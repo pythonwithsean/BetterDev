@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Algebra - Math Learning - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html" class="active">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Pre-Algebra</div>
+    <h1>Pre-Algebra</h1>
+    <p>The foundation of all mathematics. Master these concepts and every topic that follows will make sense. No prior knowledge required -- we start from scratch.</p>
+    <div class="tip-box" style="margin-top: 1rem;">
+      <div class="label">Study Approach for Beginners</div>
+      <p>If you're new to math or feeling rusty, <strong>take your time</strong> with this section. Work through every example step by step. Practice with pencil and paper, not just reading. Math is like learning to drive -- you need hands-on practice, not just theory. Aim for understanding "why" something works, not just memorizing steps.</p>
+    </div>
+
+    <div class="tip-box" style="margin-top: 1rem;">
+      <div class="label">Why Pre-Algebra Matters for Programming</div>
+      <p>"This is just basic math, why do I need it for CS?" Because <strong>every line of code you write is math in disguise</strong>. Here's how each topic on this page maps directly to programming:</p>
+      <ul>
+        <li><strong>Number types</strong> → Every programming language has data types (<code>int</code>, <code>float</code>, <code>double</code>, <code>unsigned</code>). Understanding which numbers fit where prevents bugs like integer overflow.</li>
+        <li><strong>Order of operations</strong> → Your compiler evaluates <code>3 + 4 * 2</code> using BODMAS. Get it wrong and your program produces the wrong answer silently -- the worst kind of bug.</li>
+        <li><strong>Fractions &amp; decimals</strong> → Floating-point arithmetic. Why does <code>0.1 + 0.2 == 0.30000000000000004</code> in JavaScript? You need to understand decimals to understand why.</li>
+        <li><strong>Percentages</strong> → Progress bars, CPU/memory usage, analytics dashboards, discount calculations in e-commerce, machine learning accuracy metrics.</li>
+        <li><strong>Ratios &amp; proportions</strong> → Aspect ratios (16:9), responsive design scaling, rate limiting (100 requests per minute), compression ratios.</li>
+        <li><strong>Exponents</strong> → Big-O notation (<code>O(n^2)</code>, <code>O(2^n)</code>), powers of 2 (memory sizes: 1KB = 2^10 bytes), exponential growth in algorithms.</li>
+        <li><strong>Negative numbers</strong> → Array indexing in Python (<code>arr[-1]</code>), coordinate systems in games, temperature sensors, financial calculations, two's complement binary.</li>
+        <li><strong>Modular arithmetic</strong> → The <code>%</code> operator: hash tables, circular buffers, FizzBuzz, cryptography, pagination, checking even/odd -- you'll use mod more than any other math in code.</li>
+        <li><strong>Floor &amp; ceiling</strong> → Binary search midpoint, pagination (<code>ceil(items/perPage)</code>), memory alignment, dividing work across threads.</li>
+      </ul>
+      <p>You are not just "learning basic math." You are building the mental model that every programming concept sits on top of.</p>
+    </div>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#number-types">1. Number Types</a>
+    <a href="#times-tables">2. Times Tables (Multiplication 1-12)</a>
+    <a href="#order-of-operations">3. Order of Operations (BODMAS / PEMDAS)</a>
+    <a href="#fractions">4. Fractions</a>
+    <a href="#decimals">5. Decimals</a>
+    <a href="#percentages">6. Percentages</a>
+    <a href="#ratios">7. Ratios and Proportions</a>
+    <a href="#exponents">8. Exponents and Square Roots</a>
+    <a href="#negatives">9. Negative Numbers</a>
+    <a href="#modular">10. Modular Arithmetic (The % Operator)</a>
+    <a href="#floor-ceil">11. Floor, Ceiling &amp; Integer Division</a>
+    <a href="#quiz">12. Practice Quiz</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: NUMBER TYPES                                      -->
+  <!-- ============================================================ -->
+  <section id="number-types">
+    <h2>1. Number Types</h2>
+
+    <p>Before we do anything with numbers, let's understand what kinds of numbers exist. Think of it as a family tree -- each type builds on the last one.</p>
+
+    <h3>Natural Numbers (Counting Numbers)</h3>
+    <p>These are the numbers you first learned as a kid: <strong>1, 2, 3, 4, 5, ...</strong> and so on forever. They are called "natural" because they feel, well, natural. You use them to count things: 3 apples, 7 dogs, 42 stars. Natural numbers never include zero, fractions, or negatives.</p>
+
+    <div class="formula-box">
+      Natural Numbers = { 1, 2, 3, 4, 5, 6, 7, ... }
+    </div>
+
+    <div class="example-box">
+      <div class="label">Real-World Examples</div>
+      <p><strong>Natural numbers in daily life:</strong> counting money (5 dollars), measuring quantity (3 apples), expressing age (25 years old), house numbers (123 Main St). These are the numbers that feel most "natural" because we use them constantly for counting discrete things.</p>
+    </div>
+
+    <h3>Whole Numbers</h3>
+    <p>Take all the natural numbers and add <strong>zero</strong>. That is it -- you now have the whole numbers. Zero is special because it represents "nothing," but it is still a valid number.</p>
+
+    <div class="formula-box">
+      Whole Numbers = { 0, 1, 2, 3, 4, 5, 6, ... }
+    </div>
+
+    <h3>Integers</h3>
+    <p>Now extend whole numbers in the other direction -- add all the <strong>negative</strong> whole numbers. Integers include numbers like -3, -2, -1, 0, 1, 2, 3. No fractions, no decimals -- just clean whole values, both positive and negative.</p>
+
+    <div class="formula-box">
+      Integers = { ..., -3, -2, -1, 0, 1, 2, 3, ... }
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Number Line</div>
+      <p>Picture a horizontal line stretching forever in both directions. Place 0 in the center. Positive numbers go to the right (1, 2, 3, ...) and negative numbers go to the left (-1, -2, -3, ...). Every integer sits at an exact point on this line, spaced evenly apart.</p>
+      <p style="font-family: monospace; text-align: center; color: #333333; margin-top: 0.5rem;">
+        ... -4 -- -3 -- -2 -- -1 -- 0 -- 1 -- 2 -- 3 -- 4 ...
+      </p>
+    </div>
+
+    <h3>Rational Numbers</h3>
+    <p>A rational number is any number that can be written as a <strong>fraction</strong> of two integers (where the bottom number is not zero). This includes all integers (because 5 = 5/1), all fractions (like 3/4), and all terminating or repeating decimals (like 0.75 or 0.333...).</p>
+
+    <div class="formula-box">
+      Rational Number = a/b, where a and b are integers and b != 0
+    </div>
+
+    <div class="example-box">
+      <div class="label">Examples of Rational Numbers</div>
+      <ul>
+        <li><strong>1/2</strong> = 0.5 (a simple fraction)</li>
+        <li><strong>-3/4</strong> = -0.75 (negative fraction)</li>
+        <li><strong>7</strong> = 7/1 (every integer is rational)</li>
+        <li><strong>0.333...</strong> = 1/3 (repeating decimal)</li>
+        <li><strong>2.75</strong> = 11/4 (terminating decimal)</li>
+      </ul>
+    </div>
+
+    <h3>Irrational Numbers</h3>
+    <p>These are numbers that <strong>cannot</strong> be written as a fraction of two integers. Their decimal expansions go on forever without repeating. The most famous examples are pi and the square root of 2.</p>
+
+    <div class="example-box">
+      <div class="label">Examples of Irrational Numbers</div>
+      <ul>
+        <li><strong>pi</strong> = 3.14159265358979... (never ends, never repeats)</li>
+        <li><strong>sqrt(2)</strong> = 1.41421356... (the diagonal of a 1x1 square)</li>
+        <li><strong>sqrt(3)</strong> = 1.73205080...</li>
+        <li><strong>e</strong> = 2.71828182... (Euler's number, important in advanced math)</li>
+      </ul>
+    </div>
+
+    <h3>Real Numbers</h3>
+    <p>Put <strong>all</strong> rational and irrational numbers together and you get the real numbers. This is every possible point on the number line. Basically, if you can point to it on a number line, it is a real number.</p>
+
+    <div class="formula-box">
+      Real Numbers = Rational Numbers + Irrational Numbers
+    </div>
+
+    <h3>Summary Table</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Includes</th>
+          <th>Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Natural</td>
+          <td>Positive counting numbers</td>
+          <td>1, 2, 3, 100, 9999</td>
+        </tr>
+        <tr>
+          <td>Whole</td>
+          <td>Natural numbers + zero</td>
+          <td>0, 1, 2, 3, 100</td>
+        </tr>
+        <tr>
+          <td>Integer</td>
+          <td>Whole numbers + negatives</td>
+          <td>-5, -1, 0, 3, 42</td>
+        </tr>
+        <tr>
+          <td>Rational</td>
+          <td>Any number expressible as a/b</td>
+          <td>1/2, -3, 0.75, 0.333...</td>
+        </tr>
+        <tr>
+          <td>Irrational</td>
+          <td>Non-repeating, non-terminating decimals</td>
+          <td>pi, sqrt(2), e</td>
+        </tr>
+        <tr>
+          <td>Real</td>
+          <td>All of the above combined</td>
+          <td>Everything on the number line</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Think of it like nesting dolls</div>
+      <p>Natural numbers are inside whole numbers, which are inside integers, which are inside rational numbers, which are inside real numbers. Each set contains the previous one plus more.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Practice: Classifying Numbers</div>
+      <p>Try to classify these numbers (some fit multiple categories):</p>
+      <ul>
+        <li><strong>-5:</strong> Integer, rational, real (but not natural or whole)</li>
+        <li><strong>0:</strong> Whole, integer, rational, real (but not natural)</li>
+        <li><strong>1/2:</strong> Rational, real (but not natural, whole, or integer)</li>
+        <li><strong>π:</strong> Irrational, real (but nothing else)</li>
+        <li><strong>7:</strong> Natural, whole, integer, rational, real (fits all categories!)</li>
+      </ul>
+      <p><strong>Key insight:</strong> Every natural number is also whole, integer, rational, and real. But not every real number is natural.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Data Types</div>
+      <p>In programming, you choose a <strong>data type</strong> based on what kind of number you need -- and this directly maps to the number types above:</p>
+      <ul>
+        <li><strong>Natural/Whole numbers</strong> → <code>unsigned int</code> in C++ (no negatives allowed, just 0 and up)</li>
+        <li><strong>Integers</strong> → <code>int</code>, <code>long</code> (positive and negative whole numbers)</li>
+        <li><strong>Rational numbers</strong> → <code>float</code>, <code>double</code> (numbers with decimal points)</li>
+        <li><strong>Irrational numbers</strong> → Also stored as <code>float</code>/<code>double</code>, but they get rounded because computers can't store infinite decimals. That's why <code>π</code> in code is 3.14159265... and stops at some point.</li>
+      </ul>
+      <p>Picking the wrong type causes real bugs. Storing a negative number in an <code>unsigned int</code> wraps it to a huge positive number. Storing money as a <code>float</code> causes rounding errors (use integers counting cents instead).</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: TIMES TABLES                                       -->
+  <!-- ============================================================ -->
+  <section id="times-tables">
+    <h2>2. Times Tables (Multiplication 1-12)</h2>
+
+    <p>Knowing your times tables by heart is like knowing the alphabet -- it makes everything else in math much easier. You don't want to be calculating 7 × 8 from scratch every time; you want it to be automatic. Let's master all multiplication facts from 1 to 12.</p>
+
+    <div class="tip-box">
+      <div class="label">How to Learn Times Tables</div>
+      <p><strong>The key is daily practice.</strong> Spend 5-10 minutes each day on times tables. Start with the easy ones (2s, 5s, 10s), then work your way up. Say them out loud. Write them down. Use the interactive quiz below every day until they become automatic.</p>
+    </div>
+
+    <h3>Complete Times Tables (1-12)</h3>
+    <p>Here's the full multiplication table. Notice the patterns -- the table is symmetrical because 3 × 7 = 7 × 3 (the commutative property).</p>
+
+    <div style="overflow-x: auto;">
+      <table style="font-size: 0.9rem; text-align: center;">
+        <thead>
+          <tr>
+            <th>×</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>1</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr>
+          <tr><th>2</th><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>14</td><td>16</td><td>18</td><td>20</td><td>22</td><td>24</td></tr>
+          <tr><th>3</th><td>3</td><td>6</td><td>9</td><td>12</td><td>15</td><td>18</td><td>21</td><td>24</td><td>27</td><td>30</td><td>33</td><td>36</td></tr>
+          <tr><th>4</th><td>4</td><td>8</td><td>12</td><td>16</td><td>20</td><td>24</td><td>28</td><td>32</td><td>36</td><td>40</td><td>44</td><td>48</td></tr>
+          <tr><th>5</th><td>5</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td><td>35</td><td>40</td><td>45</td><td>50</td><td>55</td><td>60</td></tr>
+          <tr><th>6</th><td>6</td><td>12</td><td>18</td><td>24</td><td>30</td><td>36</td><td>42</td><td>48</td><td>54</td><td>60</td><td>66</td><td>72</td></tr>
+          <tr><th>7</th><td>7</td><td>14</td><td>21</td><td>28</td><td>35</td><td>42</td><td>49</td><td>56</td><td>63</td><td>70</td><td>77</td><td>84</td></tr>
+          <tr><th>8</th><td>8</td><td>16</td><td>24</td><td>32</td><td>40</td><td>48</td><td>56</td><td>64</td><td>72</td><td>80</td><td>88</td><td>96</td></tr>
+          <tr><th>9</th><td>9</td><td>18</td><td>27</td><td>36</td><td>45</td><td>54</td><td>63</td><td>72</td><td>81</td><td>90</td><td>99</td><td>108</td></tr>
+          <tr><th>10</th><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td><td>60</td><td>70</td><td>80</td><td>90</td><td>100</td><td>110</td><td>120</td></tr>
+          <tr><th>11</th><td>11</td><td>22</td><td>33</td><td>44</td><td>55</td><td>66</td><td>77</td><td>88</td><td>99</td><td>110</td><td>121</td><td>132</td></tr>
+          <tr><th>12</th><td>12</td><td>24</td><td>36</td><td>48</td><td>60</td><td>72</td><td>84</td><td>96</td><td>108</td><td>120</td><td>132</td><td>144</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Tricks and Patterns for Each Number</h3>
+
+    <h4>× 1 - The Identity</h4>
+    <p>Any number times 1 equals itself. <code>7 × 1 = 7</code>. This is the easiest table!</p>
+
+    <h4>× 2 - Doubling</h4>
+    <p>Double the number. <code>2 × 6 = 12</code> (just 6 + 6). If you can add, you can multiply by 2.</p>
+
+    <h4>× 3 - Double and Add</h4>
+    <p>Triple a number = double it + add the original. <code>3 × 7 = 14 + 7 = 21</code></p>
+
+    <h4>× 4 - Double Twice</h4>
+    <p>Double the number, then double the result. <code>4 × 6 = 2 × 12 = 24</code>. Or: <code>6 → 12 → 24</code></p>
+
+    <h4>× 5 - Half of 10</h4>
+    <p>Multiply by 10, then halve. <code>5 × 7 = 70 ÷ 2 = 35</code>. Or: results always end in 0 or 5.</p>
+
+    <h4>× 6 - Even Results</h4>
+    <p>When you multiply an even number by 6, the answer ends in the same digit. <code>6 × 2 = 12</code>, <code>6 × 4 = 24</code>, <code>6 × 6 = 36</code>, <code>6 × 8 = 48</code></p>
+
+    <h4>× 7 - The Hard One</h4>
+    <p>No easy trick -- just memorize. Focus on the tricky ones: <code>7 × 7 = 49</code>, <code>7 × 8 = 56</code>, <code>7 × 6 = 42</code>. Memory trick for 7 × 8: "5, 6, 7, 8" → 56 = 7 × 8</p>
+
+    <h4>× 8 - Double Three Times</h4>
+    <p>Double, double, double. <code>8 × 3 = 3 → 6 → 12 → 24</code>. Or use: <code>8 × n = 4 × n × 2</code></p>
+
+    <h4>× 9 - The Finger Trick</h4>
+    <p><strong>Magic pattern:</strong> For 9 × n, the digits add up to 9. <code>9 × 3 = 27</code> (2+7=9), <code>9 × 7 = 63</code> (6+3=9).</p>
+    <p><strong>Finger method:</strong> Hold up 10 fingers. To find 9 × 4, put down finger 4. Count fingers on each side: 3 on left, 6 on right = 36!</p>
+    <p><strong>Pattern:</strong> 9, 18, 27, 36, 45, 54, 63, 72, 81, 90. Notice the tens go up (0,1,2,3...) and units go down (9,8,7,6...).</p>
+
+    <h4>× 10 - Add a Zero</h4>
+    <p>Just add a 0 to the end. <code>10 × 7 = 70</code>. The easiest after × 1!</p>
+
+    <h4>× 11 - Repeat the Digit (up to 9)</h4>
+    <p>For single digits: <code>11 × 3 = 33</code>, <code>11 × 7 = 77</code>. For 10+: <code>11 × 12 = 132</code> (use normal multiplication or 12 × 10 + 12).</p>
+
+    <h4>× 12 - One Dozen</h4>
+    <p>Use: <code>12 × n = 10 × n + 2 × n</code>. Example: <code>12 × 7 = 70 + 14 = 84</code>.</p>
+
+    <div class="warning-box">
+      <div class="label">The Hardest Facts to Remember</div>
+      <p>These are the facts most people struggle with. Focus extra practice here:</p>
+      <ul>
+        <li><strong>7 × 8 = 56</strong> (Memory: 5, 6, 7, 8)</li>
+        <li><strong>6 × 7 = 42</strong></li>
+        <li><strong>6 × 8 = 48</strong></li>
+        <li><strong>7 × 9 = 63</strong></li>
+        <li><strong>8 × 9 = 72</strong></li>
+        <li><strong>12 × 7 = 84</strong></li>
+        <li><strong>12 × 8 = 96</strong></li>
+      </ul>
+    </div>
+
+    <h3>Daily Times Table Checker</h3>
+    <p>Practice makes perfect! Use this quiz every day. Try to answer in under 3 seconds per question.</p>
+
+    <div class="practice-quiz">
+      <div class="label">Daily Practice Quiz</div>
+      <div id="times-table-quiz">
+        <p id="quiz-question" class="quiz-question">Loading...</p>
+        <div style="text-align: center; margin: 1rem 0;">
+          <input type="number" id="quiz-answer" placeholder="Your answer">
+          <button onclick="checkAnswer()">Check</button>
+        </div>
+        <p id="quiz-feedback" style="text-align: center; font-size: 1.1rem; min-height: 1.5rem; font-weight: 600;"></p>
+        <p id="quiz-score" class="score">Score: 0 / 0 | Streak: 0</p>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button onclick="newQuestion()" class="secondary">New Question</button>
+          <button onclick="resetQuiz()" class="secondary" style="margin-left: 0.5rem;">Reset Score</button>
+        </div>
+        <div style="margin-top: 1rem;">
+          <label style="color: #555555; font-weight: 500;">Table Range: </label>
+          <select id="table-range" onchange="newQuestion()">
+            <option value="12">1-12 (Full)</option>
+            <option value="5">1-5 (Beginner)</option>
+            <option value="10">1-10 (Standard)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentA, currentB, score = 0, total = 0, streak = 0;
+
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max) + 1;
+      }
+
+      function newQuestion() {
+        const range = parseInt(document.getElementById('table-range').value);
+        currentA = getRandomInt(range);
+        currentB = getRandomInt(12);
+        document.getElementById('quiz-question').textContent = currentA + ' × ' + currentB + ' = ?';
+        document.getElementById('quiz-answer').value = '';
+        document.getElementById('quiz-feedback').textContent = '';
+        document.getElementById('quiz-answer').focus();
+      }
+
+      function checkAnswer() {
+        const userAnswer = parseInt(document.getElementById('quiz-answer').value);
+        const correctAnswer = currentA * currentB;
+        total++;
+
+        if (userAnswer === correctAnswer) {
+          score++;
+          streak++;
+          document.getElementById('quiz-feedback').innerHTML = '<span style="color: #000000;">✓ Correct!</span>';
+        } else {
+          streak = 0;
+          document.getElementById('quiz-feedback').innerHTML = '<span style="color: #888888;">✗ Wrong. ' + currentA + ' × ' + currentB + ' = ' + correctAnswer + '</span>';
+        }
+
+        document.getElementById('quiz-score').textContent = 'Score: ' + score + ' / ' + total + ' (' + Math.round(score/total*100) + '%) | Streak: ' + streak;
+
+        setTimeout(newQuestion, 1500);
+      }
+
+      function resetQuiz() {
+        score = 0;
+        total = 0;
+        streak = 0;
+        document.getElementById('quiz-score').textContent = 'Score: 0 / 0 | Streak: 0';
+        newQuestion();
+      }
+
+      // Handle Enter key
+      document.addEventListener('DOMContentLoaded', function() {
+        newQuestion();
+        document.getElementById('quiz-answer').addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') checkAnswer();
+        });
+      });
+    </script>
+
+    <div class="tip-box">
+      <div class="label">Practice Strategy</div>
+      <p><strong>Daily goal:</strong> Get 20 questions right with at least 90% accuracy. Once you can do this consistently, you've mastered your times tables! Focus on speed -- aim to answer each question in under 3 seconds.</p>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: ORDER OF OPERATIONS                               -->
+  <!-- ============================================================ -->
+  <section id="order-of-operations">
+    <h2>3. Order of Operations (BODMAS / PEMDAS)</h2>
+
+    <p>When you see an expression like <strong>3 + 4 x 2</strong>, do you add first or multiply first? The answer matters -- and getting it wrong is one of the most common mistakes in math. The order of operations tells you <em>exactly</em> which calculations to do first.</p>
+
+    <p>There are two popular acronyms. They mean the same thing, just different words:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>BODMAS</th>
+          <th>PEMDAS</th>
+          <th>Meaning</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>B</strong>rackets</td>
+          <td><strong>P</strong>arentheses</td>
+          <td>Solve inside ( ) first</td>
+          <td>1st (highest)</td>
+        </tr>
+        <tr>
+          <td><strong>O</strong>rders</td>
+          <td><strong>E</strong>xponents</td>
+          <td>Powers and roots (x^2, sqrt)</td>
+          <td>2nd</td>
+        </tr>
+        <tr>
+          <td><strong>D</strong>ivision</td>
+          <td><strong>M</strong>ultiplication</td>
+          <td rowspan="2">Multiply and divide, left to right</td>
+          <td rowspan="2">3rd (equal priority)</td>
+        </tr>
+        <tr>
+          <td><strong>M</strong>ultiplication</td>
+          <td><strong>D</strong>ivision</td>
+        </tr>
+        <tr>
+          <td><strong>A</strong>ddition</td>
+          <td><strong>A</strong>ddition</td>
+          <td rowspan="2">Add and subtract, left to right</td>
+          <td rowspan="2">4th (equal priority)</td>
+        </tr>
+        <tr>
+          <td><strong>S</strong>ubtraction</td>
+          <td><strong>S</strong>ubtraction</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Key Rule</div>
+      <p>Multiplication and division have <strong>equal</strong> priority -- you do them left to right. Same for addition and subtraction. It is NOT "multiply before divide." It is "multiplication and division together, left to right."</p>
+    </div>
+
+    <h3>Worked Examples</h3>
+
+    <div class="example-box">
+      <div class="label">Example 1 -- Simple</div>
+      <p><strong>Solve: 3 + 4 x 2</strong></p>
+      <p>Step 1: Multiplication first: 4 x 2 = 8</p>
+      <p>Step 2: Then addition: 3 + 8 = <strong>11</strong></p>
+      <p>(Not 14! A common mistake is doing 3 + 4 = 7 first.)</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2 -- With Brackets</div>
+      <p><strong>Solve: (3 + 4) x 2</strong></p>
+      <p>Step 1: Brackets first: 3 + 4 = 7</p>
+      <p>Step 2: Then multiply: 7 x 2 = <strong>14</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3 -- Multiple Operations</div>
+      <p><strong>Solve: 10 - 3 x 2 + 8 / 4</strong></p>
+      <p>Step 1: Multiplication: 3 x 2 = 6</p>
+      <p>Step 2: Division: 8 / 4 = 2</p>
+      <p>Step 3: Now left to right: 10 - 6 + 2 = 4 + 2 = <strong>6</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 4 -- With Exponents</div>
+      <p><strong>Solve: 2 + 3^2 x 4</strong></p>
+      <p>Step 1: Exponent first: 3^2 = 9</p>
+      <p>Step 2: Multiplication: 9 x 4 = 36</p>
+      <p>Step 3: Addition: 2 + 36 = <strong>38</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 5 -- Complex</div>
+      <p><strong>Solve: 5 x (6 - 2)^2 + 12 / 3 - 1</strong></p>
+      <p>Step 1: Brackets: 6 - 2 = 4</p>
+      <p>Step 2: Exponent: 4^2 = 16</p>
+      <p>Step 3: Multiplication: 5 x 16 = 80</p>
+      <p>Step 4: Division: 12 / 3 = 4</p>
+      <p>Step 5: Left to right: 80 + 4 - 1 = <strong>83</strong></p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common Mistakes to Avoid</div>
+      <ul>
+        <li><strong>Adding before multiplying:</strong> In "3 + 4 x 2", you must multiply first. The answer is 11, not 14.</li>
+        <li><strong>Thinking M comes before D:</strong> Multiplication and division have equal priority. Do them left to right. In "12 / 4 x 3", you divide first (left to right): 3 x 3 = 9, not 12 / 12 = 1.</li>
+        <li><strong>Forgetting nested brackets:</strong> In "2 x (3 + (4 - 1))", solve the innermost brackets first: 4 - 1 = 3, then 3 + 3 = 6, then 2 x 6 = 12.</li>
+        <li><strong>Ignoring exponents:</strong> In "2 x 3^2", the exponent applies to 3 only (not 2 x 3). So it is 2 x 9 = 18, not 6^2 = 36.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">More Practice Examples</div>
+      <p><strong>Practice these step-by-step:</strong></p>
+      <p><strong>1) 2 + 3 x 4^2 - 1</strong><br>
+         Step 1: Exponent: 4^2 = 16<br>
+         Step 2: Multiply: 3 x 16 = 48<br>
+         Step 3: Left to right: 2 + 48 - 1 = 50 - 1 = <strong>49</strong></p>
+      <p><strong>2) (8 - 3) x 2 + 10 / 5</strong><br>
+         Step 1: Brackets: 8 - 3 = 5<br>
+         Step 2: Multiply: 5 x 2 = 10<br>
+         Step 3: Divide: 10 / 5 = 2<br>
+         Step 4: Add: 10 + 2 = <strong>12</strong></p>
+      <p><strong>3) 15 / 3 x 2 - 4</strong><br>
+         Step 1: Division first (left to right): 15 / 3 = 5<br>
+         Step 2: Then multiply: 5 x 2 = 10<br>
+         Step 3: Subtract: 10 - 4 = <strong>6</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Memory Trick</div>
+      <p>Remember BODMAS with: "<strong>B</strong>ig <strong>O</strong>ld <strong>D</strong>ogs <strong>M</strong>ust <strong>A</strong>lways <strong>S</strong>leep" or "<strong>P</strong>lease <strong>E</strong>xcuse <strong>M</strong>y <strong>D</strong>ear <strong>A</strong>unt <strong>S</strong>ally" (PEMDAS). But remember: MD and AS are equal priority, left to right!</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: How Your Code Evaluates Expressions</div>
+      <p>Compilers and interpreters follow <strong>exactly</strong> the same rules. When you write:</p>
+      <div class="formula-box">int result = 3 + 4 * 2;   // result = 11, NOT 14</div>
+      <p>The compiler does multiplication first, just like BODMAS says. This is called <strong>operator precedence</strong>. Every language has a precedence table -- and it matches the math you just learned. If you want addition first, you use parentheses: <code>(3 + 4) * 2 = 14</code>. This is also why complex boolean expressions like <code>a || b && c</code> can surprise you -- <code>&&</code> has higher precedence than <code>||</code>, just like <code>*</code> beats <code>+</code>.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: FRACTIONS                                         -->
+  <!-- ============================================================ -->
+  <section id="fractions">
+    <h2>3. Fractions</h2>
+
+    <p>A fraction represents a <strong>part of a whole</strong>. If you cut a pizza into 4 equal slices and eat 1, you have eaten 1/4 of the pizza. The top number (<strong>numerator</strong>) tells you how many parts you have. The bottom number (<strong>denominator</strong>) tells you how many equal parts the whole was divided into.</p>
+
+    <div class="formula-box">
+      Fraction = Numerator / Denominator
+    </div>
+
+    <h3>Types of Fractions</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Definition</th>
+          <th>Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Proper</td>
+          <td>Numerator is smaller than denominator (less than 1)</td>
+          <td>1/2, 3/4, 7/10</td>
+        </tr>
+        <tr>
+          <td>Improper</td>
+          <td>Numerator is equal to or larger than denominator (1 or more)</td>
+          <td>5/3, 9/4, 7/7</td>
+        </tr>
+        <tr>
+          <td>Mixed Number</td>
+          <td>A whole number combined with a proper fraction</td>
+          <td>1 2/3, 3 1/4, 2 5/8</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Converting Improper to Mixed</div>
+      <p><strong>Convert 7/3 to a mixed number:</strong></p>
+      <p>Step 1: Divide 7 by 3: 7 / 3 = 2 remainder 1</p>
+      <p>Step 2: The whole number is 2, the remainder goes over the denominator: <strong>2 1/3</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Converting Mixed to Improper</div>
+      <p><strong>Convert 3 2/5 to an improper fraction:</strong></p>
+      <p>Step 1: Multiply whole number by denominator: 3 x 5 = 15</p>
+      <p>Step 2: Add the numerator: 15 + 2 = 17</p>
+      <p>Step 3: Put over original denominator: <strong>17/5</strong></p>
+    </div>
+
+    <h3>Equivalent Fractions</h3>
+    <p>Equivalent fractions look different but represent the same value. You create them by multiplying (or dividing) the numerator and denominator by the same number.</p>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>1/2 = 2/4 = 3/6 = 4/8 = 50/100</p>
+      <p>All of these equal one half. We multiplied top and bottom by the same number each time.</p>
+    </div>
+
+    <h3>Simplifying Fractions</h3>
+    <p>To simplify a fraction, divide both the numerator and denominator by their <strong>Greatest Common Divisor (GCD)</strong> -- the largest number that divides both evenly.</p>
+
+    <div class="example-box">
+      <div class="label">Example -- Simplify 12/18</div>
+      <p>Step 1: Find the GCD of 12 and 18. Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 18: 1, 2, 3, 6, 9, 18. GCD = 6.</p>
+      <p>Step 2: Divide both by 6: 12/6 = 2, 18/6 = 3</p>
+      <p>Result: <strong>12/18 = 2/3</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Easy Way to Find GCD</div>
+      <p>If you struggle with finding factors, try this: start with the smaller number and work down. Does 12 divide both 12 and 18? No (18/12 = 1.5). Does 6? Yes (12/6 = 2, 18/6 = 3). So 6 is the GCD. Or use trial division: try 2, then 3, then 4, etc.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">More Fraction Simplification Practice</div>
+      <p><strong>Simplify these fractions:</strong></p>
+      <p><strong>1) 6/9:</strong> Both divide by 3 → 6/9 = 2/3</p>
+      <p><strong>2) 15/25:</strong> Both divide by 5 → 15/25 = 3/5</p>
+      <p><strong>3) 8/12:</strong> Both divide by 4 → 8/12 = 2/3</p>
+      <p><strong>4) 10/15:</strong> Both divide by 5 → 10/15 = 2/3</p>
+      <p><strong>Common pattern:</strong> Look for numbers both top and bottom can be divided by evenly.</p>
+    </div>
+
+    <!-- ADDING FRACTIONS -->
+    <h3>Adding Fractions</h3>
+
+    <p><strong>Same denominator:</strong> Just add the numerators and keep the denominator.</p>
+
+    <div class="formula-box">
+      a/c + b/c = (a + b) / c
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example -- Same Denominator</div>
+      <p><strong>2/7 + 3/7 = ?</strong></p>
+      <p>Same denominator, so: (2 + 3) / 7 = <strong>5/7</strong></p>
+    </div>
+
+    <p><strong>Different denominators:</strong> First find the <strong>Least Common Denominator (LCD)</strong>, convert both fractions, then add.</p>
+
+    <div class="formula-box">
+      a/b + c/d = (a x d + c x b) / (b x d)
+      <br><br>
+      Or better: find LCD, convert each fraction, then add numerators.
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1 -- Different Denominators</div>
+      <p><strong>1/3 + 1/4 = ?</strong></p>
+      <p>Step 1: LCD of 3 and 4 is 12.</p>
+      <p>Step 2: Convert: 1/3 = 4/12, and 1/4 = 3/12</p>
+      <p>Step 3: Add: 4/12 + 3/12 = <strong>7/12</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2 -- Different Denominators</div>
+      <p><strong>2/5 + 3/10 = ?</strong></p>
+      <p>Step 1: LCD of 5 and 10 is 10.</p>
+      <p>Step 2: Convert: 2/5 = 4/10 (multiply top and bottom by 2). 3/10 stays the same.</p>
+      <p>Step 3: Add: 4/10 + 3/10 = <strong>7/10</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3 -- With Simplifying</div>
+      <p><strong>3/4 + 1/6 = ?</strong></p>
+      <p>Step 1: LCD of 4 and 6 is 12.</p>
+      <p>Step 2: Convert: 3/4 = 9/12, and 1/6 = 2/12</p>
+      <p>Step 3: Add: 9/12 + 2/12 = 11/12</p>
+      <p>Step 4: Already simplified. Answer: <strong>11/12</strong></p>
+    </div>
+
+    <!-- SUBTRACTING FRACTIONS -->
+    <h3>Subtracting Fractions</h3>
+    <p>Subtraction works the same way as addition -- find a common denominator, then subtract the numerators.</p>
+
+    <div class="formula-box">
+      a/c - b/c = (a - b) / c
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>5/6 - 1/3 = ?</strong></p>
+      <p>Step 1: LCD of 6 and 3 is 6.</p>
+      <p>Step 2: Convert: 1/3 = 2/6</p>
+      <p>Step 3: Subtract: 5/6 - 2/6 = <strong>3/6 = 1/2</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>7/8 - 1/4 = ?</strong></p>
+      <p>Step 1: LCD of 8 and 4 is 8.</p>
+      <p>Step 2: Convert: 1/4 = 2/8</p>
+      <p>Step 3: Subtract: 7/8 - 2/8 = <strong>5/8</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3</div>
+      <p><strong>3/5 - 1/10 = ?</strong></p>
+      <p>Step 1: LCD of 5 and 10 is 10.</p>
+      <p>Step 2: Convert: 3/5 = 6/10</p>
+      <p>Step 3: Subtract: 6/10 - 1/10 = <strong>5/10 = 1/2</strong></p>
+    </div>
+
+    <!-- MULTIPLYING FRACTIONS -->
+    <h3>Multiplying Fractions</h3>
+    <p>This is actually the easiest operation with fractions. Just multiply straight across: numerator times numerator, denominator times denominator.</p>
+
+    <div class="formula-box">
+      a/b x c/d = (a x c) / (b x d)
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>2/3 x 4/5 = ?</strong></p>
+      <p>Multiply across: (2 x 4) / (3 x 5) = <strong>8/15</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>3/4 x 2/7 = ?</strong></p>
+      <p>Multiply across: (3 x 2) / (4 x 7) = <strong>6/28 = 3/14</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3</div>
+      <p><strong>5/6 x 3/10 = ?</strong></p>
+      <p>Multiply across: (5 x 3) / (6 x 10) = 15/60</p>
+      <p>Simplify: GCD of 15 and 60 is 15. So 15/60 = <strong>1/4</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Shortcut -- Cross-Cancel</div>
+      <p>Before multiplying, you can simplify diagonally. In 5/6 x 3/10: the 5 and 10 share a factor of 5 (giving 1 and 2), and the 3 and 6 share a factor of 3 (giving 1 and 2). So it becomes 1/2 x 1/2 = 1/4. Much easier!</p>
+    </div>
+
+    <!-- DIVIDING FRACTIONS -->
+    <h3>Dividing Fractions (Flip and Multiply)</h3>
+    <p>To divide by a fraction, <strong>flip</strong> the second fraction (swap its numerator and denominator) and then <strong>multiply</strong>.</p>
+
+    <div class="formula-box">
+      a/b / c/d = a/b x d/c = (a x d) / (b x c)
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>3/4 / 2/5 = ?</strong></p>
+      <p>Step 1: Flip the second fraction: 2/5 becomes 5/2</p>
+      <p>Step 2: Multiply: 3/4 x 5/2 = 15/8</p>
+      <p>Step 3: Convert to mixed: <strong>1 7/8</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>5/6 / 1/3 = ?</strong></p>
+      <p>Step 1: Flip: 1/3 becomes 3/1</p>
+      <p>Step 2: Multiply: 5/6 x 3/1 = 15/6</p>
+      <p>Step 3: Simplify: 15/6 = <strong>5/2 = 2 1/2</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3</div>
+      <p><strong>7/8 / 7/4 = ?</strong></p>
+      <p>Step 1: Flip: 7/4 becomes 4/7</p>
+      <p>Step 2: Multiply: 7/8 x 4/7 = 28/56</p>
+      <p>Step 3: Simplify: 28/56 = <strong>1/2</strong></p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common Mistake</div>
+      <p>Only flip the <strong>second</strong> fraction (the one you are dividing by). Do NOT flip both. And remember: flipping is also called finding the <strong>reciprocal</strong>.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why Does "Flip and Multiply" Work?</div>
+      <p>Think of division as "how many times does this fit?" For example, 1/2 ÷ 1/4 asks "how many quarters fit in a half?" The answer is 2. Using our rule: 1/2 ÷ 1/4 = 1/2 × 4/1 = 4/2 = 2. It works because division by a fraction is the same as multiplication by its reciprocal.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Real-World Examples</div>
+      <p><strong>Recipe scaling:</strong> If a recipe calls for 2/3 cup of flour and you want to make half the recipe, calculate 2/3 ÷ 2/1 = 2/3 × 1/2 = 2/6 = 1/3 cup.</p>
+      <p><strong>Time management:</strong> You have 3/4 hour to complete tasks that take 1/6 hour each. How many can you complete? 3/4 ÷ 1/6 = 3/4 × 6/1 = 18/4 = 4.5, so you can complete 4 full tasks.</p>
+    </div>
+
+    <!-- CONVERTING FRACTIONS, DECIMALS, PERCENTAGES -->
+    <h3>Converting Between Fractions, Decimals, and Percentages</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>To</th>
+          <th>How</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fraction</td>
+          <td>Decimal</td>
+          <td>Divide numerator by denominator: 3/4 = 3 / 4 = 0.75</td>
+        </tr>
+        <tr>
+          <td>Decimal</td>
+          <td>Fraction</td>
+          <td>Put over a power of 10, simplify: 0.75 = 75/100 = 3/4</td>
+        </tr>
+        <tr>
+          <td>Fraction</td>
+          <td>Percentage</td>
+          <td>Convert to decimal, then multiply by 100: 3/4 = 0.75 = 75%</td>
+        </tr>
+        <tr>
+          <td>Percentage</td>
+          <td>Fraction</td>
+          <td>Put over 100, simplify: 75% = 75/100 = 3/4</td>
+        </tr>
+        <tr>
+          <td>Decimal</td>
+          <td>Percentage</td>
+          <td>Multiply by 100: 0.75 x 100 = 75%</td>
+        </tr>
+        <tr>
+          <td>Percentage</td>
+          <td>Decimal</td>
+          <td>Divide by 100: 75% / 100 = 0.75</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Example -- Full Conversion</div>
+      <p><strong>Convert 3/8 to a decimal and a percentage:</strong></p>
+      <p>Decimal: 3 / 8 = 0.375</p>
+      <p>Percentage: 0.375 x 100 = <strong>37.5%</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Fractions in Code</div>
+      <p>Computers don't store fractions as "1/3" -- they convert them to decimals (floating-point). This means <strong>some fractions lose precision</strong>. The classic example: <code>1/3 = 0.33333...</code> gets cut off. This is why financial software never uses <code>float</code> for money -- they use integers (cents) or special decimal types. When you see a bug where $10.00 becomes $9.99, now you know why.</p>
+      <p>In algorithms, fractions show up constantly: probability calculations, hash table load factors (items / buckets), and dividing work across threads.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: DECIMALS                                          -->
+  <!-- ============================================================ -->
+  <section id="decimals">
+    <h2>4. Decimals</h2>
+
+    <p>Decimals are another way to write fractions, using a <strong>decimal point</strong> instead of a fraction bar. They are based on powers of 10.</p>
+
+    <h3>Place Value</h3>
+    <p>Each position after the decimal point has a specific name and value:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example in 3.456</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1st after decimal</td>
+          <td>Tenths</td>
+          <td>1/10 = 0.1</td>
+          <td>4 (four tenths)</td>
+        </tr>
+        <tr>
+          <td>2nd after decimal</td>
+          <td>Hundredths</td>
+          <td>1/100 = 0.01</td>
+          <td>5 (five hundredths)</td>
+        </tr>
+        <tr>
+          <td>3rd after decimal</td>
+          <td>Thousandths</td>
+          <td>1/1000 = 0.001</td>
+          <td>6 (six thousandths)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Reading Decimals</div>
+      <p>3.456 is read as "three and four hundred fifty-six thousandths." The number of decimal places tells you the denominator: 1 place = tenths, 2 places = hundredths, 3 places = thousandths, and so on.</p>
+    </div>
+
+    <h3>Adding and Subtracting Decimals</h3>
+    <p>The key rule: <strong>line up the decimal points</strong>, then add or subtract as normal. Fill empty spots with zeros.</p>
+
+    <div class="example-box">
+      <div class="label">Example 1 -- Adding</div>
+      <p><strong>3.25 + 1.7 = ?</strong></p>
+      <p>Line up:</p>
+      <p style="font-family: monospace; color: #333333;">&nbsp;&nbsp;3.25<br>+ 1.70<br>------<br>&nbsp;&nbsp;4.95</p>
+      <p>Answer: <strong>4.95</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2 -- Subtracting</div>
+      <p><strong>5.03 - 2.8 = ?</strong></p>
+      <p>Line up:</p>
+      <p style="font-family: monospace; color: #333333;">&nbsp;&nbsp;5.03<br>- 2.80<br>------<br>&nbsp;&nbsp;2.23</p>
+      <p>Answer: <strong>2.23</strong></p>
+    </div>
+
+    <h3>Multiplying Decimals</h3>
+    <p>Multiply the numbers as if there were no decimals. Then count the total decimal places in both original numbers and put that many decimal places in the answer.</p>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>2.5 x 1.3 = ?</strong></p>
+      <p>Step 1: Multiply as whole numbers: 25 x 13 = 325</p>
+      <p>Step 2: Count decimal places: 2.5 has 1, 1.3 has 1, total = 2</p>
+      <p>Step 3: Place decimal: 325 becomes 3.25</p>
+      <p>Answer: <strong>3.25</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>0.4 x 0.03 = ?</strong></p>
+      <p>Step 1: 4 x 3 = 12</p>
+      <p>Step 2: Decimal places: 1 + 2 = 3</p>
+      <p>Step 3: Place decimal: 12 becomes 0.012</p>
+      <p>Answer: <strong>0.012</strong></p>
+    </div>
+
+    <h3>Dividing Decimals</h3>
+    <p>If the divisor (the number you are dividing by) has a decimal, move the decimal point to the right until it is a whole number. Move the decimal in the dividend (the number being divided) the same number of places. Then divide as normal.</p>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>6.5 / 0.5 = ?</strong></p>
+      <p>Step 1: Move decimal 1 place right in both: 65 / 5</p>
+      <p>Step 2: Divide: 65 / 5 = <strong>13</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>4.56 / 0.12 = ?</strong></p>
+      <p>Step 1: Move decimal 2 places right in both: 456 / 12</p>
+      <p>Step 2: Divide: 456 / 12 = <strong>38</strong></p>
+    </div>
+
+    <h3>Rounding Decimals</h3>
+    <p>To round a decimal, look at the digit <strong>one place to the right</strong> of where you want to round. If it is 5 or more, round up. If it is less than 5, round down (keep it the same).</p>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <ul>
+        <li><strong>3.456</strong> rounded to the nearest tenth: Look at hundredths (5). Since 5 or more, round up: <strong>3.5</strong></li>
+        <li><strong>3.456</strong> rounded to the nearest hundredth: Look at thousandths (6). Since 5 or more, round up: <strong>3.46</strong></li>
+        <li><strong>7.832</strong> rounded to the nearest tenth: Look at hundredths (3). Less than 5, round down: <strong>7.8</strong></li>
+        <li><strong>12.999</strong> rounded to the nearest tenth: Look at hundredths (9). Round up: <strong>13.0</strong></li>
+      </ul>
+    </div>
+
+    <h3>Converting Decimals to Fractions</h3>
+
+    <div class="formula-box">
+      1. Write the decimal over the appropriate power of 10<br>
+      2. Simplify by finding the GCD
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>0.6 = ?</strong></p>
+      <p>0.6 = 6/10 = <strong>3/5</strong> (divide both by 2)</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>0.125 = ?</strong></p>
+      <p>0.125 = 125/1000 = <strong>1/8</strong> (divide both by 125)</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3</div>
+      <p><strong>2.75 = ?</strong></p>
+      <p>2.75 = 275/100 = 11/4 = <strong>2 3/4</strong></p>
+    </div>
+
+    <h3>Decimal Operations: Step-by-Step Mastery</h3>
+    <p>Let's deep dive into each operation with multiple examples to build your confidence.</p>
+
+    <h4>Addition with Decimals: More Practice</h4>
+    <div class="example-box">
+      <div class="label">Example: Adding Multiple Decimals</div>
+      <p><strong>1.25 + 3.7 + 0.125 = ?</strong></p>
+      <p style="font-family: monospace; color: #333333;">
+        &nbsp;&nbsp;1.250<br>
+        &nbsp;&nbsp;3.700<br>
+        + 0.125<br>
+        -------<br>
+        &nbsp;&nbsp;5.075
+      </p>
+      <p><strong>Key:</strong> Add zeros to make all numbers have the same decimal places, then add normally.</p>
+    </div>
+
+    <h4>Subtraction with Borrowing</h4>
+    <div class="example-box">
+      <div class="label">Example: When You Need to Borrow</div>
+      <p><strong>5.02 - 2.78 = ?</strong></p>
+      <p style="font-family: monospace; color: #333333;">
+        &nbsp;&nbsp;5.02<br>
+        - 2.78<br>
+        ------<br>
+        &nbsp;&nbsp;2.24
+      </p>
+      <p><strong>Step-by-step:</strong> Hundredths: 2 - 8 (can't do, borrow from tenths). Now it's 12 - 8 = 4. Tenths: 9 - 7 = 2 (was 0, became 9 after borrowing, then borrowed to 9). Units: 4 - 2 = 2.</p>
+    </div>
+
+    <h4>Multiplication: The Decimal Count Rule</h4>
+    <div class="example-box">
+      <div class="label">Example with Many Decimal Places</div>
+      <p><strong>0.25 × 0.04 = ?</strong></p>
+      <p>Step 1: Multiply as whole numbers: 25 × 4 = 100</p>
+      <p>Step 2: Count total decimal places: 0.25 has 2, 0.04 has 2, total = 4</p>
+      <p>Step 3: Place decimal 4 places from the right: 100 → 0.0100 = <strong>0.01</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Multiplying by Powers of 10</div>
+      <p><strong>Multiplying by 10, 100, 1000...</strong> just moves the decimal right!</p>
+      <p>3.456 × 10 = 34.56 (move right 1 place)</p>
+      <p>3.456 × 100 = 345.6 (move right 2 places)</p>
+      <p>3.456 × 1000 = 3456 (move right 3 places)</p>
+      <p><strong>Dividing by 10, 100, 1000...</strong> moves the decimal left!</p>
+      <p>345.6 ÷ 10 = 34.56</p>
+      <p>345.6 ÷ 100 = 3.456</p>
+      <p>345.6 ÷ 1000 = 0.3456</p>
+    </div>
+
+    <h4>Long Division with Decimals</h4>
+    <div class="example-box">
+      <div class="label">Example: Dividing to Get a Decimal Answer</div>
+      <p><strong>7 ÷ 4 = ?</strong></p>
+      <p>Step 1: 7 ÷ 4 = 1 remainder 3</p>
+      <p>Step 2: Add decimal point and zeros: 7.00</p>
+      <p>Step 3: Bring down: 30 ÷ 4 = 7 remainder 2</p>
+      <p>Step 4: Bring down: 20 ÷ 4 = 5</p>
+      <p>Answer: <strong>1.75</strong></p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common Decimal Mistakes</div>
+      <ul>
+        <li><strong>Not lining up decimals:</strong> 3.5 + 0.25 ≠ 3.75 if you write them misaligned!</li>
+        <li><strong>Forgetting to count decimal places in multiplication:</strong> 0.1 × 0.1 = 0.01, NOT 0.1</li>
+        <li><strong>Moving decimals wrong way:</strong> 5.6 ÷ 10 = 0.56, NOT 56</li>
+        <li><strong>Trailing zeros matter for place value:</strong> 2.5 = 2.50 = 2.500 (same value, different notation)</li>
+      </ul>
+    </div>
+
+    <h4>Repeating Decimals</h4>
+    <p>Some fractions create decimals that repeat forever:</p>
+    <div class="formula-box">
+      1/3 = 0.333... (3 repeats forever)<br>
+      1/6 = 0.1666... (6 repeats)<br>
+      1/7 = 0.142857142857... (pattern repeats)<br>
+      2/3 = 0.666...<br>
+      1/9 = 0.111...<br>
+      1/11 = 0.090909...
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Recognizing Repeating Decimals</div>
+      <p>When you divide and keep getting remainders that repeat, you have a repeating decimal. We write these with a bar over the repeating digits: 1/3 = 0.3̄ or 1/7 = 0.142857̄</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Floating-Point is Weird</div>
+      <p>This is one of the most important things to understand as a programmer. Open any browser console and type <code>0.1 + 0.2</code>. You get <code>0.30000000000000004</code>. Why? Because computers store decimals in <strong>binary floating-point</strong> (base 2), and just like 1/3 = 0.333... in base 10, the number 0.1 is a repeating decimal in base 2. It can never be stored exactly.</p>
+      <p><strong>Practical rule:</strong> Never compare floats with <code>==</code>. Instead, check if the difference is tiny: <code>abs(a - b) < 0.0001</code>. This comes up in game physics, financial calculations, and scientific computing.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: PERCENTAGES                                       -->
+  <!-- ============================================================ -->
+  <section id="percentages">
+    <h2>5. Percentages</h2>
+
+    <p>The word "percent" literally means <strong>"per hundred"</strong> (per centum in Latin). So 25% means 25 out of 100, or 25/100, or 0.25. Percentages are everywhere in daily life -- discounts, grades, statistics, taxes, tips.</p>
+
+    <h3>Converting Between Fractions, Decimals, and Percentages</h3>
+
+    <div class="formula-box">
+      Fraction to %: Divide, then multiply by 100<br>
+      Decimal to %: Multiply by 100 (move decimal 2 right)<br>
+      % to Decimal: Divide by 100 (move decimal 2 left)<br>
+      % to Fraction: Put over 100, simplify
+    </div>
+
+    <div class="example-box">
+      <div class="label">Quick Reference</div>
+      <table>
+        <thead>
+          <tr><th>Fraction</th><th>Decimal</th><th>Percentage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1/2</td><td>0.5</td><td>50%</td></tr>
+          <tr><td>1/4</td><td>0.25</td><td>25%</td></tr>
+          <tr><td>3/4</td><td>0.75</td><td>75%</td></tr>
+          <tr><td>1/5</td><td>0.2</td><td>20%</td></tr>
+          <tr><td>1/3</td><td>0.333...</td><td>33.3%</td></tr>
+          <tr><td>1/8</td><td>0.125</td><td>12.5%</td></tr>
+          <tr><td>1/10</td><td>0.1</td><td>10%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Finding a Percentage of a Number</h3>
+    <p>To find X% of a number, convert the percentage to a decimal and multiply.</p>
+
+    <div class="formula-box">
+      X% of Y = (X / 100) x Y
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>What is 20% of 150?</strong></p>
+      <p>20% = 0.20</p>
+      <p>0.20 x 150 = <strong>30</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>What is 15% of 80?</strong></p>
+      <p>15% = 0.15</p>
+      <p>0.15 x 80 = <strong>12</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3</div>
+      <p><strong>What is 7.5% of 200?</strong></p>
+      <p>7.5% = 0.075</p>
+      <p>0.075 x 200 = <strong>15</strong></p>
+    </div>
+
+    <h3>Percentage Increase and Decrease</h3>
+
+    <div class="formula-box">
+      Percentage Increase: New Value = Original x (1 + rate)<br>
+      Percentage Decrease: New Value = Original x (1 - rate)<br><br>
+      Percentage Change = ((New - Original) / Original) x 100%
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example -- Increase</div>
+      <p><strong>A shirt costs $40 and the price increases by 25%. What is the new price?</strong></p>
+      <p>Increase amount: 25% of $40 = 0.25 x 40 = $10</p>
+      <p>New price: $40 + $10 = <strong>$50</strong></p>
+      <p>Or directly: $40 x 1.25 = <strong>$50</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example -- Decrease</div>
+      <p><strong>A laptop costs $800 and is on sale for 15% off. What is the sale price?</strong></p>
+      <p>Discount amount: 15% of $800 = 0.15 x 800 = $120</p>
+      <p>Sale price: $800 - $120 = <strong>$680</strong></p>
+      <p>Or directly: $800 x 0.85 = <strong>$680</strong></p>
+    </div>
+
+    <h3>Finding What Percentage One Number Is of Another</h3>
+
+    <div class="formula-box">
+      Percentage = (Part / Whole) x 100%
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>You scored 42 out of 60 on a test. What percentage is that?</strong></p>
+      <p>(42 / 60) x 100 = 0.7 x 100 = <strong>70%</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>A class has 30 students. 12 are wearing hats. What percentage?</strong></p>
+      <p>(12 / 30) x 100 = 0.4 x 100 = <strong>40%</strong></p>
+    </div>
+
+    <h3>Real-World Percentage Examples</h3>
+
+    <div class="example-box">
+      <div class="label">Sales Tax</div>
+      <p><strong>You buy a $45 item and tax is 8%. What is the total?</strong></p>
+      <p>Tax amount: 0.08 x $45 = $3.60</p>
+      <p>Total: $45 + $3.60 = <strong>$48.60</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Restaurant Tip</div>
+      <p><strong>Your meal costs $32. You want to leave a 20% tip. How much?</strong></p>
+      <p>Tip: 0.20 x $32 = <strong>$6.40</strong></p>
+      <p>Total bill: $32 + $6.40 = <strong>$38.40</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Discount Shopping</div>
+      <p><strong>Shoes are $120 with a 30% discount, plus 9% tax on the sale price. Final cost?</strong></p>
+      <p>Discount: 0.30 x $120 = $36</p>
+      <p>Sale price: $120 - $36 = $84</p>
+      <p>Tax: 0.09 x $84 = $7.56</p>
+      <p>Final cost: $84 + $7.56 = <strong>$91.56</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Quick Mental Math Trick</div>
+      <p>To find 10% of any number, just move the decimal point one place to the left. 10% of $85 = $8.50. Then you can build from there: 20% = double the 10%, 5% = half the 10%, 15% = 10% + 5%.</p>
+    </div>
+
+    <h3>Essential Percentage Tricks and Shortcuts</h3>
+
+    <div class="example-box">
+      <div class="label">The 10% Building Method</div>
+      <p><strong>Find 35% of 240 using 10% as your base:</strong></p>
+      <p>10% of 240 = 24 (move decimal left)</p>
+      <p>30% = 3 × 24 = 72</p>
+      <p>5% = 24 ÷ 2 = 12</p>
+      <p>35% = 30% + 5% = 72 + 12 = <strong>84</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">The 1% Method for Complex Calculations</div>
+      <p><strong>Find 7% of 350:</strong></p>
+      <p>1% of 350 = 3.5 (move decimal two places left)</p>
+      <p>7% = 7 × 3.5 = <strong>24.5</strong></p>
+      <p><strong>Find 23% of 150:</strong></p>
+      <p>1% of 150 = 1.5</p>
+      <p>20% = 20 × 1.5 = 30</p>
+      <p>3% = 3 × 1.5 = 4.5</p>
+      <p>23% = 30 + 4.5 = <strong>34.5</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Working Backwards: Find the Original Price</div>
+      <p><strong>If something costs $68 after a 15% discount, what was the original price?</strong></p>
+      <p>$68 represents 85% of the original (100% - 15% = 85%)</p>
+      <p>85% = 0.85, so Original × 0.85 = $68</p>
+      <p>Original = $68 ÷ 0.85 = <strong>$80</strong></p>
+      <p>Check: 15% of $80 = $12, so $80 - $12 = $68 ✓</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Percentage Point vs Percentage: Know the Difference</div>
+      <p><strong>Interest rates rise from 2% to 3%:</strong></p>
+      <p>• The rate increased by <strong>1 percentage point</strong> (3 - 2 = 1)</p>
+      <p>• The rate increased by <strong>50%</strong> (1/2 = 0.5 = 50%)</p>
+      <p>Be careful with financial news and statistics – these are very different!</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Restaurant Math Made Easy</div>
+      <p><strong>Quick tip calculation:</strong> For 15%, find 10% and add half of that. For 20%, just double the 10%. For 18%, it's 10% + 8% (where 8% = 10% - 2%).</p>
+      <p><strong>Example:</strong> Bill is $42. 10% = $4.20. So 15% = $4.20 + $2.10 = $6.30, and 20% = $8.40.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Percentages Are Everywhere in Tech</div>
+      <p>As a developer, you'll calculate percentages constantly:</p>
+      <ul>
+        <li><strong>Progress bars:</strong> <code>(completed / total) * 100</code> -- loading screens, file uploads, installation progress</li>
+        <li><strong>System monitoring:</strong> CPU usage (85%), memory usage (62%), disk space (91% full)</li>
+        <li><strong>Analytics:</strong> Bounce rate, conversion rate, click-through rate -- the entire web runs on percentage metrics</li>
+        <li><strong>ML accuracy:</strong> "The model is 94.3% accurate" -- what does that actually mean? You need percentage math to evaluate models</li>
+        <li><strong>A/B testing:</strong> "Version A converts at 3.2%, version B at 3.8% -- is that a real improvement?" Percentage change vs. percentage point change matters here</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: RATIOS AND PROPORTIONS                            -->
+  <!-- ============================================================ -->
+  <section id="ratios">
+    <h2>6. Ratios and Proportions</h2>
+
+    <h3>What Are Ratios?</h3>
+    <p>A ratio compares two (or more) quantities. If a classroom has 12 boys and 8 girls, the ratio of boys to girls is <strong>12 : 8</strong> (read "12 to 8"). Ratios can also be written as fractions: 12/8.</p>
+
+    <h3>Simplifying Ratios</h3>
+    <p>Just like fractions, you simplify ratios by dividing all parts by their GCD.</p>
+
+    <div class="example-box">
+      <div class="label">Example 1</div>
+      <p><strong>Simplify 12 : 8</strong></p>
+      <p>GCD of 12 and 8 is 4.</p>
+      <p>12 / 4 : 8 / 4 = <strong>3 : 2</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2</div>
+      <p><strong>Simplify 45 : 30 : 15</strong></p>
+      <p>GCD of 45, 30, and 15 is 15.</p>
+      <p>45/15 : 30/15 : 15/15 = <strong>3 : 2 : 1</strong></p>
+    </div>
+
+    <h3>Proportions</h3>
+    <p>A proportion states that two ratios are <strong>equal</strong>. If a/b = c/d, then the two ratios are in proportion.</p>
+
+    <div class="formula-box">
+      a/b = c/d<br><br>
+      Cross-multiply: a x d = b x c
+    </div>
+
+    <p>Cross-multiplication is the key tool for solving proportions. If two fractions are equal, then multiplying diagonally gives equal products.</p>
+
+    <div class="example-box">
+      <div class="label">Example 1 -- Solving a Proportion</div>
+      <p><strong>Solve: 3/4 = x/20</strong></p>
+      <p>Cross-multiply: 3 x 20 = 4 x x</p>
+      <p>60 = 4x</p>
+      <p>x = 60 / 4 = <strong>15</strong></p>
+      <p>Check: 3/4 = 15/20 = 0.75. Correct!</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 2 -- Real-World</div>
+      <p><strong>If 5 apples cost $3, how much do 12 apples cost?</strong></p>
+      <p>Set up proportion: 5/3 = 12/x</p>
+      <p>Cross-multiply: 5 x x = 3 x 12</p>
+      <p>5x = 36</p>
+      <p>x = 36 / 5 = <strong>$7.20</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 3 -- Scale Drawing</div>
+      <p><strong>On a map, 2 cm represents 50 km. If two cities are 7 cm apart on the map, how far apart are they in reality?</strong></p>
+      <p>Proportion: 2/50 = 7/x</p>
+      <p>Cross-multiply: 2x = 50 x 7 = 350</p>
+      <p>x = 350 / 2 = <strong>175 km</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example 4 -- Recipe Scaling</div>
+      <p><strong>A recipe for 4 people uses 6 cups of flour. How much flour for 10 people?</strong></p>
+      <p>Proportion: 4/6 = 10/x</p>
+      <p>Cross-multiply: 4x = 6 x 10 = 60</p>
+      <p>x = 60 / 4 = <strong>15 cups</strong></p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common Mistake</div>
+      <p>Make sure you set up the proportion with matching units in the same position. If the left side is apples/dollars, the right side must also be apples/dollars -- not dollars/apples. Consistency is key.</p>
+    </div>
+
+    <h3>Advanced Ratio and Proportion Techniques</h3>
+
+    <div class="example-box">
+      <div class="label">Part-to-Part vs Part-to-Whole Ratios</div>
+      <p><strong>A class has 15 boys and 10 girls.</strong></p>
+      <p>• <strong>Part-to-part:</strong> Boys to girls = 15:10 = 3:2</p>
+      <p>• <strong>Part-to-whole:</strong> Boys to total = 15:25 = 3:5</p>
+      <p>• <strong>Part-to-whole:</strong> Girls to total = 10:25 = 2:5</p>
+      <p><strong>As percentages:</strong> Boys = 15/25 = 60%, Girls = 10/25 = 40%</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Three-Way Ratios in Real Life</div>
+      <p><strong>A concrete mix uses cement, sand, and gravel in the ratio 1:2:4. If you need 21 total parts, how much of each?</strong></p>
+      <p>Total ratio parts = 1 + 2 + 4 = 7</p>
+      <p>Each part = 21 ÷ 7 = 3 units</p>
+      <p>Cement = 1 × 3 = <strong>3 units</strong></p>
+      <p>Sand = 2 × 3 = <strong>6 units</strong></p>
+      <p>Gravel = 4 × 3 = <strong>12 units</strong></p>
+      <p>Check: 3 + 6 + 12 = 21 ✓</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Inverse Proportions (Very Important!)</div>
+      <p>Some relationships are <strong>inversely proportional</strong> – as one increases, the other decreases.</p>
+      <p><strong>Example:</strong> It takes 4 workers 6 hours to build a fence. How long for 8 workers?</p>
+      <p>More workers → Less time, so: Workers × Time = Constant</p>
+      <p>4 × 6 = 24 worker-hours needed</p>
+      <p>8 workers need: 24 ÷ 8 = <strong>3 hours</strong></p>
+      <p><strong>Formula:</strong> If w₁t₁ = w₂t₂, then t₂ = (w₁t₁)/w₂</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Unit Rate Problem Solving</div>
+      <p><strong>Car A travels 280 miles on 8 gallons. Car B travels 315 miles on 9 gallons. Which is more efficient?</strong></p>
+      <p>Car A: 280 ÷ 8 = <strong>35 mpg</strong></p>
+      <p>Car B: 315 ÷ 9 = <strong>35 mpg</strong></p>
+      <p>They're exactly the same efficiency! Unit rates make comparison easy.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Proportion Setup Strategy</div>
+      <p><strong>Always ask yourself:</strong> "What am I comparing to what?" Write it out in words first, then set up the math. For example: "If 3 apples cost $2, how much do 12 apples cost?" becomes "3 apples is to $2 as 12 apples is to $x" → 3/2 = 12/x.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Ratios in Software</div>
+      <p>Ratios are the backbone of many CS concepts:</p>
+      <ul>
+        <li><strong>Aspect ratios:</strong> A 1920x1080 screen is 16:9. When you resize images or videos, you maintain this ratio to avoid distortion. <code>newHeight = originalHeight * (newWidth / originalWidth)</code></li>
+        <li><strong>Hash table load factor:</strong> items/buckets. When this ratio exceeds ~0.75, the table resizes. This is why hash maps are O(1) -- proportional thinking.</li>
+        <li><strong>Rate limiting:</strong> "Allow 100 requests per 60 seconds" is a ratio. Exceeding it returns HTTP 429.</li>
+        <li><strong>Compression ratios:</strong> A 10MB file compressed to 2MB has a 5:1 ratio.</li>
+        <li><strong>Scaling:</strong> Responsive design -- "at 768px width, make the sidebar 1/3 of the screen" is a proportion.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: EXPONENTS AND SQUARE ROOTS                       -->
+  <!-- ============================================================ -->
+  <section id="exponents">
+    <h2>7. Exponents and Square Roots</h2>
+
+    <h3>What Are Exponents?</h3>
+    <p>An exponent tells you how many times to multiply a number by itself. In <strong>x^n</strong>, x is the <strong>base</strong> and n is the <strong>exponent</strong> (or power).</p>
+
+    <div class="formula-box">
+      x^n = x * x * x * ... * x (n times)<br><br>
+      3^4 = 3 * 3 * 3 * 3 = 81<br>
+      2^5 = 2 * 2 * 2 * 2 * 2 = 32<br>
+      5^3 = 5 * 5 * 5 = 125
+    </div>
+
+    <h3>Special Cases</h3>
+
+    <div class="formula-box">
+      Any number to the power of 1 = itself: x^1 = x<br>
+      Any number to the power of 0 = 1: x^0 = 1 (as long as x is not 0)<br>
+      1 to any power = 1: 1^n = 1
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why is x^0 = 1?</div>
+      <p>Think of it as a pattern: 2^3 = 8, 2^2 = 4, 2^1 = 2. Each time the exponent decreases by 1, we divide by 2. So 2^0 = 2/2 = 1. It works for every base.</p>
+    </div>
+
+    <h3>Exponent Rules</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Rule</th>
+          <th>Formula</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Product Rule</td>
+          <td>x^a * x^b = x^(a+b)</td>
+          <td>2^3 * 2^4 = 2^7 = 128</td>
+        </tr>
+        <tr>
+          <td>Quotient Rule</td>
+          <td>x^a / x^b = x^(a-b)</td>
+          <td>5^6 / 5^2 = 5^4 = 625</td>
+        </tr>
+        <tr>
+          <td>Power of a Power</td>
+          <td>(x^a)^b = x^(a*b)</td>
+          <td>(3^2)^3 = 3^6 = 729</td>
+        </tr>
+        <tr>
+          <td>Power of a Product</td>
+          <td>(x * y)^n = x^n * y^n</td>
+          <td>(2 * 3)^4 = 2^4 * 3^4 = 16 * 81 = 1296</td>
+        </tr>
+        <tr>
+          <td>Power of a Quotient</td>
+          <td>(x / y)^n = x^n / y^n</td>
+          <td>(4/3)^2 = 16/9</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Applying the Rules</div>
+      <p><strong>Simplify: 3^2 * 3^5</strong></p>
+      <p>Product rule: same base, add exponents: 3^(2+5) = 3^7 = <strong>2187</strong></p>
+      <br>
+      <p><strong>Simplify: (4^3)^2</strong></p>
+      <p>Power of a power: 4^(3*2) = 4^6 = <strong>4096</strong></p>
+      <br>
+      <p><strong>Simplify: 10^8 / 10^5</strong></p>
+      <p>Quotient rule: 10^(8-5) = 10^3 = <strong>1000</strong></p>
+    </div>
+
+    <h3>Negative Exponents</h3>
+    <p>A negative exponent means "take the reciprocal." It flips the number to the other side of the fraction bar.</p>
+
+    <div class="formula-box">
+      x^(-n) = 1 / x^n
+    </div>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <ul>
+        <li>2^(-3) = 1 / 2^3 = 1/8 = 0.125</li>
+        <li>5^(-2) = 1 / 5^2 = 1/25 = 0.04</li>
+        <li>10^(-1) = 1/10 = 0.1</li>
+        <li>(3/4)^(-1) = 4/3 (flip the fraction)</li>
+      </ul>
+    </div>
+
+    <h3>Square Roots and Cube Roots</h3>
+    <p>A square root asks: <strong>"What number multiplied by itself gives this?"</strong> The square root of 25 is 5, because 5 x 5 = 25.</p>
+
+    <div class="formula-box">
+      sqrt(x) = the number that, when squared, gives x<br>
+      cbrt(x) = the number that, when cubed, gives x<br><br>
+      sqrt(25) = 5 because 5^2 = 25<br>
+      cbrt(27) = 3 because 3^3 = 27
+    </div>
+
+    <h3>Perfect Squares</h3>
+    <p>These are numbers whose square roots are whole numbers. Memorizing them makes math much faster.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>n</th>
+          <th>n^2 (Perfect Square)</th>
+          <th>n</th>
+          <th>n^2 (Perfect Square)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td>8</td><td>64</td></tr>
+        <tr><td>2</td><td>4</td><td>9</td><td>81</td></tr>
+        <tr><td>3</td><td>9</td><td>10</td><td>100</td></tr>
+        <tr><td>4</td><td>16</td><td>11</td><td>121</td></tr>
+        <tr><td>5</td><td>25</td><td>12</td><td>144</td></tr>
+        <tr><td>6</td><td>36</td><td>13</td><td>169</td></tr>
+        <tr><td>7</td><td>49</td><td>14</td><td>196</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Estimating Square Roots</div>
+      <p>If a number is not a perfect square, estimate by finding which two perfect squares it falls between. For example, sqrt(50): since 7^2 = 49 and 8^2 = 64, sqrt(50) is between 7 and 8 -- closer to 7 (it is approximately 7.07).</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Powers of 2 Run Everything</div>
+      <p>Exponents are <strong>the single most important pre-algebra concept for CS</strong>. Here's why:</p>
+      <ul>
+        <li><strong>Memory sizes are powers of 2:</strong> 1 KB = 2^10 = 1024 bytes. 1 MB = 2^20. 1 GB = 2^30. This is because computers use binary (base 2).</li>
+        <li><strong>Big-O notation:</strong> The most important CS topic uses exponents. O(n^2) means "if you double the input, the time quadruples." O(2^n) means "adding one more item doubles the time" -- that's why brute-force password cracking is impractical for long passwords.</li>
+        <li><strong>Binary search:</strong> Searches a sorted array by cutting it in half each time. Searching 1 billion items takes only log2(1,000,000,000) ≈ 30 steps. That's the power of exponents working backwards (logarithms).</li>
+        <li><strong>Tree data structures:</strong> A balanced binary tree with height h has 2^h - 1 nodes. A tree of height 20 holds over a million nodes.</li>
+        <li><strong>Square roots in algorithms:</strong> sqrt(n) shows up in optimized algorithms. Testing if a number is prime? Only check divisors up to sqrt(n), because if a factor exists beyond sqrt(n), its pair must be below it.</li>
+      </ul>
+      <p>When someone says "that algorithm is exponential," they mean it's <strong>unusably slow</strong> for large inputs. Understanding exponents lets you instantly judge whether an approach will work.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: NEGATIVE NUMBERS                                  -->
+  <!-- ============================================================ -->
+  <section id="negatives">
+    <h2>8. Negative Numbers</h2>
+
+    <p>Negative numbers are numbers less than zero. They show up everywhere in real life: debt (you owe $50 = -$50), temperature below freezing (-15 degrees), floors below ground level (basement = -1), or losing points in a game. On the number line, they live to the left of zero.</p>
+
+    <div class="tip-box">
+      <div class="label">Number Line -- Your Best Friend</div>
+      <p style="font-family: 'JetBrains Mono', monospace; text-align: center; margin-top: 0.5rem; color: #555555;">
+        &lt;--- negative ---  0  --- positive ---&gt;<br>
+        -5  -4  -3  -2  -1  0  +1  +2  +3  +4  +5
+      </p>
+      <p>The further left you go, the <strong>smaller</strong> the number. -10 is less than -3, even though 10 "looks" bigger than 3. Think of it like temperature: -10 degrees is way colder (smaller) than -3 degrees.</p>
+      <p>Here is the key insight: <strong>the sign tells you direction, and the number tells you distance.</strong> +5 means "5 steps to the right of zero." -5 means "5 steps to the left of zero." They are the same distance from zero, just in opposite directions.</p>
+    </div>
+
+    <!-- ===== ADDITION WITH NEGATIVES ===== -->
+    <h3>Adding with Negative Numbers</h3>
+
+    <p>Before memorizing any rules, let's build the intuition. Think of positive numbers as <strong>money you have</strong> and negative numbers as <strong>money you owe</strong>. Addition means combining them together.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Case 1: Positive + Positive</h4>
+    <p>This is what you already know. You have $3 and you get $5 more. You now have $8. Nothing new here.</p>
+    <div class="formula-box">
+      3 + 5 = 8
+    </div>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Case 2: Negative + Negative</h4>
+    <p>You owe $3 and then you owe $5 more. You now owe $8 total. When you combine two debts, the debt gets bigger. So you <strong>add the numbers and keep the negative sign</strong>.</p>
+    <div class="formula-box">
+      (-3) + (-5) = -8
+    </div>
+    <div class="example-box">
+      <div class="label">Why this makes sense</div>
+      <p>On the number line: start at -3 (already left of zero). Adding -5 means move 5 more steps to the left. You land on -8. Two negatives added together always make a bigger negative.</p>
+    </div>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Case 3: Positive + Negative (or Negative + Positive)</h4>
+    <p>This is where it gets interesting. You have $7 but you owe $3. What's your actual situation? You <strong>subtract</strong> the smaller from the bigger: 7 - 3 = 4. Since you had more than you owed, the answer is positive: <strong>+4</strong>.</p>
+    <div class="formula-box">
+      7 + (-3) = 4 &nbsp;&nbsp; (you had more than you owed, so positive)<br>
+      3 + (-7) = -4 &nbsp;&nbsp; (you owed more than you had, so negative)
+    </div>
+    <p>The rule: when the signs are different, <strong>subtract the smaller number from the bigger one</strong>, then <strong>take the sign of whichever number was bigger</strong> (ignoring the sign, just looking at the size).</p>
+
+    <div class="memory-diagram">  Adding 7 + (-3): Start at 7, move 3 steps LEFT
+
+  -2  -1   0   1   2   3   4   5   6   7   8
+  ---|---|---|---|---|---|---|---|---|---|---|--->
+                              <--<--<-- START
+                              |         |
+                          LAND (4)   Start (7)
+
+  The negative sign means "go LEFT on the number line."
+  Start at 7, walk 3 steps left, land on 4.
+  So 7 + (-3) = 4</div>
+
+    <div class="example-box">
+      <div class="label">More Addition Examples</div>
+      <ul>
+        <li><strong>(-4) + (-6) = -10</strong> -- Both negative: add 4+6=10, keep negative</li>
+        <li><strong>8 + (-3) = 5</strong> -- Different signs: 8-3=5, 8 is bigger so positive</li>
+        <li><strong>(-9) + 4 = -5</strong> -- Different signs: 9-4=5, 9 is bigger so negative</li>
+        <li><strong>(-7) + 7 = 0</strong> -- Equal and opposite: they cancel out completely</li>
+        <li><strong>(-2) + (-8) = -10</strong> -- Both negative: add 2+8=10, keep negative</li>
+        <li><strong>15 + (-20) = -5</strong> -- Different signs: 20-15=5, 20 is bigger so negative</li>
+      </ul>
+    </div>
+
+    <!-- ===== SUBTRACTION WITH NEGATIVES ===== -->
+    <h3>Subtracting with Negative Numbers</h3>
+
+    <p>Here is the single most useful trick in all of basic math: <strong>subtraction is just adding the opposite.</strong> Every subtraction problem can be turned into an addition problem. Once you see this, subtraction with negatives becomes easy.</p>
+
+    <div class="tip-box">
+      <div class="label">The Golden Rule of Subtraction</div>
+      <p><strong>a - b = a + (-b)</strong></p>
+      <p>To subtract any number, just <strong>flip its sign</strong> and <strong>add</strong> instead. That is it. Every subtraction problem in existence follows this rule.</p>
+    </div>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Subtracting a positive number</h4>
+    <p>This is normal subtraction you already know. 10 - 4 = 6. But let's see it through the lens of our rule: 10 - 4 becomes 10 + (-4) = 6. Same answer.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Subtracting a negative number (the tricky one)</h4>
+    <p>What does 5 - (-3) mean? Using our rule: flip the sign of -3 (it becomes +3) and add. So 5 - (-3) = 5 + 3 = <strong>8</strong>.</p>
+
+    <div class="formula-box">
+      5 - (-3) = 5 + 3 = 8<br>
+      (-2) - (-6) = (-2) + 6 = 4<br>
+      (-4) - (-4) = (-4) + 4 = 0
+    </div>
+
+    <div class="memory-diagram">  5 - (-3)  -->  flip the sign  -->  5 + 3  -->  8
+
+  Think of it as:
+
+  5 - (-3)
+      | |
+      two negatives cancel out
+      |
+  5 + 3 = 8
+
+  Step by step:
+  +---------+     +----------+     +-------+     +---+
+  | 5 - (-3)|  => | 5 + (+3) |  => | 5 + 3 |  => | 8 |
+  +---------+     +----------+     +-------+     +---+
+       the minus and the negative     now just
+       combine into a plus            normal addition</div>
+
+    <div class="example-box">
+      <div class="label">Why "minus a negative = plus" makes sense</div>
+      <p>Imagine you owe someone $3 (that's -3 in your life). Now someone says "I'm removing that debt." Removing a debt is a <em>good</em> thing -- it's like gaining money. So subtracting a negative (removing something bad) is the same as adding a positive (gaining something good). <strong>Two negatives cancel out.</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Subtraction Examples -- Step by Step</div>
+      <ul>
+        <li><strong>10 - (-4)</strong> = 10 + 4 = <strong>14</strong> (flip -4 to +4, then add)</li>
+        <li><strong>(-3) - (-8)</strong> = (-3) + 8 = <strong>5</strong> (flip -8 to +8, then add)</li>
+        <li><strong>(-5) - 3</strong> = (-5) + (-3) = <strong>-8</strong> (flip +3 to -3, then add: two negatives combine)</li>
+        <li><strong>2 - 7</strong> = 2 + (-7) = <strong>-5</strong> (flip +7 to -7, then add: 7 is bigger so negative)</li>
+        <li><strong>(-10) - (-10)</strong> = (-10) + 10 = <strong>0</strong> (anything minus itself is zero)</li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">The Pattern for Adding and Subtracting -- Summary</div>
+      <p>Every addition/subtraction problem with signs boils down to two questions:</p>
+      <ol>
+        <li><strong>Are the signs the same or different?</strong></li>
+        <li><strong>Which number is bigger</strong> (ignoring signs)?</li>
+      </ol>
+      <p><strong>Same signs?</strong> Add the numbers, keep that sign. (-3) + (-5) = -8</p>
+      <p><strong>Different signs?</strong> Subtract the smaller from bigger, take the sign of the bigger. (-9) + 4 = -5</p>
+      <p>And for subtraction: just flip the second sign and turn it into addition. Then use the rules above.</p>
+    </div>
+
+    <!-- ===== MULTIPLICATION AND DIVISION ===== -->
+    <h3>Multiplying and Dividing Negative Numbers</h3>
+
+    <p>Multiplication and division follow a completely different (and simpler) pattern than addition and subtraction. There is one rule that handles everything:</p>
+
+    <div class="formula-box">
+      Same signs = Positive result<br>
+      Different signs = Negative result
+    </div>
+
+    <p>That is the entire rule. Let's make sure you understand <em>why</em> it works.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Positive x Positive = Positive</h4>
+    <p>3 x 4 = 12. Obvious. You have 3 groups of 4. Nothing surprising.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Positive x Negative = Negative</h4>
+    <p>3 x (-4) = -12. Think of it as: you have 3 groups of "losing 4 dollars." If you lose $4 three times, you have lost $12 total. That is -12.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Negative x Positive = Negative</h4>
+    <p>(-3) x 4 = -12. Multiplication can be done in any order (3 x 4 = 4 x 3), so this is the same situation as above, just flipped. Still -12.</p>
+
+    <h4 style="margin: 1.2rem 0 0.6rem; color: #222222; font-weight: 600;">Negative x Negative = Positive</h4>
+    <p>(-3) x (-4) = 12. This is the one that confuses people. Here is the best way to think about it:</p>
+
+    <div class="example-box">
+      <div class="label">Why negative x negative = positive</div>
+      <p>Imagine you have a debt of $4 per month (-4). Now imagine we <em>remove</em> 3 months of that debt (-3 months of -$4). Removing debt is a good thing -- you have effectively gained $12. So (-3) x (-4) = +12.</p>
+      <p>Another way: look at the pattern.<br>
+        <code>(-3) x 3 = -9</code><br>
+        <code>(-3) x 2 = -6</code><br>
+        <code>(-3) x 1 = -3</code><br>
+        <code>(-3) x 0 = 0</code><br>
+        <code>(-3) x (-1) = ?</code><br>
+        Each time we decrease the second number by 1, the answer goes up by 3. So the next answer must be <strong>+3</strong>. The pattern forces negative x negative to be positive.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">The Complete Sign Table (Multiplication &amp; Division)</div>
+      <table>
+        <thead>
+          <tr><th>First Number</th><th>Second Number</th><th>Result</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>+ (positive)</td><td>+ (positive)</td><td><strong>+ (positive)</strong></td><td>Same signs</td></tr>
+          <tr><td>- (negative)</td><td>- (negative)</td><td><strong>+ (positive)</strong></td><td>Same signs</td></tr>
+          <tr><td>+ (positive)</td><td>- (negative)</td><td><strong>- (negative)</strong></td><td>Different signs</td></tr>
+          <tr><td>- (negative)</td><td>+ (positive)</td><td><strong>- (negative)</strong></td><td>Different signs</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 0.5rem;">Think of it like friends and enemies: a friend of a friend is a friend (+)(+)=(+). An enemy of an enemy is a friend (-)(-)=(+). A friend of an enemy is an enemy (+)(-)=(-). An enemy of a friend is an enemy (-)(+)=(-).</p>
+    </div>
+
+    <div class="memory-diagram">  The pattern that FORCES the rule:
+
+  (-3) x  3 = -9     <--  going down by 3
+  (-3) x  2 = -6     <--  going down by 3
+  (-3) x  1 = -3     <--  going down by 3
+  (-3) x  0 =  0     <--  going down by 3
+  (-3) x -1 = +3     <--  must continue going UP by 3!
+  (-3) x -2 = +6     <--  going up by 3
+  (-3) x -3 = +9     <--  going up by 3
+
+  The results:  -9, -6, -3, 0, +3, +6, +9
+                 \   \   \  |  /   /   /
+                  +3  +3 +3 +3  +3  +3
+
+  Each step adds 3. The pattern cannot "break" at zero.
+  Negative x Negative MUST be positive for math to
+  stay consistent. It is not a rule someone invented --
+  it is a rule the pattern DEMANDS.</div>
+
+    <div class="example-box">
+      <div class="label">Multiplication Examples</div>
+      <ul>
+        <li><strong>(-6) x (-7) = 42</strong> -- Same signs (both negative) = positive</li>
+        <li><strong>(-5) x 8 = -40</strong> -- Different signs = negative</li>
+        <li><strong>4 x (-9) = -36</strong> -- Different signs = negative</li>
+        <li><strong>(-1) x (-1) = 1</strong> -- Same signs = positive</li>
+        <li><strong>(-10) x 3 = -30</strong> -- Different signs = negative</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Division Examples</div>
+      <p>Division follows <strong>the exact same sign rules</strong> as multiplication. No new rules to learn.</p>
+      <ul>
+        <li><strong>(-20) / (-4) = 5</strong> -- Same signs = positive</li>
+        <li><strong>(-15) / 3 = -5</strong> -- Different signs = negative</li>
+        <li><strong>24 / (-6) = -4</strong> -- Different signs = negative</li>
+        <li><strong>(-100) / (-10) = 10</strong> -- Same signs = positive</li>
+        <li><strong>36 / (-9) = -4</strong> -- Different signs = negative</li>
+      </ul>
+    </div>
+
+    <!-- ===== CHAINING AND COMMON MISTAKES ===== -->
+    <h3>Chaining Multiple Negatives</h3>
+    <p>When you multiply several negative numbers together, there is a simple counting trick:</p>
+
+    <div class="formula-box">
+      Even number of negatives = Positive result<br>
+      Odd number of negatives = Negative result
+    </div>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <ul>
+        <li><strong>(-2) x (-3) x (-1) = -6</strong> -- Three negatives (odd) = negative. Work it out: (-2)x(-3)=6, then 6x(-1)=-6.</li>
+        <li><strong>(-1) x (-1) x (-1) x (-1) = 1</strong> -- Four negatives (even) = positive.</li>
+        <li><strong>(-2) x 3 x (-4) = 24</strong> -- Two negatives (even) = positive. 2x3x4=24, positive.</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common Mistakes to Avoid</div>
+      <ul>
+        <li><strong>(-2)^2 vs -2^2 -- these are DIFFERENT!</strong> (-2)^2 means (-2) x (-2) = 4 (squaring the negative number). But -2^2 means -(2^2) = -(4) = -4 (squaring 2 first, then making it negative). The parentheses change everything.</li>
+        <li><strong>Don't confuse add/subtract rules with multiply/divide rules.</strong> For addition: (-3) + (-5) = -8 (add the numbers). For multiplication: (-3) x (-5) = +15 (same signs = positive). They are completely different operations with different rules.</li>
+        <li><strong>Subtracting is not "making negative."</strong> 5 - 8 is not "five becomes negative." It is 5 + (-8) = -3. Always convert to addition if confused.</li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Quick Reference -- All Sign Rules in One Place</div>
+      <p><strong>Addition &amp; Subtraction:</strong> Convert everything to addition (flip sign if subtracting). Then: same signs = add and keep sign. Different signs = subtract and keep sign of the bigger.</p>
+      <p><strong>Multiplication &amp; Division:</strong> Same signs = positive. Different signs = negative. Count negatives if chaining: even = positive, odd = negative.</p>
+      <p>That is genuinely all you need. Every problem with signs uses one of these rules.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Negatives Are Everywhere in Code</div>
+      <p>Negative numbers aren't just math theory -- they're a daily tool in programming:</p>
+      <ul>
+        <li><strong>Array indexing:</strong> In Python, <code>arr[-1]</code> gives you the last element, <code>arr[-2]</code> the second-to-last. This uses negative number arithmetic under the hood: <code>-1 + len(arr)</code>.</li>
+        <li><strong>Coordinate systems:</strong> In game development, moving left is negative x, moving down is negative y. Physics engines use negative velocity for deceleration.</li>
+        <li><strong>Two's complement:</strong> How computers actually store negative numbers in binary. An 8-bit <code>signed int</code> ranges from -128 to 127. Understanding sign rules helps you understand why.</li>
+        <li><strong>Financial software:</strong> Debits are negative, credits are positive. Every accounting system relies on sign arithmetic.</li>
+        <li><strong>Error codes:</strong> Many C/C++ functions return -1 to indicate failure. The Linux kernel uses negative numbers for error codes throughout.</li>
+        <li><strong>Temperature/sensor data:</strong> IoT and embedded systems deal with negative readings constantly.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: MODULAR ARITHMETIC                                -->
+  <!-- ============================================================ -->
+  <section id="modular">
+    <h2>10. Modular Arithmetic (The % Operator)</h2>
+
+    <p>Modular arithmetic answers one question: <strong>"What is the remainder when I divide?"</strong> You already know this intuitively. If you have 17 cookies and split them among 5 people, each person gets 3, and you have <strong>2 left over</strong>. That remainder -- 2 -- is the result of <code>17 mod 5</code> (or <code>17 % 5</code> in code).</p>
+
+    <div class="formula-box">
+      a mod n = remainder when a is divided by n<br><br>
+      17 mod 5 = 2    (because 17 = 5 x 3 + <strong>2</strong>)<br>
+      20 mod 4 = 0    (because 20 = 4 x 5 + <strong>0</strong>)  ← divides evenly<br>
+      7 mod 10 = 7    (because 7 = 10 x 0 + <strong>7</strong>)  ← number is smaller than divisor<br>
+      100 mod 7 = 2   (because 100 = 7 x 14 + <strong>2</strong>)
+    </div>
+
+    <h3>The Clock Analogy</h3>
+    <p>The easiest way to understand mod is a <strong>clock</strong>. A clock cycles from 1 to 12, then wraps back around. If it's 10 o'clock and you add 5 hours, you don't get 15 o'clock -- you get 3 o'clock. That's because <code>15 mod 12 = 3</code>. The number "wraps around" when it reaches the limit.</p>
+
+    <div class="memory-diagram">
+         12
+      11    1
+    10        2     15 hours on a clock:
+     9        3  ←  15 mod 12 = 3
+      8      4
+        7  5
+          6
+    </div>
+
+    <p>This "wrapping" behaviour is exactly what makes mod so powerful in programming.</p>
+
+    <h3>Key Properties</h3>
+    <div class="formula-box">
+      1. a mod n is always between 0 and n-1 (inclusive)<br>
+         → 17 mod 5 can only be 0, 1, 2, 3, or 4<br><br>
+      2. If a mod n = 0, then n divides a evenly<br>
+         → 20 mod 4 = 0, so 4 divides 20 perfectly<br><br>
+      3. (a + b) mod n = ((a mod n) + (b mod n)) mod n<br>
+         → You can mod at each step (useful for preventing overflow)<br><br>
+      4. (a x b) mod n = ((a mod n) x (b mod n)) mod n<br>
+         → Same rule for multiplication
+    </div>
+
+    <h3>Worked Examples</h3>
+
+    <div class="example-box">
+      <div class="label">Example: Is a Number Even or Odd?</div>
+      <p>The single most common use of mod in all of programming:</p>
+      <p><code>n % 2 == 0</code> → n is <strong>even</strong></p>
+      <p><code>n % 2 == 1</code> → n is <strong>odd</strong></p>
+      <p>Why? Even numbers divide by 2 with no remainder. Odd numbers always have remainder 1.</p>
+      <p>12 % 2 = 0 (even) &nbsp;&nbsp; 13 % 2 = 1 (odd) &nbsp;&nbsp; 0 % 2 = 0 (even)</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Wrapping Around an Array</div>
+      <p>You have an array of 5 elements (indices 0-4). You want to cycle through them forever:</p>
+      <div class="formula-box">
+index:  0  1  2  3  4  5  6  7  8  9  10  11  12 ...
+result: 0  1  2  3  4  0  1  2  3  4   0   1   2 ...
+
+Formula: actual_index = index % array_length
+         5 % 5 = 0  ← wraps back to start!
+         7 % 5 = 2
+        12 % 5 = 2
+      </div>
+      <p>This pattern is used in <strong>circular buffers</strong>, <strong>round-robin scheduling</strong>, <strong>rotating through players in a game</strong>, and <strong>carousel UIs</strong>.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Extracting Digits</div>
+      <p>Want the last digit of 1234? Use mod 10:</p>
+      <p><code>1234 % 10 = 4</code> (last digit)</p>
+      <p>Want the last two digits? Use mod 100:</p>
+      <p><code>1234 % 100 = 34</code></p>
+      <p>This is how you reverse numbers, check palindromes, and extract parts of numbers in coding problems.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Converting Time</div>
+      <p><strong>Convert 200 minutes to hours and minutes:</strong></p>
+      <p>Hours: 200 / 60 = 3 (integer division -- see next section)</p>
+      <p>Minutes: 200 % 60 = 20</p>
+      <p>Answer: <strong>3 hours 20 minutes</strong></p>
+      <p>This is how every clock app works: <code>totalSeconds % 60</code> gives seconds, <code>(totalSeconds / 60) % 60</code> gives minutes, <code>totalSeconds / 3600</code> gives hours.</p>
+    </div>
+
+    <h3>Negative Numbers and Mod</h3>
+    <p>Here's a gotcha: <code>-7 % 5</code> behaves <strong>differently depending on the language</strong>.</p>
+    <div class="formula-box">
+      Python:   -7 % 5 = 3   (always positive -- mathematical definition)<br>
+      C++ / JS: -7 % 5 = -2  (keeps the sign of the dividend)
+    </div>
+    <div class="warning-box">
+      <div class="label">Watch Out</div>
+      <p>If you're using C++ or JavaScript and need a positive remainder from a negative number, use: <code>((a % n) + n) % n</code>. This is a common interview trick and a real-world bug source.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Where You'll Use Mod Every Day</div>
+      <ul>
+        <li><strong>Hash tables:</strong> <code>index = hash(key) % table_size</code> -- this is literally how every hash map works. The mod ensures the hash fits within the array bounds.</li>
+        <li><strong>Circular buffers / queues:</strong> <code>next = (current + 1) % size</code> wraps around without if-statements.</li>
+        <li><strong>Cryptography:</strong> RSA encryption is built on modular exponentiation. Without mod, there is no internet security.</li>
+        <li><strong>FizzBuzz:</strong> The most famous coding interview question: <code>if (n % 3 == 0) print("Fizz")</code>.</li>
+        <li><strong>Pagination:</strong> "Show 10 items per page" → page number = <code>index / 10</code>, position on page = <code>index % 10</code>.</li>
+        <li><strong>Color cycling / animations:</strong> <code>hue = (hue + 1) % 360</code> cycles through colours forever.</li>
+        <li><strong>Preventing integer overflow:</strong> In competitive programming, you often see "return answer mod 10^9 + 7" because mod keeps numbers manageable.</li>
+      </ul>
+      <p><strong>If you learn one math operation deeply, make it mod.</strong> You will use it more than any other arithmetic in code.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 11: FLOOR, CEILING & INTEGER DIVISION                -->
+  <!-- ============================================================ -->
+  <section id="floor-ceil">
+    <h2>11. Floor, Ceiling &amp; Integer Division</h2>
+
+    <p>When you divide 7 by 2, the answer is 3.5. But what if you need a whole number? You have two choices: <strong>round down</strong> (floor) or <strong>round up</strong> (ceiling). These aren't just rounding -- they have precise mathematical definitions and they show up in programming <em>constantly</em>.</p>
+
+    <h3>Floor (Round Down)</h3>
+    <p>The <strong>floor</strong> of a number is the largest integer that is less than or equal to it. Written as <strong>⌊x⌋</strong>. Think of it as "chopping off the decimal" -- but be careful with negatives.</p>
+
+    <div class="formula-box">
+      ⌊3.7⌋ = 3     (chop off .7 → 3)<br>
+      ⌊3.0⌋ = 3     (already whole)<br>
+      ⌊0.9⌋ = 0     (not 1! Floor goes DOWN)<br>
+      ⌊-2.3⌋ = -3   (NOT -2! Floor goes DOWN, toward more negative)<br>
+      ⌊-5.0⌋ = -5   (already whole)
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The Negative Trap</div>
+      <p><code>⌊-2.3⌋ = -3</code>, not -2. Floor always goes <strong>toward negative infinity</strong>. This catches people off guard. -3 is less than -2.3, so the floor is -3.</p>
+    </div>
+
+    <h3>Ceiling (Round Up)</h3>
+    <p>The <strong>ceiling</strong> of a number is the smallest integer that is greater than or equal to it. Written as <strong>⌈x⌉</strong>. Think of it as "always round up unless already whole."</p>
+
+    <div class="formula-box">
+      ⌈3.2⌉ = 4     (round up to 4)<br>
+      ⌈3.0⌉ = 3     (already whole -- stays at 3)<br>
+      ⌈0.1⌉ = 1     (even a tiny decimal rounds up)<br>
+      ⌈-2.3⌉ = -2   (round UP toward 0, so -2 not -3)<br>
+      ⌈-5.0⌉ = -5   (already whole)
+    </div>
+
+    <h3>Integer Division (Truncation)</h3>
+    <p>In most programming languages, dividing two integers gives you <strong>integer division</strong> -- the decimal part is thrown away. In C++, Java, and JavaScript (using <code>Math.trunc</code>), this <strong>truncates toward zero</strong>, which is different from floor for negative numbers.</p>
+
+    <div class="formula-box">
+      Integer division (C++, Java):<br>
+       7 / 2 = 3    (not 3.5 -- decimal chopped off)<br>
+      -7 / 2 = -3   (truncates toward zero, NOT -4)<br><br>
+
+      Python's // operator (floor division):<br>
+       7 // 2 = 3   (same as above)<br>
+      -7 // 2 = -4  (floors toward negative infinity!)
+    </div>
+
+    <div class="warning-box">
+      <div class="label">C++ vs Python: Different Behaviour!</div>
+      <p><code>-7 / 2</code> in C++ gives <code>-3</code> (truncation). <code>-7 // 2</code> in Python gives <code>-4</code> (floor). This difference has caused countless bugs when porting code between languages. Always test with negative numbers.</p>
+    </div>
+
+    <h3>Worked Examples</h3>
+
+    <div class="example-box">
+      <div class="label">Example: How Many Full Pages?</div>
+      <p>You have 47 items and show 10 per page. How many pages do you need?</p>
+      <p><strong>Wrong answer:</strong> 47 / 10 = 4 (but that only covers 40 items!)</p>
+      <p><strong>Right answer:</strong> ⌈47 / 10⌉ = ⌈4.7⌉ = <strong>5 pages</strong></p>
+      <p>In code (without a ceiling function): <code>(47 + 10 - 1) / 10 = 56 / 10 = 5</code></p>
+      <p>The trick <code>(a + b - 1) / b</code> computes ceiling using only integer division. Memorize this -- it comes up in interviews.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Binary Search Midpoint</div>
+      <p>Binary search finds the middle index: <code>mid = (low + high) / 2</code></p>
+      <p>If low = 3 and high = 8: mid = 11 / 2 = <strong>5</strong> (integer division, floors automatically)</p>
+      <p>If low = 3 and high = 7: mid = 10 / 2 = <strong>5</strong> (exact)</p>
+      <p>Integer division naturally gives you the floor, which is exactly what binary search needs.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example: Converting Seconds to HH:MM:SS</div>
+      <p>Convert 3725 seconds:</p>
+      <p>Hours: <code>3725 / 3600 = 1</code> (integer division)</p>
+      <p>Remaining: <code>3725 % 3600 = 125</code></p>
+      <p>Minutes: <code>125 / 60 = 2</code></p>
+      <p>Seconds: <code>125 % 60 = 5</code></p>
+      <p>Result: <strong>1:02:05</strong></p>
+      <p>Notice how integer division and mod work together perfectly -- division gives the "big unit," mod gives the leftover.</p>
+    </div>
+
+    <h3>The Relationship: Division, Mod, Floor, and Ceiling</h3>
+    <div class="formula-box">
+      For any integers a and n:<br><br>
+      a = n x (a / n) + (a % n)<br>
+      ↑ original = divisor x quotient + remainder<br><br>
+
+      17 = 5 x 3 + 2    ✓ (17 / 5 = 3, 17 % 5 = 2)<br>
+      100 = 7 x 14 + 2  ✓ (100 / 7 = 14, 100 % 7 = 2)<br><br>
+
+      Floor and ceiling are related:<br>
+      ⌈a/b⌉ = ⌊a/b⌋ + 1  (when a is not divisible by b)<br>
+      ⌈a/b⌉ = ⌊a/b⌋      (when a IS divisible by b)
+    </div>
+
+    <h3>In Code</h3>
+    <div class="formula-box">
+      C++:    floor(3.7) = 3    ceil(3.7) = 4     (from &lt;cmath&gt;)<br>
+      Python: math.floor(3.7)   math.ceil(3.7)     (import math)<br>
+      JS:     Math.floor(3.7)   Math.ceil(3.7)<br><br>
+
+      Integer ceiling without float:  (a + b - 1) / b  (using integer division)<br>
+      Example: ceil(47/10) = (47 + 9) / 10 = 56 / 10 = 5  ✓
+    </div>
+
+    <div class="tip-box">
+      <div class="label">CS Connection: Floor &amp; Ceiling in Real Code</div>
+      <ul>
+        <li><strong>Binary search:</strong> <code>mid = (low + high) / 2</code> uses integer division (floor) to find the middle element.</li>
+        <li><strong>Pagination:</strong> <code>totalPages = ceil(totalItems / itemsPerPage)</code> -- every web app does this.</li>
+        <li><strong>Image processing:</strong> Resizing images requires rounding pixel coordinates. Floor/ceil determines whether a pixel rounds to the left or right neighbor.</li>
+        <li><strong>Memory alignment:</strong> Allocating memory aligned to 8-byte boundaries: <code>aligned = ceil(size / 8) * 8</code>.</li>
+        <li><strong>Dividing work across threads:</strong> <code>itemsPerThread = ceil(totalItems / numThreads)</code> ensures no items are skipped.</li>
+        <li><strong>Grid layouts:</strong> <code>numRows = ceil(items / columns)</code> tells you how many rows a grid needs.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 12: PRACTICE QUIZ                                    -->
+  <!-- ============================================================ -->
+  <section id="quiz">
+    <h2>12. Practice Quiz</h2>
+    <p>Test your understanding with these 5 questions. Click an answer to check it -- you will get immediate feedback and an explanation.</p>
+
+    <div class="quiz">
+
+      <!-- QUESTION 1 -->
+      <div class="quiz-q">
+        <h4>Q1: What is 3/4 + 1/2?</h4>
+        <button onclick="checkAnswer(this, true)">5/4</button>
+        <button onclick="checkAnswer(this, false)">4/6</button>
+        <button onclick="checkAnswer(this, false)">3/8</button>
+        <button onclick="checkAnswer(this, false)">2/3</button>
+        <div class="explanation">
+          <strong>Answer: 5/4 (or 1 1/4)</strong><br>
+          Find the LCD of 4 and 2, which is 4. Convert 1/2 to 2/4. Then add: 3/4 + 2/4 = 5/4. As a mixed number, that is 1 1/4.
+        </div>
+      </div>
+
+      <!-- QUESTION 2 -->
+      <div class="quiz-q">
+        <h4>Q2: What is 5 + 3 x 2^2?</h4>
+        <button onclick="checkAnswer(this, false)">32</button>
+        <button onclick="checkAnswer(this, true)">17</button>
+        <button onclick="checkAnswer(this, false)">64</button>
+        <button onclick="checkAnswer(this, false)">22</button>
+        <div class="explanation">
+          <strong>Answer: 17</strong><br>
+          Order of operations: First, exponent: 2^2 = 4. Then multiply: 3 x 4 = 12. Finally add: 5 + 12 = 17.
+        </div>
+      </div>
+
+      <!-- QUESTION 3 -->
+      <div class="quiz-q">
+        <h4>Q3: A jacket originally costs $80 and is 25% off. What is the sale price?</h4>
+        <button onclick="checkAnswer(this, false)">$55</button>
+        <button onclick="checkAnswer(this, false)">$65</button>
+        <button onclick="checkAnswer(this, true)">$60</button>
+        <button onclick="checkAnswer(this, false)">$20</button>
+        <div class="explanation">
+          <strong>Answer: $60</strong><br>
+          25% of $80 = 0.25 x 80 = $20. Subtract the discount: $80 - $20 = $60. Or directly: $80 x 0.75 = $60.
+        </div>
+      </div>
+
+      <!-- QUESTION 4 -->
+      <div class="quiz-q">
+        <h4>Q4: What is (-8) x (-3)?</h4>
+        <button onclick="checkAnswer(this, false)">-24</button>
+        <button onclick="checkAnswer(this, false)">-11</button>
+        <button onclick="checkAnswer(this, true)">24</button>
+        <button onclick="checkAnswer(this, false)">11</button>
+        <div class="explanation">
+          <strong>Answer: 24</strong><br>
+          When you multiply two negative numbers, the result is positive. Same signs = positive. 8 x 3 = 24, and since both are negative, the answer is positive 24.
+        </div>
+      </div>
+
+      <!-- QUESTION 5 -->
+      <div class="quiz-q">
+        <h4>Q5: If 3/x = 9/12, what is x?</h4>
+        <button onclick="checkAnswer(this, true)">4</button>
+        <button onclick="checkAnswer(this, false)">6</button>
+        <button onclick="checkAnswer(this, false)">36</button>
+        <button onclick="checkAnswer(this, false)">3</button>
+        <div class="explanation">
+          <strong>Answer: 4</strong><br>
+          Cross-multiply: 3 x 12 = 9 x x, so 36 = 9x, therefore x = 36 / 9 = 4. You can verify: 3/4 = 9/12 = 0.75. Correct!
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- end .container -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>MathPath -- Learn mathematics from the ground up.</p>
+  <p><a href="index.html">Back to Home</a></p>
+</footer>
+
+<!-- ===== QUIZ JAVASCRIPT ===== -->
+<script>
+function checkAnswer(btn, correct) {
+  var q = btn.parentElement;
+  // Prevent answering twice
+  if (q.dataset.answered) return;
+  q.dataset.answered = 'true';
+
+  // Mark the clicked button
+  btn.classList.add(correct ? 'correct' : 'wrong');
+
+  // If incorrect, highlight the correct answer
+  if (!correct) {
+    var buttons = q.querySelectorAll('button');
+    for (var i = 0; i < buttons.length; i++) {
+      // Find the correct button by checking its onclick attribute
+      var onclickStr = buttons[i].getAttribute('onclick');
+      if (onclickStr && onclickStr.indexOf('true') !== -1) {
+        buttons[i].classList.add('correct');
+      }
+    }
+  }
+
+  // Show the explanation
+  q.querySelector('.explanation').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

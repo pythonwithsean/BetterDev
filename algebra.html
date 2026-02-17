@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algebra - Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html" class="active">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &raquo; Algebra</div>
+      <h1>Algebra</h1>
+      <p>Variables, equations, functions, and polynomials -- the language of math and the backbone of programming logic.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why Algebra Matters for Programming</div>
+        <p>Every program you've ever used is built on algebraic thinking. Variables in code work exactly like variables in algebra. Equations become algorithms. Functions map inputs to outputs. Understanding algebra deeply will make you a much stronger programmer and problem-solver.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of Contents + Content -->
+  <div class="page-with-toc">
+
+    <!-- Sidebar TOC -->
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#variables">1. Variables &amp; Expressions</a>
+        <a href="#linear-equations">2. Solving Linear Equations</a>
+        <a href="#inequalities">3. Inequalities</a>
+        <a href="#functions">4. Functions</a>
+        <a href="#systems">5. Systems of Equations</a>
+        <a href="#polynomials">6. Polynomials</a>
+        <a href="#factoring">7. Factoring</a>
+        <a href="#quadratics">8. Quadratic Equations</a>
+        <a href="#exponents">9. Exponent Rules</a>
+        <a href="#logarithms">10. Logarithms</a>
+        <a href="#sequences">11. Sequences &amp; Series</a>
+        <a href="#quiz">12. Practice Quiz</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+      <div class="container">
+
+        <!-- Inline TOC for mobile -->
+        <div class="toc" style="display:none;" id="mobile-toc">
+          <h4>Table of Contents</h4>
+          <a href="#variables">1. Variables &amp; Expressions</a>
+          <a href="#linear-equations">2. Solving Linear Equations</a>
+          <a href="#inequalities">3. Inequalities</a>
+          <a href="#functions">4. Functions</a>
+          <a href="#systems">5. Systems of Equations</a>
+          <a href="#polynomials">6. Polynomials</a>
+          <a href="#factoring">7. Factoring</a>
+          <a href="#quadratics">8. Quadratic Equations</a>
+          <a href="#exponents">9. Exponent Rules</a>
+          <a href="#logarithms">10. Logarithms</a>
+          <a href="#sequences">11. Sequences &amp; Series</a>
+          <a href="#quiz">12. Practice Quiz</a>
+        </div>
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <section id="variables">
+          <h2>1. Variables and Expressions</h2>
+
+          <h3>What Are Variables?</h3>
+          <p>
+            A <strong>variable</strong> is a letter (like <em>x</em>, <em>y</em>, or <em>n</em>) that stands in for an unknown number. Think of it as a labeled box that can hold any value. In the expression <strong>x + 5</strong>, the variable <em>x</em> could be 1, 7, -3, or any other number -- we just don't know which one yet.
+          </p>
+          <p>
+            Variables let us write general rules that work for <em>any</em> number, not just a specific one. Instead of saying "3 plus 5 is 8," we can say "x + 5" and it works for every possible value of x.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Variables in Daily Life</div>
+            <p>You use variables constantly without realizing it:</p>
+            <ul>
+              <li><strong>"I'll be there in <em>t</em> minutes"</strong> -- <em>t</em> is a variable for time</li>
+              <li><strong>"Speed limit is <em>s</em> mph"</strong> -- <em>s</em> varies by road</li>
+              <li><strong>"The bill comes to $<em>x</em>"</strong> -- <em>x</em> depends on what you ordered</li>
+              <li><strong>"There are <em>n</em> people coming"</strong> -- <em>n</em> is unknown until people RSVP</li>
+            </ul>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Variables in algebra are exactly the same idea as variables in programming. When you write <code>let x = 10;</code> in JavaScript or <code>x = 10</code> in Python, you're creating a named container that holds a value -- just like in algebra. Understanding algebraic variables makes programming variables intuitive.</p>
+          </div>
+
+          <h3>Algebraic Expressions</h3>
+          <p>
+            An <strong>algebraic expression</strong> is a mathematical phrase that contains numbers, variables, and operations. Here are the key vocabulary words:
+          </p>
+          <ul>
+            <li><strong>Term</strong> -- a single chunk separated by + or - signs. In <code>3x + 7</code>, the terms are <code>3x</code> and <code>7</code>.</li>
+            <li><strong>Coefficient</strong> -- the number multiplied by the variable. In <code>3x</code>, the coefficient is <strong>3</strong>.</li>
+            <li><strong>Constant</strong> -- a term with no variable. In <code>3x + 7</code>, the constant is <strong>7</strong>.</li>
+            <li><strong>Like terms</strong> -- terms with the same variable and exponent. <code>3x</code> and <code>5x</code> are like terms. <code>3x</code> and <code>3x&sup2;</code> are NOT like terms.</li>
+          </ul>
+
+          <h3>Simplifying Expressions</h3>
+          <p>To simplify an expression, <strong>combine like terms</strong> by adding or subtracting their coefficients.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Combining Like Terms</div>
+            <p>Simplify: <strong>4x + 3 + 2x - 1</strong></p>
+            <p>Step 1: Group the like terms: <code>(4x + 2x) + (3 - 1)</code></p>
+            <p>Step 2: Combine: <code>6x + 2</code></p>
+            <p>Answer: <strong>6x + 2</strong></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Visual Method for Beginners</div>
+            <p>If you're struggling with like terms, try color-coding or underlining. Use one color for all <em>x</em> terms, another for all <em>x²</em> terms, and another for constants. Only combine terms of the same color!</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">More Practice with Like Terms</div>
+            <p><strong>1) Simplify: 5a + 2b + 3a - b</strong><br>
+               Group: (5a + 3a) + (2b - b) = <strong>8a + b</strong></p>
+            <p><strong>2) Simplify: 2x² + 4x + x² - 2x + 7</strong><br>
+               Group: (2x² + x²) + (4x - 2x) + 7 = <strong>3x² + 2x + 7</strong></p>
+            <p><strong>3) Simplify: -3y + 5 + 7y - 2 + y</strong><br>
+               Group: (-3y + 7y + y) + (5 - 2) = <strong>5y + 3</strong></p>
+            <p><strong>Key insight:</strong> Only combine terms with identical variable parts. 3x and 3x² cannot be combined!</p>
+          </div>
+
+          <h3>The Distributive Property</h3>
+          <div class="formula-box">
+            a(b + c) = ab + ac
+          </div>
+          <p>
+            The distributive property says that multiplying a number by a group of numbers added together is the same as multiplying the number by each one individually and then adding the results. You "distribute" the multiplication across each term inside the parentheses.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- Distributive Property</div>
+            <p>Expand: <strong>3(2x + 4)</strong></p>
+            <p>Step 1: Multiply 3 by each term inside: <code>3 * 2x + 3 * 4</code></p>
+            <p>Step 2: Simplify: <code>6x + 12</code></p>
+            <p>Answer: <strong>6x + 12</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Distribute then Combine</div>
+            <p>Simplify: <strong>2(x + 3) + 4x</strong></p>
+            <p>Step 1: Distribute: <code>2x + 6 + 4x</code></p>
+            <p>Step 2: Combine like terms: <code>6x + 6</code></p>
+            <p>Answer: <strong>6x + 6</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">More Distribution Practice</div>
+            <p><strong>1) Expand: 4(2x - 3)</strong><br>
+               4 × 2x + 4 × (-3) = <strong>8x - 12</strong></p>
+            <p><strong>2) Expand: -3(x + 5)</strong><br>
+               -3 × x + (-3) × 5 = <strong>-3x - 15</strong></p>
+            <p><strong>3) Expand: 0.5(4y - 6)</strong><br>
+               0.5 × 4y + 0.5 × (-6) = <strong>2y - 3</strong></p>
+            <p><strong>4) Expand and simplify: 3(2x + 1) - 2(x - 4)</strong><br>
+               = 6x + 3 - 2x + 8<br>
+               = (6x - 2x) + (3 + 8) = <strong>4x + 11</strong></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>Don't forget to distribute to <em>every</em> term inside the parentheses. A common error: writing <code>3(2x + 4) = 6x + 4</code> instead of the correct <code>6x + 12</code>. The 3 must multiply both the 2x AND the 4.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <section id="linear-equations">
+          <h2>2. Solving Linear Equations</h2>
+
+          <p>
+            An <strong>equation</strong> is a statement that two expressions are equal, connected by an equals sign. <strong>Solving</strong> an equation means finding the value of the variable that makes the statement true.
+          </p>
+
+          <div class="formula-box">
+            The Golden Rule: Whatever you do to one side, you must do to the other.
+          </div>
+
+          <p>
+            This is the single most important idea in equation solving. An equation is like a perfectly balanced scale. If you add 5 to the left side, you must add 5 to the right side too, or the scale tips over and the equation becomes false.
+          </p>
+
+          <h3>One-Step Equations</h3>
+          <p>These require a single operation to isolate the variable.</p>
+
+          <div class="example-box">
+            <div class="label">Example 1 -- Addition</div>
+            <p>Solve: <strong>x + 5 = 12</strong></p>
+            <p>Goal: Get x by itself.</p>
+            <p>Subtract 5 from both sides: <code>x + 5 - 5 = 12 - 5</code></p>
+            <p>Result: <strong>x = 7</strong></p>
+            <p>Check: 7 + 5 = 12. Correct!</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why Do We "Move" Numbers to the Other Side?</div>
+            <p>We don't actually move numbers. We add the same amount to both sides to keep the equation balanced. Saying "move 5 to the other side" is shorthand for "subtract 5 from both sides." The goal is always to isolate the variable.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 2 -- Multiplication</div>
+            <p>Solve: <strong>3x = 21</strong></p>
+            <p>Divide both sides by 3: <code>3x / 3 = 21 / 3</code></p>
+            <p>Result: <strong>x = 7</strong></p>
+            <p>Check: 3(7) = 21. Correct!</p>
+          </div>
+
+          <h3>Two-Step Equations</h3>
+          <p>Strategy: undo addition/subtraction first, then undo multiplication/division.</p>
+
+          <div class="example-box">
+            <div class="label">Example 3 -- Two Steps</div>
+            <p>Solve: <strong>2x + 3 = 11</strong></p>
+            <p>Step 1: Subtract 3 from both sides: <code>2x = 8</code></p>
+            <p>Step 2: Divide both sides by 2: <code>x = 4</code></p>
+            <p>Check: 2(4) + 3 = 8 + 3 = 11. Correct!</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">More Two-Step Practice</div>
+            <p><strong>1) Solve: 3x - 4 = 14</strong><br>
+               Add 4: 3x = 18<br>
+               Divide by 3: <strong>x = 6</strong><br>
+               Check: 3(6) - 4 = 18 - 4 = 14 ✓</p>
+            <p><strong>2) Solve: -2x + 7 = 1</strong><br>
+               Subtract 7: -2x = -6<br>
+               Divide by -2: <strong>x = 3</strong><br>
+               Check: -2(3) + 7 = -6 + 7 = 1 ✓</p>
+            <p><strong>3) Solve: 5 + 4y = 21</strong><br>
+               Subtract 5: 4y = 16<br>
+               Divide by 4: <strong>y = 4</strong><br>
+               Check: 5 + 4(4) = 5 + 16 = 21 ✓</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Strategy: Work Backwards from Order of Operations</div>
+            <p>To solve 2x + 3 = 11, ask yourself: "What operations were done to x?" Answer: "First multiplied by 2, then added 3." To undo this, work backwards: first subtract 3, then divide by 2. Always undo addition/subtraction before multiplication/division.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 4 -- Negative Coefficient</div>
+            <p>Solve: <strong>-5x + 10 = -15</strong></p>
+            <p>Step 1: Subtract 10 from both sides: <code>-5x = -25</code></p>
+            <p>Step 2: Divide both sides by -5: <code>x = 5</code></p>
+            <p>Check: -5(5) + 10 = -25 + 10 = -15. Correct!</p>
+          </div>
+
+          <h3>Multi-Step Equations (Variables on Both Sides)</h3>
+          <p>When the variable appears on both sides, move all variable terms to one side and all constants to the other.</p>
+
+          <div class="tip-box">
+            <div class="label">When You Get Negative Answers</div>
+            <p>Don't worry if x comes out negative! Many students think negative answers are "wrong," but they're often correct. For example, if x - 3 = -8, then x = -5. Negative numbers are perfectly valid solutions. Always check your answer by substituting back.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 5 -- Variables on Both Sides</div>
+            <p>Solve: <strong>5x + 3 = 2x + 18</strong></p>
+            <p>Step 1: Subtract 2x from both sides: <code>3x + 3 = 18</code></p>
+            <p>Step 2: Subtract 3 from both sides: <code>3x = 15</code></p>
+            <p>Step 3: Divide both sides by 3: <code>x = 5</code></p>
+            <p>Check: 5(5) + 3 = 28, and 2(5) + 18 = 28. Correct!</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">More Variables on Both Sides Practice</div>
+            <p><strong>1) Solve: 4x + 1 = x + 10</strong><br>
+               Subtract x: 3x + 1 = 10<br>
+               Subtract 1: 3x = 9<br>
+               Divide by 3: <strong>x = 3</strong></p>
+            <p><strong>2) Solve: 6y - 5 = 4y + 7</strong><br>
+               Subtract 4y: 2y - 5 = 7<br>
+               Add 5: 2y = 12<br>
+               Divide by 2: <strong>y = 6</strong></p>
+            <p><strong>3) Solve: 3a + 8 = 7a - 4</strong><br>
+               Subtract 3a: 8 = 4a - 4<br>
+               Add 4: 12 = 4a<br>
+               Divide by 4: <strong>a = 3</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 6 -- Distributive Property First</div>
+            <p>Solve: <strong>3(x - 2) = 2x + 1</strong></p>
+            <p>Step 1: Distribute: <code>3x - 6 = 2x + 1</code></p>
+            <p>Step 2: Subtract 2x from both sides: <code>x - 6 = 1</code></p>
+            <p>Step 3: Add 6 to both sides: <code>x = 7</code></p>
+            <p>Check: 3(7 - 2) = 3(5) = 15, and 2(7) + 1 = 15. Correct!</p>
+          </div>
+
+          <h3>Equations with Fractions</h3>
+          <p>The trick: <strong>multiply every term by the least common denominator (LCD)</strong> to clear all the fractions first. Then solve normally.</p>
+
+          <div class="example-box">
+            <div class="label">Example 7 -- Clearing Fractions</div>
+            <p>Solve: <strong>(x/2) + (x/3) = 5</strong></p>
+            <p>The LCD of 2 and 3 is 6. Multiply every term by 6:</p>
+            <p><code>6(x/2) + 6(x/3) = 6(5)</code></p>
+            <p><code>3x + 2x = 30</code></p>
+            <p><code>5x = 30</code></p>
+            <p><code>x = 6</code></p>
+            <p>Check: 6/2 + 6/3 = 3 + 2 = 5. Correct!</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>When clearing fractions, you must multiply <em>every single term</em> by the LCD -- including terms that aren't fractions. A very common error is only multiplying the fraction terms and forgetting the constant on the other side.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Solving equations is essentially what computers do when they evaluate expressions and solve algorithms. When you write code that calculates a value from a formula -- say, converting Celsius to Fahrenheit with <code>f = (9/5) * c + 32</code> -- you're applying the same equation-solving logic. Understanding how to rearrange formulas is also key for deriving algorithms, analyzing complexity, and optimizing code.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <section id="inequalities">
+          <h2>3. Inequalities</h2>
+
+          <p>
+            An <strong>inequality</strong> is like an equation, but instead of saying two things are equal, it says one is bigger or smaller. The four inequality symbols are:
+          </p>
+
+          <table>
+            <thead>
+              <tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>&lt;</td><td>Less than</td><td>x &lt; 5 (x is less than 5)</td></tr>
+              <tr><td>&gt;</td><td>Greater than</td><td>x &gt; 3 (x is greater than 3)</td></tr>
+              <tr><td>&le;</td><td>Less than or equal to</td><td>x &le; 10 (x is at most 10)</td></tr>
+              <tr><td>&ge;</td><td>Greater than or equal to</td><td>x &ge; 0 (x is non-negative)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Solving Inequalities</h3>
+          <p>
+            You solve inequalities almost exactly like equations, with <strong>one critical exception</strong>: when you multiply or divide both sides by a <strong>negative number</strong>, you must <strong>flip the inequality sign</strong>.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- Standard Inequality</div>
+            <p>Solve: <strong>2x + 1 &lt; 9</strong></p>
+            <p>Step 1: Subtract 1 from both sides: <code>2x &lt; 8</code></p>
+            <p>Step 2: Divide both sides by 2: <code>x &lt; 4</code></p>
+            <p>Solution: x can be any number less than 4.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Flipping the Sign</div>
+            <p>Solve: <strong>-3x + 6 &le; 15</strong></p>
+            <p>Step 1: Subtract 6 from both sides: <code>-3x &le; 9</code></p>
+            <p>Step 2: Divide both sides by -3 <strong>(flip the sign!)</strong>: <code>x &ge; -3</code></p>
+            <p>Solution: x can be -3 or any number greater than -3.</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>Forgetting to flip the inequality sign when multiplying or dividing by a negative number. This is the number one mistake students make with inequalities. Ask yourself: "Am I dividing by a negative?" If yes, flip the sign.</p>
+          </div>
+
+          <h3>Graphing Inequalities on a Number Line</h3>
+          <p>
+            You can visualize inequality solutions on a number line:
+          </p>
+          <ul>
+            <li><strong>x &lt; 4</strong> -- Draw an <strong>open circle</strong> at 4 (meaning 4 is NOT included) and shade everything to the <strong>left</strong>.</li>
+            <li><strong>x &ge; -3</strong> -- Draw a <strong>filled circle</strong> at -3 (meaning -3 IS included) and shade everything to the <strong>right</strong>.</li>
+            <li>Open circle = strict inequality (&lt; or &gt;), filled circle = includes the endpoint (&le; or &ge;).</li>
+          </ul>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Inequalities show up constantly in programming: loop conditions (<code>while i &lt; n</code>), array bounds checking (<code>if index &gt;= 0 &amp;&amp; index &lt; length</code>), and algorithm analysis ("this algorithm runs in O(n) when n &ge; 1"). Understanding how inequalities work helps you reason about when loops terminate and whether your array accesses are safe.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 4 ==================== -->
+        <section id="functions">
+          <h2>4. Functions</h2>
+
+          <h3>What Is a Function?</h3>
+          <p>
+            A <strong>function</strong> is an input-output machine: you feed it an input, it follows a rule, and it produces exactly one output. The key idea is that <em>each input gives exactly one output</em>. If you put the same number in twice, you get the same result both times.
+          </p>
+          <p>
+            We usually write functions using the notation <strong>f(x)</strong>, which reads as "f of x." The letter f is the name of the function, and x is the input. For example:
+          </p>
+
+          <div class="formula-box">
+            f(x) = 2x + 3
+          </div>
+
+          <p>This function takes any number x, doubles it, then adds 3.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Evaluating a Function</div>
+            <p>If <strong>f(x) = 2x + 3</strong>, find f(4).</p>
+            <p>Replace x with 4: <code>f(4) = 2(4) + 3 = 8 + 3 = 11</code></p>
+            <p>Answer: <strong>f(4) = 11</strong></p>
+          </div>
+
+          <h3>Domain and Range</h3>
+          <ul>
+            <li><strong>Domain</strong> -- the set of all valid inputs (x-values). Ask: "What values of x can I plug in without breaking anything?"</li>
+            <li><strong>Range</strong> -- the set of all possible outputs (y-values). Ask: "What values can actually come out?"</li>
+          </ul>
+          <p>
+            For example, the function f(x) = 1/x has a domain of all real numbers <em>except 0</em> (because dividing by zero is undefined). Its range is also all real numbers except 0 (because 1/x never equals zero).
+          </p>
+
+          <h3>Linear Functions: y = mx + b</h3>
+          <p>
+            The most important type of function in beginning algebra is the <strong>linear function</strong>. Its graph is a straight line.
+          </p>
+
+          <div class="formula-box">
+            y = mx + b<br><br>
+            m = slope (steepness and direction of the line)<br>
+            b = y-intercept (where the line crosses the y-axis)
+          </div>
+
+          <ul>
+            <li><strong>Slope (m)</strong> tells you how much y changes for each 1-unit increase in x. A slope of 2 means "go up 2 for every 1 you go right." A negative slope means the line goes downhill.</li>
+            <li><strong>Y-intercept (b)</strong> is the y-value when x = 0. It's where the line crosses the vertical axis.</li>
+          </ul>
+
+          <div class="example-box">
+            <div class="label">Example -- Identifying Slope and Intercept</div>
+            <p>For the line <strong>y = -3x + 7</strong>:</p>
+            <p>Slope: <strong>m = -3</strong> (the line goes down 3 units for every 1 unit to the right)</p>
+            <p>Y-intercept: <strong>b = 7</strong> (the line crosses the y-axis at the point (0, 7))</p>
+          </div>
+
+          <h3>Slope Formula</h3>
+          <p>Given two points on a line, (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>), the slope is:</p>
+
+          <div class="formula-box">
+            m = (y<sub>2</sub> - y<sub>1</sub>) / (x<sub>2</sub> - x<sub>1</sub>)
+          </div>
+
+          <p>This is often described as "rise over run" -- the vertical change divided by the horizontal change.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Finding Slope from Two Points</div>
+            <p>Find the slope of the line through <strong>(1, 2)</strong> and <strong>(4, 11)</strong>.</p>
+            <p><code>m = (11 - 2) / (4 - 1) = 9 / 3 = 3</code></p>
+            <p>The slope is <strong>3</strong>. The line rises 3 units for every 1 unit to the right.</p>
+          </div>
+
+          <h3>Understanding Slope Intuitively</h3>
+
+          <div class="example-box">
+            <div class="label">Slope in Different Contexts</div>
+            <p><strong>Positive slope:</strong> Line goes upward left-to-right (like climbing a hill)</p>
+            <p>• m = 2: For every 1 step right, go up 2 steps</p>
+            <p>• m = 0.5: For every 1 step right, go up 0.5 steps (gentle incline)</p>
+            <p><strong>Negative slope:</strong> Line goes downward left-to-right (like descending a hill)</p>
+            <p>• m = -1: For each 1 step right, go down 1 step (45° decline)</p>
+            <p>• m = -3: For each 1 step right, go down 3 steps (steep decline)</p>
+            <p><strong>Zero slope:</strong> m = 0 means horizontal line (no rise or fall)</p>
+            <p><strong>Undefined slope:</strong> Vertical line (infinite steepness)</p>
+          </div>
+
+          <h3>Finding the Equation of a Line</h3>
+
+          <div class="example-box">
+            <div class="label">Given Slope and Y-Intercept</div>
+            <p><strong>Write the equation of a line with slope -2 and y-intercept 5:</strong></p>
+            <p>Use y = mx + b directly: <strong>y = -2x + 5</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Given Two Points</div>
+            <p><strong>Find the equation passing through (3, 7) and (5, 13):</strong></p>
+            <p>Step 1: Find slope: m = (13 - 7)/(5 - 3) = 6/2 = 3</p>
+            <p>Step 2: Use point-slope form with either point. Using (3, 7):</p>
+            <p>y - 7 = 3(x - 3)</p>
+            <p>y - 7 = 3x - 9</p>
+            <p>y = 3x - 2</p>
+            <p><strong>Answer: y = 3x - 2</strong></p>
+            <p>Check with other point: 3(5) - 2 = 15 - 2 = 13 ✓</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Given Slope and One Point</div>
+            <p><strong>Find the equation with slope 4 passing through (-1, 3):</strong></p>
+            <p>Point-slope form: y - y₁ = m(x - x₁)</p>
+            <p>y - 3 = 4(x - (-1))</p>
+            <p>y - 3 = 4(x + 1)</p>
+            <p>y - 3 = 4x + 4</p>
+            <p><strong>y = 4x + 7</strong></p>
+          </div>
+
+          <h3>Graphing Lines Step-by-Step</h3>
+
+          <div class="tip-box">
+            <div class="label">Method 1: Using Slope and Y-Intercept</div>
+            <p>For y = 2x - 3:</p>
+            <p>1. Plot the y-intercept: (0, -3)</p>
+            <p>2. Use slope 2 = 2/1 to find next point: from (0, -3), go right 1 and up 2 to reach (1, -1)</p>
+            <p>3. Continue: from (1, -1) go right 1 and up 2 to reach (2, 1)</p>
+            <p>4. Draw line through these points</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Method 2: Using Two Points</div>
+            <p>For y = -x + 4:</p>
+            <p>1. Choose any x-values, say x = 0 and x = 4</p>
+            <p>2. When x = 0: y = -(0) + 4 = 4, so (0, 4)</p>
+            <p>3. When x = 4: y = -(4) + 4 = 0, so (4, 0)</p>
+            <p>4. Plot these points and draw the line</p>
+          </div>
+
+          <h3>Special Forms of Linear Equations</h3>
+
+          <div class="formula-box">
+            Standard Form: Ax + By = C<br>
+            Point-Slope Form: y - y₁ = m(x - x₁)<br>
+            Slope-Intercept Form: y = mx + b<br>
+            Intercept Form: x/a + y/b = 1
+          </div>
+
+          <div class="example-box">
+            <div class="label">Converting Between Forms</div>
+            <p><strong>Convert 3x + 2y = 6 to slope-intercept form:</strong></p>
+            <p>Solve for y:</p>
+            <p>2y = -3x + 6</p>
+            <p>y = (-3x + 6)/2</p>
+            <p><strong>y = -1.5x + 3</strong></p>
+            <p>So slope = -1.5, y-intercept = 3</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Functions in algebra map directly to functions in programming. The concept of domain is like input validation -- what inputs are acceptable? In graphics programming, linear functions define lines on screen. Slope appears in machine learning as the "weight" in linear regression models. And the idea that a function always produces the same output for the same input is the foundation of "pure functions" in functional programming.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 5 ==================== -->
+        <section id="systems">
+          <h2>5. Systems of Equations</h2>
+
+          <p>
+            A <strong>system of equations</strong> is a set of two (or more) equations with the same variables. The <strong>solution</strong> is the values of the variables that satisfy ALL equations simultaneously. Geometrically, for two linear equations, the solution is where the two lines intersect.
+          </p>
+
+          <h3>Method 1: Substitution</h3>
+          <p>
+            <strong>Idea:</strong> Solve one equation for one variable, then substitute that expression into the other equation.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- Substitution Method</div>
+            <p>Solve the system:</p>
+            <p><code>y = 2x + 1</code> &nbsp;&nbsp;&nbsp;... (Equation 1)</p>
+            <p><code>3x + y = 16</code> &nbsp;&nbsp;&nbsp;... (Equation 2)</p>
+            <p><strong>Step 1:</strong> Equation 1 already has y isolated: <code>y = 2x + 1</code></p>
+            <p><strong>Step 2:</strong> Substitute into Equation 2:</p>
+            <p><code>3x + (2x + 1) = 16</code></p>
+            <p><code>5x + 1 = 16</code></p>
+            <p><code>5x = 15</code></p>
+            <p><code>x = 3</code></p>
+            <p><strong>Step 3:</strong> Plug x = 3 back into Equation 1:</p>
+            <p><code>y = 2(3) + 1 = 7</code></p>
+            <p>Solution: <strong>(x, y) = (3, 7)</strong></p>
+            <p>Check in Equation 2: 3(3) + 7 = 9 + 7 = 16. Correct!</p>
+          </div>
+
+          <h3>Method 2: Elimination</h3>
+          <p>
+            <strong>Idea:</strong> Add or subtract the equations to eliminate one variable.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- Elimination Method</div>
+            <p>Solve the system:</p>
+            <p><code>2x + 3y = 12</code> &nbsp;&nbsp;&nbsp;... (Equation 1)</p>
+            <p><code>4x - 3y = 6</code> &nbsp;&nbsp;&nbsp;... (Equation 2)</p>
+            <p><strong>Step 1:</strong> Notice that 3y and -3y will cancel if we add the equations.</p>
+            <p><strong>Step 2:</strong> Add Equation 1 + Equation 2:</p>
+            <p><code>(2x + 4x) + (3y - 3y) = 12 + 6</code></p>
+            <p><code>6x = 18</code></p>
+            <p><code>x = 3</code></p>
+            <p><strong>Step 3:</strong> Plug x = 3 into Equation 1:</p>
+            <p><code>2(3) + 3y = 12</code></p>
+            <p><code>6 + 3y = 12</code></p>
+            <p><code>3y = 6</code></p>
+            <p><code>y = 2</code></p>
+            <p>Solution: <strong>(x, y) = (3, 2)</strong></p>
+            <p>Check in Equation 2: 4(3) - 3(2) = 12 - 6 = 6. Correct!</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Elimination with Multiplication</div>
+            <p>Solve the system:</p>
+            <p><code>3x + 2y = 16</code> &nbsp;&nbsp;&nbsp;... (Equation 1)</p>
+            <p><code>x + 4y = 22</code> &nbsp;&nbsp;&nbsp;... (Equation 2)</p>
+            <p><strong>Step 1:</strong> The variables don't cancel yet. Multiply Equation 2 by -3 so the x terms cancel:</p>
+            <p><code>3x + 2y = 16</code></p>
+            <p><code>-3x - 12y = -66</code></p>
+            <p><strong>Step 2:</strong> Add the equations:</p>
+            <p><code>-10y = -50</code></p>
+            <p><code>y = 5</code></p>
+            <p><strong>Step 3:</strong> Plug y = 5 into Equation 2:</p>
+            <p><code>x + 4(5) = 22</code></p>
+            <p><code>x + 20 = 22</code></p>
+            <p><code>x = 2</code></p>
+            <p>Solution: <strong>(x, y) = (2, 5)</strong></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Which Method Should You Use?</div>
+            <p><strong>Substitution</strong> is easiest when one variable is already isolated (like y = ...) or has a coefficient of 1. <strong>Elimination</strong> is easiest when the coefficients line up nicely or can be made to cancel with simple multiplication.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Systems of equations are everywhere in CS. In computer graphics, finding where two lines intersect is solving a 2-variable system. Linear programming (used for optimization problems like scheduling and resource allocation) involves solving systems of equations and inequalities. Machine learning's linear regression solves systems of equations to find the best-fit line. At scale, these become matrix equations -- which is why linear algebra matters so much for CS.</p>
+          </div>
+
+          <h3>Understanding Solutions Graphically</h3>
+
+          <div class="tip-box">
+            <div class="label">What Does the Solution Mean?</div>
+            <p>The solution to a system of two linear equations is the <strong>intersection point</strong> of the two lines. This point satisfies both equations simultaneously.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Types of Solutions</div>
+            <p><strong>One Solution (Most Common):</strong> Lines intersect at exactly one point</p>
+            <p>• Example: y = 2x + 1 and y = -x + 4 intersect at (1, 3)</p>
+            <p><strong>No Solution:</strong> Lines are parallel (never intersect)</p>
+            <p>• Example: y = 2x + 1 and y = 2x + 5 (same slope, different y-intercepts)</p>
+            <p><strong>Infinite Solutions:</strong> Lines are identical (overlap completely)</p>
+            <p>• Example: y = 2x + 1 and 2y = 4x + 2 (same line written differently)</p>
+          </div>
+
+          <h3>More Practice Examples</h3>
+
+          <div class="example-box">
+            <div class="label">Substitution Method Practice</div>
+            <p><strong>Solve: x + y = 5 and 2x - y = 1</strong></p>
+            <p>From equation 1: y = 5 - x</p>
+            <p>Substitute into equation 2: 2x - (5 - x) = 1</p>
+            <p>2x - 5 + x = 1</p>
+            <p>3x = 6</p>
+            <p>x = 2</p>
+            <p>So y = 5 - 2 = 3</p>
+            <p><strong>Solution: (2, 3)</strong></p>
+            <p>Check: 2 + 3 = 5 ✓ and 2(2) - 3 = 1 ✓</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Elimination Method Practice</div>
+            <p><strong>Solve: 2x + 3y = 7 and 4x - 3y = 5</strong></p>
+            <p>Notice the y-coefficients are opposites (3 and -3), so add directly:</p>
+            <p>(2x + 4x) + (3y - 3y) = 7 + 5</p>
+            <p>6x = 12</p>
+            <p>x = 2</p>
+            <p>Substitute back: 2(2) + 3y = 7 → 4 + 3y = 7 → y = 1</p>
+            <p><strong>Solution: (2, 1)</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Real-World Application</div>
+            <p><strong>Concert tickets cost $15 for adults and $8 for children. If 200 tickets were sold for $2,250 total, how many of each type were sold?</strong></p>
+            <p>Let a = adult tickets, c = child tickets</p>
+            <p>Total tickets: a + c = 200</p>
+            <p>Total revenue: 15a + 8c = 2250</p>
+            <p>From equation 1: c = 200 - a</p>
+            <p>Substitute: 15a + 8(200 - a) = 2250</p>
+            <p>15a + 1600 - 8a = 2250</p>
+            <p>7a = 650</p>
+            <p>a = ~93 adult tickets, c = ~107 child tickets</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 6 ==================== -->
+        <section id="polynomials">
+          <h2>6. Polynomials</h2>
+
+          <h3>What Are Polynomials?</h3>
+          <p>
+            A <strong>polynomial</strong> is an expression made up of terms where variables are raised to non-negative integer powers. Each term has a coefficient and a variable part. Here are some examples:
+          </p>
+          <ul>
+            <li><code>5x + 3</code> -- a polynomial with 2 terms (a <strong>binomial</strong>)</li>
+            <li><code>x&sup2; + 4x - 7</code> -- a polynomial with 3 terms (a <strong>trinomial</strong>)</li>
+            <li><code>2x&sup3; - x&sup2; + 5x - 1</code> -- a polynomial with 4 terms</li>
+          </ul>
+          <p>
+            The <strong>degree</strong> of a polynomial is the highest exponent. The degree of <code>x&sup2; + 4x - 7</code> is <strong>2</strong>. The degree of <code>2x&sup3; - x&sup2; + 5x - 1</code> is <strong>3</strong>.
+          </p>
+
+          <h3>Adding and Subtracting Polynomials</h3>
+          <p>Simply combine like terms (terms with the same variable and exponent).</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Adding Polynomials</div>
+            <p><strong>(3x&sup2; + 2x + 1) + (x&sup2; - 5x + 4)</strong></p>
+            <p>Combine like terms:</p>
+            <p>x&sup2; terms: <code>3x&sup2; + x&sup2; = 4x&sup2;</code></p>
+            <p>x terms: <code>2x + (-5x) = -3x</code></p>
+            <p>Constants: <code>1 + 4 = 5</code></p>
+            <p>Answer: <strong>4x&sup2; - 3x + 5</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Subtracting Polynomials</div>
+            <p><strong>(5x&sup2; + 3x - 2) - (2x&sup2; - x + 6)</strong></p>
+            <p>Distribute the negative sign: <code>5x&sup2; + 3x - 2 - 2x&sup2; + x - 6</code></p>
+            <p>Combine like terms: <code>3x&sup2; + 4x - 8</code></p>
+            <p>Answer: <strong>3x&sup2; + 4x - 8</strong></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>When subtracting polynomials, remember to distribute the negative sign to <em>every</em> term in the second polynomial. A common error: <code>(5x&sup2; + 3x - 2) - (2x&sup2; - x + 6) = 3x&sup2; + 2x + 4</code>. The mistake is not flipping -x to +x and +6 to -6.</p>
+          </div>
+
+          <h3>Multiplying Polynomials (FOIL)</h3>
+          <p>
+            To multiply two binomials, use <strong>FOIL</strong>: <strong>F</strong>irst, <strong>O</strong>uter, <strong>I</strong>nner, <strong>L</strong>ast.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- FOIL Method</div>
+            <p>Multiply: <strong>(x + 3)(x + 5)</strong></p>
+            <p><strong>F</strong>irst: <code>x * x = x&sup2;</code></p>
+            <p><strong>O</strong>uter: <code>x * 5 = 5x</code></p>
+            <p><strong>I</strong>nner: <code>3 * x = 3x</code></p>
+            <p><strong>L</strong>ast: <code>3 * 5 = 15</code></p>
+            <p>Combine: <code>x&sup2; + 5x + 3x + 15 = x&sup2; + 8x + 15</code></p>
+            <p>Answer: <strong>x&sup2; + 8x + 15</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- FOIL with Negatives</div>
+            <p>Multiply: <strong>(2x - 1)(x + 4)</strong></p>
+            <p><strong>F</strong>irst: <code>2x * x = 2x&sup2;</code></p>
+            <p><strong>O</strong>uter: <code>2x * 4 = 8x</code></p>
+            <p><strong>I</strong>nner: <code>-1 * x = -x</code></p>
+            <p><strong>L</strong>ast: <code>-1 * 4 = -4</code></p>
+            <p>Combine: <code>2x&sup2; + 8x - x - 4 = 2x&sup2; + 7x - 4</code></p>
+            <p>Answer: <strong>2x&sup2; + 7x - 4</strong></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Beyond FOIL</div>
+            <p>FOIL only works for two binomials. For larger polynomials, use the general rule: multiply every term in the first polynomial by every term in the second, then combine like terms. FOIL is just a shortcut for this process when each polynomial has exactly two terms.</p>
+          </div>
+
+          <h3>Special Products (Memorize These!)</h3>
+          <p>These patterns appear so often that memorizing them will save you time and reduce errors.</p>
+
+          <h4>Perfect Square Trinomials</h4>
+          <div class="formula-box">
+            (a + b)&sup2; = a&sup2; + 2ab + b&sup2;<br>
+            (a - b)&sup2; = a&sup2; - 2ab + b&sup2;
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example: Expanding (x + 5)&sup2;</div>
+            <p>(x + 5)&sup2; = x&sup2; + 2(x)(5) + 5&sup2;</p>
+            <p>= x&sup2; + 10x + 25</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example: Expanding (3y - 2)&sup2;</div>
+            <p>(3y - 2)&sup2; = (3y)&sup2; - 2(3y)(2) + 2&sup2;</p>
+            <p>= 9y&sup2; - 12y + 4</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p><strong>(x + 5)&sup2; ≠ x&sup2; + 25!</strong></p>
+            <p>You MUST include the middle term (2ab). This is one of the most common algebra mistakes.</p>
+          </div>
+
+          <h4>Difference of Squares</h4>
+          <div class="formula-box">
+            (a + b)(a - b) = a&sup2; - b&sup2;
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example: (x + 7)(x - 7)</div>
+            <p>= x&sup2; - 7&sup2; = x&sup2; - 49</p>
+            <p>The middle terms cancel out because one is +7x and one is -7x.</p>
+          </div>
+
+          <h4>Sum and Difference of Cubes</h4>
+          <div class="formula-box">
+            a&sup3; + b&sup3; = (a + b)(a&sup2; - ab + b&sup2;)<br>
+            a&sup3; - b&sup3; = (a - b)(a&sup2; + ab + b&sup2;)
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Memory Trick: SOAP</div>
+            <p>For a&sup3; ± b&sup3;, use SOAP: <strong>S</strong>ame sign, <strong>O</strong>pposite sign, <strong>A</strong>lways <strong>P</strong>ositive</p>
+            <p>a&sup3; + b&sup3; = (a <strong>+</strong> b)(a&sup2; <strong>-</strong> ab <strong>+</strong> b&sup2;)</p>
+          </div>
+
+          <h3>Multiplying Polynomials with More Than Two Terms</h3>
+
+          <div class="example-box">
+            <div class="label">Example: (x + 2)(x&sup2; + 3x - 1)</div>
+            <p>Distribute each term in the first polynomial:</p>
+            <p>= x(x&sup2; + 3x - 1) + 2(x&sup2; + 3x - 1)</p>
+            <p>= x&sup3; + 3x&sup2; - x + 2x&sup2; + 6x - 2</p>
+            <p>= <strong>x&sup3; + 5x&sup2; + 5x - 2</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example: (x&sup2; + x + 1)(x - 1)</div>
+            <p>= x&sup2;(x - 1) + x(x - 1) + 1(x - 1)</p>
+            <p>= x&sup3; - x&sup2; + x&sup2; - x + x - 1</p>
+            <p>= <strong>x&sup3; - 1</strong> (difference of cubes!)</p>
+          </div>
+
+          <h3>Polynomial Vocabulary</h3>
+          <table>
+            <thead>
+              <tr><th>Term</th><th>Definition</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Monomial</strong></td><td>1 term</td><td>5x&sup2;</td></tr>
+              <tr><td><strong>Binomial</strong></td><td>2 terms</td><td>x + 3</td></tr>
+              <tr><td><strong>Trinomial</strong></td><td>3 terms</td><td>x&sup2; + 2x + 1</td></tr>
+              <tr><td><strong>Degree</strong></td><td>Highest exponent</td><td>x&sup3; + x has degree 3</td></tr>
+              <tr><td><strong>Leading term</strong></td><td>Term with highest degree</td><td>In 2x&sup3; + x, it's 2x&sup3;</td></tr>
+              <tr><td><strong>Leading coefficient</strong></td><td>Coefficient of leading term</td><td>In 2x&sup3; + x, it's 2</td></tr>
+              <tr><td><strong>Constant term</strong></td><td>Term with no variable</td><td>In x&sup2; + 5, it's 5</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Polynomial Division (Optional Advanced Topic)</h3>
+          <p>You can divide polynomials using long division, similar to numerical long division.</p>
+
+          <div class="example-box">
+            <div class="label">Example: (x&sup2; + 5x + 6) ÷ (x + 2)</div>
+            <p>Step 1: x&sup2; ÷ x = x (first term of quotient)</p>
+            <p>Step 2: x(x + 2) = x&sup2; + 2x</p>
+            <p>Step 3: (x&sup2; + 5x + 6) - (x&sup2; + 2x) = 3x + 6</p>
+            <p>Step 4: 3x ÷ x = 3 (second term of quotient)</p>
+            <p>Step 5: 3(x + 2) = 3x + 6</p>
+            <p>Step 6: (3x + 6) - (3x + 6) = 0 (no remainder)</p>
+            <p>Answer: <strong>(x&sup2; + 5x + 6) ÷ (x + 2) = x + 3</strong></p>
+            <p>Check: (x + 2)(x + 3) = x&sup2; + 5x + 6 ✓</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 7 ==================== -->
+        <section id="factoring">
+          <h2>7. Factoring</h2>
+
+          <h3>What is Factoring, Really?</h3>
+          <p>
+            You already know how to <strong>multiply</strong>: take <code>(x + 3)(x + 5)</code> and expand it into <code>x&sup2; + 8x + 15</code>. Factoring is the <strong>reverse</strong>. You start with <code>x&sup2; + 8x + 15</code> and figure out that it came from <code>(x + 3)(x + 5)</code>.
+          </p>
+          <p>
+            Think of it like this: multiplication is baking a cake (mixing ingredients together). Factoring is looking at a finished cake and figuring out the recipe. You are "un-multiplying."
+          </p>
+
+          <div class="memory-diagram">  Multiplication (forward):     Factoring (reverse):
+
+  (x + 3)(x + 5)                x² + 8x + 15
+       |                              |
+       | FOIL / expand                | un-multiply
+       v                              v
+  x² + 8x + 15                  (x + 3)(x + 5)</div>
+
+          <div class="tip-box">
+            <div class="label">Why Do We Factor?</div>
+            <p>Factoring is how you <strong>solve equations</strong>. If you need to solve x&sup2; + 8x + 15 = 0, there is no way to "undo" the x&sup2; directly. But if you factor it into (x + 3)(x + 5) = 0, then you know either x + 3 = 0 or x + 5 = 0, giving you x = -3 or x = -5. That is the entire point: <strong>turn a hard problem into two easy ones</strong>.</p>
+          </div>
+
+          <h3>First, Understand FOIL (So You Can Reverse It)</h3>
+          <p>Before you can undo multiplication, you need to truly understand how multiplication works. FOIL stands for <strong>F</strong>irst, <strong>O</strong>uter, <strong>I</strong>nner, <strong>L</strong>ast -- it is a way to multiply two binomials.</p>
+
+          <div class="memory-diagram">  (x + 3)(x + 5)
+
+  F: First  x * x  = x²       O: Outer  x * 5  = 5x
+  I: Inner  3 * x  = 3x       L: Last   3 * 5  = 15
+
+  Add them up: x² + 5x + 3x + 15
+             = x² + 8x + 15
+
+  Notice: the middle term (8x) comes from adding the two numbers (3 + 5)
+          the last term (15) comes from multiplying them (3 × 5)</div>
+
+          <p>This is the key insight for factoring: <strong>the middle coefficient is the SUM of two numbers, and the last term is the PRODUCT of those same two numbers.</strong> When you factor, you are hunting for those two numbers.</p>
+
+          <h3>The Area Model -- A Visual Way to See It</h3>
+          <p>There is a beautiful visual way to understand what FOIL is really doing. Think of multiplying (x + 3)(x + 5) as finding the area of a rectangle with sides (x + 3) and (x + 5):</p>
+
+          <div class="memory-diagram">              x          5
+          +----------+------+
+          |          |      |
+     x    |   x²     |  5x  |
+          |          |      |
+          +----------+------+
+          |          |      |
+     3    |   3x     |  15  |
+          |          |      |
+          +----------+------+
+
+  Total area = x² + 5x + 3x + 15 = x² + 8x + 15
+
+  When you FACTOR, you are looking at the area (x² + 8x + 15)
+  and trying to figure out the dimensions of the rectangle.</div>
+
+          <h3>Factoring Strategy -- Follow This Every Time</h3>
+          <div class="tip-box">
+            <div class="label">The Factoring Flowchart</div>
+            <ol>
+              <li><strong>Step 1 -- GCF First:</strong> Always check if all terms share a common factor. If they do, pull it out. This is the single most important step and the one most people skip.</li>
+              <li><strong>Step 2 -- Count the terms:</strong>
+                <ul>
+                  <li><strong>2 terms?</strong> Check for difference of squares: a&sup2; - b&sup2; = (a + b)(a - b)</li>
+                  <li><strong>3 terms?</strong> Find two numbers that multiply to give the last term and add to give the middle. This is the core technique.</li>
+                  <li><strong>4 terms?</strong> Try factoring by grouping (pair them up).</li>
+                </ul>
+              </li>
+              <li><strong>Step 3 -- Always verify:</strong> Multiply your answer back out. If it does not match the original, something went wrong.</li>
+            </ol>
+          </div>
+
+          <!-- ===== GCF ===== -->
+          <h3>Technique 1: Greatest Common Factor (GCF)</h3>
+          <p>The GCF is the biggest thing that divides evenly into every term. Always do this first -- it makes everything else simpler.</p>
+
+          <p>How to find the GCF: look at the <strong>numbers</strong> (what is the biggest number that divides all of them?) and the <strong>variables</strong> (what is the lowest power of each variable that appears in every term?).</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Simple GCF</div>
+            <p>Factor: <strong>6x&sup2; + 9x</strong></p>
+            <p>Numbers: GCF of 6 and 9 is 3.<br>
+            Variables: both terms have at least one x, so the GCF includes x.</p>
+            <p>GCF = 3x. Divide each term by 3x:</p>
+            <p><code>6x&sup2; / 3x = 2x</code> and <code>9x / 3x = 3</code></p>
+            <p>Answer: <strong>3x(2x + 3)</strong></p>
+            <p>Verify: 3x * 2x = 6x&sup2;, and 3x * 3 = 9x. That is 6x&sup2; + 9x. Correct.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Bigger GCF</div>
+            <p>Factor: <strong>12x&sup3;y&sup2; - 8x&sup2;y&sup3; + 4xy</strong></p>
+            <p>Numbers: GCF of 12, 8, 4 is 4.<br>
+            Variables: smallest power of x across all terms is x&sup1;, smallest power of y is y&sup1;.</p>
+            <p>GCF = 4xy. Divide each term:</p>
+            <p><code>12x&sup3;y&sup2; / 4xy = 3x&sup2;y</code>, <code>8x&sup2;y&sup3; / 4xy = 2xy&sup2;</code>, <code>4xy / 4xy = 1</code></p>
+            <p>Answer: <strong>4xy(3x&sup2;y - 2xy&sup2; + 1)</strong></p>
+          </div>
+
+          <!-- ===== TRINOMIALS (a=1) ===== -->
+          <h3>Technique 2: Factoring Trinomials (x&sup2; + bx + c)</h3>
+          <p>This is the most common type. You have a trinomial where the x&sup2; has no coefficient (or a coefficient of 1). You need to find two numbers <strong>p</strong> and <strong>q</strong> where:</p>
+
+          <div class="formula-box">
+            x&sup2; + bx + c = (x + p)(x + q)<br><br>
+            Rule: p × q = c &nbsp;&nbsp;(they multiply to the last number)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p + q = b &nbsp;&nbsp;(they add to the middle number)
+          </div>
+
+          <p>This is like a number puzzle: "I'm thinking of two numbers. They multiply to give 12, and they add to give 7. What are they?" The answer is 3 and 4.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Step by Step</div>
+            <p>Factor: <strong>x&sup2; + 7x + 12</strong></p>
+            <p>We need two numbers that <strong>multiply to 12</strong> and <strong>add to 7</strong>.</p>
+            <p>List the pairs that multiply to 12:</p>
+          </div>
+
+          <div class="memory-diagram">  Pairs that multiply to 12:      Do they add to 7?
+
+    1  ×  12  = 12                  1 + 12 = 13   ✗
+    2  ×   6  = 12                  2 +  6 =  8   ✗
+    3  ×   4  = 12                  3 +  4 =  7   ✓  FOUND IT
+
+  So p = 3, q = 4
+  Answer: (x + 3)(x + 4)
+
+  Verify with FOIL:
+  (x + 3)(x + 4) = x² + 4x + 3x + 12 = x² + 7x + 12  ✓</div>
+
+          <div class="example-box">
+            <div class="label">Example -- When Signs Are Negative</div>
+            <p>Factor: <strong>x&sup2; - 2x - 15</strong></p>
+            <p>Need two numbers that multiply to <strong>-15</strong> and add to <strong>-2</strong>.</p>
+            <p>Since the product is negative, one number must be positive and one must be negative. Since the sum is negative, the negative number must be bigger.</p>
+          </div>
+
+          <div class="memory-diagram">  Pairs that multiply to -15:     Do they add to -2?
+
+    1  × (-15) = -15                1 + (-15) = -14   ✗
+   -1  ×  15   = -15               -1 +  15  =  14   ✗
+    3  × (-5)  = -15                3 + (-5)  =  -2   ✓  FOUND IT
+   -3  ×   5   = -15               -3 +   5  =   2   ✗
+
+  So p = 3, q = -5
+  Answer: (x + 3)(x - 5)
+
+  Verify: (x + 3)(x - 5) = x² - 5x + 3x - 15 = x² - 2x - 15  ✓</div>
+
+          <div class="tip-box">
+            <div class="label">Sign Cheat Sheet for Trinomials</div>
+            <p>The signs in x&sup2; + bx + c tell you a lot about p and q:</p>
+            <ul>
+              <li><strong>c is positive, b is positive:</strong> both p and q are positive. (e.g., x&sup2; + 7x + 12 = (x+3)(x+4))</li>
+              <li><strong>c is positive, b is negative:</strong> both p and q are negative. (e.g., x&sup2; - 7x + 12 = (x-3)(x-4))</li>
+              <li><strong>c is negative:</strong> one is positive, one is negative. The bigger one has the same sign as b. (e.g., x&sup2; - 2x - 15 = (x+3)(x-5))</li>
+            </ul>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Both Numbers Negative</div>
+            <p>Factor: <strong>x&sup2; - 9x + 20</strong></p>
+            <p>c = +20 (positive) and b = -9 (negative), so both numbers are negative.</p>
+            <p>Need: multiply to 20, add to -9. Pairs: (-4)(-5) = 20 and -4 + -5 = -9.</p>
+            <p>Answer: <strong>(x - 4)(x - 5)</strong></p>
+          </div>
+
+          <!-- ===== TRINOMIALS (a≠1) ===== -->
+          <h3>Technique 3: Factoring Harder Trinomials (ax&sup2; + bx + c, where a ≠ 1)</h3>
+          <p>When the x&sup2; term has a coefficient other than 1 (like <strong>2</strong>x&sup2; or <strong>3</strong>x&sup2;), the basic "find two numbers" method needs a twist. Use the <strong>AC method</strong>:</p>
+
+          <div class="formula-box">
+            AC Method for ax&sup2; + bx + c:<br><br>
+            1. Multiply a × c (the first and last coefficients)<br>
+            2. Find two numbers that multiply to (a × c) and add to b<br>
+            3. Rewrite the middle term using those two numbers<br>
+            4. Factor by grouping
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- AC Method Step by Step</div>
+            <p>Factor: <strong>2x&sup2; + 7x + 3</strong></p>
+          </div>
+
+          <div class="memory-diagram">  Step 1: a × c = 2 × 3 = 6
+  Step 2: Find two numbers that multiply to 6 and add to 7
+          1 × 6 = 6 and 1 + 6 = 7  ✓   Found them: 1 and 6
+
+  Step 3: Rewrite the middle term (7x) as 1x + 6x:
+          2x² + 1x + 6x + 3
+
+  Step 4: Factor by grouping:
+          (2x² + 1x) + (6x + 3)
+          x(2x + 1) + 3(2x + 1)     <-- both groups have (2x + 1)!
+          (2x + 1)(x + 3)
+
+  Answer: (2x + 1)(x + 3)
+
+  Verify: (2x + 1)(x + 3) = 2x² + 6x + x + 3 = 2x² + 7x + 3  ✓</div>
+
+          <div class="example-box">
+            <div class="label">Example -- AC Method with Negatives</div>
+            <p>Factor: <strong>3x&sup2; - 10x + 8</strong></p>
+            <p>a × c = 3 × 8 = 24. Need two numbers that multiply to 24 and add to -10.</p>
+            <p>Since product is positive and sum is negative, both numbers are negative: (-4)(-6) = 24 and -4 + (-6) = -10.</p>
+            <p>Rewrite: 3x&sup2; - 4x - 6x + 8</p>
+            <p>Group: x(3x - 4) - 2(3x - 4) = <strong>(3x - 4)(x - 2)</strong></p>
+          </div>
+
+          <!-- ===== DIFFERENCE OF SQUARES ===== -->
+          <h3>Technique 4: Difference of Squares</h3>
+          <p>This is one of the cleanest patterns in all of algebra. Whenever you see <strong>something squared minus something else squared</strong>, it factors instantly:</p>
+
+          <div class="formula-box">
+            a&sup2; - b&sup2; = (a + b)(a - b)
+          </div>
+
+          <p>Why does this work? Think about it backwards. If you expand (a + b)(a - b) using FOIL:</p>
+
+          <div class="memory-diagram">  (a + b)(a - b)
+
+  F: a × a  = a²
+  O: a × -b = -ab
+  I: b × a  = +ab      <-- the middle terms cancel out!
+  L: b × -b = -b²
+
+  a² - ab + ab - b² = a² - b²
+
+  The "outer" and "inner" terms always cancel.
+  That is why the result has no middle term.</div>
+
+          <div class="example-box">
+            <div class="label">Example -- Basic Difference of Squares</div>
+            <p>Factor: <strong>x&sup2; - 49</strong></p>
+            <p>Is this "something&sup2; minus something&sup2;"? Yes: x&sup2; = (x)&sup2; and 49 = (7)&sup2;.</p>
+            <p>Answer: <strong>(x + 7)(x - 7)</strong></p>
+            <p>Verify: (x + 7)(x - 7) = x&sup2; - 7x + 7x - 49 = x&sup2; - 49. Correct.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Harder Difference of Squares</div>
+            <p>Factor: <strong>4x&sup2; - 25</strong></p>
+            <p>4x&sup2; = (2x)&sup2; and 25 = (5)&sup2;. So a = 2x, b = 5.</p>
+            <p>Answer: <strong>(2x + 5)(2x - 5)</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Sneaky Difference of Squares</div>
+            <p>Factor: <strong>x&sup4; - 16</strong></p>
+            <p>x&sup4; = (x&sup2;)&sup2; and 16 = (4)&sup2;. So: (x&sup2; + 4)(x&sup2; - 4).</p>
+            <p>But wait -- x&sup2; - 4 is <em>also</em> a difference of squares! Factor it again:</p>
+            <p>Answer: <strong>(x&sup2; + 4)(x + 2)(x - 2)</strong></p>
+            <p>(x&sup2; + 4 cannot be factored further because it is a sum of squares.)</p>
+          </div>
+
+          <!-- ===== PERFECT SQUARE TRINOMIALS ===== -->
+          <h3>Technique 5: Perfect Square Trinomials</h3>
+          <p>Sometimes a trinomial is a perfect square in disguise. If the first and last terms are perfect squares, check if the middle term is twice the product of their square roots:</p>
+
+          <div class="formula-box">
+            a&sup2; + 2ab + b&sup2; = (a + b)&sup2;<br>
+            a&sup2; - 2ab + b&sup2; = (a - b)&sup2;
+          </div>
+
+          <div class="memory-diagram">  Is x² + 6x + 9 a perfect square trinomial?
+
+  First term:   x² = (x)²      ✓  perfect square
+  Last term:    9  = (3)²       ✓  perfect square
+  Middle term:  6x = 2(x)(3)?   2 × x × 3 = 6x  ✓  yes!
+
+  Answer: (x + 3)²
+
+  Visual (area model):
+          x          3
+      +----------+------+
+      |          |      |
+  x   |   x²     |  3x  |
+      |          |      |
+      +----------+------+
+      |          |      |
+  3   |   3x     |   9  |
+      |          |      |
+      +----------+------+
+  It is a perfect SQUARE -- both sides are the same (x + 3).</div>
+
+          <div class="example-box">
+            <div class="label">Example -- Perfect Square with Subtraction</div>
+            <p>Factor: <strong>4x&sup2; - 20x + 25</strong></p>
+            <p>4x&sup2; = (2x)&sup2;, and 25 = (5)&sup2;. Is the middle 2(2x)(5) = 20x? Yes.</p>
+            <p>Answer: <strong>(2x - 5)&sup2;</strong></p>
+          </div>
+
+          <!-- ===== GROUPING ===== -->
+          <h3>Technique 6: Factoring by Grouping (4 Terms)</h3>
+          <p>When you have 4 terms, try splitting them into two groups of 2, factor each group separately, and see if a common factor emerges.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Step by Step</div>
+            <p>Factor: <strong>x&sup3; + 3x&sup2; + 2x + 6</strong></p>
+          </div>
+
+          <div class="memory-diagram">  Step 1: Group into pairs:
+          (x³ + 3x²) + (2x + 6)
+
+  Step 2: Factor each group:
+          x²(x + 3) + 2(x + 3)
+          ↑            ↑
+          both groups contain (x + 3) -- this is the key!
+
+  Step 3: Factor out the common (x + 3):
+          (x + 3)(x² + 2)
+
+  Answer: (x + 3)(x² + 2)
+
+  Verify: (x + 3)(x² + 2) = x³ + 2x + 3x² + 6 = x³ + 3x² + 2x + 6  ✓</div>
+
+          <div class="warning-box">
+            <div class="label">Factoring Mistakes to Avoid</div>
+            <ul>
+              <li><strong>a&sup2; + b&sup2; does NOT factor.</strong> x&sup2; + 9 cannot be factored. Only a&sup2; <em>minus</em> b&sup2; factors. This is the most common mistake.</li>
+              <li><strong>Forgetting the GCF.</strong> Always check for a common factor first. <code>2x&sup2; + 4x + 2</code> looks hard until you pull out the 2: <code>2(x&sup2; + 2x + 1) = 2(x + 1)&sup2;</code>.</li>
+              <li><strong>Sign errors in the AC method.</strong> When you split the middle term, make sure the signs are right. Always multiply back out to verify.</li>
+              <li><strong>Stopping too early.</strong> After factoring once, check if you can factor further. <code>x&sup4; - 16 = (x&sup2; + 4)(x&sup2; - 4)</code> is not fully factored -- the second piece factors again into <code>(x+2)(x-2)</code>.</li>
+            </ul>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Factoring Summary -- The Whole System</div>
+            <p>Every factoring problem in algebra uses one or more of these techniques:</p>
+            <ol>
+              <li><strong>GCF:</strong> Pull out the biggest common factor. <em>Always first.</em></li>
+              <li><strong>Trinomial (a=1):</strong> Find two numbers that multiply to c and add to b.</li>
+              <li><strong>Trinomial (a≠1):</strong> AC method -- multiply a×c, find the pair, rewrite middle term, group.</li>
+              <li><strong>Difference of squares:</strong> a&sup2; - b&sup2; = (a+b)(a-b).</li>
+              <li><strong>Perfect square:</strong> a&sup2; ± 2ab + b&sup2; = (a ± b)&sup2;.</li>
+              <li><strong>Grouping:</strong> Split 4 terms into 2 pairs, factor each, pull out common binomial.</li>
+            </ol>
+            <p>If you can do these 6 techniques, you can factor anything that shows up in algebra, calculus, or a technical interview. Practice each one until it is automatic.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 8 ==================== -->
+        <section id="quadratics">
+          <h2>8. Quadratic Equations</h2>
+
+          <h3>Standard Form</h3>
+          <div class="formula-box">
+            ax&sup2; + bx + c = 0 &nbsp;&nbsp;(where a &ne; 0)
+          </div>
+          <p>
+            A <strong>quadratic equation</strong> is any equation where the highest power of the variable is 2. The graph of a quadratic function is a <strong>parabola</strong> -- a U-shaped curve that opens up (if a &gt; 0) or down (if a &lt; 0).
+          </p>
+
+          <h3>Method 1: Solving by Factoring</h3>
+          <p>If you can factor the quadratic, set each factor equal to zero and solve.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Solving by Factoring</div>
+            <p>Solve: <strong>x&sup2; + 5x + 6 = 0</strong></p>
+            <p>Step 1: Factor: <code>(x + 2)(x + 3) = 0</code></p>
+            <p>Step 2: Set each factor to zero:</p>
+            <p><code>x + 2 = 0 &rarr; x = -2</code></p>
+            <p><code>x + 3 = 0 &rarr; x = -3</code></p>
+            <p>Solutions: <strong>x = -2 or x = -3</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Factoring with Leading Coefficient</div>
+            <p>Solve: <strong>2x&sup2; + 7x + 3 = 0</strong></p>
+            <p>Step 1: Find two numbers that multiply to 2 * 3 = 6 and add to 7. That's 1 and 6.</p>
+            <p>Step 2: Rewrite the middle term: <code>2x&sup2; + x + 6x + 3 = 0</code></p>
+            <p>Step 3: Factor by grouping: <code>x(2x + 1) + 3(2x + 1) = 0</code></p>
+            <p>Step 4: Factor out (2x + 1): <code>(2x + 1)(x + 3) = 0</code></p>
+            <p>Solutions: <strong>x = -1/2 or x = -3</strong></p>
+          </div>
+
+          <h3>Method 2: The Quadratic Formula</h3>
+          <p>Factoring is great when it works, but sometimes the numbers are ugly and you cannot find the pair. The quadratic formula is the <strong>guaranteed method</strong> -- it works for every quadratic equation, always. It is the universal key.</p>
+
+          <div class="formula-box">
+            x = (-b &plusmn; &radic;(b&sup2; - 4ac)) / 2a
+          </div>
+
+          <p>For the equation ax&sup2; + bx + c = 0, just plug in the values of a, b, and c. That is literally all you do.</p>
+
+          <h4 style="margin: 1.2rem 0 0.6rem; color: #111; font-weight: 600;">What Each Part of the Formula Means</h4>
+          <p>This formula looks scary but every piece has a job. Let's break it down:</p>
+
+          <div class="memory-diagram">          -b  &plusmn;  &radic;(b&sup2; - 4ac)
+    x  =  ─────────────────────
+                  2a
+
+    Let's label each piece:
+
+    -b           =  the "center" of the two answers.
+                    The two solutions are always equally
+                    spaced on either side of -b/2a.
+
+    &plusmn;            =  "plus or minus" -- this is why you get
+                    TWO answers. One uses +, the other uses -.
+
+    b&sup2; - 4ac     =  the "discriminant" -- this decides how
+                    many solutions exist (see below).
+
+    &radic;(b&sup2; - 4ac) =  how far apart the two answers are from
+                    the center.
+
+    2a           =  scales everything based on the leading
+                    coefficient.</div>
+
+          <div class="tip-box">
+            <div class="label">Why Does This Formula Exist?</div>
+            <p>The quadratic formula is what you get when you "complete the square" on the general equation ax&sup2; + bx + c = 0 (instead of a specific one). Someone did the algebra once, for the general case, and got this formula. Now you never have to complete the square again -- just plug in a, b, c.</p>
+            <p>Think of it like a <strong>function in programming</strong>. Instead of writing the same logic every time, someone wrote a reusable function: <code>solve(a, b, c)</code> that returns the answer for any quadratic.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">When to Use the Quadratic Formula</div>
+            <ul>
+              <li><strong>Always works</strong> -- even when factoring is impossible</li>
+              <li><strong>Use it when</strong> the numbers are ugly (fractions, large numbers, no obvious factor pairs)</li>
+              <li><strong>Use it when</strong> you need exact answers with square roots (not just integer solutions)</li>
+              <li><strong>Real-world uses:</strong> projectile motion (when does the ball hit the ground?), break-even analysis (when does profit = cost?), optimization problems, physics simulations</li>
+            </ul>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Quadratic Formula</div>
+            <p>Solve: <strong>x&sup2; - 4x - 5 = 0</strong></p>
+            <p>Here a = 1, b = -4, c = -5.</p>
+            <p><code>x = (-(-4) &plusmn; &radic;((-4)&sup2; - 4(1)(-5))) / 2(1)</code></p>
+            <p><code>x = (4 &plusmn; &radic;(16 + 20)) / 2</code></p>
+            <p><code>x = (4 &plusmn; &radic;36) / 2</code></p>
+            <p><code>x = (4 &plusmn; 6) / 2</code></p>
+            <p>Two solutions:</p>
+            <p><code>x = (4 + 6) / 2 = 10 / 2 = 5</code></p>
+            <p><code>x = (4 - 6) / 2 = -2 / 2 = -1</code></p>
+            <p>Solutions: <strong>x = 5 or x = -1</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Quadratic Formula (No Nice Roots)</div>
+            <p>Solve: <strong>2x&sup2; + 3x - 4 = 0</strong></p>
+            <p>Here a = 2, b = 3, c = -4.</p>
+            <p><code>x = (-3 &plusmn; &radic;(9 + 32)) / 4</code></p>
+            <p><code>x = (-3 &plusmn; &radic;41) / 4</code></p>
+            <p>Since &radic;41 &approx; 6.403:</p>
+            <p><code>x &approx; (-3 + 6.403) / 4 &approx; 0.851</code></p>
+            <p><code>x &approx; (-3 - 6.403) / 4 &approx; -2.351</code></p>
+            <p>Solutions: <strong>x = (-3 + &radic;41) / 4 or x = (-3 - &radic;41) / 4</strong></p>
+          </div>
+
+          <h3>The Discriminant -- Peek at the Answer Before Solving</h3>
+          <p>The expression under the square root, <strong>b&sup2; - 4ac</strong>, is called the <strong>discriminant</strong>. It is like a preview -- before you even solve the equation, the discriminant tells you <em>how many answers you will get</em>.</p>
+
+          <p>Why? Because the &plusmn; in the formula gives you two answers: one with + and one with -. But if the thing inside the square root is zero, both answers are the same. And if it is negative, you cannot take the square root at all (no real answer).</p>
+
+          <table>
+            <thead>
+              <tr><th>Discriminant</th><th>Number of Solutions</th><th>What It Means</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>b&sup2; - 4ac &gt; 0</td><td>Two real solutions</td><td>Parabola crosses x-axis twice</td></tr>
+              <tr><td>b&sup2; - 4ac = 0</td><td>One real solution</td><td>Parabola just touches x-axis (the vertex lands exactly on it)</td></tr>
+              <tr><td>b&sup2; - 4ac &lt; 0</td><td>No real solutions</td><td>Parabola floats above (or below) the x-axis and never touches it</td></tr>
+            </tbody>
+          </table>
+
+          <div class="memory-diagram">  What the discriminant looks like visually (the parabola y = ax² + bx + c):
+
+  b²-4ac > 0                 b²-4ac = 0                 b²-4ac &lt; 0
+  Two solutions              One solution                No solutions
+
+      \   /                      |                           *
+       \ /                       *                          * *
+  ──*───*──x──           ───────*────x──           ──────*─────*──x──
+                                                   (curve never
+  Crosses x-axis            Touches x-axis          reaches x-axis)
+  at TWO points             at ONE point</div>
+
+          <h3>Method 3: Completing the Square</h3>
+          <p>This technique rewrites the quadratic by creating a perfect square trinomial. It's the method used to derive the quadratic formula itself.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Completing the Square</div>
+            <p>Solve: <strong>x&sup2; + 6x + 2 = 0</strong></p>
+            <p>Step 1: Move the constant: <code>x&sup2; + 6x = -2</code></p>
+            <p>Step 2: Take half of 6, which is 3, and square it to get 9. Add 9 to both sides:</p>
+            <p><code>x&sup2; + 6x + 9 = -2 + 9</code></p>
+            <p><code>(x + 3)&sup2; = 7</code></p>
+            <p>Step 3: Take the square root of both sides:</p>
+            <p><code>x + 3 = &plusmn;&radic;7</code></p>
+            <p>Step 4: Subtract 3:</p>
+            <p><code>x = -3 &plusmn; &radic;7</code></p>
+            <p>Solutions: <strong>x = -3 + &radic;7 &approx; -0.354</strong> and <strong>x = -3 - &radic;7 &approx; -5.646</strong></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>In the quadratic formula, the entire numerator (-b &plusmn; &radic;(b&sup2; - 4ac)) is divided by 2a, not just the square root part. Many students write x = -b &plusmn; &radic;(b&sup2; - 4ac) / 2a, which would incorrectly divide only the &radic; part by 2a. Use parentheses to keep it clear.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Quadratic equations show up in physics simulations (projectile motion follows a parabola), game development (collision detection), and algorithm analysis. Some recurrence relations that describe algorithm runtimes lead to quadratic equations. The quadratic formula itself is a great example of how a general formula can solve a whole class of problems -- the same mindset behind writing reusable functions in code.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 9 ==================== -->
+        <section id="exponents">
+          <h2>9. Exponent Rules (Advanced)</h2>
+
+          <p>
+            Exponents are shorthand for repeated multiplication. <code>x&sup3;</code> means <code>x * x * x</code>. The <strong>base</strong> is x and the <strong>exponent</strong> (or power) is 3.
+          </p>
+
+          <h3>The Core Rules</h3>
+          <table>
+            <thead>
+              <tr><th>Rule</th><th>Formula</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Product Rule</td><td>x<sup>a</sup> * x<sup>b</sup> = x<sup>a+b</sup></td><td>x&sup3; * x&sup2; = x<sup>5</sup></td></tr>
+              <tr><td>Quotient Rule</td><td>x<sup>a</sup> / x<sup>b</sup> = x<sup>a-b</sup></td><td>x<sup>5</sup> / x&sup2; = x&sup3;</td></tr>
+              <tr><td>Power Rule</td><td>(x<sup>a</sup>)<sup>b</sup> = x<sup>ab</sup></td><td>(x&sup3;)&sup2; = x<sup>6</sup></td></tr>
+              <tr><td>Product to Power</td><td>(xy)<sup>a</sup> = x<sup>a</sup> * y<sup>a</sup></td><td>(2x)&sup3; = 8x&sup3;</td></tr>
+              <tr><td>Quotient to Power</td><td>(x/y)<sup>a</sup> = x<sup>a</sup> / y<sup>a</sup></td><td>(x/3)&sup2; = x&sup2;/9</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Zero and Negative Exponents</h3>
+          <div class="formula-box">
+            x<sup>0</sup> = 1 &nbsp;&nbsp;(for any x &ne; 0)<br><br>
+            x<sup>-n</sup> = 1 / x<sup>n</sup>
+          </div>
+          <p>
+            <strong>Why does x<sup>0</sup> = 1?</strong> Think of it this way: x&sup3; / x&sup3; = 1 (anything divided by itself is 1). But by the quotient rule, x&sup3; / x&sup3; = x<sup>3-3</sup> = x<sup>0</sup>. So x<sup>0</sup> must equal 1.
+          </p>
+          <p>
+            <strong>Why does x<sup>-n</sup> = 1/x<sup>n</sup>?</strong> Same logic: x&sup2; / x<sup>5</sup> = 1/x&sup3; (dividing out). But by the quotient rule, x&sup2; / x<sup>5</sup> = x<sup>2-5</sup> = x<sup>-3</sup>. So x<sup>-3</sup> = 1/x&sup3;.
+          </p>
+
+          <div class="example-box">
+            <div class="label">Example -- Negative Exponents</div>
+            <p>Simplify: <strong>2<sup>-3</sup></strong></p>
+            <p><code>2<sup>-3</sup> = 1 / 2&sup3; = 1/8</code></p>
+          </div>
+
+          <h3>Fractional Exponents (Roots)</h3>
+          <div class="formula-box">
+            x<sup>1/n</sup> = <sup>n</sup>&radic;x &nbsp;&nbsp;(the nth root of x)<br><br>
+            x<sup>m/n</sup> = (<sup>n</sup>&radic;x)<sup>m</sup> = <sup>n</sup>&radic;(x<sup>m</sup>)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Fractional Exponents</div>
+            <p>Simplify: <strong>8<sup>2/3</sup></strong></p>
+            <p>Step 1: 8<sup>1/3</sup> = <sup>3</sup>&radic;8 = 2</p>
+            <p>Step 2: 2&sup2; = 4</p>
+            <p>Answer: <strong>8<sup>2/3</sup> = 4</strong></p>
+          </div>
+
+          <h3>Scientific Notation</h3>
+          <p>Scientific notation expresses very large or very small numbers using powers of 10:</p>
+
+          <div class="formula-box">
+            a &times; 10<sup>n</sup> &nbsp;&nbsp;(where 1 &le; a &lt; 10)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Scientific Notation</div>
+            <p><strong>4,500,000</strong> = 4.5 &times; 10<sup>6</sup> &nbsp;(moved the decimal 6 places left)</p>
+            <p><strong>0.00032</strong> = 3.2 &times; 10<sup>-4</sup> &nbsp;(moved the decimal 4 places right)</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>The product rule (x<sup>a</sup> * x<sup>b</sup> = x<sup>a+b</sup>) only works when the <strong>bases are the same</strong>. You can simplify x&sup3; * x&sup2; = x<sup>5</sup>, but you CANNOT simplify x&sup3; * y&sup2; this way. Also, don't confuse the product rule (add exponents) with the power rule (multiply exponents).</p>
+          </div>
+
+          <h3>Complete Laws of Exponents Summary</h3>
+          <p>Here are all the exponent laws in one place. Understanding why each works will help you remember them.</p>
+
+          <div class="formula-box">
+            <strong>Law 1: x<sup>1</sup> = x</strong> — Any number to the first power is itself<br><br>
+            <strong>Law 2: x<sup>0</sup> = 1</strong> — Any non-zero number to the zero power is 1<br><br>
+            <strong>Law 3: x<sup>-n</sup> = 1/x<sup>n</sup></strong> — Negative exponent means "reciprocal"<br><br>
+            <strong>Law 4: x<sup>m</sup> × x<sup>n</sup> = x<sup>m+n</sup></strong> — Multiplying same bases: ADD exponents<br><br>
+            <strong>Law 5: x<sup>m</sup> ÷ x<sup>n</sup> = x<sup>m-n</sup></strong> — Dividing same bases: SUBTRACT exponents<br><br>
+            <strong>Law 6: (x<sup>m</sup>)<sup>n</sup> = x<sup>m×n</sup></strong> — Power of a power: MULTIPLY exponents<br><br>
+            <strong>Law 7: (xy)<sup>n</sup> = x<sup>n</sup> × y<sup>n</sup></strong> — Power of a product<br><br>
+            <strong>Law 8: (x/y)<sup>n</sup> = x<sup>n</sup> / y<sup>n</sup></strong> — Power of a quotient<br><br>
+            <strong>Law 9: x<sup>m/n</sup> = <sup>n</sup>√(x<sup>m</sup>) = (<sup>n</sup>√x)<sup>m</sup></strong> — Fractional exponents = roots
+          </div>
+
+          <h3>Deep Dive: Why These Laws Work</h3>
+
+          <h4>Why x<sup>0</sup> = 1?</h4>
+          <div class="example-box">
+            <div class="label">The Logic</div>
+            <p>Consider: x<sup>3</sup> ÷ x<sup>3</sup> = 1 (anything divided by itself is 1)</p>
+            <p>But using Law 5: x<sup>3</sup> ÷ x<sup>3</sup> = x<sup>3-3</sup> = x<sup>0</sup></p>
+            <p>Therefore: x<sup>0</sup> = 1</p>
+          </div>
+
+          <h4>Why x<sup>-n</sup> = 1/x<sup>n</sup>?</h4>
+          <div class="example-box">
+            <div class="label">The Logic</div>
+            <p>Consider: x<sup>2</sup> ÷ x<sup>5</sup> = x × x / (x × x × x × x × x) = 1/(x × x × x) = 1/x<sup>3</sup></p>
+            <p>But using Law 5: x<sup>2</sup> ÷ x<sup>5</sup> = x<sup>2-5</sup> = x<sup>-3</sup></p>
+            <p>Therefore: x<sup>-3</sup> = 1/x<sup>3</sup></p>
+          </div>
+
+          <h3>Practice Problems: Simplifying Exponents</h3>
+
+          <div class="example-box">
+            <div class="label">Example 1: Product Rule</div>
+            <p>Simplify: <strong>2<sup>4</sup> × 2<sup>3</sup></strong></p>
+            <p>= 2<sup>4+3</sup> = 2<sup>7</sup> = <strong>128</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 2: Quotient Rule</div>
+            <p>Simplify: <strong>5<sup>8</sup> ÷ 5<sup>5</sup></strong></p>
+            <p>= 5<sup>8-5</sup> = 5<sup>3</sup> = <strong>125</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 3: Power Rule</div>
+            <p>Simplify: <strong>(3<sup>2</sup>)<sup>4</sup></strong></p>
+            <p>= 3<sup>2×4</sup> = 3<sup>8</sup> = <strong>6561</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 4: Negative Exponents</div>
+            <p>Simplify: <strong>4<sup>-2</sup></strong></p>
+            <p>= 1/4<sup>2</sup> = 1/16 = <strong>0.0625</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 5: Fractional Exponents</div>
+            <p>Simplify: <strong>27<sup>2/3</sup></strong></p>
+            <p>= (<sup>3</sup>√27)<sup>2</sup> = 3<sup>2</sup> = <strong>9</strong></p>
+            <p>Or: <sup>3</sup>√(27<sup>2</sup>) = <sup>3</sup>√729 = <strong>9</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 6: Combined Rules</div>
+            <p>Simplify: <strong>(x<sup>3</sup>y<sup>2</sup>)<sup>4</sup></strong></p>
+            <p>= (x<sup>3</sup>)<sup>4</sup> × (y<sup>2</sup>)<sup>4</sup></p>
+            <p>= x<sup>12</sup> × y<sup>8</sup> = <strong>x<sup>12</sup>y<sup>8</sup></strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example 7: Complex Expression</div>
+            <p>Simplify: <strong>(2x<sup>3</sup>)<sup>2</sup> × (3x<sup>-2</sup>)</strong></p>
+            <p>= 2<sup>2</sup> × x<sup>6</sup> × 3 × x<sup>-2</sup></p>
+            <p>= 4 × 3 × x<sup>6-2</sup></p>
+            <p>= <strong>12x<sup>4</sup></strong></p>
+          </div>
+
+          <h3>Moving Between Numerator and Denominator</h3>
+          <p>A negative exponent in the numerator becomes positive when moved to the denominator, and vice versa:</p>
+
+          <div class="formula-box">
+            x<sup>-n</sup> = 1/x<sup>n</sup><br>
+            1/x<sup>-n</sup> = x<sup>n</sup><br><br>
+            <strong>Moving rule:</strong> When you move a term across the fraction bar, flip the sign of its exponent.
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example: Simplify to Positive Exponents Only</div>
+            <p>Write without negative exponents: <strong>x<sup>-3</sup>y<sup>2</sup> / z<sup>-1</sup></strong></p>
+            <p>= y<sup>2</sup>z / x<sup>3</sup></p>
+            <p>(x<sup>-3</sup> moves to denominator as x<sup>3</sup>, z<sup>-1</sup> moves to numerator as z)</p>
+          </div>
+
+          <h3>Common Exponent Patterns</h3>
+          <table>
+            <thead>
+              <tr><th>Expression</th><th>Result</th><th>Pattern</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2<sup>0</sup></td><td>1</td><td>Anything to the 0 is 1</td></tr>
+              <tr><td>(-3)<sup>2</sup></td><td>9</td><td>Negative base, even exponent = positive</td></tr>
+              <tr><td>(-3)<sup>3</sup></td><td>-27</td><td>Negative base, odd exponent = negative</td></tr>
+              <tr><td>-3<sup>2</sup></td><td>-9</td><td>This is -(3<sup>2</sup>), NOT (-3)<sup>2</sup></td></tr>
+              <tr><td>0<sup>5</sup></td><td>0</td><td>0 to any positive power is 0</td></tr>
+              <tr><td>0<sup>0</sup></td><td>undefined</td><td>Mathematically ambiguous</td></tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <div class="label">Watch the Negative Sign!</div>
+            <p><strong>-3<sup>2</sup> ≠ (-3)<sup>2</sup></strong></p>
+            <p>-3<sup>2</sup> means -(3<sup>2</sup>) = -9 (the negative is not part of the base)</p>
+            <p>(-3)<sup>2</sup> means (-3) × (-3) = 9 (the negative IS part of the base)</p>
+            <p>This distinction is crucial in programming too: <code>-3**2</code> vs <code>(-3)**2</code></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why This Matters for CS</div>
+            <p>Exponents are fundamental to understanding big O notation. When we say an algorithm is O(n&sup2;) or O(2<sup>n</sup>), we're using exponents to describe how fast the runtime grows. Scientific notation is essentially how floating-point numbers are stored in computer memory -- as a mantissa times a power of 2. Understanding exponent rules helps you simplify algorithm complexity expressions like O(n&sup2; * n&sup3;) = O(n<sup>5</sup>).</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 10 ==================== -->
+        <section id="logarithms">
+          <h2>10. Logarithms</h2>
+
+          <h3>What Are Logarithms?</h3>
+          <p>
+            A <strong>logarithm</strong> answers the question: "What power do I raise this base to in order to get this number?" It is the <strong>inverse of exponentiation</strong>.
+          </p>
+
+          <div class="formula-box">
+            log<sub>b</sub>(x) = y &nbsp;&nbsp;means&nbsp;&nbsp; b<sup>y</sup> = x<br><br>
+            "log base b of x equals y" means "b raised to the y equals x"
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Reading Logarithms</div>
+            <p><strong>log<sub>2</sub>(8) = ?</strong></p>
+            <p>Ask: "2 to what power gives 8?"</p>
+            <p>2&sup3; = 8, so <strong>log<sub>2</sub>(8) = 3</strong></p>
+            <p>&nbsp;</p>
+            <p><strong>log<sub>10</sub>(1000) = ?</strong></p>
+            <p>Ask: "10 to what power gives 1000?"</p>
+            <p>10&sup3; = 1000, so <strong>log<sub>10</sub>(1000) = 3</strong></p>
+            <p>&nbsp;</p>
+            <p><strong>log<sub>5</sub>(25) = ?</strong></p>
+            <p>Ask: "5 to what power gives 25?"</p>
+            <p>5&sup2; = 25, so <strong>log<sub>5</sub>(25) = 2</strong></p>
+          </div>
+
+          <h3>Common and Natural Logs</h3>
+          <ul>
+            <li><strong>Common log:</strong> log(x) means log<sub>10</sub>(x). Base 10 is the default when no base is written.</li>
+            <li><strong>Natural log:</strong> ln(x) means log<sub>e</sub>(x), where e &approx; 2.71828. The number e is a special mathematical constant that shows up naturally in growth and decay problems.</li>
+          </ul>
+
+          <h3>Logarithm Rules</h3>
+          <table>
+            <thead>
+              <tr><th>Rule</th><th>Formula</th><th>In Words</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Product Rule</td><td>log(ab) = log(a) + log(b)</td><td>Log of a product = sum of logs</td></tr>
+              <tr><td>Quotient Rule</td><td>log(a/b) = log(a) - log(b)</td><td>Log of a quotient = difference of logs</td></tr>
+              <tr><td>Power Rule</td><td>log(a<sup>n</sup>) = n * log(a)</td><td>Exponent comes down as multiplier</td></tr>
+              <tr><td>Change of Base</td><td>log<sub>b</sub>(x) = log(x) / log(b)</td><td>Convert between bases</td></tr>
+              <tr><td>Identity</td><td>log<sub>b</sub>(b) = 1</td><td>Any base logged to itself is 1</td></tr>
+              <tr><td>Identity</td><td>log<sub>b</sub>(1) = 0</td><td>Log of 1 is always 0</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example-box">
+            <div class="label">Example -- Using Log Rules</div>
+            <p>Expand: <strong>log(x&sup2;y/z)</strong></p>
+            <p>Step 1: Apply quotient rule: <code>log(x&sup2;y) - log(z)</code></p>
+            <p>Step 2: Apply product rule: <code>log(x&sup2;) + log(y) - log(z)</code></p>
+            <p>Step 3: Apply power rule: <code>2log(x) + log(y) - log(z)</code></p>
+            <p>Answer: <strong>2log(x) + log(y) - log(z)</strong></p>
+          </div>
+
+          <h3>Solving Exponential Equations with Logs</h3>
+          <p>When the variable is in the exponent, use logarithms to bring it down.</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Solving an Exponential Equation</div>
+            <p>Solve: <strong>2<sup>x</sup> = 32</strong></p>
+            <p>Method 1 (recognition): 2<sup>5</sup> = 32, so x = 5.</p>
+            <p>Method 2 (logs): Take log of both sides:</p>
+            <p><code>log(2<sup>x</sup>) = log(32)</code></p>
+            <p><code>x * log(2) = log(32)</code></p>
+            <p><code>x = log(32) / log(2) = 5</code></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- When You Can't Guess</div>
+            <p>Solve: <strong>3<sup>x</sup> = 20</strong></p>
+            <p>Take log of both sides: <code>x * log(3) = log(20)</code></p>
+            <p><code>x = log(20) / log(3) = 1.3010 / 0.4771 &approx; 2.727</code></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why CS People Care: Log Base 2</div>
+            <p>
+              In computer science, <strong>log base 2</strong> (written log<sub>2</sub> or sometimes lg) is the most important logarithm. It answers: "How many times can I divide this number by 2 before reaching 1?"
+            </p>
+            <p>
+              This directly maps to the efficiency of divide-and-conquer algorithms. Binary search cuts the search space in half each step, so it takes log<sub>2</sub>(n) steps to search n items. Merge sort divides the array in half each level, giving O(n log n) complexity. When someone says "this runs in log n time," they almost always mean log<sub>2</sub>(n).
+            </p>
+            <p>
+              Key values every programmer should know: log<sub>2</sub>(1) = 0, log<sub>2</sub>(2) = 1, log<sub>2</sub>(4) = 2, log<sub>2</sub>(8) = 3, log<sub>2</sub>(16) = 4, log<sub>2</sub>(1024) &approx; 10, log<sub>2</sub>(1,000,000) &approx; 20. That last one is remarkable -- you can binary search through a million items in about 20 steps!
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake</div>
+            <p>
+              <strong>log(a + b) is NOT log(a) + log(b).</strong> There is no log rule for sums. The product rule says log(a * b) = log(a) + log(b), but this only works for multiplication, not addition. This is one of the most common algebra errors students make with logs.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 11 ==================== -->
+        <section id="sequences">
+          <h2>11. Sequences and Series</h2>
+
+          <p>A <strong>sequence</strong> is an ordered list of numbers following a pattern. A <strong>series</strong> is the sum of a sequence. Understanding these is essential for algorithm analysis -- every time you analyze a loop or recursion, you're working with sequences and sums.</p>
+
+          <h3>What is a Sequence? (The Basics)</h3>
+          <p>Think of a sequence as a numbered list where each position has exactly one value:</p>
+
+          <div class="example-box">
+            <div class="label">Simple Examples</div>
+            <p><strong>Natural numbers:</strong> 1, 2, 3, 4, 5, 6, ... (position 1 = 1, position 2 = 2, etc.)</p>
+            <p><strong>Even numbers:</strong> 2, 4, 6, 8, 10, ... (position n = 2n)</p>
+            <p><strong>Squares:</strong> 1, 4, 9, 16, 25, ... (position n = n²)</p>
+            <p><strong>Powers of 2:</strong> 1, 2, 4, 8, 16, 32, ... (position n = 2^(n-1))</p>
+          </div>
+
+          <p>We write a<sub>n</sub> to mean "the nth term of the sequence." So if our sequence is 2, 4, 6, 8, 10, ... then:</p>
+          <ul>
+            <li>a₁ = 2 (first term)</li>
+            <li>a₂ = 4 (second term)</li>
+            <li>a₃ = 6 (third term)</li>
+            <li>a<sub>n</sub> = 2n (formula for any term)</li>
+          </ul>
+
+          <h3>What is a Series? (Sum of a Sequence)</h3>
+          <p>A <strong>series</strong> is what you get when you <em>add up</em> the terms of a sequence:</p>
+
+          <div class="example-box">
+            <div class="label">Sequence vs Series</div>
+            <p><strong>Sequence:</strong> 1, 2, 3, 4, 5 (a list)</p>
+            <p><strong>Series:</strong> 1 + 2 + 3 + 4 + 5 = 15 (a sum)</p>
+            <p style="margin-top:1rem"><strong>Sequence:</strong> 1, 2, 4, 8 (a list)</p>
+            <p><strong>Series:</strong> 1 + 2 + 4 + 8 = 15 (a sum)</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why Does This Matter for Programming?</div>
+            <p>When you write a loop, you're essentially generating a sequence. When you count how many times that loop runs, you're computing a series. For example:</p>
+<pre><code><span class="comment"># This loop generates the sequence 0, 1, 2, 3, 4</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>):
+    <span class="builtin">print</span>(i)
+
+<span class="comment"># How many iterations? That's 5 (the sum of "1" five times)</span>
+<span class="comment"># If you nested loops, you'd need series formulas to count total iterations</span></code></pre>
+          </div>
+
+          <h3>Arithmetic Sequences</h3>
+          <p>In an <strong>arithmetic sequence</strong>, each term differs from the previous by a constant amount called the <strong>common difference (d)</strong>.</p>
+
+          <div class="example-box">
+            <div class="label">How to Recognize Arithmetic Sequences</div>
+            <p>Subtract any term from the next. If you always get the same number, it's arithmetic!</p>
+            <p style="margin-top:0.5rem"><strong>3, 7, 11, 15, 19, ...</strong></p>
+            <p>7 - 3 = 4, 11 - 7 = 4, 15 - 11 = 4, 19 - 15 = 4 → d = 4 ✓</p>
+            <p style="margin-top:0.5rem"><strong>10, 7, 4, 1, -2, ...</strong></p>
+            <p>7 - 10 = -3, 4 - 7 = -3, 1 - 4 = -3 → d = -3 ✓ (can be negative!)</p>
+          </div>
+
+          <div class="formula-box">
+            <strong>General term:</strong> aₙ = a₁ + (n - 1)d<br><br>
+            <strong>Where:</strong><br>
+            • a₁ = first term<br>
+            • d = common difference<br>
+            • n = term number<br>
+            • aₙ = the nth term
+          </div>
+
+          <div class="example-box">
+            <div class="label">Step-by-Step: Finding the nth Term</div>
+            <p>Sequence: 3, 7, 11, 15, 19, ...</p>
+            <p><strong>Step 1:</strong> Identify a₁ (first term) = 3</p>
+            <p><strong>Step 2:</strong> Find d (common difference) = 7 - 3 = 4</p>
+            <p><strong>Step 3:</strong> Write the formula: aₙ = 3 + (n - 1)(4)</p>
+            <p><strong>Step 4:</strong> Simplify: aₙ = 3 + 4n - 4 = 4n - 1</p>
+            <p style="margin-top:0.5rem"><strong>Find the 10th term:</strong></p>
+            <p>a₁₀ = 4(10) - 1 = 40 - 1 = <strong>39</strong></p>
+            <p><strong>Find the 100th term:</strong></p>
+            <p>a₁₀₀ = 4(100) - 1 = 400 - 1 = <strong>399</strong></p>
+            <p style="margin-top:0.5rem"><em>Notice: with the formula, jumping to the 100th term is instant -- no need to calculate all 99 previous terms!</em></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Mistake: Off-By-One Error</div>
+            <p>The formula uses (n - 1), NOT n. Why? Because the first term doesn't "add" any d yet:</p>
+            <ul>
+              <li>a₁ = a₁ + (1-1)d = a₁ + 0d = a₁ ✓</li>
+              <li>a₂ = a₁ + (2-1)d = a₁ + 1d ✓</li>
+              <li>a₃ = a₁ + (3-1)d = a₁ + 2d ✓</li>
+            </ul>
+            <p>To get from term 1 to term n, you add d exactly (n-1) times.</p>
+          </div>
+
+          <h3>Arithmetic Series (Sum of Arithmetic Sequence)</h3>
+          <p>The sum of the first n terms of an arithmetic sequence:</p>
+
+          <div class="formula-box">
+            <strong>Sum formula:</strong> Sₙ = n/2 × (a₁ + aₙ) = n/2 × (first + last)<br><br>
+            <strong>Or equivalently:</strong> Sₙ = n/2 × (2a₁ + (n-1)d)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Understanding the Formula Intuitively</div>
+            <p>Why does Sₙ = n/2 × (first + last) work?</p>
+            <p style="margin-top:0.5rem">Take 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10:</p>
+            <p>Pair the first with the last: 1 + 10 = 11</p>
+            <p>Pair the second with second-to-last: 2 + 9 = 11</p>
+            <p>Pair 3 + 8 = 11, 4 + 7 = 11, 5 + 6 = 11</p>
+            <p>We have 5 pairs (that's n/2 = 10/2), each summing to 11 (that's first + last).</p>
+            <p><strong>Total: 5 × 11 = 55</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Sum of 1 to 100</div>
+            <p>Find: 1 + 2 + 3 + ... + 100</p>
+            <p>This is an arithmetic sequence with a₁ = 1, aₙ = 100, n = 100</p>
+            <p>S₁₀₀ = 100/2 × (1 + 100) = 50 × 101 = <strong>5,050</strong></p>
+            <p style="margin-top:0.5rem;"><em>Legend has it that Gauss solved this as a child by noticing 1+100 = 2+99 = 3+98 = ... = 101, and there are 50 such pairs.</em></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Sum of First n Odd Numbers</div>
+            <p>Find: 1 + 3 + 5 + 7 + 9 (first 5 odd numbers)</p>
+            <p>a₁ = 1, d = 2, n = 5, a₅ = 1 + (5-1)(2) = 9</p>
+            <p>S₅ = 5/2 × (1 + 9) = 2.5 × 10 = <strong>25</strong></p>
+            <p style="margin-top:0.5rem"><strong>Fun fact:</strong> The sum of the first n odd numbers is always n². Try it: 1+3=4=2², 1+3+5=9=3², 1+3+5+7=16=4²!</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Application: Loop Analysis</div>
+            <p>The sum 1 + 2 + 3 + ... + n = n(n+1)/2 appears constantly in algorithm analysis:</p>
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):  <span class="comment"># Inner loop runs 0, 1, 2, ..., n-1 times</span>
+        <span class="builtin">print</span>(i, j)
+<span class="comment"># Total iterations: 0 + 1 + 2 + ... + (n-1) = n(n-1)/2 = O(n²)</span></code></pre>
+            <p>This is why nested triangular loops are O(n²), not O(n)!</p>
+          </div>
+
+          <h3>Geometric Sequences</h3>
+          <p>In a <strong>geometric sequence</strong>, each term is multiplied by a constant called the <strong>common ratio (r)</strong>.</p>
+
+          <div class="example-box">
+            <div class="label">How to Recognize Geometric Sequences</div>
+            <p>Divide any term by the previous term. If you always get the same number, it's geometric!</p>
+            <p style="margin-top:0.5rem"><strong>2, 6, 18, 54, 162, ...</strong></p>
+            <p>6/2 = 3, 18/6 = 3, 54/18 = 3, 162/54 = 3 → r = 3 ✓</p>
+            <p style="margin-top:0.5rem"><strong>100, 50, 25, 12.5, ...</strong></p>
+            <p>50/100 = 0.5, 25/50 = 0.5, 12.5/25 = 0.5 → r = 0.5 ✓ (can be a fraction!)</p>
+            <p style="margin-top:0.5rem"><strong>Arithmetic vs Geometric:</strong></p>
+            <p>Arithmetic: add the same amount (+d) → linear growth</p>
+            <p>Geometric: multiply by the same factor (×r) → exponential growth</p>
+          </div>
+
+          <div class="formula-box">
+            <strong>General term:</strong> aₙ = a₁ × r^(n-1)<br><br>
+            <strong>Where:</strong><br>
+            • a₁ = first term<br>
+            • r = common ratio<br>
+            • n = term number
+          </div>
+
+          <div class="example-box">
+            <div class="label">Step-by-Step: Finding the nth Term</div>
+            <p>Sequence: 2, 6, 18, 54, 162, ...</p>
+            <p><strong>Step 1:</strong> Identify a₁ = 2</p>
+            <p><strong>Step 2:</strong> Find r = 6/2 = 3</p>
+            <p><strong>Step 3:</strong> Write the formula: aₙ = 2 × 3^(n-1)</p>
+            <p style="margin-top:0.5rem"><strong>Find the 8th term:</strong></p>
+            <p>a₈ = 2 × 3^(8-1) = 2 × 3⁷ = 2 × 2187 = <strong>4,374</strong></p>
+            <p style="margin-top:0.5rem"><em>Notice how fast geometric sequences grow! The 8th term is over 4,000 even though we started at 2.</em></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Exponential Growth (Compound Interest)</div>
+            <p>You invest $1,000 at 10% annual interest. How much after 5 years?</p>
+            <p>Each year, you multiply by 1.10 (100% + 10% = 110% = 1.10)</p>
+            <p>a₁ = 1000, r = 1.10, n = 6 (year 0 through year 5)</p>
+            <p>a₆ = 1000 × 1.10⁵ = 1000 × 1.61051 = <strong>$1,610.51</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Exponential Decay (Half-Life)</div>
+            <p>A radioactive substance has a half-life of 1 hour. Starting with 800g, how much after 4 hours?</p>
+            <p>Each hour, you multiply by 0.5 (half remains)</p>
+            <p>a₁ = 800, r = 0.5, n = 5 (hour 0 through hour 4)</p>
+            <p>a₅ = 800 × 0.5⁴ = 800 × 0.0625 = <strong>50g</strong></p>
+          </div>
+
+          <h3>Geometric Series (Sum of Geometric Sequence)</h3>
+
+          <div class="formula-box">
+            <strong>Finite sum (r ≠ 1):</strong> Sₙ = a₁ × (1 - rⁿ)/(1 - r)<br><br>
+            <strong>Alternative form:</strong> Sₙ = a₁ × (rⁿ - 1)/(r - 1) &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(more intuitive when r > 1)</span><br><br>
+            <strong>Infinite sum (|r| < 1):</strong> S∞ = a₁/(1 - r)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Understanding Finite Geometric Sums</div>
+            <p>Find: 1 + 2 + 4 + 8 + 16 + 32 (sum of first 6 terms)</p>
+            <p>a₁ = 1, r = 2, n = 6</p>
+            <p>S₆ = 1 × (2⁶ - 1)/(2 - 1) = (64 - 1)/1 = <strong>63</strong></p>
+            <p style="margin-top:0.5rem"><strong>Shortcut for powers of 2:</strong> 1 + 2 + 4 + ... + 2^(n-1) = 2ⁿ - 1</p>
+            <p>So 1 + 2 + 4 + 8 + 16 + 32 = 2⁶ - 1 = 64 - 1 = 63 ✓</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Why the 2ⁿ - 1 Pattern Matters</div>
+            <p>This pattern appears EVERYWHERE in computer science:</p>
+            <ul>
+              <li><strong>Binary numbers:</strong> An 8-bit number ranges from 0 to 2⁸ - 1 = 255</li>
+              <li><strong>Max unsigned int (32-bit):</strong> 2³² - 1 = 4,294,967,295</li>
+              <li><strong>Perfect binary tree:</strong> A complete binary tree of height h has 2^(h+1) - 1 nodes</li>
+            </ul>
+            <p style="margin-top:0.5rem">Here's why: a binary tree of height 3 has 1 + 2 + 4 + 8 = 15 = 2⁴ - 1 nodes.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Application: Binary Numbers &amp; Recursive Calls</div>
+            <p>The sum 1 + 2 + 4 + 8 + ... + 2^(n-1) = 2ⁿ - 1 explains:</p>
+            <ul>
+              <li><strong>Binary numbers:</strong> An n-bit unsigned integer can represent values from 0 to 2ⁿ - 1</li>
+              <li><strong>Recursive branching:</strong> A binary tree of depth n has at most 2ⁿ - 1 nodes</li>
+              <li><strong>Naive Fibonacci:</strong> Each call spawns 2 more calls → exponential growth</li>
+            </ul>
+<pre><code><span class="comment"># Total calls in a binary recursive tree of depth n:</span>
+<span class="comment"># Level 0: 1 call</span>
+<span class="comment"># Level 1: 2 calls</span>
+<span class="comment"># Level 2: 4 calls</span>
+<span class="comment"># ...</span>
+<span class="comment"># Level n-1: 2^(n-1) calls</span>
+<span class="comment"># Total: 1 + 2 + 4 + ... + 2^(n-1) = 2ⁿ - 1 = O(2ⁿ)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Infinite Geometric Sum</div>
+            <p>Find: 1 + 1/2 + 1/4 + 1/8 + 1/16 + ...</p>
+            <p>a₁ = 1, r = 1/2 (|r| < 1, so it converges)</p>
+            <p>S∞ = 1/(1 - 1/2) = 1/(1/2) = <strong>2</strong></p>
+            <p>No matter how many terms you add, you'll never exceed 2!</p>
+          </div>
+
+          <h3>Summation Notation (Sigma Notation)</h3>
+          <p>Sigma notation (Σ) is a compact way to write sums:</p>
+
+          <div class="formula-box">
+            <strong>Σ notation:</strong> Σᵢ₌₁ⁿ f(i) = f(1) + f(2) + f(3) + ... + f(n)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Examples</div>
+            <p><strong>Σᵢ₌₁⁵ i</strong> = 1 + 2 + 3 + 4 + 5 = 15</p>
+            <p><strong>Σᵢ₌₁⁴ i²</strong> = 1² + 2² + 3² + 4² = 1 + 4 + 9 + 16 = 30</p>
+            <p><strong>Σᵢ₌₀³ 2ⁱ</strong> = 2⁰ + 2¹ + 2² + 2³ = 1 + 2 + 4 + 8 = 15</p>
+          </div>
+
+          <h3>Important Sum Formulas</h3>
+          <p>These formulas appear constantly in algorithm analysis. Memorize them!</p>
+
+          <table>
+            <tr>
+              <th>Sum</th>
+              <th>Formula</th>
+              <th>CS Application</th>
+            </tr>
+            <tr>
+              <td>1 + 2 + 3 + ... + n</td>
+              <td>n(n+1)/2</td>
+              <td>Triangular nested loops → O(n²)</td>
+            </tr>
+            <tr>
+              <td>1² + 2² + 3² + ... + n²</td>
+              <td>n(n+1)(2n+1)/6</td>
+              <td>Some triple nested patterns</td>
+            </tr>
+            <tr>
+              <td>1 + 2 + 4 + ... + 2^(n-1)</td>
+              <td>2ⁿ - 1</td>
+              <td>Binary trees, recursive branching → O(2ⁿ)</td>
+            </tr>
+            <tr>
+              <td>1 + r + r² + ... + rⁿ</td>
+              <td>(rⁿ⁺¹ - 1)/(r - 1)</td>
+              <td>Geometric growth patterns</td>
+            </tr>
+            <tr>
+              <td>n + n/2 + n/4 + ... + 1</td>
+              <td>≈ 2n</td>
+              <td>Work in merge sort levels → O(n)</td>
+            </tr>
+          </table>
+
+          <h3>Harmonic Series</h3>
+          <p>The <strong>harmonic series</strong> is: 1 + 1/2 + 1/3 + 1/4 + ... + 1/n</p>
+
+          <div class="formula-box">
+            Hₙ = 1 + 1/2 + 1/3 + ... + 1/n ≈ ln(n) + 0.577...
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Application: Expected Comparisons</div>
+            <p>The harmonic series appears in:</p>
+            <ul>
+              <li><strong>QuickSort expected comparisons:</strong> Average case involves harmonic sums</li>
+              <li><strong>Coupon collector problem:</strong> Expected tries to collect all n coupons ≈ n × Hₙ ≈ n ln(n)</li>
+              <li><strong>Hash table analysis:</strong> Expected probe count with linear probing</li>
+            </ul>
+          </div>
+
+          <h3>Connecting Sequences to Recursion</h3>
+          <p>Many sequences are defined <strong>recursively</strong> -- each term depends on previous terms.</p>
+
+          <div class="example-box">
+            <div class="label">Famous Recursive Sequences</div>
+            <p><strong>Fibonacci:</strong> F(n) = F(n-1) + F(n-2), with F(0) = 0, F(1) = 1</p>
+            <p>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...</p>
+            <p style="margin-top:1rem;"><strong>Factorial as a sequence:</strong> n! = n × (n-1)!</p>
+            <p>1, 1, 2, 6, 24, 120, 720, ...</p>
+            <p style="margin-top:1rem;"><strong>Powers of 2:</strong> a(n) = 2 × a(n-1), with a(0) = 1</p>
+            <p>1, 2, 4, 8, 16, 32, ...</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Why Naive Fibonacci is Slow</div>
+            <p>The Fibonacci recurrence T(n) = T(n-1) + T(n-2) creates exponential calls because each call branches into two more. The number of calls follows the Fibonacci sequence itself, which grows like φⁿ (where φ ≈ 1.618). This is why <code>fib(50)</code> with naive recursion is impossibly slow, but dynamic programming solves it in O(n).</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Big Picture</div>
+            <p>Sequences and series are the mathematical language of algorithm analysis:</p>
+            <ul>
+              <li><strong>Counting loop iterations</strong> = summing an arithmetic series</li>
+              <li><strong>Recursive branching</strong> = geometric series</li>
+              <li><strong>Master Theorem</strong> = solving recurrence relations (recursive sequences)</li>
+              <li><strong>Amortized analysis</strong> = understanding how costs average over a sequence of operations</li>
+            </ul>
+            <p>Every time you analyze code complexity, you're working with these formulas.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 12 ==================== -->
+        <section id="quiz">
+          <h2>12. Practice Quiz</h2>
+          <p>Test your understanding of the key algebra concepts covered on this page. Click an answer to check it.</p>
+
+          <div class="quiz">
+
+            <!-- Question 1 -->
+            <div class="quiz-q" id="q1">
+              <h4>1. Simplify: 3(2x - 4) + 5x</h4>
+              <button onclick="checkAnswer(this, false)">A) 11x + 4</button>
+              <button onclick="checkAnswer(this, true)">B) 11x - 12</button>
+              <button onclick="checkAnswer(this, false)">C) 6x - 12</button>
+              <button onclick="checkAnswer(this, false)">D) 11x - 4</button>
+              <div class="explanation">
+                <strong>Answer: B) 11x - 12</strong><br>
+                First distribute: 3(2x - 4) = 6x - 12. Then combine with +5x: 6x - 12 + 5x = 11x - 12. Remember to distribute the 3 to both terms inside the parentheses.
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-q" id="q2">
+              <h4>2. Solve for x: 5x - 3 = 2x + 12</h4>
+              <button onclick="checkAnswer(this, true)">A) x = 5</button>
+              <button onclick="checkAnswer(this, false)">B) x = 3</button>
+              <button onclick="checkAnswer(this, false)">C) x = -5</button>
+              <button onclick="checkAnswer(this, false)">D) x = 15/7</button>
+              <div class="explanation">
+                <strong>Answer: A) x = 5</strong><br>
+                Subtract 2x from both sides: 3x - 3 = 12. Add 3 to both sides: 3x = 15. Divide by 3: x = 5. Check: 5(5) - 3 = 22 and 2(5) + 12 = 22. Correct!
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-q" id="q3">
+              <h4>3. Factor completely: x&sup2; - 9</h4>
+              <button onclick="checkAnswer(this, false)">A) (x - 3)&sup2;</button>
+              <button onclick="checkAnswer(this, true)">B) (x + 3)(x - 3)</button>
+              <button onclick="checkAnswer(this, false)">C) (x - 9)(x + 1)</button>
+              <button onclick="checkAnswer(this, false)">D) Cannot be factored</button>
+              <div class="explanation">
+                <strong>Answer: B) (x + 3)(x - 3)</strong><br>
+                This is a difference of squares. x&sup2; - 9 = x&sup2; - 3&sup2; = (x + 3)(x - 3). Remember: a&sup2; - b&sup2; = (a + b)(a - b). Note that (x - 3)&sup2; would expand to x&sup2; - 6x + 9, which is different.
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-q" id="q4">
+              <h4>4. What is the value of the discriminant for 2x&sup2; + 3x + 5 = 0, and what does it tell you?</h4>
+              <button onclick="checkAnswer(this, false)">A) 49; two real solutions</button>
+              <button onclick="checkAnswer(this, false)">B) -31; one real solution</button>
+              <button onclick="checkAnswer(this, true)">C) -31; no real solutions</button>
+              <button onclick="checkAnswer(this, false)">D) 31; two real solutions</button>
+              <div class="explanation">
+                <strong>Answer: C) -31; no real solutions</strong><br>
+                The discriminant is b&sup2; - 4ac = 3&sup2; - 4(2)(5) = 9 - 40 = -31. Since the discriminant is negative, the square root of a negative number is not a real number, so this equation has no real solutions. The parabola doesn't cross the x-axis.
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-q" id="q5">
+              <h4>5. Simplify using log rules: log<sub>2</sub>(8) + log<sub>2</sub>(4)</h4>
+              <button onclick="checkAnswer(this, false)">A) log<sub>2</sub>(12)</button>
+              <button onclick="checkAnswer(this, true)">B) 5</button>
+              <button onclick="checkAnswer(this, false)">C) 7</button>
+              <button onclick="checkAnswer(this, false)">D) 12</button>
+              <div class="explanation">
+                <strong>Answer: B) 5</strong><br>
+                Method 1 (evaluate each): log<sub>2</sub>(8) = 3 (since 2&sup3; = 8) and log<sub>2</sub>(4) = 2 (since 2&sup2; = 4). So 3 + 2 = 5.<br>
+                Method 2 (product rule): log<sub>2</sub>(8) + log<sub>2</sub>(4) = log<sub>2</sub>(8 * 4) = log<sub>2</sub>(32) = 5 (since 2<sup>5</sup> = 32).<br>
+                Note: log<sub>2</sub>(12) is wrong -- the product rule says log(a) + log(b) = log(a*b), NOT log(a+b).
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; border-top: 1px solid #e5e5e5; margin-top: 2rem;">
+          <a href="pre-algebra.html" class="resource-link">&larr; Pre-Algebra</a>
+          <a href="geometry.html" class="resource-link">Geometry &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered) return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+  <!-- Mobile TOC toggle -->
+  <style>
+    @media (max-width: 1199px) {
+      #mobile-toc { display: block !important; }
+      .sidebar-toc { display: none; }
+    }
+  </style>
+
+</body>
+</html>

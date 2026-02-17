@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Foundations - Everything You Need to Know - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html" class="active">DSA Foundations</a>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / DSA Foundations</div>
+      <h1>DSA Foundations</h1>
+      <p>Everything you need to understand about data structures and algorithms, explained so simply that a 10-year-old could follow along. This is your starting point before diving into any specific topic.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Who This Is For</div>
+        <p>You're a CS student (or self-learner) who wants to master DSA for competitive programming, LeetCode, and technical interviews. Maybe you've tried reading about Big-O or linked lists before and it didn't click. This page fixes that. We start from absolute zero and build up every concept with real-world analogies, visual diagrams, and the actual math behind why things work.</p>
+      </div>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#what-is-ds">1. What Even IS a Data Structure?</a>
+      <a href="#what-is-algo">2. What Even IS an Algorithm?</a>
+      <a href="#memory">3. How Computers Store Data (Memory)</a>
+      <a href="#time-complexity">4. Time Complexity -- The Most Important Concept</a>
+      <a href="#big-o-math">5. The Math Behind Big-O (Why It Works)</a>
+      <a href="#space-complexity">6. Space Complexity</a>
+      <a href="#ds-overview">7. Every Data Structure Explained From Zero</a>
+      <a href="#algorithms">8. Essential Algorithms Explained</a>
+      <a href="#problem-solving">9. How to Think About Problems</a>
+      <a href="#cp-tips">10. Tips to Become a World-Class Competitive Programmer</a>
+      <a href="#roadmap">11. Learning Roadmap</a>
+      <a href="#quiz">12. Practice Quiz</a>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: WHAT IS A DATA STRUCTURE                          -->
+    <!-- ============================================================ -->
+    <section id="what-is-ds">
+      <h2>1. What Even IS a Data Structure?</h2>
+
+      <p>Imagine you just moved into a new house. You have a bunch of stuff -- books, clothes, food, tools. You <em>could</em> just throw everything into one giant pile in the middle of the room. But that would be a nightmare to find anything in, right?</p>
+
+      <p>So instead, you <strong>organize</strong> your stuff:</p>
+      <ul>
+        <li>Books go on a <strong>bookshelf</strong> (easy to browse, sorted by topic)</li>
+        <li>Clothes go in a <strong>wardrobe</strong> (easy to pick an outfit)</li>
+        <li>Food goes in the <strong>fridge</strong> (keeps things fresh, organized by shelf)</li>
+        <li>Tools go in a <strong>toolbox</strong> (everything has its slot)</li>
+      </ul>
+
+      <p>A <strong>data structure</strong> is exactly the same thing, but for computer data. It's a way of organizing information so you can find it, add to it, and work with it efficiently.</p>
+
+      <div class="formula-box">
+Data Structure = A way of organizing data so that it can be used efficiently
+      </div>
+
+      <p>Just like you wouldn't use a bookshelf to store soup (that's what the fridge is for), different data structures are good for different jobs:</p>
+
+      <table>
+        <tr><th>Real World</th><th>Data Structure</th><th>Good For</th></tr>
+        <tr><td>Row of lockers</td><td>Array</td><td>Quick access by number</td></tr>
+        <tr><td>Treasure hunt clues</td><td>Linked List</td><td>Easy to insert/remove items</td></tr>
+        <tr><td>Stack of plates</td><td>Stack</td><td>Undo/redo, backtracking</td></tr>
+        <tr><td>Queue at a shop</td><td>Queue</td><td>First come, first served</td></tr>
+        <tr><td>Dictionary / phone book</td><td>Hash Map</td><td>Instant lookup by name</td></tr>
+        <tr><td>Family tree</td><td>Tree</td><td>Hierarchical data, fast search</td></tr>
+        <tr><td>Road map / social network</td><td>Graph</td><td>Connections between things</td></tr>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        <p>There is no single "best" data structure. The right choice depends on what you need to do. A great programmer knows when to use which one -- and that's exactly what this page teaches you.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: WHAT IS AN ALGORITHM                               -->
+    <!-- ============================================================ -->
+    <section id="what-is-algo">
+      <h2>2. What Even IS an Algorithm?</h2>
+
+      <p>An algorithm is just a <strong>set of steps to solve a problem</strong>. That's it. You already use algorithms every day without realizing it.</p>
+
+      <div class="example-box">
+        <div class="label">Real-World Algorithm: Making a Cup of Tea</div>
+        <p><strong>Step 1:</strong> Boil water<br>
+        <strong>Step 2:</strong> Put tea bag in cup<br>
+        <strong>Step 3:</strong> Pour boiling water into cup<br>
+        <strong>Step 4:</strong> Wait 3 minutes<br>
+        <strong>Step 5:</strong> Remove tea bag<br>
+        <strong>Step 6:</strong> Add milk/sugar if you want<br><br>
+        That's an algorithm. A clear set of instructions that always produces the right result.</p>
+      </div>
+
+      <p>In programming, an algorithm is the same thing -- a step-by-step procedure to solve a problem. For example:</p>
+
+      <ul>
+        <li><strong>Finding the biggest number in a list</strong> -- look at each number, keep track of the biggest one you've seen so far</li>
+        <li><strong>Sorting a deck of cards</strong> -- pick up cards one at a time, insert each into the right position</li>
+        <li><strong>Finding a word in a dictionary</strong> -- open to the middle, decide if your word comes before or after, repeat on the correct half</li>
+      </ul>
+
+      <p>That last one? That's <strong>binary search</strong> -- one of the most important algorithms in computer science. You've been doing it since you were a kid looking up words.</p>
+
+      <div class="warning-box">
+        <div class="label">Why Some Algorithms Are Better Than Others</div>
+        <p>Imagine you need to find the name "Sean" in a phone book with 1,000,000 names.</p>
+        <p><strong>Bad algorithm:</strong> Start at page 1 and read every single name until you find "Sean". Could take up to 1,000,000 checks.</p>
+        <p><strong>Good algorithm (binary search):</strong> Open to the middle. "Sean" comes after "M", so look in the second half. Open to the middle of that. Keep halving. Only takes about <strong>20 checks</strong> to search 1,000,000 names.</p>
+        <p>Same problem. Same answer. But one approach is <strong>50,000x faster</strong>. That's why algorithms matter.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: MEMORY                                             -->
+    <!-- ============================================================ -->
+    <section id="memory">
+      <h2>3. How Computers Store Data (Memory)</h2>
+
+      <p>Before you can understand data structures, you need to understand how a computer actually stores data. Don't worry -- it's simpler than you think.</p>
+
+      <h3>RAM = A Giant Row of Numbered Boxes</h3>
+
+      <p>Your computer's memory (RAM) is like a massive row of numbered mailboxes. Each mailbox:</p>
+      <ul>
+        <li>Has a <strong>number</strong> (called an <strong>address</strong>) -- like mailbox #0, #1, #2, etc.</li>
+        <li>Can hold <strong>one piece of data</strong> -- a number, a letter, etc.</li>
+        <li>Can be accessed <strong>instantly</strong> if you know its number</li>
+      </ul>
+
+      <div class="memory-diagram">
+Address:  [0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]
+Data:     [ 42 ] [ 17 ] [ 85 ] [ 3  ] [ 99 ] [ 51 ] [ 8  ] [ 64 ]
+      </div>
+
+      <p>When you create a variable in code like <code>x = 42</code>, the computer:</p>
+      <ol>
+        <li>Finds an empty mailbox (say, address #0)</li>
+        <li>Puts the value 42 in it</li>
+        <li>Remembers that "x" means "go to address #0"</li>
+      </ol>
+
+      <h3>Why This Matters for Data Structures</h3>
+
+      <p>The key insight is: <strong>going to a specific mailbox by its number is instant</strong>. The computer doesn't have to walk past mailbox #0, #1, #2... to get to mailbox #500. It just jumps straight there. This is called <strong>random access</strong>, and it's why arrays are so fast at looking up items by index.</p>
+
+      <div class="tip-box">
+        <div class="label">The Memory Trade-Off</div>
+        <p>Every data structure is making a trade-off about how to use these mailboxes. Arrays put data in consecutive mailboxes (fast to access, hard to insert). Linked lists scatter data across random mailboxes but connect them with pointers (easy to insert, slow to access). Understanding this trade-off is the key to mastering data structures.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: TIME COMPLEXITY                                    -->
+    <!-- ============================================================ -->
+    <section id="time-complexity">
+      <h2>4. Time Complexity -- The Most Important Concept in DSA</h2>
+
+      <p>This is it. This is the single most important concept in all of data structures and algorithms. If you understand this deeply, everything else falls into place.</p>
+
+      <h3>Why We Care About Speed</h3>
+
+      <p>Imagine you're building an app. When you have 100 users, any code works fine. But what happens when you have <strong>1,000,000 users</strong>? Or <strong>1,000,000,000</strong>?</p>
+
+      <p>Bad code that takes 1 second for 100 users might take <strong>3 hours</strong> for 1,000,000 users. Good code takes 1 second for both. That's the difference between a successful app and a broken one.</p>
+
+      <h3>We Count Steps, Not Seconds</h3>
+
+      <p>We don't measure speed in seconds because different computers run at different speeds. Instead, we count <strong>how many operations</strong> the algorithm needs as the input gets bigger.</p>
+
+      <div class="example-box">
+        <div class="label">Example: Finding the Maximum</div>
+        <p>Given a list of n numbers, find the biggest one.</p>
+        <p><strong>Algorithm:</strong> Look at each number, keep track of the biggest.<br>
+        For a list of 10 numbers: ~10 operations<br>
+        For a list of 1,000 numbers: ~1,000 operations<br>
+        For a list of 1,000,000 numbers: ~1,000,000 operations</p>
+        <p>The number of operations <strong>grows linearly</strong> with the input size. We call this <strong>O(n)</strong>.</p>
+      </div>
+
+      <h3>The Big-O Notation Cheat Sheet</h3>
+
+      <p>Big-O tells us: <em>"As the input gets really big, how does the number of operations grow?"</em></p>
+
+      <table>
+        <tr><th>Big-O</th><th>Name</th><th>Analogy</th><th>Speed</th></tr>
+        <tr><td><strong>O(1)</strong></td><td>Constant</td><td>Knowing exactly which locker to open</td><td>Instant, no matter the size</td></tr>
+        <tr><td><strong>O(log n)</strong></td><td>Logarithmic</td><td>Looking up a word in a dictionary</td><td>Incredibly fast</td></tr>
+        <tr><td><strong>O(n)</strong></td><td>Linear</td><td>Reading every page of a book</td><td>Fast, grows steadily</td></tr>
+        <tr><td><strong>O(n log n)</strong></td><td>Linearithmic</td><td>Smart sorting (merge sort)</td><td>Pretty fast</td></tr>
+        <tr><td><strong>O(n²)</strong></td><td>Quadratic</td><td>Comparing every person with every other person</td><td>Slow for large inputs</td></tr>
+        <tr><td><strong>O(2ⁿ)</strong></td><td>Exponential</td><td>Trying every combination on a lock</td><td>Impossibly slow</td></tr>
+        <tr><td><strong>O(n!)</strong></td><td>Factorial</td><td>Trying every possible arrangement</td><td>Heat death of the universe</td></tr>
+      </table>
+
+      <h3>Let's See Actual Numbers</h3>
+
+      <p>This is where it gets real. Look at how many operations each complexity needs for different input sizes:</p>
+
+      <table>
+        <tr><th>n</th><th>O(1)</th><th>O(log n)</th><th>O(n)</th><th>O(n log n)</th><th>O(n²)</th><th>O(2ⁿ)</th></tr>
+        <tr><td>10</td><td>1</td><td>3</td><td>10</td><td>33</td><td>100</td><td>1,024</td></tr>
+        <tr><td>100</td><td>1</td><td>7</td><td>100</td><td>664</td><td>10,000</td><td>1.27 x 10³⁰</td></tr>
+        <tr><td>1,000</td><td>1</td><td>10</td><td>1,000</td><td>9,966</td><td>1,000,000</td><td>IMPOSSIBLE</td></tr>
+        <tr><td>10,000</td><td>1</td><td>13</td><td>10,000</td><td>132,877</td><td>100,000,000</td><td>IMPOSSIBLE</td></tr>
+        <tr><td>100,000</td><td>1</td><td>17</td><td>100,000</td><td>1,660,964</td><td>10,000,000,000</td><td>IMPOSSIBLE</td></tr>
+        <tr><td>1,000,000</td><td>1</td><td>20</td><td>1,000,000</td><td>19,931,569</td><td>1,000,000,000,000</td><td>IMPOSSIBLE</td></tr>
+      </table>
+
+      <div class="warning-box">
+        <div class="label">Look at That Table Carefully</div>
+        <p>For n = 1,000,000:<br>
+        O(log n) needs just <strong>20 operations</strong>. That's binary search.<br>
+        O(n) needs <strong>1 million operations</strong>. Fine, takes maybe 0.01 seconds.<br>
+        O(n²) needs <strong>1 trillion operations</strong>. That's roughly <strong>16 minutes</strong>.<br>
+        O(2ⁿ) is literally impossible -- more operations than atoms in the universe.</p>
+        <p>This is why understanding time complexity is life or death for your code.</p>
+      </div>
+
+      <h3>Understanding Each Complexity</h3>
+
+      <h3>O(1) -- Constant Time</h3>
+      <p>No matter how big the input is, it always takes the same number of steps.</p>
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Accessing an array element by index: <code>arr[5]</code><br>
+        Whether the array has 10 elements or 10 billion, jumping to index 5 is instant. The computer calculates: address = start_address + 5 x element_size. One calculation, done.</p>
+      </div>
+
+      <h3>O(log n) -- Logarithmic Time</h3>
+      <p>Each step <strong>cuts the problem in half</strong>. This is the magic of binary search.</p>
+      <div class="example-box">
+        <div class="label">Why log₂(n)?</div>
+        <p>Start with n items. After step 1: n/2 items. After step 2: n/4. After step 3: n/8.<br>
+        After k steps: n / 2ᵏ items remaining.<br><br>
+        We stop when 1 item is left: n / 2ᵏ = 1<br>
+        Solving: 2ᵏ = n, so <strong>k = log₂(n)</strong><br><br>
+        For n = 1,000,000,000 (1 billion): log₂(1,000,000,000) ≈ <strong>30 steps</strong><br>
+        You can search through a BILLION items in just 30 steps. That's the power of logarithms.</p>
+      </div>
+
+      <h3>O(n) -- Linear Time</h3>
+      <p>You look at every element once. If the input doubles, the time doubles.</p>
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Finding the sum of all elements in an array. You must visit each element exactly once. No shortcut.</p>
+      </div>
+      <pre><code><span class="keyword">def</span> <span class="function">find_sum</span>(arr):
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> arr:   <span class="comment"># visits each element once = O(n)</span>
+        total += num
+    <span class="keyword">return</span> total</code></pre>
+
+      <h3>O(n²) -- Quadratic Time</h3>
+      <p>For every element, you look at every OTHER element. It's a nested loop.</p>
+      <div class="example-box">
+        <div class="label">Why It's n²</div>
+        <p>Imagine 100 students in a class need to shake hands with every other student.<br>
+        Student 1 shakes hands with 99 others.<br>
+        Student 2 shakes hands with 99 others.<br>
+        ...<br>
+        Total handshakes ≈ 100 x 100 = 10,000.<br><br>
+        With 1,000 students: 1,000 x 1,000 = 1,000,000 handshakes.<br>
+        With 1,000,000 students: 1,000,000 x 1,000,000 = 1,000,000,000,000. That's a TRILLION. Way too slow.</p>
+      </div>
+      <pre><code><span class="comment"># This is O(n²) -- nested loop</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr)):
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr)):   <span class="comment"># for EACH i, we loop through ALL j</span>
+        <span class="keyword">if</span> arr[i] + arr[j] == target:
+            <span class="keyword">return</span> [i, j]</code></pre>
+
+      <h3>O(2ⁿ) -- Exponential Time</h3>
+      <p>The number of operations <strong>doubles</strong> every time you add one more element. This blows up incredibly fast.</p>
+      <div class="example-box">
+        <div class="label">Why It's So Bad</div>
+        <p>Think of a combination lock with n switches (on/off).<br>
+        1 switch: 2 combinations<br>
+        2 switches: 4 combinations<br>
+        3 switches: 8 combinations<br>
+        10 switches: 1,024 combinations<br>
+        20 switches: 1,048,576 (about 1 million)<br>
+        30 switches: 1,073,741,824 (about 1 billion)<br>
+        50 switches: 1,125,899,906,842,624 (over 1 quadrillion)<br><br>
+        This is why brute-force solutions to problems like "find the best subset" are impractical for large inputs.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: BIG-O MATH                                         -->
+    <!-- ============================================================ -->
+    <section id="big-o-math">
+      <h2>5. The Math Behind Big-O (Why It Works)</h2>
+
+      <p>Big-O notation describes the <strong>upper bound</strong> on growth rate. Formally: f(n) = O(g(n)) means there exist constants c and n₀ such that f(n) ≤ c·g(n) for all n ≥ n₀.</p>
+
+      <p>In plain English: <strong>we only care about the fastest-growing term, and we drop constants</strong>.</p>
+
+      <h3>Rule 1: Drop Constants</h3>
+      <div class="formula-box">
+3n + 5 → O(n)
+100n → O(n)
+n/2 → O(n)
+
+Why? When n = 1,000,000, the difference between n and 3n doesn't change the CATEGORY of growth. They both grow linearly.
+      </div>
+
+      <h3>Rule 2: Drop Lower-Order Terms</h3>
+      <div class="formula-box">
+n² + n → O(n²)
+n³ + 100n² + 5000n → O(n³)
+2ⁿ + n⁵ → O(2ⁿ)
+
+Why? For large n, the biggest term dominates everything else.
+When n = 1,000: n² = 1,000,000 but n = 1,000. The n term is irrelevant.
+      </div>
+
+      <h3>Rule 3: Different Steps Get Added</h3>
+      <div class="formula-box">
+Loop through array A (size a): O(a)
+Then loop through array B (size b): O(b)
+Total: O(a + b)   -- NOT O(n²)
+
+Only if you nest them: O(a × b)
+      </div>
+
+      <h3>The Math Behind log₂(n)</h3>
+      <p>Logarithms answer the question: <em>"How many times do I need to divide n by 2 to get to 1?"</em></p>
+
+      <div class="formula-box">
+log₂(8) = 3     because 2³ = 8    (divide 8 by 2 three times: 8→4→2→1)
+log₂(16) = 4    because 2⁴ = 16   (divide 16 by 2 four times: 16→8→4→2→1)
+log₂(1024) = 10 because 2¹⁰ = 1024
+log₂(1,000,000) ≈ 20
+log₂(1,000,000,000) ≈ 30
+      </div>
+
+      <p>This is why binary search is so powerful. Even for 1 billion elements, you only need ~30 steps. Each step cuts the search space in half.</p>
+
+      <h3>Why O(n log n) Is the Sorting Sweet Spot</h3>
+      <p>The best comparison-based sorting algorithms (merge sort, quick sort) are O(n log n). Here's the intuition:</p>
+      <div class="example-box">
+        <div class="label">Merge Sort Intuition</div>
+        <p>Merge sort splits the array in half, sorts each half, then merges them.<br><br>
+        <strong>How many times can you split?</strong> log₂(n) times (keep halving until you have individual elements).<br>
+        <strong>How much work at each level?</strong> n operations (to merge all the pieces at that level).<br><br>
+        Total: n work × log₂(n) levels = <strong>O(n log n)</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Competitive Programming Rule of Thumb</div>
+        <p>A modern computer does roughly <strong>100,000,000 (10⁸) simple operations per second</strong>. Use this to estimate if your solution is fast enough:</p>
+        <p>
+        n ≤ 10: O(n!) is fine<br>
+        n ≤ 20: O(2ⁿ) is fine<br>
+        n ≤ 500: O(n³) is fine<br>
+        n ≤ 10,000: O(n²) is fine<br>
+        n ≤ 1,000,000: O(n log n) is fine<br>
+        n ≤ 100,000,000: O(n) is fine<br>
+        Any n: O(log n) or O(1) is fine
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: SPACE COMPLEXITY                                   -->
+    <!-- ============================================================ -->
+    <section id="space-complexity">
+      <h2>6. Space Complexity</h2>
+
+      <p>Space complexity is the same idea as time complexity, but for <strong>memory</strong> instead of time.</p>
+
+      <p>If your algorithm creates a new array of size n, that's O(n) space. If it only uses a few variables regardless of input size, that's O(1) space.</p>
+
+      <div class="formula-box">
+O(1) space: Only uses a fixed number of variables (like counters, pointers)
+O(n) space: Creates a copy of the input or a hash map of size n
+O(n²) space: Creates a 2D grid of size n×n
+      </div>
+
+      <h3>The Time-Space Trade-Off</h3>
+      <p>Often, you can make code faster by using more memory, or save memory by being slower. This is one of the most fundamental trade-offs in CS.</p>
+
+      <div class="example-box">
+        <div class="label">Example: Two Sum</div>
+        <p><strong>Brute force:</strong> O(n²) time, O(1) space -- check every pair<br>
+        <strong>Hash map:</strong> O(n) time, O(n) space -- store seen numbers in a hash map</p>
+        <p>The hash map solution uses more memory but is MUCH faster. This is almost always worth it.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: EVERY DATA STRUCTURE                               -->
+    <!-- ============================================================ -->
+    <section id="ds-overview">
+      <h2>7. Every Data Structure Explained From Zero</h2>
+
+      <p>Now that you understand time complexity, let's learn each data structure. For each one, we'll cover: what it is, how it works internally, time complexity for every operation (and WHY), and when to use it.</p>
+
+      <p>For deep dives with code implementations, click through to each topic's dedicated page.</p>
+
+      <!-- ARRAYS -->
+      <h3>Arrays -- The Foundation of Everything</h3>
+      <p><strong>Analogy:</strong> A row of numbered lockers in a school hallway.</p>
+
+      <div class="memory-diagram">
+Index:   [0]    [1]    [2]    [3]    [4]
+Value:   [ 10 ] [ 20 ] [ 30 ] [ 40 ] [ 50 ]
+      </div>
+
+      <p>Elements are stored in <strong>consecutive memory locations</strong>. Because they're consecutive, the computer can calculate exactly where any element is:</p>
+
+      <div class="formula-box">
+address of element[i] = start_address + i × element_size
+      </div>
+
+      <p>This is why <strong>accessing by index is O(1)</strong> -- it's just one multiplication and one addition, no matter how big the array is.</p>
+
+      <table>
+        <tr><th>Operation</th><th>Time</th><th>Why</th></tr>
+        <tr><td>Access by index</td><td>O(1)</td><td>Direct address calculation</td></tr>
+        <tr><td>Search (unsorted)</td><td>O(n)</td><td>Must check each element</td></tr>
+        <tr><td>Insert at end</td><td>O(1)*</td><td>Just place at next spot (*amortized)</td></tr>
+        <tr><td>Insert at beginning/middle</td><td>O(n)</td><td>Must shift all elements after</td></tr>
+        <tr><td>Delete from middle</td><td>O(n)</td><td>Must shift elements to fill gap</td></tr>
+      </table>
+
+      <p><strong>Deep dive:</strong> <a href="arrays.html" style="color: #000000; font-weight: 500;">Arrays &amp; Strings page</a></p>
+
+      <!-- LINKED LISTS -->
+      <h3>Linked Lists -- The Treasure Hunt</h3>
+      <p><strong>Analogy:</strong> A treasure hunt where each clue tells you where the next clue is.</p>
+
+      <div class="memory-diagram">
+[10 | →] → [20 | →] → [30 | →] → [40 | →] → [50 | null]
+ Head                                          Tail
+      </div>
+
+      <p>Each element (called a <strong>node</strong>) stores two things: its value AND a pointer to the next node. Nodes can be scattered anywhere in memory -- they don't need to be consecutive.</p>
+
+      <table>
+        <tr><th>Operation</th><th>Time</th><th>Why</th></tr>
+        <tr><td>Access by index</td><td>O(n)</td><td>Must follow links from the start</td></tr>
+        <tr><td>Search</td><td>O(n)</td><td>Must follow links one by one</td></tr>
+        <tr><td>Insert at head</td><td>O(1)</td><td>Just create node, point to old head</td></tr>
+        <tr><td>Insert at position (given pointer)</td><td>O(1)</td><td>Just redirect pointers</td></tr>
+        <tr><td>Delete (given pointer)</td><td>O(1)</td><td>Just redirect pointers</td></tr>
+      </table>
+
+      <p><strong>Deep dive:</strong> <a href="linked-lists.html" style="color: #000000; font-weight: 500;">Linked Lists page</a></p>
+
+      <!-- STACKS -->
+      <h3>Stacks -- Last In, First Out (LIFO)</h3>
+      <p><strong>Analogy:</strong> A stack of plates. You can only add or remove from the <strong>top</strong>.</p>
+
+      <div class="memory-diagram">
+    | 50 |  ← top (most recently added)
+    | 40 |
+    | 30 |
+    | 20 |
+    | 10 |
+    +----+
+      </div>
+
+      <p>Three operations, ALL O(1):</p>
+      <ul>
+        <li><strong>Push:</strong> Add to the top</li>
+        <li><strong>Pop:</strong> Remove from the top</li>
+        <li><strong>Peek:</strong> Look at the top without removing</li>
+      </ul>
+
+      <p><strong>Why O(1)?</strong> You always know exactly where the top is. No searching needed.</p>
+
+      <p><strong>Use cases:</strong> Undo/redo, browser back button, matching parentheses, function call stack, DFS.</p>
+      <p><strong>Deep dive:</strong> <a href="stacks-queues.html" style="color: #000000; font-weight: 500;">Stacks &amp; Queues page</a></p>
+
+      <!-- QUEUES -->
+      <h3>Queues -- First In, First Out (FIFO)</h3>
+      <p><strong>Analogy:</strong> A line at a shop. First person in line gets served first.</p>
+
+      <div class="memory-diagram">
+Front → [10] [20] [30] [40] [50] ← Back
+Remove from here              Add here
+      </div>
+
+      <p>Two operations, both O(1):</p>
+      <ul>
+        <li><strong>Enqueue:</strong> Add to the back</li>
+        <li><strong>Dequeue:</strong> Remove from the front</li>
+      </ul>
+
+      <p><strong>Use cases:</strong> BFS, task scheduling, printer queue, message queues.</p>
+
+      <!-- HASH MAPS -->
+      <h3>Hash Maps -- The Most Important Interview Data Structure</h3>
+      <p><strong>Analogy:</strong> A magical librarian who instantly knows exactly which shelf any book is on.</p>
+
+      <p>A hash map stores <strong>key-value pairs</strong> and can find any value by its key in O(1) average time. How?</p>
+
+      <div class="example-box">
+        <div class="label">How Hashing Works</div>
+        <p><strong>Step 1:</strong> Take the key (e.g., "Sean")<br>
+        <strong>Step 2:</strong> Run it through a <strong>hash function</strong> that converts it to a number (e.g., 7)<br>
+        <strong>Step 3:</strong> Use that number as the index in an array: <code>storage[7] = "Sean's data"</code><br><br>
+        To find "Sean" later, just hash the key again → get 7 → go directly to storage[7]. Instant.</p>
+      </div>
+
+      <table>
+        <tr><th>Operation</th><th>Average</th><th>Worst</th><th>Why Worst Case?</th></tr>
+        <tr><td>Insert</td><td>O(1)</td><td>O(n)</td><td>Hash collisions (many keys map to same index)</td></tr>
+        <tr><td>Lookup</td><td>O(1)</td><td>O(n)</td><td>Same reason</td></tr>
+        <tr><td>Delete</td><td>O(1)</td><td>O(n)</td><td>Same reason</td></tr>
+      </table>
+
+      <p><strong>Deep dive:</strong> <a href="hashmaps.html" style="color: #000000; font-weight: 500;">Hash Maps &amp; Sets page</a></p>
+
+      <!-- TREES -->
+      <h3>Trees -- Hierarchical Data</h3>
+      <p><strong>Analogy:</strong> A family tree, or an org chart, or your file system (folders inside folders).</p>
+
+      <div class="memory-diagram">
+         [50]          ← root
+        /    \
+     [30]    [70]      ← children of 50
+     /  \    /  \
+  [20] [40] [60] [80]  ← leaves
+      </div>
+
+      <p>A <strong>Binary Search Tree (BST)</strong> has a special rule: left child &lt; parent &lt; right child. This means searching is like binary search:</p>
+
+      <div class="example-box">
+        <div class="label">Why BST Search Is O(log n)</div>
+        <p>Looking for 60 in the tree above:<br>
+        Start at 50. 60 > 50, so go right.<br>
+        At 70. 60 &lt; 70, so go left.<br>
+        At 60. Found it!<br><br>
+        Each comparison eliminates HALF the tree (either the left or right subtree). Same math as binary search: <strong>O(log n)</strong> for a balanced tree.</p>
+      </div>
+
+      <p><strong>Deep dive:</strong> <a href="trees.html" style="color: #000000; font-weight: 500;">Trees &amp; BST page</a></p>
+
+      <!-- HEAPS -->
+      <h3>Heaps -- Tournament Brackets</h3>
+      <p><strong>Analogy:</strong> A tournament bracket where the winner always rises to the top.</p>
+
+      <p>A <strong>min-heap</strong> always keeps the smallest element at the root. A <strong>max-heap</strong> keeps the largest. Both support:</p>
+
+      <table>
+        <tr><th>Operation</th><th>Time</th><th>Why</th></tr>
+        <tr><td>Get min/max</td><td>O(1)</td><td>It's always at the root</td></tr>
+        <tr><td>Insert</td><td>O(log n)</td><td>Add at bottom, bubble up (tree height = log n)</td></tr>
+        <tr><td>Extract min/max</td><td>O(log n)</td><td>Remove root, bubble down replacement</td></tr>
+      </table>
+
+      <p><strong>Use cases:</strong> Priority queues, finding Kth largest/smallest, Dijkstra's algorithm, merge K sorted lists.</p>
+      <p><strong>Deep dive:</strong> <a href="advanced.html" style="color: #000000; font-weight: 500;">Advanced Topics page</a></p>
+
+      <!-- GRAPHS -->
+      <h3>Graphs -- Connections Between Things</h3>
+      <p><strong>Analogy:</strong> A social network (people are nodes, friendships are edges) or a road map (cities are nodes, roads are edges).</p>
+
+      <div class="memory-diagram">
+    [A] --- [B]
+     |  \    |
+     |   \   |
+    [C] --- [D]
+      </div>
+
+      <p>Graphs are the most general data structure. Trees are actually a special type of graph (connected, no cycles). Linked lists are a special type of tree (each node has at most one child).</p>
+
+      <p><strong>Two ways to explore graphs:</strong></p>
+      <ul>
+        <li><strong>BFS (Breadth-First Search):</strong> Explore level by level, like ripples in water. Uses a queue. Good for finding shortest paths.</li>
+        <li><strong>DFS (Depth-First Search):</strong> Go as deep as possible, then backtrack. Uses a stack (or recursion). Good for exploring all paths.</li>
+      </ul>
+
+      <p><strong>Deep dive:</strong> <a href="graphs.html" style="color: #000000; font-weight: 500;">Graphs page</a></p>
+
+      <!-- TRIES -->
+      <h3>Tries -- Autocomplete on Your Phone</h3>
+      <p><strong>Analogy:</strong> The autocomplete feature that shows suggestions as you type each letter.</p>
+
+      <p>Each node represents a letter. Paths from root to leaf form words. Finding all words that start with "ca" means just following c → a and then listing everything below.</p>
+
+      <p><strong>Deep dive:</strong> <a href="advanced.html" style="color: #000000; font-weight: 500;">Advanced Topics page</a></p>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: ESSENTIAL ALGORITHMS                               -->
+    <!-- ============================================================ -->
+    <section id="algorithms">
+      <h2>8. Essential Algorithms Explained</h2>
+
+      <h3>Binary Search -- Halving Your Way to the Answer</h3>
+      <p><strong>Requirement:</strong> The data must be <strong>sorted</strong>.</p>
+      <p><strong>How it works:</strong> Compare the target with the middle element. If target is smaller, search the left half. If larger, search the right half. Repeat.</p>
+
+      <pre><code><span class="keyword">def</span> <span class="function">binary_search</span>(arr, target):
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(arr) - <span class="number">1</span>
+    <span class="keyword">while</span> left <= right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="keyword">if</span> arr[mid] == target:
+            <span class="keyword">return</span> mid
+        <span class="keyword">elif</span> arr[mid] < target:
+            left = mid + <span class="number">1</span>     <span class="comment"># target is in right half</span>
+        <span class="keyword">else</span>:
+            right = mid - <span class="number">1</span>    <span class="comment"># target is in left half</span>
+    <span class="keyword">return</span> -<span class="number">1</span>  <span class="comment"># not found</span></code></pre>
+
+      <h3>Recursion -- Functions That Call Themselves</h3>
+      <p><strong>Analogy:</strong> Russian nesting dolls. Open a doll, find a smaller doll inside. Keep opening until you reach the smallest doll (the <strong>base case</strong>).</p>
+
+      <p>Every recursive function needs:</p>
+      <ol>
+        <li><strong>Base case:</strong> When to stop (the smallest doll)</li>
+        <li><strong>Recursive case:</strong> Break the problem into a smaller version of itself</li>
+      </ol>
+
+      <pre><code><span class="comment"># Factorial: 5! = 5 × 4 × 3 × 2 × 1</span>
+<span class="keyword">def</span> <span class="function">factorial</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:        <span class="comment"># base case</span>
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">return</span> n * factorial(n - <span class="number">1</span>)  <span class="comment"># recursive case</span></code></pre>
+
+      <h3>Two Pointers</h3>
+      <p><strong>Analogy:</strong> Reading a book from both ends simultaneously, moving inward.</p>
+      <p>Use two pointers (usually start and end) and move them toward each other based on conditions. Works on sorted arrays or when you need to find pairs.</p>
+      <p><strong>Deep dive:</strong> <a href="patterns.html" style="color: #000000; font-weight: 500;">LeetCode Patterns page</a></p>
+
+      <h3>Sliding Window</h3>
+      <p><strong>Analogy:</strong> A magnifying glass sliding across a page, looking at a fixed-width section at a time.</p>
+      <p>Maintain a "window" of elements and slide it across the array, adding/removing one element at a time instead of recalculating everything.</p>
+      <p><strong>Deep dive:</strong> <a href="patterns.html" style="color: #000000; font-weight: 500;">LeetCode Patterns page</a></p>
+
+      <h3>Dynamic Programming</h3>
+      <p><strong>Analogy:</strong> Instead of recalculating your monthly expenses every time someone asks, you write the total on a sticky note and just read it next time.</p>
+      <p>DP = solving a problem by breaking it into smaller overlapping subproblems and <strong>remembering</strong> (memoizing) the results so you never solve the same subproblem twice.</p>
+      <p><strong>Deep dive:</strong> <a href="dp.html" style="color: #000000; font-weight: 500;">Dynamic Programming page</a></p>
+
+      <h3>Sorting</h3>
+      <p>The most common sorting algorithms and when to use them:</p>
+      <table>
+        <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Key Idea</th></tr>
+        <tr><td>Bubble Sort</td><td>O(n²)</td><td>O(1)</td><td>Repeatedly swap adjacent elements. Simple but slow.</td></tr>
+        <tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n)</td><td>Divide in half, sort each half, merge. Stable and consistent.</td></tr>
+        <tr><td>Quick Sort</td><td>O(n log n)*</td><td>O(log n)</td><td>Pick pivot, partition around it. Fast in practice.</td></tr>
+        <tr><td>Counting Sort</td><td>O(n + k)</td><td>O(k)</td><td>Count occurrences. Only works for integers in a known range.</td></tr>
+      </table>
+      <p><strong>Deep dive:</strong> <a href="sorting.html" style="color: #000000; font-weight: 500;">Sorting &amp; Searching page</a></p>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: PROBLEM SOLVING                                    -->
+    <!-- ============================================================ -->
+    <section id="problem-solving">
+      <h2>9. How to Think About Problems</h2>
+
+      <p>This is where most people get stuck -- not because they don't know data structures, but because they don't have a <strong>systematic approach</strong> to problem-solving.</p>
+
+      <ol>
+        <li><strong>Read the problem carefully.</strong> Read it twice. Highlight constraints (input size, value ranges).</li>
+        <li><strong>Work through examples by hand.</strong> Use small inputs. Draw pictures. Trace through the logic on paper.</li>
+        <li><strong>Think about edge cases.</strong> Empty input? One element? All duplicates? Negative numbers?</li>
+        <li><strong>Start with brute force.</strong> What's the simplest, most obvious solution? Even if it's O(n³), write it down.</li>
+        <li><strong>Identify the bottleneck.</strong> What's making it slow? Is there a nested loop that could be replaced with a hash map?</li>
+        <li><strong>Ask yourself these questions:</strong>
+          <ul>
+            <li>Can I use a <strong>hash map</strong> to avoid repeated lookups?</li>
+            <li>Can I <strong>sort first</strong> to enable two pointers or binary search?</li>
+            <li>Is this a <strong>sliding window</strong> problem (subarray/substring)?</li>
+            <li>Can I use <strong>two pointers</strong> (sorted array, palindrome)?</li>
+            <li>Is this a <strong>tree/graph traversal</strong> (BFS/DFS)?</li>
+            <li>Does it have <strong>overlapping subproblems</strong> (DP)?</li>
+            <li>Can I use a <strong>stack</strong> (matching, nearest greater/smaller)?</li>
+          </ul>
+        </li>
+        <li><strong>Code it up.</strong> Write clean code. Use meaningful variable names.</li>
+        <li><strong>Test with examples.</strong> Walk through your code with the given examples. Try edge cases.</li>
+      </ol>
+
+      <div class="tip-box">
+        <div class="label">The Pattern Recognition Shortcut</div>
+        <p>After solving 100+ problems, you'll start recognizing patterns instantly. "Oh, this is a sliding window problem." "This needs a monotonic stack." That recognition comes from practice, not theory. It's why grinding LeetCode works -- you're training pattern recognition.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: CP TIPS                                           -->
+    <!-- ============================================================ -->
+    <section id="cp-tips">
+      <h2>10. Tips to Become a World-Class Competitive Programmer</h2>
+
+      <ul class="strategy-list">
+        <li>
+          <div class="num">1</div>
+          <div><strong>Practice every single day.</strong> Consistency beats intensity. 1 problem per day for a year (365 problems) is better than 20 problems in one weekend then nothing for months. Set a daily alarm.</div>
+        </li>
+        <li>
+          <div class="num">2</div>
+          <div><strong>Learn patterns, not solutions.</strong> When you solve a problem, ask yourself: "What pattern did this use? Where else could I apply this?" Memorizing solutions is useless. Understanding patterns transfers to new problems.</div>
+        </li>
+        <li>
+          <div class="num">3</div>
+          <div><strong>Time yourself.</strong> Easy: 15-20 min. Medium: 25-35 min. Hard: 40-50 min. If you can't solve it in time, read the editorial. Then close it and solve it yourself the next day from memory.</div>
+        </li>
+        <li>
+          <div class="num">4</div>
+          <div><strong>Always start with brute force.</strong> A working O(n²) solution is infinitely better than a broken O(n) solution. Get something working first, then optimize.</div>
+        </li>
+        <li>
+          <div class="num">5</div>
+          <div><strong>Study the top solutions after solving.</strong> Even if you got it right, look at how others solved it. You'll learn cleaner techniques, new patterns, and language tricks.</div>
+        </li>
+        <li>
+          <div class="num">6</div>
+          <div><strong>Implement data structures from scratch at least once.</strong> Build a linked list, BST, hash map, heap, and trie yourself. This gives you deep understanding that reading can't provide.</div>
+        </li>
+        <li>
+          <div class="num">7</div>
+          <div><strong>Do virtual contests.</strong> Codeforces, LeetCode Weekly, AtCoder. The pressure of a time limit forces you to think faster and builds real competition skills.</div>
+        </li>
+        <li>
+          <div class="num">8</div>
+          <div><strong>Focus on weak areas.</strong> It's comfortable to solve Easy array problems all day. But growth happens when you struggle with graphs, DP, and trees. Track which topics you fail at and target those.</div>
+        </li>
+        <li>
+          <div class="num">9</div>
+          <div><strong>Read editorials even for problems you solved.</strong> The official editorial often has a more elegant or faster approach you didn't think of.</div>
+        </li>
+        <li>
+          <div class="num">10</div>
+          <div><strong>Build a problem-solving journal.</strong> After each problem, write: the pattern used, what you got stuck on, the key insight. Review this weekly. Your future self will thank you.</div>
+        </li>
+      </ul>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: ROADMAP                                           -->
+    <!-- ============================================================ -->
+    <section id="roadmap">
+      <h2>11. Learning Roadmap</h2>
+
+      <p>Follow this order. Each topic builds on the previous one.</p>
+
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <div class="step-num">1</div>
+          <div><span class="step-label">Arrays &amp; Strings</span></div>
+          <div class="step-desc">Foundation of everything</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">2</div>
+          <div><span class="step-label">Hash Maps &amp; Sets</span></div>
+          <div class="step-desc">O(1) lookups change everything</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">3</div>
+          <div><span class="step-label">Two Pointers &amp; Sliding Window</span></div>
+          <div class="step-desc">Key array/string patterns</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">4</div>
+          <div><span class="step-label">Stacks &amp; Queues</span></div>
+          <div class="step-desc">LIFO and FIFO patterns</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">5</div>
+          <div><span class="step-label">Linked Lists</span></div>
+          <div class="step-desc">Pointer manipulation</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">6</div>
+          <div><span class="step-label">Binary Search</span></div>
+          <div class="step-desc">The power of halving</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">7</div>
+          <div><span class="step-label">Sorting Algorithms</span></div>
+          <div class="step-desc">Merge sort, quick sort, and why</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">8</div>
+          <div><span class="step-label">Recursion &amp; Backtracking</span></div>
+          <div class="step-desc">Thinking recursively</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">9</div>
+          <div><span class="step-label">Trees &amp; BST</span></div>
+          <div class="step-desc">Hierarchical data, DFS/BFS on trees</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">10</div>
+          <div><span class="step-label">Heaps &amp; Priority Queues</span></div>
+          <div class="step-desc">Top-K problems, scheduling</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">11</div>
+          <div><span class="step-label">Graphs</span></div>
+          <div class="step-desc">BFS, DFS, shortest paths</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">12</div>
+          <div><span class="step-label">Dynamic Programming</span></div>
+          <div class="step-desc">The boss level -- master this and you're elite</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">13</div>
+          <div><span class="step-label">Advanced: Tries, Union-Find, Segment Trees</span></div>
+          <div class="step-desc">Competition-level data structures</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">14</div>
+          <div><span class="step-label">Grind the PythonWithSean 650</span></div>
+          <div class="step-desc"><a href="leetcode-650.html" style="color: #000000; font-weight: 500;">Start the 650 problem list</a></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: QUIZ                                              -->
+    <!-- ============================================================ -->
+    <section id="quiz">
+      <h2>12. Practice Quiz</h2>
+
+      <div class="quiz">
+        <div class="quiz-q">
+          <h4>Q1: What is the time complexity of accessing an element by index in an array?</h4>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">O(1)</button>
+          <button onclick="this.classList.add('wrong')">O(n)</button>
+          <button onclick="this.classList.add('wrong')">O(log n)</button>
+          <button onclick="this.classList.add('wrong')">O(n²)</button>
+          <div class="explanation">Correct! Arrays use direct address calculation: address = start + index × size. This takes constant time regardless of array size.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q2: You have 1,000,000 sorted numbers and want to find a specific one. What's the best approach?</h4>
+          <button onclick="this.classList.add('wrong')">Linear search -- check each one</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">Binary search -- halve the search space each step</button>
+          <button onclick="this.classList.add('wrong')">Hash map lookup</button>
+          <button onclick="this.classList.add('wrong')">Random search</button>
+          <div class="explanation">Correct! Binary search on sorted data takes O(log n). For 1,000,000 items, that's only about 20 steps. Linear search would take up to 1,000,000 steps.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q3: What is O(n²) in plain English?</h4>
+          <button onclick="this.classList.add('wrong')">The algorithm runs in constant time</button>
+          <button onclick="this.classList.add('wrong')">The time grows linearly with input</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">For each element, you process every other element (nested loop)</button>
+          <button onclick="this.classList.add('wrong')">The time halves with each step</button>
+          <div class="explanation">Correct! O(n²) typically means a nested loop: for each of n elements, you do n operations. n × n = n². For n=10,000, that's 100,000,000 operations.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q4: Which data structure gives O(1) average lookup by key?</h4>
+          <button onclick="this.classList.add('wrong')">Array</button>
+          <button onclick="this.classList.add('wrong')">Linked List</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">Hash Map</button>
+          <button onclick="this.classList.add('wrong')">Binary Search Tree</button>
+          <div class="explanation">Correct! Hash maps use a hash function to convert the key directly into an array index, giving O(1) average time for insert, lookup, and delete.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q5: What is log₂(1,000,000) approximately?</h4>
+          <button onclick="this.classList.add('wrong')">100</button>
+          <button onclick="this.classList.add('wrong')">1000</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">20</button>
+          <button onclick="this.classList.add('wrong')">50</button>
+          <div class="explanation">Correct! 2²⁰ = 1,048,576 ≈ 1,000,000. This means binary search through 1 million items needs only about 20 comparisons.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q6: A stack follows which principle?</h4>
+          <button onclick="this.classList.add('wrong')">First In, First Out (FIFO)</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">Last In, First Out (LIFO)</button>
+          <button onclick="this.classList.add('wrong')">Random access</button>
+          <button onclick="this.classList.add('wrong')">Sorted order</button>
+          <div class="explanation">Correct! Like a stack of plates, the last item placed on top is the first one removed. Push adds to top, pop removes from top.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q7: Why is inserting at the beginning of an array O(n)?</h4>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">Every existing element must shift one position to the right</button>
+          <button onclick="this.classList.add('wrong')">The array must be sorted first</button>
+          <button onclick="this.classList.add('wrong')">Memory needs to be allocated</button>
+          <button onclick="this.classList.add('wrong')">It's actually O(1)</button>
+          <div class="explanation">Correct! To insert at position 0, every element at index 0, 1, 2, ..., n-1 must move to index 1, 2, 3, ..., n. That's n shift operations.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q8: Your code has a loop inside a loop, both going from 0 to n. What's the time complexity?</h4>
+          <button onclick="this.classList.add('wrong')">O(n)</button>
+          <button onclick="this.classList.add('wrong')">O(2n)</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">O(n²)</button>
+          <button onclick="this.classList.add('wrong')">O(n log n)</button>
+          <div class="explanation">Correct! The outer loop runs n times. For each iteration, the inner loop also runs n times. Total: n × n = n².</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q9: Which traversal explores a graph level by level?</h4>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">BFS (Breadth-First Search)</button>
+          <button onclick="this.classList.add('wrong')">DFS (Depth-First Search)</button>
+          <button onclick="this.classList.add('wrong')">Binary Search</button>
+          <button onclick="this.classList.add('wrong')">Inorder Traversal</button>
+          <div class="explanation">Correct! BFS uses a queue to explore all neighbors at the current depth before moving to the next level. Like ripples spreading in water.</div>
+        </div>
+
+        <div class="quiz-q">
+          <h4>Q10: n = 100,000. Which of these is too slow?</h4>
+          <button onclick="this.classList.add('wrong')">O(n) -- 100,000 ops</button>
+          <button onclick="this.classList.add('wrong')">O(n log n) -- ~1,660,964 ops</button>
+          <button onclick="this.classList.add('correct'); this.parentElement.querySelector('.explanation').style.display='block'">O(n²) -- 10,000,000,000 ops</button>
+          <button onclick="this.classList.add('wrong')">O(log n) -- ~17 ops</button>
+          <div class="explanation">Correct! At n=100,000, O(n²) = 10 billion operations. At ~10⁸ operations per second, that's about 100 seconds -- way over typical time limits (1-2 seconds). You need at least O(n log n) for this input size.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Better Dev -- built for self-learners. Now go build the <a href="leetcode-650.html">PythonWithSean 650</a>.</p>
+  </footer>
+
+</body>
+</html>

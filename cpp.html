@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C++ - From Zero to Advanced - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html" class="active">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; C++</div>
+      <h1>C++ -- From Zero to Advanced</h1>
+      <p>Master C++ from the ground up: data types, control flow, pointers, memory management, RAII, the STL, and modern C++ features. Everything you need to write fast, safe, professional code.</p>
+    </div>
+  </div>
+
+  <div class="page-with-toc">
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#why-cpp">1. Why C++?</a>
+        <a href="#hello-world">2. Hello World &amp; Basics</a>
+        <a href="#data-types">3. Data Types</a>
+        <a href="#variables-operators">4. Variables &amp; Operators</a>
+        <a href="#control-flow">5. Control Flow</a>
+        <a href="#functions">6. Functions</a>
+        <a href="#pointers">7. Pointers</a>
+        <a href="#references">8. References</a>
+        <a href="#arrays">9. Arrays</a>
+        <a href="#strings">10. Strings</a>
+        <a href="#vectors">11. Vectors</a>
+        <a href="#memory">12. Memory Management</a>
+        <a href="#raii">13. RAII &amp; Smart Pointers</a>
+        <a href="#classes">14. Structs &amp; Classes</a>
+        <a href="#modern">15. Modern C++ Features</a>
+        <a href="#stl">16. STL Containers</a>
+        <a href="#patterns">17. Common Patterns</a>
+        <a href="#quiz">18. Practice Quiz</a>
+      </div>
+    </aside>
+
+    <div class="content">
+      <div class="container">
+
+        <div class="toc" style="display:none;" id="mobile-toc">
+          <h4>Table of Contents</h4>
+          <a href="#why-cpp">1. Why C++?</a>
+          <a href="#hello-world">2. Hello World &amp; Basics</a>
+          <a href="#data-types">3. Data Types</a>
+          <a href="#variables-operators">4. Variables &amp; Operators</a>
+          <a href="#control-flow">5. Control Flow</a>
+          <a href="#functions">6. Functions</a>
+          <a href="#pointers">7. Pointers</a>
+          <a href="#references">8. References</a>
+          <a href="#arrays">9. Arrays</a>
+          <a href="#strings">10. Strings</a>
+          <a href="#vectors">11. Vectors</a>
+          <a href="#memory">12. Memory Management</a>
+          <a href="#raii">13. RAII &amp; Smart Pointers</a>
+          <a href="#classes">14. Structs &amp; Classes</a>
+          <a href="#modern">15. Modern C++ Features</a>
+          <a href="#stl">16. STL Containers</a>
+          <a href="#patterns">17. Common Patterns</a>
+          <a href="#quiz">18. Practice Quiz</a>
+        </div>
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <section id="why-cpp">
+          <h2>1. Why C++?</h2>
+
+          <p>C++ is one of the most powerful and widely used programming languages in the world. It gives you <strong>direct control over hardware and memory</strong> while still supporting high-level abstractions like classes, templates, and the STL.</p>
+
+          <h3>Where C++ Is Used</h3>
+          <ul>
+            <li><strong>Game engines:</strong> Unreal Engine, Unity's core, virtually every AAA game</li>
+            <li><strong>Operating systems:</strong> Windows, Linux kernel modules, macOS components</li>
+            <li><strong>Browsers:</strong> Chrome, Firefox, Safari are all written in C++</li>
+            <li><strong>Embedded systems:</strong> Robotics, IoT devices, automotive software</li>
+            <li><strong>Finance:</strong> High-frequency trading systems where microseconds matter</li>
+            <li><strong>Competitive programming:</strong> Most competitive programmers use C++ for speed</li>
+            <li><strong>Databases:</strong> MySQL, MongoDB, Redis</li>
+          </ul>
+
+          <h3>C++ vs Other Languages</h3>
+          <table>
+            <tr><th>Feature</th><th>C++</th><th>Python</th><th>Java</th></tr>
+            <tr><td>Speed</td><td>Extremely fast</td><td>Slow (interpreted)</td><td>Fast (JIT compiled)</td></tr>
+            <tr><td>Memory control</td><td>Full manual control</td><td>Garbage collected</td><td>Garbage collected</td></tr>
+            <tr><td>Learning curve</td><td>Steep</td><td>Gentle</td><td>Moderate</td></tr>
+            <tr><td>Use case</td><td>Systems, games, perf-critical</td><td>Scripting, ML, web</td><td>Enterprise, Android</td></tr>
+          </table>
+
+          <h3>How C++ Code Runs</h3>
+          <p>Unlike Python (interpreted line by line), C++ is <strong>compiled</strong>. Your code goes through several steps:</p>
+          <div class="formula-box">
+            Source code (.cpp) --> Preprocessor --> Compiler --> Object file (.o) --> Linker --> Executable
+          </div>
+          <p>You write <code>.cpp</code> files, the compiler (like <code>g++</code>) turns them into machine code, and the linker combines everything into an executable you can run.</p>
+
+          <div class="tip-box">
+            <div class="label">Key Mindset Shift</div>
+            <p>In Python, you think about <em>what</em> to do. In C++, you also think about <em>how memory works</em>. This is harder but gives you much more power and understanding of how computers actually work. Every concept in this page builds toward that understanding.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <section id="hello-world">
+          <h2>2. Hello World and Basic Syntax</h2>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Every C++ program starts with #include and main()</span>
+<span class="keyword">#include</span> &lt;iostream&gt;    <span class="comment">// For input/output</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    std::cout &lt;&lt; <span class="string">"Hello, World!"</span> &lt;&lt; std::endl;
+    <span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// 0 means "everything went fine"</span>
+}
+</code></pre>
+
+          <h3>Breaking It Down</h3>
+          <ul>
+            <li><code>#include &lt;iostream&gt;</code> -- imports the input/output library (like <code>import</code> in Python)</li>
+            <li><code>int main()</code> -- the entry point. Every C++ program must have exactly one <code>main</code> function</li>
+            <li><code>std::cout</code> -- "character output" -- prints to the console. The <code>&lt;&lt;</code> operator sends data to it</li>
+            <li><code>std::endl</code> -- prints a newline and flushes the buffer (you can also use <code>"\n"</code>)</li>
+            <li><code>return 0;</code> -- tells the OS the program succeeded</li>
+            <li>Every statement ends with a <strong>semicolon</strong> <code>;</code></li>
+          </ul>
+
+          <h3>Compiling and Running</h3>
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Compile</span>
+g++ -o hello hello.cpp
+
+<span class="comment"># Run</span>
+./hello
+</code></pre>
+
+          <h3>Reading Input</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;iostream&gt;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> age;
+    std::cout &lt;&lt; <span class="string">"Enter your age: "</span>;
+    std::cin &gt;&gt; age;   <span class="comment">// Read from keyboard</span>
+    std::cout &lt;&lt; <span class="string">"You are "</span> &lt;&lt; age &lt;&lt; <span class="string">" years old."</span> &lt;&lt; std::endl;
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre>
+
+          <div class="tip-box">
+            <div class="label">Using Namespace</div>
+            <p>Tired of typing <code>std::</code> everywhere? Add <code>using namespace std;</code> after your includes. This lets you write <code>cout</code> instead of <code>std::cout</code>. It's fine for learning and competitive programming, but avoided in production code because it can cause name conflicts.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <section id="data-types">
+          <h2>3. Data Types</h2>
+
+          <p>In C++, every variable has a <strong>type</strong> that determines how much memory it uses and what values it can hold. Unlike Python, you must declare the type explicitly (or use <code>auto</code>).</p>
+
+          <h3>Primitive Types</h3>
+          <table>
+            <tr><th>Type</th><th>Size (typical)</th><th>Range</th><th>Example</th></tr>
+            <tr><td><code>bool</code></td><td>1 byte</td><td>true / false</td><td><code>bool alive = true;</code></td></tr>
+            <tr><td><code>char</code></td><td>1 byte</td><td>-128 to 127 (or a character)</td><td><code>char grade = 'A';</code></td></tr>
+            <tr><td><code>int</code></td><td>4 bytes</td><td>-2.1 billion to 2.1 billion</td><td><code>int count = 42;</code></td></tr>
+            <tr><td><code>long long</code></td><td>8 bytes</td><td>-9.2 quintillion to 9.2 quintillion</td><td><code>long long big = 1e18;</code></td></tr>
+            <tr><td><code>float</code></td><td>4 bytes</td><td>~7 decimal digits precision</td><td><code>float pi = 3.14f;</code></td></tr>
+            <tr><td><code>double</code></td><td>8 bytes</td><td>~15 decimal digits precision</td><td><code>double pi = 3.14159265;</code></td></tr>
+            <tr><td><code>void</code></td><td>0</td><td>No value (used for functions)</td><td><code>void doStuff();</code></td></tr>
+          </table>
+
+          <h3>Signed vs Unsigned</h3>
+          <p>By default, integers are <strong>signed</strong> (can be negative). Adding <code>unsigned</code> makes them non-negative but doubles the positive range:</p>
+          <div class="formula-box">
+            <strong>int:</strong> -2,147,483,648 to 2,147,483,647<br>
+            <strong>unsigned int:</strong> 0 to 4,294,967,295
+          </div>
+
+          <h3>Integer Overflow</h3>
+          <div class="warning-box">
+            <div class="label">Danger: Overflow</div>
+            <p>When a value exceeds its type's range, it <strong>wraps around</strong>. This causes bugs that are incredibly hard to find:</p>
+<pre><code><span class="keyword">int</span> x = <span class="number">2147483647</span>;  <span class="comment">// Max int value</span>
+x = x + <span class="number">1</span>;             <span class="comment">// OVERFLOW! x becomes -2147483648</span>
+
+<span class="keyword">unsigned int</span> y = <span class="number">0</span>;
+y = y - <span class="number">1</span>;              <span class="comment">// UNDERFLOW! y becomes 4294967295</span></code></pre>
+            <p>Use <code>long long</code> when numbers might exceed ~2 billion. In competitive programming, always use <code>long long</code> to be safe.</p>
+          </div>
+
+          <h3>Type Casting</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Implicit (automatic) -- compiler does it for you</span>
+<span class="keyword">int</span> a = <span class="number">5</span>;
+<span class="keyword">double</span> b = a;        <span class="comment">// b is 5.0 (safe, no data loss)</span>
+
+<span class="comment">// Implicit (dangerous) -- data loss!</span>
+<span class="keyword">double</span> c = <span class="number">3.99</span>;
+<span class="keyword">int</span> d = c;           <span class="comment">// d is 3 (decimal part is LOST, not rounded)</span>
+
+<span class="comment">// Explicit -- use static_cast to be clear about your intent</span>
+<span class="keyword">double</span> e = <span class="number">9.7</span>;
+<span class="keyword">int</span> f = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(e);  <span class="comment">// f is 9 (explicit, readable)</span>
+</code></pre>
+
+          <h3>auto Keyword</h3>
+          <p>Let the compiler figure out the type for you:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">auto</span> x = <span class="number">42</span>;          <span class="comment">// int</span>
+<span class="keyword">auto</span> y = <span class="number">3.14</span>;        <span class="comment">// double</span>
+<span class="keyword">auto</span> name = std::string(<span class="string">"Sean"</span>);  <span class="comment">// std::string</span>
+</code></pre>
+
+          <h3>const and constexpr</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">const</span> <span class="keyword">int</span> MAX_SIZE = <span class="number">100</span>;       <span class="comment">// Cannot be changed after initialization</span>
+<span class="keyword">constexpr</span> <span class="keyword">int</span> SQUARE = <span class="number">5</span> * <span class="number">5</span>;  <span class="comment">// Computed at COMPILE time (even faster)</span>
+</code></pre>
+          <p><code>const</code> means "don't change this." <code>constexpr</code> means "compute this at compile time, not runtime." Use <code>constexpr</code> whenever the value is truly known at compile time.</p>
+        </section>
+
+        <!-- ==================== SECTION 4 ==================== -->
+        <section id="variables-operators">
+          <h2>4. Variables and Operators</h2>
+
+          <h3>Declaration and Initialization</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x;             <span class="comment">// Declaration (DANGER: x has garbage value!)</span>
+<span class="keyword">int</span> y = <span class="number">10</span>;        <span class="comment">// C-style initialization</span>
+<span class="keyword">int</span> z{<span class="number">10</span>};         <span class="comment">// Brace initialization (preferred in modern C++)</span>
+<span class="keyword">int</span> w(<span class="number">10</span>);         <span class="comment">// Constructor-style initialization</span>
+</code></pre>
+          <div class="warning-box">
+            <div class="label">Always Initialize Variables</div>
+            <p>In C++, uninitialized variables contain <strong>garbage</strong> -- whatever happened to be in that memory location. This is a common source of bugs. Always give variables a starting value.</p>
+          </div>
+
+          <h3>Arithmetic Operators</h3>
+          <table>
+            <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+            <tr><td><code>+</code></td><td>Addition</td><td><code>5 + 3</code></td><td>8</td></tr>
+            <tr><td><code>-</code></td><td>Subtraction</td><td><code>5 - 3</code></td><td>2</td></tr>
+            <tr><td><code>*</code></td><td>Multiplication</td><td><code>5 * 3</code></td><td>15</td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>7 / 2</code></td><td>3 (integer division!)</td></tr>
+            <tr><td><code>%</code></td><td>Modulus (remainder)</td><td><code>7 % 2</code></td><td>1</td></tr>
+            <tr><td><code>++</code></td><td>Increment</td><td><code>x++</code></td><td>x = x + 1</td></tr>
+            <tr><td><code>--</code></td><td>Decrement</td><td><code>x--</code></td><td>x = x - 1</td></tr>
+          </table>
+
+          <div class="warning-box">
+            <div class="label">Integer Division Trap</div>
+            <p><code>7 / 2</code> gives <strong>3</strong>, not 3.5! When both operands are integers, C++ does integer division (truncates). To get 3.5, make at least one operand a double: <code>7.0 / 2</code> or <code>static_cast&lt;double&gt;(7) / 2</code>.</p>
+          </div>
+
+          <h3>Comparison and Logical Operators</h3>
+          <table>
+            <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+            <tr><td><code>==</code></td><td>Equal to</td><td><code>x == 5</code></td></tr>
+            <tr><td><code>!=</code></td><td>Not equal to</td><td><code>x != 5</code></td></tr>
+            <tr><td><code>&lt;</code>, <code>&gt;</code></td><td>Less/greater than</td><td><code>x &lt; 10</code></td></tr>
+            <tr><td><code>&lt;=</code>, <code>&gt;=</code></td><td>Less/greater or equal</td><td><code>x &gt;= 0</code></td></tr>
+            <tr><td><code>&amp;&amp;</code></td><td>Logical AND</td><td><code>x &gt; 0 &amp;&amp; x &lt; 10</code></td></tr>
+            <tr><td><code>||</code></td><td>Logical OR</td><td><code>x == 0 || x == 1</code></td></tr>
+            <tr><td><code>!</code></td><td>Logical NOT</td><td><code>!done</code></td></tr>
+          </table>
+
+          <h3>Bitwise Operators</h3>
+          <table>
+            <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+            <tr><td><code>&amp;</code></td><td>AND</td><td><code>5 &amp; 3</code> = 1</td></tr>
+            <tr><td><code>|</code></td><td>OR</td><td><code>5 | 3</code> = 7</td></tr>
+            <tr><td><code>^</code></td><td>XOR</td><td><code>5 ^ 3</code> = 6</td></tr>
+            <tr><td><code>~</code></td><td>NOT (flip bits)</td><td><code>~5</code></td></tr>
+            <tr><td><code>&lt;&lt;</code></td><td>Left shift</td><td><code>1 &lt;&lt; 3</code> = 8</td></tr>
+            <tr><td><code>&gt;&gt;</code></td><td>Right shift</td><td><code>8 &gt;&gt; 2</code> = 2</td></tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">Bit Shift Trick</div>
+            <p><code>1 &lt;&lt; n</code> is the fastest way to compute 2<sup>n</sup>. And <code>x &gt;&gt; 1</code> is the fastest way to divide by 2. You'll see these everywhere in competitive programming and systems code.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 5 ==================== -->
+        <section id="control-flow">
+          <h2>5. Control Flow</h2>
+
+          <h3>if / else if / else</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> score = <span class="number">85</span>;
+
+<span class="keyword">if</span> (score &gt;= <span class="number">90</span>) {
+    std::cout &lt;&lt; <span class="string">"A"</span>;
+} <span class="keyword">else if</span> (score &gt;= <span class="number">80</span>) {
+    std::cout &lt;&lt; <span class="string">"B"</span>;
+} <span class="keyword">else if</span> (score &gt;= <span class="number">70</span>) {
+    std::cout &lt;&lt; <span class="string">"C"</span>;
+} <span class="keyword">else</span> {
+    std::cout &lt;&lt; <span class="string">"F"</span>;
+}
+</code></pre>
+
+          <h3>Ternary Operator</h3>
+          <p>A one-line if/else:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> age = <span class="number">20</span>;
+std::string status = (age &gt;= <span class="number">18</span>) ? <span class="string">"adult"</span> : <span class="string">"minor"</span>;
+</code></pre>
+
+          <h3>switch Statement</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">char</span> grade = <span class="string">'B'</span>;
+<span class="keyword">switch</span> (grade) {
+    <span class="keyword">case</span> <span class="string">'A'</span>: std::cout &lt;&lt; <span class="string">"Excellent"</span>; <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'B'</span>: std::cout &lt;&lt; <span class="string">"Good"</span>;      <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'C'</span>: std::cout &lt;&lt; <span class="string">"Average"</span>;   <span class="keyword">break</span>;
+    <span class="keyword">default</span>:  std::cout &lt;&lt; <span class="string">"Invalid"</span>;   <span class="keyword">break</span>;
+}
+</code></pre>
+
+          <div class="warning-box">
+            <div class="label">Don't Forget break!</div>
+            <p>Without <code>break</code>, execution "falls through" to the next case. This is a classic C++ bug. Every case should end with <code>break</code> unless you intentionally want fall-through.</p>
+          </div>
+
+          <h3>for Loop</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Classic for loop</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+    std::cout &lt;&lt; i &lt;&lt; <span class="string">" "</span>;  <span class="comment">// 0 1 2 3 4</span>
+}
+
+<span class="comment">// Range-based for loop (modern C++)</span>
+std::vector&lt;<span class="keyword">int</span>&gt; nums = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>};
+<span class="keyword">for</span> (<span class="keyword">int</span> n : nums) {
+    std::cout &lt;&lt; n &lt;&lt; <span class="string">" "</span>;  <span class="comment">// 10 20 30</span>
+}
+</code></pre>
+
+          <h3>while and do-while</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// while -- checks condition BEFORE each iteration</span>
+<span class="keyword">int</span> i = <span class="number">0</span>;
+<span class="keyword">while</span> (i &lt; <span class="number">5</span>) {
+    std::cout &lt;&lt; i &lt;&lt; <span class="string">" "</span>;
+    i++;
+}
+
+<span class="comment">// do-while -- runs at least ONCE, checks condition AFTER</span>
+<span class="keyword">int</span> input;
+<span class="keyword">do</span> {
+    std::cout &lt;&lt; <span class="string">"Enter a positive number: "</span>;
+    std::cin &gt;&gt; input;
+} <span class="keyword">while</span> (input &lt;= <span class="number">0</span>);
+</code></pre>
+
+          <h3>break and continue</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {
+    <span class="keyword">if</span> (i == <span class="number">5</span>) <span class="keyword">break</span>;      <span class="comment">// Exit the loop entirely</span>
+    <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) <span class="keyword">continue</span>; <span class="comment">// Skip to next iteration</span>
+    std::cout &lt;&lt; i &lt;&lt; <span class="string">" "</span>;    <span class="comment">// Prints: 1 3</span>
+}
+</code></pre>
+        </section>
+
+        <!-- ==================== SECTION 6 ==================== -->
+        <section id="functions">
+          <h2>6. Functions</h2>
+
+          <h3>Basic Syntax</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Declaration (prototype) -- tells compiler this function exists</span>
+<span class="keyword">int</span> <span class="function">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b);
+
+<span class="comment">// Definition -- the actual implementation</span>
+<span class="keyword">int</span> <span class="function">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    <span class="keyword">return</span> a + b;
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">int</span> result = <span class="function">add</span>(<span class="number">3</span>, <span class="number">4</span>);  <span class="comment">// result = 7</span>
+</code></pre>
+
+          <h3>Pass by Value vs Pass by Reference</h3>
+          <p>This is one of the most important concepts in C++:</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Pass by VALUE -- function gets a COPY</span>
+<span class="keyword">void</span> <span class="function">doubleIt</span>(<span class="keyword">int</span> x) {
+    x = x * <span class="number">2</span>;  <span class="comment">// Only changes the local copy!</span>
+}
+
+<span class="keyword">int</span> num = <span class="number">5</span>;
+<span class="function">doubleIt</span>(num);
+<span class="comment">// num is STILL 5! The function only modified its own copy.</span>
+
+<span class="comment">// Pass by REFERENCE -- function gets the ORIGINAL variable</span>
+<span class="keyword">void</span> <span class="function">doubleIt</span>(<span class="keyword">int</span>&amp; x) {  <span class="comment">// Note the &amp;</span>
+    x = x * <span class="number">2</span>;  <span class="comment">// Changes the original!</span>
+}
+
+<span class="keyword">int</span> num = <span class="number">5</span>;
+<span class="function">doubleIt</span>(num);
+<span class="comment">// num is now 10!</span>
+</code></pre>
+
+          <div class="tip-box">
+            <div class="label">When to Use Which</div>
+            <p><strong>Pass by value:</strong> When the function shouldn't modify the original (small types like int, double).</p>
+            <p><strong>Pass by reference:</strong> When you want to modify the original, or when copying is expensive (large objects).</p>
+            <p><strong>Pass by const reference:</strong> When you don't want to modify but also don't want to copy: <code>void print(const string&amp; s)</code>. This is the go-to for strings, vectors, and any large object.</p>
+          </div>
+
+          <h3>Function Overloading</h3>
+          <p>C++ lets you have multiple functions with the same name but different parameter types:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span>    <span class="function">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b)       { <span class="keyword">return</span> a + b; }
+<span class="keyword">double</span> <span class="function">add</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b) { <span class="keyword">return</span> a + b; }
+
+<span class="function">add</span>(<span class="number">3</span>, <span class="number">4</span>);       <span class="comment">// Calls int version, returns 7</span>
+<span class="function">add</span>(<span class="number">3.0</span>, <span class="number">4.0</span>);   <span class="comment">// Calls double version, returns 7.0</span>
+</code></pre>
+
+          <h3>Default Arguments</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">void</span> <span class="function">greet</span>(std::string name = <span class="string">"World"</span>) {
+    std::cout &lt;&lt; <span class="string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="string">"!"</span> &lt;&lt; std::endl;
+}
+
+<span class="function">greet</span>(<span class="string">"Sean"</span>);   <span class="comment">// Hello, Sean!</span>
+<span class="function">greet</span>();          <span class="comment">// Hello, World!</span>
+</code></pre>
+        </section>
+
+        <!-- ==================== SECTION 7 ==================== -->
+        <section id="pointers">
+          <h2>7. Pointers (The Big One)</h2>
+
+          <p>Pointers are C++'s most powerful and most feared feature. But they're not actually that hard once you understand the mental model.</p>
+
+          <h3>What Is a Pointer?</h3>
+          <p>Think of computer memory as a long street of houses. Each house has an <strong>address</strong> (a number) and a <strong>value</strong> (what's inside). A <strong>pointer</strong> is a variable that stores the address of another variable -- like writing down someone's house number on a piece of paper.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x = <span class="number">42</span>;        <span class="comment">// A regular variable (a house with 42 inside)</span>
+<span class="keyword">int</span>* ptr = &amp;x;     <span class="comment">// A pointer to x (stores x's address)</span>
+
+std::cout &lt;&lt; x;      <span class="comment">// 42 (the value)</span>
+std::cout &lt;&lt; &amp;x;     <span class="comment">// 0x7fff5a2 (x's memory address)</span>
+std::cout &lt;&lt; ptr;    <span class="comment">// 0x7fff5a2 (same address -- ptr stores it)</span>
+std::cout &lt;&lt; *ptr;   <span class="comment">// 42 (dereference -- "go to the address and read the value")</span>
+</code></pre>
+
+          <div class="formula-box">
+            <strong>&amp;x</strong> = "address of x" (give me the house number)<br>
+            <strong>*ptr</strong> = "value at address stored in ptr" (go to that house and look inside)<br>
+            <strong>int*</strong> = "pointer to int" (a variable that holds an address of an int)
+          </div>
+
+          <h3>Memory Diagram</h3>
+          <div class="memory-diagram">
+Stack Memory:
++----------+---------+------------+
+| Variable | Value   | Address    |
++----------+---------+------------+
+| x        | 42      | 0x1000     |
+| ptr      | 0x1000  | 0x1008     |  <-- ptr stores x's address
++----------+---------+------------+
+
+*ptr means: "go to address 0x1000 and read what's there" --> 42
+          </div>
+
+          <h3>Modifying Through a Pointer</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x = <span class="number">42</span>;
+<span class="keyword">int</span>* ptr = &amp;x;
+
+*ptr = <span class="number">100</span>;        <span class="comment">// Change the value AT the address ptr points to</span>
+std::cout &lt;&lt; x;    <span class="comment">// 100 -- x changed because ptr pointed at it!</span>
+</code></pre>
+
+          <h3>nullptr</h3>
+          <p>A pointer that points to "nothing" -- always initialize pointers to <code>nullptr</code> if you don't have an address yet:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span>* ptr = <span class="keyword">nullptr</span>;  <span class="comment">// Points to nothing (safe)</span>
+<span class="comment">// *ptr would CRASH (segfault) -- never dereference nullptr!</span>
+
+<span class="keyword">if</span> (ptr != <span class="keyword">nullptr</span>) {
+    std::cout &lt;&lt; *ptr;  <span class="comment">// Only dereference if not null</span>
+}
+</code></pre>
+
+          <h3>Pointer Arithmetic</h3>
+          <p>Adding to a pointer moves it forward by the size of the type it points to:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> arr[] = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>};
+<span class="keyword">int</span>* p = arr;       <span class="comment">// Points to arr[0]</span>
+
+std::cout &lt;&lt; *p;       <span class="comment">// 10</span>
+std::cout &lt;&lt; *(p+<span class="number">1</span>);   <span class="comment">// 20 (next int, 4 bytes forward)</span>
+std::cout &lt;&lt; *(p+<span class="number">2</span>);   <span class="comment">// 30</span>
+</code></pre>
+
+          <h3>Pointer to Pointer (int**)</h3>
+          <p>A pointer can also point to another pointer. Think of it as: "I have a note with an address on it, and at that address there's another note with another address."</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x = <span class="number">42</span>;
+<span class="keyword">int</span>* p = &amp;x;       <span class="comment">// p points to x</span>
+<span class="keyword">int</span>** pp = &amp;p;     <span class="comment">// pp points to p (pointer to pointer)</span>
+
+std::cout &lt;&lt; x;     <span class="comment">// 42</span>
+std::cout &lt;&lt; *p;    <span class="comment">// 42 (dereference once: go to x)</span>
+std::cout &lt;&lt; **pp;  <span class="comment">// 42 (dereference twice: go to p, then go to x)</span>
+</code></pre>
+
+          <div class="memory-diagram">
++----------+---------+------------+
+| Variable | Value   | Address    |
++----------+---------+------------+
+| x        | 42      | 0x1000     |
+| p        | 0x1000  | 0x1008     |  <-- p stores &x
+| pp       | 0x1008  | 0x1010     |  <-- pp stores &p
++----------+---------+------------+
+
+ pp --> p --> x
+ **pp: go to pp(0x1008), read p(0x1000), go there, read 42
+          </div>
+
+          <h3>Pointer to Pointer to Pointer (int***)</h3>
+          <p>Yes, you can go deeper. Three levels of indirection:</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x = <span class="number">42</span>;
+<span class="keyword">int</span>* p = &amp;x;        <span class="comment">// Level 1: points to x</span>
+<span class="keyword">int</span>** pp = &amp;p;      <span class="comment">// Level 2: points to p</span>
+<span class="keyword">int</span>*** ppp = &amp;pp;   <span class="comment">// Level 3: points to pp</span>
+
+std::cout &lt;&lt; ***ppp;   <span class="comment">// 42 (follow three arrows to reach x)</span>
+</code></pre>
+
+          <div class="memory-diagram">
++----------+---------+------------+
+| Variable | Value   | Address    |
++----------+---------+------------+
+| x        | 42      | 0x1000     |
+| p        | 0x1000  | 0x1008     |
+| pp       | 0x1008  | 0x1010     |
+| ppp      | 0x1010  | 0x1018     |
++----------+---------+------------+
+
+ ppp --> pp --> p --> x
+ ***ppp = 42
+          </div>
+
+          <div class="tip-box">
+            <div class="label">When Would You Actually Use Multi-Level Pointers?</div>
+            <ul>
+              <li><strong>int** :</strong> Very common -- used for 2D arrays, arrays of strings in C, and functions that need to modify a pointer</li>
+              <li><strong>int*** :</strong> Rare in practice -- sometimes 3D arrays or complex data structures. If you find yourself here, consider using vectors or classes instead</li>
+              <li><strong>int**** :</strong> Almost never. If you need this, your design probably needs rethinking</li>
+            </ul>
+          </div>
+
+          <h3>Common Pointer Pitfalls</h3>
+          <div class="warning-box">
+            <div class="label">Dangers to Watch For</div>
+            <ul>
+              <li><strong>Dangling pointer:</strong> Points to memory that's been freed. Dereferencing it is undefined behavior (crash or garbage).</li>
+              <li><strong>Wild pointer:</strong> Never initialized. Contains a random address. Always initialize to <code>nullptr</code>.</li>
+              <li><strong>Memory leak:</strong> You <code>new</code> something but never <code>delete</code> it. The memory is gone until the program ends.</li>
+              <li><strong>Double free:</strong> Deleting the same memory twice. Causes crashes.</li>
+            </ul>
+            <p>Modern C++ largely solves these with smart pointers (Section 13).</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 8 ==================== -->
+        <section id="references">
+          <h2>8. References</h2>
+
+          <p>A <strong>reference</strong> is an alias (another name) for an existing variable. Unlike a pointer, it can't be null and can't be reassigned.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> x = <span class="number">42</span>;
+<span class="keyword">int</span>&amp; ref = x;    <span class="comment">// ref IS x (another name for the same memory)</span>
+
+ref = <span class="number">100</span>;
+std::cout &lt;&lt; x;  <span class="comment">// 100 -- changing ref changes x</span>
+</code></pre>
+
+          <h3>References vs Pointers</h3>
+          <table>
+            <tr><th>Feature</th><th>Reference</th><th>Pointer</th></tr>
+            <tr><td>Syntax</td><td><code>int&amp; ref = x;</code></td><td><code>int* ptr = &amp;x;</code></td></tr>
+            <tr><td>Can be null?</td><td>No</td><td>Yes (nullptr)</td></tr>
+            <tr><td>Can be reassigned?</td><td>No (always refers to same variable)</td><td>Yes (can point to different things)</td></tr>
+            <tr><td>Must be initialized?</td><td>Yes</td><td>No (but should be)</td></tr>
+            <tr><td>Dereference needed?</td><td>No (use directly)</td><td>Yes (*ptr)</td></tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">Rule of Thumb</div>
+            <p>Use <strong>references</strong> when you can, <strong>pointers</strong> when you must. References are safer and cleaner. Use pointers when you need nullptr, pointer arithmetic, or dynamic memory.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 9 ==================== -->
+        <section id="arrays">
+          <h2>9. Arrays</h2>
+
+          <h3>C-Style Arrays</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> arr[<span class="number">5</span>] = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>};
+
+std::cout &lt;&lt; arr[<span class="number">0</span>];    <span class="comment">// 10 (0-indexed!)</span>
+std::cout &lt;&lt; arr[<span class="number">4</span>];    <span class="comment">// 50</span>
+<span class="comment">// arr[5] -- OUT OF BOUNDS! No error, just undefined behavior (scary)</span>
+</code></pre>
+
+          <div class="warning-box">
+            <div class="label">No Bounds Checking</div>
+            <p>C-style arrays do NOT check if your index is valid. <code>arr[100]</code> won't give an error -- it'll just read random memory. This is a major source of security vulnerabilities. Prefer <code>std::vector</code> or <code>std::array</code> instead.</p>
+          </div>
+
+          <h3>std::array (Modern C++)</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;array&gt;
+
+std::array&lt;<span class="keyword">int</span>, <span class="number">5</span>&gt; arr = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>};
+std::cout &lt;&lt; arr.<span class="function">size</span>();    <span class="comment">// 5 (knows its own size!)</span>
+std::cout &lt;&lt; arr.<span class="function">at</span>(<span class="number">2</span>);     <span class="comment">// 30 (bounds-checked -- throws exception if out of range)</span>
+</code></pre>
+
+          <h3>Array Decay to Pointer</h3>
+          <p>When you pass a C-style array to a function, it "decays" into a pointer to its first element and loses its size information:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">void</span> <span class="function">printArray</span>(<span class="keyword">int</span>* arr, <span class="keyword">int</span> size) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)
+        std::cout &lt;&lt; arr[i] &lt;&lt; <span class="string">" "</span>;
+}
+<span class="comment">// You must pass size separately -- the array forgets it!</span>
+</code></pre>
+          <p>This is one more reason to prefer <code>std::vector</code>.</p>
+        </section>
+
+        <!-- ==================== SECTION 10 ==================== -->
+        <section id="strings">
+          <h2>10. Strings</h2>
+
+          <h3>C-Strings (The Old Way)</h3>
+          <p>A C-string is just a <code>char</code> array ending with a null character <code>'\0'</code>:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">char</span> name[] = <span class="string">"Hello"</span>;  <span class="comment">// Actually stores: H e l l o \0</span>
+<span class="comment">// Dangerous: no bounds checking, must manage \0 yourself</span>
+</code></pre>
+
+          <div class="warning-box">
+            <div class="label">Avoid C-Strings</div>
+            <p>C-strings are error-prone (buffer overflows, missing null terminators). Use <code>std::string</code> for everything unless you're interfacing with C code.</p>
+          </div>
+
+          <h3>std::string (The Right Way)</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;string&gt;
+
+std::string s1 = <span class="string">"Hello"</span>;
+std::string s2 = <span class="string">"World"</span>;
+
+<span class="comment">// Concatenation</span>
+std::string s3 = s1 + <span class="string">" "</span> + s2;  <span class="comment">// "Hello World"</span>
+
+<span class="comment">// Length</span>
+std::cout &lt;&lt; s3.<span class="function">size</span>();      <span class="comment">// 11</span>
+std::cout &lt;&lt; s3.<span class="function">length</span>();    <span class="comment">// 11 (same thing)</span>
+
+<span class="comment">// Access characters</span>
+std::cout &lt;&lt; s3[<span class="number">0</span>];          <span class="comment">// 'H'</span>
+std::cout &lt;&lt; s3.<span class="function">at</span>(<span class="number">4</span>);       <span class="comment">// 'o' (bounds-checked)</span>
+
+<span class="comment">// Comparison (works with == unlike C!)</span>
+<span class="keyword">if</span> (s1 == <span class="string">"Hello"</span>) { <span class="comment">/* true */</span> }
+
+<span class="comment">// Substring</span>
+std::string sub = s3.<span class="function">substr</span>(<span class="number">0</span>, <span class="number">5</span>);  <span class="comment">// "Hello"</span>
+
+<span class="comment">// Find</span>
+<span class="keyword">size_t</span> pos = s3.<span class="function">find</span>(<span class="string">"World"</span>);  <span class="comment">// 6</span>
+<span class="keyword">if</span> (pos != std::string::npos) { <span class="comment">/* found */</span> }
+</code></pre>
+
+          <h3>Useful String Methods</h3>
+          <table>
+            <tr><th>Method</th><th>What It Does</th><th>Example</th></tr>
+            <tr><td><code>.size()</code> / <code>.length()</code></td><td>Number of characters</td><td><code>s.size()</code></td></tr>
+            <tr><td><code>.empty()</code></td><td>True if string is ""</td><td><code>s.empty()</code></td></tr>
+            <tr><td><code>.substr(pos, len)</code></td><td>Extract substring</td><td><code>s.substr(0, 5)</code></td></tr>
+            <tr><td><code>.find(str)</code></td><td>Find position of substring</td><td><code>s.find("hello")</code></td></tr>
+            <tr><td><code>.push_back(c)</code></td><td>Append a character</td><td><code>s.push_back('!')</code></td></tr>
+            <tr><td><code>.pop_back()</code></td><td>Remove last character</td><td><code>s.pop_back()</code></td></tr>
+            <tr><td><code>.append(str)</code></td><td>Append a string</td><td><code>s.append(" end")</code></td></tr>
+            <tr><td><code>.erase(pos, len)</code></td><td>Remove characters</td><td><code>s.erase(0, 3)</code></td></tr>
+            <tr><td><code>.c_str()</code></td><td>Get C-string version</td><td><code>s.c_str()</code></td></tr>
+          </table>
+
+          <h3>String Iteration</h3>
+<pre><code><span class="lang-label">C++</span>
+std::string word = <span class="string">"Hello"</span>;
+
+<span class="comment">// By index</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; word.<span class="function">size</span>(); i++)
+    std::cout &lt;&lt; word[i];
+
+<span class="comment">// Range-based (modern, preferred)</span>
+<span class="keyword">for</span> (<span class="keyword">char</span> c : word)
+    std::cout &lt;&lt; c;
+
+<span class="comment">// By reference (if modifying)</span>
+<span class="keyword">for</span> (<span class="keyword">char</span>&amp; c : word)
+    c = <span class="function">toupper</span>(c);  <span class="comment">// Uppercase in-place</span>
+</code></pre>
+
+          <h3>Reading Strings with Spaces</h3>
+<pre><code><span class="lang-label">C++</span>
+std::string name;
+std::cin &gt;&gt; name;              <span class="comment">// Reads only ONE word (stops at space)</span>
+std::getline(std::cin, name);  <span class="comment">// Reads entire line including spaces</span>
+</code></pre>
+        </section>
+
+        <!-- ==================== SECTION 11 ==================== -->
+        <section id="vectors">
+          <h2>11. Vectors (std::vector)</h2>
+
+          <p>Vectors are <strong>dynamic arrays</strong> -- they grow and shrink automatically. They're the most commonly used container in C++ and should be your default choice over raw arrays.</p>
+
+          <h3>Why Vectors Over Arrays?</h3>
+          <ul>
+            <li>Dynamic size -- no need to know the size at compile time</li>
+            <li>Knows its own size (<code>.size()</code>)</li>
+            <li>Bounds checking with <code>.at()</code></li>
+            <li>Automatic memory management (no manual new/delete)</li>
+          </ul>
+
+          <h3>Creating and Using Vectors</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;vector&gt;
+
+<span class="comment">// Create</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v1;                    <span class="comment">// Empty vector</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v2 = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};  <span class="comment">// Initialized</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v3(<span class="number">10</span>, <span class="number">0</span>);              <span class="comment">// 10 elements, all 0</span>
+
+<span class="comment">// Add elements</span>
+v1.<span class="function">push_back</span>(<span class="number">10</span>);   <span class="comment">// [10]</span>
+v1.<span class="function">push_back</span>(<span class="number">20</span>);   <span class="comment">// [10, 20]</span>
+v1.<span class="function">push_back</span>(<span class="number">30</span>);   <span class="comment">// [10, 20, 30]</span>
+
+<span class="comment">// Remove last element</span>
+v1.<span class="function">pop_back</span>();       <span class="comment">// [10, 20]</span>
+
+<span class="comment">// Access</span>
+std::cout &lt;&lt; v2[<span class="number">0</span>];      <span class="comment">// 1 (no bounds check)</span>
+std::cout &lt;&lt; v2.<span class="function">at</span>(<span class="number">0</span>);   <span class="comment">// 1 (bounds checked -- throws if invalid)</span>
+std::cout &lt;&lt; v2.<span class="function">front</span>(); <span class="comment">// 1 (first element)</span>
+std::cout &lt;&lt; v2.<span class="function">back</span>();  <span class="comment">// 5 (last element)</span>
+
+<span class="comment">// Size</span>
+std::cout &lt;&lt; v2.<span class="function">size</span>();  <span class="comment">// 5</span>
+std::cout &lt;&lt; v2.<span class="function">empty</span>(); <span class="comment">// false</span>
+</code></pre>
+
+          <h3>Iterating Over Vectors</h3>
+<pre><code><span class="lang-label">C++</span>
+std::vector&lt;<span class="keyword">int</span>&gt; nums = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>};
+
+<span class="comment">// Method 1: Index-based</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="function">size</span>(); i++)
+    std::cout &lt;&lt; nums[i] &lt;&lt; <span class="string">" "</span>;
+
+<span class="comment">// Method 2: Range-based (preferred)</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> n : nums)
+    std::cout &lt;&lt; n &lt;&lt; <span class="string">" "</span>;
+
+<span class="comment">// Method 3: Range-based by reference (can modify)</span>
+<span class="keyword">for</span> (<span class="keyword">int</span>&amp; n : nums)
+    n *= <span class="number">2</span>;  <span class="comment">// Doubles every element in-place</span>
+</code></pre>
+
+          <h3>2D Vectors</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Create a 3x4 grid initialized to 0</span>
+std::vector&lt;std::vector&lt;<span class="keyword">int</span>&gt;&gt; grid(<span class="number">3</span>, std::vector&lt;<span class="keyword">int</span>&gt;(<span class="number">4</span>, <span class="number">0</span>));
+
+grid[<span class="number">1</span>][<span class="number">2</span>] = <span class="number">42</span>;  <span class="comment">// Row 1, Column 2</span>
+
+<span class="comment">// Iterate 2D</span>
+<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; row : grid) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> cell : row)
+        std::cout &lt;&lt; cell &lt;&lt; <span class="string">" "</span>;
+    std::cout &lt;&lt; <span class="string">"\n"</span>;
+}
+</code></pre>
+
+          <h3>Common Vector Operations</h3>
+          <table>
+            <tr><th>Operation</th><th>Code</th><th>Time</th></tr>
+            <tr><td>Add to end</td><td><code>v.push_back(x)</code></td><td>O(1) amortized</td></tr>
+            <tr><td>Remove from end</td><td><code>v.pop_back()</code></td><td>O(1)</td></tr>
+            <tr><td>Access by index</td><td><code>v[i]</code> or <code>v.at(i)</code></td><td>O(1)</td></tr>
+            <tr><td>Insert at position</td><td><code>v.insert(v.begin()+i, x)</code></td><td>O(n)</td></tr>
+            <tr><td>Erase at position</td><td><code>v.erase(v.begin()+i)</code></td><td>O(n)</td></tr>
+            <tr><td>Size</td><td><code>v.size()</code></td><td>O(1)</td></tr>
+            <tr><td>Clear all</td><td><code>v.clear()</code></td><td>O(n)</td></tr>
+            <tr><td>Sort</td><td><code>sort(v.begin(), v.end())</code></td><td>O(n log n)</td></tr>
+            <tr><td>Reverse</td><td><code>reverse(v.begin(), v.end())</code></td><td>O(n)</td></tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">reserve() for Performance</div>
+            <p>If you know roughly how many elements you'll add, call <code>v.reserve(n)</code> first. This pre-allocates memory so the vector doesn't have to resize (copy everything) multiple times as it grows.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 12 ==================== -->
+        <section id="memory">
+          <h2>12. Memory Management</h2>
+
+          <h3>Stack vs Heap</h3>
+          <p>C++ uses two areas of memory:</p>
+
+          <div class="memory-diagram">
++---------------------------+
+|        STACK              |  Fast, automatic, limited size
+|  Local variables          |  Freed when function returns
+|  Function parameters      |  int x = 5; (lives here)
++---------------------------+
+|                           |
+|        HEAP               |  Slower, manual, large
+|  Dynamically allocated    |  Freed when YOU say so
+|  new / delete             |  int* p = new int(5);
++---------------------------+
+          </div>
+
+          <table>
+            <tr><th>Feature</th><th>Stack</th><th>Heap</th></tr>
+            <tr><td>Speed</td><td>Very fast</td><td>Slower</td></tr>
+            <tr><td>Size</td><td>Small (~1-8 MB)</td><td>Large (GBs)</td></tr>
+            <tr><td>Lifetime</td><td>Automatic (scope-based)</td><td>Manual (you control)</td></tr>
+            <tr><td>Syntax</td><td><code>int x = 5;</code></td><td><code>int* p = new int(5);</code></td></tr>
+          </table>
+
+          <h3>new and delete</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Allocate single value on heap</span>
+<span class="keyword">int</span>* p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>);
+std::cout &lt;&lt; *p;    <span class="comment">// 42</span>
+<span class="keyword">delete</span> p;            <span class="comment">// Free the memory</span>
+p = <span class="keyword">nullptr</span>;         <span class="comment">// Good practice: avoid dangling pointer</span>
+
+<span class="comment">// Allocate array on heap</span>
+<span class="keyword">int</span>* arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>]{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+std::cout &lt;&lt; arr[<span class="number">2</span>];  <span class="comment">// 3</span>
+<span class="keyword">delete</span>[] arr;         <span class="comment">// Free array (note the []!)</span>
+</code></pre>
+
+          <div class="warning-box">
+            <div class="label">Memory Leak</div>
+            <p>If you <code>new</code> something but never <code>delete</code> it, that memory is leaked -- it can't be reused until the program exits. In a long-running server, this means your program slowly eats all available RAM and crashes.</p>
+<pre><code><span class="keyword">void</span> <span class="function">leak</span>() {
+    <span class="keyword">int</span>* p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>);
+    <span class="comment">// Function returns without delete -- memory leaked!</span>
+}</code></pre>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Modern Rule</div>
+            <p>In modern C++, you should <strong>almost never use raw new/delete</strong>. Use smart pointers (next section) or containers like <code>std::vector</code> that manage memory for you. If you never write <code>new</code>, you can never leak.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 13 ==================== -->
+        <section id="raii">
+          <h2>13. RAII and Smart Pointers</h2>
+
+          <p><strong>RAII</strong> stands for <strong>Resource Acquisition Is Initialization</strong>. It's the most important idiom in C++ and the reason C++ can be both low-level and safe.</p>
+
+          <h3>The Core Idea</h3>
+          <p>RAII means: <strong>tie the lifetime of a resource to the lifetime of an object.</strong></p>
+          <ul>
+            <li>When the object is <strong>created</strong> (constructor), it <strong>acquires</strong> the resource (memory, file handle, lock, etc.)</li>
+            <li>When the object is <strong>destroyed</strong> (destructor), it <strong>releases</strong> the resource</li>
+            <li>Since C++ guarantees destructors run when objects go out of scope, the resource is <strong>always</strong> cleaned up</li>
+          </ul>
+
+          <div class="example-box">
+            <div class="label">RAII in Action -- File Handling</div>
+<pre><code><span class="comment">// BAD: Manual resource management (C-style)</span>
+<span class="keyword">void</span> <span class="function">readFile</span>() {
+    FILE* f = fopen(<span class="string">"data.txt"</span>, <span class="string">"r"</span>);
+    <span class="comment">// ... what if an exception happens here?</span>
+    <span class="comment">// fclose(f) never runs -- resource leaked!</span>
+    fclose(f);
+}
+
+<span class="comment">// GOOD: RAII (C++ style)</span>
+<span class="keyword">void</span> <span class="function">readFile</span>() {
+    std::ifstream file(<span class="string">"data.txt"</span>);  <span class="comment">// Constructor opens file</span>
+    <span class="comment">// ... use file ...</span>
+}  <span class="comment">// Destructor automatically closes file, even if exception!</span></code></pre>
+          </div>
+
+          <h3>Smart Pointers</h3>
+          <p>Smart pointers are the RAII solution for heap memory. They wrap a raw pointer and automatically call <code>delete</code> when they go out of scope.</p>
+
+          <h3>unique_ptr (Sole Ownership)</h3>
+          <p>Exactly <strong>one</strong> owner. When the unique_ptr goes out of scope, it deletes the memory. Can't be copied, only moved.</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;memory&gt;
+
+<span class="comment">// Create</span>
+std::unique_ptr&lt;<span class="keyword">int</span>&gt; p = std::make_unique&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);
+std::cout &lt;&lt; *p;  <span class="comment">// 42</span>
+
+<span class="comment">// Transfer ownership (move)</span>
+std::unique_ptr&lt;<span class="keyword">int</span>&gt; p2 = std::move(p);
+<span class="comment">// p is now nullptr, p2 owns the memory</span>
+
+<span class="comment">// Automatically deleted when p2 goes out of scope</span>
+<span class="comment">// No delete needed! No leaks possible!</span>
+</code></pre>
+
+          <h3>shared_ptr (Shared Ownership)</h3>
+          <p>Multiple owners. Uses <strong>reference counting</strong>. Memory is freed when the LAST shared_ptr is destroyed.</p>
+<pre><code><span class="lang-label">C++</span>
+std::shared_ptr&lt;<span class="keyword">int</span>&gt; p1 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);
+std::shared_ptr&lt;<span class="keyword">int</span>&gt; p2 = p1;  <span class="comment">// Both point to same memory</span>
+
+std::cout &lt;&lt; p1.<span class="function">use_count</span>();  <span class="comment">// 2 (two owners)</span>
+
+p1.<span class="function">reset</span>();  <span class="comment">// p1 releases ownership</span>
+std::cout &lt;&lt; p2.<span class="function">use_count</span>();  <span class="comment">// 1</span>
+<span class="comment">// Memory freed when p2 is destroyed (last owner)</span>
+</code></pre>
+
+          <h3>weak_ptr (Non-Owning Observer)</h3>
+          <p>Watches a shared_ptr without owning it. Prevents circular references.</p>
+<pre><code><span class="lang-label">C++</span>
+std::shared_ptr&lt;<span class="keyword">int</span>&gt; sp = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>);
+std::weak_ptr&lt;<span class="keyword">int</span>&gt; wp = sp;  <span class="comment">// Doesn't increase ref count</span>
+
+<span class="keyword">if</span> (<span class="keyword">auto</span> locked = wp.<span class="function">lock</span>()) {  <span class="comment">// Try to get a shared_ptr</span>
+    std::cout &lt;&lt; *locked;       <span class="comment">// 42</span>
+}
+</code></pre>
+
+          <h3>Which Smart Pointer to Use?</h3>
+          <table>
+            <tr><th>Type</th><th>Use When</th><th>Overhead</th></tr>
+            <tr><td><code>unique_ptr</code></td><td>Single owner (95% of cases)</td><td>Zero (same as raw pointer)</td></tr>
+            <tr><td><code>shared_ptr</code></td><td>Multiple owners needed</td><td>Reference count (small)</td></tr>
+            <tr><td><code>weak_ptr</code></td><td>Observing without owning</td><td>Minimal</td></tr>
+          </table>
+
+          <div class="formula-box">
+            <strong>Modern C++ Rule:</strong><br>
+            1. Use <code>unique_ptr</code> by default<br>
+            2. Use <code>shared_ptr</code> when you need shared ownership<br>
+            3. Never use raw <code>new</code>/<code>delete</code> in application code<br>
+            4. Use <code>make_unique</code> and <code>make_shared</code> to create smart pointers
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 14 ==================== -->
+        <section id="classes">
+          <h2>14. Structs and Classes</h2>
+
+          <h3>Structs</h3>
+          <p>A struct groups related data together:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> Point {
+    <span class="keyword">double</span> x;
+    <span class="keyword">double</span> y;
+};
+
+Point p{<span class="number">3.0</span>, <span class="number">4.0</span>};
+std::cout &lt;&lt; p.x &lt;&lt; <span class="string">", "</span> &lt;&lt; p.y;  <span class="comment">// 3, 4</span>
+</code></pre>
+
+          <h3>Classes</h3>
+          <p>Same as structs but with <strong>private by default</strong> and the full power of OOP:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">class</span> Rectangle {
+<span class="keyword">private</span>:
+    <span class="keyword">double</span> width;
+    <span class="keyword">double</span> height;
+
+<span class="keyword">public</span>:
+    <span class="comment">// Constructor</span>
+    Rectangle(<span class="keyword">double</span> w, <span class="keyword">double</span> h) : width(w), height(h) {}
+
+    <span class="comment">// Destructor</span>
+    ~Rectangle() { <span class="comment">/* cleanup if needed */</span> }
+
+    <span class="comment">// Member functions</span>
+    <span class="keyword">double</span> <span class="function">area</span>() <span class="keyword">const</span> { <span class="keyword">return</span> width * height; }
+    <span class="keyword">double</span> <span class="function">perimeter</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="number">2</span> * (width + height); }
+};
+
+Rectangle r(<span class="number">5.0</span>, <span class="number">3.0</span>);
+std::cout &lt;&lt; r.<span class="function">area</span>();       <span class="comment">// 15</span>
+std::cout &lt;&lt; r.<span class="function">perimeter</span>(); <span class="comment">// 16</span>
+</code></pre>
+
+          <h3>The this Pointer</h3>
+          <p>Inside a member function, <code>this</code> is a pointer to the current object:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">class</span> Counter {
+    <span class="keyword">int</span> count = <span class="number">0</span>;
+<span class="keyword">public</span>:
+    Counter&amp; <span class="function">increment</span>() {
+        <span class="keyword">this</span>-&gt;count++;
+        <span class="keyword">return</span> *<span class="keyword">this</span>;  <span class="comment">// Return reference to self (enables chaining)</span>
+    }
+};
+
+Counter c;
+c.<span class="function">increment</span>().<span class="function">increment</span>().<span class="function">increment</span>();  <span class="comment">// Method chaining!</span>
+</code></pre>
+
+          <h3>Operator Overloading</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> Vec2 {
+    <span class="keyword">double</span> x, y;
+
+    Vec2 <span class="keyword">operator</span>+(<span class="keyword">const</span> Vec2&amp; other) <span class="keyword">const</span> {
+        <span class="keyword">return</span> {x + other.x, y + other.y};
+    }
+
+    <span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> Vec2&amp; other) <span class="keyword">const</span> {
+        <span class="keyword">return</span> x == other.x &amp;&amp; y == other.y;
+    }
+};
+
+Vec2 a{<span class="number">1</span>, <span class="number">2</span>}, b{<span class="number">3</span>, <span class="number">4</span>};
+Vec2 c = a + b;  <span class="comment">// {4, 6}</span>
+</code></pre>
+        </section>
+
+        <!-- ==================== SECTION 15 ==================== -->
+        <section id="modern">
+          <h2>15. Modern C++ Features</h2>
+
+          <h3>Lambda Expressions</h3>
+          <p>Anonymous functions you can define inline:</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Basic lambda</span>
+<span class="keyword">auto</span> add = [](<span class="keyword">int</span> a, <span class="keyword">int</span> b) { <span class="keyword">return</span> a + b; };
+std::cout &lt;&lt; add(<span class="number">3</span>, <span class="number">4</span>);  <span class="comment">// 7</span>
+
+<span class="comment">// Lambda with capture (access outside variables)</span>
+<span class="keyword">int</span> multiplier = <span class="number">3</span>;
+<span class="keyword">auto</span> times = [multiplier](<span class="keyword">int</span> x) { <span class="keyword">return</span> x * multiplier; };
+std::cout &lt;&lt; times(<span class="number">5</span>);  <span class="comment">// 15</span>
+
+<span class="comment">// Lambda for sorting</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>};
+std::sort(v.begin(), v.end(), [](<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    <span class="keyword">return</span> a &gt; b;  <span class="comment">// Sort descending</span>
+});
+</code></pre>
+
+          <h3>std::pair and std::tuple</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Pair: holds exactly 2 values</span>
+std::pair&lt;<span class="keyword">int</span>, std::string&gt; p = {<span class="number">1</span>, <span class="string">"hello"</span>};
+std::cout &lt;&lt; p.first &lt;&lt; <span class="string">" "</span> &lt;&lt; p.second;
+
+<span class="comment">// Tuple: holds any number of values</span>
+<span class="keyword">auto</span> t = std::make_tuple(<span class="number">1</span>, <span class="string">"hello"</span>, <span class="number">3.14</span>);
+std::cout &lt;&lt; std::get&lt;<span class="number">0</span>&gt;(t);  <span class="comment">// 1</span>
+</code></pre>
+
+          <h3>Structured Bindings (C++17)</h3>
+<pre><code><span class="lang-label">C++</span>
+std::pair&lt;<span class="keyword">int</span>, std::string&gt; p = {<span class="number">42</span>, <span class="string">"answer"</span>};
+<span class="keyword">auto</span> [num, text] = p;  <span class="comment">// Unpack!</span>
+std::cout &lt;&lt; num &lt;&lt; <span class="string">": "</span> &lt;&lt; text;  <span class="comment">// 42: answer</span>
+
+<span class="comment">// Great for maps</span>
+std::map&lt;std::string, <span class="keyword">int</span>&gt; ages = {{<span class="string">"Alice"</span>, <span class="number">25</span>}, {<span class="string">"Bob"</span>, <span class="number">30</span>}};
+<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [name, age] : ages) {
+    std::cout &lt;&lt; name &lt;&lt; <span class="string">": "</span> &lt;&lt; age &lt;&lt; <span class="string">"\n"</span>;
+}
+</code></pre>
+
+          <h3>std::optional (C++17)</h3>
+          <p>A value that might or might not exist (like nullable types):</p>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;optional&gt;
+
+std::optional&lt;<span class="keyword">int</span>&gt; <span class="function">findIndex</span>(<span class="keyword">const</span> std::vector&lt;<span class="keyword">int</span>&gt;&amp; v, <span class="keyword">int</span> target) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.<span class="function">size</span>(); i++)
+        <span class="keyword">if</span> (v[i] == target) <span class="keyword">return</span> i;
+    <span class="keyword">return</span> std::nullopt;  <span class="comment">// Not found</span>
+}
+
+<span class="keyword">auto</span> result = <span class="function">findIndex</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}, <span class="number">2</span>);
+<span class="keyword">if</span> (result.<span class="function">has_value</span>())
+    std::cout &lt;&lt; *result;  <span class="comment">// 1</span>
+</code></pre>
+
+          <h3>Move Semantics (Brief Intuition)</h3>
+          <p>Instead of <strong>copying</strong> a large object (expensive), you can <strong>move</strong> it (fast). Moving transfers ownership of the internal data without copying:</p>
+<pre><code><span class="lang-label">C++</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v1 = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+std::vector&lt;<span class="keyword">int</span>&gt; v2 = std::move(v1);
+<span class="comment">// v2 now has the data, v1 is empty</span>
+<span class="comment">// No elements were copied -- just the internal pointer was transferred</span>
+</code></pre>
+          <p>Think of it like giving someone your suitcase vs. buying them a new suitcase and copying everything into it.</p>
+        </section>
+
+        <!-- ==================== SECTION 16 ==================== -->
+        <section id="stl">
+          <h2>16. STL Containers Overview</h2>
+
+          <table>
+            <tr><th>Container</th><th>Description</th><th>Access</th><th>Insert/Delete</th><th>Use When</th></tr>
+            <tr><td><code>vector</code></td><td>Dynamic array</td><td>O(1)</td><td>O(1) back, O(n) middle</td><td>Default choice</td></tr>
+            <tr><td><code>deque</code></td><td>Double-ended queue</td><td>O(1)</td><td>O(1) front/back</td><td>Need front insertion</td></tr>
+            <tr><td><code>list</code></td><td>Doubly linked list</td><td>O(n)</td><td>O(1) at iterator</td><td>Frequent mid-insertion</td></tr>
+            <tr><td><code>set</code></td><td>Sorted unique elements</td><td>O(log n)</td><td>O(log n)</td><td>Need sorted uniqueness</td></tr>
+            <tr><td><code>map</code></td><td>Sorted key-value pairs</td><td>O(log n)</td><td>O(log n)</td><td>Need sorted keys</td></tr>
+            <tr><td><code>unordered_set</code></td><td>Hash set</td><td>O(1) avg</td><td>O(1) avg</td><td>Fast lookup</td></tr>
+            <tr><td><code>unordered_map</code></td><td>Hash map</td><td>O(1) avg</td><td>O(1) avg</td><td>Fast key-value lookup</td></tr>
+            <tr><td><code>stack</code></td><td>LIFO adapter</td><td>O(1) top</td><td>O(1) push/pop</td><td>DFS, bracket matching</td></tr>
+            <tr><td><code>queue</code></td><td>FIFO adapter</td><td>O(1) front</td><td>O(1) push/pop</td><td>BFS</td></tr>
+            <tr><td><code>priority_queue</code></td><td>Max-heap</td><td>O(1) top</td><td>O(log n)</td><td>Always want max/min</td></tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">Quick Decision Guide</div>
+            <p><strong>Need a list of things?</strong> Use <code>vector</code>.</p>
+            <p><strong>Need to check "is X in the collection?"</strong> Use <code>unordered_set</code>.</p>
+            <p><strong>Need key-value mapping?</strong> Use <code>unordered_map</code>.</p>
+            <p><strong>Need sorted order?</strong> Use <code>set</code> or <code>map</code>.</p>
+            <p><strong>Need LIFO/FIFO?</strong> Use <code>stack</code> or <code>queue</code>.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 17 ==================== -->
+        <section id="patterns">
+          <h2>17. Common Patterns and Idioms</h2>
+
+          <h3>Common STL Algorithms</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;algorithm&gt;
+<span class="keyword">#include</span> &lt;numeric&gt;
+
+std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>};
+
+<span class="comment">// Sort</span>
+std::sort(v.begin(), v.end());           <span class="comment">// Ascending: 1 2 3 5 8 9</span>
+std::sort(v.begin(), v.end(), std::greater&lt;&gt;());  <span class="comment">// Descending</span>
+
+<span class="comment">// Find</span>
+<span class="keyword">auto</span> it = std::find(v.begin(), v.end(), <span class="number">5</span>);
+<span class="keyword">if</span> (it != v.end()) std::cout &lt;&lt; <span class="string">"Found at index "</span> &lt;&lt; (it - v.begin());
+
+<span class="comment">// Binary search (requires sorted container)</span>
+<span class="keyword">bool</span> found = std::binary_search(v.begin(), v.end(), <span class="number">5</span>);
+
+<span class="comment">// Sum all elements</span>
+<span class="keyword">int</span> total = std::accumulate(v.begin(), v.end(), <span class="number">0</span>);
+
+<span class="comment">// Min and Max</span>
+<span class="keyword">int</span> mx = *std::max_element(v.begin(), v.end());
+<span class="keyword">int</span> mn = *std::min_element(v.begin(), v.end());
+
+<span class="comment">// Reverse</span>
+std::reverse(v.begin(), v.end());
+
+<span class="comment">// Remove duplicates (must be sorted first)</span>
+std::sort(v.begin(), v.end());
+v.erase(std::unique(v.begin(), v.end()), v.end());
+</code></pre>
+
+          <h3>Competitive Programming Template</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;  <span class="comment">// Includes everything (GCC only)</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">typedef</span> <span class="keyword">long long</span> ll;
+<span class="keyword">typedef</span> vector&lt;<span class="keyword">int</span>&gt; vi;
+<span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; pii;
+<span class="keyword">#define</span> pb push_back
+<span class="keyword">#define</span> all(x) (x).begin(), (x).end()
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    ios_base::sync_with_stdio(<span class="keyword">false</span>);
+    cin.tie(<span class="keyword">nullptr</span>);
+
+    <span class="keyword">int</span> n;
+    cin &gt;&gt; n;
+
+    vi a(n);
+    <span class="keyword">for</span> (<span class="keyword">int</span>&amp; x : a) cin &gt;&gt; x;
+
+    <span class="comment">// Solve...</span>
+
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre>
+
+          <div class="tip-box">
+            <div class="label">Why ios_base::sync_with_stdio(false)?</div>
+            <p>By default, C++ synchronizes cin/cout with C's stdio. Disabling this makes I/O much faster -- critical in competitive programming where reading 10^5 numbers with sync on can TLE.</p>
+          </div>
+
+          <h3>Reading Input Patterns</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Read n numbers into a vector</span>
+<span class="keyword">int</span> n;
+cin &gt;&gt; n;
+vector&lt;<span class="keyword">int</span>&gt; v(n);
+<span class="keyword">for</span> (<span class="keyword">int</span>&amp; x : v) cin &gt;&gt; x;
+
+<span class="comment">// Read until EOF</span>
+<span class="keyword">int</span> x;
+<span class="keyword">while</span> (cin &gt;&gt; x) {
+    <span class="comment">// process x</span>
+}
+
+<span class="comment">// Read a 2D grid</span>
+<span class="keyword">int</span> rows, cols;
+cin &gt;&gt; rows &gt;&gt; cols;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; grid(rows, vector&lt;<span class="keyword">int</span>&gt;(cols));
+<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; row : grid)
+    <span class="keyword">for</span> (<span class="keyword">int</span>&amp; cell : row)
+        cin &gt;&gt; cell;
+</code></pre>
+        </section>
+
+        <!-- ==================== SECTION 18 ==================== -->
+        <section id="quiz">
+          <h2>18. Practice Quiz</h2>
+          <p>Test your understanding of C++ concepts. Click an answer to check it.</p>
+
+          <div class="quiz">
+
+            <div class="quiz-q">
+              <h4>Q1: What does <code>int x;</code> (without initialization) contain?</h4>
+              <button onclick="checkAnswer(this, false)">A) 0</button>
+              <button onclick="checkAnswer(this, true)">B) Garbage (undefined value)</button>
+              <button onclick="checkAnswer(this, false)">C) null</button>
+              <button onclick="checkAnswer(this, false)">D) Compiler error</button>
+              <div class="explanation">
+                <strong>B) Garbage.</strong> In C++, local variables are NOT automatically initialized to 0. They contain whatever was previously in that memory location. Always initialize your variables.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q2: What is the output of <code>7 / 2</code> in C++ when both operands are int?</h4>
+              <button onclick="checkAnswer(this, true)">A) 3</button>
+              <button onclick="checkAnswer(this, false)">B) 3.5</button>
+              <button onclick="checkAnswer(this, false)">C) 4</button>
+              <button onclick="checkAnswer(this, false)">D) 3.0</button>
+              <div class="explanation">
+                <strong>A) 3.</strong> Integer division truncates the decimal part. To get 3.5, you need at least one operand to be a floating-point type: <code>7.0 / 2</code> or <code>static_cast&lt;double&gt;(7) / 2</code>.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q3: Given <code>int x = 5; int* p = &amp;x;</code>, what does <code>*p = 10;</code> do?</h4>
+              <button onclick="checkAnswer(this, false)">A) Changes p to point to address 10</button>
+              <button onclick="checkAnswer(this, true)">B) Changes x to 10</button>
+              <button onclick="checkAnswer(this, false)">C) Creates a new variable with value 10</button>
+              <button onclick="checkAnswer(this, false)">D) Compiler error</button>
+              <div class="explanation">
+                <strong>B) Changes x to 10.</strong> The <code>*</code> operator dereferences the pointer -- it goes to the address p points to (which is x's address) and writes 10 there. Since p points to x, this modifies x.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q4: What is the key advantage of <code>unique_ptr</code> over raw pointers?</h4>
+              <button onclick="checkAnswer(this, false)">A) It's faster</button>
+              <button onclick="checkAnswer(this, true)">B) It automatically deletes memory when it goes out of scope</button>
+              <button onclick="checkAnswer(this, false)">C) It can point to multiple objects</button>
+              <button onclick="checkAnswer(this, false)">D) It doesn't use heap memory</button>
+              <div class="explanation">
+                <strong>B) Automatic cleanup.</strong> unique_ptr implements RAII -- when it goes out of scope, its destructor automatically calls delete. This prevents memory leaks with zero overhead compared to a raw pointer.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q5: What does <code>void foo(int&amp; x)</code> mean?</h4>
+              <button onclick="checkAnswer(this, false)">A) x is a pointer to an int</button>
+              <button onclick="checkAnswer(this, true)">B) x is passed by reference (can modify the original)</button>
+              <button onclick="checkAnswer(this, false)">C) x is the address of an int</button>
+              <button onclick="checkAnswer(this, false)">D) x is a copy of the argument</button>
+              <div class="explanation">
+                <strong>B) Pass by reference.</strong> The <code>&amp;</code> in the parameter means x is an alias for the original variable. Any changes to x inside the function will affect the caller's variable directly.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q6: What does RAII stand for and what does it mean?</h4>
+              <button onclick="checkAnswer(this, false)">A) Run-time Allocation Is Inefficient -- avoid heap allocation</button>
+              <button onclick="checkAnswer(this, true)">B) Resource Acquisition Is Initialization -- tie resource lifetime to object lifetime</button>
+              <button onclick="checkAnswer(this, false)">C) Reference And Integer Interaction -- rules for mixing types</button>
+              <button onclick="checkAnswer(this, false)">D) Recursive Algorithm Implementation Interface -- a design pattern</button>
+              <div class="explanation">
+                <strong>B) Resource Acquisition Is Initialization.</strong> RAII means that when an object is created, it acquires a resource (memory, file, lock), and when the object is destroyed (goes out of scope), it releases the resource. This guarantees cleanup even if exceptions occur.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q7: Given <code>int** pp;</code>, what is <code>pp</code>?</h4>
+              <button onclick="checkAnswer(this, false)">A) A double (floating-point) pointer</button>
+              <button onclick="checkAnswer(this, true)">B) A pointer to a pointer to an int</button>
+              <button onclick="checkAnswer(this, false)">C) An array of two pointers</button>
+              <button onclick="checkAnswer(this, false)">D) A reference to a pointer</button>
+              <div class="explanation">
+                <strong>B) A pointer to a pointer to an int.</strong> Each <code>*</code> adds a level of indirection. <code>int**</code> means: this variable holds the address of another pointer, which itself holds the address of an int. Dereferencing twice (<code>**pp</code>) gets you the int value.
+              </div>
+            </div>
+
+            <div class="quiz-q">
+              <h4>Q8: What happens when you <code>push_back</code> to a vector that is at capacity?</h4>
+              <button onclick="checkAnswer(this, false)">A) It throws an exception</button>
+              <button onclick="checkAnswer(this, false)">B) It silently fails</button>
+              <button onclick="checkAnswer(this, true)">C) It allocates a bigger buffer, copies all elements, and frees the old buffer</button>
+              <button onclick="checkAnswer(this, false)">D) It overwrites the last element</button>
+              <div class="explanation">
+                <strong>C) Reallocates and copies.</strong> Vectors typically double their capacity when full. This makes push_back O(1) amortized -- most calls are O(1), but occasionally one is O(n) for the copy. Use <code>reserve()</code> to pre-allocate if you know the size.
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; border-top: 1px solid #e5e7eb; margin-top: 2rem;">
+          <a href="advanced.html" class="resource-link">&larr; Advanced DSA</a>
+          <a href="index.html" class="resource-link">Home &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+  </footer>
+
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered) return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+  <style>
+    @media (max-width: 1199px) {
+      #mobile-toc { display: block !important; }
+      .sidebar-toc { display: none; }
+    }
+  </style>
+
+</body>
+</html>

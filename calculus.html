@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculus - Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html" class="active">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Calculus</div>
+      <h1>Calculus</h1>
+      <p>The math of change and accumulation -- limits, derivatives, and integrals explained step by step for programmers.</p>
+
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why Calculus Matters for CS</div>
+        <p>"Do I really need calculus as a programmer?" If you want to work in <strong>any</strong> of these areas, yes:</p>
+        <ul>
+          <li><strong>Machine learning / AI:</strong> Gradient descent -- the core algorithm behind training neural networks -- is literally "take the derivative, walk downhill." Every ML framework (PyTorch, TensorFlow) runs calculus under the hood.</li>
+          <li><strong>Computer graphics:</strong> Lighting, shadows, curves (Bezier curves in Photoshop/Figma), and physics simulations all use derivatives and integrals.</li>
+          <li><strong>Physics engines:</strong> Position is the integral of velocity, velocity is the integral of acceleration. Every game engine computes this every frame.</li>
+          <li><strong>Signal processing:</strong> Audio, video, and image compression (JPEG, MP3) use Fourier transforms -- a calculus concept.</li>
+          <li><strong>Algorithm analysis:</strong> Understanding growth rates, optimization, and approximation all rely on calculus intuition.</li>
+          <li><strong>Robotics / control systems:</strong> PID controllers use proportional, integral, and derivative terms to keep drones stable and robots balanced.</li>
+        </ul>
+        <p>Even if you never solve an integral by hand again, understanding <em>what</em> derivatives and integrals mean lets you use libraries and tools effectively instead of treating them as magic black boxes.</p>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#big-picture">1. What is Calculus? (The Big Picture)</a>
+      <a href="#limits">2. Limits</a>
+      <a href="#derivatives-basics">3. Derivatives -- The Basics</a>
+      <a href="#derivatives-advanced">4. Derivative Rules (Advanced)</a>
+      <a href="#applications-derivatives">5. Applications of Derivatives</a>
+      <a href="#integrals-basics">6. Integrals -- The Basics</a>
+      <a href="#definite-integrals">7. Definite Integrals</a>
+      <a href="#applications-integrals">8. Applications of Integrals</a>
+      <a href="#partial-derivatives">9. Partial Derivatives &amp; Gradients (For ML)</a>
+      <a href="#quiz">10. Practice Quiz</a>
+    </div>
+
+    <!-- ============================== -->
+    <!-- SECTION 1: THE BIG PICTURE     -->
+    <!-- ============================== -->
+    <section id="big-picture">
+      <h2>1. What is Calculus? (The Big Picture)</h2>
+
+      <p>
+        Calculus sounds intimidating, but at its core it answers two simple questions:
+      </p>
+      <ol>
+        <li><strong>How fast is something changing right now?</strong> (Differential calculus)</li>
+        <li><strong>How much has accumulated over time?</strong> (Integral calculus)</li>
+      </ol>
+      <p>
+        That is it. Every formula, every rule, every theorem in calculus is just a tool for answering one of those two questions more precisely.
+      </p>
+
+      <h3>The Speed vs. Distance Analogy</h3>
+      <p>
+        Imagine you are driving a car. Your speedometer tells you your <strong>speed at this exact instant</strong> -- that is a derivative. Your odometer tells you the <strong>total distance you have traveled</strong> -- that is an integral. Calculus is the math that connects these two ideas.
+      </p>
+      <ul>
+        <li>If you know your position at every moment, calculus can tell you your speed (derivative).</li>
+        <li>If you know your speed at every moment, calculus can tell you the total distance traveled (integral).</li>
+      </ul>
+      <p>
+        These two operations are inverses of each other -- and that beautiful connection is called the <strong>Fundamental Theorem of Calculus</strong>.
+      </p>
+
+      <h3>Why Programmers Need Calculus</h3>
+      <p>
+        You might wonder: "I write code, not physics papers. Why do I need this?" Here is why:
+      </p>
+      <ul>
+        <li><strong>Machine Learning / AI:</strong> Training a neural network uses gradient descent, which is literally "follow the derivative downhill to minimize error."</li>
+        <li><strong>Optimization:</strong> Finding the minimum cost, maximum efficiency, or best fit to data -- all use derivatives.</li>
+        <li><strong>Physics Simulations:</strong> Game engines, robotics, animations -- anything with motion uses calculus.</li>
+        <li><strong>Computer Graphics:</strong> Smooth curves, lighting calculations, and surface normals rely on calculus.</li>
+        <li><strong>Probability and Statistics:</strong> Continuous probability distributions are defined using integrals.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>You do not need to be a calculus wizard to be a great programmer. But understanding the core ideas -- especially derivatives and what they mean -- will unlock entire areas of CS that would otherwise feel like black-box magic.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 2: LIMITS              -->
+    <!-- ============================== -->
+    <section id="limits">
+      <h2>2. Limits</h2>
+
+      <p>
+        Before you can understand derivatives or integrals, you need limits. A <strong>limit</strong> answers the question: "What value does f(x) <em>approach</em> as x gets closer and closer to some number?"
+      </p>
+      <p>
+        Notice the word "approach." We do not care what f(x) actually equals at that point -- we care about what it is heading toward.
+      </p>
+
+      <h3>Notation</h3>
+      <div class="formula-box">
+        lim   f(x) = L
+       x &rarr; a
+
+        "The limit of f(x) as x approaches a equals L"
+      </div>
+      <p>
+        This means: as x gets closer and closer to <strong>a</strong> (from both sides), f(x) gets closer and closer to <strong>L</strong>.
+      </p>
+
+      <h3>One-Sided Limits</h3>
+      <p>
+        Sometimes a function approaches different values depending on which direction you come from:
+      </p>
+      <div class="formula-box">
+        Left-hand limit:   lim    f(x) = L
+                          x &rarr; a&minus;
+
+        Right-hand limit:  lim    f(x) = L
+                          x &rarr; a&plus;
+      </div>
+      <p>
+        The full (two-sided) limit exists <strong>only if</strong> the left-hand and right-hand limits are equal. If they disagree, the limit does not exist.
+      </p>
+
+      <h3>Limits at Infinity</h3>
+      <p>
+        We can also ask what happens as x grows without bound:
+      </p>
+      <div class="formula-box">
+        lim     f(x) = L
+       x &rarr; &infin;
+
+        "As x grows infinitely large, f(x) approaches L"
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Find: lim (1/x) as x &rarr; &infin;</p>
+        <p>As x gets bigger and bigger (10, 100, 1000, ...), 1/x gets smaller and smaller (0.1, 0.01, 0.001, ...).</p>
+        <p><strong>Answer:</strong> The limit is <strong>0</strong>.</p>
+      </div>
+
+      <h3>When Limits Do Not Exist</h3>
+      <p>A limit does not exist (DNE) when:</p>
+      <ul>
+        <li>The left and right limits disagree (e.g., a step function at the jump).</li>
+        <li>The function oscillates wildly without settling (e.g., sin(1/x) as x &rarr; 0).</li>
+        <li>The function blows up to infinity (though we sometimes write "the limit is &infin;" informally).</li>
+      </ul>
+
+      <h3>How to Evaluate Limits</h3>
+
+      <p><strong>Method 1: Direct Substitution</strong></p>
+      <p>Just plug in the value of a. If you get a real number, that is the limit. This works for most "nice" functions (polynomials, exponentials, trig).</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Direct Substitution</div>
+        <p>Find: lim (x&sup2; + 3x) as x &rarr; 2</p>
+        <p>Plug in x = 2: (2)&sup2; + 3(2) = 4 + 6 = 10</p>
+        <p><strong>Answer:</strong> The limit is <strong>10</strong>.</p>
+      </div>
+
+      <p><strong>Method 2: Factoring</strong></p>
+      <p>If direct substitution gives 0/0 (an indeterminate form), try factoring and canceling.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Factoring</div>
+        <p>Find: lim (x&sup2; - 4) / (x - 2) as x &rarr; 2</p>
+        <p>Direct substitution gives: (4 - 4) / (2 - 2) = 0/0. Indeterminate!</p>
+        <p>Factor the numerator: (x - 2)(x + 2) / (x - 2)</p>
+        <p>Cancel (x - 2): x + 2</p>
+        <p>Now substitute: 2 + 2 = 4</p>
+        <p><strong>Answer:</strong> The limit is <strong>4</strong>.</p>
+      </div>
+
+      <p><strong>Method 3: Rationalizing</strong></p>
+      <p>When you have square roots and get 0/0, multiply by the conjugate.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Rationalizing</div>
+        <p>Find: lim (&radic;(x+1) - 1) / x as x &rarr; 0</p>
+        <p>Direct substitution: (&radic;1 - 1) / 0 = 0/0. Indeterminate!</p>
+        <p>Multiply by the conjugate: [(&radic;(x+1) - 1)(&radic;(x+1) + 1)] / [x(&radic;(x+1) + 1)]</p>
+        <p>Numerator becomes: (x+1) - 1 = x</p>
+        <p>So we get: x / [x(&radic;(x+1) + 1)] = 1 / (&radic;(x+1) + 1)</p>
+        <p>Now substitute x = 0: 1 / (&radic;1 + 1) = 1/2</p>
+        <p><strong>Answer:</strong> The limit is <strong>1/2</strong>.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Limit at Infinity</div>
+        <p>Find: lim (3x&sup2; + 2x) / (x&sup2; - 5) as x &rarr; &infin;</p>
+        <p>Divide every term by x&sup2; (the highest power): (3 + 2/x) / (1 - 5/x&sup2;)</p>
+        <p>As x &rarr; &infin;, 2/x &rarr; 0 and 5/x&sup2; &rarr; 0</p>
+        <p>So the limit becomes: 3 / 1 = 3</p>
+        <p><strong>Answer:</strong> The limit is <strong>3</strong>.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip -- Limits at Infinity for Rational Functions</div>
+        <p>For a ratio of polynomials as x &rarr; &infin;: compare the highest degree in the numerator and denominator. Same degree? Limit = ratio of leading coefficients. Numerator higher? Limit is &infin;. Denominator higher? Limit is 0.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>0/0 is NOT the answer -- it means the limit is "indeterminate" and you need to do more work (factor, rationalize, or use L'Hopital's rule). Do not confuse 0/0 with "the limit is 0" or "the limit does not exist."</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 3: DERIVATIVES BASICS  -->
+    <!-- ============================== -->
+    <section id="derivatives-basics">
+      <h2>3. Derivatives -- The Basics</h2>
+
+      <p>
+        A <strong>derivative</strong> measures the <strong>instantaneous rate of change</strong> of a function. If f(x) describes your position at time x, then f'(x) tells you your velocity -- how fast you are moving right at that instant.
+      </p>
+
+      <h3>The Formal Definition</h3>
+      <div class="formula-box">
+        f'(x) = lim   [f(x + h) - f(x)] / h
+               h &rarr; 0
+      </div>
+      <p>
+        This says: take two points on the curve that are very close together (distance h apart), compute the slope of the line between them, and see what happens as h shrinks to zero. The slope of that infinitely-close line is the derivative.
+      </p>
+
+      <h3>Geometric Meaning</h3>
+      <p>
+        The derivative at a point is the <strong>slope of the tangent line</strong> to the curve at that point. A positive derivative means the function is going up; a negative derivative means it is going down; a zero derivative means it is flat (possibly a peak or valley).
+      </p>
+
+      <h3>Notation</h3>
+      <p>You will see derivatives written in several ways. They all mean the same thing:</p>
+      <div class="formula-box">
+        f'(x)     -- "f prime of x" (Lagrange notation)
+        dy/dx     -- "dee y dee x" (Leibniz notation)
+        df/dx     -- "dee f dee x"
+        Df(x)     -- "D of f" (operator notation)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Leibniz notation (dy/dx) is not a fraction, but it behaves like one in many situations -- which is part of its power. It reminds you that the derivative is a ratio of tiny changes.</p>
+      </div>
+
+      <h3>Basic Differentiation Rules</h3>
+
+      <p>You do not need to use the formal limit definition every time. These rules let you find derivatives quickly:</p>
+
+      <table>
+        <tr>
+          <th>Rule</th>
+          <th>Formula</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Constant</td>
+          <td>d/dx(c) = 0</td>
+          <td>d/dx(7) = 0</td>
+        </tr>
+        <tr>
+          <td>Power Rule</td>
+          <td>d/dx(x<sup>n</sup>) = n &middot; x<sup>n-1</sup></td>
+          <td>d/dx(x&sup3;) = 3x&sup2;</td>
+        </tr>
+        <tr>
+          <td>Constant Multiple</td>
+          <td>d/dx(c &middot; f) = c &middot; f'(x)</td>
+          <td>d/dx(5x&sup2;) = 10x</td>
+        </tr>
+        <tr>
+          <td>Sum Rule</td>
+          <td>d/dx(f + g) = f' + g'</td>
+          <td>d/dx(x&sup2; + 3x) = 2x + 3</td>
+        </tr>
+        <tr>
+          <td>Difference Rule</td>
+          <td>d/dx(f - g) = f' - g'</td>
+          <td>d/dx(x&sup3; - x) = 3x&sup2; - 1</td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example -- Power Rule</div>
+        <p>Find the derivative of f(x) = x&sup2;</p>
+        <p>Using the limit definition (to show why the power rule works):</p>
+        <p>f'(x) = lim [(x+h)&sup2; - x&sup2;] / h as h &rarr; 0</p>
+        <p>= lim [x&sup2; + 2xh + h&sup2; - x&sup2;] / h</p>
+        <p>= lim [2xh + h&sup2;] / h</p>
+        <p>= lim (2x + h)</p>
+        <p>= <strong>2x</strong></p>
+        <p>This matches the power rule: d/dx(x&sup2;) = 2x<sup>1</sup> = 2x.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Combining Rules</div>
+        <p>Find f'(x) where f(x) = 4x&sup3; - 2x&sup2; + 7x - 5</p>
+        <p>Apply the rules term by term:</p>
+        <ul>
+          <li>d/dx(4x&sup3;) = 12x&sup2; (power rule + constant multiple)</li>
+          <li>d/dx(-2x&sup2;) = -4x</li>
+          <li>d/dx(7x) = 7</li>
+          <li>d/dx(-5) = 0 (constant rule)</li>
+        </ul>
+        <p><strong>f'(x) = 12x&sup2; - 4x + 7</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Negative and Fractional Exponents</div>
+        <p>The power rule works for all exponents, not just positive integers:</p>
+        <ul>
+          <li>d/dx(1/x) = d/dx(x<sup>-1</sup>) = -1 &middot; x<sup>-2</sup> = <strong>-1/x&sup2;</strong></li>
+          <li>d/dx(&radic;x) = d/dx(x<sup>1/2</sup>) = (1/2) &middot; x<sup>-1/2</sup> = <strong>1 / (2&radic;x)</strong></li>
+        </ul>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>The power rule only works on x<sup>n</sup> where n is a constant. It does NOT work on functions like 2<sup>x</sup> or x<sup>x</sup> -- those require different rules.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 4: ADVANCED RULES      -->
+    <!-- ============================== -->
+    <section id="derivatives-advanced">
+      <h2>4. Derivative Rules (Advanced)</h2>
+
+      <p>
+        The basic rules handle simple terms, but what about products, quotients, and compositions of functions? That is where these three powerful rules come in.
+      </p>
+
+      <h3>The Product Rule</h3>
+      <div class="formula-box">
+        (f &middot; g)' = f' &middot; g + f &middot; g'
+
+        "Derivative of first times second, plus first times derivative of second"
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Product Rule</div>
+        <p>Find d/dx [x&sup2; &middot; sin(x)]</p>
+        <p>Let f = x&sup2; and g = sin(x)</p>
+        <p>f' = 2x, g' = cos(x)</p>
+        <p>Product rule: f'g + fg' = 2x &middot; sin(x) + x&sup2; &middot; cos(x)</p>
+        <p><strong>Answer: 2x sin(x) + x&sup2; cos(x)</strong></p>
+      </div>
+
+      <h3>The Quotient Rule</h3>
+      <div class="formula-box">
+        (f / g)' = [f' &middot; g - f &middot; g'] / g&sup2;
+
+        "Low d-high minus high d-low, over the square of what's below"
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Quotient Rule</div>
+        <p>Find d/dx [(3x + 1) / (x&sup2; + 1)]</p>
+        <p>f = 3x + 1, g = x&sup2; + 1</p>
+        <p>f' = 3, g' = 2x</p>
+        <p>= [3(x&sup2; + 1) - (3x + 1)(2x)] / (x&sup2; + 1)&sup2;</p>
+        <p>= [3x&sup2; + 3 - 6x&sup2; - 2x] / (x&sup2; + 1)&sup2;</p>
+        <p><strong>= (-3x&sup2; - 2x + 3) / (x&sup2; + 1)&sup2;</strong></p>
+      </div>
+
+      <h3>The Chain Rule</h3>
+      <p>The chain rule is arguably the most important rule in all of calculus, especially for machine learning. It tells you how to differentiate <strong>compositions</strong> of functions -- a function inside another function.</p>
+
+      <div class="formula-box">
+        d/dx [f(g(x))] = f'(g(x)) &middot; g'(x)
+
+        "Derivative of the outer (evaluated at inner) times derivative of the inner"
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Chain Rule</div>
+        <p>Find d/dx [(3x + 2)&sup3;]</p>
+        <p>Outer function: f(u) = u&sup3;, so f'(u) = 3u&sup2;</p>
+        <p>Inner function: g(x) = 3x + 2, so g'(x) = 3</p>
+        <p>Chain rule: f'(g(x)) &middot; g'(x) = 3(3x + 2)&sup2; &middot; 3</p>
+        <p><strong>= 9(3x + 2)&sup2;</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Chain Rule with Trig</div>
+        <p>Find d/dx [sin(x&sup2;)]</p>
+        <p>Outer: sin(u), derivative = cos(u)</p>
+        <p>Inner: x&sup2;, derivative = 2x</p>
+        <p><strong>= cos(x&sup2;) &middot; 2x = 2x cos(x&sup2;)</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip -- Why the Chain Rule Matters for ML</div>
+        <p>Neural networks are just chains of functions: layer after layer of transformations. <strong>Backpropagation</strong> -- the algorithm that trains neural networks -- is literally the chain rule applied repeatedly. When people say "deep learning requires calculus," this is what they mean.</p>
+      </div>
+
+      <h3>Derivatives of Common Functions</h3>
+      <p>Memorize these. They come up constantly:</p>
+
+      <table>
+        <tr>
+          <th>f(x)</th>
+          <th>f'(x)</th>
+          <th>Notes</th>
+        </tr>
+        <tr>
+          <td>sin(x)</td>
+          <td>cos(x)</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>cos(x)</td>
+          <td>-sin(x)</td>
+          <td>Note the negative sign</td>
+        </tr>
+        <tr>
+          <td>tan(x)</td>
+          <td>sec&sup2;(x)</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>e<sup>x</sup></td>
+          <td>e<sup>x</sup></td>
+          <td>e<sup>x</sup> is its own derivative!</td>
+        </tr>
+        <tr>
+          <td>ln(x)</td>
+          <td>1/x</td>
+          <td>Only for x &gt; 0</td>
+        </tr>
+        <tr>
+          <td>a<sup>x</sup></td>
+          <td>a<sup>x</sup> &middot; ln(a)</td>
+          <td>General exponential</td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example -- Combining Multiple Rules</div>
+        <p>Find d/dx [e<sup>x</sup> &middot; ln(x)]</p>
+        <p>Use product rule with f = e<sup>x</sup>, g = ln(x):</p>
+        <p>f' = e<sup>x</sup>, g' = 1/x</p>
+        <p>= e<sup>x</sup> &middot; ln(x) + e<sup>x</sup> &middot; (1/x)</p>
+        <p><strong>= e<sup>x</sup>(ln(x) + 1/x)</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Chain Rule with e</div>
+        <p>Find d/dx [e<sup>(3x&sup2;)</sup>]</p>
+        <p>Outer: e<sup>u</sup>, derivative = e<sup>u</sup></p>
+        <p>Inner: 3x&sup2;, derivative = 6x</p>
+        <p><strong>= 6x &middot; e<sup>(3x&sup2;)</sup></strong></p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 5: APPLICATIONS        -->
+    <!-- ============================== -->
+    <section id="applications-derivatives">
+      <h2>5. Applications of Derivatives</h2>
+
+      <p>
+        Derivatives are not just abstract math -- they are tools for solving real problems. Here are the most important applications.
+      </p>
+
+      <h3>Finding Maxima and Minima</h3>
+      <p>
+        At the top of a hill or the bottom of a valley, the slope is <strong>zero</strong>. This means we can find peaks and valleys of any function by setting its derivative equal to zero and solving.
+      </p>
+
+      <div class="formula-box">
+        To find maxima/minima of f(x):
+        1. Find f'(x)
+        2. Set f'(x) = 0 and solve for x (these are "critical points")
+        3. Use the second derivative to classify:
+           - f''(x) > 0 at critical point &rarr; local minimum (concave up)
+           - f''(x) < 0 at critical point &rarr; local maximum (concave down)
+           - f''(x) = 0 &rarr; inconclusive (need further analysis)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Finding Extrema</div>
+        <p>Find the maximum and minimum of f(x) = x&sup3; - 3x + 2</p>
+        <p><strong>Step 1:</strong> f'(x) = 3x&sup2; - 3</p>
+        <p><strong>Step 2:</strong> Set f'(x) = 0: 3x&sup2; - 3 = 0 &rarr; x&sup2; = 1 &rarr; x = 1 or x = -1</p>
+        <p><strong>Step 3:</strong> f''(x) = 6x</p>
+        <ul>
+          <li>At x = 1: f''(1) = 6 > 0, so x = 1 is a <strong>local minimum</strong>. f(1) = 0</li>
+          <li>At x = -1: f''(-1) = -6 < 0, so x = -1 is a <strong>local maximum</strong>. f(-1) = 4</li>
+        </ul>
+      </div>
+
+      <h3>Optimization Problems</h3>
+      <p>
+        Real-world optimization follows the same pattern: write a function for the thing you want to maximize or minimize, take the derivative, set it to zero, solve.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Optimization</div>
+        <p>A farmer has 100 meters of fencing. What dimensions maximize the area of a rectangular pen?</p>
+        <p>Let width = x, so length = (100 - 2x) / 2 = 50 - x</p>
+        <p>Area: A(x) = x(50 - x) = 50x - x&sup2;</p>
+        <p>A'(x) = 50 - 2x</p>
+        <p>Set A'(x) = 0: 50 - 2x = 0 &rarr; x = 25</p>
+        <p>So width = 25m, length = 25m. <strong>A square!</strong></p>
+        <p>Maximum area = 25 &times; 25 = <strong>625 m&sup2;</strong></p>
+      </div>
+
+      <h3>Related Rates (Brief Introduction)</h3>
+      <p>
+        Related rates problems ask: if one quantity is changing, how fast is a related quantity changing? You use the chain rule with respect to time.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Related Rates</div>
+        <p>A circle's radius is increasing at 2 cm/s. How fast is the area increasing when r = 5 cm?</p>
+        <p>A = &pi;r&sup2;</p>
+        <p>Differentiate both sides with respect to time t:</p>
+        <p>dA/dt = 2&pi;r &middot; (dr/dt)</p>
+        <p>Plug in r = 5 and dr/dt = 2:</p>
+        <p>dA/dt = 2&pi;(5)(2) = 20&pi; &approx; <strong>62.83 cm&sup2;/s</strong></p>
+      </div>
+
+      <h3>Gradient Descent -- Why ML Engineers Love Derivatives</h3>
+      <p>
+        In machine learning, you have a <strong>loss function</strong> that measures how wrong your model is. Training the model means finding the inputs (weights) that <strong>minimize</strong> this loss. How? Derivatives!
+      </p>
+
+      <div class="formula-box">
+        Gradient Descent Update Rule:
+
+        w_new = w_old - learning_rate &times; dL/dw
+
+        "Move the weight in the direction that reduces the loss"
+      </div>
+
+      <p>The idea is beautifully simple:</p>
+      <ol>
+        <li>Compute the derivative of the loss with respect to each weight (the gradient).</li>
+        <li>The derivative tells you which direction increases the loss.</li>
+        <li>Go in the <strong>opposite</strong> direction (hence the minus sign).</li>
+        <li>Repeat until you reach a minimum.</li>
+      </ol>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Think of gradient descent like walking downhill in fog. You cannot see the bottom, but you can feel the slope under your feet (the derivative). Take a step in the steepest downhill direction, check the slope again, repeat. You will eventually reach a valley.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>Gradient descent can get stuck in local minima -- a valley that is not the lowest point overall. This is a real problem in ML and is why techniques like momentum, Adam optimizer, and random restarts exist.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 6: INTEGRALS BASICS    -->
+    <!-- ============================== -->
+    <section id="integrals-basics">
+      <h2>6. Integrals -- The Basics</h2>
+
+      <p>
+        If derivatives answer "how fast is it changing?", integrals answer "how much has accumulated?" Integration is the reverse process of differentiation -- finding the <strong>antiderivative</strong>.
+      </p>
+
+      <h3>Antiderivatives</h3>
+      <p>
+        If F'(x) = f(x), then F(x) is the antiderivative of f(x). We write this as:
+      </p>
+      <div class="formula-box">
+        &int; f(x) dx = F(x) + C
+
+        where F'(x) = f(x) and C is the constant of integration
+      </div>
+
+      <h3>Why the +C?</h3>
+      <p>
+        Since the derivative of any constant is zero, there are infinitely many antiderivatives. For example, x&sup2; + 5 and x&sup2; - 100 and x&sup2; + &pi; all have the same derivative: 2x. The "+C" captures all these possibilities.
+      </p>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>Never forget the +C on indefinite integrals. It is a constant source of lost marks (pun intended) and it actually matters in applications -- the constant represents initial conditions (like starting position or initial amount).</p>
+      </div>
+
+      <h3>Basic Integration Rules</h3>
+      <p>These are the derivative rules, but reversed:</p>
+
+      <table>
+        <tr>
+          <th>Function</th>
+          <th>Integral</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>x<sup>n</sup> (n &ne; -1)</td>
+          <td>x<sup>n+1</sup> / (n+1) + C</td>
+          <td>&int; x&sup3; dx = x<sup>4</sup>/4 + C</td>
+        </tr>
+        <tr>
+          <td>1/x</td>
+          <td>ln|x| + C</td>
+          <td>&int; (1/x) dx = ln|x| + C</td>
+        </tr>
+        <tr>
+          <td>e<sup>x</sup></td>
+          <td>e<sup>x</sup> + C</td>
+          <td>&int; e<sup>x</sup> dx = e<sup>x</sup> + C</td>
+        </tr>
+        <tr>
+          <td>cos(x)</td>
+          <td>sin(x) + C</td>
+          <td>&int; cos(x) dx = sin(x) + C</td>
+        </tr>
+        <tr>
+          <td>sin(x)</td>
+          <td>-cos(x) + C</td>
+          <td>&int; sin(x) dx = -cos(x) + C</td>
+        </tr>
+        <tr>
+          <td>constant k</td>
+          <td>kx + C</td>
+          <td>&int; 5 dx = 5x + C</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Tip -- Checking Your Work</div>
+        <p>You can always verify an integral by differentiating your answer. If you get back the original function, you did it right. This is the best self-check in calculus.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Power Rule for Integration</div>
+        <p>Find &int; x<sup>4</sup> dx</p>
+        <p>Add 1 to the exponent: 4 + 1 = 5</p>
+        <p>Divide by the new exponent: x<sup>5</sup> / 5</p>
+        <p><strong>&int; x<sup>4</sup> dx = x<sup>5</sup>/5 + C</strong></p>
+        <p>Check: d/dx (x<sup>5</sup>/5 + C) = 5x<sup>4</sup>/5 = x<sup>4</sup>. Correct!</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Integrating a Polynomial</div>
+        <p>Find &int; (3x&sup2; + 2x - 7) dx</p>
+        <p>Integrate term by term:</p>
+        <ul>
+          <li>&int; 3x&sup2; dx = 3 &middot; x&sup3;/3 = x&sup3;</li>
+          <li>&int; 2x dx = 2 &middot; x&sup2;/2 = x&sup2;</li>
+          <li>&int; -7 dx = -7x</li>
+        </ul>
+        <p><strong>= x&sup3; + x&sup2; - 7x + C</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Rewriting Before Integrating</div>
+        <p>Find &int; (1/x&sup3;) dx</p>
+        <p>Rewrite: 1/x&sup3; = x<sup>-3</sup></p>
+        <p>Apply power rule: x<sup>-3+1</sup> / (-3+1) = x<sup>-2</sup> / (-2) = -1/(2x&sup2;)</p>
+        <p><strong>&int; (1/x&sup3;) dx = -1/(2x&sup2;) + C</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Roots</div>
+        <p>Find &int; &radic;x dx</p>
+        <p>Rewrite: &radic;x = x<sup>1/2</sup></p>
+        <p>Apply power rule: x<sup>1/2 + 1</sup> / (1/2 + 1) = x<sup>3/2</sup> / (3/2) = (2/3)x<sup>3/2</sup></p>
+        <p><strong>&int; &radic;x dx = (2/3)x<sup>3/2</sup> + C</strong></p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 7: DEFINITE INTEGRALS  -->
+    <!-- ============================== -->
+    <section id="definite-integrals">
+      <h2>7. Definite Integrals</h2>
+
+      <p>
+        An <strong>indefinite integral</strong> gives you a family of functions (+C). A <strong>definite integral</strong> gives you a specific number -- the total accumulation between two points.
+      </p>
+
+      <h3>Area Under a Curve</h3>
+      <p>
+        The definite integral of f(x) from a to b represents the <strong>signed area</strong> between the curve and the x-axis, from x = a to x = b.
+      </p>
+
+      <div class="formula-box">
+         b
+        &int;  f(x) dx = "Area under f(x) from a to b"
+         a
+
+        Area above x-axis is positive; area below x-axis is negative.
+      </div>
+
+      <h3>The Fundamental Theorem of Calculus</h3>
+      <p>
+        This is the crown jewel of calculus. It says that differentiation and integration are inverses of each other, and it gives us a practical way to evaluate definite integrals:
+      </p>
+
+      <div class="formula-box">
+         b
+        &int;  f(x) dx = F(b) - F(a)
+         a
+
+        where F(x) is any antiderivative of f(x)
+
+        "Find the antiderivative, plug in the upper limit,
+         subtract the antiderivative at the lower limit."
+      </div>
+
+      <p>
+        Notice that the +C cancels out (it appears in both F(b) and F(a)), which is why definite integrals do not have a +C.
+      </p>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>The notation F(x) |<sub>a</sub><sup>b</sup> (with the evaluation bar) is a shorthand for F(b) - F(a). You will see this written as [F(x)]<sub>a</sub><sup>b</sup> in many textbooks.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Basic Definite Integral</div>
+        <p>Evaluate &int; from 1 to 3 of x&sup2; dx</p>
+        <p><strong>Step 1:</strong> Find antiderivative: F(x) = x&sup3;/3</p>
+        <p><strong>Step 2:</strong> Evaluate at the bounds:</p>
+        <p>F(3) - F(1) = (3&sup3;/3) - (1&sup3;/3) = 27/3 - 1/3 = 26/3</p>
+        <p><strong>Answer: 26/3 &approx; 8.667</strong></p>
+        <p>This is the area under y = x&sup2; from x = 1 to x = 3.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Definite Integral with Multiple Terms</div>
+        <p>Evaluate &int; from 0 to 2 of (3x&sup2; - 4x + 1) dx</p>
+        <p>Antiderivative: F(x) = x&sup3; - 2x&sup2; + x</p>
+        <p>F(2) = 8 - 8 + 2 = 2</p>
+        <p>F(0) = 0 - 0 + 0 = 0</p>
+        <p><strong>Answer: 2 - 0 = 2</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Using e and ln</div>
+        <p>Evaluate &int; from 1 to e of (1/x) dx</p>
+        <p>Antiderivative: F(x) = ln(x)</p>
+        <p>F(e) - F(1) = ln(e) - ln(1) = 1 - 0</p>
+        <p><strong>Answer: 1</strong></p>
+        <p>The area under 1/x from 1 to e is exactly 1. This is actually how the number e is defined!</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>The definite integral gives <strong>signed</strong> area. If f(x) is below the x-axis, the integral is negative. To find the total (unsigned) area, you need to split the integral at the zeros and take absolute values.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 8: APPLICATIONS        -->
+    <!-- ============================== -->
+    <section id="applications-integrals">
+      <h2>8. Applications of Integrals</h2>
+
+      <h3>Area Between Two Curves</h3>
+      <p>
+        To find the area between two curves f(x) and g(x) (where f(x) &ge; g(x)) from a to b:
+      </p>
+
+      <div class="formula-box">
+         b
+        &int;  [f(x) - g(x)] dx
+         a
+
+        "Integral of (top curve minus bottom curve)"
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Area Between Curves</div>
+        <p>Find the area between y = x&sup2; and y = x from x = 0 to x = 1.</p>
+        <p>On [0, 1], x &ge; x&sup2; (the line is above the parabola).</p>
+        <p>&int; from 0 to 1 of (x - x&sup2;) dx</p>
+        <p>= [x&sup2;/2 - x&sup3;/3] from 0 to 1</p>
+        <p>= (1/2 - 1/3) - (0 - 0) = 1/6</p>
+        <p><strong>Area = 1/6</strong></p>
+      </div>
+
+      <h3>Why CS People Care About Integrals</h3>
+
+      <p><strong>Probability Distributions</strong></p>
+      <p>
+        In statistics and ML, continuous probability distributions are defined using integrals. The probability that a random variable X falls between a and b is:
+      </p>
+      <div class="formula-box">
+                  b
+        P(a &le; X &le; b) = &int;  f(x) dx
+                  a
+
+        where f(x) is the probability density function (PDF)
+      </div>
+      <p>
+        The total area under the entire PDF must equal 1 (there is a 100% chance of something happening). This is why integrals are unavoidable in probability.
+      </p>
+
+      <p><strong>Expected Value</strong></p>
+      <p>
+        The expected value (average outcome) of a continuous random variable is:
+      </p>
+      <div class="formula-box">
+                   &infin;
+        E[X] = &int;   x &middot; f(x) dx
+                  -&infin;
+      </div>
+      <p>
+        This shows up everywhere in ML: loss functions, reward signals in reinforcement learning, and Bayesian statistics.
+      </p>
+
+      <p><strong>Computational Geometry</strong></p>
+      <p>
+        Integrals help compute areas and volumes of complex shapes, which matters for computer graphics, geographic information systems (GIS), physics simulations, and any application that works with continuous shapes.
+      </p>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>In practice, computers almost never compute integrals symbolically. They use <strong>numerical integration</strong> -- approximating the area by dividing it into tiny rectangles or trapezoids and adding them up. But understanding the theory tells you what the computer is approximating and why.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 9: PARTIAL DERIVATIVES -->
+    <!-- ============================== -->
+    <section id="partial-derivatives">
+      <h2>9. Partial Derivatives &amp; Gradients (For ML)</h2>
+
+      <p>Everything you learned about derivatives so far involved <strong>one variable</strong>: y = f(x). But in real-world CS, functions depend on <strong>many variables at once</strong>. A machine learning loss function might depend on millions of weights. How do you take the derivative when there are 10 inputs, not 1?</p>
+
+      <p>The answer: <strong>partial derivatives</strong>. You take the derivative with respect to <em>one variable at a time</em>, treating all the others as constants.</p>
+
+      <h3>What Is a Partial Derivative?</h3>
+
+      <p>Consider this function with two inputs:</p>
+
+      <div class="formula-box">
+        f(x, y) = x² + 3xy + y²
+      </div>
+
+      <p>The partial derivative with respect to x (written ∂f/∂x) asks: <strong>"If I nudge x slightly while keeping y fixed, how much does f change?"</strong></p>
+
+      <p>To compute it, just differentiate normally with respect to x, treating y as a constant number:</p>
+
+      <div class="example-box">
+        <div class="label">Example: Partial Derivatives of f(x, y) = x² + 3xy + y²</div>
+        <p><strong>∂f/∂x:</strong> Treat y as a constant, differentiate with respect to x:</p>
+        <p>x² → 2x &nbsp;&nbsp; 3xy → 3y (y is a constant times x) &nbsp;&nbsp; y² → 0 (constant)</p>
+        <p><strong>∂f/∂x = 2x + 3y</strong></p>
+        <br>
+        <p><strong>∂f/∂y:</strong> Treat x as a constant, differentiate with respect to y:</p>
+        <p>x² → 0 (constant) &nbsp;&nbsp; 3xy → 3x (x is a constant times y) &nbsp;&nbsp; y² → 2y</p>
+        <p><strong>∂f/∂y = 3x + 2y</strong></p>
+      </div>
+
+      <p>That's it. Each partial derivative tells you how sensitive the output is to one specific input. If ∂f/∂x = 10 and ∂f/∂y = 2, then tweaking x has 5 times more effect than tweaking y.</p>
+
+      <div class="example-box">
+        <div class="label">Example: f(x, y, z) = 2x²y + z³ - 5xz</div>
+        <p><strong>∂f/∂x</strong> (y and z are constants): 4xy + 0 - 5z = <strong>4xy - 5z</strong></p>
+        <p><strong>∂f/∂y</strong> (x and z are constants): 2x² + 0 - 0 = <strong>2x²</strong></p>
+        <p><strong>∂f/∂z</strong> (x and y are constants): 0 + 3z² - 5x = <strong>3z² - 5x</strong></p>
+      </div>
+
+      <h3>The Gradient Vector</h3>
+
+      <p>If you collect <em>all</em> the partial derivatives into a single vector, you get the <strong>gradient</strong> (written ∇f, pronounced "nabla f" or "grad f"):</p>
+
+      <div class="formula-box">
+        ∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z, ...)<br><br>
+
+        For f(x, y) = x² + 3xy + y²:<br>
+        ∇f = (2x + 3y, 3x + 2y)
+      </div>
+
+      <p>The gradient has a beautiful geometric meaning: <strong>it points in the direction of steepest increase</strong>. If you want the function to grow as fast as possible, walk in the direction of the gradient. If you want it to <em>shrink</em> as fast as possible, walk in the <em>opposite</em> direction.</p>
+
+      <div class="memory-diagram">
+    Loss landscape (imagine a hilly surface):
+
+         ^  Loss
+         |
+    high |    *  ← you are here
+         |     \
+         |      \  ← gradient points uphill
+         |       \    so NEGATIVE gradient points downhill
+         |        \
+    low  |         *  ← minimum (goal!)
+         +-------------------> weights
+
+    Gradient descent: move OPPOSITE to the gradient
+    new_weights = old_weights - learning_rate × ∇Loss
+      </div>
+
+      <h3>Why This Is the Heart of Machine Learning</h3>
+
+      <p>In machine learning, you have a <strong>loss function</strong> that measures how wrong your model is. It depends on all the model's weights (parameters). A neural network might have millions of weights: w₁, w₂, ..., w₁₀₀₀₀₀₀.</p>
+
+      <p>Training the model means minimizing the loss. How? <strong>Gradient descent</strong>:</p>
+
+      <div class="formula-box">
+        1. Compute the gradient: ∇Loss = (∂Loss/∂w₁, ∂Loss/∂w₂, ..., ∂Loss/∂wₙ)<br>
+        2. Update each weight: wᵢ = wᵢ - learning_rate × ∂Loss/∂wᵢ<br>
+        3. Repeat until loss is small enough
+      </div>
+
+      <p>Each partial derivative ∂Loss/∂wᵢ tells you: <strong>"How much does the loss change if I nudge weight i?"</strong> If the partial derivative is large and positive, increasing that weight makes the loss worse -- so decrease it. If it's negative, increasing that weight helps -- so increase it.</p>
+
+      <div class="example-box">
+        <div class="label">Concrete Example: Simple Linear Model</div>
+        <p>Model: prediction = wx + b (two parameters: weight w and bias b)</p>
+        <p>Loss for one data point: L = (prediction - actual)² = (wx + b - y)²</p>
+        <br>
+        <p><strong>∂L/∂w</strong> = 2(wx + b - y) · x &nbsp;&nbsp; (chain rule!)</p>
+        <p><strong>∂L/∂b</strong> = 2(wx + b - y) · 1</p>
+        <br>
+        <p>If x = 3, y = 7, w = 1, b = 0:</p>
+        <p>prediction = 1(3) + 0 = 3 &nbsp;&nbsp; error = 3 - 7 = -4</p>
+        <p>∂L/∂w = 2(-4)(3) = -24 → w should increase (gradient is negative)</p>
+        <p>∂L/∂b = 2(-4)(1) = -8 → b should increase too</p>
+        <br>
+        <p>With learning_rate = 0.01:</p>
+        <p>new w = 1 - 0.01(-24) = 1 + 0.24 = <strong>1.24</strong></p>
+        <p>new b = 0 - 0.01(-8) = 0 + 0.08 = <strong>0.08</strong></p>
+        <p>New prediction: 1.24(3) + 0.08 = 3.80 (closer to 7 than before!)</p>
+      </div>
+
+      <h3>Backpropagation = Chain Rule on Steroids</h3>
+
+      <p>A neural network is a chain of functions: each layer takes the previous layer's output and transforms it. To find ∂Loss/∂w for a weight in an early layer, you use the <strong>chain rule repeatedly</strong> through every layer between that weight and the output. This process is called <strong>backpropagation</strong>.</p>
+
+      <div class="formula-box">
+        Layer 1 output: h₁ = f(w₁ · input)<br>
+        Layer 2 output: h₂ = g(w₂ · h₁)<br>
+        Loss: L = (h₂ - target)²<br><br>
+
+        To find ∂L/∂w₁, chain rule through the layers:<br>
+        ∂L/∂w₁ = (∂L/∂h₂) · (∂h₂/∂h₁) · (∂h₁/∂w₁)<br><br>
+
+        Each term is a partial derivative. Multiply them all together.<br>
+        This is what PyTorch/TensorFlow compute automatically with "autograd."
+      </div>
+
+      <div class="tip-box">
+        <div class="label">The Big Picture</div>
+        <p>Partial derivatives let you ask "what happens if I change just this one thing?" The gradient collects all those answers into a direction. Gradient descent follows that direction downhill. Backpropagation uses the chain rule to compute the gradient efficiently through layers. <strong>That's all of machine learning optimization in four sentences.</strong></p>
+        <p>You don't need to compute these by hand -- frameworks do it. But understanding what they compute helps you debug, tune learning rates, and understand why training fails (vanishing/exploding gradients).</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- SECTION 10: PRACTICE QUIZ      -->
+    <!-- ============================== -->
+    <section id="quiz">
+      <h2>10. Practice Quiz</h2>
+      <p>Test your understanding of limits, derivatives, and integrals.</p>
+
+      <div class="quiz" id="calculus-quiz">
+
+        <!-- Q1 -->
+        <div class="quiz-q" data-correct="1">
+          <h4>Q1: What is lim (x&sup2; - 9) / (x - 3) as x &rarr; 3?</h4>
+          <button onclick="checkAnswer(this, false)">A) 0</button>
+          <button onclick="checkAnswer(this, true)">B) 6</button>
+          <button onclick="checkAnswer(this, false)">C) 3</button>
+          <button onclick="checkAnswer(this, false)">D) Does not exist</button>
+          <div class="explanation">
+            <strong>B) 6.</strong> Factor the numerator: (x-3)(x+3) / (x-3) = x+3. Plug in x = 3: 3 + 3 = 6.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-q" data-correct="2">
+          <h4>Q2: What is the derivative of f(x) = 5x<sup>4</sup> - 3x + 8?</h4>
+          <button onclick="checkAnswer(this, false)">A) 20x&sup3; - 3x</button>
+          <button onclick="checkAnswer(this, true)">B) 20x&sup3; - 3</button>
+          <button onclick="checkAnswer(this, false)">C) 5x&sup3; - 3</button>
+          <button onclick="checkAnswer(this, false)">D) 20x<sup>4</sup> - 3</button>
+          <div class="explanation">
+            <strong>B) 20x&sup3; - 3.</strong> Power rule on each term: d/dx(5x<sup>4</sup>) = 20x&sup3;, d/dx(-3x) = -3, d/dx(8) = 0.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-q" data-correct="3">
+          <h4>Q3: Using the chain rule, what is d/dx [sin(3x)]?</h4>
+          <button onclick="checkAnswer(this, false)">A) cos(3x)</button>
+          <button onclick="checkAnswer(this, false)">B) 3 sin(3x)</button>
+          <button onclick="checkAnswer(this, true)">C) 3 cos(3x)</button>
+          <button onclick="checkAnswer(this, false)">D) -3 cos(3x)</button>
+          <div class="explanation">
+            <strong>C) 3 cos(3x).</strong> Outer: sin(u) &rarr; cos(u). Inner: 3x &rarr; 3. Chain rule: cos(3x) &middot; 3 = 3 cos(3x).
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-q" data-correct="0">
+          <h4>Q4: What is &int; (6x&sup2; + 4x) dx?</h4>
+          <button onclick="checkAnswer(this, true)">A) 2x&sup3; + 2x&sup2; + C</button>
+          <button onclick="checkAnswer(this, false)">B) 2x&sup3; + 2x&sup2;</button>
+          <button onclick="checkAnswer(this, false)">C) 3x&sup3; + 2x&sup2; + C</button>
+          <button onclick="checkAnswer(this, false)">D) 12x + 4 + C</button>
+          <div class="explanation">
+            <strong>A) 2x&sup3; + 2x&sup2; + C.</strong> Integrate term by term: &int;6x&sup2; dx = 6(x&sup3;/3) = 2x&sup3;, &int;4x dx = 4(x&sup2;/2) = 2x&sup2;. Do not forget +C! (That rules out option B.)
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-q" data-correct="2">
+          <h4>Q5: Evaluate &int; from 0 to 1 of 2x dx</h4>
+          <button onclick="checkAnswer(this, false)">A) 2</button>
+          <button onclick="checkAnswer(this, false)">B) 0</button>
+          <button onclick="checkAnswer(this, true)">C) 1</button>
+          <button onclick="checkAnswer(this, false)">D) 1 + C</button>
+          <div class="explanation">
+            <strong>C) 1.</strong> Antiderivative: x&sup2;. Evaluate: (1)&sup2; - (0)&sup2; = 1 - 0 = 1. Note: definite integrals give a number, no +C needed.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(button, isCorrect) {
+      // If already answered, do nothing
+      var parent = button.parentElement;
+      if (parent.classList.contains('answered')) return;
+      parent.classList.add('answered');
+
+      // Mark the button
+      if (isCorrect) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        // Highlight the correct answer
+        var buttons = parent.querySelectorAll('button');
+        buttons.forEach(function(btn) {
+          // Find the correct one by trying each
+          // We use a data attribute approach instead
+        });
+        // Use data-correct to find right answer
+        var correctIndex = parseInt(parent.getAttribute('data-correct'));
+        var allButtons = parent.querySelectorAll('button');
+        if (allButtons[correctIndex]) {
+          allButtons[correctIndex].classList.add('correct');
+        }
+      }
+
+      // Show explanation
+      var explanation = parent.querySelector('.explanation');
+      if (explanation) {
+        explanation.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

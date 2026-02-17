@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linked Lists - Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html" class="active">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<div class="container">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Linked Lists</div>
+    <h1>Linked Lists</h1>
+    <p>Nodes connected by pointers -- the fundamental dynamic data structure for efficient insertions and deletions.</p>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is">1. What is a Linked List?</a>
+    <a href="#singly-vs-doubly">2. Singly vs Doubly Linked List</a>
+    <a href="#complexity">3. Time Complexity</a>
+    <a href="#implementation">4. Implementation from Scratch</a>
+    <a href="#techniques">5. Common Linked List Techniques</a>
+    <a href="#leetcode">6. LeetCode Problems</a>
+    <a href="#when-to-use">7. When to Use Linked Lists</a>
+    <a href="#quiz">8. Practice Quiz</a>
+  </div>
+
+  <!-- ======================= SECTION 1 ======================= -->
+  <section id="what-is">
+    <h2>1. What is a Linked List?</h2>
+
+    <p>A <strong>linked list</strong> is a linear data structure where each element (called a <strong>node</strong>) contains two things: the data itself and a <strong>pointer</strong> (reference) to the next node in the sequence. Unlike arrays, linked list nodes are <strong>not stored contiguously</strong> in memory -- they can be scattered anywhere in the heap.</p>
+
+    <h3>Node Structure</h3>
+    <p>Each node holds:</p>
+    <ul>
+      <li><strong>Data</strong> -- the value stored in the node</li>
+      <li><strong>Next pointer</strong> -- a reference to the next node (or <code>null</code> if it is the last node)</li>
+    </ul>
+
+    <h3>Visual Representation</h3>
+    <div class="formula-box">
+      Head                                          Tail<br>
+       |                                             |<br>
+       v                                             v<br>
+      [1 | next] ---> [2 | next] ---> [3 | next] ---> null
+    </div>
+
+    <p>The <strong>head</strong> pointer always references the first node. The <strong>tail</strong> is the last node whose <code>next</code> pointer is <code>null</code>. Some implementations also maintain an explicit tail pointer for O(1) append operations.</p>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      <p>Arrays give you O(1) random access because elements sit next to each other in memory. Linked lists sacrifice random access (O(n) to reach index i) but gain O(1) insertions/deletions at the head -- no shifting elements required.</p>
+    </div>
+
+    <h3>Memory Layout: Array vs Linked List</h3>
+    <div class="formula-box">
+      <strong>Array (contiguous):</strong><br>
+      Memory: | 1 | 2 | 3 | 4 | 5 |<br>
+      Index:    0   1   2   3   4<br><br>
+      <strong>Linked List (scattered):</strong><br>
+      Addr 0x100: [1 | 0x348]<br>
+      Addr 0x348: [2 | 0x0F0]<br>
+      Addr 0x0F0: [3 | 0x7A2]<br>
+      Addr 0x7A2: [4 | null]
+    </div>
+  </section>
+
+  <!-- ======================= SECTION 2 ======================= -->
+  <section id="singly-vs-doubly">
+    <h2>2. Singly vs Doubly Linked List</h2>
+
+    <h3>Singly Linked List</h3>
+    <p>Each node stores data and a <strong>single pointer</strong> to the next node. Traversal is one-directional -- you can only go forward.</p>
+
+    <div class="formula-box">
+      Head<br>
+       |<br>
+       v<br>
+      [A | ->] ---> [B | ->] ---> [C | ->] ---> null
+    </div>
+
+    <h3>Doubly Linked List</h3>
+    <p>Each node stores data, a pointer to the <strong>next</strong> node, and a pointer to the <strong>previous</strong> node. Traversal goes both directions.</p>
+
+    <div class="formula-box">
+      Head                                                  Tail<br>
+       |                                                     |<br>
+       v                                                     v<br>
+      null <--- [prev | A | next] <---> [prev | B | next] <---> [prev | C | next] ---> null
+    </div>
+
+    <h3>Trade-offs</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>Singly Linked List</th>
+          <th>Doubly Linked List</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Memory per node</td>
+          <td>Less (1 pointer)</td>
+          <td>More (2 pointers)</td>
+        </tr>
+        <tr>
+          <td>Forward traversal</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Backward traversal</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Delete given node</td>
+          <td>O(n) -- need predecessor</td>
+          <td>O(1) -- has prev pointer</td>
+        </tr>
+        <tr>
+          <td>Insert before node</td>
+          <td>O(n) -- need predecessor</td>
+          <td>O(1) -- has prev pointer</td>
+        </tr>
+        <tr>
+          <td>Implementation</td>
+          <td>Simpler</td>
+          <td>More complex</td>
+        </tr>
+        <tr>
+          <td>Use case</td>
+          <td>Stacks, simple lists</td>
+          <td>LRU cache, browser history</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ======================= SECTION 3 ======================= -->
+  <section id="complexity">
+    <h2>3. Time Complexity</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Singly LL</th>
+          <th>Doubly LL</th>
+          <th>Array</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Access by index</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+        </tr>
+        <tr>
+          <td>Insert at head</td>
+          <td>O(1)</td>
+          <td>O(1)</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td>Insert at tail</td>
+          <td>O(n) / O(1)*</td>
+          <td>O(1)</td>
+          <td>O(1) amortized</td>
+        </tr>
+        <tr>
+          <td>Insert at middle</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td>Delete head</td>
+          <td>O(1)</td>
+          <td>O(1)</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td>Delete tail</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>O(1)</td>
+        </tr>
+        <tr>
+          <td>Search</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Note</div>
+      <p>* Singly linked list insert at tail is O(1) <strong>only if you maintain a tail pointer</strong>. Without one, you must traverse the entire list to find the end, making it O(n).</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Cache Performance</div>
+      <p>Even though linked lists have great theoretical complexity for insertions/deletions, arrays often win in practice because of <strong>CPU cache locality</strong>. Array elements sit next to each other in memory, so the CPU can prefetch them efficiently. Linked list nodes are scattered in memory, causing frequent cache misses.</p>
+    </div>
+  </section>
+
+  <!-- ======================= SECTION 4 ======================= -->
+  <section id="implementation">
+    <h2>4. Implementation from Scratch</h2>
+
+    <!-- --- SINGLY LINKED LIST --- -->
+    <h3>Singly Linked List</h3>
+
+    <p>We build a <code>Node</code> class (data + next pointer) and a <code>LinkedList</code> class with core operations: <strong>append</strong>, <strong>prepend</strong>, <strong>insert_at</strong>, <strong>delete</strong>, <strong>search</strong>, <strong>display</strong>, and <strong>length</strong>.</p>
+
+    <h3>Python -- Singly Linked List</h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="builtin">Node</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, data):
+        <span class="builtin">self</span>.data = data
+        <span class="builtin">self</span>.next = <span class="keyword">None</span>
+
+
+<span class="keyword">class</span> <span class="builtin">LinkedList</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>.head = <span class="keyword">None</span>
+        <span class="builtin">self</span>._length = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">append</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Add node to the end of the list."""</span>
+        new_node = <span class="builtin">Node</span>(data)
+        <span class="builtin">self</span>._length += <span class="number">1</span>
+        <span class="keyword">if not</span> <span class="builtin">self</span>.head:
+            <span class="builtin">self</span>.head = new_node
+            <span class="keyword">return</span>
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current.next:
+            current = current.next
+        current.next = new_node
+
+    <span class="keyword">def</span> <span class="function">prepend</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Add node to the beginning of the list. O(1)."""</span>
+        new_node = <span class="builtin">Node</span>(data)
+        new_node.next = <span class="builtin">self</span>.head
+        <span class="builtin">self</span>.head = new_node
+        <span class="builtin">self</span>._length += <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">insert_at</span>(<span class="builtin">self</span>, index, data):
+        <span class="comment">"""Insert node at a specific index."""</span>
+        <span class="keyword">if</span> index &lt; <span class="number">0</span> <span class="keyword">or</span> index &gt; <span class="builtin">self</span>._length:
+            <span class="keyword">raise</span> <span class="builtin">IndexError</span>(<span class="string">"Index out of bounds"</span>)
+        <span class="keyword">if</span> index == <span class="number">0</span>:
+            <span class="builtin">self</span>.<span class="function">prepend</span>(data)
+            <span class="keyword">return</span>
+        new_node = <span class="builtin">Node</span>(data)
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(index - <span class="number">1</span>):
+            current = current.next
+        new_node.next = current.next
+        current.next = new_node
+        <span class="builtin">self</span>._length += <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">delete</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Delete the first node with the given value."""</span>
+        <span class="keyword">if not</span> <span class="builtin">self</span>.head:
+            <span class="keyword">return</span>
+        <span class="keyword">if</span> <span class="builtin">self</span>.head.data == data:
+            <span class="builtin">self</span>.head = <span class="builtin">self</span>.head.next
+            <span class="builtin">self</span>._length -= <span class="number">1</span>
+            <span class="keyword">return</span>
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current.next:
+            <span class="keyword">if</span> current.next.data == data:
+                current.next = current.next.next
+                <span class="builtin">self</span>._length -= <span class="number">1</span>
+                <span class="keyword">return</span>
+            current = current.next
+
+    <span class="keyword">def</span> <span class="function">search</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Return True if value exists in the list."""</span>
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current:
+            <span class="keyword">if</span> current.data == data:
+                <span class="keyword">return</span> <span class="keyword">True</span>
+            current = current.next
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">def</span> <span class="function">display</span>(<span class="builtin">self</span>):
+        <span class="comment">"""Print the list as: 1 -> 2 -> 3 -> null"""</span>
+        parts = []
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current:
+            parts.<span class="function">append</span>(<span class="builtin">str</span>(current.data))
+            current = current.next
+        <span class="builtin">print</span>(<span class="string">" -> "</span>.<span class="function">join</span>(parts) + <span class="string">" -> null"</span>)
+
+    <span class="keyword">def</span> <span class="function">length</span>(<span class="builtin">self</span>):
+        <span class="comment">"""Return the number of nodes."""</span>
+        <span class="keyword">return</span> <span class="builtin">self</span>._length
+
+
+<span class="comment"># Usage</span>
+ll = <span class="builtin">LinkedList</span>()
+ll.<span class="function">append</span>(<span class="number">1</span>)
+ll.<span class="function">append</span>(<span class="number">2</span>)
+ll.<span class="function">append</span>(<span class="number">3</span>)
+ll.<span class="function">prepend</span>(<span class="number">0</span>)
+ll.<span class="function">insert_at</span>(<span class="number">2</span>, <span class="number">99</span>)
+ll.<span class="function">display</span>()       <span class="comment"># 0 -> 1 -> 99 -> 2 -> 3 -> null</span>
+ll.<span class="function">delete</span>(<span class="number">99</span>)
+ll.<span class="function">display</span>()       <span class="comment"># 0 -> 1 -> 2 -> 3 -> null</span>
+<span class="builtin">print</span>(ll.<span class="function">search</span>(<span class="number">2</span>))  <span class="comment"># True</span>
+<span class="builtin">print</span>(ll.<span class="function">length</span>())   <span class="comment"># 4</span></code></pre>
+
+    <div class="example-box">
+      <div class="label">Step-by-step: append(3)</div>
+      <p><strong>1.</strong> Create new node with data=3, next=null.<br>
+         <strong>2.</strong> If head is null, set head = new node. Done.<br>
+         <strong>3.</strong> Otherwise, start at head. Walk forward until you find a node whose next is null (the tail).<br>
+         <strong>4.</strong> Set that tail node's next to the new node. The new node becomes the new tail.</p>
+    </div>
+
+    <h3>JavaScript -- Singly Linked List</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="builtin">Node</span> {
+    <span class="function">constructor</span>(data) {
+        <span class="keyword">this</span>.data = data;
+        <span class="keyword">this</span>.next = <span class="keyword">null</span>;
+    }
+}
+
+<span class="keyword">class</span> <span class="builtin">LinkedList</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.head = <span class="keyword">null</span>;
+        <span class="keyword">this</span>._length = <span class="number">0</span>;
+    }
+
+    <span class="function">append</span>(data) {
+        <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="builtin">Node</span>(data);
+        <span class="keyword">this</span>._length++;
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.head) {
+            <span class="keyword">this</span>.head = newNode;
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current.next) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+
+    <span class="function">prepend</span>(data) {
+        <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="builtin">Node</span>(data);
+        newNode.next = <span class="keyword">this</span>.head;
+        <span class="keyword">this</span>.head = newNode;
+        <span class="keyword">this</span>._length++;
+    }
+
+    <span class="function">insertAt</span>(index, data) {
+        <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; <span class="keyword">this</span>._length) {
+            <span class="keyword">throw new</span> <span class="builtin">Error</span>(<span class="string">"Index out of bounds"</span>);
+        }
+        <span class="keyword">if</span> (index === <span class="number">0</span>) {
+            <span class="keyword">this</span>.<span class="function">prepend</span>(data);
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="builtin">Node</span>(data);
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; index - <span class="number">1</span>; i++) {
+            current = current.next;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
+        <span class="keyword">this</span>._length++;
+    }
+
+    <span class="function">delete</span>(data) {
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.head) <span class="keyword">return</span>;
+        <span class="keyword">if</span> (<span class="keyword">this</span>.head.data === data) {
+            <span class="keyword">this</span>.head = <span class="keyword">this</span>.head.next;
+            <span class="keyword">this</span>._length--;
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current.next) {
+            <span class="keyword">if</span> (current.next.data === data) {
+                current.next = current.next.next;
+                <span class="keyword">this</span>._length--;
+                <span class="keyword">return</span>;
+            }
+            current = current.next;
+        }
+    }
+
+    <span class="function">search</span>(data) {
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current) {
+            <span class="keyword">if</span> (current.data === data) <span class="keyword">return true</span>;
+            current = current.next;
+        }
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="function">display</span>() {
+        <span class="keyword">const</span> parts = [];
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current) {
+            parts.<span class="function">push</span>(current.data);
+            current = current.next;
+        }
+        <span class="builtin">console</span>.<span class="function">log</span>(parts.<span class="function">join</span>(<span class="string">" -> "</span>) + <span class="string">" -> null"</span>);
+    }
+
+    <span class="function">length</span>() {
+        <span class="keyword">return this</span>._length;
+    }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> ll = <span class="keyword">new</span> <span class="builtin">LinkedList</span>();
+ll.<span class="function">append</span>(<span class="number">1</span>);
+ll.<span class="function">append</span>(<span class="number">2</span>);
+ll.<span class="function">append</span>(<span class="number">3</span>);
+ll.<span class="function">prepend</span>(<span class="number">0</span>);
+ll.<span class="function">insertAt</span>(<span class="number">2</span>, <span class="number">99</span>);
+ll.<span class="function">display</span>();        <span class="comment">// 0 -> 1 -> 99 -> 2 -> 3 -> null</span>
+ll.<span class="function">delete</span>(<span class="number">99</span>);
+ll.<span class="function">display</span>();        <span class="comment">// 0 -> 1 -> 2 -> 3 -> null</span>
+<span class="builtin">console</span>.<span class="function">log</span>(ll.<span class="function">search</span>(<span class="number">2</span>));  <span class="comment">// true</span>
+<span class="builtin">console</span>.<span class="function">log</span>(ll.<span class="function">length</span>());   <span class="comment">// 4</span></code></pre>
+
+    <!-- --- DOUBLY LINKED LIST --- -->
+    <h3>Doubly Linked List</h3>
+
+    <p>The doubly linked list adds a <code>prev</code> pointer to each node. This enables O(1) deletion of a given node and backward traversal, at the cost of extra memory per node.</p>
+
+    <h3>Python -- Doubly Linked List</h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="builtin">DNode</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, data):
+        <span class="builtin">self</span>.data = data
+        <span class="builtin">self</span>.prev = <span class="keyword">None</span>
+        <span class="builtin">self</span>.next = <span class="keyword">None</span>
+
+
+<span class="keyword">class</span> <span class="builtin">DoublyLinkedList</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>.head = <span class="keyword">None</span>
+        <span class="builtin">self</span>.tail = <span class="keyword">None</span>
+        <span class="builtin">self</span>._length = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">append</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Add node to end. O(1) with tail pointer."""</span>
+        new_node = <span class="builtin">DNode</span>(data)
+        <span class="builtin">self</span>._length += <span class="number">1</span>
+        <span class="keyword">if not</span> <span class="builtin">self</span>.head:
+            <span class="builtin">self</span>.head = new_node
+            <span class="builtin">self</span>.tail = new_node
+            <span class="keyword">return</span>
+        new_node.prev = <span class="builtin">self</span>.tail
+        <span class="builtin">self</span>.tail.next = new_node
+        <span class="builtin">self</span>.tail = new_node
+
+    <span class="keyword">def</span> <span class="function">prepend</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Add node to beginning. O(1)."""</span>
+        new_node = <span class="builtin">DNode</span>(data)
+        <span class="builtin">self</span>._length += <span class="number">1</span>
+        <span class="keyword">if not</span> <span class="builtin">self</span>.head:
+            <span class="builtin">self</span>.head = new_node
+            <span class="builtin">self</span>.tail = new_node
+            <span class="keyword">return</span>
+        new_node.next = <span class="builtin">self</span>.head
+        <span class="builtin">self</span>.head.prev = new_node
+        <span class="builtin">self</span>.head = new_node
+
+    <span class="keyword">def</span> <span class="function">delete_node</span>(<span class="builtin">self</span>, node):
+        <span class="comment">"""Delete a specific node reference. O(1)."""</span>
+        <span class="keyword">if</span> node.prev:
+            node.prev.next = node.next
+        <span class="keyword">else</span>:
+            <span class="builtin">self</span>.head = node.next
+        <span class="keyword">if</span> node.next:
+            node.next.prev = node.prev
+        <span class="keyword">else</span>:
+            <span class="builtin">self</span>.tail = node.prev
+        <span class="builtin">self</span>._length -= <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">delete_value</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Delete first node with given value."""</span>
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current:
+            <span class="keyword">if</span> current.data == data:
+                <span class="builtin">self</span>.<span class="function">delete_node</span>(current)
+                <span class="keyword">return</span>
+            current = current.next
+
+    <span class="keyword">def</span> <span class="function">search</span>(<span class="builtin">self</span>, data):
+        <span class="comment">"""Return True if value exists."""</span>
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current:
+            <span class="keyword">if</span> current.data == data:
+                <span class="keyword">return</span> <span class="keyword">True</span>
+            current = current.next
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">def</span> <span class="function">display_forward</span>(<span class="builtin">self</span>):
+        parts = []
+        current = <span class="builtin">self</span>.head
+        <span class="keyword">while</span> current:
+            parts.<span class="function">append</span>(<span class="builtin">str</span>(current.data))
+            current = current.next
+        <span class="builtin">print</span>(<span class="string">"null <-> "</span> + <span class="string">" <-> "</span>.<span class="function">join</span>(parts) + <span class="string">" <-> null"</span>)
+
+    <span class="keyword">def</span> <span class="function">display_backward</span>(<span class="builtin">self</span>):
+        parts = []
+        current = <span class="builtin">self</span>.tail
+        <span class="keyword">while</span> current:
+            parts.<span class="function">append</span>(<span class="builtin">str</span>(current.data))
+            current = current.prev
+        <span class="builtin">print</span>(<span class="string">"null <-> "</span> + <span class="string">" <-> "</span>.<span class="function">join</span>(parts) + <span class="string">" <-> null"</span>)
+
+    <span class="keyword">def</span> <span class="function">length</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="builtin">self</span>._length</code></pre>
+
+    <h3>JavaScript -- Doubly Linked List</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="builtin">DNode</span> {
+    <span class="function">constructor</span>(data) {
+        <span class="keyword">this</span>.data = data;
+        <span class="keyword">this</span>.prev = <span class="keyword">null</span>;
+        <span class="keyword">this</span>.next = <span class="keyword">null</span>;
+    }
+}
+
+<span class="keyword">class</span> <span class="builtin">DoublyLinkedList</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.head = <span class="keyword">null</span>;
+        <span class="keyword">this</span>.tail = <span class="keyword">null</span>;
+        <span class="keyword">this</span>._length = <span class="number">0</span>;
+    }
+
+    <span class="function">append</span>(data) {
+        <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="builtin">DNode</span>(data);
+        <span class="keyword">this</span>._length++;
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.head) {
+            <span class="keyword">this</span>.head = newNode;
+            <span class="keyword">this</span>.tail = newNode;
+            <span class="keyword">return</span>;
+        }
+        newNode.prev = <span class="keyword">this</span>.tail;
+        <span class="keyword">this</span>.tail.next = newNode;
+        <span class="keyword">this</span>.tail = newNode;
+    }
+
+    <span class="function">prepend</span>(data) {
+        <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="builtin">DNode</span>(data);
+        <span class="keyword">this</span>._length++;
+        <span class="keyword">if</span> (!<span class="keyword">this</span>.head) {
+            <span class="keyword">this</span>.head = newNode;
+            <span class="keyword">this</span>.tail = newNode;
+            <span class="keyword">return</span>;
+        }
+        newNode.next = <span class="keyword">this</span>.head;
+        <span class="keyword">this</span>.head.prev = newNode;
+        <span class="keyword">this</span>.head = newNode;
+    }
+
+    <span class="function">deleteNode</span>(node) {
+        <span class="keyword">if</span> (node.prev) {
+            node.prev.next = node.next;
+        } <span class="keyword">else</span> {
+            <span class="keyword">this</span>.head = node.next;
+        }
+        <span class="keyword">if</span> (node.next) {
+            node.next.prev = node.prev;
+        } <span class="keyword">else</span> {
+            <span class="keyword">this</span>.tail = node.prev;
+        }
+        <span class="keyword">this</span>._length--;
+    }
+
+    <span class="function">deleteValue</span>(data) {
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current) {
+            <span class="keyword">if</span> (current.data === data) {
+                <span class="keyword">this</span>.<span class="function">deleteNode</span>(current);
+                <span class="keyword">return</span>;
+            }
+            current = current.next;
+        }
+    }
+
+    <span class="function">search</span>(data) {
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current) {
+            <span class="keyword">if</span> (current.data === data) <span class="keyword">return true</span>;
+            current = current.next;
+        }
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="function">displayForward</span>() {
+        <span class="keyword">const</span> parts = [];
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;
+        <span class="keyword">while</span> (current) {
+            parts.<span class="function">push</span>(current.data);
+            current = current.next;
+        }
+        <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"null <-> "</span> + parts.<span class="function">join</span>(<span class="string">" <-> "</span>) + <span class="string">" <-> null"</span>);
+    }
+
+    <span class="function">displayBackward</span>() {
+        <span class="keyword">const</span> parts = [];
+        <span class="keyword">let</span> current = <span class="keyword">this</span>.tail;
+        <span class="keyword">while</span> (current) {
+            parts.<span class="function">push</span>(current.data);
+            current = current.prev;
+        }
+        <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"null <-> "</span> + parts.<span class="function">join</span>(<span class="string">" <-> "</span>) + <span class="string">" <-> null"</span>);
+    }
+
+    <span class="function">length</span>() {
+        <span class="keyword">return this</span>._length;
+    }
+}</code></pre>
+
+  </section>
+
+  <!-- ======================= SECTION 5 ======================= -->
+  <section id="techniques">
+    <h2>5. Common Linked List Techniques</h2>
+
+    <!-- --- FAST AND SLOW POINTERS --- -->
+    <h3>Fast and Slow Pointers (Tortoise and Hare)</h3>
+
+    <p>This technique uses two pointers that move at different speeds through the list. The <strong>slow pointer</strong> moves one step at a time, while the <strong>fast pointer</strong> moves two steps. This pattern is used to detect cycles and find the middle of a linked list.</p>
+
+    <h3>Detect Cycle in a Linked List</h3>
+    <p>If a cycle exists, the fast pointer will eventually "lap" the slow pointer and they will meet. If no cycle exists, the fast pointer reaches <code>null</code>.</p>
+
+    <div class="formula-box">
+      1 -> 2 -> 3 -> 4 -> 5<br>
+                ^         |<br>
+                |_________|<br>
+      <br>
+      slow: 1, 2, 3, 4, 5, 3, 4, ...<br>
+      fast: 1, 3, 5, 4, 3, 5, 4, ...<br>
+      They meet at node 4 (or 5 depending on start).
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">has_cycle</span>(head):
+    <span class="comment">"""Floyd's cycle detection. O(n) time, O(1) space."""</span>
+    slow = head
+    fast = head
+    <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:
+        slow = slow.next          <span class="comment"># Move 1 step</span>
+        fast = fast.next.next     <span class="comment"># Move 2 steps</span>
+        <span class="keyword">if</span> slow == fast:
+            <span class="keyword">return</span> <span class="keyword">True</span>           <span class="comment"># Cycle detected</span>
+    <span class="keyword">return</span> <span class="keyword">False</span>                  <span class="comment"># No cycle</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">hasCycle</span>(head) {
+    <span class="keyword">let</span> slow = head;
+    <span class="keyword">let</span> fast = head;
+    <span class="keyword">while</span> (fast !== <span class="keyword">null</span> &amp;&amp; fast.next !== <span class="keyword">null</span>) {
+        slow = slow.next;          <span class="comment">// Move 1 step</span>
+        fast = fast.next.next;     <span class="comment">// Move 2 steps</span>
+        <span class="keyword">if</span> (slow === fast) {
+            <span class="keyword">return true</span>;            <span class="comment">// Cycle detected</span>
+        }
+    }
+    <span class="keyword">return false</span>;                  <span class="comment">// No cycle</span>
+}</code></pre>
+
+    <h3>Find Middle of a Linked List</h3>
+    <p>When fast reaches the end, slow is at the middle. If the list has even length, slow will be at the second of the two middle nodes.</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">find_middle</span>(head):
+    <span class="comment">"""Return middle node. O(n) time, O(1) space."""</span>
+    slow = head
+    fast = head
+    <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    <span class="keyword">return</span> slow   <span class="comment"># slow is now at the middle</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">findMiddle</span>(head) {
+    <span class="keyword">let</span> slow = head;
+    <span class="keyword">let</span> fast = head;
+    <span class="keyword">while</span> (fast !== <span class="keyword">null</span> &amp;&amp; fast.next !== <span class="keyword">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="keyword">return</span> slow;
+}</code></pre>
+
+    <div class="example-box">
+      <div class="label">Why does this work?</div>
+      <p>Fast moves 2x the speed of slow. When fast has traversed the entire list (n steps), slow has traversed n/2 steps -- exactly the middle.</p>
+    </div>
+
+    <!-- --- REVERSING A LINKED LIST --- -->
+    <h3>Reversing a Linked List (Iterative)</h3>
+
+    <p>This is one of the most important linked list operations. We use <strong>three pointers</strong>: <code>prev</code>, <code>curr</code>, and <code>next_node</code>. At each step, we reverse one link.</p>
+
+    <h3>Step-by-Step Visual Walkthrough</h3>
+
+    <div class="formula-box">
+      <strong>Original:</strong> 1 -> 2 -> 3 -> 4 -> null<br><br>
+      <strong>Step 1:</strong> prev=null, curr=1, next=2<br>
+        Reverse: 1.next = null<br>
+        Move: prev=1, curr=2<br>
+        Result: null &lt;- 1    2 -> 3 -> 4 -> null<br><br>
+      <strong>Step 2:</strong> prev=1, curr=2, next=3<br>
+        Reverse: 2.next = 1<br>
+        Move: prev=2, curr=3<br>
+        Result: null &lt;- 1 &lt;- 2    3 -> 4 -> null<br><br>
+      <strong>Step 3:</strong> prev=2, curr=3, next=4<br>
+        Reverse: 3.next = 2<br>
+        Move: prev=3, curr=4<br>
+        Result: null &lt;- 1 &lt;- 2 &lt;- 3    4 -> null<br><br>
+      <strong>Step 4:</strong> prev=3, curr=4, next=null<br>
+        Reverse: 4.next = 3<br>
+        Move: prev=4, curr=null<br>
+        Result: null &lt;- 1 &lt;- 2 &lt;- 3 &lt;- 4<br><br>
+      <strong>Done!</strong> curr is null, return prev (4) as new head.
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">reverse_list</span>(head):
+    <span class="comment">"""Reverse a singly linked list. O(n) time, O(1) space."""</span>
+    prev = <span class="keyword">None</span>
+    curr = head
+    <span class="keyword">while</span> curr:
+        next_node = curr.next   <span class="comment"># Save next</span>
+        curr.next = prev        <span class="comment"># Reverse the link</span>
+        prev = curr             <span class="comment"># Move prev forward</span>
+        curr = next_node        <span class="comment"># Move curr forward</span>
+    <span class="keyword">return</span> prev                 <span class="comment"># prev is the new head</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">reverseList</span>(head) {
+    <span class="keyword">let</span> prev = <span class="keyword">null</span>;
+    <span class="keyword">let</span> curr = head;
+    <span class="keyword">while</span> (curr !== <span class="keyword">null</span>) {
+        <span class="keyword">const</span> nextNode = curr.next;  <span class="comment">// Save next</span>
+        curr.next = prev;            <span class="comment">// Reverse the link</span>
+        prev = curr;                 <span class="comment">// Move prev forward</span>
+        curr = nextNode;             <span class="comment">// Move curr forward</span>
+    }
+    <span class="keyword">return</span> prev;                     <span class="comment">// prev is the new head</span>
+}</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Common Mistake</div>
+      <p>Forgetting to save <code>curr.next</code> before overwriting it. If you set <code>curr.next = prev</code> first, you lose the reference to the rest of the list. Always save the next pointer first.</p>
+    </div>
+
+    <!-- --- MERGING TWO SORTED LISTS --- -->
+    <h3>Merging Two Sorted Linked Lists</h3>
+
+    <p>Use a <strong>two-pointer approach</strong> with a dummy head node. Compare current nodes from both lists, attach the smaller one to the merged list, and advance that pointer.</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">merge_two_lists</span>(l1, l2):
+    <span class="comment">"""Merge two sorted lists into one sorted list."""</span>
+    dummy = <span class="builtin">Node</span>(<span class="number">0</span>)       <span class="comment"># Dummy head simplifies edge cases</span>
+    current = dummy
+
+    <span class="keyword">while</span> l1 <span class="keyword">and</span> l2:
+        <span class="keyword">if</span> l1.data &lt;= l2.data:
+            current.next = l1
+            l1 = l1.next
+        <span class="keyword">else</span>:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+
+    <span class="comment"># Attach the remaining nodes</span>
+    current.next = l1 <span class="keyword">if</span> l1 <span class="keyword">else</span> l2
+
+    <span class="keyword">return</span> dummy.next     <span class="comment"># Skip the dummy node</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">mergeTwoLists</span>(l1, l2) {
+    <span class="keyword">const</span> dummy = <span class="keyword">new</span> <span class="builtin">Node</span>(<span class="number">0</span>);
+    <span class="keyword">let</span> current = dummy;
+
+    <span class="keyword">while</span> (l1 !== <span class="keyword">null</span> &amp;&amp; l2 !== <span class="keyword">null</span>) {
+        <span class="keyword">if</span> (l1.data &lt;= l2.data) {
+            current.next = l1;
+            l1 = l1.next;
+        } <span class="keyword">else</span> {
+            current.next = l2;
+            l2 = l2.next;
+        }
+        current = current.next;
+    }
+
+    <span class="comment">// Attach remaining nodes</span>
+    current.next = l1 !== <span class="keyword">null</span> ? l1 : l2;
+
+    <span class="keyword">return</span> dummy.next;
+}</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Dummy Node Trick</div>
+      <p>The dummy node eliminates special-case handling for the first node. Instead of checking "is the merged list empty?", we always have a node to attach to. At the end, we return <code>dummy.next</code> to skip it.</p>
+    </div>
+  </section>
+
+  <!-- ======================= SECTION 6 ======================= -->
+  <section id="leetcode">
+    <h2>6. LeetCode Problems</h2>
+
+    <p>These are the essential linked list problems. Master these and you will handle most linked list interview questions.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Problem</th>
+          <th>Difficulty</th>
+          <th>Key Technique</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>206. Reverse Linked List</td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Three pointers (prev, curr, next)</td>
+        </tr>
+        <tr>
+          <td>21. Merge Two Sorted Lists</td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Two pointers + dummy node</td>
+        </tr>
+        <tr>
+          <td>141. Linked List Cycle</td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Fast/slow pointers</td>
+        </tr>
+        <tr>
+          <td>19. Remove Nth Node From End</td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Two pointers with n-gap</td>
+        </tr>
+        <tr>
+          <td>143. Reorder List</td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Find middle + reverse second half + merge</td>
+        </tr>
+        <tr>
+          <td>2. Add Two Numbers</td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Traverse both lists, carry digit</td>
+        </tr>
+        <tr>
+          <td>146. LRU Cache</td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Doubly linked list + hash map</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- --- FULL SOLUTION: Reverse Linked List --- -->
+    <h3>206. Reverse Linked List (Full Solution)</h3>
+
+    <p><strong>Problem:</strong> Given the head of a singly linked list, reverse the list and return the reversed list.</p>
+
+    <p><strong>Approach:</strong> Use three pointers -- <code>prev</code>, <code>curr</code>, and <code>next_node</code>. Walk through the list, reversing each link as you go. When <code>curr</code> becomes null, <code>prev</code> points to the new head.</p>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>Input: 1 -> 2 -> 3 -> 4 -> 5 -> null<br>
+         Output: 5 -> 4 -> 3 -> 2 -> 1 -> null</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="builtin">Solution</span>:
+    <span class="keyword">def</span> <span class="function">reverseList</span>(<span class="builtin">self</span>, head):
+        <span class="comment"># Initialize prev to None -- this becomes the new tail</span>
+        prev = <span class="keyword">None</span>
+        curr = head
+
+        <span class="keyword">while</span> curr:
+            <span class="comment"># 1) Save the next node before we break the link</span>
+            next_node = curr.next
+
+            <span class="comment"># 2) Reverse the link: point curr backwards</span>
+            curr.next = prev
+
+            <span class="comment"># 3) Advance prev and curr one step forward</span>
+            prev = curr
+            curr = next_node
+
+        <span class="comment"># When loop ends, curr is None and prev is the new head</span>
+        <span class="keyword">return</span> prev
+
+<span class="comment"># Time: O(n) -- visit each node once</span>
+<span class="comment"># Space: O(1) -- only use pointer variables</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">var</span> <span class="function">reverseList</span> = <span class="keyword">function</span>(head) {
+    <span class="keyword">let</span> prev = <span class="keyword">null</span>;
+    <span class="keyword">let</span> curr = head;
+
+    <span class="keyword">while</span> (curr !== <span class="keyword">null</span>) {
+        <span class="comment">// 1) Save next before breaking the link</span>
+        <span class="keyword">const</span> nextNode = curr.next;
+
+        <span class="comment">// 2) Reverse the link</span>
+        curr.next = prev;
+
+        <span class="comment">// 3) Move pointers forward</span>
+        prev = curr;
+        curr = nextNode;
+    }
+
+    <span class="comment">// prev is the new head</span>
+    <span class="keyword">return</span> prev;
+};
+
+<span class="comment">// Time: O(n) | Space: O(1)</span></code></pre>
+
+    <div class="tip-box">
+      <div class="label">Why this works</div>
+      <p>At each step, we are "peeling off" the current node from the front of the remaining list and attaching it to the front of the reversed list (pointed to by <code>prev</code>). After processing all nodes, <code>prev</code> is the head of the fully reversed list.</p>
+    </div>
+
+    <!-- --- FULL SOLUTION: Merge Two Sorted Lists --- -->
+    <h3>21. Merge Two Sorted Lists (Full Solution)</h3>
+
+    <p><strong>Problem:</strong> Merge two sorted linked lists and return it as a sorted list. The list should be made by splicing together the nodes of the first two lists.</p>
+
+    <p><strong>Approach:</strong> Create a dummy node as the anchor. Compare the front of both lists, attach the smaller node, advance that pointer. When one list is exhausted, attach the rest of the other.</p>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>Input: list1 = 1 -> 2 -> 4, list2 = 1 -> 3 -> 4<br>
+         Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="builtin">Solution</span>:
+    <span class="keyword">def</span> <span class="function">mergeTwoLists</span>(<span class="builtin">self</span>, list1, list2):
+        <span class="comment"># Dummy node eliminates edge cases for the first node</span>
+        dummy = <span class="builtin">ListNode</span>(<span class="number">0</span>)
+        tail = dummy
+
+        <span class="keyword">while</span> list1 <span class="keyword">and</span> list2:
+            <span class="keyword">if</span> list1.val &lt;= list2.val:
+                <span class="comment"># Attach list1's current node</span>
+                tail.next = list1
+                list1 = list1.next
+            <span class="keyword">else</span>:
+                <span class="comment"># Attach list2's current node</span>
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+
+        <span class="comment"># One list might still have nodes remaining</span>
+        tail.next = list1 <span class="keyword">if</span> list1 <span class="keyword">else</span> list2
+
+        <span class="keyword">return</span> dummy.next  <span class="comment"># Skip the dummy</span>
+
+<span class="comment"># Time: O(n + m) where n, m are list lengths</span>
+<span class="comment"># Space: O(1) -- we reuse existing nodes</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">var</span> <span class="function">mergeTwoLists</span> = <span class="keyword">function</span>(list1, list2) {
+    <span class="keyword">const</span> dummy = <span class="keyword">new</span> <span class="builtin">ListNode</span>(<span class="number">0</span>);
+    <span class="keyword">let</span> tail = dummy;
+
+    <span class="keyword">while</span> (list1 !== <span class="keyword">null</span> &amp;&amp; list2 !== <span class="keyword">null</span>) {
+        <span class="keyword">if</span> (list1.val &lt;= list2.val) {
+            tail.next = list1;
+            list1 = list1.next;
+        } <span class="keyword">else</span> {
+            tail.next = list2;
+            list2 = list2.next;
+        }
+        tail = tail.next;
+    }
+
+    <span class="comment">// Attach remaining nodes</span>
+    tail.next = list1 !== <span class="keyword">null</span> ? list1 : list2;
+
+    <span class="keyword">return</span> dummy.next;
+};
+
+<span class="comment">// Time: O(n + m) | Space: O(1)</span></code></pre>
+
+    <div class="example-box">
+      <div class="label">Walkthrough</div>
+      <p><strong>list1:</strong> 1 -> 2 -> 4 &nbsp;&nbsp; <strong>list2:</strong> 1 -> 3 -> 4<br><br>
+         <strong>Step 1:</strong> Compare 1 vs 1. Pick list1 (<=). Result: 1<br>
+         <strong>Step 2:</strong> Compare 2 vs 1. Pick list2. Result: 1 -> 1<br>
+         <strong>Step 3:</strong> Compare 2 vs 3. Pick list1. Result: 1 -> 1 -> 2<br>
+         <strong>Step 4:</strong> Compare 4 vs 3. Pick list2. Result: 1 -> 1 -> 2 -> 3<br>
+         <strong>Step 5:</strong> Compare 4 vs 4. Pick list1 (<=). Result: 1 -> 1 -> 2 -> 3 -> 4<br>
+         <strong>Step 6:</strong> list1 exhausted. Attach list2 remainder: 1 -> 1 -> 2 -> 3 -> 4 -> 4</p>
+    </div>
+
+    <!-- --- FULL SOLUTION: Linked List Cycle --- -->
+    <h3>141. Linked List Cycle (Full Solution)</h3>
+
+    <p><strong>Problem:</strong> Given the head of a linked list, determine if the linked list has a cycle in it. A cycle exists if some node can be reached again by continuously following the <code>next</code> pointer.</p>
+
+    <p><strong>Approach:</strong> Use Floyd's Tortoise and Hare algorithm. The slow pointer moves one step, the fast pointer moves two steps. If they ever meet, there is a cycle. If fast reaches null, there is no cycle.</p>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>Input: 3 -> 2 -> 0 -> -4 -> (back to node 2)<br>
+         Output: true<br><br>
+         Input: 1 -> 2 -> null<br>
+         Output: false</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="builtin">Solution</span>:
+    <span class="keyword">def</span> <span class="function">hasCycle</span>(<span class="builtin">self</span>, head):
+        <span class="comment"># Two pointers starting at head</span>
+        slow = head
+        fast = head
+
+        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:
+            slow = slow.next           <span class="comment"># Tortoise: 1 step</span>
+            fast = fast.next.next      <span class="comment"># Hare: 2 steps</span>
+
+            <span class="keyword">if</span> slow == fast:
+                <span class="keyword">return</span> <span class="keyword">True</span>            <span class="comment"># They met -- cycle exists!</span>
+
+        <span class="comment"># Fast reached the end -- no cycle</span>
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+<span class="comment"># Time: O(n) -- at most 2 passes through the list</span>
+<span class="comment"># Space: O(1) -- only two pointers</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">var</span> <span class="function">hasCycle</span> = <span class="keyword">function</span>(head) {
+    <span class="keyword">let</span> slow = head;
+    <span class="keyword">let</span> fast = head;
+
+    <span class="keyword">while</span> (fast !== <span class="keyword">null</span> &amp;&amp; fast.next !== <span class="keyword">null</span>) {
+        slow = slow.next;            <span class="comment">// Tortoise: 1 step</span>
+        fast = fast.next.next;       <span class="comment">// Hare: 2 steps</span>
+
+        <span class="keyword">if</span> (slow === fast) {
+            <span class="keyword">return true</span>;              <span class="comment">// Cycle detected</span>
+        }
+    }
+
+    <span class="keyword">return false</span>;                    <span class="comment">// No cycle</span>
+};
+
+<span class="comment">// Time: O(n) | Space: O(1)</span></code></pre>
+
+    <div class="tip-box">
+      <div class="label">Why does fast always catch slow?</div>
+      <p>Once both pointers are inside the cycle, the distance between them decreases by 1 each iteration (fast gains 1 step on slow). So they are guaranteed to meet within one full loop of the cycle. This is why it is O(n) and not infinite.</p>
+    </div>
+
+    <!-- --- BRIEF DESCRIPTIONS OF REMAINING PROBLEMS --- -->
+    <h3>Other Key Problems (Approach Overview)</h3>
+
+    <h3>19. Remove Nth Node From End of List</h3>
+    <p><strong>Technique:</strong> Use two pointers separated by a gap of <code>n</code>. Advance the first pointer <code>n</code> steps ahead. Then move both pointers together until the first reaches the end. The second pointer is now at the node just before the one to remove.</p>
+
+    <div class="formula-box">
+      n = 2<br>
+      first:  [1] -> [2] -> [3] -> [4] -> [5] -> null<br>
+                              ^                     ^<br>
+                            second                first<br>
+      Remove second.next (node 4). Result: 1 -> 2 -> 3 -> 5
+    </div>
+
+    <h3>143. Reorder List</h3>
+    <p><strong>Technique:</strong> Three-step process:</p>
+    <ol>
+      <li><strong>Find middle</strong> using slow/fast pointers</li>
+      <li><strong>Reverse</strong> the second half of the list</li>
+      <li><strong>Merge</strong> the two halves by alternating nodes</li>
+    </ol>
+    <p>Input: 1 -> 2 -> 3 -> 4 -> 5 becomes 1 -> 5 -> 2 -> 4 -> 3</p>
+
+    <h3>2. Add Two Numbers</h3>
+    <p><strong>Technique:</strong> Traverse both lists simultaneously, adding corresponding digits plus any carry. Create new nodes for each digit of the result. Remember to handle the final carry (e.g., 99 + 1 = 100 creates an extra node).</p>
+
+    <h3>146. LRU Cache</h3>
+    <p><strong>Technique:</strong> Combine a <strong>doubly linked list</strong> (for O(1) removal and reinsertion to track recency) with a <strong>hash map</strong> (for O(1) key lookup). The most recently used item goes to the front; when capacity is exceeded, remove from the back (least recently used).</p>
+
+    <div class="warning-box">
+      <div class="label">Interview Tip</div>
+      <p>LRU Cache is one of the most commonly asked medium-difficulty questions. It tests your ability to combine two data structures. Practice implementing it from scratch -- interviewers expect you to write the doubly linked list operations, not use a built-in OrderedDict.</p>
+    </div>
+  </section>
+
+  <!-- ======================= SECTION 7 ======================= -->
+  <section id="when-to-use">
+    <h2>7. When to Use Linked Lists</h2>
+
+    <h3>Use linked lists when:</h3>
+    <ul>
+      <li><strong>Frequent insertions/deletions at the head</strong> -- O(1) vs O(n) for arrays</li>
+      <li><strong>You do not need random access</strong> -- you always iterate sequentially</li>
+      <li><strong>Implementing stacks</strong> -- push/pop at head are both O(1)</li>
+      <li><strong>Implementing queues</strong> -- enqueue at tail, dequeue at head (with tail pointer)</li>
+      <li><strong>Building an LRU cache</strong> -- doubly linked list + hash map</li>
+      <li><strong>Unknown or highly variable data size</strong> -- no need to pre-allocate or resize</li>
+    </ul>
+
+    <h3>Avoid linked lists when:</h3>
+    <ul>
+      <li><strong>You need random access by index</strong> -- use an array</li>
+      <li><strong>Memory is tight</strong> -- pointers add overhead per node</li>
+      <li><strong>Cache performance matters</strong> -- arrays have better locality</li>
+      <li><strong>You need binary search</strong> -- requires O(1) index access (use arrays)</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="label">Real-World Usage</div>
+      <p>In practice, dynamic arrays (Python lists, JavaScript arrays, Java ArrayList) are preferred for most use cases because of CPU cache benefits. Linked lists shine in specialized scenarios: undo/redo systems, memory allocators, hash table chaining, and implementing other data structures like stacks, queues, and LRU caches.</p>
+    </div>
+  </section>
+
+  <!-- ======================= SECTION 8 ======================= -->
+  <section id="quiz">
+    <h2>8. Practice Quiz</h2>
+
+    <div class="quiz">
+
+      <!-- Question 1 -->
+      <div class="quiz-q" id="q1">
+        <h4>Q1: What is the time complexity of inserting a node at the head of a singly linked list?</h4>
+        <button onclick="checkAnswer('q1', this, false)">A) O(n)</button>
+        <button onclick="checkAnswer('q1', this, true)">B) O(1)</button>
+        <button onclick="checkAnswer('q1', this, false)">C) O(log n)</button>
+        <button onclick="checkAnswer('q1', this, false)">D) O(n log n)</button>
+        <div class="explanation">Correct! Inserting at the head is O(1) because you only need to create the new node, point its next to the current head, and update the head pointer. No traversal is needed.</div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="quiz-q" id="q2">
+        <h4>Q2: In Floyd's cycle detection algorithm, how does the fast pointer move?</h4>
+        <button onclick="checkAnswer('q2', this, false)">A) One step at a time</button>
+        <button onclick="checkAnswer('q2', this, true)">B) Two steps at a time</button>
+        <button onclick="checkAnswer('q2', this, false)">C) Three steps at a time</button>
+        <button onclick="checkAnswer('q2', this, false)">D) It jumps to random nodes</button>
+        <div class="explanation">Correct! The fast pointer moves two steps for every one step the slow pointer takes. If a cycle exists, the fast pointer will eventually catch up to and meet the slow pointer inside the cycle.</div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="quiz-q" id="q3">
+        <h4>Q3: What is the main advantage of a doubly linked list over a singly linked list?</h4>
+        <button onclick="checkAnswer('q3', this, false)">A) Uses less memory per node</button>
+        <button onclick="checkAnswer('q3', this, false)">B) Faster search time</button>
+        <button onclick="checkAnswer('q3', this, true)">C) O(1) deletion of a given node</button>
+        <button onclick="checkAnswer('q3', this, false)">D) O(1) random access by index</button>
+        <div class="explanation">Correct! With a doubly linked list, if you have a reference to a node, you can delete it in O(1) because you can access both its previous and next neighbors. In a singly linked list, you need to traverse from the head to find the predecessor, which takes O(n).</div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="quiz-q" id="q4">
+        <h4>Q4: When reversing a singly linked list iteratively, what must you do FIRST at each step?</h4>
+        <button onclick="checkAnswer('q4', this, true)">A) Save the next node reference</button>
+        <button onclick="checkAnswer('q4', this, false)">B) Set curr.next to prev</button>
+        <button onclick="checkAnswer('q4', this, false)">C) Move prev to curr</button>
+        <button onclick="checkAnswer('q4', this, false)">D) Move curr to the next node</button>
+        <div class="explanation">Correct! You must save curr.next before reversing the link, otherwise you lose your reference to the rest of the list. The order is: (1) save next, (2) reverse link, (3) advance pointers.</div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="quiz-q" id="q5">
+        <h4>Q5: Why do arrays often outperform linked lists in practice despite linked lists having better Big-O for some operations?</h4>
+        <button onclick="checkAnswer('q5', this, false)">A) Arrays use less total memory</button>
+        <button onclick="checkAnswer('q5', this, true)">B) CPU cache locality -- array elements are contiguous in memory</button>
+        <button onclick="checkAnswer('q5', this, false)">C) Arrays have O(1) insertion at the head</button>
+        <button onclick="checkAnswer('q5', this, false)">D) Linked lists cannot store primitive types</button>
+        <div class="explanation">Correct! Array elements are stored contiguously in memory, allowing the CPU to prefetch data efficiently into the cache. Linked list nodes are scattered throughout memory, causing frequent cache misses. This practical performance difference often outweighs theoretical Big-O advantages.</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built for learning DSA. <a href="index.html">Back to Home</a></p>
+</footer>
+
+<script>
+function checkAnswer(qId, btn, isCorrect) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('button');
+  const explanation = question.querySelector('.explanation');
+
+  // Prevent re-answering
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  // Disable all buttons and mark correct/wrong
+  buttons.forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    // Highlight the correct answer
+    buttons.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) {
+        b.classList.add('correct');
+      }
+    });
+  }
+
+  // Show explanation
+  explanation.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

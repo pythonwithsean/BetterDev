@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trees &amp; Binary Search Trees | Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html" class="active">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ====== PAGE HEADER ====== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Trees &amp; Binary Search Trees</div>
+    <h1>Trees &amp; Binary Search Trees</h1>
+    <p>Hierarchical data structures that power databases, file systems, and countless interview problems.</p>
+  </div>
+
+  <!-- ====== TABLE OF CONTENTS ====== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is-a-tree">1. What is a Tree?</a>
+    <a href="#bst">2. Binary Search Tree (BST)</a>
+    <a href="#bst-implementation">3. BST Implementation</a>
+    <a href="#traversals">4. Tree Traversals</a>
+    <a href="#common-problems">5. Common Tree Problems &amp; Patterns</a>
+    <a href="#leetcode">6. LeetCode Problems</a>
+    <a href="#balanced-trees">7. Balanced Trees</a>
+    <a href="#quiz">8. Practice Quiz</a>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: WHAT IS A TREE?                                   -->
+  <!-- ============================================================ -->
+  <section id="what-is-a-tree">
+    <h2>1. What is a Tree?</h2>
+
+    <p>A <strong>tree</strong> is a hierarchical data structure consisting of nodes connected by edges. Unlike arrays or linked lists which are linear, trees branch out -- making them perfect for representing hierarchical relationships like file systems, HTML DOM, or organizational charts.</p>
+
+    <h3>Key Terminology</h3>
+    <ul>
+      <li><strong>Root</strong> -- The topmost node (no parent)</li>
+      <li><strong>Child</strong> -- A node directly connected below another node</li>
+      <li><strong>Parent</strong> -- A node directly connected above another node</li>
+      <li><strong>Leaf</strong> -- A node with no children</li>
+      <li><strong>Depth</strong> -- Distance from the root to a node (root has depth 0)</li>
+      <li><strong>Height</strong> -- Distance from a node to its deepest leaf (leaves have height 0)</li>
+      <li><strong>Subtree</strong> -- A node and all its descendants</li>
+      <li><strong>Edge</strong> -- Connection between a parent and child</li>
+    </ul>
+
+    <h3>Visual Representation</h3>
+    <pre><code>
+            <span class="number">1</span>            &lt;-- Root (depth 0, height 2)
+           / \
+          <span class="number">2</span>   <span class="number">3</span>         &lt;-- depth 1
+         / \   \
+        <span class="number">4</span>   <span class="number">5</span>   <span class="number">6</span>      &lt;-- Leaves (depth 2, height 0)
+
+    Nodes: 6
+    Edges: 5  (always n-1 for n nodes)
+    Height of tree: 2
+</code></pre>
+
+    <h3>Binary Tree</h3>
+    <p>A <strong>binary tree</strong> is a tree where each node has <strong>at most 2 children</strong> -- referred to as the <strong>left child</strong> and <strong>right child</strong>. This is the most common tree type in interviews.</p>
+
+    <div class="formula-box">
+      Properties of Binary Trees:<br>
+      - A tree with n nodes has exactly n - 1 edges<br>
+      - Maximum nodes at depth d = 2^d<br>
+      - Maximum total nodes with height h = 2^(h+1) - 1<br>
+      - A complete binary tree of n nodes has height = floor(log2(n))
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Tip</div>
+      <p>Trees are <strong>recursive</strong> by nature: every subtree is itself a tree. This is why most tree problems are elegantly solved with recursion.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: BINARY SEARCH TREE                                -->
+  <!-- ============================================================ -->
+  <section id="bst">
+    <h2>2. Binary Search Tree (BST)</h2>
+
+    <p>A <strong>Binary Search Tree</strong> is a binary tree with an ordering property: for every node, <strong>all values in its left subtree are less than the node's value</strong>, and <strong>all values in its right subtree are greater</strong>.</p>
+
+    <div class="formula-box">
+      BST Property: left &lt; parent &lt; right (for every node)
+    </div>
+
+    <h3>BST Example</h3>
+    <pre><code>
+            <span class="number">8</span>
+           / \
+          <span class="number">3</span>   <span class="number">10</span>
+         / \    \
+        <span class="number">1</span>   <span class="number">6</span>   <span class="number">14</span>
+           / \   /
+          <span class="number">4</span>   <span class="number">7</span> <span class="number">13</span>
+
+    Inorder traversal gives sorted order:
+    1, 3, 4, 6, 7, 8, 10, 13, 14
+</code></pre>
+
+    <h3>BST Operations &amp; Time Complexity</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Average Case</th>
+          <th>Worst Case</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Search</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+          <td>Find a value in the tree</td>
+        </tr>
+        <tr>
+          <td>Insert</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+          <td>Add a new value</td>
+        </tr>
+        <tr>
+          <td>Delete</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+          <td>Remove a value</td>
+        </tr>
+        <tr>
+          <td>Find Min/Max</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+          <td>Go left/right until leaf</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>All operations are <strong>O(h)</strong> where h is the height. For a <strong>balanced</strong> tree, h = O(log n). For a <strong>skewed</strong> tree (essentially a linked list), h = O(n).</p>
+
+    <div class="warning-box">
+      <div class="label">Worst Case</div>
+      <p>If you insert sorted data [1, 2, 3, 4, 5] into a BST, you get a skewed tree that looks like a linked list. Every operation becomes O(n). This is why balanced BSTs (AVL, Red-Black) exist.</p>
+      <pre><code>    <span class="number">1</span>
+     \
+      <span class="number">2</span>
+       \
+        <span class="number">3</span>       &lt;-- Skewed tree: height = n - 1
+         \
+          <span class="number">4</span>
+           \
+            <span class="number">5</span></code></pre>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: BST IMPLEMENTATION                                -->
+  <!-- ============================================================ -->
+  <section id="bst-implementation">
+    <h2>3. BST Implementation</h2>
+
+    <h3>TreeNode Class</h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">TreeNode</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, val=<span class="number">0</span>):
+        <span class="builtin">self</span>.val = val
+        <span class="builtin">self</span>.left = <span class="keyword">None</span>
+        <span class="builtin">self</span>.right = <span class="keyword">None</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">TreeNode</span> {
+    <span class="function">constructor</span>(val = <span class="number">0</span>) {
+        <span class="keyword">this</span>.val = val;
+        <span class="keyword">this</span>.left = <span class="keyword">null</span>;
+        <span class="keyword">this</span>.right = <span class="keyword">null</span>;
+    }
+}
+</code></pre>
+
+    <h3>Full BST Class -- Python</h3>
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">BST</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>.root = <span class="keyword">None</span>
+
+    <span class="comment"># ---- INSERT ----</span>
+    <span class="keyword">def</span> <span class="function">insert</span>(<span class="builtin">self</span>, val):
+        <span class="builtin">self</span>.root = <span class="builtin">self</span>._insert(<span class="builtin">self</span>.root, val)
+
+    <span class="keyword">def</span> <span class="function">_insert</span>(<span class="builtin">self</span>, node, val):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span> <span class="function">TreeNode</span>(val)
+        <span class="keyword">if</span> val &lt; node.val:
+            node.left = <span class="builtin">self</span>._insert(node.left, val)
+        <span class="keyword">elif</span> val &gt; node.val:
+            node.right = <span class="builtin">self</span>._insert(node.right, val)
+        <span class="comment"># if val == node.val, ignore duplicate</span>
+        <span class="keyword">return</span> node
+
+    <span class="comment"># ---- SEARCH ----</span>
+    <span class="keyword">def</span> <span class="function">search</span>(<span class="builtin">self</span>, val):
+        <span class="keyword">return</span> <span class="builtin">self</span>._search(<span class="builtin">self</span>.root, val)
+
+    <span class="keyword">def</span> <span class="function">_search</span>(<span class="builtin">self</span>, node, val):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        <span class="keyword">if</span> val == node.val:
+            <span class="keyword">return</span> <span class="keyword">True</span>
+        <span class="keyword">elif</span> val &lt; node.val:
+            <span class="keyword">return</span> <span class="builtin">self</span>._search(node.left, val)
+        <span class="keyword">else</span>:
+            <span class="keyword">return</span> <span class="builtin">self</span>._search(node.right, val)
+
+    <span class="comment"># ---- FIND MIN / MAX ----</span>
+    <span class="keyword">def</span> <span class="function">find_min</span>(<span class="builtin">self</span>, node=<span class="keyword">None</span>):
+        node = node <span class="keyword">or</span> <span class="builtin">self</span>.root
+        <span class="keyword">while</span> node.left:
+            node = node.left
+        <span class="keyword">return</span> node.val
+
+    <span class="keyword">def</span> <span class="function">find_max</span>(<span class="builtin">self</span>, node=<span class="keyword">None</span>):
+        node = node <span class="keyword">or</span> <span class="builtin">self</span>.root
+        <span class="keyword">while</span> node.right:
+            node = node.right
+        <span class="keyword">return</span> node.val
+
+    <span class="comment"># ---- DELETE ----</span>
+    <span class="keyword">def</span> <span class="function">delete</span>(<span class="builtin">self</span>, val):
+        <span class="builtin">self</span>.root = <span class="builtin">self</span>._delete(<span class="builtin">self</span>.root, val)
+
+    <span class="keyword">def</span> <span class="function">_delete</span>(<span class="builtin">self</span>, node, val):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span> <span class="keyword">None</span>
+
+        <span class="keyword">if</span> val &lt; node.val:
+            node.left = <span class="builtin">self</span>._delete(node.left, val)
+        <span class="keyword">elif</span> val &gt; node.val:
+            node.right = <span class="builtin">self</span>._delete(node.right, val)
+        <span class="keyword">else</span>:
+            <span class="comment"># Case 1: Leaf node (no children)</span>
+            <span class="keyword">if not</span> node.left <span class="keyword">and not</span> node.right:
+                <span class="keyword">return</span> <span class="keyword">None</span>
+
+            <span class="comment"># Case 2: One child</span>
+            <span class="keyword">if not</span> node.left:
+                <span class="keyword">return</span> node.right
+            <span class="keyword">if not</span> node.right:
+                <span class="keyword">return</span> node.left
+
+            <span class="comment"># Case 3: Two children</span>
+            <span class="comment"># Find inorder successor (smallest in right subtree)</span>
+            successor_val = <span class="builtin">self</span>.find_min(node.right)
+            node.val = successor_val
+            node.right = <span class="builtin">self</span>._delete(node.right, successor_val)
+
+        <span class="keyword">return</span> node
+</code></pre>
+
+    <h3>Full BST Class -- JavaScript</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">BST</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.root = <span class="keyword">null</span>;
+    }
+
+    <span class="comment">// ---- INSERT ----</span>
+    <span class="function">insert</span>(val) {
+        <span class="keyword">this</span>.root = <span class="keyword">this</span>._insert(<span class="keyword">this</span>.root, val);
+    }
+
+    <span class="function">_insert</span>(node, val) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return new</span> <span class="function">TreeNode</span>(val);
+        <span class="keyword">if</span> (val &lt; node.val) node.left = <span class="keyword">this</span>._insert(node.left, val);
+        <span class="keyword">else if</span> (val &gt; node.val) node.right = <span class="keyword">this</span>._insert(node.right, val);
+        <span class="keyword">return</span> node;
+    }
+
+    <span class="comment">// ---- SEARCH ----</span>
+    <span class="function">search</span>(val) {
+        <span class="keyword">return</span> <span class="keyword">this</span>._search(<span class="keyword">this</span>.root, val);
+    }
+
+    <span class="function">_search</span>(node, val) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return false</span>;
+        <span class="keyword">if</span> (val === node.val) <span class="keyword">return true</span>;
+        <span class="keyword">if</span> (val &lt; node.val) <span class="keyword">return</span> <span class="keyword">this</span>._search(node.left, val);
+        <span class="keyword">return</span> <span class="keyword">this</span>._search(node.right, val);
+    }
+
+    <span class="comment">// ---- FIND MIN / MAX ----</span>
+    <span class="function">findMin</span>(node = <span class="keyword">this</span>.root) {
+        <span class="keyword">while</span> (node.left) node = node.left;
+        <span class="keyword">return</span> node.val;
+    }
+
+    <span class="function">findMax</span>(node = <span class="keyword">this</span>.root) {
+        <span class="keyword">while</span> (node.right) node = node.right;
+        <span class="keyword">return</span> node.val;
+    }
+
+    <span class="comment">// ---- DELETE ----</span>
+    <span class="function">delete</span>(val) {
+        <span class="keyword">this</span>.root = <span class="keyword">this</span>._delete(<span class="keyword">this</span>.root, val);
+    }
+
+    <span class="function">_delete</span>(node, val) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return null</span>;
+
+        <span class="keyword">if</span> (val &lt; node.val) {
+            node.left = <span class="keyword">this</span>._delete(node.left, val);
+        } <span class="keyword">else if</span> (val &gt; node.val) {
+            node.right = <span class="keyword">this</span>._delete(node.right, val);
+        } <span class="keyword">else</span> {
+            <span class="comment">// Case 1: Leaf node</span>
+            <span class="keyword">if</span> (!node.left && !node.right) <span class="keyword">return null</span>;
+
+            <span class="comment">// Case 2: One child</span>
+            <span class="keyword">if</span> (!node.left) <span class="keyword">return</span> node.right;
+            <span class="keyword">if</span> (!node.right) <span class="keyword">return</span> node.left;
+
+            <span class="comment">// Case 3: Two children</span>
+            <span class="keyword">const</span> successorVal = <span class="keyword">this</span>.<span class="function">findMin</span>(node.right);
+            node.val = successorVal;
+            node.right = <span class="keyword">this</span>._delete(node.right, successorVal);
+        }
+        <span class="keyword">return</span> node;
+    }
+}
+</code></pre>
+
+    <h3>Understanding Delete -- The Three Cases</h3>
+
+    <div class="example-box">
+      <div class="label">Case 1: Deleting a Leaf Node</div>
+      <p>Simply remove it. No children to worry about.</p>
+      <pre><code>  Delete 4:
+
+      <span class="number">5</span>               <span class="number">5</span>
+     / \     -->    / \
+    <span class="number">3</span>   <span class="number">7</span>          <span class="number">3</span>   <span class="number">7</span>
+   /
+  <span class="number">4</span>  (removed)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Case 2: Node with One Child</div>
+      <p>Replace the node with its only child.</p>
+      <pre><code>  Delete 3 (has left child only):
+
+      <span class="number">5</span>               <span class="number">5</span>
+     / \     -->    / \
+    <span class="number">3</span>   <span class="number">7</span>          <span class="number">2</span>   <span class="number">7</span>
+   /
+  <span class="number">2</span></code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Case 3: Node with Two Children</div>
+      <p>Find the <strong>inorder successor</strong> (smallest value in the right subtree), copy its value to the current node, then delete the successor.</p>
+      <pre><code>  Delete 5 (root, has two children):
+
+      <span class="number">5</span>          Step 1: Find inorder       <span class="number">6</span>
+     / \        successor = 6              / \
+    <span class="number">3</span>   <span class="number">8</span>      Step 2: Copy 6 to root     <span class="number">3</span>   <span class="number">8</span>
+       / \     Step 3: Delete 6               \
+      <span class="number">6</span>   <span class="number">9</span>     from right subtree           <span class="number">9</span>
+       \
+        <span class="number">7</span></code></pre>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: TREE TRAVERSALS                                   -->
+  <!-- ============================================================ -->
+  <section id="traversals">
+    <h2>4. Tree Traversals</h2>
+
+    <p>Tree traversal means visiting every node exactly once. There are two main approaches: <strong>Depth-First Search (DFS)</strong> and <strong>Breadth-First Search (BFS)</strong>.</p>
+
+    <div class="formula-box">
+      Reference tree for all traversal examples:<br><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ \<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;6<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ \&nbsp;&nbsp;/ \<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;3 5&nbsp;&nbsp;7
+    </div>
+
+    <!-- INORDER -->
+    <h3>Inorder Traversal (Left, Root, Right)</h3>
+    <p>Visit left subtree, then current node, then right subtree. For a BST, this gives values in <strong>sorted ascending order</strong>.</p>
+
+    <pre><code>
+    Inorder walk-through:
+
+        <span class="number">4</span>
+       / \
+      <span class="number">2</span>   <span class="number">6</span>
+     / \ / \
+    <span class="number">1</span>  <span class="number">3</span> <span class="number">5</span>  <span class="number">7</span>
+
+    Visit order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7  (sorted!)
+</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Recursive Inorder</span>
+<span class="keyword">def</span> <span class="function">inorder_recursive</span>(root):
+    result = []
+    <span class="keyword">def</span> <span class="function">dfs</span>(node):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span>
+        dfs(node.left)       <span class="comment"># Left</span>
+        result.append(node.val)  <span class="comment"># Root</span>
+        dfs(node.right)      <span class="comment"># Right</span>
+    dfs(root)
+    <span class="keyword">return</span> result
+
+<span class="comment"># Iterative Inorder (using stack)</span>
+<span class="keyword">def</span> <span class="function">inorder_iterative</span>(root):
+    result = []
+    stack = []
+    current = root
+    <span class="keyword">while</span> current <span class="keyword">or</span> stack:
+        <span class="comment"># Go as far left as possible</span>
+        <span class="keyword">while</span> current:
+            stack.append(current)
+            current = current.left
+        <span class="comment"># Process node</span>
+        current = stack.pop()
+        result.append(current.val)
+        <span class="comment"># Move to right subtree</span>
+        current = current.right
+    <span class="keyword">return</span> result
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Recursive Inorder</span>
+<span class="keyword">function</span> <span class="function">inorderRecursive</span>(root) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">dfs</span>(node) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return</span>;
+        dfs(node.left);           <span class="comment">// Left</span>
+        result.push(node.val);    <span class="comment">// Root</span>
+        dfs(node.right);          <span class="comment">// Right</span>
+    }
+    dfs(root);
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">// Iterative Inorder (using stack)</span>
+<span class="keyword">function</span> <span class="function">inorderIterative</span>(root) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">const</span> stack = [];
+    <span class="keyword">let</span> current = root;
+    <span class="keyword">while</span> (current || stack.length) {
+        <span class="keyword">while</span> (current) {
+            stack.push(current);
+            current = current.left;
+        }
+        current = stack.pop();
+        result.push(current.val);
+        current = current.right;
+    }
+    <span class="keyword">return</span> result;
+}
+</code></pre>
+
+    <!-- PREORDER -->
+    <h3>Preorder Traversal (Root, Left, Right)</h3>
+    <p>Visit current node first, then left subtree, then right subtree. Useful for <strong>copying/serializing</strong> a tree.</p>
+
+    <pre><code>
+    Preorder walk-through:
+
+        <span class="number">4</span>
+       / \
+      <span class="number">2</span>   <span class="number">6</span>
+     / \ / \
+    <span class="number">1</span>  <span class="number">3</span> <span class="number">5</span>  <span class="number">7</span>
+
+    Visit order: 4 -> 2 -> 1 -> 3 -> 6 -> 5 -> 7
+</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Recursive Preorder</span>
+<span class="keyword">def</span> <span class="function">preorder_recursive</span>(root):
+    result = []
+    <span class="keyword">def</span> <span class="function">dfs</span>(node):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span>
+        result.append(node.val)  <span class="comment"># Root</span>
+        dfs(node.left)           <span class="comment"># Left</span>
+        dfs(node.right)          <span class="comment"># Right</span>
+    dfs(root)
+    <span class="keyword">return</span> result
+
+<span class="comment"># Iterative Preorder (using stack)</span>
+<span class="keyword">def</span> <span class="function">preorder_iterative</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> []
+    result = []
+    stack = [root]
+    <span class="keyword">while</span> stack:
+        node = stack.pop()
+        result.append(node.val)
+        <span class="comment"># Push right first so left is processed first</span>
+        <span class="keyword">if</span> node.right:
+            stack.append(node.right)
+        <span class="keyword">if</span> node.left:
+            stack.append(node.left)
+    <span class="keyword">return</span> result
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Recursive Preorder</span>
+<span class="keyword">function</span> <span class="function">preorderRecursive</span>(root) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">dfs</span>(node) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return</span>;
+        result.push(node.val);    <span class="comment">// Root</span>
+        dfs(node.left);           <span class="comment">// Left</span>
+        dfs(node.right);          <span class="comment">// Right</span>
+    }
+    dfs(root);
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">// Iterative Preorder (using stack)</span>
+<span class="keyword">function</span> <span class="function">preorderIterative</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> [];
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">const</span> stack = [root];
+    <span class="keyword">while</span> (stack.length) {
+        <span class="keyword">const</span> node = stack.pop();
+        result.push(node.val);
+        <span class="keyword">if</span> (node.right) stack.push(node.right);
+        <span class="keyword">if</span> (node.left) stack.push(node.left);
+    }
+    <span class="keyword">return</span> result;
+}
+</code></pre>
+
+    <!-- POSTORDER -->
+    <h3>Postorder Traversal (Left, Right, Root)</h3>
+    <p>Visit left subtree, then right subtree, then current node. Useful for <strong>deletion</strong> (delete children before parent) and evaluating expression trees.</p>
+
+    <pre><code>
+    Postorder walk-through:
+
+        <span class="number">4</span>
+       / \
+      <span class="number">2</span>   <span class="number">6</span>
+     / \ / \
+    <span class="number">1</span>  <span class="number">3</span> <span class="number">5</span>  <span class="number">7</span>
+
+    Visit order: 1 -> 3 -> 2 -> 5 -> 7 -> 6 -> 4
+</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Recursive Postorder</span>
+<span class="keyword">def</span> <span class="function">postorder_recursive</span>(root):
+    result = []
+    <span class="keyword">def</span> <span class="function">dfs</span>(node):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span>
+        dfs(node.left)           <span class="comment"># Left</span>
+        dfs(node.right)          <span class="comment"># Right</span>
+        result.append(node.val)  <span class="comment"># Root</span>
+    dfs(root)
+    <span class="keyword">return</span> result
+
+<span class="comment"># Iterative Postorder (using two stacks)</span>
+<span class="keyword">def</span> <span class="function">postorder_iterative</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> []
+    result = []
+    stack = [root]
+    <span class="keyword">while</span> stack:
+        node = stack.pop()
+        result.append(node.val)
+        <span class="keyword">if</span> node.left:
+            stack.append(node.left)
+        <span class="keyword">if</span> node.right:
+            stack.append(node.right)
+    <span class="keyword">return</span> result[::-<span class="number">1</span>]  <span class="comment"># Reverse the result</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Recursive Postorder</span>
+<span class="keyword">function</span> <span class="function">postorderRecursive</span>(root) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">dfs</span>(node) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return</span>;
+        dfs(node.left);           <span class="comment">// Left</span>
+        dfs(node.right);          <span class="comment">// Right</span>
+        result.push(node.val);    <span class="comment">// Root</span>
+    }
+    dfs(root);
+    <span class="keyword">return</span> result;
+}
+
+<span class="comment">// Iterative Postorder</span>
+<span class="keyword">function</span> <span class="function">postorderIterative</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> [];
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">const</span> stack = [root];
+    <span class="keyword">while</span> (stack.length) {
+        <span class="keyword">const</span> node = stack.pop();
+        result.push(node.val);
+        <span class="keyword">if</span> (node.left) stack.push(node.left);
+        <span class="keyword">if</span> (node.right) stack.push(node.right);
+    }
+    <span class="keyword">return</span> result.reverse();
+}
+</code></pre>
+
+    <!-- BFS / LEVEL ORDER -->
+    <h3>Level Order Traversal (BFS)</h3>
+    <p>Visit nodes level by level, from left to right. Uses a <strong>queue</strong> instead of a stack.</p>
+
+    <pre><code>
+    Level order walk-through:
+
+        <span class="number">4</span>           Level 0: [4]
+       / \
+      <span class="number">2</span>   <span class="number">6</span>        Level 1: [2, 6]
+     / \ / \
+    <span class="number">1</span>  <span class="number">3</span> <span class="number">5</span>  <span class="number">7</span>     Level 2: [1, 3, 5, 7]
+
+    Result: [[4], [2, 6], [1, 3, 5, 7]]
+</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">level_order</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> []
+
+    result = []
+    queue = deque([root])
+
+    <span class="keyword">while</span> queue:
+        level_size = <span class="builtin">len</span>(queue)
+        current_level = []
+
+        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+
+            <span class="keyword">if</span> node.left:
+                queue.append(node.left)
+            <span class="keyword">if</span> node.right:
+                queue.append(node.right)
+
+        result.append(current_level)
+
+    <span class="keyword">return</span> result
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">levelOrder</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> [];
+
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">const</span> queue = [root];
+
+    <span class="keyword">while</span> (queue.length) {
+        <span class="keyword">const</span> levelSize = queue.length;
+        <span class="keyword">const</span> currentLevel = [];
+
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; levelSize; i++) {
+            <span class="keyword">const</span> node = queue.shift();
+            currentLevel.push(node.val);
+
+            <span class="keyword">if</span> (node.left) queue.push(node.left);
+            <span class="keyword">if</span> (node.right) queue.push(node.right);
+        }
+
+        result.push(currentLevel);
+    }
+
+    <span class="keyword">return</span> result;
+}
+</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Traversal Cheat Sheet</div>
+      <p><strong>Inorder</strong> (L, Root, R) -- sorted order for BST, most common</p>
+      <p><strong>Preorder</strong> (Root, L, R) -- copy/serialize tree, build tree from traversal</p>
+      <p><strong>Postorder</strong> (L, R, Root) -- delete tree, evaluate expressions</p>
+      <p><strong>Level Order</strong> (BFS) -- shortest path, level-by-level processing</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: COMMON TREE PROBLEMS                              -->
+  <!-- ============================================================ -->
+  <section id="common-problems">
+    <h2>5. Common Tree Problems &amp; Patterns</h2>
+
+    <!-- MAX DEPTH -->
+    <h3>Maximum Depth of Binary Tree</h3>
+    <p>Find the maximum depth (number of nodes along the longest path from root to the farthest leaf). This is the classic recursive tree problem.</p>
+
+    <div class="formula-box">
+      maxDepth(node) = 1 + max(maxDepth(left), maxDepth(right))<br>
+      Base case: maxDepth(null) = 0
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_depth</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> <span class="number">0</span>
+    left_depth = max_depth(root.left)
+    right_depth = max_depth(root.right)
+    <span class="keyword">return</span> <span class="number">1</span> + <span class="builtin">max</span>(left_depth, right_depth)
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxDepth</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">const</span> leftDepth = maxDepth(root.left);
+    <span class="keyword">const</span> rightDepth = maxDepth(root.right);
+    <span class="keyword">return</span> <span class="number">1</span> + Math.max(leftDepth, rightDepth);
+}
+</code></pre>
+
+    <pre><code>
+    Walk-through:
+
+        <span class="number">3</span>        maxDepth(3) = 1 + max(2, 1) = 3
+       / \
+      <span class="number">9</span>   <span class="number">20</span>     maxDepth(9) = 1 + max(0, 0) = 1  |  maxDepth(20) = 1 + max(1, 1) = 2
+          / \
+         <span class="number">15</span>  <span class="number">7</span>    maxDepth(15) = 1  |  maxDepth(7) = 1
+
+    Answer: 3
+</code></pre>
+
+    <!-- VALIDATE BST -->
+    <h3>Validate Binary Search Tree</h3>
+    <p>Check if a binary tree is a valid BST. The trick: each node must be within a valid <strong>range</strong> (min, max), not just compared to its immediate parent.</p>
+
+    <div class="warning-box">
+      <div class="label">Common Mistake</div>
+      <p>Do NOT just check <code>node.left.val &lt; node.val &lt; node.right.val</code>. This misses cases where a deeper node violates the BST property with an ancestor.</p>
+      <pre><code>       <span class="number">5</span>
+      / \
+     <span class="number">1</span>   <span class="number">7</span>
+        / \
+       <span class="number">3</span>   <span class="number">8</span>    &lt;-- 3 is less than 5, violates BST!
+                    (3 &lt; 7 passes local check but 3 &lt; 5 fails)</code></pre>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Approach 1: Min/Max Range</span>
+<span class="keyword">def</span> <span class="function">is_valid_bst</span>(root):
+    <span class="keyword">def</span> <span class="function">validate</span>(node, low=<span class="builtin">float</span>(<span class="string">'-inf'</span>), high=<span class="builtin">float</span>(<span class="string">'inf'</span>)):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span> <span class="keyword">True</span>
+        <span class="keyword">if</span> node.val &lt;= low <span class="keyword">or</span> node.val &gt;= high:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        <span class="keyword">return</span> (validate(node.left, low, node.val) <span class="keyword">and</span>
+                validate(node.right, node.val, high))
+    <span class="keyword">return</span> validate(root)
+
+<span class="comment"># Approach 2: Inorder traversal should be sorted</span>
+<span class="keyword">def</span> <span class="function">is_valid_bst_inorder</span>(root):
+    prev = [<span class="builtin">float</span>(<span class="string">'-inf'</span>)]
+    <span class="keyword">def</span> <span class="function">inorder</span>(node):
+        <span class="keyword">if not</span> node:
+            <span class="keyword">return</span> <span class="keyword">True</span>
+        <span class="keyword">if not</span> inorder(node.left):
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        <span class="keyword">if</span> node.val &lt;= prev[<span class="number">0</span>]:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        prev[<span class="number">0</span>] = node.val
+        <span class="keyword">return</span> inorder(node.right)
+    <span class="keyword">return</span> inorder(root)
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Approach 1: Min/Max Range</span>
+<span class="keyword">function</span> <span class="function">isValidBST</span>(root) {
+    <span class="keyword">function</span> <span class="function">validate</span>(node, low = -<span class="builtin">Infinity</span>, high = <span class="builtin">Infinity</span>) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return true</span>;
+        <span class="keyword">if</span> (node.val &lt;= low || node.val &gt;= high) <span class="keyword">return false</span>;
+        <span class="keyword">return</span> validate(node.left, low, node.val) &&
+               validate(node.right, node.val, high);
+    }
+    <span class="keyword">return</span> validate(root);
+}
+
+<span class="comment">// Approach 2: Inorder traversal should be sorted</span>
+<span class="keyword">function</span> <span class="function">isValidBSTInorder</span>(root) {
+    <span class="keyword">let</span> prev = -<span class="builtin">Infinity</span>;
+    <span class="keyword">function</span> <span class="function">inorder</span>(node) {
+        <span class="keyword">if</span> (!node) <span class="keyword">return true</span>;
+        <span class="keyword">if</span> (!inorder(node.left)) <span class="keyword">return false</span>;
+        <span class="keyword">if</span> (node.val &lt;= prev) <span class="keyword">return false</span>;
+        prev = node.val;
+        <span class="keyword">return</span> inorder(node.right);
+    }
+    <span class="keyword">return</span> inorder(root);
+}
+</code></pre>
+
+    <!-- INVERT BINARY TREE -->
+    <h3>Invert Binary Tree</h3>
+    <p>Swap left and right children at every node. The famous question that Max Howell (Homebrew creator) couldn't solve in a Google interview.</p>
+
+    <pre><code>
+    Before:            After:
+
+        <span class="number">4</span>                 <span class="number">4</span>
+       / \               / \
+      <span class="number">2</span>   <span class="number">7</span>             <span class="number">7</span>   <span class="number">2</span>
+     / \ / \           / \ / \
+    <span class="number">1</span>  <span class="number">3</span> <span class="number">6</span>  <span class="number">9</span>         <span class="number">9</span>  <span class="number">6</span> <span class="number">3</span>  <span class="number">1</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">invert_tree</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> <span class="keyword">None</span>
+    <span class="comment"># Swap left and right</span>
+    root.left, root.right = root.right, root.left
+    <span class="comment"># Recursively invert subtrees</span>
+    invert_tree(root.left)
+    invert_tree(root.right)
+    <span class="keyword">return</span> root
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">invertTree</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return null</span>;
+    <span class="comment">// Swap left and right</span>
+    [root.left, root.right] = [root.right, root.left];
+    <span class="comment">// Recursively invert subtrees</span>
+    invertTree(root.left);
+    invertTree(root.right);
+    <span class="keyword">return</span> root;
+}
+</code></pre>
+
+    <!-- LOWEST COMMON ANCESTOR -->
+    <h3>Lowest Common Ancestor of a BST</h3>
+    <p>Find the lowest node that is an ancestor of both p and q. In a BST, we can leverage the ordering property.</p>
+
+    <div class="formula-box">
+      BST LCA Logic:<br>
+      - If both p and q are smaller than root -> LCA is in left subtree<br>
+      - If both p and q are larger than root -> LCA is in right subtree<br>
+      - Otherwise, root IS the LCA (split point)
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">lowest_common_ancestor</span>(root, p, q):
+    <span class="keyword">while</span> root:
+        <span class="keyword">if</span> p.val &lt; root.val <span class="keyword">and</span> q.val &lt; root.val:
+            root = root.left       <span class="comment"># Both in left subtree</span>
+        <span class="keyword">elif</span> p.val &gt; root.val <span class="keyword">and</span> q.val &gt; root.val:
+            root = root.right      <span class="comment"># Both in right subtree</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">return</span> root            <span class="comment"># Split point = LCA</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">lowestCommonAncestor</span>(root, p, q) {
+    <span class="keyword">while</span> (root) {
+        <span class="keyword">if</span> (p.val &lt; root.val && q.val &lt; root.val) {
+            root = root.left;       <span class="comment">// Both in left subtree</span>
+        } <span class="keyword">else if</span> (p.val &gt; root.val && q.val &gt; root.val) {
+            root = root.right;      <span class="comment">// Both in right subtree</span>
+        } <span class="keyword">else</span> {
+            <span class="keyword">return</span> root;            <span class="comment">// Split point = LCA</span>
+        }
+    }
+}
+</code></pre>
+
+    <pre><code>
+    Example: Find LCA of 2 and 8
+
+        <span class="number">6</span>       &lt;-- 2 &lt; 6 and 8 &gt; 6 -> split! LCA = 6
+       / \
+      <span class="number">2</span>   <span class="number">8</span>
+     / \ / \
+    <span class="number">0</span>  <span class="number">4</span> <span class="number">7</span>  <span class="number">9</span>
+
+    Example: Find LCA of 2 and 4
+
+        <span class="number">6</span>       &lt;-- 2 &lt; 6 and 4 &lt; 6 -> go left
+       / \
+      <span class="number">2</span>   <span class="number">8</span>     &lt;-- 2 == 2 -> split! LCA = 2
+     / \ / \
+    <span class="number">0</span>  <span class="number">4</span> <span class="number">7</span>  <span class="number">9</span>
+</code></pre>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: LEETCODE PROBLEMS                                 -->
+  <!-- ============================================================ -->
+  <section id="leetcode">
+    <h2>6. LeetCode Problems</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Problem</th>
+          <th>Difficulty</th>
+          <th>Key Concept</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>104</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank">Maximum Depth of Binary Tree</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Recursive DFS</td>
+        </tr>
+        <tr>
+          <td>226</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/invert-binary-tree/" target="_blank">Invert Binary Tree</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Recursive swap</td>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/same-tree/" target="_blank">Same Tree</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Simultaneous DFS</td>
+        </tr>
+        <tr>
+          <td>572</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/subtree-of-another-tree/" target="_blank">Subtree of Another Tree</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Recursive + isSameTree</td>
+        </tr>
+        <tr>
+          <td>235</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank">Lowest Common Ancestor of BST</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>BST split point</td>
+        </tr>
+        <tr>
+          <td>102</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank">Binary Tree Level Order Traversal</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>BFS with queue</td>
+        </tr>
+        <tr>
+          <td>98</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/validate-binary-search-tree/" target="_blank">Validate Binary Search Tree</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Min/max range DFS</td>
+        </tr>
+        <tr>
+          <td>230</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/" target="_blank">Kth Smallest Element in BST</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Inorder traversal</td>
+        </tr>
+        <tr>
+          <td>199</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank">Binary Tree Right Side View</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>BFS, last node per level</td>
+        </tr>
+        <tr>
+          <td>297</td>
+          <td><a class="resource-link" href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" target="_blank">Serialize and Deserialize Binary Tree</a></td>
+          <td><span class="tag red">Hard</span></td>
+          <td>Preorder + null markers</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Full Solutions</h3>
+
+    <h3>104. Maximum Depth of Binary Tree</h3>
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># LeetCode 104 - Maximum Depth of Binary Tree</span>
+<span class="comment"># Time: O(n)  Space: O(h) where h = height (recursion stack)</span>
+
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">maxDepth</span>(<span class="builtin">self</span>, root) -> <span class="builtin">int</span>:
+        <span class="keyword">if not</span> root:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">return</span> <span class="number">1</span> + <span class="builtin">max</span>(
+            <span class="builtin">self</span>.maxDepth(root.left),
+            <span class="builtin">self</span>.maxDepth(root.right)
+        )
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// LeetCode 104 - Maximum Depth of Binary Tree</span>
+<span class="comment">// Time: O(n)  Space: O(h)</span>
+
+<span class="keyword">var</span> <span class="function">maxDepth</span> = <span class="keyword">function</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">return</span> <span class="number">1</span> + Math.max(
+        maxDepth(root.left),
+        maxDepth(root.right)
+    );
+};
+</code></pre>
+
+    <h3>226. Invert Binary Tree</h3>
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># LeetCode 226 - Invert Binary Tree</span>
+<span class="comment"># Time: O(n)  Space: O(h)</span>
+
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">invertTree</span>(<span class="builtin">self</span>, root):
+        <span class="keyword">if not</span> root:
+            <span class="keyword">return</span> <span class="keyword">None</span>
+        root.left, root.right = root.right, root.left
+        <span class="builtin">self</span>.invertTree(root.left)
+        <span class="builtin">self</span>.invertTree(root.right)
+        <span class="keyword">return</span> root
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// LeetCode 226 - Invert Binary Tree</span>
+<span class="comment">// Time: O(n)  Space: O(h)</span>
+
+<span class="keyword">var</span> <span class="function">invertTree</span> = <span class="keyword">function</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return null</span>;
+    [root.left, root.right] = [root.right, root.left];
+    invertTree(root.left);
+    invertTree(root.right);
+    <span class="keyword">return</span> root;
+};
+</code></pre>
+
+    <h3>102. Binary Tree Level Order Traversal</h3>
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># LeetCode 102 - Binary Tree Level Order Traversal</span>
+<span class="comment"># Time: O(n)  Space: O(n)</span>
+
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">levelOrder</span>(<span class="builtin">self</span>, root):
+        <span class="keyword">if not</span> root:
+            <span class="keyword">return</span> []
+
+        result = []
+        queue = deque([root])
+
+        <span class="keyword">while</span> queue:
+            level = []
+            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(queue)):
+                node = queue.popleft()
+                level.append(node.val)
+                <span class="keyword">if</span> node.left:
+                    queue.append(node.left)
+                <span class="keyword">if</span> node.right:
+                    queue.append(node.right)
+            result.append(level)
+
+        <span class="keyword">return</span> result
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// LeetCode 102 - Binary Tree Level Order Traversal</span>
+<span class="comment">// Time: O(n)  Space: O(n)</span>
+
+<span class="keyword">var</span> <span class="function">levelOrder</span> = <span class="keyword">function</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> [];
+
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">const</span> queue = [root];
+
+    <span class="keyword">while</span> (queue.length) {
+        <span class="keyword">const</span> level = [];
+        <span class="keyword">const</span> size = queue.length;
+
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; size; i++) {
+            <span class="keyword">const</span> node = queue.shift();
+            level.push(node.val);
+            <span class="keyword">if</span> (node.left) queue.push(node.left);
+            <span class="keyword">if</span> (node.right) queue.push(node.right);
+        }
+
+        result.push(level);
+    }
+
+    <span class="keyword">return</span> result;
+};
+</code></pre>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 7: BALANCED TREES                                    -->
+  <!-- ============================================================ -->
+  <section id="balanced-trees">
+    <h2>7. Balanced Trees</h2>
+
+    <p>A balanced BST maintains a height of O(log n), guaranteeing efficient operations. Without balancing, a BST can degrade to O(n) for all operations.</p>
+
+    <h3>Why Balance Matters</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Tree Type</th>
+          <th>Height</th>
+          <th>Search</th>
+          <th>Insert</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Balanced BST</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+        </tr>
+        <tr>
+          <td>Skewed BST</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>AVL Trees</h3>
+    <p><strong>AVL trees</strong> maintain balance by ensuring the height difference between left and right subtrees of any node is at most 1. After every insert/delete, rotations are performed if the balance factor (|height(left) - height(right)|) exceeds 1.</p>
+    <ul>
+      <li><strong>Balance factor</strong> = height(left) - height(right)</li>
+      <li>Valid range: -1, 0, or 1</li>
+      <li>Four rotation types: Left, Right, Left-Right, Right-Left</li>
+      <li>Strictly balanced -- slightly faster lookups than Red-Black trees</li>
+    </ul>
+
+    <h3>Red-Black Trees</h3>
+    <p><strong>Red-Black trees</strong> use node coloring (red or black) and a set of rules to maintain approximate balance. They are less strictly balanced than AVL trees but have faster insertions and deletions.</p>
+    <ul>
+      <li>Every node is red or black</li>
+      <li>Root is always black</li>
+      <li>No two consecutive red nodes</li>
+      <li>Every path from root to null has the same number of black nodes</li>
+      <li>Used in: Java TreeMap, C++ std::map, Linux kernel</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="label">Interview Tip</div>
+      <p>You almost never need to implement AVL or Red-Black trees from scratch in interviews. Know the <strong>concepts</strong> and <strong>when to use them</strong>. In practice, use built-in sorted structures:</p>
+      <ul>
+        <li><strong>Python:</strong> <code>sortedcontainers.SortedList</code> or <code>bisect</code> module</li>
+        <li><strong>Java:</strong> <code>TreeMap</code>, <code>TreeSet</code></li>
+        <li><strong>C++:</strong> <code>std::set</code>, <code>std::map</code></li>
+        <li><strong>JavaScript:</strong> No built-in balanced BST (use a library or implement if needed)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 8: PRACTICE QUIZ                                     -->
+  <!-- ============================================================ -->
+  <section id="quiz">
+    <h2>8. Practice Quiz</h2>
+
+    <div class="quiz">
+
+      <!-- Q1 -->
+      <div class="quiz-q" id="q1">
+        <h4>Q1: What is the inorder traversal of this BST?</h4>
+        <pre><code>        <span class="number">10</span>
+       /  \
+      <span class="number">5</span>    <span class="number">15</span>
+     / \     \
+    <span class="number">3</span>   <span class="number">7</span>    <span class="number">20</span></code></pre>
+        <button onclick="checkAnswer('q1', this, true)">A) 3, 5, 7, 10, 15, 20</button>
+        <button onclick="checkAnswer('q1', this, false)">B) 10, 5, 3, 7, 15, 20</button>
+        <button onclick="checkAnswer('q1', this, false)">C) 3, 7, 5, 20, 15, 10</button>
+        <button onclick="checkAnswer('q1', this, false)">D) 10, 5, 15, 3, 7, 20</button>
+        <div class="explanation">Inorder traversal (Left, Root, Right) of a BST always produces values in sorted ascending order: 3, 5, 7, 10, 15, 20.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-q" id="q2">
+        <h4>Q2: What is the time complexity of searching in a balanced BST with n nodes?</h4>
+        <button onclick="checkAnswer('q2', this, false)">A) O(1)</button>
+        <button onclick="checkAnswer('q2', this, true)">B) O(log n)</button>
+        <button onclick="checkAnswer('q2', this, false)">C) O(n)</button>
+        <button onclick="checkAnswer('q2', this, false)">D) O(n log n)</button>
+        <div class="explanation">In a balanced BST, the height is O(log n). Since search follows a path from root to a leaf, it takes O(log n) time. In a skewed tree, it degrades to O(n).</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-q" id="q3">
+        <h4>Q3: When deleting a node with TWO children from a BST, what replaces it?</h4>
+        <button onclick="checkAnswer('q3', this, false)">A) Its left child</button>
+        <button onclick="checkAnswer('q3', this, false)">B) Its right child</button>
+        <button onclick="checkAnswer('q3', this, true)">C) Its inorder successor (smallest value in right subtree)</button>
+        <button onclick="checkAnswer('q3', this, false)">D) The root node</button>
+        <div class="explanation">When deleting a node with two children, we replace it with its inorder successor (the smallest node in the right subtree) or inorder predecessor (largest in left subtree). This maintains the BST property.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-q" id="q4">
+        <h4>Q4: Which traversal is used for level-by-level processing of a tree?</h4>
+        <button onclick="checkAnswer('q4', this, false)">A) Inorder (DFS)</button>
+        <button onclick="checkAnswer('q4', this, false)">B) Preorder (DFS)</button>
+        <button onclick="checkAnswer('q4', this, false)">C) Postorder (DFS)</button>
+        <button onclick="checkAnswer('q4', this, true)">D) Level Order (BFS)</button>
+        <div class="explanation">Level Order traversal uses BFS with a queue to process nodes level by level. DFS traversals (inorder, preorder, postorder) go deep before going wide.</div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-q" id="q5">
+        <h4>Q5: A binary tree with 15 nodes has how many edges?</h4>
+        <button onclick="checkAnswer('q5', this, false)">A) 15</button>
+        <button onclick="checkAnswer('q5', this, true)">B) 14</button>
+        <button onclick="checkAnswer('q5', this, false)">C) 16</button>
+        <button onclick="checkAnswer('q5', this, false)">D) 30</button>
+        <div class="explanation">A tree with n nodes always has exactly n - 1 edges. Each node (except the root) has exactly one edge connecting it to its parent. So 15 nodes = 14 edges.</div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- .container -->
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <p>Built for learning DSA. Keep grinding.</p>
+</footer>
+
+<!-- ====== QUIZ SCRIPT ====== -->
+<script>
+function checkAnswer(qId, btn, isCorrect) {
+  const question = document.getElementById(qId);
+  // Prevent re-answering
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  // Disable all buttons in this question
+  const buttons = question.querySelectorAll('button');
+  buttons.forEach(b => b.style.pointerEvents = 'none');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    // Highlight the correct answer
+    buttons.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) {
+        b.classList.add('correct');
+      }
+    });
+  }
+
+  // Show explanation
+  question.querySelector('.explanation').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

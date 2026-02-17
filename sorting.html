@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting &amp; Searching | DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html" class="active">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Sorting &amp; Searching</div>
+      <h1>Sorting &amp; Searching</h1>
+      <p>From O(n&sup2;) basics to O(n log n) workhorses and binary search. Know the trade-offs, write the code, crush the interviews.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#why-sorting">1. Why Sorting Matters</a>
+      <a href="#comparison">2. Comparison of All Sorting Algorithms</a>
+      <a href="#bubble-sort">3. Bubble Sort</a>
+      <a href="#selection-sort">4. Selection Sort</a>
+      <a href="#insertion-sort">5. Insertion Sort</a>
+      <a href="#merge-sort">6. Merge Sort</a>
+      <a href="#quick-sort">7. Quick Sort</a>
+      <a href="#heap-sort">8. Heap Sort</a>
+      <a href="#counting-radix">9. Counting Sort &amp; Radix Sort</a>
+      <a href="#binary-search">10. Binary Search</a>
+      <a href="#built-in">11. Built-in Sorting</a>
+      <a href="#leetcode">12. LeetCode Problems</a>
+      <a href="#quiz">13. Practice Quiz</a>
+    </div>
+
+    <!-- ============================== -->
+    <!-- 1. WHY SORTING MATTERS         -->
+    <!-- ============================== -->
+    <section id="why-sorting">
+      <h2>1. Why Sorting Matters</h2>
+      <p>Sorting is one of the most fundamental operations in computer science. Nearly every system you interact with uses sorting under the hood -- databases order query results, search engines rank pages, and operating systems schedule processes.</p>
+
+      <ul>
+        <li><strong>Binary search requires sorted data.</strong> You cannot binary search an unsorted array. Sorting first gives you O(n log n + log n) = O(n log n) total, which beats O(n) linear search when you query multiple times.</li>
+        <li><strong>Sorting makes problems easier.</strong> Two-pointer techniques, deduplication, finding closest pairs, merge intervals -- all of these become straightforward once the data is sorted.</li>
+        <li><strong>Understanding trade-offs is key.</strong> There is no single "best" sorting algorithm. The right choice depends on data size, whether it is nearly sorted, memory constraints, and stability requirements.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>In interviews, you rarely need to implement a sorting algorithm from scratch. But you absolutely need to know their complexities, trade-offs, and when to use each one. For binary search, you need to be able to write it cold.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 2. COMPARISON TABLE             -->
+    <!-- ============================== -->
+    <section id="comparison">
+      <h2>2. Comparison of All Sorting Algorithms</h2>
+
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Best</th>
+              <th>Average</th>
+              <th>Worst</th>
+              <th>Space</th>
+              <th>Stable?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bubble Sort</td>
+              <td>O(n)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(1)</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Selection Sort</td>
+              <td>O(n&sup2;)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(1)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Insertion Sort</td>
+              <td>O(n)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(1)</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Merge Sort</td>
+              <td>O(n log n)</td>
+              <td>O(n log n)</td>
+              <td>O(n log n)</td>
+              <td>O(n)</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Quick Sort</td>
+              <td>O(n log n)</td>
+              <td>O(n log n)</td>
+              <td>O(n&sup2;)</td>
+              <td>O(log n)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Heap Sort</td>
+              <td>O(n log n)</td>
+              <td>O(n log n)</td>
+              <td>O(n log n)</td>
+              <td>O(1)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Counting Sort</td>
+              <td>O(n + k)</td>
+              <td>O(n + k)</td>
+              <td>O(n + k)</td>
+              <td>O(k)</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Radix Sort</td>
+              <td>O(nk)</td>
+              <td>O(nk)</td>
+              <td>O(nk)</td>
+              <td>O(n + k)</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>What Does "Stable" Mean?</h3>
+      <p>A sorting algorithm is <strong>stable</strong> if it preserves the relative order of elements that have equal keys. For example, if you sort a list of students by grade and two students both have a B, a stable sort keeps them in the same relative order they were in before sorting.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Stability</div>
+        <p>Input: <code>[("Alice", B), ("Bob", A), ("Charlie", B)]</code></p>
+        <p><strong>Stable sort by grade:</strong> <code>[("Bob", A), ("Alice", B), ("Charlie", B)]</code> -- Alice still before Charlie</p>
+        <p><strong>Unstable sort by grade:</strong> <code>[("Bob", A), ("Charlie", B), ("Alice", B)]</code> -- order of B's might flip</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Stability matters when you sort by multiple keys. Sort by secondary key first, then by primary key with a stable sort, and the secondary ordering is preserved within groups.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 3. BUBBLE SORT                  -->
+    <!-- ============================== -->
+    <section id="bubble-sort">
+      <h2>3. Bubble Sort</h2>
+      <p><strong>Concept:</strong> Repeatedly walk through the array and swap adjacent elements if they are in the wrong order. After each full pass, the largest unsorted element "bubbles" up to its correct position at the end.</p>
+
+      <h3>Visual Walkthrough</h3>
+      <div class="example-box">
+        <div class="label">Step-by-Step: Sorting [5, 3, 8, 1, 2]</div>
+<pre><code><span class="comment">Pass 1:</span>
+  [<span class="number">5</span>, <span class="number">3</span>, 8, 1, 2]  &rarr; swap 5,3  &rarr; [<span class="number">3</span>, <span class="number">5</span>, 8, 1, 2]
+  [3, <span class="number">5</span>, <span class="number">8</span>, 1, 2]  &rarr; no swap   &rarr; [3, 5, 8, 1, 2]
+  [3, 5, <span class="number">8</span>, <span class="number">1</span>, 2]  &rarr; swap 8,1  &rarr; [3, 5, <span class="number">1</span>, <span class="number">8</span>, 2]
+  [3, 5, 1, <span class="number">8</span>, <span class="number">2</span>]  &rarr; swap 8,2  &rarr; [3, 5, 1, <span class="number">2</span>, <span class="number">8</span>]
+  <span class="comment">// 8 is now in its final position</span>
+
+<span class="comment">Pass 2:</span>
+  [<span class="number">3</span>, <span class="number">5</span>, 1, 2, 8]  &rarr; no swap   &rarr; [3, 5, 1, 2, 8]
+  [3, <span class="number">5</span>, <span class="number">1</span>, 2, 8]  &rarr; swap 5,1  &rarr; [3, <span class="number">1</span>, <span class="number">5</span>, 2, 8]
+  [3, 1, <span class="number">5</span>, <span class="number">2</span>, 8]  &rarr; swap 5,2  &rarr; [3, 1, <span class="number">2</span>, <span class="number">5</span>, 8]
+  <span class="comment">// 5 is now in its final position</span>
+
+<span class="comment">Pass 3:</span>
+  [<span class="number">3</span>, <span class="number">1</span>, 2, 5, 8]  &rarr; swap 3,1  &rarr; [<span class="number">1</span>, <span class="number">3</span>, 2, 5, 8]
+  [1, <span class="number">3</span>, <span class="number">2</span>, 5, 8]  &rarr; swap 3,2  &rarr; [1, <span class="number">2</span>, <span class="number">3</span>, 5, 8]
+  <span class="comment">// 3 is now in its final position</span>
+
+<span class="comment">Pass 4:</span>
+  [<span class="number">1</span>, <span class="number">2</span>, 3, 5, 8]  &rarr; no swaps  &rarr; DONE!
+
+<span class="comment">Result: [1, 2, 3, 5, 8]</span></code></pre>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">bubble_sort</span>(arr):
+    n = <span class="builtin">len</span>(arr)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        swapped = <span class="keyword">False</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span> - i):
+            <span class="keyword">if</span> arr[j] > arr[j + <span class="number">1</span>]:
+                arr[j], arr[j + <span class="number">1</span>] = arr[j + <span class="number">1</span>], arr[j]
+                swapped = <span class="keyword">True</span>
+        <span class="comment"># If no swaps happened, array is already sorted</span>
+        <span class="keyword">if not</span> swapped:
+            <span class="keyword">break</span>
+    <span class="keyword">return</span> arr
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">bubble_sort</span>([<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>]))  <span class="comment"># [1, 2, 3, 5, 8]</span></code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">bubbleSort</span>(arr) {
+    <span class="keyword">const</span> n = arr.length;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">let</span> swapped = <span class="keyword">false</span>;
+        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; n - <span class="number">1</span> - i; j++) {
+            <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) {
+                [arr[j], arr[j + <span class="number">1</span>]] = [arr[j + <span class="number">1</span>], arr[j]];
+                swapped = <span class="keyword">true</span>;
+            }
+        }
+        <span class="comment">// If no swaps happened, array is already sorted</span>
+        <span class="keyword">if</span> (!swapped) <span class="keyword">break</span>;
+    }
+    <span class="keyword">return</span> arr;
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">bubbleSort</span>([<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>]));  <span class="comment">// [1, 2, 3, 5, 8]</span></code></pre>
+
+      <div class="formula-box">
+        Time: O(n&sup2;) average/worst | O(n) best (already sorted) | Space: O(1) | Stable: Yes
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Why It's Bad</div>
+        <p>Bubble sort is O(n&sup2;) in the average and worst case. It does far too many comparisons and swaps. Never use it in production code. The only scenario where it's acceptable is a nearly-sorted, very small array -- and even then, insertion sort is better.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 4. SELECTION SORT               -->
+    <!-- ============================== -->
+    <section id="selection-sort">
+      <h2>4. Selection Sort</h2>
+      <p><strong>Concept:</strong> Find the minimum element in the unsorted portion, swap it with the first unsorted element, and move the boundary one step to the right. Repeat until the entire array is sorted.</p>
+
+      <h3>Visual Walkthrough</h3>
+      <div class="example-box">
+        <div class="label">Step-by-Step: Sorting [29, 10, 14, 37, 13]</div>
+<pre><code><span class="comment">Pass 1: Find min in [29, 10, 14, 37, 13] &rarr; min is 10 at index 1</span>
+  Swap arr[0] and arr[1]: [<span class="number">10</span>, 29, 14, 37, 13]
+  Sorted: [<span class="number">10</span> | 29, 14, 37, 13]
+
+<span class="comment">Pass 2: Find min in [29, 14, 37, 13] &rarr; min is 13 at index 4</span>
+  Swap arr[1] and arr[4]: [10, <span class="number">13</span>, 14, 37, 29]
+  Sorted: [10, <span class="number">13</span> | 14, 37, 29]
+
+<span class="comment">Pass 3: Find min in [14, 37, 29] &rarr; min is 14 at index 2</span>
+  Already in place: [10, 13, <span class="number">14</span>, 37, 29]
+  Sorted: [10, 13, <span class="number">14</span> | 37, 29]
+
+<span class="comment">Pass 4: Find min in [37, 29] &rarr; min is 29 at index 4</span>
+  Swap arr[3] and arr[4]: [10, 13, 14, <span class="number">29</span>, 37]
+  Sorted: [10, 13, 14, <span class="number">29</span> | 37]
+
+<span class="comment">Result: [10, 13, 14, 29, 37]</span></code></pre>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">selection_sort</span>(arr):
+    n = <span class="builtin">len</span>(arr)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="comment"># Find the index of the minimum element in unsorted portion</span>
+        min_idx = i
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i + <span class="number">1</span>, n):
+            <span class="keyword">if</span> arr[j] &lt; arr[min_idx]:
+                min_idx = j
+        <span class="comment"># Swap the found minimum with the first unsorted element</span>
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    <span class="keyword">return</span> arr
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">selection_sort</span>([<span class="number">29</span>, <span class="number">10</span>, <span class="number">14</span>, <span class="number">37</span>, <span class="number">13</span>]))  <span class="comment"># [10, 13, 14, 29, 37]</span></code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">selectionSort</span>(arr) {
+    <span class="keyword">const</span> n = arr.length;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="comment">// Find the index of the minimum element in unsorted portion</span>
+        <span class="keyword">let</span> minIdx = i;
+        <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; n; j++) {
+            <span class="keyword">if</span> (arr[j] &lt; arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        <span class="comment">// Swap the found minimum with the first unsorted element</span>
+        [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+    }
+    <span class="keyword">return</span> arr;
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">selectionSort</span>([<span class="number">29</span>, <span class="number">10</span>, <span class="number">14</span>, <span class="number">37</span>, <span class="number">13</span>]));  <span class="comment">// [10, 13, 14, 29, 37]</span></code></pre>
+
+      <div class="formula-box">
+        Time: O(n&sup2;) all cases | Space: O(1) | Stable: No
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Not Stable</div>
+        <p>Selection sort is <strong>not stable</strong> because the swap can move equal elements past each other. It is also O(n&sup2;) in all cases -- even if the array is already sorted, it still scans for the minimum every pass. Don't use it in practice.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 5. INSERTION SORT               -->
+    <!-- ============================== -->
+    <section id="insertion-sort">
+      <h2>5. Insertion Sort</h2>
+      <p><strong>Concept:</strong> Build the sorted array one element at a time. Take each element and insert it into its correct position in the already-sorted portion. Think of it like sorting a hand of playing cards -- you pick up each card and slide it into the right spot.</p>
+
+      <h3>Visual Walkthrough</h3>
+      <div class="example-box">
+        <div class="label">Step-by-Step: Sorting [5, 2, 4, 6, 1, 3]</div>
+<pre><code><span class="comment">Start: sorted portion = [5], pick up 2</span>
+  2 &lt; 5, shift 5 right, insert 2: [<span class="number">2</span>, <span class="number">5</span>, 4, 6, 1, 3]
+
+<span class="comment">Pick up 4:</span>
+  4 &lt; 5, shift 5 right. 4 &gt; 2, stop. Insert 4: [2, <span class="number">4</span>, 5, 6, 1, 3]
+
+<span class="comment">Pick up 6:</span>
+  6 &gt; 5, already in place: [2, 4, 5, <span class="number">6</span>, 1, 3]
+
+<span class="comment">Pick up 1:</span>
+  1 &lt; 6, shift. 1 &lt; 5, shift. 1 &lt; 4, shift. 1 &lt; 2, shift.
+  Insert 1 at front: [<span class="number">1</span>, 2, 4, 5, 6, 3]
+
+<span class="comment">Pick up 3:</span>
+  3 &lt; 6, shift. 3 &lt; 5, shift. 3 &lt; 4, shift. 3 &gt; 2, stop.
+  Insert 3: [1, 2, <span class="number">3</span>, 4, 5, 6]
+
+<span class="comment">Result: [1, 2, 3, 4, 5, 6]</span></code></pre>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">insertion_sort</span>(arr):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(arr)):
+        key = arr[i]          <span class="comment"># The element to insert</span>
+        j = i - <span class="number">1</span>
+        <span class="comment"># Shift elements of the sorted portion that are greater than key</span>
+        <span class="keyword">while</span> j >= <span class="number">0</span> <span class="keyword">and</span> arr[j] > key:
+            arr[j + <span class="number">1</span>] = arr[j]
+            j -= <span class="number">1</span>
+        arr[j + <span class="number">1</span>] = key        <span class="comment"># Insert into correct position</span>
+    <span class="keyword">return</span> arr
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">insertion_sort</span>([<span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">3</span>]))  <span class="comment"># [1, 2, 3, 4, 5, 6]</span></code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">insertionSort</span>(arr) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) {
+        <span class="keyword">const</span> key = arr[i];     <span class="comment">// The element to insert</span>
+        <span class="keyword">let</span> j = i - <span class="number">1</span>;
+        <span class="comment">// Shift elements of the sorted portion that are greater than key</span>
+        <span class="keyword">while</span> (j >= <span class="number">0</span> &amp;&amp; arr[j] &gt; key) {
+            arr[j + <span class="number">1</span>] = arr[j];
+            j--;
+        }
+        arr[j + <span class="number">1</span>] = key;       <span class="comment">// Insert into correct position</span>
+    }
+    <span class="keyword">return</span> arr;
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">insertionSort</span>([<span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">3</span>]));  <span class="comment">// [1, 2, 3, 4, 5, 6]</span></code></pre>
+
+      <div class="formula-box">
+        Time: O(n&sup2;) average/worst | O(n) best (already sorted) | Space: O(1) | Stable: Yes
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Actually Useful</div>
+        <p>Unlike bubble and selection sort, insertion sort is actually used in practice. Python's built-in <code>sorted()</code> uses <strong>Timsort</strong>, which is a hybrid of merge sort and insertion sort. Timsort uses insertion sort for small subarrays (typically &lt; 64 elements) because insertion sort has low overhead and is very fast on small or nearly-sorted data.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 6. MERGE SORT                   -->
+    <!-- ============================== -->
+    <section id="merge-sort">
+      <h2>6. Merge Sort (Important)</h2>
+      <p><strong>Concept:</strong> Divide the array in half, recursively sort each half, then merge the two sorted halves back together. This is a classic <strong>divide and conquer</strong> algorithm.</p>
+
+      <h3>The Divide and Conquer Approach</h3>
+      <ol>
+        <li><strong>Divide:</strong> Split the array into two halves.</li>
+        <li><strong>Conquer:</strong> Recursively sort each half (base case: array of size 0 or 1 is already sorted).</li>
+        <li><strong>Combine:</strong> Merge the two sorted halves into one sorted array.</li>
+      </ol>
+
+      <h3>Visual Walkthrough</h3>
+      <div class="example-box">
+        <div class="label">Splitting and Merging [38, 27, 43, 3, 9, 82, 10]</div>
+<pre><code><span class="comment">SPLIT phase (divide into halves):</span>
+                 [38, 27, 43, 3, 9, 82, 10]
+                /                           \
+        [38, 27, 43, 3]              [9, 82, 10]
+         /           \                /         \
+    [38, 27]      [43, 3]       [9, 82]       [10]
+     /    \        /    \        /    \
+   [38]  [27]   [43]   [3]    [9]  [82]
+
+<span class="comment">MERGE phase (combine sorted halves):</span>
+   [38]  [27]   [43]   [3]    [9]  [82]     [10]
+     \    /        \    /        \    /
+    [27, 38]      [3, 43]       [9, 82]      [10]
+         \           /                \         /
+      [3, 27, 38, 43]              [9, 10, 82]
+                \                       /
+           [3, 9, 10, 27, 38, 43, 82]</code></pre>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">merge_sort</span>(arr):
+    <span class="comment"># Base case: array of length 0 or 1 is already sorted</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(arr) &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> arr
+
+    <span class="comment"># DIVIDE: split array into two halves</span>
+    mid = <span class="builtin">len</span>(arr) // <span class="number">2</span>
+    left = <span class="function">merge_sort</span>(arr[:mid])     <span class="comment"># Recursively sort left half</span>
+    right = <span class="function">merge_sort</span>(arr[mid:])    <span class="comment"># Recursively sort right half</span>
+
+    <span class="comment"># MERGE: combine two sorted halves</span>
+    <span class="keyword">return</span> <span class="function">merge</span>(left, right)
+
+
+<span class="keyword">def</span> <span class="function">merge</span>(left, right):
+    result = []
+    i = j = <span class="number">0</span>
+
+    <span class="comment"># Compare elements from both halves, pick the smaller one</span>
+    <span class="keyword">while</span> i &lt; <span class="builtin">len</span>(left) <span class="keyword">and</span> j &lt; <span class="builtin">len</span>(right):
+        <span class="keyword">if</span> left[i] &lt;= right[j]:   <span class="comment"># &lt;= makes it stable</span>
+            result.<span class="function">append</span>(left[i])
+            i += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            result.<span class="function">append</span>(right[j])
+            j += <span class="number">1</span>
+
+    <span class="comment"># Append remaining elements (one half may have leftovers)</span>
+    result.<span class="function">extend</span>(left[i:])
+    result.<span class="function">extend</span>(right[j:])
+    <span class="keyword">return</span> result
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">merge_sort</span>([<span class="number">38</span>, <span class="number">27</span>, <span class="number">43</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">82</span>, <span class="number">10</span>]))
+<span class="comment"># [3, 9, 10, 27, 38, 43, 82]</span></code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">mergeSort</span>(arr) {
+    <span class="comment">// Base case: array of length 0 or 1 is already sorted</span>
+    <span class="keyword">if</span> (arr.length &lt;= <span class="number">1</span>) <span class="keyword">return</span> arr;
+
+    <span class="comment">// DIVIDE: split array into two halves</span>
+    <span class="keyword">const</span> mid = Math.<span class="function">floor</span>(arr.length / <span class="number">2</span>);
+    <span class="keyword">const</span> left = <span class="function">mergeSort</span>(arr.<span class="function">slice</span>(<span class="number">0</span>, mid));   <span class="comment">// Recursively sort left</span>
+    <span class="keyword">const</span> right = <span class="function">mergeSort</span>(arr.<span class="function">slice</span>(mid));    <span class="comment">// Recursively sort right</span>
+
+    <span class="comment">// MERGE: combine two sorted halves</span>
+    <span class="keyword">return</span> <span class="function">merge</span>(left, right);
+}
+
+<span class="keyword">function</span> <span class="function">merge</span>(left, right) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">let</span> i = <span class="number">0</span>, j = <span class="number">0</span>;
+
+    <span class="comment">// Compare elements from both halves, pick the smaller one</span>
+    <span class="keyword">while</span> (i &lt; left.length &amp;&amp; j &lt; right.length) {
+        <span class="keyword">if</span> (left[i] &lt;= right[j]) {   <span class="comment">// &lt;= makes it stable</span>
+            result.<span class="function">push</span>(left[i]);
+            i++;
+        } <span class="keyword">else</span> {
+            result.<span class="function">push</span>(right[j]);
+            j++;
+        }
+    }
+
+    <span class="comment">// Append remaining elements</span>
+    <span class="keyword">return</span> result.<span class="function">concat</span>(left.<span class="function">slice</span>(i)).<span class="function">concat</span>(right.<span class="function">slice</span>(j));
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">mergeSort</span>([<span class="number">38</span>, <span class="number">27</span>, <span class="number">43</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">82</span>, <span class="number">10</span>]));
+<span class="comment">// [3, 9, 10, 27, 38, 43, 82]</span></code></pre>
+
+      <div class="formula-box">
+        Time: O(n log n) all cases | Space: O(n) | Stable: Yes
+      </div>
+
+      <ul>
+        <li><strong>Always O(n log n)</strong> -- very predictable performance, no worst-case degradation.</li>
+        <li><strong>Downside:</strong> O(n) extra space for the temporary arrays during merging.</li>
+        <li><strong>Used in:</strong> Python's <code>sorted()</code> (Timsort is a hybrid of merge sort + insertion sort), Java's <code>Arrays.sort()</code> for objects, external sorting (sorting data that doesn't fit in memory).</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Interview Tip</div>
+        <p>Merge sort is a top interview topic. You should be able to write it from memory. The key insight is that merging two sorted arrays is O(n) -- you just compare the fronts of both arrays and pick the smaller one.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 7. QUICK SORT                   -->
+    <!-- ============================== -->
+    <section id="quick-sort">
+      <h2>7. Quick Sort (Important)</h2>
+      <p><strong>Concept:</strong> Pick a "pivot" element, then partition the array so that all elements less than the pivot come before it and all elements greater come after it. Recursively sort the two partitions.</p>
+
+      <h3>The Partition Step (Detailed)</h3>
+      <p>The partition is the heart of quick sort. Here is how Lomuto's partition scheme works:</p>
+      <ol>
+        <li>Choose the last element as the pivot.</li>
+        <li>Maintain a pointer <code>i</code> that tracks where the next "smaller than pivot" element should go.</li>
+        <li>Walk through the array with pointer <code>j</code>. If <code>arr[j] &lt; pivot</code>, swap <code>arr[i]</code> and <code>arr[j]</code>, then increment <code>i</code>.</li>
+        <li>After scanning, swap the pivot into position <code>i</code>. Now everything left of <code>i</code> is smaller, everything right is larger.</li>
+      </ol>
+
+      <h3>Visual Walkthrough</h3>
+      <div class="example-box">
+        <div class="label">Partitioning [10, 80, 30, 90, 40, 50, 70] with pivot = 70</div>
+<pre><code><span class="comment">pivot = 70 (last element), i = 0</span>
+
+j=0: arr[0]=10 &lt; 70 &rarr; swap arr[0],arr[0], i=1   [<span class="number">10</span>, 80, 30, 90, 40, 50, 70]
+j=1: arr[1]=80 &gt; 70 &rarr; skip                       [10, 80, 30, 90, 40, 50, 70]
+j=2: arr[2]=30 &lt; 70 &rarr; swap arr[1],arr[2], i=2   [10, <span class="number">30</span>, <span class="number">80</span>, 90, 40, 50, 70]
+j=3: arr[3]=90 &gt; 70 &rarr; skip                       [10, 30, 80, 90, 40, 50, 70]
+j=4: arr[4]=40 &lt; 70 &rarr; swap arr[2],arr[4], i=3   [10, 30, <span class="number">40</span>, 90, <span class="number">80</span>, 50, 70]
+j=5: arr[5]=50 &lt; 70 &rarr; swap arr[3],arr[5], i=4   [10, 30, 40, <span class="number">50</span>, 80, <span class="number">90</span>, 70]
+
+<span class="comment">Swap pivot (70) into position i=4:</span>
+[10, 30, 40, 50, <span class="number">70</span>, 90, 80]
+
+<span class="comment">Now: [10, 30, 40, 50] &lt; 70 &lt; [90, 80]</span>
+<span class="comment">Recursively sort left and right partitions.</span></code></pre>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">quick_sort</span>(arr):
+    <span class="comment"># Simple version using list comprehensions (Pythonic but uses extra space)</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(arr) &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> arr
+
+    pivot = arr[<span class="builtin">len</span>(arr) // <span class="number">2</span>]   <span class="comment"># Choose middle element as pivot</span>
+    left = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x &lt; pivot]
+    middle = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x == pivot]
+    right = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x > pivot]
+
+    <span class="keyword">return</span> <span class="function">quick_sort</span>(left) + middle + <span class="function">quick_sort</span>(right)
+
+
+<span class="comment"># In-place version (more efficient, what interviewers want to see)</span>
+<span class="keyword">def</span> <span class="function">quick_sort_inplace</span>(arr, low=<span class="number">0</span>, high=<span class="keyword">None</span>):
+    <span class="keyword">if</span> high <span class="keyword">is</span> <span class="keyword">None</span>:
+        high = <span class="builtin">len</span>(arr) - <span class="number">1</span>
+
+    <span class="keyword">if</span> low &lt; high:
+        <span class="comment"># Partition and get pivot index</span>
+        pivot_idx = <span class="function">partition</span>(arr, low, high)
+        <span class="comment"># Recursively sort left and right of pivot</span>
+        <span class="function">quick_sort_inplace</span>(arr, low, pivot_idx - <span class="number">1</span>)
+        <span class="function">quick_sort_inplace</span>(arr, pivot_idx + <span class="number">1</span>, high)
+
+    <span class="keyword">return</span> arr
+
+
+<span class="keyword">def</span> <span class="function">partition</span>(arr, low, high):
+    pivot = arr[high]        <span class="comment"># Choose last element as pivot</span>
+    i = low                  <span class="comment"># Pointer for "smaller than pivot" boundary</span>
+
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(low, high):
+        <span class="keyword">if</span> arr[j] &lt; pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += <span class="number">1</span>
+
+    <span class="comment"># Place pivot in its correct position</span>
+    arr[i], arr[high] = arr[high], arr[i]
+    <span class="keyword">return</span> i
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">quick_sort</span>([<span class="number">10</span>, <span class="number">80</span>, <span class="number">30</span>, <span class="number">90</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">70</span>]))
+<span class="comment"># [10, 30, 40, 50, 70, 80, 90]</span>
+
+<span class="builtin">print</span>(<span class="function">quick_sort_inplace</span>([<span class="number">10</span>, <span class="number">80</span>, <span class="number">30</span>, <span class="number">90</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">70</span>]))
+<span class="comment"># [10, 30, 40, 50, 70, 80, 90]</span></code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="comment">// Simple version (uses extra space)</span>
+<span class="keyword">function</span> <span class="function">quickSort</span>(arr) {
+    <span class="keyword">if</span> (arr.length &lt;= <span class="number">1</span>) <span class="keyword">return</span> arr;
+
+    <span class="keyword">const</span> pivot = arr[Math.<span class="function">floor</span>(arr.length / <span class="number">2</span>)];
+    <span class="keyword">const</span> left = arr.<span class="function">filter</span>(x =&gt; x &lt; pivot);
+    <span class="keyword">const</span> middle = arr.<span class="function">filter</span>(x =&gt; x === pivot);
+    <span class="keyword">const</span> right = arr.<span class="function">filter</span>(x =&gt; x &gt; pivot);
+
+    <span class="keyword">return</span> [...<span class="function">quickSort</span>(left), ...middle, ...<span class="function">quickSort</span>(right)];
+}
+
+
+<span class="comment">// In-place version (efficient, interview-ready)</span>
+<span class="keyword">function</span> <span class="function">quickSortInPlace</span>(arr, low = <span class="number">0</span>, high = arr.length - <span class="number">1</span>) {
+    <span class="keyword">if</span> (low &lt; high) {
+        <span class="keyword">const</span> pivotIdx = <span class="function">partition</span>(arr, low, high);
+        <span class="function">quickSortInPlace</span>(arr, low, pivotIdx - <span class="number">1</span>);
+        <span class="function">quickSortInPlace</span>(arr, pivotIdx + <span class="number">1</span>, high);
+    }
+    <span class="keyword">return</span> arr;
+}
+
+<span class="keyword">function</span> <span class="function">partition</span>(arr, low, high) {
+    <span class="keyword">const</span> pivot = arr[high];   <span class="comment">// Choose last element as pivot</span>
+    <span class="keyword">let</span> i = low;               <span class="comment">// Boundary pointer</span>
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> j = low; j &lt; high; j++) {
+        <span class="keyword">if</span> (arr[j] &lt; pivot) {
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            i++;
+        }
+    }
+
+    <span class="comment">// Place pivot in correct position</span>
+    [arr[i], arr[high]] = [arr[high], arr[i]];
+    <span class="keyword">return</span> i;
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">quickSort</span>([<span class="number">10</span>, <span class="number">80</span>, <span class="number">30</span>, <span class="number">90</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">70</span>]));
+<span class="comment">// [10, 30, 40, 50, 70, 80, 90]</span></code></pre>
+
+      <div class="formula-box">
+        Time: O(n log n) avg | O(n&sup2;) worst (bad pivot) | Space: O(log n) stack | Stable: No
+      </div>
+
+      <h3>Pivot Selection Strategies</h3>
+      <ul>
+        <li><strong>Last element:</strong> Simple but vulnerable to sorted/reverse-sorted input (degrades to O(n&sup2;)).</li>
+        <li><strong>Random element:</strong> Swap a random element to the end before partitioning. Makes worst case extremely unlikely.</li>
+        <li><strong>Median-of-three:</strong> Take the median of the first, middle, and last elements. Good compromise between simplicity and performance.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">In Practice</div>
+        <p>Quick sort is generally the fastest comparison-based sorting algorithm in practice due to excellent cache locality and low constant factors. Most standard library sorts (C's <code>qsort</code>, C++'s <code>std::sort</code>) use some variant of quick sort (often introsort, which falls back to heap sort if recursion gets too deep).</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 8. HEAP SORT                    -->
+    <!-- ============================== -->
+    <section id="heap-sort">
+      <h2>8. Heap Sort (Brief)</h2>
+      <p><strong>Concept:</strong> Build a max heap from the array, then repeatedly extract the maximum element and place it at the end.</p>
+
+      <h3>How It Works</h3>
+      <ol>
+        <li><strong>Build a max heap</strong> from the input array. A max heap is a complete binary tree where every parent is greater than or equal to its children.</li>
+        <li><strong>Extract the max</strong> (root of the heap) and swap it with the last element of the heap.</li>
+        <li><strong>Reduce heap size</strong> by one and "heapify" the root to restore the heap property.</li>
+        <li><strong>Repeat</strong> until the heap is empty. The array is now sorted.</li>
+      </ol>
+
+      <div class="formula-box">
+        Time: O(n log n) all cases | Space: O(1) | Stable: No
+      </div>
+
+      <ul>
+        <li><strong>Guaranteed O(n log n)</strong> with O(1) extra space -- the only algorithm that offers both.</li>
+        <li><strong>Downsides:</strong> Poor cache locality (jumps around the array), higher constant factors than quick sort. Rarely the fastest in practice.</li>
+        <li><strong>Best for:</strong> When you need guaranteed O(n log n) with no extra memory.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Learn More</div>
+        <p>Heaps are covered in detail on the <a href="advanced.html" class="resource-link">Advanced Data Structures</a> page, including heap implementation, heapify, and priority queues.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 9. COUNTING & RADIX SORT        -->
+    <!-- ============================== -->
+    <section id="counting-radix">
+      <h2>9. Counting Sort &amp; Radix Sort (Brief)</h2>
+      <p>These are <strong>non-comparison sorts</strong>. They don't compare elements to each other -- instead, they exploit the structure of the data to sort faster than O(n log n).</p>
+
+      <h3>Counting Sort</h3>
+      <p><strong>When to use:</strong> You know the range of values is small (for example, sorting grades 0-100, or characters a-z).</p>
+      <ol>
+        <li>Count occurrences of each value.</li>
+        <li>Build a cumulative count array.</li>
+        <li>Place each element in its correct position using the counts.</li>
+      </ol>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">counting_sort</span>(arr, max_val):
+    <span class="comment"># Count occurrences of each value</span>
+    count = [<span class="number">0</span>] * (max_val + <span class="number">1</span>)
+    <span class="keyword">for</span> num <span class="keyword">in</span> arr:
+        count[num] += <span class="number">1</span>
+
+    <span class="comment"># Build sorted array from counts</span>
+    result = []
+    <span class="keyword">for</span> val <span class="keyword">in</span> <span class="builtin">range</span>(max_val + <span class="number">1</span>):
+        result.<span class="function">extend</span>([val] * count[val])
+
+    <span class="keyword">return</span> result
+
+<span class="comment"># Example: sorting grades (range 0-5)</span>
+<span class="builtin">print</span>(<span class="function">counting_sort</span>([<span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>], <span class="number">8</span>))
+<span class="comment"># [1, 2, 2, 3, 3, 4, 8]</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">countingSort</span>(arr, maxVal) {
+    <span class="keyword">const</span> count = <span class="keyword">new</span> <span class="builtin">Array</span>(maxVal + <span class="number">1</span>).<span class="function">fill</span>(<span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> arr) count[num]++;
+
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">for</span> (<span class="keyword">let</span> val = <span class="number">0</span>; val &lt;= maxVal; val++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; count[val]; i++) {
+            result.<span class="function">push</span>(val);
+        }
+    }
+    <span class="keyword">return</span> result;
+}
+
+console.<span class="function">log</span>(<span class="function">countingSort</span>([<span class="number">4</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>], <span class="number">8</span>));
+<span class="comment">// [1, 2, 2, 3, 3, 4, 8]</span></code></pre>
+
+      <div class="formula-box">
+        Counting Sort: Time O(n + k) | Space O(k) | k = range of values
+      </div>
+
+      <h3>Radix Sort</h3>
+      <p><strong>Concept:</strong> Sort numbers digit by digit, starting from the least significant digit to the most significant. Uses counting sort (or any stable sort) as a subroutine for each digit.</p>
+      <ul>
+        <li><strong>Time:</strong> O(nk) where k = number of digits.</li>
+        <li><strong>Space:</strong> O(n + k).</li>
+        <li><strong>When to use:</strong> Large arrays of integers with a known, bounded number of digits.</li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Limitation</div>
+        <p>Non-comparison sorts only work with specific data types (integers, strings of fixed length). They cannot sort arbitrary objects. For general-purpose sorting, you need comparison-based algorithms.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 10. BINARY SEARCH               -->
+    <!-- ============================== -->
+    <section id="binary-search">
+      <h2>10. Binary Search (Very Important)</h2>
+      <p><strong>Prerequisite:</strong> The array must be sorted.</p>
+      <p><strong>Concept:</strong> Compare the target with the middle element. If the target is smaller, search the left half. If larger, search the right half. Eliminate half the remaining elements with each comparison.</p>
+
+      <div class="formula-box">
+        Time: O(log n) | Space: O(1) iterative, O(log n) recursive
+      </div>
+
+      <h3>Why O(log n)?</h3>
+      <p>Each step cuts the search space in half. Starting with n elements: n &rarr; n/2 &rarr; n/4 &rarr; ... &rarr; 1. The number of steps to go from n to 1 by halving is log&sub2;(n). For an array of 1,000,000 elements, binary search takes at most ~20 comparisons.</p>
+
+      <h3>Iterative Binary Search</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">binary_search</span>(arr, target):
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(arr) - <span class="number">1</span>
+
+    <span class="keyword">while</span> left &lt;= right:
+        mid = (left + right) // <span class="number">2</span>   <span class="comment"># or left + (right - left) // 2 to avoid overflow</span>
+
+        <span class="keyword">if</span> arr[mid] == target:
+            <span class="keyword">return</span> mid            <span class="comment"># Found it!</span>
+        <span class="keyword">elif</span> arr[mid] &lt; target:
+            left = mid + <span class="number">1</span>       <span class="comment"># Target is in right half</span>
+        <span class="keyword">else</span>:
+            right = mid - <span class="number">1</span>      <span class="comment"># Target is in left half</span>
+
+    <span class="keyword">return</span> -<span class="number">1</span>                    <span class="comment"># Not found</span>
+
+<span class="comment"># Example</span>
+arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>]
+<span class="builtin">print</span>(<span class="function">binary_search</span>(arr, <span class="number">7</span>))   <span class="comment"># 3 (index)</span>
+<span class="builtin">print</span>(<span class="function">binary_search</span>(arr, <span class="number">4</span>))   <span class="comment"># -1 (not found)</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">binarySearch</span>(arr, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>;
+
+    <span class="keyword">while</span> (left &lt;= right) {
+        <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+
+        <span class="keyword">if</span> (arr[mid] === target) <span class="keyword">return</span> mid;
+        <span class="keyword">else if</span> (arr[mid] &lt; target) left = mid + <span class="number">1</span>;
+        <span class="keyword">else</span> right = mid - <span class="number">1</span>;
+    }
+
+    <span class="keyword">return</span> -<span class="number">1</span>;
+}
+
+<span class="comment">// Example</span>
+<span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>];
+console.<span class="function">log</span>(<span class="function">binarySearch</span>(arr, <span class="number">7</span>));   <span class="comment">// 3</span>
+console.<span class="function">log</span>(<span class="function">binarySearch</span>(arr, <span class="number">4</span>));   <span class="comment">// -1</span></code></pre>
+
+      <h3>Recursive Binary Search</h3>
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">binary_search_recursive</span>(arr, target, left=<span class="number">0</span>, right=<span class="keyword">None</span>):
+    <span class="keyword">if</span> right <span class="keyword">is</span> <span class="keyword">None</span>:
+        right = <span class="builtin">len</span>(arr) - <span class="number">1</span>
+
+    <span class="keyword">if</span> left > right:
+        <span class="keyword">return</span> -<span class="number">1</span>               <span class="comment"># Base case: not found</span>
+
+    mid = (left + right) // <span class="number">2</span>
+
+    <span class="keyword">if</span> arr[mid] == target:
+        <span class="keyword">return</span> mid
+    <span class="keyword">elif</span> arr[mid] &lt; target:
+        <span class="keyword">return</span> <span class="function">binary_search_recursive</span>(arr, target, mid + <span class="number">1</span>, right)
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="function">binary_search_recursive</span>(arr, target, left, mid - <span class="number">1</span>)</code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">binarySearchRecursive</span>(arr, target, left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>) {
+    <span class="keyword">if</span> (left &gt; right) <span class="keyword">return</span> -<span class="number">1</span>;
+
+    <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+
+    <span class="keyword">if</span> (arr[mid] === target) <span class="keyword">return</span> mid;
+    <span class="keyword">if</span> (arr[mid] &lt; target) <span class="keyword">return</span> <span class="function">binarySearchRecursive</span>(arr, target, mid + <span class="number">1</span>, right);
+    <span class="keyword">return</span> <span class="function">binarySearchRecursive</span>(arr, target, left, mid - <span class="number">1</span>);
+}</code></pre>
+
+      <h3>Variation: Find Leftmost (bisect_left)</h3>
+      <p>Find the first position where target could be inserted to keep the array sorted. If target exists, returns its leftmost index.</p>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">bisect_left</span>(arr, target):
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(arr)
+
+    <span class="keyword">while</span> left &lt; right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="keyword">if</span> arr[mid] &lt; target:
+            left = mid + <span class="number">1</span>
+        <span class="keyword">else</span>:
+            right = mid          <span class="comment"># Don't skip mid -- it might be the answer</span>
+
+    <span class="keyword">return</span> left
+
+<span class="comment"># Example: [1, 2, 2, 2, 3, 4]</span>
+<span class="comment"># bisect_left(arr, 2) = 1  (leftmost index of 2)</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">bisectLeft</span>(arr, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = arr.length;
+
+    <span class="keyword">while</span> (left &lt; right) {
+        <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+        <span class="keyword">if</span> (arr[mid] &lt; target) left = mid + <span class="number">1</span>;
+        <span class="keyword">else</span> right = mid;
+    }
+
+    <span class="keyword">return</span> left;
+}</code></pre>
+
+      <h3>Variation: Find Rightmost (bisect_right)</h3>
+      <p>Find the first position after all occurrences of target.</p>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">bisect_right</span>(arr, target):
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(arr)
+
+    <span class="keyword">while</span> left &lt; right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="keyword">if</span> arr[mid] &lt;= target:
+            left = mid + <span class="number">1</span>      <span class="comment"># Skip past equal elements</span>
+        <span class="keyword">else</span>:
+            right = mid
+
+    <span class="keyword">return</span> left
+
+<span class="comment"># Example: [1, 2, 2, 2, 3, 4]</span>
+<span class="comment"># bisect_right(arr, 2) = 4  (first index after all 2s)</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">bisectRight</span>(arr, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = arr.length;
+
+    <span class="keyword">while</span> (left &lt; right) {
+        <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+        <span class="keyword">if</span> (arr[mid] &lt;= target) left = mid + <span class="number">1</span>;
+        <span class="keyword">else</span> right = mid;
+    }
+
+    <span class="keyword">return</span> left;
+}</code></pre>
+
+      <h3>Variation: Search in Rotated Sorted Array</h3>
+      <p>A sorted array has been rotated at some pivot. For example, <code>[4, 5, 6, 7, 0, 1, 2]</code>. Find a target value in O(log n).</p>
+      <p><strong>Key insight:</strong> At least one half of the array (left or right of mid) is always sorted. Determine which half is sorted, then check if the target falls in that range.</p>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">search_rotated</span>(nums, target):
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(nums) - <span class="number">1</span>
+
+    <span class="keyword">while</span> left &lt;= right:
+        mid = (left + right) // <span class="number">2</span>
+
+        <span class="keyword">if</span> nums[mid] == target:
+            <span class="keyword">return</span> mid
+
+        <span class="comment"># Left half is sorted</span>
+        <span class="keyword">if</span> nums[left] &lt;= nums[mid]:
+            <span class="keyword">if</span> nums[left] &lt;= target &lt; nums[mid]:
+                right = mid - <span class="number">1</span>   <span class="comment"># Target is in sorted left half</span>
+            <span class="keyword">else</span>:
+                left = mid + <span class="number">1</span>    <span class="comment"># Target is in right half</span>
+        <span class="comment"># Right half is sorted</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">if</span> nums[mid] &lt; target &lt;= nums[right]:
+                left = mid + <span class="number">1</span>    <span class="comment"># Target is in sorted right half</span>
+            <span class="keyword">else</span>:
+                right = mid - <span class="number">1</span>   <span class="comment"># Target is in left half</span>
+
+    <span class="keyword">return</span> -<span class="number">1</span>
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">search_rotated</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">0</span>))  <span class="comment"># 4</span>
+<span class="builtin">print</span>(<span class="function">search_rotated</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>))  <span class="comment"># -1</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">searchRotated</span>(nums, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;
+
+    <span class="keyword">while</span> (left &lt;= right) {
+        <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+
+        <span class="keyword">if</span> (nums[mid] === target) <span class="keyword">return</span> mid;
+
+        <span class="comment">// Left half is sorted</span>
+        <span class="keyword">if</span> (nums[left] &lt;= nums[mid]) {
+            <span class="keyword">if</span> (nums[left] &lt;= target &amp;&amp; target &lt; nums[mid]) {
+                right = mid - <span class="number">1</span>;
+            } <span class="keyword">else</span> {
+                left = mid + <span class="number">1</span>;
+            }
+        <span class="comment">// Right half is sorted</span>
+        } <span class="keyword">else</span> {
+            <span class="keyword">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[right]) {
+                left = mid + <span class="number">1</span>;
+            } <span class="keyword">else</span> {
+                right = mid - <span class="number">1</span>;
+            }
+        }
+    }
+
+    <span class="keyword">return</span> -<span class="number">1</span>;
+}
+
+console.<span class="function">log</span>(<span class="function">searchRotated</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">0</span>));  <span class="comment">// 4</span>
+console.<span class="function">log</span>(<span class="function">searchRotated</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>));  <span class="comment">// -1</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Common Bug</div>
+        <p>The most common binary search bug is off-by-one errors. Pay close attention to: (1) <code>left &lt;= right</code> vs <code>left &lt; right</code>, (2) <code>mid + 1</code> vs <code>mid</code>, and (3) using <code>right = len(arr)</code> vs <code>right = len(arr) - 1</code>. These differ between "find exact" and "find insertion point" variants.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 11. BUILT-IN SORTING            -->
+    <!-- ============================== -->
+    <section id="built-in">
+      <h2>11. Built-in Sorting</h2>
+      <p>In practice, you will almost always use your language's built-in sort. But you need to know how to use it correctly and what is happening under the hood.</p>
+
+      <h3>Python</h3>
+      <pre><span class="lang-label">Python</span><code><span class="comment"># sorted() returns a new list (does not modify original)</span>
+nums = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>]
+sorted_nums = <span class="builtin">sorted</span>(nums)          <span class="comment"># [1, 1, 3, 4, 5, 9]</span>
+<span class="builtin">print</span>(nums)                          <span class="comment"># [3, 1, 4, 1, 5, 9] (unchanged)</span>
+
+<span class="comment"># list.sort() sorts in-place (modifies original, returns None)</span>
+nums.<span class="function">sort</span>()
+<span class="builtin">print</span>(nums)                          <span class="comment"># [1, 1, 3, 4, 5, 9]</span>
+
+<span class="comment"># Reverse sort</span>
+<span class="builtin">sorted</span>(nums, reverse=<span class="keyword">True</span>)          <span class="comment"># [9, 5, 4, 3, 1, 1]</span>
+
+<span class="comment"># Custom key function</span>
+words = [<span class="string">"banana"</span>, <span class="string">"apple"</span>, <span class="string">"cherry"</span>]
+<span class="builtin">sorted</span>(words, key=<span class="builtin">len</span>)               <span class="comment"># ["apple", "banana", "cherry"]</span>
+
+<span class="comment"># Sort by multiple criteria: sort tuples by second element, then first</span>
+pairs = [(<span class="number">2</span>, <span class="string">"b"</span>), (<span class="number">1</span>, <span class="string">"a"</span>), (<span class="number">2</span>, <span class="string">"a"</span>), (<span class="number">1</span>, <span class="string">"b"</span>)]
+<span class="builtin">sorted</span>(pairs, key=<span class="keyword">lambda</span> x: (x[<span class="number">1</span>], x[<span class="number">0</span>]))
+<span class="comment"># [(1, 'a'), (2, 'a'), (1, 'b'), (2, 'b')]</span>
+
+<span class="comment"># Sort objects by attribute</span>
+students = [{<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"gpa"</span>: <span class="number">3.5</span>}, {<span class="string">"name"</span>: <span class="string">"Bob"</span>, <span class="string">"gpa"</span>: <span class="number">3.9</span>}]
+<span class="builtin">sorted</span>(students, key=<span class="keyword">lambda</span> s: s[<span class="string">"gpa"</span>], reverse=<span class="keyword">True</span>)
+<span class="comment"># [{"name": "Bob", "gpa": 3.9}, {"name": "Alice", "gpa": 3.5}]</span></code></pre>
+
+      <h3>JavaScript</h3>
+      <pre><span class="lang-label">JavaScript</span><code><span class="comment">// Array.sort() sorts IN-PLACE and returns the array</span>
+<span class="keyword">const</span> nums = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>];
+nums.<span class="function">sort</span>();
+console.<span class="function">log</span>(nums);  <span class="comment">// [1, 1, 3, 4, 5, 9]  ...or IS IT?</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">JavaScript sort() Trap</div>
+        <p><strong>By default, <code>Array.sort()</code> converts elements to strings and sorts lexicographically!</strong> This means <code>[10, 9, 80].sort()</code> gives <code>[10, 80, 9]</code> because "10" &lt; "80" &lt; "9" as strings. You must ALWAYS provide a comparator for numbers.</p>
+      </div>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="comment">// ALWAYS use a comparator for numbers</span>
+<span class="keyword">const</span> nums = [<span class="number">10</span>, <span class="number">9</span>, <span class="number">80</span>, <span class="number">3</span>, <span class="number">1</span>];
+
+<span class="comment">// Ascending sort</span>
+nums.<span class="function">sort</span>((a, b) =&gt; a - b);        <span class="comment">// [1, 3, 9, 10, 80]</span>
+
+<span class="comment">// Descending sort</span>
+nums.<span class="function">sort</span>((a, b) =&gt; b - a);        <span class="comment">// [80, 10, 9, 3, 1]</span>
+
+<span class="comment">// Sort strings (default works fine for strings)</span>
+<span class="keyword">const</span> words = [<span class="string">"banana"</span>, <span class="string">"apple"</span>, <span class="string">"cherry"</span>];
+words.<span class="function">sort</span>();                      <span class="comment">// ["apple", "banana", "cherry"]</span>
+
+<span class="comment">// Sort by string length</span>
+words.<span class="function">sort</span>((a, b) =&gt; a.length - b.length);
+
+<span class="comment">// Sort objects by property</span>
+<span class="keyword">const</span> students = [
+    { name: <span class="string">"Alice"</span>, gpa: <span class="number">3.5</span> },
+    { name: <span class="string">"Bob"</span>, gpa: <span class="number">3.9</span> }
+];
+students.<span class="function">sort</span>((a, b) =&gt; b.gpa - a.gpa);
+<span class="comment">// [{name: "Bob", gpa: 3.9}, {name: "Alice", gpa: 3.5}]</span>
+
+<span class="comment">// Non-destructive sort (create a copy first)</span>
+<span class="keyword">const</span> original = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>];
+<span class="keyword">const</span> sorted = [...original].<span class="function">sort</span>((a, b) =&gt; a - b);
+<span class="comment">// original is still [3, 1, 2]</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Under the Hood</div>
+        <p><strong>Python:</strong> Uses Timsort (hybrid merge sort + insertion sort). Always O(n log n), stable.<br>
+        <strong>JavaScript:</strong> Implementation varies. V8 (Chrome/Node) uses Timsort. SpiderMonkey (Firefox) uses merge sort. All modern engines guarantee stable sort as of ES2019.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 12. LEETCODE PROBLEMS           -->
+    <!-- ============================== -->
+    <section id="leetcode">
+      <h2>12. LeetCode Problems</h2>
+      <p>These problems test your understanding of sorting algorithms and binary search. Focus on understanding the patterns, not just memorizing solutions.</p>
+
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Problem</th>
+              <th>Difficulty</th>
+              <th>Key Concept</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>56. Merge Intervals</td>
+              <td>Medium</td>
+              <td>Sort + merge overlapping</td>
+            </tr>
+            <tr>
+              <td>75. Sort Colors</td>
+              <td>Medium</td>
+              <td>Dutch national flag / counting sort</td>
+            </tr>
+            <tr>
+              <td>215. Kth Largest Element</td>
+              <td>Medium</td>
+              <td>Quick select / heap</td>
+            </tr>
+            <tr>
+              <td>33. Search in Rotated Sorted Array</td>
+              <td>Medium</td>
+              <td>Modified binary search</td>
+            </tr>
+            <tr>
+              <td>153. Find Min in Rotated Sorted Array</td>
+              <td>Medium</td>
+              <td>Binary search</td>
+            </tr>
+            <tr>
+              <td>74. Search a 2D Matrix</td>
+              <td>Medium</td>
+              <td>Binary search on 2D</td>
+            </tr>
+            <tr>
+              <td>4. Median of Two Sorted Arrays</td>
+              <td>Hard</td>
+              <td>Binary search on partition</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Merge Intervals Solution -->
+      <h3>56. Merge Intervals</h3>
+      <p><strong>Problem:</strong> Given an array of intervals <code>[[start, end], ...]</code>, merge all overlapping intervals.</p>
+      <p><strong>Approach:</strong> Sort by start time, then iterate. If the current interval overlaps with the previous one (current start &lt;= previous end), merge them by extending the end. Otherwise, add the current interval to the result.</p>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">merge</span>(intervals):
+    <span class="comment"># Sort by start time</span>
+    intervals.<span class="function">sort</span>(key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>])
+    merged = [intervals[<span class="number">0</span>]]
+
+    <span class="keyword">for</span> start, end <span class="keyword">in</span> intervals[<span class="number">1</span>:]:
+        <span class="comment"># If current overlaps with last merged interval</span>
+        <span class="keyword">if</span> start &lt;= merged[-<span class="number">1</span>][<span class="number">1</span>]:
+            merged[-<span class="number">1</span>][<span class="number">1</span>] = <span class="builtin">max</span>(merged[-<span class="number">1</span>][<span class="number">1</span>], end)  <span class="comment"># Extend end</span>
+        <span class="keyword">else</span>:
+            merged.<span class="function">append</span>([start, end])
+
+    <span class="keyword">return</span> merged
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">merge</span>([[<span class="number">1</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">6</span>],[<span class="number">8</span>,<span class="number">10</span>],[<span class="number">15</span>,<span class="number">18</span>]]))
+<span class="comment"># [[1, 6], [8, 10], [15, 18]]</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">merge</span>(intervals) {
+    intervals.<span class="function">sort</span>((a, b) =&gt; a[<span class="number">0</span>] - b[<span class="number">0</span>]);
+    <span class="keyword">const</span> merged = [intervals[<span class="number">0</span>]];
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; intervals.length; i++) {
+        <span class="keyword">const</span> [start, end] = intervals[i];
+        <span class="keyword">const</span> last = merged[merged.length - <span class="number">1</span>];
+
+        <span class="keyword">if</span> (start &lt;= last[<span class="number">1</span>]) {
+            last[<span class="number">1</span>] = Math.<span class="function">max</span>(last[<span class="number">1</span>], end);
+        } <span class="keyword">else</span> {
+            merged.<span class="function">push</span>([start, end]);
+        }
+    }
+
+    <span class="keyword">return</span> merged;
+}
+
+console.<span class="function">log</span>(<span class="function">merge</span>([[<span class="number">1</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">6</span>],[<span class="number">8</span>,<span class="number">10</span>],[<span class="number">15</span>,<span class="number">18</span>]]));
+<span class="comment">// [[1, 6], [8, 10], [15, 18]]</span></code></pre>
+
+      <!-- Binary Search (basic is already above, this is Search a 2D Matrix) -->
+      <h3>74. Search a 2D Matrix</h3>
+      <p><strong>Problem:</strong> Search for a target in an m x n matrix where each row is sorted and the first element of each row is greater than the last element of the previous row.</p>
+      <p><strong>Approach:</strong> Treat the 2D matrix as a flattened sorted array. Use binary search with index conversion: <code>row = mid // cols</code>, <code>col = mid % cols</code>.</p>
+
+      <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">search_matrix</span>(matrix, target):
+    rows, cols = <span class="builtin">len</span>(matrix), <span class="builtin">len</span>(matrix[<span class="number">0</span>])
+    left, right = <span class="number">0</span>, rows * cols - <span class="number">1</span>
+
+    <span class="keyword">while</span> left &lt;= right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="comment"># Convert 1D index to 2D coordinates</span>
+        val = matrix[mid // cols][mid % cols]
+
+        <span class="keyword">if</span> val == target:
+            <span class="keyword">return</span> <span class="keyword">True</span>
+        <span class="keyword">elif</span> val &lt; target:
+            left = mid + <span class="number">1</span>
+        <span class="keyword">else</span>:
+            right = mid - <span class="number">1</span>
+
+    <span class="keyword">return</span> <span class="keyword">False</span></code></pre>
+
+      <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">searchMatrix</span>(matrix, target) {
+    <span class="keyword">const</span> rows = matrix.length, cols = matrix[<span class="number">0</span>].length;
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = rows * cols - <span class="number">1</span>;
+
+    <span class="keyword">while</span> (left &lt;= right) {
+        <span class="keyword">const</span> mid = Math.<span class="function">floor</span>((left + right) / <span class="number">2</span>);
+        <span class="keyword">const</span> val = matrix[Math.<span class="function">floor</span>(mid / cols)][mid % cols];
+
+        <span class="keyword">if</span> (val === target) <span class="keyword">return</span> <span class="keyword">true</span>;
+        <span class="keyword">else if</span> (val &lt; target) left = mid + <span class="number">1</span>;
+        <span class="keyword">else</span> right = mid - <span class="number">1</span>;
+    }
+
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}</code></pre>
+
+      <!-- Search in Rotated Sorted Array (full solution already above in section 10) -->
+      <h3>33. Search in Rotated Sorted Array</h3>
+      <p>Full solution with detailed explanation is in <a href="#binary-search">Section 10: Binary Search</a> above.</p>
+
+      <div class="tip-box">
+        <div class="label">Practice Strategy</div>
+        <p>Start with Merge Intervals and Search in Rotated Sorted Array -- they appear in almost every interview prep list. Then tackle Kth Largest Element (introduces quick select) and Search a 2D Matrix. Save Median of Two Sorted Arrays for last -- it is genuinely hard.</p>
+      </div>
+    </section>
+
+    <!-- ============================== -->
+    <!-- 13. PRACTICE QUIZ               -->
+    <!-- ============================== -->
+    <section id="quiz">
+      <h2>13. Practice Quiz</h2>
+      <p>Test your understanding of sorting algorithms and binary search.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: Which sorting algorithm has the best worst-case time complexity?</h4>
+          <button onclick="checkAnswer('q1', this, false)">A) Quick Sort -- O(n log n)</button>
+          <button onclick="checkAnswer('q1', this, true)">B) Merge Sort -- O(n log n)</button>
+          <button onclick="checkAnswer('q1', this, false)">C) Insertion Sort -- O(n)</button>
+          <button onclick="checkAnswer('q1', this, false)">D) Bubble Sort -- O(n)</button>
+          <div class="explanation">Merge Sort guarantees O(n log n) in all cases (best, average, worst). Quick Sort's worst case is O(n&sup2;) with a bad pivot. Insertion Sort and Bubble Sort have O(n) best case but O(n&sup2;) worst case.</div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: What does it mean for a sorting algorithm to be "stable"?</h4>
+          <button onclick="checkAnswer('q2', this, false)">A) It never crashes or throws an error</button>
+          <button onclick="checkAnswer('q2', this, false)">B) Its time complexity doesn't change based on input</button>
+          <button onclick="checkAnswer('q2', this, true)">C) It preserves the relative order of equal elements</button>
+          <button onclick="checkAnswer('q2', this, false)">D) It uses O(1) extra space</button>
+          <div class="explanation">A stable sort preserves the relative order of elements with equal keys. This matters when sorting by multiple criteria. For example, if you sort students by name and then by grade (stable), students with the same grade remain in alphabetical order.</div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: Binary search on a sorted array of 1,000,000 elements requires at most how many comparisons?</h4>
+          <button onclick="checkAnswer('q3', this, false)">A) 1,000,000</button>
+          <button onclick="checkAnswer('q3', this, false)">B) 1,000</button>
+          <button onclick="checkAnswer('q3', this, true)">C) 20</button>
+          <button onclick="checkAnswer('q3', this, false)">D) 100</button>
+          <div class="explanation">Binary search is O(log n). log&sub2;(1,000,000) is approximately 19.93, so at most 20 comparisons. Each comparison eliminates half the remaining elements: 1M &rarr; 500K &rarr; 250K &rarr; ... &rarr; 1.</div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: What is the output of <code>[10, 9, 80].sort()</code> in JavaScript?</h4>
+          <button onclick="checkAnswer('q4', this, false)">A) [9, 10, 80]</button>
+          <button onclick="checkAnswer('q4', this, true)">B) [10, 80, 9]</button>
+          <button onclick="checkAnswer('q4', this, false)">C) [80, 10, 9]</button>
+          <button onclick="checkAnswer('q4', this, false)">D) TypeError</button>
+          <div class="explanation">JavaScript's default <code>.sort()</code> converts elements to strings and sorts lexicographically. As strings: "10" &lt; "80" &lt; "9" (because "1" &lt; "8" &lt; "9"). To sort numbers correctly, you must use <code>.sort((a, b) =&gt; a - b)</code>.</div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: Which sorting algorithm is most commonly used in practice for general-purpose sorting?</h4>
+          <button onclick="checkAnswer('q5', this, false)">A) Bubble Sort (simple to implement)</button>
+          <button onclick="checkAnswer('q5', this, false)">B) Merge Sort (guaranteed O(n log n))</button>
+          <button onclick="checkAnswer('q5', this, true)">C) A hybrid like Timsort or Introsort</button>
+          <button onclick="checkAnswer('q5', this, false)">D) Counting Sort (O(n) time)</button>
+          <div class="explanation">Real-world sorting uses hybrid algorithms. Python and JavaScript (V8) use Timsort (merge sort + insertion sort). C++ uses Introsort (quick sort + heap sort + insertion sort). These hybrids combine the strengths of multiple algorithms: insertion sort for small subarrays, merge/quick sort for large ones, with fallbacks to prevent worst-case performance.</div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /.container -->
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers who want to master data structures and algorithms.</p>
+    <p>No ads, no tracking, no paywalls -- just DSA.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(qId, btn, isCorrect) {
+      const question = document.getElementById(qId);
+      // Prevent re-answering
+      if (question.dataset.answered) return;
+      question.dataset.answered = 'true';
+
+      // Mark the clicked button
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+      // If wrong, also highlight the correct answer
+      if (!isCorrect) {
+        const buttons = question.querySelectorAll('button');
+        buttons.forEach(function(b) {
+          // Find the correct button by re-checking the onclick
+          // We mark correct via a data attribute approach instead
+        });
+        // Highlight correct: find button that would be correct
+        const allBtns = question.querySelectorAll('button');
+        allBtns.forEach(function(b) {
+          const onclickStr = b.getAttribute('onclick');
+          if (onclickStr && onclickStr.includes('true')) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      // Show explanation
+      const explanation = question.querySelector('.explanation');
+      if (explanation) explanation.style.display = 'block';
+
+      // Disable all buttons
+      const allBtns = question.querySelectorAll('button');
+      allBtns.forEach(function(b) {
+        b.style.pointerEvents = 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>

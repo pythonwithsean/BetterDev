@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geometry - Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html" class="active">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &raquo; Geometry</div>
+      <h1>Geometry</h1>
+      <p>Shapes, angles, area, volume, trigonometry, and coordinate geometry -- the math that gives structure to the visual world and powers computer graphics, game engines, and spatial computing.</p>
+
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why Geometry Matters for CS -- Every Pixel is Math</div>
+        <p>Geometry isn't just about shapes on paper. <strong>Everything visual on a computer is geometry</strong>. Here's what each topic on this page lets you build:</p>
+        <ul>
+          <li><strong>Shapes &amp; angles</strong> → Collision detection in games ("did the bullet hit the wall?"), UI layout calculations, bounding boxes for click detection</li>
+          <li><strong>Area &amp; perimeter</strong> → Computational geometry algorithms, determining if a point is inside a polygon (used in maps, GIS, game zones)</li>
+          <li><strong>Volume &amp; surface area</strong> → 3D rendering, physics simulations, voxel-based games like Minecraft</li>
+          <li><strong>Pythagorean theorem</strong> → Distance calculations between any two points -- used in pathfinding (A* algorithm), nearest-neighbor search, GPS, and every 2D/3D game ever made</li>
+          <li><strong>Trigonometry</strong> → Rotations (spinning a character, rotating an image), wave animations (CSS/canvas), physics engines (projectile motion, pendulums), audio signal processing</li>
+          <li><strong>Coordinate geometry</strong> → Every pixel on your screen has (x, y) coordinates. CSS positioning, SVG graphics, canvas drawing, game object positions -- all coordinate geometry</li>
+          <li><strong>Transformations</strong> → CSS <code>transform: rotate() scale() translate()</code>, 3D graphics pipeline (model → world → camera → screen space), image processing filters</li>
+        </ul>
+        <p>If you ever want to build games, graphics, animations, data visualizations, or even just understand how CSS layout works at a deeper level -- geometry is your foundation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="container">
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#basic-shapes">1. Basic Shapes and Properties</a>
+      <a href="#angles">2. Angles</a>
+      <a href="#area-perimeter">3. Area and Perimeter</a>
+      <a href="#volume-surface-area">4. Volume and Surface Area</a>
+      <a href="#pythagorean">5. Pythagorean Theorem</a>
+      <a href="#trigonometry">6. Trigonometry Basics</a>
+      <a href="#coordinate-geometry">7. Coordinate Geometry</a>
+      <a href="#transformations">8. Transformations</a>
+      <a href="#quiz">9. Practice Quiz</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: Basic Shapes and Properties -->
+    <!-- ============================================================ -->
+    <section id="basic-shapes">
+      <h2>1. Basic Shapes and Properties</h2>
+      <p>Geometry starts with the most fundamental building blocks: points, lines, and the shapes they form. Everything in geometry -- from simple triangles to complex 3D models -- is built from these primitives.</p>
+
+      <h3>Points, Lines, Rays, and Line Segments</h3>
+      <p>These are the atoms of geometry. Every shape is ultimately defined by points and the connections between them.</p>
+      <ul>
+        <li><strong>Point:</strong> A single location in space. It has no size, no width, no length -- just a position. We label points with capital letters: A, B, C.</li>
+        <li><strong>Line:</strong> An infinite collection of points extending forever in both directions. A line through points A and B is written as AB with a double-headed arrow above it. Lines never end.</li>
+        <li><strong>Ray:</strong> Starts at a point and extends forever in one direction. Think of a flashlight beam -- it has a starting point but no end.</li>
+        <li><strong>Line Segment:</strong> A piece of a line with two endpoints. It has a definite, measurable length. The segment from A to B is written AB with a bar above it.</li>
+      </ul>
+
+<pre>
+<span class="comment">  Point         Line (infinite)       Ray (one direction)     Segment (finite)</span>
+
+    *            &lt;-----------&gt;          *-----------&gt;           *-----------*
+    A            A           B          A                       A           B
+</pre>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>In computer graphics, everything you draw on screen is made of points (vertices) connected by line segments (edges). A 3D model in a game is just thousands of points connected by segments forming triangles. Understanding these primitives is the foundation of rendering.</p>
+      </div>
+
+      <h3>Triangles</h3>
+      <p>The triangle is the most important polygon in geometry and in computer science. Every complex shape can be broken down into triangles -- this is why GPUs are optimized for triangle rendering.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Definition</th>
+            <th>Key Property</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Equilateral</strong></td>
+            <td>All 3 sides equal</td>
+            <td>All angles are 60 degrees</td>
+          </tr>
+          <tr>
+            <td><strong>Isosceles</strong></td>
+            <td>2 sides equal</td>
+            <td>2 base angles are equal</td>
+          </tr>
+          <tr>
+            <td><strong>Scalene</strong></td>
+            <td>No sides equal</td>
+            <td>All angles different</td>
+          </tr>
+          <tr>
+            <td><strong>Right</strong></td>
+            <td>One angle is exactly 90 degrees</td>
+            <td>Pythagorean theorem applies</td>
+          </tr>
+        </tbody>
+      </table>
+
+<pre>
+<span class="comment">    Equilateral        Isosceles          Scalene            Right</span>
+
+        /\                /\               /\                 |\
+       /  \              /  \             /  \                | \
+      /    \            /    \           /    \               |  \
+     /______\          /______\         /______\              |___\
+   60  60  60         70  70  40      50   60   70            90
+</pre>
+
+      <p>A crucial fact: <strong>the angles in any triangle always sum to exactly 180 degrees.</strong> This is true regardless of the type of triangle. We will use this constantly.</p>
+
+      <h3>Quadrilaterals</h3>
+      <p>Quadrilaterals are four-sided polygons. Each type has specific properties that make them useful for different calculations.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Shape</th>
+            <th>Properties</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Square</strong></td>
+            <td>4 equal sides, 4 right angles (90 degrees). Diagonals are equal and bisect each other at right angles.</td>
+          </tr>
+          <tr>
+            <td><strong>Rectangle</strong></td>
+            <td>Opposite sides equal, 4 right angles. A "stretched" square. Diagonals are equal.</td>
+          </tr>
+          <tr>
+            <td><strong>Parallelogram</strong></td>
+            <td>Opposite sides parallel and equal. Opposite angles equal. Diagonals bisect each other.</td>
+          </tr>
+          <tr>
+            <td><strong>Trapezoid</strong></td>
+            <td>Exactly one pair of parallel sides (called bases). The non-parallel sides are called legs.</td>
+          </tr>
+          <tr>
+            <td><strong>Rhombus</strong></td>
+            <td>4 equal sides (like a "tilted" square). Opposite angles equal. Diagonals bisect each other at right angles.</td>
+          </tr>
+        </tbody>
+      </table>
+
+<pre>
+<span class="comment">  Square       Rectangle     Parallelogram    Trapezoid       Rhombus</span>
+
+  +------+    +----------+     ________       __________       /\
+  |      |    |          |    /       /       /          \     /  \
+  |      |    |          |   /       /       /            \   /    \
+  +------+    +----------+  /-------/       /--------------\ \    /
+                                                              \  /
+                                                               \/
+</pre>
+
+      <h3>Circles</h3>
+      <p>A circle is the set of all points that are the same distance from a center point. That distance is the <strong>radius</strong>.</p>
+      <ul>
+        <li><strong>Radius (r):</strong> Distance from center to any point on the circle.</li>
+        <li><strong>Diameter (d):</strong> Distance across the circle through the center. Always d = 2r.</li>
+        <li><strong>Circumference (C):</strong> The distance around the circle (its perimeter). C = 2(pi)r.</li>
+        <li><strong>Chord:</strong> A line segment connecting any two points on the circle. The diameter is the longest possible chord.</li>
+        <li><strong>Arc:</strong> A portion of the circumference. Measured by angle or length.</li>
+        <li><strong>Sector:</strong> The "pie slice" region between two radii and an arc.</li>
+        <li><strong>Tangent:</strong> A line that touches the circle at exactly one point, perpendicular to the radius at that point.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>Circles are everywhere in CS: collision detection (is a point within radius r of an object?), circular buffers in data structures, the unit circle in trigonometry for rotations, and even hashing algorithms that work modularly "wrapping around" like a circle.</p>
+      </div>
+
+      <h3>Polygons</h3>
+      <p>A polygon is a closed figure made of straight line segments. Triangles (3 sides) and quadrilaterals (4 sides) are the simplest, but polygons can have any number of sides.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Sides</th>
+            <th>Name</th>
+            <th>Sum of Interior Angles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>3</td><td>Triangle</td><td>180 degrees</td></tr>
+          <tr><td>4</td><td>Quadrilateral</td><td>360 degrees</td></tr>
+          <tr><td>5</td><td>Pentagon</td><td>540 degrees</td></tr>
+          <tr><td>6</td><td>Hexagon</td><td>720 degrees</td></tr>
+          <tr><td>7</td><td>Heptagon</td><td>900 degrees</td></tr>
+          <tr><td>8</td><td>Octagon</td><td>1080 degrees</td></tr>
+          <tr><td>n</td><td>n-gon</td><td>(n - 2) x 180 degrees</td></tr>
+        </tbody>
+      </table>
+
+      <div class="formula-box">
+        Sum of interior angles of an n-sided polygon = (n - 2) x 180 degrees<br>
+        Each interior angle of a regular n-gon = (n - 2) x 180 / n degrees
+      </div>
+
+      <p>A <strong>regular polygon</strong> has all sides equal and all angles equal. A <strong>convex polygon</strong> has all interior angles less than 180 degrees (no "dents"). These properties matter for CS algorithms like convex hull computation.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: Angles -->
+    <!-- ============================================================ -->
+    <section id="angles">
+      <h2>2. Angles</h2>
+      <p>An angle is formed when two rays share a common endpoint (called the vertex). Angles are measured in degrees (from 0 to 360) or radians (from 0 to 2(pi)). Understanding angle relationships is essential for everything from triangle solving to rotation in graphics.</p>
+
+      <h3>Types of Angles</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Measure</th>
+            <th>Looks Like</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Acute</strong></td>
+            <td>Less than 90 degrees</td>
+            <td>A "sharp" angle</td>
+          </tr>
+          <tr>
+            <td><strong>Right</strong></td>
+            <td>Exactly 90 degrees</td>
+            <td>A perfect corner (L-shape)</td>
+          </tr>
+          <tr>
+            <td><strong>Obtuse</strong></td>
+            <td>Between 90 and 180 degrees</td>
+            <td>A "wide" angle</td>
+          </tr>
+          <tr>
+            <td><strong>Straight</strong></td>
+            <td>Exactly 180 degrees</td>
+            <td>A flat line</td>
+          </tr>
+          <tr>
+            <td><strong>Reflex</strong></td>
+            <td>Between 180 and 360 degrees</td>
+            <td>More than a half-turn</td>
+          </tr>
+        </tbody>
+      </table>
+
+<pre>
+<span class="comment">   Acute (45)     Right (90)     Obtuse (120)    Straight (180)   Reflex (270)</span>
+
+       /              |               \              ___________      ___________
+      /               |                \                                   |
+     /____            |_____            \____                              |
+                                                                           |
+</pre>
+
+      <h3>Complementary and Supplementary Angles</h3>
+      <p>These are pairs of angles with special relationships:</p>
+
+      <div class="formula-box">
+        Complementary angles: two angles that sum to 90 degrees<br>
+        Supplementary angles: two angles that sum to 180 degrees
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> If one angle is 35 degrees, find its complement and supplement.</p>
+        <p><strong>Complement:</strong> 90 - 35 = 55 degrees</p>
+        <p><strong>Supplement:</strong> 180 - 35 = 145 degrees</p>
+      </div>
+
+      <h3>Vertical Angles</h3>
+      <p>When two lines cross, they form two pairs of <strong>vertical angles</strong> (also called "vertically opposite angles"). Vertical angles are always equal.</p>
+
+<pre>
+<span class="comment">           Two lines crossing form 4 angles:</span>
+
+              \   a   /                a = c  (vertical angles)
+               \     /                 b = d  (vertical angles)
+            b   \   /   d             a + b = 180  (supplementary)
+         --------\ /--------
+                 / \
+            d   /   \   b
+               /     \
+              /   c   \
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Two lines intersect. One angle is 65 degrees. Find all four angles.</p>
+        <p>The vertical angle is also 65 degrees.</p>
+        <p>The supplementary angle is 180 - 65 = 115 degrees.</p>
+        <p>Its vertical angle is also 115 degrees.</p>
+        <p><strong>Answer:</strong> 65, 115, 65, 115 degrees.</p>
+      </div>
+
+      <h3>Angles in a Triangle</h3>
+      <div class="formula-box">
+        The three interior angles of any triangle sum to exactly 180 degrees.<br><br>
+        If two angles are known: third angle = 180 - (angle1 + angle2)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A triangle has angles of 50 degrees and 70 degrees. Find the third angle.</p>
+        <p>Third angle = 180 - 50 - 70 = 60 degrees</p>
+      </div>
+
+      <h3>Interior Angles of Polygons</h3>
+      <div class="formula-box">
+        Sum of interior angles of an n-sided polygon = (n - 2) x 180 degrees
+      </div>
+
+      <p>This formula works because any polygon can be divided into (n - 2) triangles by drawing diagonals from one vertex. Since each triangle has angles summing to 180 degrees, the total is (n - 2) x 180.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> What is the sum of interior angles of a hexagon (6 sides)?</p>
+        <p>Sum = (6 - 2) x 180 = 4 x 180 = 720 degrees</p>
+        <p><strong>Q:</strong> What is each interior angle of a regular hexagon?</p>
+        <p>Each angle = 720 / 6 = 120 degrees</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>Angles are fundamental to rotation in computer graphics. When you rotate a sprite in a game, you are applying an angle. When a character "looks at" another character, the game engine calculates the angle between them. Radians (not degrees) are typically used in code because trig functions in most languages expect radians.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Watch Out</div>
+        <p>Most programming languages (JavaScript, Python, C++) use <strong>radians</strong>, not degrees, for trigonometric functions. To convert: radians = degrees x (pi / 180). Forgetting this conversion is one of the most common bugs in graphics code.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: Area and Perimeter -->
+    <!-- ============================================================ -->
+    <section id="area-perimeter">
+      <h2>3. Area and Perimeter</h2>
+      <p><strong>Perimeter</strong> is the total distance around a shape (sum of all sides). <strong>Area</strong> is the amount of surface the shape covers, measured in square units (cm squared, m squared, pixels squared, etc.).</p>
+
+      <h3>Rectangle</h3>
+      <div class="formula-box">
+        Area = length x width<br>
+        Perimeter = 2 x (length + width)
+      </div>
+
+<pre>
+<span class="comment">        width (w)</span>
+       +----------+
+       |          |
+<span class="comment"> length |          |  A = l x w</span>
+<span class="comment"> (l)   |          |  P = 2(l + w)</span>
+       +----------+
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A rectangle is 8 cm long and 5 cm wide. Find its area and perimeter.</p>
+        <p>Area = 8 x 5 = 40 cm squared</p>
+        <p>Perimeter = 2 x (8 + 5) = 2 x 13 = 26 cm</p>
+      </div>
+
+      <h3>Square</h3>
+      <div class="formula-box">
+        Area = side squared = s x s<br>
+        Perimeter = 4 x side = 4s
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the area and perimeter of a square with side length 6 cm.</p>
+        <p>Area = 6 x 6 = 36 cm squared</p>
+        <p>Perimeter = 4 x 6 = 24 cm</p>
+      </div>
+
+      <h3>Triangle</h3>
+      <div class="formula-box">
+        Area = (1/2) x base x height<br>
+        Perimeter = side1 + side2 + side3
+      </div>
+
+      <p>The <strong>height</strong> (or altitude) must be perpendicular to the base. It is not necessarily one of the sides -- sometimes you drop a perpendicular from the top vertex down to the base.</p>
+
+<pre>
+<span class="comment">         *</span>
+<span class="comment">        /|\</span>
+<span class="comment">       / | \     height (h)</span>
+<span class="comment">      /  |  \</span>
+<span class="comment">     /   |   \</span>
+<span class="comment">    /____|____\</span>
+<span class="comment">      base (b)</span>
+<span class="comment"></span>
+<span class="comment">    A = (1/2) x b x h</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A triangle has a base of 10 cm and a height of 7 cm. Find its area.</p>
+        <p>Area = (1/2) x 10 x 7 = 35 cm squared</p>
+      </div>
+
+      <h3>Circle</h3>
+      <div class="formula-box">
+        Area = pi x r squared (approximately 3.14159 x r x r)<br>
+        Circumference = 2 x pi x r = pi x d
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A circle has a radius of 4 cm. Find its area and circumference.</p>
+        <p>Area = pi x 4 x 4 = 16pi approximately equals 50.27 cm squared</p>
+        <p>Circumference = 2 x pi x 4 = 8pi approximately equals 25.13 cm</p>
+      </div>
+
+      <h3>Parallelogram</h3>
+      <div class="formula-box">
+        Area = base x height<br>
+        Perimeter = 2 x (base + side)
+      </div>
+
+      <p>Notice that the area formula looks like a rectangle's. That is because if you "cut" one end of a parallelogram and move it to the other end, you get a rectangle with the same base and height.</p>
+
+<pre>
+<span class="comment">      __________</span>
+<span class="comment">     /          /    height (h) is perpendicular</span>
+<span class="comment">    /     h    /     to the base, NOT the slanted side</span>
+<span class="comment">   /__________/</span>
+<span class="comment">      base (b)</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A parallelogram has a base of 12 cm and a height of 5 cm. Find its area.</p>
+        <p>Area = 12 x 5 = 60 cm squared</p>
+      </div>
+
+      <h3>Trapezoid (Trapezium)</h3>
+      <div class="formula-box">
+        Area = (1/2) x (a + b) x h<br><br>
+        where a and b are the two parallel sides (bases) and h is the height between them
+      </div>
+
+<pre>
+<span class="comment">       ________     &lt;-- top base (a)</span>
+<span class="comment">      /        \</span>
+<span class="comment">     /    h     \    height is perpendicular</span>
+<span class="comment">    /            \   distance between bases</span>
+<span class="comment">   /______________\  &lt;-- bottom base (b)</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A trapezoid has parallel sides of 6 cm and 10 cm, with a height of 4 cm. Find its area.</p>
+        <p>Area = (1/2) x (6 + 10) x 4 = (1/2) x 16 x 4 = 32 cm squared</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Common Mistake</div>
+        <p>For parallelograms and trapezoids, the <strong>height</strong> is the perpendicular distance, not the length of the slanted side. If you use the slanted side instead of the true height, your answer will be wrong. Always look for or calculate the perpendicular height.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>Area calculations appear in collision detection (does a click land inside a shape?), UI layout engines (sizing elements), image processing (counting pixels in regions), and geographic information systems (calculating land areas). The "point in polygon" problem is a classic CS challenge.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: Volume and Surface Area -->
+    <!-- ============================================================ -->
+    <section id="volume-surface-area">
+      <h2>4. Volume and Surface Area</h2>
+      <p><strong>Volume</strong> measures the 3D space inside a solid shape (in cubic units). <strong>Surface area</strong> is the total area of all the outer faces. Think of volume as how much water a container holds, and surface area as how much wrapping paper you need to cover it.</p>
+
+      <h3>Cube</h3>
+      <div class="formula-box">
+        Volume = s cubed = s x s x s<br>
+        Surface Area = 6 x s squared (6 identical square faces)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A cube has side length 3 cm. Find its volume and surface area.</p>
+        <p>Volume = 3 x 3 x 3 = 27 cm cubed</p>
+        <p>Surface Area = 6 x (3 x 3) = 6 x 9 = 54 cm squared</p>
+      </div>
+
+      <h3>Rectangular Prism (Box)</h3>
+      <div class="formula-box">
+        Volume = length x width x height<br>
+        Surface Area = 2(lw + lh + wh)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A box is 5 cm long, 3 cm wide, and 4 cm tall. Find its volume and surface area.</p>
+        <p>Volume = 5 x 3 x 4 = 60 cm cubed</p>
+        <p>Surface Area = 2(5x3 + 5x4 + 3x4) = 2(15 + 20 + 12) = 2(47) = 94 cm squared</p>
+      </div>
+
+      <h3>Cylinder</h3>
+      <div class="formula-box">
+        Volume = pi x r squared x h<br>
+        Surface Area = 2 x pi x r squared + 2 x pi x r x h = 2(pi)r(r + h)<br><br>
+        (Two circular ends + the curved side that "unwraps" into a rectangle)
+      </div>
+
+<pre>
+<span class="comment">        _____</span>
+<span class="comment">       /     \     &lt;-- top circle: area = pi x r squared</span>
+<span class="comment">      |       |</span>
+<span class="comment">      |   h   |    &lt;-- curved surface "unwraps" to a rectangle:</span>
+<span class="comment">      |       |        width = 2(pi)r, height = h</span>
+<span class="comment">       \_____/     &lt;-- bottom circle</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A cylinder has radius 3 cm and height 10 cm. Find its volume.</p>
+        <p>Volume = pi x 3 x 3 x 10 = 90pi approximately equals 282.74 cm cubed</p>
+      </div>
+
+      <h3>Sphere</h3>
+      <div class="formula-box">
+        Volume = (4/3) x pi x r cubed<br>
+        Surface Area = 4 x pi x r squared
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A sphere has radius 6 cm. Find its volume and surface area.</p>
+        <p>Volume = (4/3) x pi x 6 x 6 x 6 = (4/3) x 216pi = 288pi approximately equals 904.78 cm cubed</p>
+        <p>Surface Area = 4 x pi x 6 x 6 = 144pi approximately equals 452.39 cm squared</p>
+      </div>
+
+      <h3>Cone</h3>
+      <div class="formula-box">
+        Volume = (1/3) x pi x r squared x h<br>
+        Surface Area = pi x r squared + pi x r x l<br><br>
+        where l is the slant height: l = sqrt(r squared + h squared)
+      </div>
+
+      <p>Notice the cone volume is exactly 1/3 of a cylinder with the same base and height. This is not a coincidence -- it can be proven with calculus.</p>
+
+<pre>
+<span class="comment">          *        &lt;-- apex</span>
+<span class="comment">         /|\</span>
+<span class="comment">        / | \  l (slant height)</span>
+<span class="comment">       /  |h \</span>
+<span class="comment">      /   |   \</span>
+<span class="comment">     /____|____\</span>
+<span class="comment">         r</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A cone has radius 4 cm and height 9 cm. Find its volume.</p>
+        <p>Volume = (1/3) x pi x 4 x 4 x 9 = (1/3) x 144pi = 48pi approximately equals 150.80 cm cubed</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>3D volume and surface area calculations are essential in game physics (calculating buoyancy, mass from density), 3D printing (estimating material needed), and scientific computing. Bounding volumes (spheres, boxes) are used in collision detection because checking "is a point inside a sphere?" is much faster than checking complex shapes.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: Pythagorean Theorem -->
+    <!-- ============================================================ -->
+    <section id="pythagorean">
+      <h2>5. Pythagorean Theorem</h2>
+
+      <h3>What Is It and Why Does It Exist?</h3>
+      <p>The Pythagorean theorem answers one of the most practical questions in all of math: <strong>if I know two sides of a right triangle, how do I find the third?</strong> That is it. It is a tool for finding missing distances.</p>
+
+      <p>It only works on <strong>right triangles</strong> (triangles with one 90-degree angle). The formula says: the two shorter sides, when squared and added together, equal the longest side squared.</p>
+
+      <div class="formula-box">
+        a&sup2; + b&sup2; = c&sup2;<br><br>
+        c is the hypotenuse (the longest side, always opposite the right angle)<br>
+        a and b are the two legs (the sides that form the right angle)
+      </div>
+
+      <div class="memory-diagram">           |\
+           | \
+         a |  \ c  (hypotenuse -- longest side,
+           |   \    always opposite the right angle)
+           |    \
+           |_____\
+              b
+
+         a² + b² = c²</div>
+
+      <h3>Why Does It Work? (Visual Proof)</h3>
+      <p>This is not just a formula someone invented -- there is a beautiful geometric reason it is true. If you build a square on each side of a right triangle, the area of the two smaller squares adds up exactly to the area of the big square:</p>
+
+      <div class="memory-diagram">      +-------+
+      |       |
+      | a²=9  |         The square on side a (3x3) has area 9
+      |       |         The square on side b (4x4) has area 16
+      +-------+\        The square on side c (5x5) has area 25
+      |\        \
+    a | \     c  \       9 + 16 = 25
+      |  \        \      a² + b² = c²
+      |___\--------+
+        b  |       |     The two small squares TILE PERFECTLY
+           | b²=16 |     into the big square. Always.
+           |       |     This is not a coincidence -- it is
+           +-------+     geometry forcing it to be true.
+
+  Try it yourself: 3² + 4² = 9 + 16 = 25 = 5²</div>
+
+      <h3>When Would I Actually Use This?</h3>
+      <div class="tip-box">
+        <div class="label">Real-World Situations</div>
+        <ul>
+          <li><strong>How far is that object?</strong> You walk 3 blocks east and 4 blocks north. How far are you from where you started? Straight-line distance = sqrt(3&sup2; + 4&sup2;) = 5 blocks.</li>
+          <li><strong>Will a TV fit?</strong> A TV is measured diagonally (the hypotenuse). A "55-inch TV" means the diagonal is 55 inches. You can figure out the actual width and height.</li>
+          <li><strong>Ladder against a wall:</strong> A 10-foot ladder leans against a wall, with its base 6 feet from the wall. How high does it reach? height = sqrt(10&sup2; - 6&sup2;) = sqrt(64) = 8 feet.</li>
+          <li><strong>Game development:</strong> How far is the enemy from the player? distance = sqrt((enemy_x - player_x)&sup2; + (enemy_y - player_y)&sup2;)</li>
+        </ul>
+      </div>
+
+      <h3>Finding the Hypotenuse</h3>
+      <p>If you know both legs, solve for the hypotenuse:</p>
+      <div class="formula-box">
+        c = sqrt(a squared + b squared)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A right triangle has legs of 3 cm and 4 cm. Find the hypotenuse.</p>
+        <p>c = sqrt(3 squared + 4 squared) = sqrt(9 + 16) = sqrt(25) = 5 cm</p>
+      </div>
+
+      <h3>Finding a Leg</h3>
+      <p>If you know the hypotenuse and one leg, rearrange to find the other leg:</p>
+      <div class="formula-box">
+        a = sqrt(c squared - b squared)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A right triangle has a hypotenuse of 13 cm and one leg of 5 cm. Find the other leg.</p>
+        <p>a = sqrt(13 squared - 5 squared) = sqrt(169 - 25) = sqrt(144) = 12 cm</p>
+      </div>
+
+      <h3>Pythagorean Triples</h3>
+      <p>Some right triangles have all integer side lengths. These are called <strong>Pythagorean triples</strong>. Memorizing a few common ones saves time:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Triple (a, b, c)</th>
+            <th>Verification</th>
+            <th>Multiples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>3, 4, 5</strong></td>
+            <td>9 + 16 = 25</td>
+            <td>6-8-10, 9-12-15, 12-16-20, ...</td>
+          </tr>
+          <tr>
+            <td><strong>5, 12, 13</strong></td>
+            <td>25 + 144 = 169</td>
+            <td>10-24-26, 15-36-39, ...</td>
+          </tr>
+          <tr>
+            <td><strong>8, 15, 17</strong></td>
+            <td>64 + 225 = 289</td>
+            <td>16-30-34, ...</td>
+          </tr>
+          <tr>
+            <td><strong>7, 24, 25</strong></td>
+            <td>49 + 576 = 625</td>
+            <td>14-48-50, ...</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Any multiple of a Pythagorean triple is also a triple. If 3-4-5 works, then 6-8-10 works (just multiply each by 2), and 30-40-50 works (multiply by 10). This is because scaling all sides by the same factor preserves the right angle.</p>
+      </div>
+
+      <h3>The Distance Formula</h3>
+      <p>The distance formula is the Pythagorean theorem in disguise. To find the distance between two points on a coordinate plane, you form a right triangle where the horizontal and vertical distances are the legs.</p>
+
+      <div class="formula-box">
+        Distance = sqrt((x2 - x1) squared + (y2 - y1) squared)
+      </div>
+
+<pre>
+<span class="comment">    (x2, y2) *</span>
+<span class="comment">             |\</span>
+<span class="comment">             | \   d = distance (hypotenuse)</span>
+<span class="comment">    (y2 - y1)| d\</span>
+<span class="comment">             |   \</span>
+<span class="comment">             |____\</span>
+<span class="comment">    (x1, y1) *     * (x2, y1)</span>
+<span class="comment">           (x2 - x1)</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the distance between points (1, 2) and (4, 6).</p>
+        <p>d = sqrt((4 - 1) squared + (6 - 2) squared)</p>
+        <p>d = sqrt(3 squared + 4 squared) = sqrt(9 + 16) = sqrt(25) = 5</p>
+        <p>It is a 3-4-5 triangle!</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the distance between (-2, 3) and (1, 7).</p>
+        <p>d = sqrt((1 - (-2)) squared + (7 - 3) squared)</p>
+        <p>d = sqrt(3 squared + 4 squared) = sqrt(9 + 16) = sqrt(25) = 5</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>The Pythagorean theorem and distance formula are used constantly in CS: calculating distance between game objects, nearest-neighbor searches, k-means clustering (machine learning), pathfinding algorithms (A*), and determining if two circles overlap (compare distance between centers to sum of radii). The squared distance is often used instead of actual distance to avoid the expensive square root operation.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Performance Tip</div>
+        <p>In code, computing <code>sqrt()</code> is slow. When you only need to compare distances (e.g., "is A closer than B?"), compare the <strong>squared</strong> distances instead: <code>dx*dx + dy*dy</code>. If dist1_squared &lt; dist2_squared, then dist1 &lt; dist2. This optimization matters in game loops running 60 times per second.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Beyond Straight Lines: Manhattan Distance</div>
+        <p>The distance formula above gives the <strong>Euclidean distance</strong> (straight line). But in grid-based problems (LeetCode, chess, city navigation), you often need the <strong>Manhattan distance</strong> instead: <code>|x2-x1| + |y2-y1|</code>. This measures the distance walking along grid lines, not cutting diagonally. See the full comparison in the <a href="#coordinate-geometry">Coordinate Geometry section</a> below.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: Trigonometry Basics -->
+    <!-- ============================================================ -->
+    <section id="trigonometry">
+      <h2>6. Trigonometry Basics</h2>
+
+      <h3>What Problem Does Trig Solve?</h3>
+      <p>The Pythagorean theorem connects <em>sides to sides</em>. But what if you know an <strong>angle</strong> and a <strong>side</strong>, and need to find another side? Or you know two sides and need the angle? That is what trigonometry does. It connects <strong>angles to side lengths</strong>.</p>
+
+      <p>Here is the real-world problem: you are standing 50 meters from a building. You look up at the top and measure the angle is 35 degrees. How tall is the building? You cannot use Pythagoras -- you only know one side and one angle, not two sides. You need trig.</p>
+
+      <div class="tip-box">
+        <div class="label">The Key Insight Behind All of Trig</div>
+        <p>Here is the beautiful idea: <strong>in a right triangle, once you fix an angle, the RATIOS between the sides are always the same, no matter how big or small the triangle is.</strong></p>
+        <p>A tiny right triangle with a 30-degree angle and a huge right triangle with a 30-degree angle have sides of different lengths, but the <em>ratios</em> between their sides are identical. Sine, cosine, and tangent are just names for these fixed ratios.</p>
+      </div>
+
+      <div class="memory-diagram">  All 30-degree right triangles have the same ratios:
+
+  Small triangle:        Big triangle:
+      |\                     |\
+      | \                    | \
+    1 |  \ 2               5 |  \ 10
+      |   \                  |   \
+      |30° \                 |30° \
+      |_____\                |_____\
+      1.73                   8.66
+
+  opposite / hypotenuse = 1/2 = 0.5     = sin(30°)
+  opposite / hypotenuse = 5/10 = 0.5    = sin(30°)
+
+  Same ratio! The triangle got bigger but the RATIO stayed the same.
+  That is why sin(30°) = 0.5 no matter what triangle you use.</div>
+
+      <h3>SOH CAH TOA</h3>
+      <p>SOHCAHTOA is a mnemonic for the three ratios. Each one divides two specific sides of a right triangle:</p>
+
+      <div class="formula-box">
+        <strong>SOH:</strong> sin(theta) = Opposite / Hypotenuse<br>
+        <strong>CAH:</strong> cos(theta) = Adjacent / Hypotenuse<br>
+        <strong>TOA:</strong> tan(theta) = Opposite / Adjacent<br><br>
+        Also: tan(theta) = sin(theta) / cos(theta)
+      </div>
+
+      <div class="memory-diagram">  Which sides are which? It depends on your angle.
+
+            |\
+            | \
+  Opposite  |  \ Hypotenuse      Opposite = the side ACROSS from your angle
+   (to      |   \                 Adjacent = the side TOUCHING your angle
+   angle    |    \                Hypotenuse = the longest side (always
+   theta)   |_____\ theta                     opposite the right angle)
+           Adjacent
+           (to angle theta)</div>
+
+      <h3>What Each Ratio Actually Tells You</h3>
+      <ul>
+        <li><strong>sin(angle)</strong> = "what fraction of the hypotenuse is the opposite side?" If sin(30) = 0.5, that means the opposite side is always half the hypotenuse in a 30-degree triangle.</li>
+        <li><strong>cos(angle)</strong> = "what fraction of the hypotenuse is the adjacent side?" If cos(60) = 0.5, the adjacent side is half the hypotenuse.</li>
+        <li><strong>tan(angle)</strong> = "how many times bigger is the opposite side than the adjacent side?" If tan(45) = 1, they are equal. If tan(60) = 1.73, the opposite side is 1.73 times the adjacent.</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">When to Use Which Ratio</div>
+        <p>Look at what you <strong>know</strong> and what you <strong>want</strong>:</p>
+        <ul>
+          <li>Know hypotenuse, want opposite? Use <strong>sin</strong> (SOH)</li>
+          <li>Know hypotenuse, want adjacent? Use <strong>cos</strong> (CAH)</li>
+          <li>Know adjacent, want opposite (or vice versa)? Use <strong>tan</strong> (TOA)</li>
+        </ul>
+        <p>Just ask: "which two sides am I dealing with?" and pick the ratio that uses those two.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Watch Out</div>
+        <p>The "opposite" and "adjacent" sides <strong>change depending on which angle you are looking at</strong>. Always identify your angle first, then determine which side is across from it (opposite) and which side touches it (adjacent). The hypotenuse is always the same.</p>
+      </div>
+
+      <h3>Common Angle Values</h3>
+      <p>Memorize these. They come up constantly in math and CS.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Angle</th>
+            <th>sin</th>
+            <th>cos</th>
+            <th>tan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>0 degrees</strong></td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td><strong>30 degrees</strong></td>
+            <td>1/2 = 0.500</td>
+            <td>sqrt(3)/2 = 0.866</td>
+            <td>1/sqrt(3) = 0.577</td>
+          </tr>
+          <tr>
+            <td><strong>45 degrees</strong></td>
+            <td>sqrt(2)/2 = 0.707</td>
+            <td>sqrt(2)/2 = 0.707</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td><strong>60 degrees</strong></td>
+            <td>sqrt(3)/2 = 0.866</td>
+            <td>1/2 = 0.500</td>
+            <td>sqrt(3) = 1.732</td>
+          </tr>
+          <tr>
+            <td><strong>90 degrees</strong></td>
+            <td>1</td>
+            <td>0</td>
+            <td>undefined</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Memory Trick</div>
+        <p>For sine, the values at 0, 30, 45, 60, 90 degrees follow a pattern: sqrt(0)/2, sqrt(1)/2, sqrt(2)/2, sqrt(3)/2, sqrt(4)/2 which simplifies to 0, 1/2, sqrt(2)/2, sqrt(3)/2, 1. Cosine is the same pattern in reverse.</p>
+      </div>
+
+      <h3>Solving for a Side</h3>
+      <div class="example-box">
+        <div class="label">Example 1 -- Finding the opposite side</div>
+        <p><strong>Q:</strong> A right triangle has a hypotenuse of 10 cm and an angle of 30 degrees. Find the side opposite to the 30-degree angle.</p>
+        <p>sin(30) = opposite / hypotenuse</p>
+        <p>0.5 = opposite / 10</p>
+        <p>opposite = 10 x 0.5 = 5 cm</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example 2 -- Finding the adjacent side</div>
+        <p><strong>Q:</strong> A right triangle has a hypotenuse of 10 cm and an angle of 30 degrees. Find the side adjacent to the 30-degree angle.</p>
+        <p>cos(30) = adjacent / hypotenuse</p>
+        <p>0.866 = adjacent / 10</p>
+        <p>adjacent = 10 x 0.866 = 8.66 cm</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example 3 -- Using tangent</div>
+        <p><strong>Q:</strong> A ladder leans against a wall. The base is 6 m from the wall, and the angle at the ground is 60 degrees. How high up the wall does the ladder reach?</p>
+        <p>tan(60) = opposite / adjacent = height / 6</p>
+        <p>1.732 = height / 6</p>
+        <p>height = 6 x 1.732 = 10.39 m</p>
+      </div>
+
+      <h3>Solving for an Angle</h3>
+      <p>To find an angle when you know the sides, use the inverse trig functions (arcsin, arccos, arctan):</p>
+
+      <div class="formula-box">
+        theta = arcsin(opposite / hypotenuse)<br>
+        theta = arccos(adjacent / hypotenuse)<br>
+        theta = arctan(opposite / adjacent)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> A right triangle has an opposite side of 4 and an adjacent side of 4. What is the angle?</p>
+        <p>theta = arctan(4 / 4) = arctan(1) = 45 degrees</p>
+        <p>This makes sense -- when opposite equals adjacent, we have a 45-45-90 triangle.</p>
+      </div>
+
+      <h3>The Unit Circle (Introduction)</h3>
+      <p>The unit circle is a circle with radius 1 centered at the origin. It extends trigonometry beyond right triangles to any angle (including negative angles and angles greater than 360 degrees).</p>
+
+<pre>
+<span class="comment">                    90 (pi/2)</span>
+<span class="comment">                    (0, 1)</span>
+<span class="comment">                      |</span>
+<span class="comment">                      |</span>
+<span class="comment">  180 (pi)  (-1, 0)---+---(1, 0)  0 (0 radians)</span>
+<span class="comment">                      |</span>
+<span class="comment">                      |</span>
+<span class="comment">                    (0, -1)</span>
+<span class="comment">                   270 (3pi/2)</span>
+</pre>
+
+      <p>On the unit circle, for any angle theta measured from the positive x-axis:</p>
+      <ul>
+        <li>The x-coordinate of the point = cos(theta)</li>
+        <li>The y-coordinate of the point = sin(theta)</li>
+      </ul>
+
+      <p>This means <strong>any point on a circle of radius r</strong> can be described as:</p>
+      <div class="formula-box">
+        x = r x cos(theta)<br>
+        y = r x sin(theta)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>This is how you place objects in a circle, create circular motion, rotate points, build clocks, create radial menus, animate orbiting objects, and so much more. The formula <code>x = r * cos(angle), y = r * sin(angle)</code> is probably the most-used trig formula in game development and graphics programming. It is also the basis for the rotation matrix you will learn in Linear Algebra.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Degrees vs Radians</div>
+        <p>In code, trig functions almost always expect <strong>radians</strong>. The conversion: <code>radians = degrees * Math.PI / 180</code>. A full circle is 2(pi) radians (approximately 6.283). If your rotation is going weird, check your units first.</p>
+      </div>
+
+      <h3>Radians Explained</h3>
+      <p>Radians are another way to measure angles. One radian is the angle created when the arc length equals the radius of the circle.</p>
+
+      <div class="formula-box">
+        Full circle = 360° = 2π radians<br>
+        Half circle = 180° = π radians<br>
+        Quarter circle = 90° = π/2 radians<br><br>
+        Conversion: degrees = radians × (180/π)<br>
+        Conversion: radians = degrees × (π/180)
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Degrees</th><th>Radians</th><th>Radians (decimal)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0°</td><td>0</td><td>0</td></tr>
+          <tr><td>30°</td><td>π/6</td><td>≈ 0.524</td></tr>
+          <tr><td>45°</td><td>π/4</td><td>≈ 0.785</td></tr>
+          <tr><td>60°</td><td>π/3</td><td>≈ 1.047</td></tr>
+          <tr><td>90°</td><td>π/2</td><td>≈ 1.571</td></tr>
+          <tr><td>180°</td><td>π</td><td>≈ 3.142</td></tr>
+          <tr><td>270°</td><td>3π/2</td><td>≈ 4.712</td></tr>
+          <tr><td>360°</td><td>2π</td><td>≈ 6.283</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Fundamental Trigonometric Identities</h3>
+      <p>These identities are relationships that are always true for any angle. They're essential for simplifying expressions and solving equations.</p>
+
+      <h4>Reciprocal Identities</h4>
+      <div class="formula-box">
+        csc(θ) = 1 / sin(θ)  &nbsp;&nbsp;(cosecant)<br>
+        sec(θ) = 1 / cos(θ)  &nbsp;&nbsp;(secant)<br>
+        cot(θ) = 1 / tan(θ) = cos(θ) / sin(θ)  &nbsp;&nbsp;(cotangent)
+      </div>
+
+      <h4>Pythagorean Identities</h4>
+      <div class="formula-box">
+        sin²(θ) + cos²(θ) = 1  &nbsp;&nbsp;(most important!)<br>
+        1 + tan²(θ) = sec²(θ)<br>
+        1 + cot²(θ) = csc²(θ)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Using the Pythagorean Identity</div>
+        <p><strong>If sin(θ) = 3/5, find cos(θ) (assuming θ is in the first quadrant).</strong></p>
+        <p>sin²(θ) + cos²(θ) = 1</p>
+        <p>(3/5)² + cos²(θ) = 1</p>
+        <p>9/25 + cos²(θ) = 1</p>
+        <p>cos²(θ) = 1 - 9/25 = 16/25</p>
+        <p>cos(θ) = 4/5 (positive because first quadrant)</p>
+      </div>
+
+      <h4>Quotient Identity</h4>
+      <div class="formula-box">
+        tan(θ) = sin(θ) / cos(θ)
+      </div>
+
+      <h3>Law of Sines</h3>
+      <p>For any triangle (not just right triangles), the Law of Sines relates sides and angles:</p>
+
+      <div class="formula-box">
+        a / sin(A) = b / sin(B) = c / sin(C)<br><br>
+        Where a is the side opposite angle A, b is opposite B, c is opposite C.
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Find a Missing Side</div>
+        <p>Triangle ABC has angle A = 40°, angle B = 60°, and side a = 10cm. Find side b.</p>
+        <p>Using Law of Sines: a / sin(A) = b / sin(B)</p>
+        <p>10 / sin(40°) = b / sin(60°)</p>
+        <p>10 / 0.643 = b / 0.866</p>
+        <p>15.56 = b / 0.866</p>
+        <p>b = 15.56 × 0.866 ≈ <strong>13.5 cm</strong></p>
+      </div>
+
+      <h3>Law of Cosines</h3>
+      <p>This generalizes the Pythagorean theorem to all triangles:</p>
+
+      <div class="formula-box">
+        c² = a² + b² - 2ab × cos(C)<br><br>
+        (This becomes c² = a² + b² when C = 90°, since cos(90°) = 0)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Find a Missing Side</div>
+        <p>Triangle has sides a = 5, b = 7, and angle C = 60° between them. Find side c.</p>
+        <p>c² = 5² + 7² - 2(5)(7) × cos(60°)</p>
+        <p>c² = 25 + 49 - 70 × 0.5</p>
+        <p>c² = 74 - 35 = 39</p>
+        <p>c = √39 ≈ <strong>6.24</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Find a Missing Angle</div>
+        <p>Triangle has sides a = 8, b = 6, c = 10. Find angle C.</p>
+        <p>c² = a² + b² - 2ab × cos(C)</p>
+        <p>100 = 64 + 36 - 96 × cos(C)</p>
+        <p>100 = 100 - 96 × cos(C)</p>
+        <p>0 = -96 × cos(C)</p>
+        <p>cos(C) = 0</p>
+        <p>C = 90° (this is a right triangle!)</p>
+      </div>
+
+      <h3>When to Use Each Law</h3>
+      <table>
+        <thead>
+          <tr><th>Known Information</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Two angles and any side (AAS or ASA)</td><td>Law of Sines</td></tr>
+          <tr><td>Two sides and angle opposite one of them (SSA)</td><td>Law of Sines (careful: ambiguous case possible)</td></tr>
+          <tr><td>Two sides and the included angle (SAS)</td><td>Law of Cosines</td></tr>
+          <tr><td>Three sides (SSS)</td><td>Law of Cosines</td></tr>
+        </tbody>
+      </table>
+
+      <h3>SOHCAHTOA Practice Problems</h3>
+      <div class="example-box">
+        <div class="label">Problem 1: Finding Height</div>
+        <p>You're 50 meters from a building. The angle of elevation to the top is 35°. How tall is the building?</p>
+        <p>tan(35°) = height / 50</p>
+        <p>height = 50 × tan(35°) = 50 × 0.700 ≈ <strong>35 meters</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Problem 2: Shadow Length</div>
+        <p>A 10-meter pole casts a shadow. The sun's angle of elevation is 60°. How long is the shadow?</p>
+        <p>tan(60°) = 10 / shadow</p>
+        <p>shadow = 10 / tan(60°) = 10 / 1.732 ≈ <strong>5.77 meters</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Problem 3: Distance Across a River</div>
+        <p>From point A on one bank, you measure the angle to point B directly across as 90°. You walk 100m along the bank to point C, and the angle to B is now 65°. How wide is the river?</p>
+        <p>tan(65°) = width / 100</p>
+        <p>width = 100 × tan(65°) = 100 × 2.145 ≈ <strong>214.5 meters</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Trigonometry Applications in Programming</div>
+        <ul>
+          <li><strong>Game movement:</strong> Moving a character at angle θ: x += speed × cos(θ), y += speed × sin(θ)</li>
+          <li><strong>Rotation:</strong> Rotating point (x,y) by angle θ: new_x = x×cos(θ) - y×sin(θ), new_y = x×sin(θ) + y×cos(θ)</li>
+          <li><strong>Distance to target:</strong> angle = atan2(target_y - origin_y, target_x - origin_x)</li>
+          <li><strong>Wave animations:</strong> y = amplitude × sin(frequency × time + phase)</li>
+          <li><strong>3D graphics:</strong> All 3D rotations use trig extensively</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: Coordinate Geometry -->
+    <!-- ============================================================ -->
+    <section id="coordinate-geometry">
+      <h2>7. Coordinate Geometry</h2>
+      <p>Coordinate geometry (analytic geometry) bridges algebra and geometry by placing shapes on a number grid. Instead of abstract shapes, everything gets precise coordinates, which is exactly how computers work with geometry.</p>
+
+      <h3>The Coordinate Plane</h3>
+      <p>The coordinate plane has two perpendicular number lines: the x-axis (horizontal) and y-axis (vertical). Every point is described by an ordered pair (x, y).</p>
+
+<pre>
+<span class="comment">              y</span>
+<span class="comment">              |</span>
+<span class="comment">         Q2   |   Q1</span>
+<span class="comment">       (-,+)  |  (+,+)</span>
+<span class="comment">              |</span>
+<span class="comment">   -----------+-----------> x</span>
+<span class="comment">              |</span>
+<span class="comment">         Q3   |   Q4</span>
+<span class="comment">       (-,-)  |  (+,-)</span>
+<span class="comment">              |</span>
+</pre>
+
+      <p>The four quadrants are numbered counterclockwise starting from the upper right (Q1). The origin is the point (0, 0).</p>
+
+      <h3>Distance Formula</h3>
+      <p>(Derived from the Pythagorean theorem -- see Section 5 above.)</p>
+
+      <div class="formula-box">
+        d = sqrt((x2 - x1) squared + (y2 - y1) squared)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the distance between (3, -1) and (-2, 4).</p>
+        <p>d = sqrt((-2 - 3) squared + (4 - (-1)) squared)</p>
+        <p>d = sqrt((-5) squared + (5) squared) = sqrt(25 + 25) = sqrt(50) = 5 x sqrt(2) approximately equals 7.07</p>
+      </div>
+
+      <p>This is the <strong>Euclidean distance</strong> -- the "straight line" or "as the crow flies" distance. But it is not the only way to measure distance, and in programming you will use different distance formulas for different situations.</p>
+
+      <h3>Euclidean Distance vs Manhattan Distance</h3>
+
+      <p>Imagine you are in a city with a grid of streets. You want to get from point A to point B. You can't walk through buildings -- you have to walk along the streets. The distance you actually walk (along the grid) is the <strong>Manhattan distance</strong> (named after Manhattan's grid layout). The straight-line distance if you could fly is the <strong>Euclidean distance</strong>.</p>
+
+      <div class="memory-diagram">
+    B * - - - - - - - +
+    |               / |
+    |  Manhattan   /  |
+    |  distance   /   |
+    |  = 9      /     | 4 blocks
+    |         /       | north
+    |   Euclidean     |
+    |   distance      |
+    |   = sqrt(41)    |
+    |   ≈ 6.4         |
+    |                 |
+    A * - - - - - - - +
+      5 blocks east
+
+    Manhattan:  |5| + |4| = 9
+    Euclidean:  sqrt(5² + 4²) = sqrt(41) ≈ 6.4
+      </div>
+
+      <div class="formula-box">
+        <strong>Euclidean Distance</strong> (straight line, "L2 norm"):<br>
+        d = sqrt((x2 - x1)² + (y2 - y1)²)<br><br>
+
+        <strong>Manhattan Distance</strong> (grid/taxicab, "L1 norm"):<br>
+        d = |x2 - x1| + |y2 - y1|<br><br>
+
+        The | | means absolute value -- ignore negative signs, just add the distances.
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Both Distances Between (1, 2) and (4, 6)</div>
+        <p><strong>Euclidean:</strong> sqrt((4-1)² + (6-2)²) = sqrt(9 + 16) = sqrt(25) = <strong>5</strong></p>
+        <p><strong>Manhattan:</strong> |4-1| + |6-2| = 3 + 4 = <strong>7</strong></p>
+        <p>Manhattan is always greater than or equal to Euclidean (you can't beat a straight line).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Distances Between (-3, 2) and (1, -1)</div>
+        <p><strong>Euclidean:</strong> sqrt((1-(-3))² + (-1-2)²) = sqrt(16 + 9) = sqrt(25) = <strong>5</strong></p>
+        <p><strong>Manhattan:</strong> |1-(-3)| + |-1-2| = 4 + 3 = <strong>7</strong></p>
+      </div>
+
+      <h3>When to Use Which Distance</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Use Euclidean When...</th>
+            <th>Use Manhattan When...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>You can move in any direction (straight line)</td>
+            <td>You can only move along axes (grid movement)</td>
+          </tr>
+          <tr>
+            <td>Physics, real-world distance, "how far apart?"</td>
+            <td>City blocks, grid-based games, chess (rook moves)</td>
+          </tr>
+          <tr>
+            <td>k-means clustering, nearest neighbor</td>
+            <td>Feature comparison with independent dimensions</td>
+          </tr>
+          <tr>
+            <td>2D/3D game object distance</td>
+            <td>Grid pathfinding where diagonal movement is not allowed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Chebyshev Distance (Bonus)</h3>
+      <p>There is a third distance you'll see in programming: <strong>Chebyshev distance</strong> (also called "chessboard distance"). It is the maximum of the horizontal and vertical distances. Think of how a king moves in chess -- it can move diagonally, so the distance is just the larger of the two axis differences.</p>
+
+      <div class="formula-box">
+        <strong>Chebyshev Distance</strong> ("L∞ norm", king moves):<br>
+        d = max(|x2 - x1|, |y2 - y1|)<br><br>
+
+        Example: (1, 2) to (4, 6):<br>
+        d = max(|4-1|, |6-2|) = max(3, 4) = <strong>4</strong>
+      </div>
+
+      <div class="memory-diagram">
+    Summary of all three distances from (1,2) to (4,6):
+
+    Euclidean  = 5     (straight line, Pythagorean)
+    Manhattan  = 7     (grid walking, no diagonals)
+    Chebyshev  = 4     (king moves, diagonals allowed)
+
+    Euclidean ≤ Manhattan  (always)
+    Chebyshev ≤ Euclidean  (always)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Connection: Distance Formulas in Real Code</div>
+        <p>These aren't just math -- they are tools you'll reach for constantly:</p>
+        <ul>
+          <li><strong>Euclidean:</strong> Game object distances, collision detection, k-means clustering, k-nearest neighbors (KNN), GPS "distance from here"</li>
+          <li><strong>Manhattan:</strong> Grid-based pathfinding (BFS on a grid), LeetCode problems like "minimum moves on a grid," feature comparison in ML where dimensions are independent, computing distance in a warehouse robot that moves along rails</li>
+          <li><strong>Chebyshev:</strong> Chess programming (king/queen minimum moves), grid problems where diagonal movement costs the same as horizontal/vertical</li>
+          <li><strong>Squared Euclidean:</strong> When you only need to <em>compare</em> distances, skip the sqrt: <code>dx*dx + dy*dy</code>. This is faster and is used in game loops, collision checks, and ML distance comparisons.</li>
+        </ul>
+        <p><strong>LeetCode tip:</strong> When a problem says "minimum number of moves on a grid," think Manhattan distance. When it says "straight-line distance," think Euclidean. When diagonal moves are allowed at the same cost, think Chebyshev.</p>
+      </div>
+
+      <h3>3D Distance</h3>
+      <p>All three formulas extend naturally to 3D (and beyond) by adding the z dimension:</p>
+
+      <div class="formula-box">
+        <strong>3D Euclidean:</strong> d = sqrt((x2-x1)² + (y2-y1)² + (z2-z1)²)<br>
+        <strong>3D Manhattan:</strong> d = |x2-x1| + |y2-y1| + |z2-z1|<br>
+        <strong>3D Chebyshev:</strong> d = max(|x2-x1|, |y2-y1|, |z2-z1|)<br><br>
+
+        In code (Python):<br>
+        import math<br>
+        euclidean = math.sqrt(sum((a-b)**2 for a,b in zip(p1, p2)))<br>
+        manhattan = sum(abs(a-b) for a,b in zip(p1, p2))<br>
+        chebyshev = max(abs(a-b) for a,b in zip(p1, p2))
+      </div>
+
+      <h3>Midpoint Formula</h3>
+      <p>The midpoint is the point exactly halfway between two points. You just average the x-coordinates and average the y-coordinates.</p>
+
+      <div class="formula-box">
+        Midpoint = ((x1 + x2) / 2, (y1 + y2) / 2)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the midpoint of (2, 8) and (6, 4).</p>
+        <p>Midpoint = ((2 + 6) / 2, (8 + 4) / 2) = (4, 6)</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the midpoint of (-3, 5) and (7, -1).</p>
+        <p>Midpoint = ((-3 + 7) / 2, (5 + (-1)) / 2) = (4 / 2, 4 / 2) = (2, 2)</p>
+      </div>
+
+      <h3>Slope of a Line</h3>
+      <p>The slope measures how steep a line is -- how much y changes for each unit change in x. It is the "rise over run."</p>
+
+      <div class="formula-box">
+        slope (m) = (y2 - y1) / (x2 - x1) = rise / run
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Slope Value</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Positive</td>
+            <td>Line goes up from left to right</td>
+          </tr>
+          <tr>
+            <td>Negative</td>
+            <td>Line goes down from left to right</td>
+          </tr>
+          <tr>
+            <td>Zero</td>
+            <td>Horizontal line</td>
+          </tr>
+          <tr>
+            <td>Undefined</td>
+            <td>Vertical line (division by zero)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Find the slope of the line through (1, 2) and (4, 8).</p>
+        <p>m = (8 - 2) / (4 - 1) = 6 / 3 = 2</p>
+        <p>The line rises 2 units for every 1 unit it moves right.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Parallel and Perpendicular</div>
+        <p><strong>Parallel lines</strong> have the same slope (m1 = m2). <strong>Perpendicular lines</strong> have slopes that are negative reciprocals (m1 x m2 = -1). For example, if one line has slope 2, a perpendicular line has slope -1/2.</p>
+      </div>
+
+      <h3>Equation of a Line</h3>
+      <p>There are several forms for writing the equation of a line. Each has its uses.</p>
+
+      <div class="formula-box">
+        <strong>Slope-Intercept Form:</strong><br>
+        y = mx + b<br>
+        where m = slope, b = y-intercept (where line crosses y-axis)<br><br>
+
+        <strong>Point-Slope Form:</strong><br>
+        y - y1 = m(x - x1)<br>
+        where m = slope and (x1, y1) is any point on the line
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- From two points to an equation</div>
+        <p><strong>Q:</strong> Find the equation of the line through (1, 3) and (3, 7).</p>
+        <p><strong>Step 1:</strong> Find slope: m = (7 - 3) / (3 - 1) = 4 / 2 = 2</p>
+        <p><strong>Step 2:</strong> Use point-slope form with point (1, 3):</p>
+        <p>y - 3 = 2(x - 1)</p>
+        <p>y - 3 = 2x - 2</p>
+        <p>y = 2x + 1</p>
+        <p><strong>Answer:</strong> y = 2x + 1 (slope = 2, y-intercept = 1)</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Given slope and a point</div>
+        <p><strong>Q:</strong> A line has slope -3 and passes through (2, 5). Find the equation.</p>
+        <p>y - 5 = -3(x - 2)</p>
+        <p>y - 5 = -3x + 6</p>
+        <p>y = -3x + 11</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters for CS</div>
+        <p>Coordinate geometry is how computers represent all geometry. Every pixel on your screen has coordinates. Line equations are used in: rendering (line-drawing algorithms like Bresenham's), collision detection (does a line segment intersect a boundary?), path planning (robot navigation), and linear regression (finding the "best fit" line through data points in machine learning).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: Transformations -->
+    <!-- ============================================================ -->
+    <section id="transformations">
+      <h2>8. Transformations</h2>
+      <p>A transformation changes a shape's position, size, or orientation. There are four fundamental types, and they are the backbone of computer graphics, animation, and game development.</p>
+
+      <h3>Translation (Sliding)</h3>
+      <p>A translation moves every point of a shape the same distance in the same direction. The shape does not rotate, flip, or change size -- it just slides.</p>
+
+      <div class="formula-box">
+        New position = (x + dx, y + dy)<br><br>
+        where (dx, dy) is the translation vector
+      </div>
+
+<pre>
+<span class="comment">  Before                After (translated by (4, 2))</span>
+
+<span class="comment">    *                         *</span>
+<span class="comment">   / \         --->          / \</span>
+<span class="comment">  /___\                     /___\</span>
+<span class="comment"> (1,1)                     (5,3)</span>
+</pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Translate triangle with vertices (1, 1), (3, 1), (2, 4) by vector (5, -2).</p>
+        <p>(1 + 5, 1 - 2) = (6, -1)</p>
+        <p>(3 + 5, 1 - 2) = (8, -1)</p>
+        <p>(2 + 5, 4 - 2) = (7, 2)</p>
+        <p>New vertices: (6, -1), (8, -1), (7, 2)</p>
+      </div>
+
+      <h3>Rotation</h3>
+      <p>A rotation turns a shape around a fixed point (center of rotation) by a given angle. Counterclockwise is the positive direction.</p>
+
+      <div class="formula-box">
+        Rotation by angle theta around the origin:<br><br>
+        x' = x x cos(theta) - y x sin(theta)<br>
+        y' = x x sin(theta) + y x cos(theta)
+      </div>
+
+      <p>Common rotations around the origin:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Rotation</th>
+            <th>Rule</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>90 degrees counterclockwise</td>
+            <td>(x, y) becomes (-y, x)</td>
+          </tr>
+          <tr>
+            <td>180 degrees</td>
+            <td>(x, y) becomes (-x, -y)</td>
+          </tr>
+          <tr>
+            <td>270 degrees counterclockwise (or 90 clockwise)</td>
+            <td>(x, y) becomes (y, -x)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Rotate the point (3, 4) by 90 degrees counterclockwise around the origin.</p>
+        <p>Using the rule: (x, y) becomes (-y, x)</p>
+        <p>(3, 4) becomes (-4, 3)</p>
+      </div>
+
+      <h3>Reflection</h3>
+      <p>A reflection flips a shape across a line (the line of reflection), creating a mirror image.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Reflection Across</th>
+            <th>Rule</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>x-axis</td>
+            <td>(x, y) becomes (x, -y)</td>
+          </tr>
+          <tr>
+            <td>y-axis</td>
+            <td>(x, y) becomes (-x, y)</td>
+          </tr>
+          <tr>
+            <td>Line y = x</td>
+            <td>(x, y) becomes (y, x)</td>
+          </tr>
+          <tr>
+            <td>Origin</td>
+            <td>(x, y) becomes (-x, -y) (same as 180 degree rotation)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Reflect the point (3, -5) across the x-axis.</p>
+        <p>(x, y) becomes (x, -y)</p>
+        <p>(3, -5) becomes (3, 5)</p>
+      </div>
+
+      <h3>Scaling (Dilation)</h3>
+      <p>Scaling changes the size of a shape by multiplying all coordinates by a scale factor.</p>
+
+      <div class="formula-box">
+        Scaling by factor k from the origin:<br><br>
+        x' = k x x<br>
+        y' = k x y<br><br>
+        k &gt; 1: enlargement<br>
+        0 &lt; k &lt; 1: reduction<br>
+        k &lt; 0: reflection + scaling
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Q:</strong> Scale the triangle with vertices (2, 1), (4, 1), (3, 3) by factor 2 from the origin.</p>
+        <p>(2 x 2, 1 x 2) = (4, 2)</p>
+        <p>(4 x 2, 1 x 2) = (8, 2)</p>
+        <p>(3 x 2, 3 x 2) = (6, 6)</p>
+        <p>The triangle is now twice as big and twice as far from the origin.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS People Care About Transformations</div>
+        <p>Transformations are THE core concept in computer graphics. Every frame of every game applies transformations:</p>
+        <ul>
+          <li><strong>Translation:</strong> Moving characters, camera movement, scrolling backgrounds</li>
+          <li><strong>Rotation:</strong> Turning characters, steering wheels, spinning objects</li>
+          <li><strong>Reflection:</strong> Mirror effects, water reflections, sprite flipping</li>
+          <li><strong>Scaling:</strong> Zoom in/out, responsive UI, LOD (level of detail)</li>
+        </ul>
+        <p>In practice, all four transformations are combined into a single <strong>transformation matrix</strong> (covered in Linear Algebra) that the GPU applies to every vertex in parallel. This is why GPUs exist -- they apply the same transformation to millions of points simultaneously.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Order Matters</div>
+        <p>Transformation order matters! Rotate-then-translate gives a different result than translate-then-rotate. In graphics programming, transformations are applied right-to-left (the last transformation you write in code happens first). Getting this wrong is one of the most common bugs in 3D graphics.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: Practice Quiz -->
+    <!-- ============================================================ -->
+    <section id="quiz">
+      <h2>9. Practice Quiz</h2>
+      <p>Test your understanding. Click the answer you think is correct.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: What is the area of a triangle with base 12 and height 8?</h4>
+          <button onclick="checkAnswer('q1', this, false)">A) 96</button>
+          <button onclick="checkAnswer('q1', this, true)">B) 48</button>
+          <button onclick="checkAnswer('q1', this, false)">C) 40</button>
+          <button onclick="checkAnswer('q1', this, false)">D) 20</button>
+          <div class="explanation">
+            Area = (1/2) x base x height = (1/2) x 12 x 8 = 48. Remember, triangle area is <strong>half</strong> of base times height. Option A (96) is the common mistake of forgetting the 1/2.
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: A right triangle has legs of 5 and 12. What is the hypotenuse?</h4>
+          <button onclick="checkAnswer('q2', this, false)">A) 15</button>
+          <button onclick="checkAnswer('q2', this, false)">B) 17</button>
+          <button onclick="checkAnswer('q2', this, true)">C) 13</button>
+          <button onclick="checkAnswer('q2', this, false)">D) 14</button>
+          <div class="explanation">
+            Using the Pythagorean theorem: c = sqrt(5 squared + 12 squared) = sqrt(25 + 144) = sqrt(169) = 13. This is the classic 5-12-13 Pythagorean triple.
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: What is sin(30 degrees)?</h4>
+          <button onclick="checkAnswer('q3', this, true)">A) 1/2</button>
+          <button onclick="checkAnswer('q3', this, false)">B) sqrt(3)/2</button>
+          <button onclick="checkAnswer('q3', this, false)">C) sqrt(2)/2</button>
+          <button onclick="checkAnswer('q3', this, false)">D) 1</button>
+          <div class="explanation">
+            sin(30 degrees) = 1/2 = 0.5. This is one of the most important trig values to memorize. Option B (sqrt(3)/2) is cos(30) or sin(60). Option C (sqrt(2)/2) is sin(45).
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: What is the sum of interior angles of a pentagon (5 sides)?</h4>
+          <button onclick="checkAnswer('q4', this, false)">A) 360 degrees</button>
+          <button onclick="checkAnswer('q4', this, false)">B) 450 degrees</button>
+          <button onclick="checkAnswer('q4', this, true)">C) 540 degrees</button>
+          <button onclick="checkAnswer('q4', this, false)">D) 720 degrees</button>
+          <div class="explanation">
+            Sum = (n - 2) x 180 = (5 - 2) x 180 = 3 x 180 = 540 degrees. Option D (720) is for a hexagon (6 sides). A common mistake is using n instead of (n - 2).
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: You rotate the point (4, 0) by 90 degrees counterclockwise around the origin. What are the new coordinates?</h4>
+          <button onclick="checkAnswer('q5', this, false)">A) (-4, 0)</button>
+          <button onclick="checkAnswer('q5', this, true)">B) (0, 4)</button>
+          <button onclick="checkAnswer('q5', this, false)">C) (0, -4)</button>
+          <button onclick="checkAnswer('q5', this, false)">D) (4, 4)</button>
+          <div class="explanation">
+            For a 90-degree counterclockwise rotation, the rule is (x, y) becomes (-y, x). So (4, 0) becomes (-(0), 4) = (0, 4). Think about it visually: a point on the positive x-axis moves up to the positive y-axis after a quarter turn counterclockwise.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(questionId, button, isCorrect) {
+      var question = document.getElementById(questionId);
+      // If already answered, do nothing
+      if (question.classList.contains('answered')) return;
+      question.classList.add('answered');
+
+      // Disable all buttons in this question
+      var buttons = question.querySelectorAll('button');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].style.pointerEvents = 'none';
+      }
+
+      if (isCorrect) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        // Highlight the correct answer
+        for (var i = 0; i < buttons.length; i++) {
+          if (buttons[i].getAttribute('onclick').indexOf('true') !== -1) {
+            buttons[i].classList.add('correct');
+          }
+        }
+      }
+
+      // Show explanation
+      var explanation = question.querySelector('.explanation');
+      explanation.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

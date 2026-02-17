@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Programming | DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html" class="active">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Dynamic Programming</div>
+      <h1>Dynamic Programming</h1>
+      <p>Break hard problems into simple subproblems. DP is just smart recursion -- and it is way less scary than it sounds.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>On This Page</h4>
+      <a href="#what-is-dp">1. What is Dynamic Programming?</a>
+      <a href="#top-down-vs-bottom-up">2. Top-Down vs Bottom-Up</a>
+      <a href="#framework">3. The DP Problem-Solving Framework</a>
+      <a href="#fibonacci">4. Fibonacci (The Classic Intro)</a>
+      <a href="#climbing-stairs">5. Climbing Stairs</a>
+      <a href="#1d-dp">6. 1D DP Problems</a>
+      <a href="#2d-dp">7. 2D DP Problems</a>
+      <a href="#categories">8. DP Categories Cheat Sheet</a>
+      <a href="#leetcode">9. LeetCode Problems by Category</a>
+      <a href="#tips">10. Tips for DP</a>
+      <a href="#quiz">11. Practice Quiz</a>
+    </div>
+
+    <!-- ======================= SECTION 1 ======================= -->
+    <section id="what-is-dp">
+      <h2>1. What is Dynamic Programming?</h2>
+      <p>
+        Dynamic Programming (DP) is a technique for solving problems by <strong>breaking them into overlapping subproblems</strong> and storing the results so you never solve the same subproblem twice. That is literally all it is.
+      </p>
+      <p>For a problem to be solvable with DP, it needs two key properties:</p>
+      <ol>
+        <li><strong>Optimal substructure</strong> -- the optimal solution to the problem contains optimal solutions to its subproblems. If you can build the answer from answers to smaller versions of the same problem, you have this.</li>
+        <li><strong>Overlapping subproblems</strong> -- the same subproblems are solved multiple times. This is why storing results helps. If each subproblem is unique (like in merge sort), DP won't help -- that is just divide and conquer.</li>
+      </ol>
+
+      <div class="formula-box">
+        DP = Recursion + Memoization (or Bottom-Up Tabulation)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Don't Panic</div>
+        <p>DP is NOT as scary as people make it sound. If you can write a recursive solution, you can convert it to DP. The hard part is defining what your subproblem is -- the actual coding is usually straightforward. Think of DP as "remembering your work so you don't redo it."</p>
+      </div>
+
+      <h3>Why naive recursion is slow</h3>
+      <p>Consider computing Fibonacci(5). A naive recursive approach recalculates the same values over and over:</p>
+
+      <pre><code><span class="comment">/*
+                     fib(5)
+                   /        \
+              fib(4)         fib(3)
+             /    \          /    \
+         fib(3)  fib(2)  fib(2)  fib(1)
+         /   \    / \     / \
+     fib(2) fib(1) ...  ...
+      / \
+ fib(1) fib(0)
+
+ fib(3) is computed 2 times
+ fib(2) is computed 3 times
+ This EXPLODES exponentially as n grows
+*/</span></code></pre>
+
+      <p>With DP, you compute each value <strong>once</strong>, store it, and look it up next time. That takes you from O(2^n) to O(n).</p>
+    </section>
+
+    <!-- ======================= SECTION 2 ======================= -->
+    <section id="top-down-vs-bottom-up">
+      <h2>2. Top-Down (Memoization) vs Bottom-Up (Tabulation)</h2>
+      <p>There are two ways to implement DP. Both give the same results -- they just approach the problem from different directions.</p>
+
+      <h3>Top-Down (Memoization)</h3>
+      <ul>
+        <li>Start from the original problem and recurse downward</li>
+        <li>Cache (memoize) results of subproblems as you go</li>
+        <li>Easier to think about -- just write the recursive solution and add a cache</li>
+        <li>May have recursion overhead (stack frames)</li>
+      </ul>
+
+      <h3>Bottom-Up (Tabulation)</h3>
+      <ul>
+        <li>Start from the smallest subproblems and build up iteratively</li>
+        <li>Fill a table (array) from base cases to final answer</li>
+        <li>No recursion overhead -- pure iteration</li>
+        <li>Can be more efficient in practice</li>
+        <li>Sometimes easier to optimize space</li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Top-Down (Memo)</th>
+            <th>Bottom-Up (Tab)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Direction</td><td>Big problem down to base cases</td><td>Base cases up to big problem</td></tr>
+          <tr><td>Implementation</td><td>Recursion + cache</td><td>Iterative + table</td></tr>
+          <tr><td>Ease of thought</td><td>Often easier to derive</td><td>Requires knowing computation order</td></tr>
+          <tr><td>Stack overflow risk</td><td>Yes, for large inputs</td><td>No</td></tr>
+          <tr><td>Space optimization</td><td>Harder</td><td>Easier (can drop old rows/values)</td></tr>
+          <tr><td>Computes unused states?</td><td>No (only what's needed)</td><td>Sometimes yes</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Recommendation</div>
+        <p>In interviews, start with top-down -- it is the natural extension of your recursive brute force. Once that works, mention you could convert to bottom-up for better space/performance. We will show both approaches for every problem below.</p>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 3 ======================= -->
+    <section id="framework">
+      <h2>3. The DP Problem-Solving Framework</h2>
+      <p>Use this 5-step framework for every DP problem. Seriously -- every single one.</p>
+
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <div class="step-num">1</div>
+          <span class="step-label">Define the state</span>
+          <span class="step-desc">What does dp[i] (or dp[i][j]) represent?</span>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">2</div>
+          <span class="step-label">Find the recurrence</span>
+          <span class="step-desc">dp[i] = f(dp[i-1], dp[i-2], ...)</span>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">3</div>
+          <span class="step-label">Set base cases</span>
+          <span class="step-desc">dp[0] = ?, dp[1] = ?</span>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">4</div>
+          <span class="step-label">Determine computation order</span>
+          <span class="step-desc">Left to right? Bottom to top?</span>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">5</div>
+          <span class="step-label">Optimize space</span>
+          <span class="step-desc">Do you really need the whole table?</span>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Applying the framework</div>
+        <p>Problem: "How many ways to reach step n if you can take 1 or 2 steps?"</p>
+        <ol>
+          <li><strong>State:</strong> dp[i] = number of ways to reach step i</li>
+          <li><strong>Recurrence:</strong> dp[i] = dp[i-1] + dp[i-2] (arrive from one step back OR two steps back)</li>
+          <li><strong>Base cases:</strong> dp[0] = 1 (one way to be at the start), dp[1] = 1 (one way to reach step 1)</li>
+          <li><strong>Order:</strong> Left to right (i = 2, 3, ..., n)</li>
+          <li><strong>Space:</strong> Only need last two values, so O(1) instead of O(n)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 4 ======================= -->
+    <section id="fibonacci">
+      <h2>4. Fibonacci (The Classic Intro)</h2>
+      <p>Every DP tutorial starts with Fibonacci for a reason: it perfectly illustrates why DP exists. The Fibonacci sequence is 0, 1, 1, 2, 3, 5, 8, 13, 21, ... where each number is the sum of the two before it.</p>
+
+      <div class="formula-box">fib(n) = fib(n-1) + fib(n-2), where fib(0) = 0, fib(1) = 1</div>
+
+      <h3>Approach 1: Naive Recursion -- O(2^n) time, O(n) space</h3>
+      <p>This is what NOT to do. Each call branches into two more, creating exponential work.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    <span class="keyword">return</span> <span class="function">fib</span>(n - <span class="number">1</span>) + <span class="function">fib</span>(n - <span class="number">2</span>)
+
+<span class="comment"># fib(40) takes SECONDS. fib(50) may never finish.</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">fib</span>(n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    <span class="keyword">return</span> <span class="function">fib</span>(n - <span class="number">1</span>) + <span class="function">fib</span>(n - <span class="number">2</span>);
+}</code></pre>
+
+      <h3>Approach 2: Top-Down with Memoization -- O(n) time, O(n) space</h3>
+      <p>Same recursion, but we remember every result. Each fib(k) is computed exactly once.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">fib</span>(n, memo={}):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    <span class="keyword">if</span> n <span class="keyword">in</span> memo:
+        <span class="keyword">return</span> memo[n]
+    memo[n] = <span class="function">fib</span>(n - <span class="number">1</span>, memo) + <span class="function">fib</span>(n - <span class="number">2</span>, memo)
+    <span class="keyword">return</span> memo[n]
+
+<span class="comment"># fib(1000) returns instantly</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">fib</span>(n, memo = {}) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    <span class="keyword">if</span> (memo[n] !== <span class="keyword">undefined</span>) <span class="keyword">return</span> memo[n];
+    memo[n] = <span class="function">fib</span>(n - <span class="number">1</span>, memo) + <span class="function">fib</span>(n - <span class="number">2</span>, memo);
+    <span class="keyword">return</span> memo[n];
+}</code></pre>
+
+      <h3>Approach 3: Bottom-Up Tabulation -- O(n) time, O(n) space</h3>
+      <p>Build the table iteratively from the base cases up. No recursion at all.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    dp = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    dp[<span class="number">1</span>] = <span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>]
+    <span class="keyword">return</span> dp[n]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">fib</span>(n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    <span class="keyword">const</span> dp = <span class="keyword">new</span> <span class="builtin">Array</span>(n + <span class="number">1</span>).fill(<span class="number">0</span>);
+    dp[<span class="number">1</span>] = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i <= n; i++) {
+        dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>];
+    }
+    <span class="keyword">return</span> dp[n];
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">State Table Walkthrough</div>
+        <p>Computing fib(6) bottom-up:</p>
+        <table>
+          <thead><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+          <tbody><tr><td>dp[i]</td><td>0</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td></tr></tbody>
+        </table>
+        <p>Each cell is just the sum of the two cells to its left. That is it.</p>
+      </div>
+
+      <h3>Approach 4: Space-Optimized -- O(n) time, O(1) space</h3>
+      <p>We only ever look at the last two values, so why store the whole array?</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    prev2, prev1 = <span class="number">0</span>, <span class="number">1</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        curr = prev1 + prev2
+        prev2 = prev1
+        prev1 = curr
+    <span class="keyword">return</span> prev1</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">fib</span>(n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    <span class="keyword">let</span> prev2 = <span class="number">0</span>, prev1 = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i <= n; i++) {
+        <span class="keyword">const</span> curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    <span class="keyword">return</span> prev1;
+}</code></pre>
+
+      <table>
+        <thead><tr><th>Approach</th><th>Time</th><th>Space</th></tr></thead>
+        <tbody>
+          <tr><td>Naive recursion</td><td>O(2^n)</td><td>O(n)</td></tr>
+          <tr><td>Top-down memo</td><td>O(n)</td><td>O(n)</td></tr>
+          <tr><td>Bottom-up table</td><td>O(n)</td><td>O(n)</td></tr>
+          <tr><td>Space-optimized</td><td>O(n)</td><td>O(1)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ======================= SECTION 5 ======================= -->
+    <section id="climbing-stairs">
+      <h2>5. Climbing Stairs</h2>
+      <p><strong>Problem:</strong> You are climbing a staircase with n steps. Each time you can climb 1 or 2 steps. How many distinct ways can you reach the top?</p>
+
+      <div class="formula-box">
+        State: dp[i] = number of ways to reach step i<br>
+        Recurrence: dp[i] = dp[i-1] + dp[i-2]<br>
+        Base cases: dp[0] = 1, dp[1] = 1
+      </div>
+
+      <p>Wait -- this is just Fibonacci! To reach step i, you either came from step i-1 (one step) or step i-2 (two steps). The total ways is the sum of both.</p>
+
+      <div class="example-box">
+        <div class="label">State Table: n = 5</div>
+        <table>
+          <thead><tr><th>Step</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+          <tbody><tr><td>Ways</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td></tr></tbody>
+        </table>
+        <p>There are 8 distinct ways to climb 5 stairs.</p>
+      </div>
+
+      <h3>Top-Down</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">climbStairs</span>(n, memo={}):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">if</span> n <span class="keyword">in</span> memo:
+        <span class="keyword">return</span> memo[n]
+    memo[n] = <span class="function">climbStairs</span>(n - <span class="number">1</span>, memo) + <span class="function">climbStairs</span>(n - <span class="number">2</span>, memo)
+    <span class="keyword">return</span> memo[n]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">climbStairs</span>(n, memo = {}) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">if</span> (memo[n] !== <span class="keyword">undefined</span>) <span class="keyword">return</span> memo[n];
+    memo[n] = <span class="function">climbStairs</span>(n - <span class="number">1</span>, memo) + <span class="function">climbStairs</span>(n - <span class="number">2</span>, memo);
+    <span class="keyword">return</span> memo[n];
+}</code></pre>
+
+      <h3>Bottom-Up (Space-Optimized)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">climbStairs</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> <span class="number">1</span>
+    prev2, prev1 = <span class="number">1</span>, <span class="number">1</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        curr = prev1 + prev2
+        prev2 = prev1
+        prev1 = curr
+    <span class="keyword">return</span> prev1</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">climbStairs</span>(n) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">let</span> prev2 = <span class="number">1</span>, prev1 = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i <= n; i++) {
+        <span class="keyword">const</span> curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    <span class="keyword">return</span> prev1;
+}</code></pre>
+
+      <p><strong>Time:</strong> O(n) | <strong>Space:</strong> O(1)</p>
+    </section>
+
+    <!-- ======================= SECTION 6 ======================= -->
+    <section id="1d-dp">
+      <h2>6. 1D DP Problems</h2>
+
+      <!-- House Robber -->
+      <h3>House Robber</h3>
+      <p><strong>Problem:</strong> You are a robber planning to rob houses along a street. Each house has a certain amount of money. You cannot rob two adjacent houses (alarm triggers). Find the maximum amount you can rob.</p>
+
+      <div class="formula-box">
+        State: dp[i] = max money robbing houses 0..i<br>
+        Recurrence: dp[i] = max(dp[i-1], dp[i-2] + nums[i])<br>
+        Base cases: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+      </div>
+
+      <p>At each house, you have two choices: <strong>skip it</strong> (take dp[i-1]) or <strong>rob it</strong> (take dp[i-2] + this house's money). Pick whichever is more.</p>
+
+      <div class="example-box">
+        <div class="label">State Table: nums = [2, 7, 9, 3, 1]</div>
+        <table>
+          <thead><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+          <tbody>
+            <tr><td>nums[i]</td><td>2</td><td>7</td><td>9</td><td>3</td><td>1</td></tr>
+            <tr><td>dp[i]</td><td>2</td><td>7</td><td>11</td><td>11</td><td>12</td></tr>
+          </tbody>
+        </table>
+        <p>dp[2] = max(7, 2+9) = 11. dp[3] = max(11, 7+3) = 11. dp[4] = max(11, 11+1) = 12. Rob houses 0, 2, 4 for $12.</p>
+      </div>
+
+      <h3>Top-Down</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">rob</span>(nums):
+    memo = {}
+    <span class="keyword">def</span> <span class="function">dp</span>(i):
+        <span class="keyword">if</span> i < <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> i <span class="keyword">in</span> memo:
+            <span class="keyword">return</span> memo[i]
+        memo[i] = <span class="builtin">max</span>(<span class="function">dp</span>(i - <span class="number">1</span>), <span class="function">dp</span>(i - <span class="number">2</span>) + nums[i])
+        <span class="keyword">return</span> memo[i]
+    <span class="keyword">return</span> <span class="function">dp</span>(<span class="builtin">len</span>(nums) - <span class="number">1</span>)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">rob</span>(nums) {
+    <span class="keyword">const</span> memo = {};
+    <span class="keyword">function</span> <span class="function">dp</span>(i) {
+        <span class="keyword">if</span> (i < <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">if</span> (memo[i] !== <span class="keyword">undefined</span>) <span class="keyword">return</span> memo[i];
+        memo[i] = Math.<span class="function">max</span>(<span class="function">dp</span>(i - <span class="number">1</span>), <span class="function">dp</span>(i - <span class="number">2</span>) + nums[i]);
+        <span class="keyword">return</span> memo[i];
+    }
+    <span class="keyword">return</span> <span class="function">dp</span>(nums.length - <span class="number">1</span>);
+}</code></pre>
+
+      <h3>Bottom-Up (Space-Optimized)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">rob</span>(nums):
+    <span class="keyword">if</span> <span class="keyword">not</span> nums:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(nums) == <span class="number">1</span>:
+        <span class="keyword">return</span> nums[<span class="number">0</span>]
+    prev2, prev1 = <span class="number">0</span>, <span class="number">0</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        curr = <span class="builtin">max</span>(prev1, prev2 + num)
+        prev2 = prev1
+        prev1 = curr
+    <span class="keyword">return</span> prev1</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">rob</span>(nums) {
+    <span class="keyword">let</span> prev2 = <span class="number">0</span>, prev1 = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        <span class="keyword">const</span> curr = Math.<span class="function">max</span>(prev1, prev2 + num);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    <span class="keyword">return</span> prev1;
+}</code></pre>
+
+      <p><strong>Time:</strong> O(n) | <strong>Space:</strong> O(1)</p>
+
+      <!-- Maximum Subarray -->
+      <h3>Maximum Subarray (Kadane's Algorithm)</h3>
+      <p><strong>Problem:</strong> Find the contiguous subarray with the largest sum.</p>
+
+      <div class="formula-box">
+        State: dp[i] = maximum subarray sum ending at index i<br>
+        Recurrence: dp[i] = max(nums[i], dp[i-1] + nums[i])<br>
+        Base case: dp[0] = nums[0]
+      </div>
+
+      <p>At each element, you decide: start a new subarray here, or extend the previous one. If the running sum is negative, start fresh.</p>
+
+      <div class="example-box">
+        <div class="label">State Table: nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]</div>
+        <table>
+          <thead><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+          <tbody>
+            <tr><td>nums[i]</td><td>-2</td><td>1</td><td>-3</td><td>4</td><td>-1</td><td>2</td><td>1</td><td>-5</td><td>4</td></tr>
+            <tr><td>dp[i]</td><td>-2</td><td>1</td><td>-2</td><td>4</td><td>3</td><td>5</td><td>6</td><td>1</td><td>5</td></tr>
+          </tbody>
+        </table>
+        <p>Maximum is 6 (subarray [4, -1, 2, 1]).</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">maxSubArray</span>(nums):
+    max_sum = curr_sum = nums[<span class="number">0</span>]
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums[<span class="number">1</span>:]:
+        curr_sum = <span class="builtin">max</span>(num, curr_sum + num)
+        max_sum = <span class="builtin">max</span>(max_sum, curr_sum)
+    <span class="keyword">return</span> max_sum</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSubArray</span>(nums) {
+    <span class="keyword">let</span> maxSum = nums[<span class="number">0</span>], currSum = nums[<span class="number">0</span>];
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < nums.length; i++) {
+        currSum = Math.<span class="function">max</span>(nums[i], currSum + nums[i]);
+        maxSum = Math.<span class="function">max</span>(maxSum, currSum);
+    }
+    <span class="keyword">return</span> maxSum;
+}</code></pre>
+
+      <p><strong>Time:</strong> O(n) | <strong>Space:</strong> O(1)</p>
+
+      <!-- Coin Change -->
+      <h3>Coin Change</h3>
+      <p><strong>Problem:</strong> Given coin denominations and a target amount, find the minimum number of coins needed. If impossible, return -1.</p>
+
+      <div class="formula-box">
+        State: dp[i] = minimum coins needed for amount i<br>
+        Recurrence: dp[i] = min(dp[i - coin] + 1) for each coin where coin &lt;= i<br>
+        Base case: dp[0] = 0
+      </div>
+
+      <div class="example-box">
+        <div class="label">State Table: coins = [1, 3, 4], amount = 6</div>
+        <table>
+          <thead><tr><th>Amount</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+          <tbody><tr><td>dp[i]</td><td>0</td><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td><td>2</td></tr></tbody>
+        </table>
+        <p>dp[6] = 2 (use coins 3 + 3). Note: greedy (4+1+1 = 3 coins) fails here!</p>
+      </div>
+
+      <h3>Top-Down</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">coinChange</span>(coins, amount):
+    memo = {}
+    <span class="keyword">def</span> <span class="function">dp</span>(remaining):
+        <span class="keyword">if</span> remaining == <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> remaining < <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="builtin">float</span>(<span class="string">'inf'</span>)
+        <span class="keyword">if</span> remaining <span class="keyword">in</span> memo:
+            <span class="keyword">return</span> memo[remaining]
+        memo[remaining] = <span class="builtin">min</span>(<span class="function">dp</span>(remaining - c) + <span class="number">1</span> <span class="keyword">for</span> c <span class="keyword">in</span> coins)
+        <span class="keyword">return</span> memo[remaining]
+
+    result = <span class="function">dp</span>(amount)
+    <span class="keyword">return</span> result <span class="keyword">if</span> result != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">else</span> -<span class="number">1</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">coinChange</span>(coins, amount) {
+    <span class="keyword">const</span> memo = {};
+    <span class="keyword">function</span> <span class="function">dp</span>(remaining) {
+        <span class="keyword">if</span> (remaining === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">if</span> (remaining < <span class="number">0</span>) <span class="keyword">return</span> <span class="number">Infinity</span>;
+        <span class="keyword">if</span> (memo[remaining] !== <span class="keyword">undefined</span>) <span class="keyword">return</span> memo[remaining];
+        <span class="keyword">let</span> min = <span class="number">Infinity</span>;
+        <span class="keyword">for</span> (<span class="keyword">const</span> coin <span class="keyword">of</span> coins) {
+            min = Math.<span class="function">min</span>(min, <span class="function">dp</span>(remaining - coin) + <span class="number">1</span>);
+        }
+        memo[remaining] = min;
+        <span class="keyword">return</span> min;
+    }
+    <span class="keyword">const</span> result = <span class="function">dp</span>(amount);
+    <span class="keyword">return</span> result === <span class="number">Infinity</span> ? -<span class="number">1</span> : result;
+}</code></pre>
+
+      <h3>Bottom-Up</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">coinChange</span>(coins, amount):
+    dp = [<span class="builtin">float</span>(<span class="string">'inf'</span>)] * (amount + <span class="number">1</span>)
+    dp[<span class="number">0</span>] = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, amount + <span class="number">1</span>):
+        <span class="keyword">for</span> coin <span class="keyword">in</span> coins:
+            <span class="keyword">if</span> coin <= i:
+                dp[i] = <span class="builtin">min</span>(dp[i], dp[i - coin] + <span class="number">1</span>)
+    <span class="keyword">return</span> dp[amount] <span class="keyword">if</span> dp[amount] != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">else</span> -<span class="number">1</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">coinChange</span>(coins, amount) {
+    <span class="keyword">const</span> dp = <span class="keyword">new</span> <span class="builtin">Array</span>(amount + <span class="number">1</span>).fill(<span class="number">Infinity</span>);
+    dp[<span class="number">0</span>] = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i <= amount; i++) {
+        <span class="keyword">for</span> (<span class="keyword">const</span> coin <span class="keyword">of</span> coins) {
+            <span class="keyword">if</span> (coin <= i) {
+                dp[i] = Math.<span class="function">min</span>(dp[i], dp[i - coin] + <span class="number">1</span>);
+            }
+        }
+    }
+    <span class="keyword">return</span> dp[amount] === <span class="number">Infinity</span> ? -<span class="number">1</span> : dp[amount];
+}</code></pre>
+
+      <p><strong>Time:</strong> O(amount * coins) | <strong>Space:</strong> O(amount)</p>
+
+      <div class="warning-box">
+        <div class="label">Why Greedy Fails</div>
+        <p>For coins [1, 3, 4] and amount 6, greedy picks 4+1+1 = 3 coins. DP correctly finds 3+3 = 2 coins. This is exactly why DP exists -- it explores all possibilities without brute-forcing every combination.</p>
+      </div>
+
+      <!-- Longest Increasing Subsequence -->
+      <h3>Longest Increasing Subsequence (LIS)</h3>
+      <p><strong>Problem:</strong> Find the length of the longest strictly increasing subsequence (not necessarily contiguous).</p>
+
+      <div class="formula-box">
+        State: dp[i] = length of LIS ending at index i<br>
+        Recurrence: dp[i] = max(dp[j] + 1) for all j &lt; i where nums[j] &lt; nums[i]<br>
+        Base case: dp[i] = 1 for all i (each element is a subsequence of length 1)
+      </div>
+
+      <div class="example-box">
+        <div class="label">State Table: nums = [10, 9, 2, 5, 3, 7, 101, 18]</div>
+        <table>
+          <thead><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+          <tbody>
+            <tr><td>nums[i]</td><td>10</td><td>9</td><td>2</td><td>5</td><td>3</td><td>7</td><td>101</td><td>18</td></tr>
+            <tr><td>dp[i]</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td><td>4</td><td>4</td></tr>
+          </tbody>
+        </table>
+        <p>LIS length = 4. One possible LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or [2, 5, 7, 18].</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">lengthOfLIS</span>(nums):
+    n = <span class="builtin">len</span>(nums)
+    dp = [<span class="number">1</span>] * n
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):
+            <span class="keyword">if</span> nums[j] < nums[i]:
+                dp[i] = <span class="builtin">max</span>(dp[i], dp[j] + <span class="number">1</span>)
+    <span class="keyword">return</span> <span class="builtin">max</span>(dp)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">lengthOfLIS</span>(nums) {
+    <span class="keyword">const</span> n = nums.length;
+    <span class="keyword">const</span> dp = <span class="keyword">new</span> <span class="builtin">Array</span>(n).fill(<span class="number">1</span>);
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < n; i++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j < i; j++) {
+            <span class="keyword">if</span> (nums[j] < nums[i]) {
+                dp[i] = Math.<span class="function">max</span>(dp[i], dp[j] + <span class="number">1</span>);
+            }
+        }
+    }
+    <span class="keyword">return</span> Math.<span class="function">max</span>(...dp);
+}</code></pre>
+
+      <p><strong>Time:</strong> O(n^2) | <strong>Space:</strong> O(n)</p>
+
+      <div class="tip-box">
+        <div class="label">For interviews</div>
+        <p>There is an O(n log n) solution using binary search + patience sorting. Know it exists and can explain the idea, but the O(n^2) DP solution is perfectly acceptable in most interviews. The O(n log n) version is rarely expected unless specifically asked.</p>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 7 ======================= -->
+    <section id="2d-dp">
+      <h2>7. 2D DP Problems</h2>
+      <p>When your state depends on two variables (two indices, a position in a grid, etc.), you need a 2D DP table.</p>
+
+      <!-- Unique Paths -->
+      <h3>Unique Paths</h3>
+      <p><strong>Problem:</strong> Given an m x n grid, starting at top-left, you can only move right or down. How many unique paths to the bottom-right?</p>
+
+      <div class="formula-box">
+        State: dp[i][j] = number of ways to reach cell (i, j)<br>
+        Recurrence: dp[i][j] = dp[i-1][j] + dp[i][j-1]<br>
+        Base cases: dp[0][j] = 1 (first row), dp[i][0] = 1 (first column)
+      </div>
+
+      <div class="example-box">
+        <div class="label">State Table: 3x4 grid</div>
+        <table>
+          <thead><tr><th></th><th>col 0</th><th>col 1</th><th>col 2</th><th>col 3</th></tr></thead>
+          <tbody>
+            <tr><td><strong>row 0</strong></td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>row 1</strong></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td><strong>row 2</strong></td><td>1</td><td>3</td><td>6</td><td>10</td></tr>
+          </tbody>
+        </table>
+        <p>Answer: 10 unique paths. Each cell = sum of cell above + cell to the left.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">uniquePaths</span>(m, n):
+    dp = [[<span class="number">1</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n):
+            dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>]
+    <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">uniquePaths</span>(m, n) {
+    <span class="keyword">const</span> dp = <span class="builtin">Array</span>.from({ length: m }, () =>
+        <span class="keyword">new</span> <span class="builtin">Array</span>(n).fill(<span class="number">1</span>)
+    );
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < m; i++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j < n; j++) {
+            dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];
+        }
+    }
+    <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>];
+}</code></pre>
+
+      <p><strong>Time:</strong> O(m * n) | <strong>Space:</strong> O(m * n), can be optimized to O(n) using a single row</p>
+
+      <!-- Longest Common Subsequence -->
+      <h3>Longest Common Subsequence (LCS)</h3>
+      <p><strong>Problem:</strong> Given two strings, find the length of their longest common subsequence.</p>
+
+      <div class="formula-box">
+        State: dp[i][j] = LCS length of text1[0..i-1] and text2[0..j-1]<br>
+        Recurrence:<br>
+        &nbsp;&nbsp;If text1[i-1] == text2[j-1]: dp[i][j] = dp[i-1][j-1] + 1<br>
+        &nbsp;&nbsp;Else: dp[i][j] = max(dp[i-1][j], dp[i][j-1])<br>
+        Base cases: dp[0][j] = 0, dp[i][0] = 0
+      </div>
+
+      <div class="example-box">
+        <div class="label">State Table: text1 = "abcde", text2 = "ace"</div>
+        <table>
+          <thead><tr><th></th><th>""</th><th>a</th><th>c</th><th>e</th></tr></thead>
+          <tbody>
+            <tr><td><strong>""</strong></td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>a</strong></td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>b</strong></td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>c</strong></td><td>0</td><td>1</td><td>2</td><td>2</td></tr>
+            <tr><td><strong>d</strong></td><td>0</td><td>1</td><td>2</td><td>2</td></tr>
+            <tr><td><strong>e</strong></td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+          </tbody>
+        </table>
+        <p>LCS length = 3. The LCS is "ace".</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">longestCommonSubsequence</span>(text1, text2):
+    m, n = <span class="builtin">len</span>(text1), <span class="builtin">len</span>(text2)
+    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> text1[i - <span class="number">1</span>] == text2[j - <span class="number">1</span>]:
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>
+            <span class="keyword">else</span>:
+                dp[i][j] = <span class="builtin">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>])
+    <span class="keyword">return</span> dp[m][n]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">longestCommonSubsequence</span>(text1, text2) {
+    <span class="keyword">const</span> m = text1.length, n = text2.length;
+    <span class="keyword">const</span> dp = <span class="builtin">Array</span>.from({ length: m + <span class="number">1</span> }, () =>
+        <span class="keyword">new</span> <span class="builtin">Array</span>(n + <span class="number">1</span>).fill(<span class="number">0</span>)
+    );
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i <= m; i++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j <= n; j++) {
+            <span class="keyword">if</span> (text1[i - <span class="number">1</span>] === text2[j - <span class="number">1</span>]) {
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;
+            } <span class="keyword">else</span> {
+                dp[i][j] = Math.<span class="function">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);
+            }
+        }
+    }
+    <span class="keyword">return</span> dp[m][n];
+}</code></pre>
+
+      <p><strong>Time:</strong> O(m * n) | <strong>Space:</strong> O(m * n)</p>
+
+      <!-- 0/1 Knapsack -->
+      <h3>0/1 Knapsack</h3>
+      <p><strong>Problem:</strong> Given items with weights and values, and a knapsack with weight capacity W, maximize the total value you can carry. Each item can only be used once.</p>
+
+      <div class="formula-box">
+        State: dp[i][w] = max value using items 0..i-1 with capacity w<br>
+        Recurrence:<br>
+        &nbsp;&nbsp;If weights[i-1] &lt;= w: dp[i][w] = max(dp[i-1][w], dp[i-1][w - weights[i-1]] + values[i-1])<br>
+        &nbsp;&nbsp;Else: dp[i][w] = dp[i-1][w]<br>
+        Base cases: dp[0][w] = 0 for all w
+      </div>
+
+      <div class="example-box">
+        <div class="label">State Table: weights=[1,3,4,5], values=[1,4,5,7], capacity=7</div>
+        <table>
+          <thead><tr><th>item\cap</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+          <tbody>
+            <tr><td><strong>0 items</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>item 1 (1,1)</strong></td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>item 2 (3,4)</strong></td><td>0</td><td>1</td><td>1</td><td>4</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+            <tr><td><strong>item 3 (4,5)</strong></td><td>0</td><td>1</td><td>1</td><td>4</td><td>5</td><td>6</td><td>6</td><td>9</td></tr>
+            <tr><td><strong>item 4 (5,7)</strong></td><td>0</td><td>1</td><td>1</td><td>4</td><td>5</td><td>7</td><td>8</td><td>9</td></tr>
+          </tbody>
+        </table>
+        <p>Max value = 9 (items 2 and 3: weight 3+4=7, value 4+5=9).</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">knapsack</span>(weights, values, capacity):
+    n = <span class="builtin">len</span>(weights)
+    dp = [[<span class="number">0</span>] * (capacity + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n + <span class="number">1</span>)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        <span class="keyword">for</span> w <span class="keyword">in</span> <span class="builtin">range</span>(capacity + <span class="number">1</span>):
+            <span class="keyword">if</span> weights[i - <span class="number">1</span>] <= w:
+                dp[i][w] = <span class="builtin">max</span>(
+                    dp[i - <span class="number">1</span>][w],
+                    dp[i - <span class="number">1</span>][w - weights[i - <span class="number">1</span>]] + values[i - <span class="number">1</span>]
+                )
+            <span class="keyword">else</span>:
+                dp[i][w] = dp[i - <span class="number">1</span>][w]
+    <span class="keyword">return</span> dp[n][capacity]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">knapsack</span>(weights, values, capacity) {
+    <span class="keyword">const</span> n = weights.length;
+    <span class="keyword">const</span> dp = <span class="builtin">Array</span>.from({ length: n + <span class="number">1</span> }, () =>
+        <span class="keyword">new</span> <span class="builtin">Array</span>(capacity + <span class="number">1</span>).fill(<span class="number">0</span>)
+    );
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i <= n; i++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> w = <span class="number">0</span>; w <= capacity; w++) {
+            <span class="keyword">if</span> (weights[i - <span class="number">1</span>] <= w) {
+                dp[i][w] = Math.<span class="function">max</span>(
+                    dp[i - <span class="number">1</span>][w],
+                    dp[i - <span class="number">1</span>][w - weights[i - <span class="number">1</span>]] + values[i - <span class="number">1</span>]
+                );
+            } <span class="keyword">else</span> {
+                dp[i][w] = dp[i - <span class="number">1</span>][w];
+            }
+        }
+    }
+    <span class="keyword">return</span> dp[n][capacity];
+}</code></pre>
+
+      <p><strong>Time:</strong> O(n * W) | <strong>Space:</strong> O(n * W), can be optimized to O(W) using a 1D array</p>
+    </section>
+
+    <!-- ======================= SECTION 8 ======================= -->
+    <section id="categories">
+      <h2>8. DP Categories Cheat Sheet</h2>
+      <p>Most DP problems fall into one of these categories. Recognizing the category is half the battle.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Example Problems</th>
+            <th>Key Idea</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Linear</strong></td>
+            <td>Fibonacci, Climbing Stairs, House Robber</td>
+            <td>dp[i] depends on previous elements</td>
+          </tr>
+          <tr>
+            <td><strong>Interval</strong></td>
+            <td>Palindromic Substrings, Matrix Chain Mult.</td>
+            <td>dp[i][j] for range i to j</td>
+          </tr>
+          <tr>
+            <td><strong>Grid</strong></td>
+            <td>Unique Paths, Min Path Sum</td>
+            <td>dp[i][j] for grid position</td>
+          </tr>
+          <tr>
+            <td><strong>String</strong></td>
+            <td>LCS, Edit Distance</td>
+            <td>dp[i][j] for indices in two strings</td>
+          </tr>
+          <tr>
+            <td><strong>Knapsack</strong></td>
+            <td>0/1 Knapsack, Coin Change, Subset Sum</td>
+            <td>Include or exclude item</td>
+          </tr>
+          <tr>
+            <td><strong>Tree</strong></td>
+            <td>House Robber III, Tree Diameter</td>
+            <td>DFS + memoization on tree nodes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Pattern Recognition</div>
+        <p>When you see a new DP problem, ask: "Which category is this?" If it involves a grid, try grid DP. If two strings, try string DP. If choosing to include/exclude items, try knapsack. This narrows down your approach immediately.</p>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 9 ======================= -->
+    <section id="leetcode">
+      <h2>9. LeetCode Problems by Category</h2>
+
+      <h3>1D DP</h3>
+      <table>
+        <thead><tr><th>Problem</th><th>Difficulty</th><th>Key Pattern</th></tr></thead>
+        <tbody>
+          <tr><td>70. Climbing Stairs</td><td><span class="tag green">Easy</span></td><td>Fibonacci variant</td></tr>
+          <tr><td>198. House Robber</td><td><span class="tag orange">Medium</span></td><td>Include/exclude adjacent</td></tr>
+          <tr><td>322. Coin Change</td><td><span class="tag orange">Medium</span></td><td>Unbounded knapsack</td></tr>
+          <tr><td>300. Longest Increasing Subsequence</td><td><span class="tag orange">Medium</span></td><td>LIS pattern</td></tr>
+          <tr><td>139. Word Break</td><td><span class="tag orange">Medium</span></td><td>String segmentation</td></tr>
+          <tr><td>91. Decode Ways</td><td><span class="tag orange">Medium</span></td><td>Fibonacci-like with conditions</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2D DP</h3>
+      <table>
+        <thead><tr><th>Problem</th><th>Difficulty</th><th>Key Pattern</th></tr></thead>
+        <tbody>
+          <tr><td>62. Unique Paths</td><td><span class="tag orange">Medium</span></td><td>Grid traversal</td></tr>
+          <tr><td>1143. Longest Common Subsequence</td><td><span class="tag orange">Medium</span></td><td>Two-string comparison</td></tr>
+          <tr><td>72. Edit Distance</td><td><span class="tag orange">Medium</span></td><td>Two-string transformation</td></tr>
+          <tr><td>494. Target Sum</td><td><span class="tag orange">Medium</span></td><td>Knapsack variant</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Classic Patterns</h3>
+      <table>
+        <thead><tr><th>Problem</th><th>Difficulty</th><th>Key Pattern</th></tr></thead>
+        <tbody>
+          <tr><td>0/1 Knapsack</td><td><span class="tag orange">Medium</span></td><td>Include/exclude with capacity</td></tr>
+          <tr><td>Unbounded Knapsack (Coin Change)</td><td><span class="tag orange">Medium</span></td><td>Reusable items with capacity</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Study Order</div>
+        <p>Do them in this order: Climbing Stairs, House Robber, Coin Change, Unique Paths, LCS, then LIS. Each one builds on the concepts from the previous ones. After these six, the rest are variations.</p>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 10 ======================= -->
+    <section id="tips">
+      <h2>10. Tips for DP</h2>
+
+      <ul class="strategy-list">
+        <li>
+          <div class="num">1</div>
+          <div><strong>If you can solve it recursively, you can DP it.</strong> Every DP problem has a recursive brute-force solution. Start there, identify overlapping subproblems, add memoization. Done.</div>
+        </li>
+        <li>
+          <div class="num">2</div>
+          <div><strong>Draw the recursion tree.</strong> Literally sketch it on paper. You will SEE the overlapping subproblems. This also helps you identify the state and recurrence.</div>
+        </li>
+        <li>
+          <div class="num">3</div>
+          <div><strong>Start with brute force, then optimize.</strong> Don't try to jump straight to the DP solution. Write the recursive solution first. Then add memoization. Then convert to bottom-up if needed. Then optimize space.</div>
+        </li>
+        <li>
+          <div class="num">4</div>
+          <div><strong>Practice identifying the state and recurrence.</strong> For every problem, ask: "What does dp[i] represent?" and "How does dp[i] relate to smaller subproblems?" These two questions are the entire game.</div>
+        </li>
+        <li>
+          <div class="num">5</div>
+          <div><strong>Most DP problems are variations of ~10 core patterns.</strong> Fibonacci, knapsack, LCS, LIS, grid paths, interval DP, tree DP, bitmask DP, digit DP, and state machine DP. Learn these and you can solve almost anything.</div>
+        </li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Common Mistakes</div>
+        <ul>
+          <li>Forgetting base cases -- always handle dp[0], dp[1], empty arrays, empty strings</li>
+          <li>Off-by-one errors in loop bounds -- double-check inclusive vs exclusive ranges</li>
+          <li>Wrong computation order -- make sure dp[i] values you need are already computed</li>
+          <li>Not considering all transitions -- missing a case in your recurrence</li>
+          <li>Overcomplicating the state -- start simple, add dimensions only if needed</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================= SECTION 11 ======================= -->
+    <section id="quiz">
+      <h2>11. Practice Quiz</h2>
+      <div class="quiz">
+
+        <!-- Q1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: What are the two key properties required for a problem to be solvable with DP?</h4>
+          <button onclick="checkAnswer('q1','a')">A) Divide and conquer + greedy choice</button>
+          <button onclick="checkAnswer('q1','b')">B) Optimal substructure + overlapping subproblems</button>
+          <button onclick="checkAnswer('q1','c')">C) Recursion + iteration</button>
+          <button onclick="checkAnswer('q1','d')">D) Memoization + tabulation</button>
+          <div class="explanation">
+            <strong>B) Optimal substructure + overlapping subproblems.</strong> Optimal substructure means the optimal solution contains optimal solutions to subproblems. Overlapping subproblems means the same subproblems are solved multiple times, which is why caching helps. Memoization and tabulation are implementation techniques, not properties of the problem itself.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: What is the time complexity of naive recursive Fibonacci?</h4>
+          <button onclick="checkAnswer('q2','a')">A) O(n)</button>
+          <button onclick="checkAnswer('q2','b')">B) O(n log n)</button>
+          <button onclick="checkAnswer('q2','c')">C) O(2^n)</button>
+          <button onclick="checkAnswer('q2','d')">D) O(n^2)</button>
+          <div class="explanation">
+            <strong>C) O(2^n).</strong> Each call branches into two recursive calls, creating an exponential number of function calls. The recursion tree has roughly 2^n nodes. Adding memoization reduces this to O(n) because each subproblem is computed only once.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: For the House Robber problem with nums = [2, 7, 9, 3, 1], what is dp[2]?</h4>
+          <button onclick="checkAnswer('q3','a')">A) 9</button>
+          <button onclick="checkAnswer('q3','b')">B) 11</button>
+          <button onclick="checkAnswer('q3','c')">C) 7</button>
+          <button onclick="checkAnswer('q3','d')">D) 16</button>
+          <div class="explanation">
+            <strong>B) 11.</strong> dp[2] = max(dp[1], dp[0] + nums[2]) = max(7, 2 + 9) = max(7, 11) = 11. We either skip house 2 (keeping 7 from house 1) or rob house 2 (adding 9 to the 2 we got from house 0).
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: In the Coin Change problem, why does a greedy approach fail for coins = [1, 3, 4] and amount = 6?</h4>
+          <button onclick="checkAnswer('q4','a')">A) Greedy picks 4+1+1 (3 coins) instead of 3+3 (2 coins)</button>
+          <button onclick="checkAnswer('q4','b')">B) Greedy cannot handle amounts larger than the biggest coin</button>
+          <button onclick="checkAnswer('q4','c')">C) Greedy always picks the smallest coin first</button>
+          <button onclick="checkAnswer('q4','d')">D) Greedy only works with sorted coins</button>
+          <div class="explanation">
+            <strong>A) Greedy picks 4+1+1 (3 coins) instead of 3+3 (2 coins).</strong> The greedy approach always picks the largest coin possible, giving 4+1+1 = 3 coins. But the optimal solution is 3+3 = 2 coins. DP considers all possible combinations and finds the true minimum.
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: In a Unique Paths problem on a 3x3 grid, what is dp[2][2] (bottom-right)?</h4>
+          <button onclick="checkAnswer('q5','a')">A) 4</button>
+          <button onclick="checkAnswer('q5','b')">B) 6</button>
+          <button onclick="checkAnswer('q5','c')">C) 8</button>
+          <button onclick="checkAnswer('q5','d')">D) 9</button>
+          <div class="explanation">
+            <strong>B) 6.</strong> The grid fills as: row 0 = [1,1,1], row 1 = [1,2,3], row 2 = [1,3,6]. Each cell is the sum of the cell above and the cell to the left. dp[2][2] = dp[1][2] + dp[2][1] = 3 + 3 = 6.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers who want to master data structures and algorithms.</p>
+    <p>No ads, no tracking, no paywalls -- just DSA.</p>
+  </footer>
+
+  <script>
+    const answers = { q1: 'b', q2: 'c', q3: 'b', q4: 'a', q5: 'b' };
+
+    function checkAnswer(qId, selected) {
+      const container = document.getElementById(qId);
+      const buttons = container.querySelectorAll('button');
+      const explanation = container.querySelector('.explanation');
+
+      // Prevent re-answering
+      if (container.dataset.answered) return;
+      container.dataset.answered = 'true';
+
+      buttons.forEach(btn => {
+        btn.style.pointerEvents = 'none';
+      });
+
+      const correctLetter = answers[qId];
+      const letters = ['a', 'b', 'c', 'd'];
+
+      buttons.forEach((btn, idx) => {
+        if (letters[idx] === correctLetter) {
+          btn.classList.add('correct');
+        } else if (letters[idx] === selected) {
+          btn.classList.add('wrong');
+        }
+      });
+
+      explanation.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

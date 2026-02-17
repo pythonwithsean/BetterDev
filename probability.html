@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Probability &amp; Statistics -- Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html" class="active">Probability</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Probability &amp; Statistics</div>
+      <h1>Probability &amp; Statistics</h1>
+      <p>The mathematics of uncertainty -- from coin flips to machine learning, this is how we reason about the unknown.</p>
+
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why Probability Matters for CS</div>
+        <p>Probability is the math that makes intelligent software possible. Here's where you'll use it:</p>
+        <ul>
+          <li><strong>Machine learning:</strong> Classification ("is this email spam?"), language models (predicting the next word), recommendation engines -- all probability at their core.</li>
+          <li><strong>Randomized algorithms:</strong> QuickSort's average O(n log n) is a probability result. Hash tables, skip lists, and Monte Carlo methods all depend on randomness.</li>
+          <li><strong>System reliability:</strong> "If each server has 99.9% uptime, what's the probability all 5 are up?" This is how you design fault-tolerant systems.</li>
+          <li><strong>A/B testing:</strong> "Is the new design actually better, or did we get lucky?" Statistical significance testing answers this.</li>
+          <li><strong>Networking:</strong> Packet loss, retry strategies, load balancing -- all modeled with probability distributions.</li>
+          <li><strong>Games &amp; simulations:</strong> Loot drop rates, damage variance, procedural generation -- probability makes games feel alive.</li>
+          <li><strong>Security:</strong> Password strength, encryption key spaces, attack probability -- security is applied probability.</li>
+        </ul>
+        <p>Probability transforms you from someone who guesses to someone who <em>quantifies uncertainty</em> and makes data-driven decisions.</p>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#what-is-probability">1. What is Probability?</a>
+      <a href="#basic-rules">2. Basic Probability Rules</a>
+      <a href="#conditional">3. Conditional Probability</a>
+      <a href="#bayes">4. Bayes' Theorem</a>
+      <a href="#perms-combs">5. Permutations &amp; Combinations (Review)</a>
+      <a href="#random-variables">6. Random Variables</a>
+      <a href="#distributions">7. Common Distributions</a>
+      <a href="#expected-value">8. Expected Value &amp; Variance</a>
+      <a href="#basic-stats">9. Basic Statistics</a>
+      <a href="#cs-applications">10. CS Applications</a>
+      <a href="#quiz">11. Practice Quiz</a>
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 1: What is Probability? -->
+    <!-- ======================================================= -->
+    <section id="what-is-probability">
+      <h2>1. What is Probability?</h2>
+
+      <p>
+        Probability is the branch of mathematics that measures <strong>how likely</strong> something is to happen.
+        It gives us a number between <strong>0</strong> (impossible) and <strong>1</strong> (certain) -- or equivalently,
+        between 0% and 100%. If you flip a fair coin, the probability of heads is 0.5, or 50%. Simple enough on the surface,
+        but this idea powers everything from spam filters to self-driving cars.
+      </p>
+
+      <h3>Sample Space and Events</h3>
+      <p>
+        The <strong>sample space</strong> (often written <strong>S</strong> or <strong>&Omega;</strong>) is the set of
+        all possible outcomes of an experiment. An <strong>event</strong> is any subset of the sample space -- the outcomes
+        we actually care about.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Rolling a Six-Sided Die</div>
+        <p><strong>Sample space:</strong> S = {1, 2, 3, 4, 5, 6}</p>
+        <p><strong>Event A</strong> = "rolling an even number" = {2, 4, 6}</p>
+        <p><strong>Event B</strong> = "rolling greater than 4" = {5, 6}</p>
+      </div>
+
+      <h3>The Basic Probability Formula</h3>
+      <div class="formula-box">
+        P(event) = (number of favorable outcomes) / (total number of outcomes)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Probability of Rolling Even</div>
+        <p>P(even) = |{2, 4, 6}| / |{1, 2, 3, 4, 5, 6}| = 3/6 = <strong>0.5</strong></p>
+        <p>There are 3 even numbers out of 6 total equally likely outcomes.</p>
+      </div>
+
+      <h3>Why CS Cares About Probability</h3>
+      <p>Probability shows up everywhere in computer science:</p>
+      <ul>
+        <li><strong>Algorithms:</strong> Randomized algorithms (quicksort pivot selection, hash functions) rely on probability to guarantee average-case performance.</li>
+        <li><strong>Machine Learning:</strong> Nearly every ML model is a probability machine -- classifiers output probabilities, and training uses probabilistic optimization.</li>
+        <li><strong>Cryptography:</strong> Security depends on events being astronomically unlikely -- probability quantifies "how hard" it is to break encryption.</li>
+        <li><strong>Simulations:</strong> Monte Carlo simulations use random sampling to estimate complex quantities -- from pi to stock prices.</li>
+        <li><strong>Networking:</strong> Packet loss, latency distributions, load balancing -- all probabilistic.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Think of probability as a language for expressing uncertainty precisely. Instead of saying "it probably works," you can say "it works with probability 0.997." That precision is what makes probability so powerful in engineering.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 2: Basic Probability Rules -->
+    <!-- ======================================================= -->
+    <section id="basic-rules">
+      <h2>2. Basic Probability Rules</h2>
+
+      <p>
+        These rules are the toolkit for combining probabilities. Once you know them, you can break complex
+        problems into simple pieces.
+      </p>
+
+      <h3>The Complement Rule</h3>
+      <p>
+        The probability that an event does <strong>not</strong> happen is 1 minus the probability that it does.
+        This is incredibly useful when "not happening" is easier to calculate.
+      </p>
+      <div class="formula-box">
+        P(not A) = 1 - P(A)<br><br>
+        Equivalently written: P(A') = 1 - P(A) &nbsp; or &nbsp; P(A&#x0305;) = 1 - P(A)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- At Least One Head in 3 Coin Flips</div>
+        <p>Instead of counting all the ways to get at least one head (HHH, HHT, HTH, HTT, THH, THT, TTH), use the complement:</p>
+        <p>P(at least one head) = 1 - P(no heads) = 1 - P(TTT)</p>
+        <p>P(TTT) = (1/2)^3 = 1/8</p>
+        <p>P(at least one head) = 1 - 1/8 = <strong>7/8 = 0.875</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Programming Analogy</div>
+        <p>The complement rule is like the <code>!</code> (NOT) operator in code. If you know <code>P(condition)</code>, then <code>P(!condition) = 1 - P(condition)</code>. Whenever you see "at least one" in a probability problem, think complement first.</p>
+      </div>
+
+      <h3>The Addition Rule (OR)</h3>
+      <p>
+        The probability that <strong>A or B</strong> (or both) happens:
+      </p>
+      <div class="formula-box">
+        P(A or B) = P(A) + P(B) - P(A and B)
+      </div>
+      <p>
+        We subtract P(A and B) because we would count those outcomes twice otherwise --
+        once when counting A and again when counting B.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Drawing a Card</div>
+        <p>What is the probability of drawing a King or a Heart from a standard 52-card deck?</p>
+        <p>P(King) = 4/52</p>
+        <p>P(Heart) = 13/52</p>
+        <p>P(King AND Heart) = P(King of Hearts) = 1/52</p>
+        <p>P(King OR Heart) = 4/52 + 13/52 - 1/52 = <strong>16/52 = 4/13 &approx; 0.308</strong></p>
+      </div>
+
+      <h3>Mutually Exclusive Events</h3>
+      <p>
+        Two events are <strong>mutually exclusive</strong> (or <strong>disjoint</strong>) if they cannot happen at
+        the same time. When events are mutually exclusive, <code>P(A and B) = 0</code>, so the addition rule simplifies:
+      </p>
+      <div class="formula-box">
+        If A and B are mutually exclusive:<br>
+        P(A or B) = P(A) + P(B)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Rolling a Die</div>
+        <p>P(rolling a 2 or rolling a 5) = ?</p>
+        <p>These are mutually exclusive -- you cannot roll both at once.</p>
+        <p>P(2 or 5) = P(2) + P(5) = 1/6 + 1/6 = <strong>2/6 = 1/3</strong></p>
+      </div>
+
+      <h3>The Multiplication Rule (AND)</h3>
+      <p>
+        The probability that <strong>both A and B</strong> happen:
+      </p>
+      <div class="formula-box">
+        P(A and B) = P(A) &times; P(B | A)
+      </div>
+      <p>
+        Here, P(B | A) is the probability of B <strong>given that</strong> A has already occurred (conditional probability --
+        we will cover this fully in the next section).
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Drawing Two Cards Without Replacement</div>
+        <p>What is the probability of drawing two Aces in a row from a deck (without putting the first card back)?</p>
+        <p>P(1st Ace) = 4/52</p>
+        <p>P(2nd Ace | 1st was Ace) = 3/51 &nbsp; (one fewer Ace, one fewer card in the deck)</p>
+        <p>P(both Aces) = (4/52) &times; (3/51) = 12/2652 = <strong>1/221 &approx; 0.0045</strong></p>
+      </div>
+
+      <h3>Independent Events</h3>
+      <p>
+        Two events are <strong>independent</strong> if the occurrence of one does not affect the probability of the other.
+        For independent events, the multiplication rule simplifies because P(B | A) = P(B):
+      </p>
+      <div class="formula-box">
+        If A and B are independent:<br>
+        P(A and B) = P(A) &times; P(B)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Flipping Two Coins</div>
+        <p>P(1st coin heads AND 2nd coin heads) = ?</p>
+        <p>Coin flips are independent -- what the first coin does has no effect on the second.</p>
+        <p>P(HH) = P(H) &times; P(H) = (1/2) &times; (1/2) = <strong>1/4 = 0.25</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Password Brute Force</div>
+        <p>A 4-digit PIN where each digit is independent and chosen from 0-9:</p>
+        <p>P(guessing correctly) = P(1st digit correct) &times; P(2nd) &times; P(3rd) &times; P(4th)</p>
+        <p>= (1/10) &times; (1/10) &times; (1/10) &times; (1/10) = <strong>1/10,000 = 0.0001</strong></p>
+        <p>This is why longer passwords are exponentially harder to crack!</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Common Mistake</div>
+        <p>Do not confuse <strong>mutually exclusive</strong> with <strong>independent</strong>! They are different concepts. Mutually exclusive events are actually <em>dependent</em> -- if one happens, the other definitely cannot (P = 0). Independent events can absolutely happen at the same time.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 3: Conditional Probability -->
+    <!-- ======================================================= -->
+    <section id="conditional">
+      <h2>3. Conditional Probability</h2>
+
+      <p>
+        Conditional probability answers the question: <strong>"What is the probability of A, given that B has already happened?"</strong>
+        The notation P(A | B) reads as "the probability of A given B."
+      </p>
+
+      <div class="formula-box">
+        P(A | B) = P(A and B) / P(B) &nbsp;&nbsp;&nbsp; (where P(B) &gt; 0)
+      </div>
+
+      <p>
+        The idea is that once B has happened, our sample space shrinks to only the outcomes where B is true.
+        We then ask: of those outcomes, how many also include A?
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Die Roll with Information</div>
+        <p>You roll a fair die. Someone tells you the result is greater than 3. What is the probability it is a 5?</p>
+        <p><strong>Event A:</strong> rolling a 5 = {5}</p>
+        <p><strong>Event B:</strong> rolling greater than 3 = {4, 5, 6}</p>
+        <p>P(A and B) = P({5}) = 1/6</p>
+        <p>P(B) = P({4, 5, 6}) = 3/6 = 1/2</p>
+        <p>P(A | B) = (1/6) / (1/2) = <strong>1/3 &approx; 0.333</strong></p>
+        <p>Knowing the roll is greater than 3 narrows our world to three possibilities, and 5 is one of them.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Colored Balls in a Bag</div>
+        <p>A bag has 5 red balls and 3 blue balls. You draw one ball (red), keep it out, then draw another. What is the probability the second ball is red?</p>
+        <p>After drawing one red ball, the bag has 4 red and 3 blue balls (7 total).</p>
+        <p>P(2nd red | 1st red) = 4/7 <strong>&approx; 0.571</strong></p>
+        <p>This is conditional probability in action -- the first draw changes the conditions for the second.</p>
+      </div>
+
+      <h3>Tree Diagrams</h3>
+      <p>
+        A tree diagram is a visual tool for mapping out sequential events. Each branch represents a possible outcome
+        with its probability. To find the probability of a specific path, you multiply along the branches.
+        To find the total probability of an event, you add up all paths leading to it.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Tree Diagram (Textual)</div>
+        <p>A company has two servers. Server A handles 60% of requests, Server B handles 40%. Server A fails 5% of the time, Server B fails 10% of the time. What is the probability a random request fails?</p>
+        <pre><code>                     +----- Fail (0.05)   --> P = 0.60 x 0.05 = 0.030
+       +-- Server A --+
+       |   (0.60)     +----- OK   (0.95)   --> P = 0.60 x 0.95 = 0.570
+ Start-+
+       |              +----- Fail (0.10)   --> P = 0.40 x 0.10 = 0.040
+       +-- Server B --+
+           (0.40)     +----- OK   (0.90)   --> P = 0.40 x 0.90 = 0.360</code></pre>
+        <p>P(fail) = 0.030 + 0.040 = <strong>0.070 = 7%</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Tree diagrams are your best friend for multi-step probability problems. Even if you do not draw them on paper, thinking in terms of "branches" helps you organize your calculation. Each branch multiplies, parallel branches add.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 4: Bayes' Theorem -->
+    <!-- ======================================================= -->
+    <section id="bayes">
+      <h2>4. Bayes' Theorem</h2>
+
+      <p>
+        Bayes' theorem is arguably <strong>the single most important formula in machine learning and data science</strong>.
+        It lets you <strong>update your beliefs</strong> when you receive new evidence. It flips conditional probability
+        around: if you know P(B | A), Bayes tells you P(A | B).
+      </p>
+
+      <div class="formula-box">
+        P(A | B) = [ P(B | A) &times; P(A) ] / P(B)
+      </div>
+
+      <h3>Deriving Bayes' Theorem</h3>
+      <p>The derivation is straightforward from the definition of conditional probability:</p>
+      <div class="formula-box">
+        From the definition:&nbsp; P(A | B) = P(A and B) / P(B)<br><br>
+        We also know:&nbsp; P(A and B) = P(B | A) &times; P(A)<br><br>
+        Substitute:&nbsp; P(A | B) = [ P(B | A) &times; P(A) ] / P(B)
+      </div>
+
+      <h3>The Terms Have Names</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Name</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>P(A)</td>
+            <td>Prior</td>
+            <td>What you believed before seeing evidence</td>
+          </tr>
+          <tr>
+            <td>P(B | A)</td>
+            <td>Likelihood</td>
+            <td>How likely the evidence is if A is true</td>
+          </tr>
+          <tr>
+            <td>P(B)</td>
+            <td>Evidence (Marginal)</td>
+            <td>How likely the evidence is overall</td>
+          </tr>
+          <tr>
+            <td>P(A | B)</td>
+            <td>Posterior</td>
+            <td>Your updated belief after seeing evidence</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Classic Example -- Medical Test Accuracy</div>
+        <p>A disease affects 1 in 1,000 people. A test for the disease is 99% accurate (it correctly identifies 99% of sick people, and correctly identifies 99% of healthy people). You test positive. What is the probability you actually have the disease?</p>
+        <p><strong>Your intuition probably says 99%. The real answer is shocking.</strong></p>
+        <p>Let D = has disease, T+ = tests positive.</p>
+        <p>P(D) = 0.001 &nbsp; (prior -- 1 in 1,000 people are sick)</p>
+        <p>P(T+ | D) = 0.99 &nbsp; (sensitivity -- test catches 99% of sick people)</p>
+        <p>P(T+ | not D) = 0.01 &nbsp; (false positive rate -- 1% of healthy people test positive)</p>
+        <p>We need P(D | T+). First, find P(T+) using the law of total probability:</p>
+        <p>P(T+) = P(T+ | D) &times; P(D) + P(T+ | not D) &times; P(not D)</p>
+        <p>P(T+) = (0.99)(0.001) + (0.01)(0.999) = 0.00099 + 0.00999 = 0.01098</p>
+        <p>Now apply Bayes:</p>
+        <p>P(D | T+) = (0.99 &times; 0.001) / 0.01098 = 0.00099 / 0.01098 = <strong>0.0902 &approx; 9%</strong></p>
+        <p><strong>Even with a 99% accurate test, a positive result only means a 9% chance of having the disease!</strong> This is because the disease is so rare that false positives vastly outnumber true positives.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Why This Matters</div>
+        <p>The medical test example is not just academic. This is the <strong>base rate fallacy</strong> -- ignoring how rare a condition is when interpreting test results. It is one of the most common reasoning errors humans make, and understanding Bayes' theorem is the cure.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">CS Example -- Spam Filter (Naive Bayes)</div>
+        <p>This is exactly how early spam filters worked (and many still do). Suppose:</p>
+        <p>P(spam) = 0.40 &nbsp; (40% of all emails are spam)</p>
+        <p>P("free" | spam) = 0.70 &nbsp; (70% of spam emails contain the word "free")</p>
+        <p>P("free" | not spam) = 0.05 &nbsp; (5% of legitimate emails contain "free")</p>
+        <p><strong>An email contains the word "free." What is the probability it is spam?</strong></p>
+        <p>P("free") = P("free" | spam) &times; P(spam) + P("free" | not spam) &times; P(not spam)</p>
+        <p>P("free") = (0.70)(0.40) + (0.05)(0.60) = 0.28 + 0.03 = 0.31</p>
+        <p>P(spam | "free") = (0.70 &times; 0.40) / 0.31 = 0.28 / 0.31 = <strong>0.903 &approx; 90.3%</strong></p>
+        <p>An email containing "free" is about 90% likely to be spam! In practice, Naive Bayes classifiers combine evidence from many words, not just one.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Defective Parts from Two Factories</div>
+        <p>Factory X produces 70% of parts, Factory Y produces 30%. Factory X has a 2% defect rate, Factory Y has a 5% defect rate. A randomly chosen part is defective. Which factory most likely made it?</p>
+        <p>P(defective) = (0.02)(0.70) + (0.05)(0.30) = 0.014 + 0.015 = 0.029</p>
+        <p>P(X | defective) = (0.02 &times; 0.70) / 0.029 = 0.014 / 0.029 = <strong>0.483 &approx; 48.3%</strong></p>
+        <p>P(Y | defective) = (0.05 &times; 0.30) / 0.029 = 0.015 / 0.029 = <strong>0.517 &approx; 51.7%</strong></p>
+        <p>Even though Factory X produces most parts, Factory Y is slightly more likely to be the source of a defective part because of its higher defect rate.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>When applying Bayes' theorem, always start by identifying your prior P(A), your likelihood P(B|A), and then compute P(B) using the law of total probability. This three-step approach works every time.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 5: Permutations and Combinations -->
+    <!-- ======================================================= -->
+    <section id="perms-combs">
+      <h2>5. Permutations &amp; Combinations (Review)</h2>
+
+      <p>
+        Permutations and combinations are the counting tools you need when computing probabilities.
+        They answer a simple question: <strong>how many ways can we choose or arrange items?</strong>
+        (For a deeper treatment, see the <a href="discrete-math.html" style="color:#000000;">Discrete Math</a> page.)
+      </p>
+
+      <h3>Factorial</h3>
+      <div class="formula-box">
+        n! = n &times; (n-1) &times; (n-2) &times; ... &times; 2 &times; 1<br><br>
+        0! = 1 &nbsp; (by definition)<br>
+        5! = 5 &times; 4 &times; 3 &times; 2 &times; 1 = 120
+      </div>
+
+      <h3>Permutations -- Order Matters</h3>
+      <p>
+        A permutation counts the number of ways to <strong>arrange r items from n items</strong>,
+        where the order of selection matters.
+      </p>
+      <div class="formula-box">
+        P(n, r) = n! / (n - r)!
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Podium Finishers</div>
+        <p>In a race with 10 runners, how many different ways can the gold, silver, and bronze be awarded?</p>
+        <p>P(10, 3) = 10! / 7! = 10 &times; 9 &times; 8 = <strong>720</strong></p>
+        <p>Order matters because gold is different from silver.</p>
+      </div>
+
+      <h3>Combinations -- Order Does Not Matter</h3>
+      <p>
+        A combination counts the number of ways to <strong>choose r items from n items</strong>,
+        where order does not matter.
+      </p>
+      <div class="formula-box">
+        C(n, r) = n! / [ r! &times; (n - r)! ]
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Choosing a Team</div>
+        <p>How many ways can you choose 3 people from a group of 10 to form a committee?</p>
+        <p>C(10, 3) = 10! / (3! &times; 7!) = (10 &times; 9 &times; 8) / (3 &times; 2 &times; 1) = 720 / 6 = <strong>120</strong></p>
+        <p>Order does not matter -- choosing {Alice, Bob, Charlie} is the same committee as {Charlie, Alice, Bob}.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Quick Decision Guide</div>
+        <p><strong>Ask yourself: "Does the order of selection change the outcome?"</strong></p>
+        <ul>
+          <li><strong>Yes</strong> (passwords, rankings, arrangements) -- use <strong>Permutations</strong></li>
+          <li><strong>No</strong> (teams, hands of cards, committees) -- use <strong>Combinations</strong></li>
+        </ul>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 6: Random Variables -->
+    <!-- ======================================================= -->
+    <section id="random-variables">
+      <h2>6. Random Variables</h2>
+
+      <p>
+        A <strong>random variable</strong> is a variable whose value is determined by a random process.
+        It is a function that maps each outcome in the sample space to a number. We use capital letters
+        (X, Y, Z) for random variables and lowercase (x, y, z) for specific values they take.
+      </p>
+
+      <h3>Discrete Random Variables</h3>
+      <p>
+        A discrete random variable takes on a <strong>countable</strong> number of values -- you can list them out.
+        Think integers: number of heads in 10 flips, number of bugs in your code, number of users online.
+      </p>
+      <p>
+        A <strong>probability mass function (PMF)</strong> gives the probability that a discrete random variable
+        equals each specific value:
+      </p>
+      <div class="formula-box">
+        PMF: P(X = x) for each possible value x<br><br>
+        Rules: &nbsp; 0 &le; P(X = x) &le; 1 &nbsp; for all x<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &Sigma; P(X = x) = 1 &nbsp; (probabilities must sum to 1)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- PMF of Two Coin Flips</div>
+        <p>Let X = number of heads in 2 fair coin flips.</p>
+        <p>Possible outcomes: HH, HT, TH, TT</p>
+        <table>
+          <thead><tr><th>x (heads)</th><th>Outcomes</th><th>P(X = x)</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>TT</td><td>1/4</td></tr>
+            <tr><td>1</td><td>HT, TH</td><td>2/4 = 1/2</td></tr>
+            <tr><td>2</td><td>HH</td><td>1/4</td></tr>
+          </tbody>
+        </table>
+        <p>Check: 1/4 + 1/2 + 1/4 = 1. The probabilities sum to 1.</p>
+      </div>
+
+      <h3>Continuous Random Variables</h3>
+      <p>
+        A continuous random variable can take on <strong>any value in a range</strong> (uncountably many values).
+        Think real numbers: exact height, exact time until a server responds, temperature.
+      </p>
+      <p>
+        Since there are infinitely many possible values, the probability of any single exact value is 0.
+        Instead, we use a <strong>probability density function (PDF)</strong> and calculate probabilities over intervals:
+      </p>
+      <div class="formula-box">
+        PDF: f(x)<br><br>
+        P(a &le; X &le; b) = integral of f(x) from a to b<br><br>
+        Rules: &nbsp; f(x) &ge; 0 &nbsp; for all x<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total area under f(x) = 1
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Programming Analogy</div>
+        <p>Think of discrete random variables like integer types (<code>int</code>) -- they take specific, countable values. Continuous random variables are like floating-point types (<code>float</code>, <code>double</code>) -- they can take any value in a range. The PMF is like a dictionary mapping values to probabilities; the PDF is like a mathematical function you integrate over a range.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 7: Common Distributions -->
+    <!-- ======================================================= -->
+    <section id="distributions">
+      <h2>7. Common Distributions</h2>
+
+      <p>
+        A probability distribution describes all the possible values a random variable can take and their probabilities.
+        Here are the distributions you will encounter most often in CS.
+      </p>
+
+      <h3>Bernoulli Distribution</h3>
+      <p>
+        The simplest distribution: a single trial with two outcomes -- <strong>success</strong> (1) with probability p,
+        or <strong>failure</strong> (0) with probability 1-p.
+      </p>
+      <div class="formula-box">
+        X ~ Bernoulli(p)<br><br>
+        P(X = 1) = p<br>
+        P(X = 0) = 1 - p<br><br>
+        E[X] = p &nbsp;&nbsp;&nbsp; Var(X) = p(1 - p)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Single Bit Flip</div>
+        <p>A network has a 3% bit error rate. For a single bit: X ~ Bernoulli(0.03)</p>
+        <p>P(bit is corrupted) = 0.03</p>
+        <p>P(bit is fine) = 0.97</p>
+      </div>
+
+      <h3>Binomial Distribution</h3>
+      <p>
+        The result of <strong>n independent Bernoulli trials</strong>. It counts how many successes you get
+        in n attempts, each with success probability p.
+      </p>
+      <div class="formula-box">
+        X ~ Binomial(n, p)<br><br>
+        P(X = k) = C(n, k) &times; p^k &times; (1 - p)^(n - k)<br><br>
+        E[X] = np &nbsp;&nbsp;&nbsp; Var(X) = np(1 - p)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Server Uptime</div>
+        <p>You have 5 independent servers, each with 95% uptime (p = 0.95). What is the probability that exactly 4 are running?</p>
+        <p>X ~ Binomial(5, 0.95), find P(X = 4):</p>
+        <p>P(X = 4) = C(5, 4) &times; (0.95)^4 &times; (0.05)^1</p>
+        <p>= 5 &times; 0.8145 &times; 0.05</p>
+        <p>= <strong>0.2036 &approx; 20.4%</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When to Use Binomial</div>
+        <p>Use the binomial distribution when you have: (1) a fixed number of trials n, (2) each trial is independent, (3) each trial has only two outcomes (success/failure), and (4) the probability p is the same for every trial.</p>
+      </div>
+
+      <h3>Uniform Distribution</h3>
+      <p>
+        Every outcome is equally likely. Comes in two flavors:
+      </p>
+      <div class="formula-box">
+        <strong>Discrete Uniform:</strong> X takes values {a, a+1, ..., b}, each with probability 1/(b - a + 1)<br><br>
+        <strong>Continuous Uniform:</strong> X ~ Uniform(a, b)<br>
+        f(x) = 1/(b - a) &nbsp; for a &le; x &le; b<br><br>
+        E[X] = (a + b) / 2 &nbsp;&nbsp;&nbsp; Var(X) = (b - a)^2 / 12
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Random Number Generator</div>
+        <p><code>Math.random()</code> in JavaScript returns a value from the continuous uniform distribution on [0, 1).</p>
+        <p>P(0.3 &le; X &le; 0.7) = 0.7 - 0.3 = <strong>0.4</strong></p>
+        <p>The probability of landing in any interval is just the length of that interval (divided by the total range).</p>
+      </div>
+
+      <h3>Normal (Gaussian) Distribution</h3>
+      <p>
+        The famous <strong>bell curve</strong>. It is defined by its mean <strong>&mu;</strong> (center) and
+        standard deviation <strong>&sigma;</strong> (spread). It appears everywhere in nature and statistics thanks to
+        the Central Limit Theorem: the average of many independent random variables tends toward a normal distribution.
+      </p>
+      <div class="formula-box">
+        X ~ Normal(&mu;, &sigma;&sup2;)<br><br>
+        f(x) = (1 / &sigma;&radic;(2&pi;)) &times; e^(-(x - &mu;)&sup2; / (2&sigma;&sup2;))<br><br>
+        E[X] = &mu; &nbsp;&nbsp;&nbsp; Var(X) = &sigma;&sup2;
+      </div>
+
+      <p><strong>The 68-95-99.7 Rule (Empirical Rule):</strong></p>
+      <ul>
+        <li>About <strong>68%</strong> of data falls within 1 standard deviation of the mean (&mu; &plusmn; &sigma;)</li>
+        <li>About <strong>95%</strong> of data falls within 2 standard deviations (&mu; &plusmn; 2&sigma;)</li>
+        <li>About <strong>99.7%</strong> of data falls within 3 standard deviations (&mu; &plusmn; 3&sigma;)</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Example -- Response Times</div>
+        <p>A web API has response times normally distributed with &mu; = 200ms and &sigma; = 30ms.</p>
+        <p>68% of requests complete between 170ms and 230ms (200 &plusmn; 30)</p>
+        <p>95% complete between 140ms and 260ms (200 &plusmn; 60)</p>
+        <p>A response taking 290ms (3&sigma; above mean) is very unusual -- only about 0.15% of requests are that slow.</p>
+      </div>
+
+      <h3>Poisson Distribution</h3>
+      <p>
+        Models the number of events occurring in a <strong>fixed interval</strong> of time or space,
+        when events happen independently at a constant average rate &lambda; (lambda).
+      </p>
+      <div class="formula-box">
+        X ~ Poisson(&lambda;)<br><br>
+        P(X = k) = (e^(-&lambda;) &times; &lambda;^k) / k!<br><br>
+        E[X] = &lambda; &nbsp;&nbsp;&nbsp; Var(X) = &lambda;
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Website Errors</div>
+        <p>A website averages 3 server errors per hour (&lambda; = 3). What is the probability of exactly 0 errors in the next hour?</p>
+        <p>P(X = 0) = (e^(-3) &times; 3^0) / 0! = e^(-3) &times; 1 / 1 = e^(-3) &approx; <strong>0.0498 &approx; 5%</strong></p>
+        <p>So there is about a 5% chance of a completely error-free hour.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When to Use Poisson</div>
+        <p>Use Poisson when counting occurrences per unit of time/space: website hits per minute, typos per page, network packets per second, bugs per 1000 lines of code. The key assumption is that events happen independently at a constant rate.</p>
+      </div>
+
+      <h3>Distribution Summary Table</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Distribution</th>
+            <th>Type</th>
+            <th>Use When</th>
+            <th>E[X]</th>
+            <th>Var(X)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bernoulli(p)</td>
+            <td>Discrete</td>
+            <td>Single yes/no trial</td>
+            <td>p</td>
+            <td>p(1-p)</td>
+          </tr>
+          <tr>
+            <td>Binomial(n,p)</td>
+            <td>Discrete</td>
+            <td>Count successes in n trials</td>
+            <td>np</td>
+            <td>np(1-p)</td>
+          </tr>
+          <tr>
+            <td>Uniform(a,b)</td>
+            <td>Both</td>
+            <td>All outcomes equally likely</td>
+            <td>(a+b)/2</td>
+            <td>(b-a)&sup2;/12</td>
+          </tr>
+          <tr>
+            <td>Normal(&mu;,&sigma;&sup2;)</td>
+            <td>Continuous</td>
+            <td>Natural phenomena, averages</td>
+            <td>&mu;</td>
+            <td>&sigma;&sup2;</td>
+          </tr>
+          <tr>
+            <td>Poisson(&lambda;)</td>
+            <td>Discrete</td>
+            <td>Events per time interval</td>
+            <td>&lambda;</td>
+            <td>&lambda;</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 8: Expected Value and Variance -->
+    <!-- ======================================================= -->
+    <section id="expected-value">
+      <h2>8. Expected Value &amp; Variance</h2>
+
+      <h3>Expected Value (Mean)</h3>
+      <p>
+        The <strong>expected value</strong> E[X] is the long-run average of a random variable -- what you would
+        get on average if you repeated the experiment infinitely many times. It is a <strong>weighted average</strong>
+        of all possible values, where each value is weighted by its probability.
+      </p>
+      <div class="formula-box">
+        For discrete random variables:<br><br>
+        E[X] = &Sigma; x &times; P(X = x) &nbsp; (sum over all possible values of x)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Expected Value of a Die Roll</div>
+        <p>X = result of rolling a fair six-sided die.</p>
+        <p>E[X] = 1(1/6) + 2(1/6) + 3(1/6) + 4(1/6) + 5(1/6) + 6(1/6)</p>
+        <p>= (1 + 2 + 3 + 4 + 5 + 6) / 6 = 21/6 = <strong>3.5</strong></p>
+        <p>You can never roll a 3.5, but over many rolls, the average converges to 3.5.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">CS Example -- Expected Comparisons in Linear Search</div>
+        <p>Searching for a random element in an array of n elements (assuming it is present and equally likely to be at any position):</p>
+        <p>E[comparisons] = 1(1/n) + 2(1/n) + 3(1/n) + ... + n(1/n)</p>
+        <p>= (1 + 2 + ... + n) / n = n(n+1)/(2n) = <strong>(n+1)/2</strong></p>
+        <p>On average, linear search checks about half the array. This is why we say it has O(n) average complexity.</p>
+      </div>
+
+      <h3>Properties of Expected Value</h3>
+      <div class="formula-box">
+        E[aX + b] = a &times; E[X] + b &nbsp;&nbsp; (scaling and shifting)<br><br>
+        E[X + Y] = E[X] + E[Y] &nbsp;&nbsp; (always true, even if X and Y are dependent!)<br><br>
+        E[XY] = E[X] &times; E[Y] &nbsp;&nbsp; (only if X and Y are independent)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Linearity of Expectation</div>
+        <p>You roll two dice. What is the expected sum?</p>
+        <p>E[die1 + die2] = E[die1] + E[die2] = 3.5 + 3.5 = <strong>7</strong></p>
+        <p>This works even though the two dice create 36 different outcomes. Linearity of expectation is a surprisingly powerful shortcut!</p>
+      </div>
+
+      <h3>Variance and Standard Deviation</h3>
+      <p>
+        While expected value tells you the center, <strong>variance</strong> tells you <strong>how spread out</strong>
+        the values are around that center. <strong>Standard deviation</strong> is the square root of variance and has
+        the same units as the original variable.
+      </p>
+      <div class="formula-box">
+        Var(X) = E[(X - E[X])&sup2;] = E[X&sup2;] - (E[X])&sup2;<br><br>
+        Standard Deviation: &sigma; = &radic;Var(X)<br><br>
+        Properties:<br>
+        Var(aX + b) = a&sup2; &times; Var(X) &nbsp; (constants shift but don't spread; scaling squares)<br>
+        Var(X + Y) = Var(X) + Var(Y) &nbsp; (only if X and Y are independent)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Variance of a Die Roll</div>
+        <p>E[X] = 3.5 (from above)</p>
+        <p>E[X&sup2;] = 1&sup2;(1/6) + 2&sup2;(1/6) + 3&sup2;(1/6) + 4&sup2;(1/6) + 5&sup2;(1/6) + 6&sup2;(1/6)</p>
+        <p>= (1 + 4 + 9 + 16 + 25 + 36) / 6 = 91/6 &approx; 15.167</p>
+        <p>Var(X) = E[X&sup2;] - (E[X])&sup2; = 91/6 - (3.5)&sup2; = 91/6 - 12.25 = <strong>35/12 &approx; 2.917</strong></p>
+        <p>&sigma; = &radic;(35/12) &approx; <strong>1.708</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares</div>
+        <p>Expected value is the foundation of algorithm analysis. When we say quicksort is O(n log n) "on average," we mean the expected number of comparisons is proportional to n log n. Variance tells you how much the actual runtime might deviate from that average -- a low-variance algorithm is more predictable, which matters for real-time systems.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 9: Basic Statistics -->
+    <!-- ======================================================= -->
+    <section id="basic-stats">
+      <h2>9. Basic Statistics</h2>
+
+      <p>
+        Statistics is the practice of collecting, organizing, and interpreting data. While probability predicts
+        what <em>should</em> happen, statistics analyzes what <em>did</em> happen. Here are the key descriptive
+        statistics you need to know.
+      </p>
+
+      <h3>Measures of Central Tendency</h3>
+
+      <p><strong>Mean (Average):</strong> Sum of all values divided by the count. Sensitive to outliers.</p>
+      <div class="formula-box">
+        Mean = (x_1 + x_2 + ... + x_n) / n = (&Sigma; x_i) / n
+      </div>
+
+      <p><strong>Median:</strong> The middle value when data is sorted. Robust to outliers.</p>
+      <ul>
+        <li>If n is odd: median = middle value</li>
+        <li>If n is even: median = average of the two middle values</li>
+      </ul>
+
+      <p><strong>Mode:</strong> The most frequently occurring value. Can have multiple modes or none.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Salary Data</div>
+        <p>Team salaries: $50k, $55k, $60k, $65k, $70k, $500k (the CEO)</p>
+        <p><strong>Mean:</strong> (50 + 55 + 60 + 65 + 70 + 500) / 6 = 800/6 = <strong>$133.3k</strong></p>
+        <p><strong>Median:</strong> Sort and find middle. With 6 values, average positions 3 and 4: (60 + 65)/2 = <strong>$62.5k</strong></p>
+        <p>The mean ($133.3k) is misleading -- nobody on the team earns close to that. The median ($62.5k) better represents the "typical" salary. This is why median household income is more meaningful than mean household income.</p>
+      </div>
+
+      <h3>Range</h3>
+      <div class="formula-box">
+        Range = Maximum value - Minimum value
+      </div>
+      <p>Simple but crude -- it only looks at two data points and is heavily influenced by outliers.</p>
+
+      <h3>Standard Deviation</h3>
+      <p>
+        Measures how spread out the data is from the mean. A small standard deviation means data points
+        cluster tightly around the mean; a large one means they are spread out.
+      </p>
+      <div class="formula-box">
+        Population standard deviation:&nbsp; &sigma; = &radic;[ &Sigma;(x_i - &mu;)&sup2; / N ]<br><br>
+        Sample standard deviation:&nbsp; s = &radic;[ &Sigma;(x_i - x&#x0305;)&sup2; / (n - 1) ]
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Population vs Sample</div>
+        <p>If your data is the <strong>entire population</strong> (every possible data point), divide by N. If your data is a <strong>sample</strong> (a subset), divide by n-1. The n-1 correction (called Bessel's correction) prevents underestimating the true variability. In CS, you almost always work with samples.</p>
+      </div>
+
+      <h3>Percentiles and Quartiles</h3>
+      <p>
+        A <strong>percentile</strong> tells you what percentage of data falls below a given value.
+        <strong>Quartiles</strong> divide data into four equal parts:
+      </p>
+      <ul>
+        <li><strong>Q1 (25th percentile):</strong> 25% of data below this value</li>
+        <li><strong>Q2 (50th percentile):</strong> The median -- 50% below</li>
+        <li><strong>Q3 (75th percentile):</strong> 75% of data below this value</li>
+        <li><strong>IQR (Interquartile Range):</strong> Q3 - Q1, measures the spread of the middle 50%</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">CS Example -- Latency Percentiles</div>
+        <p>Web services commonly report latency percentiles:</p>
+        <ul>
+          <li><strong>p50 = 45ms:</strong> Half of requests complete in 45ms or less</li>
+          <li><strong>p95 = 120ms:</strong> 95% of requests complete in 120ms or less</li>
+          <li><strong>p99 = 800ms:</strong> 99% complete in 800ms or less (the "tail latency")</li>
+        </ul>
+        <p>The p99 is crucial -- it tells you the experience of your worst-off 1% of users. A service with great p50 but terrible p99 has a hidden reliability problem.</p>
+      </div>
+
+      <h3>When to Use Each Measure</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Measure</th>
+            <th>Best For</th>
+            <th>Watch Out For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mean</td>
+            <td>Symmetric data, calculating totals</td>
+            <td>Skewed by outliers</td>
+          </tr>
+          <tr>
+            <td>Median</td>
+            <td>Skewed data, income, home prices</td>
+            <td>Ignores extreme values</td>
+          </tr>
+          <tr>
+            <td>Mode</td>
+            <td>Categorical data, most common value</td>
+            <td>May not exist or may be multiple</td>
+          </tr>
+          <tr>
+            <td>Standard Deviation</td>
+            <td>Measuring consistency/reliability</td>
+            <td>Affected by outliers (like mean)</td>
+          </tr>
+          <tr>
+            <td>Percentiles</td>
+            <td>Understanding distribution shape</td>
+            <td>Need enough data points</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 10: CS Applications -->
+    <!-- ======================================================= -->
+    <section id="cs-applications">
+      <h2>10. CS Applications</h2>
+
+      <p>
+        Here is where probability and statistics come alive in computer science. These are real problems
+        you will encounter as a developer, and probability gives you the tools to reason about them.
+      </p>
+
+      <h3>Hash Function Collision Probability</h3>
+      <p>
+        A hash function maps inputs to a fixed-size output (e.g., 256 bits). When two different inputs produce
+        the same hash, that is a <strong>collision</strong>. How likely is it?
+      </p>
+      <p>
+        If your hash function has m possible outputs and you hash n items, the probability of at least one
+        collision is approximately:
+      </p>
+      <div class="formula-box">
+        P(collision) &approx; 1 - e^(-n&sup2; / (2m))
+      </div>
+      <p>
+        For a 128-bit hash (m = 2^128), you need about 2^64 items before a collision becomes likely.
+        This is why 128-bit hashes are considered secure for most purposes -- 2^64 is an astronomically large number.
+      </p>
+
+      <h3>The Birthday Problem (Birthday Paradox)</h3>
+      <p>
+        How many people do you need in a room before there is a 50% chance that two of them share a birthday?
+        Surprisingly, only <strong>23</strong>!
+      </p>
+
+      <div class="example-box">
+        <div class="label">Worked Example -- Birthday Problem</div>
+        <p>There are 365 possible birthdays (ignoring leap years). Instead of directly computing the probability of a match, we use the complement: what is the probability that <em>nobody</em> shares a birthday?</p>
+        <p>Person 1: any birthday. Probability of no conflict: 365/365</p>
+        <p>Person 2: must differ from person 1: 364/365</p>
+        <p>Person 3: must differ from persons 1 and 2: 363/365</p>
+        <p>...</p>
+        <p>Person n: (365 - n + 1)/365</p>
+        <p>P(no shared birthday among n people) = (365/365) &times; (364/365) &times; ... &times; ((365 - n + 1)/365)</p>
+        <p>P(at least one shared birthday) = 1 - P(no shared birthday)</p>
+        <p>For n = 23: P(match) &approx; <strong>50.7%</strong></p>
+        <p>For n = 50: P(match) &approx; <strong>97%</strong></p>
+        <p>For n = 70: P(match) &approx; <strong>99.9%</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Connection</div>
+        <p>The birthday problem is not about birthdays -- it is about <strong>collisions</strong>. The same math applies to hash collisions, UUID conflicts, random port assignments, and any situation where you are picking random values from a finite set. The general rule: collisions become likely after about &radic;m selections from m possibilities. This is called the <strong>birthday bound</strong>.</p>
+      </div>
+
+      <h3>Randomized Algorithms</h3>
+      <p>
+        Many algorithms use randomness to achieve better <strong>expected</strong> performance, even if worst-case
+        performance is still bad.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Quicksort Pivot Selection</div>
+        <p>Quicksort's performance depends on choosing a good pivot:</p>
+        <ul>
+          <li><strong>Worst case</strong> (bad pivot every time): O(n&sup2;)</li>
+          <li><strong>Expected case</strong> (random pivot): O(n log n)</li>
+        </ul>
+        <p>By choosing the pivot randomly, the probability of consistently picking the worst pivot is astronomically small. The expected number of comparisons is about 2n ln n &approx; 1.39n log&sub2; n.</p>
+        <p>This is why randomized quicksort is preferred in practice -- it has no "adversarial" inputs that can force worst-case behavior (unlike always picking the first element as pivot).</p>
+      </div>
+
+      <h3>Monte Carlo Methods</h3>
+      <p>
+        Monte Carlo methods use random sampling to estimate quantities that are hard to compute exactly.
+        The idea is simple: generate lots of random samples, and use them to approximate the answer.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Estimating Pi with Random Points</div>
+        <p>Draw a unit square [0,1] x [0,1] and inscribe a quarter circle of radius 1.</p>
+        <p>Area of quarter circle = &pi;/4. Area of square = 1.</p>
+        <p>Generate N random points in the square. Count how many fall inside the quarter circle (where x&sup2; + y&sup2; &le; 1).</p>
+        <p>&pi; &approx; 4 &times; (points inside circle) / (total points)</p>
+        <p>With 10,000 random points, you typically get &pi; &approx; 3.14 &plusmn; 0.02. With 1,000,000 points, the estimate becomes much more accurate.</p>
+      </div>
+
+      <h3>Machine Learning Connections</h3>
+      <p>Probability is the backbone of machine learning:</p>
+      <ul>
+        <li><strong>Naive Bayes:</strong> Directly applies Bayes' theorem for classification (spam detection, sentiment analysis). "Naive" because it assumes features are independent.</li>
+        <li><strong>Logistic Regression:</strong> Outputs the probability that an input belongs to a class. Uses the sigmoid function to map any value to [0, 1].</li>
+        <li><strong>Neural Networks:</strong> The softmax output layer converts raw scores to a probability distribution over classes.</li>
+        <li><strong>Training:</strong> Maximum Likelihood Estimation (MLE) finds model parameters that maximize the probability of observing the training data.</li>
+      </ul>
+
+      <h3>A/B Testing</h3>
+      <p>
+        A/B testing uses statistics to determine whether a change (new UI, different algorithm, pricing change)
+        actually improves a metric or whether the difference is just random chance.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example -- Testing a New Button Color</div>
+        <p>Version A (blue button): 1,000 visitors, 50 clicked (5.0% conversion)</p>
+        <p>Version B (green button): 1,000 visitors, 65 clicked (6.5% conversion)</p>
+        <p>Is the 1.5% difference real or just luck?</p>
+        <p>Statistical tests (like a chi-squared test or z-test for proportions) compute a <strong>p-value</strong> -- the probability of seeing this large a difference by pure chance.</p>
+        <p>If p-value &lt; 0.05 (the conventional threshold), we say the result is <strong>statistically significant</strong> and the green button likely performs better.</p>
+        <p>Without understanding probability, you might deploy changes that only appeared to work due to random variation.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Key Takeaway</div>
+        <p>Probability is not just theory -- it is a practical tool used daily in software engineering. From load balancers to recommendation engines, from security analysis to performance testing, understanding probability makes you a better engineer.</p>
+      </div>
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- SECTION 11: Practice Quiz -->
+    <!-- ======================================================= -->
+    <section id="quiz">
+      <h2>11. Practice Quiz</h2>
+      <p>Test your understanding. Think through each problem before clicking an answer.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q1: You flip a fair coin 4 times. What is the probability of getting at least one head?</h4>
+          <button onclick="checkAnswer(this, false)">A) 1/2</button>
+          <button onclick="checkAnswer(this, false)">B) 3/4</button>
+          <button onclick="checkAnswer(this, true)">C) 15/16</button>
+          <button onclick="checkAnswer(this, false)">D) 1</button>
+          <div class="explanation">
+            <strong>C) 15/16.</strong> Use the complement rule: P(at least one head) = 1 - P(no heads) = 1 - P(TTTT) = 1 - (1/2)^4 = 1 - 1/16 = 15/16 = 0.9375. The complement approach avoids counting all 15 favorable outcomes individually.
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q2: A disease affects 1% of the population. A test is 90% accurate (90% sensitivity, 90% specificity). If you test positive, what is the approximate probability you have the disease?</h4>
+          <button onclick="checkAnswer(this, true)">A) About 8.3%</button>
+          <button onclick="checkAnswer(this, false)">B) About 50%</button>
+          <button onclick="checkAnswer(this, false)">C) About 90%</button>
+          <button onclick="checkAnswer(this, false)">D) About 99%</button>
+          <div class="explanation">
+            <strong>A) About 8.3%.</strong> Applying Bayes' theorem: P(D|T+) = P(T+|D) &times; P(D) / P(T+). P(T+) = (0.90)(0.01) + (0.10)(0.99) = 0.009 + 0.099 = 0.108. So P(D|T+) = 0.009 / 0.108 &approx; 0.083 or 8.3%. The low base rate (1%) means most positive results are false positives. This is the base rate fallacy in action.
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q3: You have 8 programmers and need to choose a team of 3 for a hackathon. How many different teams are possible?</h4>
+          <button onclick="checkAnswer(this, false)">A) 24</button>
+          <button onclick="checkAnswer(this, false)">B) 336</button>
+          <button onclick="checkAnswer(this, true)">C) 56</button>
+          <button onclick="checkAnswer(this, false)">D) 512</button>
+          <div class="explanation">
+            <strong>C) 56.</strong> Order does not matter (the team {Alice, Bob, Carol} is the same as {Carol, Alice, Bob}), so use combinations: C(8,3) = 8! / (3! &times; 5!) = (8 &times; 7 &times; 6) / (3 &times; 2 &times; 1) = 336 / 6 = 56.
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q4: A server has 99.9% uptime (p = 0.999). With 3 independent servers and the system fails only if ALL 3 fail, what is the system's uptime probability?</h4>
+          <button onclick="checkAnswer(this, false)">A) 99.9%</button>
+          <button onclick="checkAnswer(this, false)">B) 99.97%</button>
+          <button onclick="checkAnswer(this, false)">C) 99.99%</button>
+          <button onclick="checkAnswer(this, true)">D) 99.9999999%</button>
+          <div class="explanation">
+            <strong>D) 99.9999999% (nine nines!).</strong> The system fails only if all 3 fail. P(all fail) = (0.001)^3 = 0.000000001. P(system up) = 1 - 0.000000001 = 0.999999999. This is why redundancy is so powerful in distributed systems -- multiplying independent failure probabilities gives exponentially better reliability.
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q5: A random variable X has values {1, 2, 3} with probabilities {0.2, 0.5, 0.3}. What is E[X]?</h4>
+          <button onclick="checkAnswer(this, false)">A) 2.0</button>
+          <button onclick="checkAnswer(this, true)">B) 2.1</button>
+          <button onclick="checkAnswer(this, false)">C) 2.5</button>
+          <button onclick="checkAnswer(this, false)">D) 3.0</button>
+          <div class="explanation">
+            <strong>B) 2.1.</strong> E[X] = 1(0.2) + 2(0.5) + 3(0.3) = 0.2 + 1.0 + 0.9 = 2.1. Expected value is a weighted average -- each value is multiplied by how likely it is. Note that 2.1 is not one of the possible values of X, and that is fine. Expected value is a long-run average, not a value X must take.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered === 'true') return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

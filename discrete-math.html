@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discrete Math -- Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html" class="active">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Discrete Math</div>
+      <h1>Discrete Mathematics</h1>
+      <p>The branch of mathematics built specifically for computer science. Logic, sets, graphs, counting, proofs -- this is where math and programming truly merge.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why This Is the Most Important Math for CS</div>
+      <p>If you only study one branch of math for computer science, make it discrete math. Every <code>if</code> statement is logic. Every database query is set theory. Every algorithm analysis is Big-O. Every recursive function needs induction to prove correct. This page covers the mathematical foundations you will use every single day as a programmer.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#logic">1. Logic and Propositions</a>
+      <a href="#sets">2. Sets</a>
+      <a href="#functions">3. Functions and Relations</a>
+      <a href="#proofs">4. Proof Techniques</a>
+      <a href="#counting">5. Counting and Combinatorics</a>
+      <a href="#graphs">6. Graph Theory</a>
+      <a href="#number-theory">7. Number Theory and Modular Arithmetic</a>
+      <a href="#boolean">8. Boolean Algebra</a>
+      <a href="#big-o">9. Big-O Notation</a>
+      <a href="#recurrences">10. Recurrence Relations</a>
+      <a href="#quiz">11. Practice Quiz</a>
+    </div>
+
+    <!-- ===================== SECTION 1: LOGIC ===================== -->
+    <section id="logic">
+      <h2>1. Logic and Propositions</h2>
+
+      <p>Logic is the foundation of all mathematical reasoning -- and all programming. A <strong>proposition</strong> is a declarative statement that is either <strong>true</strong> or <strong>false</strong>, never both, never neither.</p>
+
+      <div class="example-box">
+        <div class="label">Examples of Propositions</div>
+        <ul>
+          <li>"5 is greater than 3" -- this is <strong>true</strong></li>
+          <li>"The Earth is flat" -- this is <strong>false</strong></li>
+          <li>"2 + 2 = 4" -- this is <strong>true</strong></li>
+        </ul>
+        <p style="margin-top:0.8rem"><strong>Not propositions:</strong> "What time is it?" (question), "Close the door" (command), "x + 5 = 10" (depends on x -- this is a <em>predicate</em>, not a proposition).</p>
+      </div>
+
+      <h3>Logical Operators</h3>
+      <p>We combine propositions using <strong>logical operators</strong> (also called connectives). If you have written an <code>if</code> statement, you already know these.</p>
+
+      <table>
+        <tr>
+          <th>Operator</th>
+          <th>Symbol</th>
+          <th>Python</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>AND</td>
+          <td style="color:#333333; font-size:1.1rem;">&and;</td>
+          <td><code>and</code></td>
+          <td>True only when both are true</td>
+        </tr>
+        <tr>
+          <td>OR</td>
+          <td style="color:#333333; font-size:1.1rem;">&or;</td>
+          <td><code>or</code></td>
+          <td>True when at least one is true</td>
+        </tr>
+        <tr>
+          <td>NOT</td>
+          <td style="color:#333333; font-size:1.1rem;">&not;</td>
+          <td><code>not</code></td>
+          <td>Flips true to false, false to true</td>
+        </tr>
+        <tr>
+          <td>XOR</td>
+          <td style="color:#333333; font-size:1.1rem;">&oplus;</td>
+          <td><code>^</code></td>
+          <td>True when exactly one is true</td>
+        </tr>
+        <tr>
+          <td>Implication</td>
+          <td style="color:#333333; font-size:1.1rem;">&rarr;</td>
+          <td>--</td>
+          <td>If A then B</td>
+        </tr>
+        <tr>
+          <td>Biconditional</td>
+          <td style="color:#333333; font-size:1.1rem;">&harr;</td>
+          <td><code>==</code></td>
+          <td>A if and only if B</td>
+        </tr>
+      </table>
+
+      <h3>Truth Tables</h3>
+      <p>A truth table shows every possible combination of inputs and the resulting output. Here are the truth tables for the core operators.</p>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">AND (&and;) -- both must be true</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th>A &and; B</th></tr>
+        <tr><td>T</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>T</td><td>F</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td>T</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td>F</td><td style="color:#888888;">F</td></tr>
+      </table>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">OR (&or;) -- at least one must be true</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th>A &or; B</th></tr>
+        <tr><td>T</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>T</td><td>F</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>F</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>F</td><td>F</td><td style="color:#888888;">F</td></tr>
+      </table>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">NOT (&not;) -- flip the value</h4>
+      <table>
+        <tr><th>A</th><th>&not;A</th></tr>
+        <tr><td>T</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td style="color:#000000; font-weight:600;">T</td></tr>
+      </table>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">XOR (&oplus;) -- exactly one must be true</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th>A &oplus; B</th></tr>
+        <tr><td>T</td><td>T</td><td style="color:#888888;">F</td></tr>
+        <tr><td>T</td><td>F</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>F</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>F</td><td>F</td><td style="color:#888888;">F</td></tr>
+      </table>
+
+      <h3>Implication (&rarr;) and Biconditional (&harr;)</h3>
+      <p>The <strong>implication</strong> A &rarr; B means "if A, then B." It is only false when A is true but B is false. Think of it as a promise: "If it rains, I will bring an umbrella." The promise is only broken if it rains and you don't bring one.</p>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">Implication (&rarr;)</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th>A &rarr; B</th></tr>
+        <tr><td>T</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>T</td><td>F</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>F</td><td>F</td><td style="color:#000000; font-weight:600;">T</td></tr>
+      </table>
+
+      <div class="warning-box">
+        <div class="label">Tricky Part</div>
+        <p>When A is false, the implication A &rarr; B is <strong>always true</strong> regardless of B. This feels counterintuitive but makes logical sense: a promise made under a false premise cannot be broken. "If pigs fly, then I will give you a million dollars" -- pigs don't fly, so you can't claim I broke my promise.</p>
+      </div>
+
+      <p>The <strong>biconditional</strong> A &harr; B means "A if and only if B" -- both must have the same truth value.</p>
+
+      <h4 style="color:#333333; margin:1.2rem 0 0.6rem;">Biconditional (&harr;)</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th>A &harr; B</th></tr>
+        <tr><td>T</td><td>T</td><td style="color:#000000; font-weight:600;">T</td></tr>
+        <tr><td>T</td><td>F</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td>T</td><td style="color:#888888;">F</td></tr>
+        <tr><td>F</td><td>F</td><td style="color:#000000; font-weight:600;">T</td></tr>
+      </table>
+
+      <h3>Logical Equivalences</h3>
+      <p>Two expressions are <strong>logically equivalent</strong> if they have the same truth value for every possible input. The most famous equivalences are <strong>De Morgan's Laws</strong>:</p>
+
+      <div class="formula-box">
+        &not;(A &and; B) = &not;A &or; &not;B<br>
+        &not;(A &or; B) = &not;A &and; &not;B
+      </div>
+
+      <p>In English: "not (A and B)" is the same as "not A or not B." And "not (A or B)" is the same as "not A and not B."</p>
+
+      <div class="example-box">
+        <div class="label">De Morgan's in Python</div>
+<pre><code><span class="comment"># These two are equivalent:</span>
+<span class="keyword">if</span> <span class="keyword">not</span> (is_admin <span class="keyword">and</span> is_logged_in):
+    deny_access()
+
+<span class="comment"># Same as:</span>
+<span class="keyword">if</span> (<span class="keyword">not</span> is_admin) <span class="keyword">or</span> (<span class="keyword">not</span> is_logged_in):
+    deny_access()</code></pre>
+      </div>
+
+      <p>Other important equivalences:</p>
+      <ul>
+        <li><strong>Double negation:</strong> &not;(&not;A) = A</li>
+        <li><strong>Commutative:</strong> A &and; B = B &and; A, and A &or; B = B &or; A</li>
+        <li><strong>Associative:</strong> (A &and; B) &and; C = A &and; (B &and; C)</li>
+        <li><strong>Distributive:</strong> A &and; (B &or; C) = (A &and; B) &or; (A &and; C)</li>
+        <li><strong>Contrapositive:</strong> A &rarr; B = &not;B &rarr; &not;A</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Logic</div>
+        <p>Every <code>if</code> statement, every <code>while</code> loop condition, and every boolean expression in your code is propositional logic. De Morgan's Laws help you simplify complex conditions. Understanding implication helps you write correct assertions and contracts. Logic gates (AND, OR, NOT) are the physical building blocks of every CPU. Formal logic is also the foundation of SQL's <code>WHERE</code> clauses, type systems, and automated theorem proving.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 2: SETS ===================== -->
+    <section id="sets">
+      <h2>2. Sets</h2>
+
+      <p>A <strong>set</strong> is an unordered collection of distinct elements. Sets are one of the most fundamental concepts in all of mathematics -- and they show up everywhere in programming.</p>
+
+      <h3>Set Notation</h3>
+      <p>Sets are written with curly braces. Order does not matter, and duplicates are ignored.</p>
+
+      <div class="formula-box">
+        A = {1, 2, 3, 4, 5}<br>
+        B = {3, 4, 5, 6, 7}<br>
+        C = {apple, banana, cherry}
+      </div>
+
+      <p>We write <strong>x &isin; A</strong> to say "x is an element of A," and <strong>x &notin; A</strong> to say "x is not in A."</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>If A = {1, 2, 3}, then 2 &isin; A is true and 7 &isin; A is false.</p>
+      </div>
+
+      <h3>Set Operations</h3>
+
+      <table>
+        <tr>
+          <th>Operation</th>
+          <th>Symbol</th>
+          <th>Meaning</th>
+          <th>Python</th>
+        </tr>
+        <tr>
+          <td>Union</td>
+          <td style="color:#333333;">&cup;</td>
+          <td>Everything in A or B (or both)</td>
+          <td><code>A | B</code></td>
+        </tr>
+        <tr>
+          <td>Intersection</td>
+          <td style="color:#333333;">&cap;</td>
+          <td>Only elements in both A and B</td>
+          <td><code>A & B</code></td>
+        </tr>
+        <tr>
+          <td>Difference</td>
+          <td style="color:#333333;">\</td>
+          <td>Elements in A but not in B</td>
+          <td><code>A - B</code></td>
+        </tr>
+        <tr>
+          <td>Complement</td>
+          <td style="color:#333333;">A<sup>c</sup></td>
+          <td>Everything not in A (relative to universe)</td>
+          <td><code>U - A</code></td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example -- Set Operations</div>
+        <p>Given A = {1, 2, 3, 4, 5} and B = {3, 4, 5, 6, 7}:</p>
+        <ul>
+          <li><strong>A &cup; B</strong> = {1, 2, 3, 4, 5, 6, 7} -- everything from both</li>
+          <li><strong>A &cap; B</strong> = {3, 4, 5} -- only the overlap</li>
+          <li><strong>A \ B</strong> = {1, 2} -- in A but not B</li>
+          <li><strong>B \ A</strong> = {6, 7} -- in B but not A</li>
+        </ul>
+      </div>
+
+      <h3>Subsets and Special Sets</h3>
+
+      <p><strong>A &sube; B</strong> means "A is a subset of B" -- every element of A is also in B. <strong>A &sub; B</strong> means "A is a proper subset" -- A is a subset but A &ne; B.</p>
+
+      <ul>
+        <li>The <strong>empty set</strong> &empty; = {} has no elements. It is a subset of every set.</li>
+        <li><strong>Cardinality</strong> |S| is the number of elements in a set. |{a, b, c}| = 3.</li>
+        <li>The <strong>power set</strong> P(S) is the set of all subsets of S. If S = {1, 2}, then P(S) = {&empty;, {1}, {2}, {1, 2}}. The power set always has 2<sup>|S|</sup> elements.</li>
+      </ul>
+
+      <div class="formula-box">
+        |P(S)| = 2<sup>|S|</sup>
+      </div>
+
+      <h3>Venn Diagrams</h3>
+      <p>A <strong>Venn diagram</strong> visualizes sets as overlapping circles. Imagine two circles, one for set A and one for set B, that partially overlap. The overlapping region represents A &cap; B (intersection). The entire area covered by both circles is A &cup; B (union). The area in A's circle but not in B's is A \ B (difference). This visual tool makes set relationships immediately intuitive.</p>
+
+      <div class="example-box">
+        <div class="label">Sets in Python</div>
+<pre><code>A = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}
+B = {<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>}
+
+<span class="builtin">print</span>(A | B)   <span class="comment"># Union:        {1, 2, 3, 4, 5, 6, 7}</span>
+<span class="builtin">print</span>(A & B)   <span class="comment"># Intersection: {3, 4, 5}</span>
+<span class="builtin">print</span>(A - B)   <span class="comment"># Difference:   {1, 2}</span>
+<span class="builtin">print</span>(A ^ B)   <span class="comment"># Symmetric difference (XOR): {1, 2, 6, 7}</span>
+
+<span class="builtin">print</span>(<span class="number">3</span> <span class="keyword">in</span> A)  <span class="comment"># Membership: True</span>
+<span class="builtin">print</span>(<span class="builtin">len</span>(A))  <span class="comment"># Cardinality: 5</span></code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Sets</div>
+        <p>Sets are everywhere in computing. <strong>Database queries</strong> are set operations (SQL's UNION, INTERSECT, EXCEPT map directly to &cup;, &cap;, \). <strong>Type systems</strong> model types as sets of values. Python has a built-in <code>set</code> type with O(1) membership testing. <strong>Hash sets</strong> and <strong>hash maps</strong> are the most-used data structures in real-world code. Even IP address ranges and permission systems are modeled as sets.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 3: FUNCTIONS AND RELATIONS ===================== -->
+    <section id="functions">
+      <h2>3. Functions and Relations</h2>
+
+      <h3>Relations</h3>
+      <p>A <strong>relation</strong> from set A to set B is any subset of the <strong>Cartesian product</strong> A &times; B (all possible ordered pairs). A relation describes how elements of A connect to elements of B.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Let A = {1, 2, 3} and B = {a, b}. The Cartesian product A &times; B is:</p>
+        <p>{(1,a), (1,b), (2,a), (2,b), (3,a), (3,b)}</p>
+        <p>A relation R might be: R = {(1,a), (2,b), (3,a)} -- this picks out specific connections.</p>
+      </div>
+
+      <p>Relations can have special properties:</p>
+      <ul>
+        <li><strong>Reflexive:</strong> Every element relates to itself. (a, a) &isin; R for all a.</li>
+        <li><strong>Symmetric:</strong> If (a, b) &isin; R then (b, a) &isin; R.</li>
+        <li><strong>Transitive:</strong> If (a, b) &isin; R and (b, c) &isin; R then (a, c) &isin; R.</li>
+        <li><strong>Equivalence relation:</strong> All three -- reflexive, symmetric, and transitive.</li>
+      </ul>
+
+      <h3>Functions</h3>
+      <p>A <strong>function</strong> f: A &rarr; B is a special relation where every element of A maps to <strong>exactly one</strong> element of B. A is the <strong>domain</strong>, B is the <strong>codomain</strong>.</p>
+
+      <p>Functions come in three important flavors:</p>
+
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Definition</th>
+          <th>Intuition</th>
+        </tr>
+        <tr>
+          <td><strong>Injective</strong> (one-to-one)</td>
+          <td>Different inputs always give different outputs. If f(a) = f(b), then a = b.</td>
+          <td>No two inputs share an output.</td>
+        </tr>
+        <tr>
+          <td><strong>Surjective</strong> (onto)</td>
+          <td>Every element of B is mapped to by some element of A.</td>
+          <td>Every output is "hit" by some input.</td>
+        </tr>
+        <tr>
+          <td><strong>Bijective</strong> (one-to-one and onto)</td>
+          <td>Both injective and surjective.</td>
+          <td>Perfect pairing -- every input maps to a unique output, and every output is used.</td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>f(x) = 2x from integers to integers:</p>
+        <ul>
+          <li><strong>Injective?</strong> Yes -- different inputs give different outputs (if 2a = 2b then a = b).</li>
+          <li><strong>Surjective?</strong> No -- odd numbers like 3 are never output by f.</li>
+          <li><strong>Bijective?</strong> No -- not surjective.</li>
+        </ul>
+      </div>
+
+      <h3>Composition of Functions</h3>
+      <p>If you have f: A &rarr; B and g: B &rarr; C, the <strong>composition</strong> g &compfn; f (read "g of f") is defined as (g &compfn; f)(x) = g(f(x)). Apply f first, then g.</p>
+
+      <div class="formula-box">
+        f(x) = x + 1,&nbsp;&nbsp; g(x) = x&sup2;<br>
+        (g &compfn; f)(x) = g(f(x)) = g(x + 1) = (x + 1)&sup2;<br>
+        (f &compfn; g)(x) = f(g(x)) = f(x&sup2;) = x&sup2; + 1
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Order Matters</div>
+        <p>Composition is <strong>not commutative</strong>: g &compfn; f &ne; f &compfn; g in general. In the example above, (x + 1)&sup2; &ne; x&sup2; + 1. This is like how in programming, the order of function calls matters: <code>g(f(x))</code> is different from <code>f(g(x))</code>.</p>
+      </div>
+
+      <h3>Inverse Functions</h3>
+      <p>If f: A &rarr; B is bijective, then there exists an <strong>inverse function</strong> f<sup>-1</sup>: B &rarr; A such that f<sup>-1</sup>(f(x)) = x and f(f<sup>-1</sup>(y)) = y. The inverse "undoes" the original function.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>f(x) = 2x + 3. To find f<sup>-1</sup>, solve y = 2x + 3 for x:</p>
+        <p>x = (y - 3) / 2, so f<sup>-1</sup>(y) = (y - 3) / 2</p>
+        <p>Check: f<sup>-1</sup>(f(5)) = f<sup>-1</sup>(13) = (13 - 3)/2 = 5. It works.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Functions</div>
+        <p><strong>Bijections</strong> are essential in cryptography -- encryption must be reversible (bijective) for decryption to work. <strong>Hash functions</strong> are surjective (many inputs can map to the same hash). Function composition is the basis of <strong>functional programming</strong> and <strong>middleware pipelines</strong>. Understanding injectivity helps you reason about whether a mapping can be reversed (critical for encoding/decoding).</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 4: PROOF TECHNIQUES ===================== -->
+    <section id="proofs">
+      <h2>4. Proof Techniques</h2>
+
+      <p>Proofs are how mathematicians verify that something is always true, not just sometimes. As a programmer, proof techniques help you <strong>reason about correctness</strong> -- proving your algorithm works for all inputs, not just the ones you tested.</p>
+
+      <h3>Direct Proof</h3>
+      <p>Start with what you know (premises), apply logical steps, arrive at the conclusion. The most straightforward approach.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Direct Proof</div>
+        <p><strong>Claim:</strong> If n is even, then n&sup2; is even.</p>
+        <p><strong>Proof:</strong></p>
+        <ol>
+          <li>Assume n is even. By definition, n = 2k for some integer k.</li>
+          <li>Then n&sup2; = (2k)&sup2; = 4k&sup2; = 2(2k&sup2;).</li>
+          <li>Since 2k&sup2; is an integer, n&sup2; = 2(integer), so n&sup2; is even. &square;</li>
+        </ol>
+      </div>
+
+      <h3>Proof by Contradiction</h3>
+      <p>Assume the opposite of what you want to prove, then show that leads to something impossible (a contradiction). Since the assumption caused a contradiction, it must be false, so the original statement must be true.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Proof by Contradiction</div>
+        <p><strong>Claim:</strong> &radic;2 is irrational.</p>
+        <p><strong>Proof:</strong></p>
+        <ol>
+          <li>Assume &radic;2 is rational. Then &radic;2 = a/b where a, b are integers with no common factors.</li>
+          <li>Squaring both sides: 2 = a&sup2;/b&sup2;, so a&sup2; = 2b&sup2;.</li>
+          <li>This means a&sup2; is even, so a must be even. Write a = 2c.</li>
+          <li>Then (2c)&sup2; = 2b&sup2;, so 4c&sup2; = 2b&sup2;, so b&sup2; = 2c&sup2;.</li>
+          <li>This means b&sup2; is even, so b is even.</li>
+          <li><strong>Contradiction:</strong> Both a and b are even, so they share factor 2. But we said they have no common factors.</li>
+          <li>Therefore &radic;2 is irrational. &square;</li>
+        </ol>
+      </div>
+
+      <h3>Proof by Induction</h3>
+      <p>This is the <strong>most important proof technique for computer science</strong>. Induction proves that a statement holds for all natural numbers by proving two things:</p>
+
+      <ol>
+        <li><strong>Base case:</strong> Show the statement is true for n = 1 (or n = 0).</li>
+        <li><strong>Inductive step:</strong> Assume the statement is true for some arbitrary n = k (the <em>inductive hypothesis</em>), then prove it is true for n = k + 1.</li>
+      </ol>
+
+      <p>Think of it like dominoes: if the first one falls (base case) and each domino knocks over the next (inductive step), then all dominoes fall.</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Proof by Induction</div>
+        <p><strong>Claim:</strong> The sum 1 + 2 + 3 + ... + n = n(n+1)/2 for all n &ge; 1.</p>
+        <p><strong>Base case (n = 1):</strong></p>
+        <p>Left side: 1. Right side: 1(1+1)/2 = 1. They match. Base case holds.</p>
+        <p><strong>Inductive hypothesis:</strong> Assume the formula holds for n = k:</p>
+        <div class="formula-box">1 + 2 + 3 + ... + k = k(k+1)/2</div>
+        <p><strong>Inductive step:</strong> Prove it holds for n = k + 1:</p>
+        <div class="formula-box">
+          1 + 2 + ... + k + (k+1)<br>
+          = k(k+1)/2 + (k+1) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888888;">// using the inductive hypothesis</span><br>
+          = k(k+1)/2 + 2(k+1)/2<br>
+          = (k+1)(k+2)/2<br>
+          = (k+1)((k+1)+1)/2 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888888;">// this is the formula with n = k+1</span>
+        </div>
+        <p>The formula holds for k + 1. By induction, it holds for all n &ge; 1. &square;</p>
+      </div>
+
+      <h3>Proof by Contrapositive</h3>
+      <p>Instead of proving "if A then B," prove the logically equivalent statement "if not B then not A." Sometimes this direction is easier.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><strong>Claim:</strong> If n&sup2; is even, then n is even.</p>
+        <p><strong>Contrapositive:</strong> If n is odd, then n&sup2; is odd.</p>
+        <p><strong>Proof:</strong> If n is odd, then n = 2k + 1. So n&sup2; = (2k+1)&sup2; = 4k&sup2; + 4k + 1 = 2(2k&sup2; + 2k) + 1, which is odd. &square;</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Proofs</div>
+        <p><strong>Induction</strong> is how you prove recursive algorithms are correct. Every time you write a recursive function, you are implicitly doing induction: the base case is your recursion base case, and the recursive call assumes the function works for smaller inputs (inductive hypothesis). <strong>Loop invariants</strong> use induction to prove loops are correct. <strong>Proof by contradiction</strong> is used to prove impossibility results, like "you can't sort faster than O(n log n) with comparisons."</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 5: COUNTING ===================== -->
+    <section id="counting">
+      <h2>5. Counting and Combinatorics</h2>
+
+      <p>Combinatorics is the mathematics of counting. How many ways can something happen? This is essential for analyzing algorithms, understanding probability, and solving optimization problems.</p>
+
+      <h3>The Multiplication Principle</h3>
+      <p>If you have <strong>m</strong> ways to do one thing and <strong>n</strong> ways to do another, there are <strong>m &times; n</strong> ways to do both.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>A restaurant has 3 appetizers and 5 entrees. How many different meals (one appetizer + one entree) can you order?</p>
+        <p>3 &times; 5 = <strong>15 meals</strong></p>
+        <p style="margin-top:0.5rem"><strong>In CS terms:</strong> A 4-bit number has 2 &times; 2 &times; 2 &times; 2 = 2<sup>4</sup> = 16 possible values. An 8-character password using 26 lowercase letters has 26<sup>8</sup> = 208 billion possibilities.</p>
+      </div>
+
+      <h3>Factorials</h3>
+      <p>The <strong>factorial</strong> of n (written n!) is the product of all positive integers up to n:</p>
+
+      <div class="formula-box">
+        n! = n &times; (n-1) &times; (n-2) &times; ... &times; 2 &times; 1<br><br>
+        5! = 5 &times; 4 &times; 3 &times; 2 &times; 1 = 120<br>
+        0! = 1 &nbsp;&nbsp;<span style="color:#888888;">(by definition)</span>
+      </div>
+
+      <p>Factorials grow incredibly fast: 10! = 3,628,800 and 20! = 2,432,902,008,176,640,000.</p>
+
+      <h3>Permutations -- Order Matters</h3>
+      <p>A <strong>permutation</strong> is an arrangement where <strong>order matters</strong>. How many ways can you arrange r items chosen from n items?</p>
+
+      <div class="formula-box">
+        P(n, r) = n! / (n - r)!
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>How many ways can 3 students win gold, silver, and bronze medals from a class of 10?</p>
+        <p>P(10, 3) = 10! / 7! = 10 &times; 9 &times; 8 = <strong>720 ways</strong></p>
+        <p>Order matters because gold-silver-bronze is a different outcome than bronze-silver-gold.</p>
+      </div>
+
+      <h3>Combinations -- Order Doesn't Matter</h3>
+      <p>A <strong>combination</strong> is a selection where <strong>order does NOT matter</strong>. How many ways can you choose r items from n items?</p>
+
+      <div class="formula-box">
+        C(n, r) = n! / (r! &times; (n - r)!)
+      </div>
+
+      <p>Also written as <span style="font-family:serif;font-size:1.2rem;">(</span><sup style="font-size:0.85rem;">n</sup><sub style="font-size:0.85rem;">r</sub><span style="font-family:serif;font-size:1.2rem;">)</span> and read "n choose r."</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>How many ways can you pick a committee of 3 people from 10?</p>
+        <p>C(10, 3) = 10! / (3! &times; 7!) = 720 / 6 = <strong>120 ways</strong></p>
+        <p>Order doesn't matter because {Alice, Bob, Carol} is the same committee as {Carol, Alice, Bob}.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Permutations vs. Combinations</div>
+        <p>Ask yourself: <strong>"Does the order matter?"</strong></p>
+        <ul>
+          <li>Arranging books on a shelf &rarr; <strong>Permutation</strong> (order matters)</li>
+          <li>Choosing a team from a group &rarr; <strong>Combination</strong> (order doesn't matter)</li>
+          <li>Creating a password &rarr; <strong>Permutation</strong> ("abc" &ne; "cba")</li>
+          <li>Dealing a poker hand &rarr; <strong>Combination</strong> (same cards regardless of deal order)</li>
+        </ul>
+      </div>
+
+      <h3>The Pigeonhole Principle</h3>
+      <p>If you put <strong>n + 1</strong> items into <strong>n</strong> containers, at least one container must hold <strong>more than one</strong> item. It sounds obvious, but it has powerful consequences.</p>
+
+      <div class="example-box">
+        <div class="label">Examples</div>
+        <ul>
+          <li>In any group of 367 people, at least two share a birthday (366 possible days + 1).</li>
+          <li>If you have 5 pairs of socks in a dark room and grab 6, you must have at least one matching pair.</li>
+          <li><strong>CS application:</strong> If a hash function maps to 2<sup>32</sup> values, then with 2<sup>32</sup> + 1 inputs, at least two must collide (same hash). This is why <strong>hash collisions are inevitable</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Counting</div>
+        <p><strong>Algorithm analysis</strong> relies on counting: "How many operations does this algorithm perform?" Combinatorics tells you the size of a search space (e.g., how many possible passwords exist), which determines whether brute force is feasible. <strong>Probability</strong> is built on counting (probability = favorable outcomes / total outcomes). The <strong>pigeonhole principle</strong> proves hash collisions are unavoidable, that lossless compression can't compress all files, and many other impossibility results.</p>
+      </div>
+
+      <h3>Stars and Bars (Distributing Identical Items)</h3>
+      <p>How many ways can you distribute <strong>n identical items</strong> into <strong>k distinct boxes</strong>?</p>
+
+      <div class="formula-box">
+        Number of ways = C(n + k - 1, k - 1) = C(n + k - 1, n)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>How many ways can you put 10 identical balls into 4 different boxes?</p>
+        <p>C(10 + 4 - 1, 4 - 1) = C(13, 3) = 286 ways</p>
+        <p><strong>Visualization:</strong> Imagine 10 balls in a row: ○○○○○○○○○○. Adding 3 dividers creates 4 groups. We're choosing where to place 3 dividers among 13 positions.</p>
+      </div>
+
+      <h3>The Inclusion-Exclusion Principle</h3>
+      <p>When counting elements in overlapping sets, use inclusion-exclusion to avoid double-counting:</p>
+
+      <div class="formula-box">
+        |A ∪ B| = |A| + |B| - |A ∩ B|<br><br>
+        |A ∪ B ∪ C| = |A| + |B| + |C| - |A ∩ B| - |A ∩ C| - |B ∩ C| + |A ∩ B ∩ C|
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>In a class of 100 students, 60 take Math, 50 take Physics, and 20 take both. How many take at least one?</p>
+        <p>|Math ∪ Physics| = 60 + 50 - 20 = <strong>90 students</strong></p>
+        <p>The -20 removes those who were counted twice (in both classes).</p>
+      </div>
+
+      <h3>Permutations with Repetition</h3>
+      <p>How many arrangements of n objects where some are identical?</p>
+
+      <div class="formula-box">
+        n! / (n₁! × n₂! × ... × nₖ!)<br><br>
+        Where n₁, n₂, ..., nₖ are the counts of each identical type
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>How many ways can you arrange the letters in "MISSISSIPPI"?</p>
+        <p>Total: 11 letters. M: 1, I: 4, S: 4, P: 2</p>
+        <p>11! / (1! × 4! × 4! × 2!) = 39,916,800 / (1 × 24 × 24 × 2) = <strong>34,650 arrangements</strong></p>
+      </div>
+
+      <h3>Combinations with Repetition</h3>
+      <p>Choosing r items from n types, where you can choose the same type multiple times:</p>
+
+      <div class="formula-box">
+        C(n + r - 1, r) &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(same as stars and bars)</span>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>An ice cream shop has 5 flavors. How many ways can you choose 3 scoops (repeats allowed)?</p>
+        <p>C(5 + 3 - 1, 3) = C(7, 3) = <strong>35 ways</strong></p>
+        <p>This includes choices like (chocolate, chocolate, vanilla) or (strawberry, strawberry, strawberry).</p>
+      </div>
+
+      <h3>Derangements</h3>
+      <p>A <strong>derangement</strong> is a permutation where <em>no element appears in its original position</em>.</p>
+
+      <div class="formula-box">
+        D(n) = n! × (1 - 1/1! + 1/2! - 1/3! + ... + (-1)ⁿ/n!)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>5 people put their hats in a pile and randomly pick one. How many ways can NO ONE get their own hat?</p>
+        <p>D(5) = 5! × (1 - 1 + 1/2 - 1/6 + 1/24 - 1/120)</p>
+        <p>= 120 × (0 + 0.5 - 0.167 + 0.042 - 0.008)</p>
+        <p>= 120 × 0.367 = <strong>44 derangements</strong></p>
+        <p><strong>Fun fact:</strong> As n gets large, approximately 1/e (≈ 36.8%) of all permutations are derangements.</p>
+      </div>
+
+      <h3>Binomial Theorem</h3>
+      <p>The binomial theorem expands (a + b)ⁿ:</p>
+
+      <div class="formula-box">
+        (a + b)ⁿ = Σ C(n, k) × aⁿ⁻ᵏ × bᵏ &nbsp;&nbsp;&nbsp;for k = 0 to n
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Expand (x + y)⁴</div>
+        <p>= C(4,0)x⁴ + C(4,1)x³y + C(4,2)x²y² + C(4,3)xy³ + C(4,4)y⁴</p>
+        <p>= x⁴ + 4x³y + 6x²y² + 4xy³ + y⁴</p>
+        <p><strong>Pascal's Triangle:</strong> The coefficients (1, 4, 6, 4, 1) form row 4 of Pascal's triangle!</p>
+      </div>
+
+      <h3>Combinatorial Identities</h3>
+      <table>
+        <tr><th>Identity</th><th>Meaning</th></tr>
+        <tr><td>C(n, k) = C(n, n-k)</td><td>Choosing k to include = choosing n-k to exclude</td></tr>
+        <tr><td>C(n, 0) = C(n, n) = 1</td><td>One way to choose nothing or everything</td></tr>
+        <tr><td>C(n, k) = C(n-1, k-1) + C(n-1, k)</td><td>Pascal's Triangle rule</td></tr>
+        <tr><td>Σ C(n, k) = 2ⁿ</td><td>Total subsets of n items</td></tr>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">CS Application: Subsets and Power Sets</div>
+        <p>A set of n elements has exactly 2ⁿ subsets (including empty set and the full set). This is why iterating over all subsets of n items takes O(2ⁿ) time -- exponential! For n=30, that's over a billion subsets. Understanding this helps you recognize when a brute-force approach is infeasible.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 6: GRAPH THEORY ===================== -->
+    <section id="graphs">
+      <h2>6. Graph Theory</h2>
+
+      <p>A <strong>graph</strong> G = (V, E) consists of <strong>vertices</strong> (nodes) V and <strong>edges</strong> (connections) E. Graphs are one of the most important data structures in computer science -- they model networks, relationships, maps, dependencies, and much more.</p>
+
+      <h3>Types of Graphs</h3>
+
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><strong>Undirected</strong></td>
+          <td>Edges have no direction. If A connects to B, then B connects to A.</td>
+          <td>Facebook friendships</td>
+        </tr>
+        <tr>
+          <td><strong>Directed</strong></td>
+          <td>Edges have direction. A &rarr; B does not mean B &rarr; A.</td>
+          <td>Twitter follows, web links</td>
+        </tr>
+        <tr>
+          <td><strong>Weighted</strong></td>
+          <td>Edges have values (costs, distances, capacities).</td>
+          <td>Road maps with distances</td>
+        </tr>
+        <tr>
+          <td><strong>Unweighted</strong></td>
+          <td>All edges are equal -- no values attached.</td>
+          <td>Social connections</td>
+        </tr>
+      </table>
+
+      <h3>Graph Representations</h3>
+      <p>There are two main ways to store a graph in code:</p>
+
+      <p><strong>Adjacency Matrix</strong> -- a 2D array where matrix[i][j] = 1 if there is an edge from vertex i to vertex j.</p>
+
+      <div class="example-box">
+        <div class="label">Adjacency Matrix</div>
+<pre><code><span class="comment"># Graph: A--B, A--C, B--C</span>
+<span class="comment">#     A  B  C</span>
+<span class="comment"># A [ 0, 1, 1 ]</span>
+<span class="comment"># B [ 1, 0, 1 ]</span>
+<span class="comment"># C [ 1, 1, 0 ]</span>
+
+matrix = [
+    [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],
+    [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],
+    [<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]
+]</code></pre>
+        <p style="margin-top:0.5rem"><strong>Space:</strong> O(V&sup2;). <strong>Edge lookup:</strong> O(1). Best for dense graphs.</p>
+      </div>
+
+      <p><strong>Adjacency List</strong> -- each vertex stores a list of its neighbors.</p>
+
+      <div class="example-box">
+        <div class="label">Adjacency List</div>
+<pre><code><span class="comment"># Same graph: A--B, A--C, B--C</span>
+graph = {
+    <span class="string">'A'</span>: [<span class="string">'B'</span>, <span class="string">'C'</span>],
+    <span class="string">'B'</span>: [<span class="string">'A'</span>, <span class="string">'C'</span>],
+    <span class="string">'C'</span>: [<span class="string">'A'</span>, <span class="string">'B'</span>]
+}</code></pre>
+        <p style="margin-top:0.5rem"><strong>Space:</strong> O(V + E). <strong>Edge lookup:</strong> O(degree). Best for sparse graphs (most real-world graphs).</p>
+      </div>
+
+      <h3>Key Graph Concepts</h3>
+      <ul>
+        <li><strong>Degree</strong> of a vertex: number of edges connected to it. In a directed graph, distinguish between in-degree (edges coming in) and out-degree (edges going out).</li>
+        <li><strong>Path:</strong> A sequence of vertices connected by edges. A &rarr; B &rarr; C is a path of length 2.</li>
+        <li><strong>Cycle:</strong> A path that starts and ends at the same vertex. A &rarr; B &rarr; C &rarr; A.</li>
+        <li><strong>Tree:</strong> A connected graph with no cycles. A tree with n vertices has exactly n - 1 edges.</li>
+        <li><strong>Connected graph:</strong> Every vertex can reach every other vertex.</li>
+      </ul>
+
+      <h3>Graph Traversals</h3>
+      <p>Two fundamental ways to explore a graph:</p>
+
+      <table>
+        <tr>
+          <th>Algorithm</th>
+          <th>Strategy</th>
+          <th>Data Structure</th>
+          <th>Use Case</th>
+        </tr>
+        <tr>
+          <td><strong>BFS</strong> (Breadth-First Search)</td>
+          <td>Explore all neighbors first, then their neighbors</td>
+          <td>Queue</td>
+          <td>Shortest path (unweighted), level-order</td>
+        </tr>
+        <tr>
+          <td><strong>DFS</strong> (Depth-First Search)</td>
+          <td>Go as deep as possible, then backtrack</td>
+          <td>Stack / recursion</td>
+          <td>Cycle detection, topological sort, maze solving</td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">BFS and DFS in Python</div>
+<pre><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">bfs</span>(graph, start):
+    visited = <span class="builtin">set</span>()
+    queue = deque([start])
+    visited.add(start)
+    <span class="keyword">while</span> queue:
+        vertex = queue.popleft()
+        <span class="builtin">print</span>(vertex, end=<span class="string">' '</span>)
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not</span> <span class="keyword">in</span> visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+<span class="keyword">def</span> <span class="function">dfs</span>(graph, start, visited=<span class="keyword">None</span>):
+    <span class="keyword">if</span> visited <span class="keyword">is</span> <span class="keyword">None</span>:
+        visited = <span class="builtin">set</span>()
+    visited.add(start)
+    <span class="builtin">print</span>(start, end=<span class="string">' '</span>)
+    <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[start]:
+        <span class="keyword">if</span> neighbor <span class="keyword">not</span> <span class="keyword">in</span> visited:
+            dfs(graph, neighbor, visited)</code></pre>
+      </div>
+
+      <h3>Euler Paths and Circuits</h3>
+      <p>An <strong>Euler path</strong> visits every <em>edge</em> exactly once. An <strong>Euler circuit</strong> is an Euler path that starts and ends at the same vertex.</p>
+
+      <ul>
+        <li>An undirected graph has an <strong>Euler circuit</strong> if and only if every vertex has even degree.</li>
+        <li>An undirected graph has an <strong>Euler path</strong> (but not circuit) if and only if exactly two vertices have odd degree.</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">The Konigsberg Bridge Problem</div>
+        <p>This is the problem that founded graph theory. The city of Konigsberg had 7 bridges connecting 4 land masses. Euler proved it was impossible to walk across every bridge exactly once because more than two vertices had odd degree.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Graphs</div>
+        <p>Graphs are arguably the most important data structure in CS. <strong>The internet</strong> is a graph (pages are vertices, links are edges). <strong>Social networks</strong> are graphs. <strong>GPS navigation</strong> uses weighted graphs with shortest-path algorithms (Dijkstra's). <strong>Package managers</strong> (npm, pip) use directed acyclic graphs for dependency resolution. <strong>Compilers</strong> build abstract syntax trees and control flow graphs. <strong>Databases</strong> use B-trees (tree-structured graphs) for indexing. If you learn one data structure deeply, make it graphs.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 7: NUMBER THEORY ===================== -->
+    <section id="number-theory">
+      <h2>7. Number Theory and Modular Arithmetic</h2>
+
+      <p>Number theory studies the properties of integers. It might seem abstract, but it is the mathematical backbone of <strong>cryptography</strong>, <strong>hashing</strong>, and <strong>error detection</strong>.</p>
+
+      <h3>Divisibility</h3>
+      <p>We say <strong>a divides b</strong> (written a | b) if b = a &times; k for some integer k. For example, 3 | 12 because 12 = 3 &times; 4.</p>
+
+      <h3>Prime Numbers and Factorization</h3>
+      <p>A <strong>prime number</strong> is greater than 1 and divisible only by 1 and itself. The first primes: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29...</p>
+
+      <p>The <strong>Fundamental Theorem of Arithmetic</strong> says every integer greater than 1 can be written as a unique product of primes:</p>
+
+      <div class="formula-box">
+        60 = 2&sup2; &times; 3 &times; 5<br>
+        84 = 2&sup2; &times; 3 &times; 7<br>
+        100 = 2&sup2; &times; 5&sup2;
+      </div>
+
+      <h3>GCD and LCM</h3>
+      <p>The <strong>Greatest Common Divisor</strong> GCD(a, b) is the largest number that divides both a and b. The <strong>Least Common Multiple</strong> LCM(a, b) is the smallest number that both a and b divide.</p>
+
+      <div class="formula-box">
+        GCD(12, 18) = 6<br>
+        LCM(12, 18) = 36<br><br>
+        Useful identity: GCD(a, b) &times; LCM(a, b) = a &times; b
+      </div>
+
+      <h3>The Euclidean Algorithm</h3>
+      <p>An efficient method to compute GCD using repeated division. This is one of the oldest algorithms known (over 2300 years old) and is still used today.</p>
+
+      <div class="formula-box">
+        GCD(a, b) = GCD(b, a mod b) &nbsp;&nbsp;&nbsp; <span style="color:#888888;">until b = 0</span>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Euclidean Algorithm</div>
+        <p>Find GCD(252, 105):</p>
+        <ul>
+          <li>GCD(252, 105): 252 mod 105 = 42, so GCD(105, 42)</li>
+          <li>GCD(105, 42): 105 mod 42 = 21, so GCD(42, 21)</li>
+          <li>GCD(42, 21): 42 mod 21 = 0, so <strong>GCD = 21</strong></li>
+        </ul>
+      </div>
+
+<pre><code><span class="keyword">def</span> <span class="function">gcd</span>(a, b):
+    <span class="keyword">while</span> b:
+        a, b = b, a % b
+    <span class="keyword">return</span> a
+
+<span class="builtin">print</span>(gcd(<span class="number">252</span>, <span class="number">105</span>))  <span class="comment"># 21</span></code></pre>
+
+      <h3>Modular Arithmetic</h3>
+      <p><strong>a mod n</strong> gives the remainder when a is divided by n. We write <strong>a &equiv; b (mod n)</strong> to say "a and b have the same remainder when divided by n."</p>
+
+      <div class="formula-box">
+        17 mod 5 = 2 &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(17 = 3&times;5 + 2)</span><br>
+        23 mod 7 = 2 &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(23 = 3&times;7 + 2)</span><br>
+        100 mod 3 = 1 &nbsp;&nbsp;<span style="color:#888888;">(100 = 33&times;3 + 1)</span>
+      </div>
+
+      <h3>Properties of Modular Arithmetic</h3>
+      <p>These properties allow you to compute modular arithmetic on very large numbers without overflow:</p>
+
+      <div class="formula-box">
+        (a + b) mod n = ((a mod n) + (b mod n)) mod n<br>
+        (a &times; b) mod n = ((a mod n) &times; (b mod n)) mod n<br>
+        (a - b) mod n = ((a mod n) - (b mod n) + n) mod n
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Why This Matters</div>
+        <p>Compute (987654321 &times; 123456789) mod 1000000007 without overflow:</p>
+<pre><code><span class="comment"># Instead of computing the huge product first:</span>
+a = <span class="number">987654321</span> % <span class="number">1000000007</span>
+b = <span class="number">123456789</span> % <span class="number">1000000007</span>
+result = (a * b) % <span class="number">1000000007</span>
+<span class="builtin">print</span>(result)  <span class="comment"># Safe from overflow in languages with fixed-width integers</span></code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Number Theory</div>
+        <p><strong>RSA encryption</strong> is built entirely on number theory: large prime numbers, modular exponentiation, and the difficulty of factoring. <strong>Hash functions</strong> use modular arithmetic extensively (e.g., hash(key) = key mod table_size). <strong>Checksums</strong> and <strong>error-detecting codes</strong> use modular arithmetic. <strong>Random number generators</strong> use modular arithmetic (linear congruential generators). <strong>Competitive programming</strong> problems frequently require modular arithmetic to handle large numbers (mod 10<sup>9</sup> + 7 is the most common modulus).</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 8: BOOLEAN ALGEBRA ===================== -->
+    <section id="boolean">
+      <h2>8. Boolean Algebra</h2>
+
+      <p>Boolean algebra is the mathematics of <strong>true/false values</strong> (or equivalently, 1/0). It is the direct mathematical foundation of digital electronics and every computer ever built.</p>
+
+      <h3>Boolean Variables and Operations</h3>
+      <p>A boolean variable can only be <strong>0</strong> (false) or <strong>1</strong> (true). The three fundamental operations are:</p>
+
+      <table>
+        <tr>
+          <th>Operation</th>
+          <th>Notation</th>
+          <th>Logic Gate</th>
+          <th>Rule</th>
+        </tr>
+        <tr>
+          <td><strong>AND</strong></td>
+          <td>A &middot; B or AB</td>
+          <td>AND gate</td>
+          <td>1 only if both inputs are 1</td>
+        </tr>
+        <tr>
+          <td><strong>OR</strong></td>
+          <td>A + B</td>
+          <td>OR gate</td>
+          <td>1 if at least one input is 1</td>
+        </tr>
+        <tr>
+          <td><strong>NOT</strong></td>
+          <td>A&#x0305; or &not;A</td>
+          <td>NOT gate (inverter)</td>
+          <td>Flips 0 to 1, 1 to 0</td>
+        </tr>
+      </table>
+
+      <h3>Boolean Laws and Simplification</h3>
+      <p>Boolean algebra follows laws similar to regular algebra, with some unique ones:</p>
+
+      <table>
+        <tr><th>Law</th><th>AND Form</th><th>OR Form</th></tr>
+        <tr><td>Identity</td><td>A &middot; 1 = A</td><td>A + 0 = A</td></tr>
+        <tr><td>Null</td><td>A &middot; 0 = 0</td><td>A + 1 = 1</td></tr>
+        <tr><td>Idempotent</td><td>A &middot; A = A</td><td>A + A = A</td></tr>
+        <tr><td>Complement</td><td>A &middot; &not;A = 0</td><td>A + &not;A = 1</td></tr>
+        <tr><td>Commutative</td><td>A &middot; B = B &middot; A</td><td>A + B = B + A</td></tr>
+        <tr><td>Associative</td><td>(AB)C = A(BC)</td><td>(A+B)+C = A+(B+C)</td></tr>
+        <tr><td>Distributive</td><td>A(B+C) = AB + AC</td><td>A+(BC) = (A+B)(A+C)</td></tr>
+        <tr><td>De Morgan's</td><td>&not;(AB) = &not;A + &not;B</td><td>&not;(A+B) = &not;A &middot; &not;B</td></tr>
+        <tr><td>Absorption</td><td>A(A+B) = A</td><td>A + AB = A</td></tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example -- Boolean Simplification</div>
+        <p>Simplify: F = AB + A&not;B + &not;AB</p>
+        <ul>
+          <li>F = A(B + &not;B) + &not;AB &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Factor out A</span></li>
+          <li>F = A(1) + &not;AB &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Complement law: B + &not;B = 1</span></li>
+          <li>F = A + &not;AB &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Identity law: A &middot; 1 = A</span></li>
+          <li>F = A + B &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Absorption: A + &not;AB = A + B</span></li>
+        </ul>
+        <p>We reduced a complex expression to <strong>A + B</strong> (just an OR gate).</p>
+      </div>
+
+      <h3>Logic Gates and Circuits</h3>
+      <p>In hardware, boolean operations are implemented as <strong>logic gates</strong>. Every CPU is built from billions of these gates.</p>
+
+      <ul>
+        <li><strong>AND gate:</strong> Output 1 only when all inputs are 1.</li>
+        <li><strong>OR gate:</strong> Output 1 when any input is 1.</li>
+        <li><strong>NOT gate:</strong> Inverts the input.</li>
+        <li><strong>NAND gate:</strong> NOT-AND. Universal gate (you can build any circuit using only NAND).</li>
+        <li><strong>NOR gate:</strong> NOT-OR. Also a universal gate.</li>
+        <li><strong>XOR gate:</strong> Output 1 when inputs differ. Used in adders and parity checks.</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Half Adder -- Adding Two Bits</div>
+        <p>A half adder adds two single-bit numbers. It needs two outputs: the sum and the carry.</p>
+        <div class="formula-box">
+          Sum = A &oplus; B &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(XOR)</span><br>
+          Carry = A &middot; B &nbsp;&nbsp;&nbsp;<span style="color:#888888;">(AND)</span>
+        </div>
+        <table>
+          <tr><th>A</th><th>B</th><th>Sum</th><th>Carry</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+        </table>
+        <p>This is literally how your CPU adds numbers -- chains of logic gates.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Boolean Algebra</div>
+        <p>Boolean algebra is the math of <strong>hardware design</strong>. Every CPU, every memory chip, every digital circuit is built from boolean logic gates. <strong>Compiler optimizations</strong> use boolean simplification to reduce the number of instructions. <strong>Database query optimizers</strong> simplify WHERE clauses using boolean algebra. Understanding boolean algebra helps you write simpler, faster conditional logic in your code. The absorption law alone (A + AB = A) can simplify many complex <code>if</code> statements.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 9: BIG-O ===================== -->
+    <section id="big-o">
+      <h2>9. Big-O Notation</h2>
+
+      <p>Big-O notation describes the <strong>upper bound on the growth rate</strong> of an algorithm's time (or space) as the input size grows. It answers: "How does this algorithm scale?"</p>
+
+      <h3>What Big-O Means</h3>
+      <p>We say f(n) = O(g(n)) if there exist constants c and n<sub>0</sub> such that f(n) &le; c &middot; g(n) for all n &ge; n<sub>0</sub>. In plain English: for large enough inputs, f(n) grows no faster than g(n), up to a constant factor.</p>
+
+      <div class="formula-box">
+        f(n) = O(g(n)) means: f grows at most as fast as g
+      </div>
+
+      <p>Big-O drops constants and lower-order terms because we care about <strong>scalability</strong>, not exact counts:</p>
+      <ul>
+        <li>3n&sup2; + 5n + 100 = O(n&sup2;) -- drop the 5n and 100, drop the constant 3</li>
+        <li>n log n + n = O(n log n) -- n log n dominates n</li>
+        <li>500 = O(1) -- any constant is O(1)</li>
+      </ul>
+
+      <h3>Common Complexities</h3>
+
+      <table>
+        <tr>
+          <th>Big-O</th>
+          <th>Name</th>
+          <th>Example</th>
+          <th>n=1000</th>
+        </tr>
+        <tr>
+          <td style="color:#000000; font-weight:600;">O(1)</td>
+          <td>Constant</td>
+          <td>Array index lookup, hash map get</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td style="color:#000000; font-weight:600;">O(log n)</td>
+          <td>Logarithmic</td>
+          <td>Binary search</td>
+          <td>~10</td>
+        </tr>
+        <tr>
+          <td style="color:#000000; font-weight:600;">O(n)</td>
+          <td>Linear</td>
+          <td>Linear search, single loop</td>
+          <td>1,000</td>
+        </tr>
+        <tr>
+          <td style="color:#555555;">O(n log n)</td>
+          <td>Linearithmic</td>
+          <td>Merge sort, heap sort</td>
+          <td>~10,000</td>
+        </tr>
+        <tr>
+          <td style="color:#555555;">O(n&sup2;)</td>
+          <td>Quadratic</td>
+          <td>Bubble sort, nested loops</td>
+          <td>1,000,000</td>
+        </tr>
+        <tr>
+          <td style="color:#888888;">O(2<sup>n</sup>)</td>
+          <td>Exponential</td>
+          <td>Brute-force subsets</td>
+          <td>~10<sup>301</sup></td>
+        </tr>
+        <tr>
+          <td style="color:#888888;">O(n!)</td>
+          <td>Factorial</td>
+          <td>Brute-force permutations</td>
+          <td>~10<sup>2567</sup></td>
+        </tr>
+      </table>
+
+      <h3>How to Determine Big-O</h3>
+      <p>Three rules of thumb:</p>
+      <ol>
+        <li><strong>Drop constants:</strong> O(3n) = O(n)</li>
+        <li><strong>Keep the dominant term:</strong> O(n&sup2; + n) = O(n&sup2;)</li>
+        <li><strong>Multiply nested operations:</strong> A loop inside a loop = multiply their complexities</li>
+      </ol>
+
+      <h3>Examples with Code</h3>
+
+      <div class="example-box">
+        <div class="label">O(1) -- Constant Time</div>
+<pre><code><span class="keyword">def</span> <span class="function">get_first</span>(arr):
+    <span class="keyword">return</span> arr[<span class="number">0</span>]  <span class="comment"># Always one operation, regardless of array size</span></code></pre>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(n) -- Linear Time</div>
+<pre><code><span class="keyword">def</span> <span class="function">find_max</span>(arr):
+    max_val = arr[<span class="number">0</span>]
+    <span class="keyword">for</span> num <span class="keyword">in</span> arr:       <span class="comment"># Loops through n elements</span>
+        <span class="keyword">if</span> num > max_val:
+            max_val = num
+    <span class="keyword">return</span> max_val       <span class="comment"># O(n) -- one loop over the data</span></code></pre>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(n&sup2;) -- Quadratic Time</div>
+<pre><code><span class="keyword">def</span> <span class="function">has_duplicate</span>(arr):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr)):         <span class="comment"># n iterations</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i + <span class="number">1</span>, <span class="builtin">len</span>(arr)):  <span class="comment"># n iterations (roughly)</span>
+            <span class="keyword">if</span> arr[i] == arr[j]:
+                <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">return</span> <span class="keyword">False</span>                       <span class="comment"># O(n^2) -- nested loop</span></code></pre>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(log n) -- Logarithmic Time</div>
+<pre><code><span class="keyword">def</span> <span class="function">binary_search</span>(arr, target):
+    lo, hi = <span class="number">0</span>, <span class="builtin">len</span>(arr) - <span class="number">1</span>
+    <span class="keyword">while</span> lo <= hi:
+        mid = (lo + hi) // <span class="number">2</span>
+        <span class="keyword">if</span> arr[mid] == target:
+            <span class="keyword">return</span> mid
+        <span class="keyword">elif</span> arr[mid] < target:
+            lo = mid + <span class="number">1</span>           <span class="comment"># Eliminate half the data</span>
+        <span class="keyword">else</span>:
+            hi = mid - <span class="number">1</span>           <span class="comment"># Eliminate half the data</span>
+    <span class="keyword">return</span> -<span class="number">1</span>                       <span class="comment"># O(log n) -- halving each step</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Why log n?</strong> If you halve n repeatedly: n → n/2 → n/4 → ... → 1. How many halves until you reach 1? That's log₂(n). This is the *inverse* of exponential growth.</p>
+      </div>
+
+      <h3>O(N × M) vs O(N + M) -- Two Variables!</h3>
+      <p>When you have <strong>two inputs of different sizes</strong>, you need two variables. This is crucial and often confuses beginners.</p>
+
+      <div class="example-box">
+        <div class="label">O(N × M) -- Nested Loops Over Different Inputs</div>
+<pre><code><span class="keyword">def</span> <span class="function">all_pairs</span>(arr1, arr2):
+    <span class="string">"""Find all pairs from two arrays"""</span>
+    pairs = []
+    <span class="keyword">for</span> a <span class="keyword">in</span> arr1:          <span class="comment"># N iterations (arr1 has N elements)</span>
+        <span class="keyword">for</span> b <span class="keyword">in</span> arr2:      <span class="comment"># M iterations (arr2 has M elements)</span>
+            pairs.append((a, b))
+    <span class="keyword">return</span> pairs             <span class="comment"># O(N × M) -- every element of arr1 pairs with every element of arr2</span>
+
+<span class="comment"># If arr1 has 100 elements and arr2 has 50 elements: 100 × 50 = 5,000 pairs</span></code></pre>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(N + M) -- Sequential Loops Over Different Inputs</div>
+<pre><code><span class="keyword">def</span> <span class="function">process_both</span>(arr1, arr2):
+    <span class="string">"""Process both arrays separately"""</span>
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> a <span class="keyword">in</span> arr1:           <span class="comment"># N iterations</span>
+        total += a
+    <span class="keyword">for</span> b <span class="keyword">in</span> arr2:           <span class="comment"># M iterations (after arr1 loop finishes)</span>
+        total += b
+    <span class="keyword">return</span> total              <span class="comment"># O(N + M) -- sequential, not nested!</span>
+
+<span class="comment"># If arr1 has 100 elements and arr2 has 50 elements: 100 + 50 = 150 operations</span></code></pre>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Critical Difference: × vs +</div>
+        <p><strong>Nested loops = multiply.</strong> The inner loop runs completely for each iteration of the outer loop.</p>
+        <p><strong>Sequential loops = add.</strong> One finishes, then the other runs.</p>
+        <p>For N=M=1000: O(N×M) = 1,000,000 operations. O(N+M) = 2,000 operations. That's a 500× difference!</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(N²) vs O(N×M) -- When N = M</div>
+        <p>If both arrays have the same size n, then O(N×M) = O(n×n) = O(n²). That's why nested loops over the <em>same</em> array are O(n²).</p>
+<pre><code><span class="keyword">def</span> <span class="function">same_array_pairs</span>(arr):
+    <span class="keyword">for</span> i <span class="keyword">in</span> arr:       <span class="comment"># n iterations</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> arr:   <span class="comment"># n iterations</span>
+            <span class="builtin">print</span>(i, j)  <span class="comment"># O(n²) because N = M = n</span></code></pre>
+      </div>
+
+      <h3>Understanding O(N + M) in Real Code</h3>
+      <div class="example-box">
+        <div class="label">Merging Two Sorted Arrays -- O(N + M)</div>
+<pre><code><span class="keyword">def</span> <span class="function">merge_sorted</span>(arr1, arr2):
+    <span class="string">"""Merge two sorted arrays into one sorted array"""</span>
+    result = []
+    i, j = <span class="number">0</span>, <span class="number">0</span>
+
+    <span class="comment"># Each element is visited at most once</span>
+    <span class="keyword">while</span> i < <span class="builtin">len</span>(arr1) <span class="keyword">and</span> j < <span class="builtin">len</span>(arr2):
+        <span class="keyword">if</span> arr1[i] <= arr2[j]:
+            result.append(arr1[i])
+            i += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            result.append(arr2[j])
+            j += <span class="number">1</span>
+
+    <span class="comment"># Add remaining elements</span>
+    result.extend(arr1[i:])
+    result.extend(arr2[j:])
+    <span class="keyword">return</span> result
+    <span class="comment"># Total: each element from arr1 and arr2 processed once = O(N + M)</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Key insight:</strong> Total iterations ≤ N + M because we increment i or j each time, and they can only reach N and M respectively.</p>
+      </div>
+
+      <h3>Analyzing More Complex Patterns</h3>
+
+      <div class="example-box">
+        <div class="label">O(N × M) -- Matrix Traversal</div>
+<pre><code><span class="keyword">def</span> <span class="function">sum_matrix</span>(matrix):
+    <span class="string">"""Matrix with N rows and M columns"""</span>
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> row <span class="keyword">in</span> matrix:           <span class="comment"># N rows</span>
+        <span class="keyword">for</span> val <span class="keyword">in</span> row:          <span class="comment"># M columns per row</span>
+            total += val
+    <span class="keyword">return</span> total                  <span class="comment"># O(N × M) or O(rows × cols)</span></code></pre>
+        <p style="margin-top:0.5rem">For a square matrix where N = M, this is O(n²). For a 100×3 matrix, it's O(100 × 3) = O(300) = O(N × M).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(N × K) -- Inner Loop of Fixed Size</div>
+<pre><code><span class="keyword">def</span> <span class="function">check_windows</span>(arr, k):
+    <span class="string">"""Check all windows of size k in array of size n"""</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr) - k + <span class="number">1</span>):  <span class="comment"># N - K + 1 ≈ N windows</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(k):              <span class="comment"># K elements per window</span>
+            <span class="builtin">print</span>(arr[i + j])
+    <span class="comment"># O(N × K) total</span>
+    <span class="comment"># If K is a constant (like 3), this simplifies to O(N)</span>
+    <span class="comment"># If K could be as large as N, worst case is O(N²)</span></code></pre>
+      </div>
+
+      <h3>The Math Behind It: Summing Operations</h3>
+      <p>Time complexity analysis is fundamentally about <strong>counting operations</strong>. This connects directly to what we learned in sequences and series:</p>
+
+      <div class="formula-box">
+        <strong>Single loop (1 to n):</strong> 1 + 1 + 1 + ... + 1 = n times → O(n)<br><br>
+        <strong>Nested loops:</strong> n × n = n² operations → O(n²)<br><br>
+        <strong>Sum of 1 to n:</strong> 1 + 2 + 3 + ... + n = n(n+1)/2 → O(n²)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Why Triangular Patterns are O(n²)</div>
+<pre><code><span class="keyword">def</span> <span class="function">triangular_loop</span>(n):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):  <span class="comment"># j goes from 0 to i-1</span>
+            <span class="builtin">print</span>(i, j)
+    <span class="comment"># Iterations: 0 + 1 + 2 + ... + (n-1) = n(n-1)/2 = O(n²)</span></code></pre>
+        <p style="margin-top:0.5rem">Even though the inner loop varies, the total is the sum of 0 + 1 + 2 + ... + (n-1), which equals n(n-1)/2. Using the formula for arithmetic series (covered in Sequences and Series), this is O(n²).</p>
+      </div>
+
+      <h3>Recursive Time Complexity</h3>
+      <p>Recursion requires special analysis. The key is to count <strong>how many times</strong> the function is called and <strong>how much work</strong> each call does.</p>
+
+      <div class="example-box">
+        <div class="label">O(n) Recursion -- Linear</div>
+<pre><code><span class="keyword">def</span> <span class="function">factorial</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">return</span> n * factorial(n - <span class="number">1</span>)
+    <span class="comment"># Calls: factorial(n) → factorial(n-1) → ... → factorial(1)</span>
+    <span class="comment"># That's n calls, each doing O(1) work</span>
+    <span class="comment"># Total: O(n)</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Recurrence:</strong> T(n) = T(n-1) + O(1), which solves to T(n) = O(n)</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(2ⁿ) Recursion -- Exponential (Naive Fibonacci)</div>
+<pre><code><span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)
+    <span class="comment"># Each call spawns TWO more calls!</span>
+    <span class="comment"># Call tree grows exponentially: 1 → 2 → 4 → 8 → ...</span>
+    <span class="comment"># Total calls ≈ 2ⁿ, so O(2ⁿ)</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Recurrence:</strong> T(n) = T(n-1) + T(n-2) + O(1). The solution is O(φⁿ) where φ ≈ 1.618 (golden ratio), but we approximate as O(2ⁿ).</p>
+        <p><strong>Why this is terrible:</strong> For n=50, this makes about 10¹⁵ calls. Dynamic programming fixes this to O(n)!</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(log n) Recursion -- Binary Search</div>
+<pre><code><span class="keyword">def</span> <span class="function">binary_search_recursive</span>(arr, target, lo, hi):
+    <span class="keyword">if</span> lo > hi:
+        <span class="keyword">return</span> -<span class="number">1</span>
+    mid = (lo + hi) // <span class="number">2</span>
+    <span class="keyword">if</span> arr[mid] == target:
+        <span class="keyword">return</span> mid
+    <span class="keyword">elif</span> arr[mid] < target:
+        <span class="keyword">return</span> binary_search_recursive(arr, target, mid + <span class="number">1</span>, hi)
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> binary_search_recursive(arr, target, lo, mid - <span class="number">1</span>)
+    <span class="comment"># Each call halves the search space</span>
+    <span class="comment"># n → n/2 → n/4 → ... → 1 = log₂(n) calls</span>
+    <span class="comment"># O(log n)</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Recurrence:</strong> T(n) = T(n/2) + O(1), which solves to T(n) = O(log n)</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">O(n log n) Recursion -- Merge Sort</div>
+<pre><code><span class="keyword">def</span> <span class="function">merge_sort</span>(arr):
+    <span class="keyword">if</span> <span class="builtin">len</span>(arr) <= <span class="number">1</span>:
+        <span class="keyword">return</span> arr
+
+    mid = <span class="builtin">len</span>(arr) // <span class="number">2</span>
+    left = merge_sort(arr[:mid])     <span class="comment"># T(n/2)</span>
+    right = merge_sort(arr[mid:])    <span class="comment"># T(n/2)</span>
+    <span class="keyword">return</span> merge(left, right)         <span class="comment"># O(n) to merge</span>
+
+    <span class="comment"># Recurrence: T(n) = 2T(n/2) + O(n)</span>
+    <span class="comment"># By Master Theorem: O(n log n)</span></code></pre>
+        <p style="margin-top:0.5rem"><strong>Visual intuition:</strong> We split the array log(n) times (levels of recursion). At each level, we do O(n) total work merging. So: O(n) × O(log n) = O(n log n).</p>
+      </div>
+
+      <h3>Recognizing Recursive Patterns</h3>
+      <table>
+        <tr>
+          <th>Pattern</th>
+          <th>Recurrence</th>
+          <th>Complexity</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Single call, subtract 1</td>
+          <td>T(n) = T(n-1) + O(1)</td>
+          <td style="color:#000000; font-weight:600;">O(n)</td>
+          <td>Factorial, linear recursion</td>
+        </tr>
+        <tr>
+          <td>Single call, divide by 2</td>
+          <td>T(n) = T(n/2) + O(1)</td>
+          <td style="color:#000000; font-weight:600;">O(log n)</td>
+          <td>Binary search</td>
+        </tr>
+        <tr>
+          <td>Two calls, divide by 2</td>
+          <td>T(n) = 2T(n/2) + O(1)</td>
+          <td style="color:#000000; font-weight:600;">O(n)</td>
+          <td>Tree traversal (no extra work)</td>
+        </tr>
+        <tr>
+          <td>Two calls, divide by 2, linear work</td>
+          <td>T(n) = 2T(n/2) + O(n)</td>
+          <td style="color:#555555;">O(n log n)</td>
+          <td>Merge sort</td>
+        </tr>
+        <tr>
+          <td>Two calls, subtract 1</td>
+          <td>T(n) = 2T(n-1) + O(1)</td>
+          <td style="color:#888888;">O(2ⁿ)</td>
+          <td>Towers of Hanoi</td>
+        </tr>
+        <tr>
+          <td>Fibonacci-style</td>
+          <td>T(n) = T(n-1) + T(n-2)</td>
+          <td style="color:#888888;">O(2ⁿ)</td>
+          <td>Naive Fibonacci</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">The Math Connection</div>
+        <p>Recursive time complexity is fundamentally about <strong>geometric series</strong>:</p>
+        <ul style="margin-top:0.5rem;">
+          <li><strong>O(2ⁿ):</strong> Each level doubles the work: 1 + 2 + 4 + 8 + ... + 2ⁿ = 2ⁿ⁺¹ - 1 ≈ 2ⁿ</li>
+          <li><strong>O(n log n):</strong> We have log(n) levels, each doing O(n) work</li>
+          <li><strong>O(log n):</strong> Dividing by 2 each time means log₂(n) steps to reach 1</li>
+        </ul>
+        <p style="margin-top:0.5rem;">Understanding series formulas lets you analyze these patterns mathematically.</p>
+      </div>
+
+      <h3>Space Complexity of Recursion</h3>
+      <p>Recursive functions also use <strong>space</strong> for the call stack. Each recursive call adds a frame to the stack.</p>
+
+      <div class="formula-box">
+        Space complexity = maximum depth of recursion × space per call
+      </div>
+
+      <div class="example-box">
+        <div class="label">Space Complexity Examples</div>
+        <ul>
+          <li><strong>factorial(n):</strong> Depth is n, each frame is O(1) → <strong>O(n) space</strong></li>
+          <li><strong>binary_search:</strong> Depth is log(n), each frame is O(1) → <strong>O(log n) space</strong></li>
+          <li><strong>merge_sort:</strong> Depth is log(n), but we also create new arrays → <strong>O(n) space</strong></li>
+          <li><strong>naive fib:</strong> Maximum depth is n (following one branch) → <strong>O(n) space</strong></li>
+        </ul>
+      </div>
+
+      <h3>Big-Omega and Big-Theta</h3>
+      <p>Big-O gives the <strong>upper bound</strong> (worst case). There are two related notations:</p>
+      <ul>
+        <li><strong>Big-Omega</strong> (&Omega;) -- <strong>lower bound</strong>. The algorithm takes at least this long. Merge sort is &Omega;(n log n).</li>
+        <li><strong>Big-Theta</strong> (&Theta;) -- <strong>tight bound</strong>. The algorithm takes exactly this long (up to constants). If f(n) = O(g(n)) and f(n) = &Omega;(g(n)), then f(n) = &Theta;(g(n)). Merge sort is &Theta;(n log n).</li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Common Mistake</div>
+        <p>People often say "this algorithm is O(n)" when they mean &Theta;(n). Big-O is an upper bound, so it's technically true that linear search is O(n&sup2;) (it's never worse than quadratic), but that's not helpful. In practice, use Big-O for the <strong>tightest upper bound</strong> you can give.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Big-O</div>
+        <p>Big-O is the language engineers use to discuss performance. When someone says "binary search is O(log n)," they're telling you it scales incredibly well. When your database query is O(n&sup2;), you know it will crawl on large datasets. <strong>Every technical interview</strong> expects you to analyze the time and space complexity of your solutions. Understanding Big-O is the difference between writing code that works on 100 items and code that works on 100 million items.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 10: RECURRENCES ===================== -->
+    <section id="recurrences">
+      <h2>10. Recurrence Relations</h2>
+
+      <p>A <strong>recurrence relation</strong> defines a sequence where each term depends on previous terms. In CS, recurrences describe the running time of <strong>recursive algorithms</strong>.</p>
+
+      <h3>What They Look Like</h3>
+
+      <div class="formula-box">
+        T(n) = 2T(n/2) + n &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Merge sort</span><br>
+        T(n) = T(n-1) + 1 &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Linear recursion (like factorial)</span><br>
+        T(n) = 2T(n-1) + 1 &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Towers of Hanoi</span><br>
+        T(n) = T(n-1) + T(n-2) &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Fibonacci</span>
+      </div>
+
+      <p>Reading T(n) = 2T(n/2) + n: "The algorithm splits the problem into <strong>2 subproblems</strong> of size <strong>n/2</strong>, then does <strong>n</strong> work to combine the results."</p>
+
+      <h3>Solving Simple Recurrences</h3>
+      <p>The simplest method is <strong>expansion</strong> (also called "unrolling" or "substitution").</p>
+
+      <div class="example-box">
+        <div class="label">Example -- Solve T(n) = T(n-1) + 1, T(1) = 1</div>
+        <ul>
+          <li>T(n) = T(n-1) + 1</li>
+          <li>= T(n-2) + 1 + 1 = T(n-2) + 2</li>
+          <li>= T(n-3) + 3</li>
+          <li>...</li>
+          <li>= T(1) + (n-1) = 1 + (n-1) = <strong>n</strong></li>
+        </ul>
+        <p>So T(n) = O(n). This makes sense: a function that calls itself n times with O(1) work each time is linear.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Solve T(n) = 2T(n/2) + n, T(1) = 1</div>
+        <ul>
+          <li>T(n) = 2T(n/2) + n</li>
+          <li>= 2[2T(n/4) + n/2] + n = 4T(n/4) + 2n</li>
+          <li>= 4[2T(n/8) + n/4] + 2n = 8T(n/8) + 3n</li>
+          <li>...</li>
+          <li>= 2<sup>k</sup>T(n/2<sup>k</sup>) + kn</li>
+          <li>When n/2<sup>k</sup> = 1, so k = log<sub>2</sub>(n):</li>
+          <li>= nT(1) + n log n = n + n log n = <strong>O(n log n)</strong></li>
+        </ul>
+        <p>This is the running time of merge sort.</p>
+      </div>
+
+      <h3>The Master Theorem (Simplified)</h3>
+      <p>For recurrences of the form <strong>T(n) = aT(n/b) + O(n<sup>d</sup>)</strong>, the Master Theorem gives the answer directly:</p>
+
+      <table>
+        <tr>
+          <th>Condition</th>
+          <th>Result</th>
+          <th>Intuition</th>
+        </tr>
+        <tr>
+          <td>log<sub>b</sub>(a) &lt; d</td>
+          <td>T(n) = O(n<sup>d</sup>)</td>
+          <td>Work at each level dominates. The "combine" step is the bottleneck.</td>
+        </tr>
+        <tr>
+          <td>log<sub>b</sub>(a) = d</td>
+          <td>T(n) = O(n<sup>d</sup> log n)</td>
+          <td>Work is evenly distributed across levels.</td>
+        </tr>
+        <tr>
+          <td>log<sub>b</sub>(a) &gt; d</td>
+          <td>T(n) = O(n<sup>log<sub>b</sub>(a)</sup>)</td>
+          <td>Number of subproblems dominates. The "split" step is the bottleneck.</td>
+        </tr>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Applying the Master Theorem</div>
+        <p><strong>Merge sort:</strong> T(n) = 2T(n/2) + O(n). Here a=2, b=2, d=1.</p>
+        <p>log<sub>2</sub>(2) = 1 = d, so T(n) = O(n<sup>1</sup> log n) = <strong>O(n log n)</strong>.</p>
+        <p style="margin-top:0.8rem"><strong>Binary search:</strong> T(n) = T(n/2) + O(1). Here a=1, b=2, d=0.</p>
+        <p>log<sub>2</sub>(1) = 0 = d, so T(n) = O(n<sup>0</sup> log n) = <strong>O(log n)</strong>.</p>
+        <p style="margin-top:0.8rem"><strong>Strassen's matrix multiply:</strong> T(n) = 7T(n/2) + O(n&sup2;). Here a=7, b=2, d=2.</p>
+        <p>log<sub>2</sub>(7) &approx; 2.81 &gt; 2 = d, so T(n) = <strong>O(n<sup>2.81</sup>)</strong>.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why CS Cares -- Recurrences</div>
+        <p>Every recursive algorithm has a running time described by a recurrence relation. <strong>Merge sort, quicksort, binary search, tree traversals, divide-and-conquer</strong> -- all analyzed using recurrences. The Master Theorem lets you determine the Big-O of most divide-and-conquer algorithms by inspection. Understanding recurrences is understanding how recursive code scales.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION 11: QUIZ ===================== -->
+    <section id="quiz">
+      <h2>11. Practice Quiz</h2>
+      <p>Test your understanding of discrete math. Click on an answer to check it.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" id="q1">
+          <h4>1. What is the value of &not;(A &and; B) when A = True and B = False?</h4>
+          <button onclick="checkAnswer('q1', this, true)">True</button>
+          <button onclick="checkAnswer('q1', this, false)">False</button>
+          <button onclick="checkAnswer('q1', this, false)">Cannot be determined</button>
+          <button onclick="checkAnswer('q1', this, false)">Undefined</button>
+          <div class="explanation">A &and; B = True &and; False = False. Then &not;(False) = <strong>True</strong>. This is also consistent with De Morgan's Law: &not;(A &and; B) = &not;A &or; &not;B = False &or; True = True.</div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" id="q2">
+          <h4>2. How many elements are in the power set of {a, b, c, d}?</h4>
+          <button onclick="checkAnswer('q2', this, false)">4</button>
+          <button onclick="checkAnswer('q2', this, false)">8</button>
+          <button onclick="checkAnswer('q2', this, true)">16</button>
+          <button onclick="checkAnswer('q2', this, false)">24</button>
+          <div class="explanation">The power set has 2<sup>|S|</sup> elements. |{a, b, c, d}| = 4, so |P(S)| = 2<sup>4</sup> = <strong>16</strong>. The power set contains all subsets: the empty set, all singletons, all pairs, all triples, and the full set itself.</div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" id="q3">
+          <h4>3. What is the time complexity of an algorithm with the recurrence T(n) = 2T(n/2) + n?</h4>
+          <button onclick="checkAnswer('q3', this, false)">O(n)</button>
+          <button onclick="checkAnswer('q3', this, true)">O(n log n)</button>
+          <button onclick="checkAnswer('q3', this, false)">O(n&sup2;)</button>
+          <button onclick="checkAnswer('q3', this, false)">O(log n)</button>
+          <div class="explanation">Using the Master Theorem: a=2, b=2, d=1. Since log<sub>2</sub>(2) = 1 = d, T(n) = O(n<sup>d</sup> log n) = <strong>O(n log n)</strong>. This is the recurrence for merge sort.</div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" id="q4">
+          <h4>4. In how many ways can you choose a committee of 3 people from a group of 8?</h4>
+          <button onclick="checkAnswer('q4', this, false)">24</button>
+          <button onclick="checkAnswer('q4', this, true)">56</button>
+          <button onclick="checkAnswer('q4', this, false)">336</button>
+          <button onclick="checkAnswer('q4', this, false)">512</button>
+          <div class="explanation">Order doesn't matter (a committee, not a ranking), so use combinations: C(8, 3) = 8! / (3! &times; 5!) = (8 &times; 7 &times; 6) / (3 &times; 2 &times; 1) = 336 / 6 = <strong>56</strong>.</div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" id="q5">
+          <h4>5. What is GCD(48, 18) using the Euclidean algorithm?</h4>
+          <button onclick="checkAnswer('q5', this, false)">2</button>
+          <button onclick="checkAnswer('q5', this, false)">3</button>
+          <button onclick="checkAnswer('q5', this, true)">6</button>
+          <button onclick="checkAnswer('q5', this, false)">9</button>
+          <div class="explanation">GCD(48, 18): 48 mod 18 = 12, so GCD(18, 12). 18 mod 12 = 6, so GCD(12, 6). 12 mod 6 = 0, so <strong>GCD = 6</strong>.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <div style="display:flex; justify-content:space-between; padding:2rem 0; border-top:1px solid #1e1e35; margin-top:2rem;">
+      <a href="calculus.html" style="color:#000000; text-decoration:none; font-weight:500;">&larr; Calculus</a>
+      <a href="linear-algebra.html" style="color:#000000; text-decoration:none; font-weight:500;">Linear Algebra &rarr;</a>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(questionId, button, isCorrect) {
+      const question = document.getElementById(questionId);
+      const buttons = question.querySelectorAll('button');
+      const explanation = question.querySelector('.explanation');
+
+      // Prevent re-answering
+      if (question.dataset.answered === 'true') return;
+      question.dataset.answered = 'true';
+
+      // Disable all buttons and mark correct/wrong
+      buttons.forEach(btn => {
+        btn.style.pointerEvents = 'none';
+      });
+
+      if (isCorrect) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        // Highlight the correct answer
+        buttons.forEach(btn => {
+          if (btn.onclick.toString().includes('true)')) {
+            btn.classList.add('correct');
+          }
+        });
+      }
+
+      // Show explanation
+      explanation.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

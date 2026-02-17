@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphs | Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html" class="active">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<!-- ========== PAGE HEADER ========== -->
+<div class="container">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> &rarr; Graphs</div>
+    <h1>Graphs</h1>
+    <p>Vertices, edges, traversals, shortest paths, and topological ordering &mdash; the most versatile data structure in computer science.</p>
+  </div>
+
+  <!-- ========== TABLE OF CONTENTS ========== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is-a-graph">1. What is a Graph?</a>
+    <a href="#representations">2. Graph Representations</a>
+    <a href="#traversals">3. Graph Traversals (BFS &amp; DFS)</a>
+    <a href="#algorithms">4. Common Graph Algorithms</a>
+    <a href="#cycle-detection">5. Cycle Detection</a>
+    <a href="#leetcode">6. LeetCode Problems</a>
+    <a href="#quiz">7. Practice Quiz</a>
+  </div>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 1: WHAT IS A GRAPH?                                    -->
+  <!-- ============================================================== -->
+  <section id="what-is-a-graph">
+    <h2>1. What is a Graph?</h2>
+
+    <p>A <strong>graph</strong> is a collection of <strong>vertices</strong> (nodes) connected by <strong>edges</strong> (links). Unlike trees, graphs can have cycles, multiple paths between nodes, and no required root.</p>
+
+    <div class="formula-box">G = (V, E) where V = set of vertices, E = set of edges</div>
+
+    <h3>Visual Example</h3>
+<pre><code><span class="comment">    An undirected graph with 5 vertices and 6 edges:</span>
+
+        (A)-----(B)
+        / \       |
+       /   \      |
+     (C)   (D)---(E)
+       \         /
+        \-------/
+
+    V = {A, B, C, D, E}
+    E = {(A,B), (A,C), (A,D), (B,E), (D,E), (C,E)}</code></pre>
+
+    <h3>Directed vs Undirected</h3>
+    <p><strong>Undirected:</strong> Edges have no direction. If A connects to B, then B connects to A.</p>
+    <p><strong>Directed (Digraph):</strong> Edges have direction. A &rarr; B does NOT mean B &rarr; A.</p>
+<pre><code><span class="comment">    Undirected:              Directed:</span>
+
+     (A)---(B)              (A)--->(B)
+      |     |                |       |
+     (C)---(D)              (C)<---(D)
+                                ^
+                              A->B, A->C, D->B, D->C</code></pre>
+
+    <h3>Weighted vs Unweighted</h3>
+    <p><strong>Unweighted:</strong> All edges are equal. <strong>Weighted:</strong> Edges carry a cost/distance/value.</p>
+<pre><code><span class="comment">    Weighted graph (think road distances):</span>
+
+       (A)---5---(B)
+        |         |
+        2         3
+        |         |
+       (C)---1---(D)
+
+    <span class="comment">Shortest A->D: A->C->D = 2+1 = 3  (not A->B->D = 5+3 = 8)</span></code></pre>
+
+    <h3>Cyclic vs Acyclic</h3>
+    <p><strong>Cyclic:</strong> Contains at least one cycle (a path that starts and ends at the same vertex). <strong>Acyclic:</strong> No cycles.</p>
+<pre><code><span class="comment">    Cyclic:                 Acyclic:</span>
+
+     (A)--->(B)              (A)--->(B)
+      ^      |                       |
+      |      v                       v
+     (D)<---(C)              (C)    (D)</code></pre>
+
+    <h3>Connected vs Disconnected</h3>
+    <p><strong>Connected:</strong> There is a path between every pair of vertices. <strong>Disconnected:</strong> Some vertices are unreachable from others.</p>
+<pre><code><span class="comment">    Connected:              Disconnected (2 components):</span>
+
+     (A)---(B)               (A)---(B)     (D)---(E)
+      |     |                  |
+     (C)---(D)               (C)</code></pre>
+
+    <h3>DAG (Directed Acyclic Graph)</h3>
+    <div class="tip-box">
+      <div class="label">Key Concept</div>
+      A DAG is a directed graph with no cycles. DAGs are essential for <strong>topological sorting</strong>, task scheduling, dependency resolution (like build systems, course prerequisites, and package managers).
+    </div>
+<pre><code><span class="comment">    A DAG representing course prerequisites:</span>
+
+     (Math101)--->(Math201)--->(Math301)
+                      |
+                      v
+     (CS101)---->(CS201)---->(CS301)
+                      |
+                      v
+                  (CS250)</code></pre>
+
+    <table>
+      <tr><th>Property</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Directed</td><td>Edges have direction</td><td>Twitter follow</td></tr>
+      <tr><td>Undirected</td><td>Edges go both ways</td><td>Facebook friend</td></tr>
+      <tr><td>Weighted</td><td>Edges have cost</td><td>Road map with distances</td></tr>
+      <tr><td>Unweighted</td><td>All edges equal</td><td>Social network connections</td></tr>
+      <tr><td>Cyclic</td><td>Has at least one cycle</td><td>Circular dependency</td></tr>
+      <tr><td>Acyclic</td><td>No cycles</td><td>Family tree (DAG)</td></tr>
+      <tr><td>Connected</td><td>All nodes reachable</td><td>Single network</td></tr>
+      <tr><td>Disconnected</td><td>Has isolated components</td><td>Islands on a map</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 2: GRAPH REPRESENTATIONS                               -->
+  <!-- ============================================================== -->
+  <section id="representations">
+    <h2>2. Graph Representations</h2>
+
+    <p>There are three main ways to represent a graph in code. Your choice depends on the problem constraints.</p>
+
+<pre><code><span class="comment">    Reference graph for all examples below:</span>
+
+        (0)----(1)
+         |    / |
+         |   /  |
+         |  /   |
+        (2)----(3)</code></pre>
+
+    <!-- ADJACENCY MATRIX -->
+    <h3>Adjacency Matrix</h3>
+    <p>A 2D array where <code>matrix[i][j] = 1</code> if there is an edge from vertex i to vertex j.</p>
+
+<pre><code><span class="comment">         0  1  2  3</span>
+    0 [  0  1  1  0 ]
+    1 [  1  0  1  1 ]
+    2 [  1  1  0  1 ]
+    3 [  0  1  1  0 ]</code></pre>
+
+    <p><strong>Pros:</strong> O(1) edge lookup &mdash; just check matrix[i][j]. Simple to implement.</p>
+    <p><strong>Cons:</strong> O(V<sup>2</sup>) space regardless of edge count. Wasteful for sparse graphs.</p>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">class</span> <span class="function">GraphMatrix</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, num_vertices):
+        <span class="builtin">self</span>.V = num_vertices
+        <span class="builtin">self</span>.matrix = [[<span class="number">0</span>] * num_vertices <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(num_vertices)]
+
+    <span class="keyword">def</span> <span class="function">add_edge</span>(<span class="builtin">self</span>, u, v):
+        <span class="builtin">self</span>.matrix[u][v] = <span class="number">1</span>
+        <span class="builtin">self</span>.matrix[v][u] = <span class="number">1</span>  <span class="comment"># remove for directed</span>
+
+    <span class="keyword">def</span> <span class="function">has_edge</span>(<span class="builtin">self</span>, u, v):
+        <span class="keyword">return</span> <span class="builtin">self</span>.matrix[u][v] == <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">get_neighbors</span>(<span class="builtin">self</span>, v):
+        <span class="keyword">return</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.V) <span class="keyword">if</span> <span class="builtin">self</span>.matrix[v][i]]
+
+g = GraphMatrix(<span class="number">4</span>)
+g.add_edge(<span class="number">0</span>, <span class="number">1</span>)
+g.add_edge(<span class="number">0</span>, <span class="number">2</span>)
+g.add_edge(<span class="number">1</span>, <span class="number">2</span>)
+g.add_edge(<span class="number">1</span>, <span class="number">3</span>)
+g.add_edge(<span class="number">2</span>, <span class="number">3</span>)
+<span class="builtin">print</span>(g.has_edge(<span class="number">0</span>, <span class="number">3</span>))   <span class="comment"># False</span>
+<span class="builtin">print</span>(g.get_neighbors(<span class="number">1</span>))  <span class="comment"># [0, 2, 3]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">class</span> <span class="function">GraphMatrix</span> {
+  <span class="function">constructor</span>(numVertices) {
+    <span class="keyword">this</span>.V = numVertices;
+    <span class="keyword">this</span>.matrix = Array.from({ length: numVertices },
+      () => <span class="keyword">new</span> Array(numVertices).fill(<span class="number">0</span>));
+  }
+
+  <span class="function">addEdge</span>(u, v) {
+    <span class="keyword">this</span>.matrix[u][v] = <span class="number">1</span>;
+    <span class="keyword">this</span>.matrix[v][u] = <span class="number">1</span>;  <span class="comment">// remove for directed</span>
+  }
+
+  <span class="function">hasEdge</span>(u, v) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.matrix[u][v] === <span class="number">1</span>;
+  }
+
+  <span class="function">getNeighbors</span>(v) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.matrix[v]
+      .map((val, idx) => val ? idx : -<span class="number">1</span>)
+      .filter(idx => idx !== -<span class="number">1</span>);
+  }
+}
+
+<span class="keyword">const</span> g = <span class="keyword">new</span> GraphMatrix(<span class="number">4</span>);
+g.addEdge(<span class="number">0</span>, <span class="number">1</span>);
+g.addEdge(<span class="number">0</span>, <span class="number">2</span>);
+g.addEdge(<span class="number">1</span>, <span class="number">2</span>);
+g.addEdge(<span class="number">1</span>, <span class="number">3</span>);
+g.addEdge(<span class="number">2</span>, <span class="number">3</span>);
+console.log(g.hasEdge(<span class="number">0</span>, <span class="number">3</span>));   <span class="comment">// false</span>
+console.log(g.getNeighbors(<span class="number">1</span>));  <span class="comment">// [0, 2, 3]</span></code></pre>
+
+    <!-- ADJACENCY LIST -->
+    <h3>Adjacency List</h3>
+
+    <div class="tip-box">
+      <div class="label">This is the one you will use most</div>
+      For nearly every graph problem in interviews and competitive programming, the adjacency list is the go-to representation. It is space-efficient for sparse graphs (which most real-world graphs are) and makes traversal straightforward.
+    </div>
+
+    <p>A dictionary/map where each vertex maps to a list of its neighbors.</p>
+
+<pre><code><span class="comment">    Adjacency list for our reference graph:</span>
+
+    0: [1, 2]
+    1: [0, 2, 3]
+    2: [0, 1, 3]
+    3: [1, 2]</code></pre>
+
+    <p><strong>Pros:</strong> O(V + E) space. Efficient for sparse graphs. Easy to iterate neighbors.</p>
+    <p><strong>Cons:</strong> O(V) edge lookup in worst case (check if neighbor exists in list).</p>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">class</span> <span class="function">Graph</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>.adj = defaultdict(<span class="builtin">list</span>)
+
+    <span class="keyword">def</span> <span class="function">add_edge</span>(<span class="builtin">self</span>, u, v):
+        <span class="builtin">self</span>.adj[u].append(v)
+        <span class="builtin">self</span>.adj[v].append(u)  <span class="comment"># remove for directed</span>
+
+    <span class="keyword">def</span> <span class="function">get_neighbors</span>(<span class="builtin">self</span>, v):
+        <span class="keyword">return</span> <span class="builtin">self</span>.adj[v]
+
+    <span class="keyword">def</span> <span class="function">has_edge</span>(<span class="builtin">self</span>, u, v):
+        <span class="keyword">return</span> v <span class="keyword">in</span> <span class="builtin">self</span>.adj[u]
+
+g = Graph()
+g.add_edge(<span class="number">0</span>, <span class="number">1</span>)
+g.add_edge(<span class="number">0</span>, <span class="number">2</span>)
+g.add_edge(<span class="number">1</span>, <span class="number">2</span>)
+g.add_edge(<span class="number">1</span>, <span class="number">3</span>)
+g.add_edge(<span class="number">2</span>, <span class="number">3</span>)
+<span class="builtin">print</span>(g.get_neighbors(<span class="number">1</span>))  <span class="comment"># [0, 2, 3]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">class</span> <span class="function">Graph</span> {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.adj = <span class="keyword">new</span> Map();
+  }
+
+  <span class="function">addVertex</span>(v) {
+    <span class="keyword">if</span> (!<span class="keyword">this</span>.adj.has(v)) <span class="keyword">this</span>.adj.set(v, []);
+  }
+
+  <span class="function">addEdge</span>(u, v) {
+    <span class="keyword">this</span>.addVertex(u);
+    <span class="keyword">this</span>.addVertex(v);
+    <span class="keyword">this</span>.adj.get(u).push(v);
+    <span class="keyword">this</span>.adj.get(v).push(u);  <span class="comment">// remove for directed</span>
+  }
+
+  <span class="function">getNeighbors</span>(v) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.adj.get(v) || [];
+  }
+
+  <span class="function">hasEdge</span>(u, v) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.adj.has(u) && <span class="keyword">this</span>.adj.get(u).includes(v);
+  }
+}
+
+<span class="keyword">const</span> g = <span class="keyword">new</span> Graph();
+g.addEdge(<span class="number">0</span>, <span class="number">1</span>);
+g.addEdge(<span class="number">0</span>, <span class="number">2</span>);
+g.addEdge(<span class="number">1</span>, <span class="number">2</span>);
+g.addEdge(<span class="number">1</span>, <span class="number">3</span>);
+g.addEdge(<span class="number">2</span>, <span class="number">3</span>);
+console.log(g.getNeighbors(<span class="number">1</span>));  <span class="comment">// [0, 2, 3]</span></code></pre>
+
+    <!-- EDGE LIST -->
+    <h3>Edge List</h3>
+    <p>A simple list of <code>[from, to, weight]</code> tuples. Rarely used for traversal, but essential for <strong>Kruskal's MST algorithm</strong> (sort edges by weight).</p>
+
+    <pre><span class="lang-label">Python</span><code><span class="comment"># Edge list: [(from, to, weight), ...]</span>
+edges = [
+    (<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>),
+    (<span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>),
+    (<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>),
+    (<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>),
+    (<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>),
+]
+
+<span class="comment"># Sort by weight (useful for Kruskal's)</span>
+edges.sort(key=<span class="keyword">lambda</span> e: e[<span class="number">2</span>])
+<span class="builtin">print</span>(edges)
+<span class="comment"># [(2,3,1), (0,2,2), (1,3,3), (1,2,4), (0,1,5)]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">const</span> edges = [
+  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>],
+  [<span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>],
+  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>],
+  [<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>],
+  [<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>],
+];
+
+<span class="comment">// Sort by weight (useful for Kruskal's)</span>
+edges.sort((a, b) => a[<span class="number">2</span>] - b[<span class="number">2</span>]);
+console.log(edges);
+<span class="comment">// [[2,3,1], [0,2,2], [1,3,3], [1,2,4], [0,1,5]]</span></code></pre>
+
+    <h3>Representation Comparison</h3>
+    <table>
+      <tr><th>Representation</th><th>Space</th><th>Edge Lookup</th><th>Iterate Neighbors</th><th>Best For</th></tr>
+      <tr><td>Adjacency Matrix</td><td>O(V<sup>2</sup>)</td><td>O(1)</td><td>O(V)</td><td>Dense graphs, quick edge checks</td></tr>
+      <tr><td>Adjacency List</td><td>O(V + E)</td><td>O(degree)</td><td>O(degree)</td><td>Sparse graphs, traversals (most problems)</td></tr>
+      <tr><td>Edge List</td><td>O(E)</td><td>O(E)</td><td>O(E)</td><td>Kruskal's MST, edge-centric algorithms</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 3: GRAPH TRAVERSALS                                    -->
+  <!-- ============================================================== -->
+  <section id="traversals">
+    <h2>3. Graph Traversals</h2>
+
+    <p>The two fundamental ways to explore a graph. Both visit every reachable vertex exactly once.</p>
+
+<pre><code><span class="comment">    Reference graph for traversal walkthroughs:</span>
+
+        (0)----(1)
+        / \      \
+       /   \      \
+     (2)   (3)---(4)
+       \         /
+        \       /
+         (5)--/</code></pre>
+
+    <!-- BFS -->
+    <h3>BFS (Breadth-First Search)</h3>
+
+    <p>Explores <strong>level by level</strong>. Uses a <strong>queue</strong>. Think of it like ripples spreading from a stone dropped in water.</p>
+
+    <div class="example-box">
+      <div class="label">BFS Walkthrough</div>
+<pre><code><span class="comment">Starting from vertex 0:</span>
+
+Queue: [0]          Visited: {0}
+Process 0 -> add neighbors 1, 2, 3
+
+Queue: [1, 2, 3]   Visited: {0, 1, 2, 3}
+Process 1 -> add neighbor 4 (0 already visited)
+
+Queue: [2, 3, 4]   Visited: {0, 1, 2, 3, 4}
+Process 2 -> add neighbor 5 (0 already visited)
+
+Queue: [3, 4, 5]   Visited: {0, 1, 2, 3, 4, 5}
+Process 3 -> neighbor 4 already visited
+
+Queue: [4, 5]      Visited: {0, 1, 2, 3, 4, 5}
+Process 4 -> neighbors 3, 5 already visited
+
+Queue: [5]          Visited: {0, 1, 2, 3, 4, 5}
+Process 5 -> neighbors 2, 4 already visited
+
+Queue: []           DONE!
+
+<span class="comment">BFS Order: 0 -> 1 -> 2 -> 3 -> 4 -> 5</span>
+<span class="comment">Level 0: {0}  |  Level 1: {1,2,3}  |  Level 2: {4,5}</span></code></pre>
+    </div>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">bfs</span>(graph, start):
+    <span class="string">"""BFS traversal from a starting vertex."""</span>
+    visited = <span class="builtin">set</span>([start])
+    queue = deque([start])
+    order = []
+
+    <span class="keyword">while</span> queue:
+        vertex = queue.popleft()
+        order.append(vertex)
+
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+    <span class="keyword">return</span> order
+
+<span class="comment"># Adjacency list representation</span>
+graph = {
+    <span class="number">0</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+    <span class="number">1</span>: [<span class="number">0</span>, <span class="number">4</span>],
+    <span class="number">2</span>: [<span class="number">0</span>, <span class="number">5</span>],
+    <span class="number">3</span>: [<span class="number">0</span>, <span class="number">4</span>],
+    <span class="number">4</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>],
+    <span class="number">5</span>: [<span class="number">2</span>, <span class="number">4</span>],
+}
+
+<span class="builtin">print</span>(bfs(graph, <span class="number">0</span>))  <span class="comment"># [0, 1, 2, 3, 4, 5]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">bfs</span>(graph, start) {
+  <span class="keyword">const</span> visited = <span class="keyword">new</span> Set([start]);
+  <span class="keyword">const</span> queue = [start];
+  <span class="keyword">const</span> order = [];
+
+  <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+    <span class="keyword">const</span> vertex = queue.shift();
+    order.push(vertex);
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[vertex]) {
+      <span class="keyword">if</span> (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> order;
+}
+
+<span class="keyword">const</span> graph = {
+  <span class="number">0</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+  <span class="number">1</span>: [<span class="number">0</span>, <span class="number">4</span>],
+  <span class="number">2</span>: [<span class="number">0</span>, <span class="number">5</span>],
+  <span class="number">3</span>: [<span class="number">0</span>, <span class="number">4</span>],
+  <span class="number">4</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>],
+  <span class="number">5</span>: [<span class="number">2</span>, <span class="number">4</span>],
+};
+
+console.log(bfs(graph, <span class="number">0</span>));  <span class="comment">// [0, 1, 2, 3, 4, 5]</span></code></pre>
+
+    <div class="formula-box">BFS Time: O(V + E) &nbsp;|&nbsp; Space: O(V)</div>
+
+    <div class="tip-box">
+      <div class="label">When to use BFS</div>
+      <ul>
+        <li><strong>Shortest path in unweighted graphs</strong> &mdash; BFS guarantees the shortest path</li>
+        <li>Level-order traversal</li>
+        <li>Finding all nodes within k distance</li>
+        <li>Multi-source shortest path (start BFS from multiple sources simultaneously)</li>
+      </ul>
+    </div>
+
+    <!-- DFS -->
+    <h3>DFS (Depth-First Search)</h3>
+
+    <p>Explores <strong>as deep as possible</strong> before backtracking. Uses a <strong>stack</strong> (or recursion, which uses the call stack). Think of it like exploring a maze &mdash; go down a path until you hit a dead end, then backtrack.</p>
+
+    <div class="example-box">
+      <div class="label">DFS Walkthrough</div>
+<pre><code><span class="comment">Starting from vertex 0 (recursive):</span>
+
+Visit 0 -> go to neighbor 1
+  Visit 1 -> go to neighbor 4
+    Visit 4 -> go to neighbor 3
+      Visit 3 -> neighbor 0 visited, neighbor 4 visited, backtrack
+    back to 4 -> go to neighbor 5
+      Visit 5 -> go to neighbor 2
+        Visit 2 -> neighbor 0 visited, backtrack
+      back to 5 -> backtrack
+    back to 4 -> backtrack
+  back to 1 -> backtrack
+back to 0 -> neighbors 2,3 already visited -> DONE
+
+<span class="comment">DFS Order: 0 -> 1 -> 4 -> 3 -> 5 -> 2</span></code></pre>
+    </div>
+
+    <h3>DFS - Recursive</h3>
+    <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">dfs_recursive</span>(graph, vertex, visited=<span class="keyword">None</span>):
+    <span class="string">"""DFS traversal using recursion."""</span>
+    <span class="keyword">if</span> visited <span class="keyword">is</span> <span class="keyword">None</span>:
+        visited = <span class="builtin">set</span>()
+
+    visited.add(vertex)
+    <span class="builtin">print</span>(vertex, end=<span class="string">" "</span>)
+
+    <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+        <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+            dfs_recursive(graph, neighbor, visited)
+
+    <span class="keyword">return</span> visited
+
+<span class="comment"># Usage</span>
+graph = {
+    <span class="number">0</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+    <span class="number">1</span>: [<span class="number">0</span>, <span class="number">4</span>],
+    <span class="number">2</span>: [<span class="number">0</span>, <span class="number">5</span>],
+    <span class="number">3</span>: [<span class="number">0</span>, <span class="number">4</span>],
+    <span class="number">4</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>],
+    <span class="number">5</span>: [<span class="number">2</span>, <span class="number">4</span>],
+}
+dfs_recursive(graph, <span class="number">0</span>)  <span class="comment"># 0 1 4 3 5 2</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">dfsRecursive</span>(graph, vertex, visited = <span class="keyword">new</span> Set()) {
+  visited.add(vertex);
+  <span class="keyword">const</span> order = [vertex];
+
+  <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[vertex]) {
+    <span class="keyword">if</span> (!visited.has(neighbor)) {
+      order.push(...dfsRecursive(graph, neighbor, visited));
+    }
+  }
+
+  <span class="keyword">return</span> order;
+}
+
+console.log(dfsRecursive(graph, <span class="number">0</span>));  <span class="comment">// [0, 1, 4, 3, 5, 2]</span></code></pre>
+
+    <h3>DFS - Iterative (Using Explicit Stack)</h3>
+    <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">dfs_iterative</span>(graph, start):
+    <span class="string">"""DFS traversal using explicit stack."""</span>
+    visited = <span class="builtin">set</span>()
+    stack = [start]
+    order = []
+
+    <span class="keyword">while</span> stack:
+        vertex = stack.pop()
+        <span class="keyword">if</span> vertex <span class="keyword">in</span> visited:
+            <span class="keyword">continue</span>
+        visited.add(vertex)
+        order.append(vertex)
+
+        <span class="comment"># Add neighbors in reverse for same order as recursive</span>
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> <span class="builtin">reversed</span>(graph[vertex]):
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                stack.append(neighbor)
+
+    <span class="keyword">return</span> order
+
+<span class="builtin">print</span>(dfs_iterative(graph, <span class="number">0</span>))  <span class="comment"># [0, 1, 4, 3, 5, 2]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">dfsIterative</span>(graph, start) {
+  <span class="keyword">const</span> visited = <span class="keyword">new</span> Set();
+  <span class="keyword">const</span> stack = [start];
+  <span class="keyword">const</span> order = [];
+
+  <span class="keyword">while</span> (stack.length > <span class="number">0</span>) {
+    <span class="keyword">const</span> vertex = stack.pop();
+    <span class="keyword">if</span> (visited.has(vertex)) <span class="keyword">continue</span>;
+    visited.add(vertex);
+    order.push(vertex);
+
+    <span class="comment">// Add neighbors in reverse for same order as recursive</span>
+    <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> [...graph[vertex]].reverse()) {
+      <span class="keyword">if</span> (!visited.has(neighbor)) {
+        stack.push(neighbor);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> order;
+}
+
+console.log(dfsIterative(graph, <span class="number">0</span>));  <span class="comment">// [0, 1, 4, 3, 5, 2]</span></code></pre>
+
+    <div class="formula-box">DFS Time: O(V + E) &nbsp;|&nbsp; Space: O(V)</div>
+
+    <div class="tip-box">
+      <div class="label">When to use DFS</div>
+      <ul>
+        <li><strong>Cycle detection</strong> &mdash; track visited and in-progress nodes</li>
+        <li><strong>Connected components</strong> &mdash; DFS from unvisited nodes</li>
+        <li><strong>Topological sort</strong> &mdash; process after all descendants</li>
+        <li><strong>Path finding</strong> &mdash; does any path exist?</li>
+        <li><strong>Backtracking</strong> &mdash; explore all possibilities</li>
+      </ul>
+    </div>
+
+    <h3>BFS vs DFS Comparison</h3>
+    <table>
+      <tr><th>Feature</th><th>BFS</th><th>DFS</th></tr>
+      <tr><td>Data Structure</td><td>Queue</td><td>Stack / Recursion</td></tr>
+      <tr><td>Exploration</td><td>Level by level</td><td>Depth first, backtrack</td></tr>
+      <tr><td>Shortest Path</td><td>Yes (unweighted)</td><td>No</td></tr>
+      <tr><td>Space (worst)</td><td>O(V) - width of graph</td><td>O(V) - depth of graph</td></tr>
+      <tr><td>Cycle Detection</td><td>Possible but awkward</td><td>Natural fit</td></tr>
+      <tr><td>Topological Sort</td><td>Kahn's algorithm</td><td>Post-order approach</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 4: COMMON GRAPH ALGORITHMS                             -->
+  <!-- ============================================================== -->
+  <section id="algorithms">
+    <h2>4. Common Graph Algorithms</h2>
+
+    <!-- SHORTEST PATH BFS -->
+    <h3>Shortest Path - BFS (Unweighted)</h3>
+
+    <p>In an unweighted graph, <strong>BFS naturally finds the shortest path</strong> because it explores nodes level by level. Track parent pointers to reconstruct the actual path.</p>
+
+<pre><code><span class="comment">    Finding shortest path from A to E:</span>
+
+        (A)---(B)---(E)
+         |         /
+        (C)---(D)-/
+
+    BFS from A:
+    Level 0: A
+    Level 1: B, C
+    Level 2: E, D     <-- E found at level 2 = distance 2
+
+    Shortest path: A -> B -> E</code></pre>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">bfs_shortest_path</span>(graph, start, end):
+    <span class="string">"""Find shortest path in unweighted graph using BFS."""</span>
+    <span class="keyword">if</span> start == end:
+        <span class="keyword">return</span> [start]
+
+    visited = <span class="builtin">set</span>([start])
+    queue = deque([(start, [start])])  <span class="comment"># (vertex, path)</span>
+
+    <span class="keyword">while</span> queue:
+        vertex, path = queue.popleft()
+
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+            <span class="keyword">if</span> neighbor == end:
+                <span class="keyword">return</span> path + [neighbor]
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+
+    <span class="keyword">return</span> []  <span class="comment"># no path found</span>
+
+graph = {
+    <span class="string">'A'</span>: [<span class="string">'B'</span>, <span class="string">'C'</span>],
+    <span class="string">'B'</span>: [<span class="string">'A'</span>, <span class="string">'E'</span>],
+    <span class="string">'C'</span>: [<span class="string">'A'</span>, <span class="string">'D'</span>],
+    <span class="string">'D'</span>: [<span class="string">'C'</span>, <span class="string">'E'</span>],
+    <span class="string">'E'</span>: [<span class="string">'B'</span>, <span class="string">'D'</span>],
+}
+
+<span class="builtin">print</span>(bfs_shortest_path(graph, <span class="string">'A'</span>, <span class="string">'E'</span>))  <span class="comment"># ['A', 'B', 'E']</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">bfsShortestPath</span>(graph, start, end) {
+  <span class="keyword">if</span> (start === end) <span class="keyword">return</span> [start];
+
+  <span class="keyword">const</span> visited = <span class="keyword">new</span> Set([start]);
+  <span class="keyword">const</span> queue = [[start, [start]]];  <span class="comment">// [vertex, path]</span>
+
+  <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+    <span class="keyword">const</span> [vertex, path] = queue.shift();
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[vertex]) {
+      <span class="keyword">if</span> (neighbor === end) {
+        <span class="keyword">return</span> [...path, neighbor];
+      }
+      <span class="keyword">if</span> (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push([neighbor, [...path, neighbor]]);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> [];  <span class="comment">// no path found</span>
+}
+
+console.log(bfsShortestPath(graph, <span class="string">'A'</span>, <span class="string">'E'</span>));  <span class="comment">// ['A', 'B', 'E']</span></code></pre>
+
+    <!-- DIJKSTRA'S -->
+    <h3>Dijkstra's Algorithm (Weighted Shortest Path)</h3>
+
+    <p>Finds the shortest path in a <strong>weighted graph with non-negative edges</strong>. Uses a <strong>priority queue (min heap)</strong> to always process the closest unvisited vertex next.</p>
+
+    <div class="warning-box">
+      <div class="label">Important</div>
+      Dijkstra's does NOT work with negative edge weights. For negative weights, use Bellman-Ford instead.
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step-by-step Walkthrough</div>
+<pre><code><span class="comment">    Graph:</span>
+        (A)---5---(B)
+         |  \      |
+         2   8     3
+         |    \    |
+        (C)--1-(D)-+
+
+    <span class="comment">Find shortest path from A to all vertices:</span>
+
+    Init:   dist = {A:0, B:inf, C:inf, D:inf}
+            heap = [(0, A)]
+
+    Step 1: Pop (0, A) -> process A
+            Update B: 0+5=5, C: 0+2=2, D: 0+8=8
+            dist = {A:0, B:5, C:2, D:8}
+            heap = [(2,C), (5,B), (8,D)]
+
+    Step 2: Pop (2, C) -> process C
+            Update D: 2+1=3 < 8 -> update!
+            dist = {A:0, B:5, C:2, D:3}
+            heap = [(3,D), (5,B), (8,D)]
+
+    Step 3: Pop (3, D) -> process D
+            Update B: 3+3=6 > 5 -> no update
+            dist = {A:0, B:5, C:2, D:3}
+
+    Step 4: Pop (5, B) -> process B
+            No better paths found
+
+    <span class="comment">Final: A->A:0, A->B:5, A->C:2, A->D:3</span>
+    <span class="comment">Shortest A->D: A -> C -> D  (cost 3)</span></code></pre>
+    </div>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">dijkstra</span>(graph, start):
+    <span class="string">"""
+    Dijkstra's shortest path algorithm.
+    graph: {vertex: [(neighbor, weight), ...]}
+    Returns: {vertex: shortest_distance}
+    """</span>
+    dist = {v: <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">for</span> v <span class="keyword">in</span> graph}
+    dist[start] = <span class="number">0</span>
+    prev = {v: <span class="keyword">None</span> <span class="keyword">for</span> v <span class="keyword">in</span> graph}
+    heap = [(<span class="number">0</span>, start)]  <span class="comment"># (distance, vertex)</span>
+
+    <span class="keyword">while</span> heap:
+        d, u = heapq.heappop(heap)
+
+        <span class="comment"># Skip if we already found a shorter path</span>
+        <span class="keyword">if</span> d > dist[u]:
+            <span class="keyword">continue</span>
+
+        <span class="keyword">for</span> neighbor, weight <span class="keyword">in</span> graph[u]:
+            new_dist = dist[u] + weight
+            <span class="keyword">if</span> new_dist < dist[neighbor]:
+                dist[neighbor] = new_dist
+                prev[neighbor] = u
+                heapq.heappush(heap, (new_dist, neighbor))
+
+    <span class="keyword">return</span> dist, prev
+
+<span class="keyword">def</span> <span class="function">reconstruct_path</span>(prev, start, end):
+    <span class="string">"""Rebuild path from prev pointers."""</span>
+    path = []
+    current = end
+    <span class="keyword">while</span> current <span class="keyword">is not</span> <span class="keyword">None</span>:
+        path.append(current)
+        current = prev[current]
+    <span class="keyword">return</span> path[::-<span class="number">1</span>]
+
+<span class="comment"># Weighted adjacency list: vertex -> [(neighbor, weight), ...]</span>
+graph = {
+    <span class="string">'A'</span>: [(<span class="string">'B'</span>, <span class="number">5</span>), (<span class="string">'C'</span>, <span class="number">2</span>), (<span class="string">'D'</span>, <span class="number">8</span>)],
+    <span class="string">'B'</span>: [(<span class="string">'A'</span>, <span class="number">5</span>), (<span class="string">'D'</span>, <span class="number">3</span>)],
+    <span class="string">'C'</span>: [(<span class="string">'A'</span>, <span class="number">2</span>), (<span class="string">'D'</span>, <span class="number">1</span>)],
+    <span class="string">'D'</span>: [(<span class="string">'A'</span>, <span class="number">8</span>), (<span class="string">'B'</span>, <span class="number">3</span>), (<span class="string">'C'</span>, <span class="number">1</span>)],
+}
+
+dist, prev = dijkstra(graph, <span class="string">'A'</span>)
+<span class="builtin">print</span>(dist)  <span class="comment"># {'A': 0, 'B': 5, 'C': 2, 'D': 3}</span>
+<span class="builtin">print</span>(reconstruct_path(prev, <span class="string">'A'</span>, <span class="string">'D'</span>))  <span class="comment"># ['A', 'C', 'D']</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">dijkstra</span>(graph, start) {
+  <span class="keyword">const</span> dist = {};
+  <span class="keyword">const</span> prev = {};
+
+  <span class="keyword">for</span> (<span class="keyword">const</span> v <span class="keyword">of</span> Object.keys(graph)) {
+    dist[v] = Infinity;
+    prev[v] = <span class="keyword">null</span>;
+  }
+  dist[start] = <span class="number">0</span>;
+
+  <span class="comment">// Simple priority queue using sorted array</span>
+  <span class="comment">// (for production, use a real min-heap)</span>
+  <span class="keyword">const</span> pq = [[<span class="number">0</span>, start]];  <span class="comment">// [distance, vertex]</span>
+
+  <span class="keyword">while</span> (pq.length > <span class="number">0</span>) {
+    pq.sort((a, b) => a[<span class="number">0</span>] - b[<span class="number">0</span>]);
+    <span class="keyword">const</span> [d, u] = pq.shift();
+
+    <span class="keyword">if</span> (d > dist[u]) <span class="keyword">continue</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> [neighbor, weight] <span class="keyword">of</span> graph[u]) {
+      <span class="keyword">const</span> newDist = dist[u] + weight;
+      <span class="keyword">if</span> (newDist < dist[neighbor]) {
+        dist[neighbor] = newDist;
+        prev[neighbor] = u;
+        pq.push([newDist, neighbor]);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> { dist, prev };
+}
+
+<span class="keyword">function</span> <span class="function">reconstructPath</span>(prev, start, end) {
+  <span class="keyword">const</span> path = [];
+  <span class="keyword">let</span> current = end;
+  <span class="keyword">while</span> (current !== <span class="keyword">null</span>) {
+    path.unshift(current);
+    current = prev[current];
+  }
+  <span class="keyword">return</span> path;
+}
+
+<span class="keyword">const</span> graph = {
+  A: [['B', <span class="number">5</span>], ['C', <span class="number">2</span>], ['D', <span class="number">8</span>]],
+  B: [['A', <span class="number">5</span>], ['D', <span class="number">3</span>]],
+  C: [['A', <span class="number">2</span>], ['D', <span class="number">1</span>]],
+  D: [['A', <span class="number">8</span>], ['B', <span class="number">3</span>], ['C', <span class="number">1</span>]],
+};
+
+<span class="keyword">const</span> { dist, prev } = dijkstra(graph, <span class="string">'A'</span>);
+console.log(dist);  <span class="comment">// {A: 0, B: 5, C: 2, D: 3}</span>
+console.log(reconstructPath(prev, <span class="string">'A'</span>, <span class="string">'D'</span>));  <span class="comment">// ['A', 'C', 'D']</span></code></pre>
+
+    <div class="formula-box">Dijkstra's Time: O((V + E) log V) with binary heap &nbsp;|&nbsp; Space: O(V)</div>
+
+    <!-- TOPOLOGICAL SORT -->
+    <h3>Topological Sort</h3>
+
+    <p>A linear ordering of vertices in a <strong>DAG</strong> such that for every edge u &rarr; v, vertex u comes before v. Think of it as a valid task execution order where all dependencies are satisfied first.</p>
+
+<pre><code><span class="comment">    DAG of course prerequisites:</span>
+
+     (Calc1)--->(Calc2)--->(Calc3)
+                  |
+                  v
+     (CS101)-->(CS201)--->(CS301)
+
+    <span class="comment">Valid topological orderings:</span>
+    Calc1, CS101, Calc2, CS201, Calc3, CS301
+    CS101, Calc1, Calc2, CS201, CS301, Calc3
+    <span class="comment">(many valid orderings exist)</span></code></pre>
+
+    <h3>Kahn's Algorithm (BFS / Indegree Approach)</h3>
+    <pre><span class="lang-label">Python</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque, defaultdict
+
+<span class="keyword">def</span> <span class="function">topological_sort_bfs</span>(num_vertices, edges):
+    <span class="string">"""
+    Kahn's algorithm for topological sort.
+    edges: list of (u, v) meaning u must come before v.
+    Returns: topological order, or [] if cycle exists.
+    """</span>
+    graph = defaultdict(<span class="builtin">list</span>)
+    indegree = [<span class="number">0</span>] * num_vertices
+
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        graph[u].append(v)
+        indegree[v] += <span class="number">1</span>
+
+    <span class="comment"># Start with all vertices that have no prerequisites</span>
+    queue = deque()
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(num_vertices):
+        <span class="keyword">if</span> indegree[i] == <span class="number">0</span>:
+            queue.append(i)
+
+    order = []
+    <span class="keyword">while</span> queue:
+        vertex = queue.popleft()
+        order.append(vertex)
+
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+            indegree[neighbor] -= <span class="number">1</span>
+            <span class="keyword">if</span> indegree[neighbor] == <span class="number">0</span>:
+                queue.append(neighbor)
+
+    <span class="comment"># If we processed all vertices, no cycle exists</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(order) == num_vertices:
+        <span class="keyword">return</span> order
+    <span class="keyword">return</span> []  <span class="comment"># cycle detected!</span>
+
+<span class="comment"># 0=Calc1, 1=Calc2, 2=Calc3, 3=CS101, 4=CS201, 5=CS301</span>
+edges = [(<span class="number">0</span>,<span class="number">1</span>), (<span class="number">1</span>,<span class="number">2</span>), (<span class="number">3</span>,<span class="number">4</span>), (<span class="number">1</span>,<span class="number">4</span>), (<span class="number">4</span>,<span class="number">5</span>)]
+<span class="builtin">print</span>(topological_sort_bfs(<span class="number">6</span>, edges))
+<span class="comment"># [0, 3, 1, 4, 2, 5]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">topologicalSortBFS</span>(numVertices, edges) {
+  <span class="keyword">const</span> graph = Array.from({ length: numVertices }, () => []);
+  <span class="keyword">const</span> indegree = <span class="keyword">new</span> Array(numVertices).fill(<span class="number">0</span>);
+
+  <span class="keyword">for</span> (<span class="keyword">const</span> [u, v] <span class="keyword">of</span> edges) {
+    graph[u].push(v);
+    indegree[v]++;
+  }
+
+  <span class="keyword">const</span> queue = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < numVertices; i++) {
+    <span class="keyword">if</span> (indegree[i] === <span class="number">0</span>) queue.push(i);
+  }
+
+  <span class="keyword">const</span> order = [];
+  <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+    <span class="keyword">const</span> vertex = queue.shift();
+    order.push(vertex);
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[vertex]) {
+      indegree[neighbor]--;
+      <span class="keyword">if</span> (indegree[neighbor] === <span class="number">0</span>) queue.push(neighbor);
+    }
+  }
+
+  <span class="keyword">return</span> order.length === numVertices ? order : [];
+}
+
+<span class="keyword">const</span> edges = [[<span class="number">0</span>,<span class="number">1</span>], [<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>], [<span class="number">1</span>,<span class="number">4</span>], [<span class="number">4</span>,<span class="number">5</span>]];
+console.log(topologicalSortBFS(<span class="number">6</span>, edges));
+<span class="comment">// [0, 3, 1, 4, 2, 5]</span></code></pre>
+
+    <h3>Topological Sort - DFS Approach</h3>
+    <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">topological_sort_dfs</span>(num_vertices, edges):
+    <span class="string">"""Topological sort using DFS post-order."""</span>
+    graph = defaultdict(<span class="builtin">list</span>)
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        graph[u].append(v)
+
+    visited = <span class="builtin">set</span>()
+    stack = []  <span class="comment"># result in reverse order</span>
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(v):
+        visited.add(v)
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[v]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                dfs(neighbor)
+        stack.append(v)  <span class="comment"># add AFTER processing all descendants</span>
+
+    <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(num_vertices):
+        <span class="keyword">if</span> v <span class="keyword">not in</span> visited:
+            dfs(v)
+
+    <span class="keyword">return</span> stack[::-<span class="number">1</span>]  <span class="comment"># reverse the post-order</span>
+
+<span class="builtin">print</span>(topological_sort_dfs(<span class="number">6</span>, edges))
+<span class="comment"># [3, 0, 1, 4, 5, 2]</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">function</span> <span class="function">topologicalSortDFS</span>(numVertices, edges) {
+  <span class="keyword">const</span> graph = Array.from({ length: numVertices }, () => []);
+  <span class="keyword">for</span> (<span class="keyword">const</span> [u, v] <span class="keyword">of</span> edges) graph[u].push(v);
+
+  <span class="keyword">const</span> visited = <span class="keyword">new</span> Set();
+  <span class="keyword">const</span> stack = [];
+
+  <span class="keyword">function</span> <span class="function">dfs</span>(v) {
+    visited.add(v);
+    <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[v]) {
+      <span class="keyword">if</span> (!visited.has(neighbor)) dfs(neighbor);
+    }
+    stack.push(v);  <span class="comment">// add AFTER all descendants</span>
+  }
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> v = <span class="number">0</span>; v < numVertices; v++) {
+    <span class="keyword">if</span> (!visited.has(v)) dfs(v);
+  }
+
+  <span class="keyword">return</span> stack.reverse();
+}
+
+console.log(topologicalSortDFS(<span class="number">6</span>, edges));
+<span class="comment">// [3, 0, 1, 4, 5, 2]</span></code></pre>
+
+    <div class="tip-box">
+      <div class="label">Topological Sort Applications</div>
+      <ul>
+        <li><strong>Course scheduling</strong> &mdash; can you finish all courses?</li>
+        <li><strong>Build systems</strong> &mdash; compile dependencies first (Make, Webpack)</li>
+        <li><strong>Task scheduling</strong> &mdash; execute tasks respecting dependencies</li>
+        <li><strong>Package managers</strong> &mdash; install dependencies in correct order (npm, pip)</li>
+      </ul>
+    </div>
+
+    <!-- UNION-FIND -->
+    <h3>Union-Find / Disjoint Set (Brief)</h3>
+
+    <p>A data structure for tracking disjoint sets. Supports two operations: <strong>find</strong> (which set does element belong to?) and <strong>union</strong> (merge two sets). Optimized with <strong>path compression</strong> and <strong>union by rank</strong>.</p>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">class</span> <span class="function">UnionFind</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n):
+        <span class="builtin">self</span>.parent = <span class="builtin">list</span>(<span class="builtin">range</span>(n))
+        <span class="builtin">self</span>.rank = [<span class="number">0</span>] * n
+        <span class="builtin">self</span>.components = n
+
+    <span class="keyword">def</span> <span class="function">find</span>(<span class="builtin">self</span>, x):
+        <span class="string">"""Find root with path compression."""</span>
+        <span class="keyword">if</span> <span class="builtin">self</span>.parent[x] != x:
+            <span class="builtin">self</span>.parent[x] = <span class="builtin">self</span>.find(<span class="builtin">self</span>.parent[x])
+        <span class="keyword">return</span> <span class="builtin">self</span>.parent[x]
+
+    <span class="keyword">def</span> <span class="function">union</span>(<span class="builtin">self</span>, x, y):
+        <span class="string">"""Union by rank. Returns True if merged."""</span>
+        px, py = <span class="builtin">self</span>.find(x), <span class="builtin">self</span>.find(y)
+        <span class="keyword">if</span> px == py:
+            <span class="keyword">return</span> <span class="keyword">False</span>  <span class="comment"># already same set (cycle!)</span>
+        <span class="keyword">if</span> <span class="builtin">self</span>.rank[px] < <span class="builtin">self</span>.rank[py]:
+            px, py = py, px
+        <span class="builtin">self</span>.parent[py] = px
+        <span class="keyword">if</span> <span class="builtin">self</span>.rank[px] == <span class="builtin">self</span>.rank[py]:
+            <span class="builtin">self</span>.rank[px] += <span class="number">1</span>
+        <span class="builtin">self</span>.components -= <span class="number">1</span>
+        <span class="keyword">return</span> <span class="keyword">True</span>
+
+    <span class="keyword">def</span> <span class="function">connected</span>(<span class="builtin">self</span>, x, y):
+        <span class="keyword">return</span> <span class="builtin">self</span>.find(x) == <span class="builtin">self</span>.find(y)
+
+<span class="comment"># Usage: detect cycles, count connected components</span>
+uf = UnionFind(<span class="number">5</span>)
+uf.union(<span class="number">0</span>, <span class="number">1</span>)
+uf.union(<span class="number">2</span>, <span class="number">3</span>)
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># True</span>
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">2</span>))  <span class="comment"># False</span>
+<span class="builtin">print</span>(uf.components)        <span class="comment"># 3</span>
+uf.union(<span class="number">1</span>, <span class="number">3</span>)
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">2</span>))  <span class="comment"># True (0-1-3-2)</span>
+<span class="builtin">print</span>(uf.components)        <span class="comment"># 2</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript</span><code><span class="keyword">class</span> <span class="function">UnionFind</span> {
+  <span class="function">constructor</span>(n) {
+    <span class="keyword">this</span>.parent = Array.from({ length: n }, (_, i) => i);
+    <span class="keyword">this</span>.rank = <span class="keyword">new</span> Array(n).fill(<span class="number">0</span>);
+    <span class="keyword">this</span>.components = n;
+  }
+
+  <span class="function">find</span>(x) {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.parent[x] !== x) {
+      <span class="keyword">this</span>.parent[x] = <span class="keyword">this</span>.find(<span class="keyword">this</span>.parent[x]);
+    }
+    <span class="keyword">return</span> <span class="keyword">this</span>.parent[x];
+  }
+
+  <span class="function">union</span>(x, y) {
+    <span class="keyword">let</span> px = <span class="keyword">this</span>.find(x), py = <span class="keyword">this</span>.find(y);
+    <span class="keyword">if</span> (px === py) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">if</span> (<span class="keyword">this</span>.rank[px] < <span class="keyword">this</span>.rank[py]) [px, py] = [py, px];
+    <span class="keyword">this</span>.parent[py] = px;
+    <span class="keyword">if</span> (<span class="keyword">this</span>.rank[px] === <span class="keyword">this</span>.rank[py]) <span class="keyword">this</span>.rank[px]++;
+    <span class="keyword">this</span>.components--;
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="function">connected</span>(x, y) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.find(x) === <span class="keyword">this</span>.find(y);
+  }
+}</code></pre>
+
+    <div class="formula-box">Union-Find: find() and union() are nearly O(1) amortized with both optimizations</div>
+
+    <p>For more on Union-Find and advanced graph algorithms, see the <a href="advanced.html" class="resource-link">Advanced page</a>.</p>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 5: CYCLE DETECTION                                     -->
+  <!-- ============================================================== -->
+  <section id="cycle-detection">
+    <h2>5. Cycle Detection</h2>
+
+    <h3>Undirected Graph - DFS with Parent Tracking</h3>
+    <p>In an undirected graph, if we visit a neighbor that is already visited AND it is not the parent of the current node, we have found a cycle.</p>
+
+    <pre><span class="lang-label">Python</span><code><span class="keyword">def</span> <span class="function">has_cycle_undirected</span>(graph, num_vertices):
+    <span class="string">"""Detect cycle in undirected graph using DFS."""</span>
+    visited = <span class="builtin">set</span>()
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(vertex, parent):
+        visited.add(vertex)
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[vertex]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                <span class="keyword">if</span> dfs(neighbor, vertex):
+                    <span class="keyword">return</span> <span class="keyword">True</span>
+            <span class="keyword">elif</span> neighbor != parent:
+                <span class="keyword">return</span> <span class="keyword">True</span>  <span class="comment"># cycle found!</span>
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="comment"># Check all components (disconnected graph)</span>
+    <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(num_vertices):
+        <span class="keyword">if</span> v <span class="keyword">not in</span> visited:
+            <span class="keyword">if</span> dfs(v, -<span class="number">1</span>):
+                <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">return</span> <span class="keyword">False</span>
+
+<span class="comment"># Has cycle: 0-1-2-0</span>
+graph = {<span class="number">0</span>: [<span class="number">1</span>, <span class="number">2</span>], <span class="number">1</span>: [<span class="number">0</span>, <span class="number">2</span>], <span class="number">2</span>: [<span class="number">0</span>, <span class="number">1</span>]}
+<span class="builtin">print</span>(has_cycle_undirected(graph, <span class="number">3</span>))  <span class="comment"># True</span>
+
+<span class="comment"># No cycle</span>
+graph = {<span class="number">0</span>: [<span class="number">1</span>], <span class="number">1</span>: [<span class="number">0</span>, <span class="number">2</span>], <span class="number">2</span>: [<span class="number">1</span>]}
+<span class="builtin">print</span>(has_cycle_undirected(graph, <span class="number">3</span>))  <span class="comment"># False</span></code></pre>
+
+    <h3>Directed Graph - Three-Color Marking (White/Gray/Black)</h3>
+
+    <p>For directed graphs, parent tracking is not enough. We use three states:</p>
+    <ul>
+      <li><strong>White (0):</strong> Not visited yet</li>
+      <li><strong>Gray (1):</strong> Currently being processed (in the recursion stack)</li>
+      <li><strong>Black (2):</strong> Completely processed (all descendants finished)</li>
+    </ul>
+    <p>A cycle exists if we encounter a <strong>gray</strong> node &mdash; that means we have found a back edge to an ancestor still being processed.</p>
+
+<pre><code><span class="comment">    Why parent tracking fails for directed graphs:</span>
+
+        (A)--->(B)
+               |
+               v
+        (C)--->(D)
+
+    <span class="comment">A->B->D is fine. C->D is NOT a cycle, just another path to D.</span>
+    <span class="comment">But with parent tracking, D looks "already visited" from C.</span>
+    <span class="comment">Three-color fixes this: D is BLACK (done), not GRAY (in progress).</span></code></pre>
+
+    <pre><span class="lang-label">Python</span><code>WHITE, GRAY, BLACK = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>
+
+<span class="keyword">def</span> <span class="function">has_cycle_directed</span>(graph, num_vertices):
+    <span class="string">"""Detect cycle in directed graph using 3-color DFS."""</span>
+    color = [WHITE] * num_vertices
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(vertex):
+        color[vertex] = GRAY  <span class="comment"># mark as in-progress</span>
+
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph.get(vertex, []):
+            <span class="keyword">if</span> color[neighbor] == GRAY:
+                <span class="keyword">return</span> <span class="keyword">True</span>   <span class="comment"># back edge = cycle!</span>
+            <span class="keyword">if</span> color[neighbor] == WHITE:
+                <span class="keyword">if</span> dfs(neighbor):
+                    <span class="keyword">return</span> <span class="keyword">True</span>
+
+        color[vertex] = BLACK  <span class="comment"># mark as done</span>
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(num_vertices):
+        <span class="keyword">if</span> color[v] == WHITE:
+            <span class="keyword">if</span> dfs(v):
+                <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">return</span> <span class="keyword">False</span>
+
+<span class="comment"># Cycle: 0->1->2->0</span>
+graph = {<span class="number">0</span>: [<span class="number">1</span>], <span class="number">1</span>: [<span class="number">2</span>], <span class="number">2</span>: [<span class="number">0</span>]}
+<span class="builtin">print</span>(has_cycle_directed(graph, <span class="number">3</span>))  <span class="comment"># True</span>
+
+<span class="comment"># No cycle (DAG)</span>
+graph = {<span class="number">0</span>: [<span class="number">1</span>], <span class="number">1</span>: [<span class="number">2</span>], <span class="number">2</span>: []}
+<span class="builtin">print</span>(has_cycle_directed(graph, <span class="number">3</span>))  <span class="comment"># False</span></code></pre>
+
+    <table>
+      <tr><th>Graph Type</th><th>Method</th><th>Key Idea</th></tr>
+      <tr><td>Undirected</td><td>DFS + parent tracking</td><td>Visited neighbor that is not parent = cycle</td></tr>
+      <tr><td>Directed</td><td>DFS + 3-color (W/G/B)</td><td>Encountering GRAY node = back edge = cycle</td></tr>
+      <tr><td>Either</td><td>Union-Find</td><td>If find(u) == find(v) before union = cycle</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 6: LEETCODE PROBLEMS                                   -->
+  <!-- ============================================================== -->
+  <section id="leetcode">
+    <h2>6. LeetCode Problems</h2>
+
+    <table>
+      <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Key Technique</th></tr>
+      <tr><td>200</td><td>Number of Islands</td><td><span class="tag green">Medium</span></td><td>BFS/DFS on grid</td></tr>
+      <tr><td>133</td><td>Clone Graph</td><td><span class="tag green">Medium</span></td><td>BFS/DFS + hash map</td></tr>
+      <tr><td>207</td><td>Course Schedule</td><td><span class="tag green">Medium</span></td><td>Topological sort (cycle detection)</td></tr>
+      <tr><td>210</td><td>Course Schedule II</td><td><span class="tag green">Medium</span></td><td>Topological sort (ordering)</td></tr>
+      <tr><td>417</td><td>Pacific Atlantic Water Flow</td><td><span class="tag green">Medium</span></td><td>Multi-source BFS/DFS</td></tr>
+      <tr><td>261</td><td>Graph Valid Tree</td><td><span class="tag green">Medium</span></td><td>Union-Find or DFS</td></tr>
+      <tr><td>323</td><td>Number of Connected Components</td><td><span class="tag green">Medium</span></td><td>Union-Find or DFS</td></tr>
+      <tr><td>127</td><td>Word Ladder</td><td><span class="tag red">Hard</span></td><td>BFS shortest path</td></tr>
+      <tr><td>269</td><td>Alien Dictionary</td><td><span class="tag red">Hard</span></td><td>Topological sort</td></tr>
+    </table>
+
+    <!-- FULL SOLUTION: NUMBER OF ISLANDS -->
+    <h3>200. Number of Islands - Full Solution</h3>
+
+    <p>Given a 2D grid of '1' (land) and '0' (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.</p>
+
+<pre><code><span class="comment">    Input:                     Islands = 3</span>
+    1 1 0 0 0                  X X . . .
+    1 1 0 0 0                  X X . . .
+    0 0 1 0 0      --->        . . X . .
+    0 0 0 1 1                  . . . X X</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      Each unvisited '1' is the start of a new island. Use BFS or DFS to "flood fill" the entire island (mark all connected '1's as visited). Count how many times you start a new flood fill.
+    </div>
+
+    <pre><span class="lang-label">Python - BFS</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">numIslands</span>(grid):
+    <span class="keyword">if not</span> grid:
+        <span class="keyword">return</span> <span class="number">0</span>
+
+    rows, cols = <span class="builtin">len</span>(grid), <span class="builtin">len</span>(grid[<span class="number">0</span>])
+    visited = <span class="builtin">set</span>()
+    islands = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">bfs</span>(r, c):
+        queue = deque([(r, c)])
+        visited.add((r, c))
+
+        <span class="keyword">while</span> queue:
+            row, col = queue.popleft()
+            <span class="comment"># Check all 4 directions: right, left, down, up</span>
+            <span class="keyword">for</span> dr, dc <span class="keyword">in</span> [(<span class="number">0</span>,<span class="number">1</span>), (<span class="number">0</span>,-<span class="number">1</span>), (<span class="number">1</span>,<span class="number">0</span>), (-<span class="number">1</span>,<span class="number">0</span>)]:
+                nr, nc = row + dr, col + dc
+                <span class="keyword">if</span> (<span class="number">0</span> <= nr < rows <span class="keyword">and</span>
+                    <span class="number">0</span> <= nc < cols <span class="keyword">and</span>
+                    grid[nr][nc] == <span class="string">"1"</span> <span class="keyword">and</span>
+                    (nr, nc) <span class="keyword">not in</span> visited):
+                    visited.add((nr, nc))
+                    queue.append((nr, nc))
+
+    <span class="keyword">for</span> r <span class="keyword">in</span> <span class="builtin">range</span>(rows):
+        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="builtin">range</span>(cols):
+            <span class="keyword">if</span> grid[r][c] == <span class="string">"1"</span> <span class="keyword">and</span> (r, c) <span class="keyword">not in</span> visited:
+                bfs(r, c)
+                islands += <span class="number">1</span>
+
+    <span class="keyword">return</span> islands
+
+<span class="comment"># Time: O(M * N)  |  Space: O(M * N)</span>
+
+grid = [
+    [<span class="string">"1"</span>,<span class="string">"1"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>],
+    [<span class="string">"1"</span>,<span class="string">"1"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>],
+    [<span class="string">"0"</span>,<span class="string">"0"</span>,<span class="string">"1"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>],
+    [<span class="string">"0"</span>,<span class="string">"0"</span>,<span class="string">"0"</span>,<span class="string">"1"</span>,<span class="string">"1"</span>],
+]
+<span class="builtin">print</span>(numIslands(grid))  <span class="comment"># 3</span></code></pre>
+
+    <pre><span class="lang-label">Python - DFS (alternative)</span><code><span class="keyword">def</span> <span class="function">numIslands</span>(grid):
+    <span class="keyword">if not</span> grid:
+        <span class="keyword">return</span> <span class="number">0</span>
+
+    rows, cols = <span class="builtin">len</span>(grid), <span class="builtin">len</span>(grid[<span class="number">0</span>])
+    islands = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(r, c):
+        <span class="comment"># Base case: out of bounds or water</span>
+        <span class="keyword">if</span> (r < <span class="number">0</span> <span class="keyword">or</span> r >= rows <span class="keyword">or</span>
+            c < <span class="number">0</span> <span class="keyword">or</span> c >= cols <span class="keyword">or</span>
+            grid[r][c] != <span class="string">"1"</span>):
+            <span class="keyword">return</span>
+
+        grid[r][c] = <span class="string">"#"</span>  <span class="comment"># mark as visited (sink the island)</span>
+        dfs(r + <span class="number">1</span>, c)
+        dfs(r - <span class="number">1</span>, c)
+        dfs(r, c + <span class="number">1</span>)
+        dfs(r, c - <span class="number">1</span>)
+
+    <span class="keyword">for</span> r <span class="keyword">in</span> <span class="builtin">range</span>(rows):
+        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="builtin">range</span>(cols):
+            <span class="keyword">if</span> grid[r][c] == <span class="string">"1"</span>:
+                dfs(r, c)
+                islands += <span class="number">1</span>
+
+    <span class="keyword">return</span> islands</code></pre>
+
+    <pre><span class="lang-label">JavaScript - BFS</span><code><span class="keyword">function</span> <span class="function">numIslands</span>(grid) {
+  <span class="keyword">if</span> (!grid || grid.length === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+
+  <span class="keyword">const</span> rows = grid.length;
+  <span class="keyword">const</span> cols = grid[<span class="number">0</span>].length;
+  <span class="keyword">const</span> visited = <span class="keyword">new</span> Set();
+  <span class="keyword">let</span> islands = <span class="number">0</span>;
+
+  <span class="keyword">const</span> directions = [[<span class="number">0</span>,<span class="number">1</span>], [<span class="number">0</span>,-<span class="number">1</span>], [<span class="number">1</span>,<span class="number">0</span>], [-<span class="number">1</span>,<span class="number">0</span>]];
+
+  <span class="keyword">function</span> <span class="function">bfs</span>(r, c) {
+    <span class="keyword">const</span> queue = [[r, c]];
+    visited.add(`${r},${c}`);
+
+    <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+      <span class="keyword">const</span> [row, col] = queue.shift();
+
+      <span class="keyword">for</span> (<span class="keyword">const</span> [dr, dc] <span class="keyword">of</span> directions) {
+        <span class="keyword">const</span> nr = row + dr;
+        <span class="keyword">const</span> nc = col + dc;
+        <span class="keyword">const</span> key = `${nr},${nc}`;
+
+        <span class="keyword">if</span> (nr >= <span class="number">0</span> && nr < rows &&
+            nc >= <span class="number">0</span> && nc < cols &&
+            grid[nr][nc] === <span class="string">"1"</span> &&
+            !visited.has(key)) {
+          visited.add(key);
+          queue.push([nr, nc]);
+        }
+      }
+    }
+  }
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> r = <span class="number">0</span>; r < rows; r++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c < cols; c++) {
+      <span class="keyword">if</span> (grid[r][c] === <span class="string">"1"</span> && !visited.has(`${r},${c}`)) {
+        bfs(r, c);
+        islands++;
+      }
+    }
+  }
+
+  <span class="keyword">return</span> islands;
+}
+
+<span class="comment">// Time: O(M * N)  |  Space: O(M * N)</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript - DFS (alternative)</span><code><span class="keyword">function</span> <span class="function">numIslands</span>(grid) {
+  <span class="keyword">if</span> (!grid || grid.length === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+
+  <span class="keyword">const</span> rows = grid.length;
+  <span class="keyword">const</span> cols = grid[<span class="number">0</span>].length;
+  <span class="keyword">let</span> islands = <span class="number">0</span>;
+
+  <span class="keyword">function</span> <span class="function">dfs</span>(r, c) {
+    <span class="keyword">if</span> (r < <span class="number">0</span> || r >= rows || c < <span class="number">0</span> || c >= cols || grid[r][c] !== <span class="string">"1"</span>) {
+      <span class="keyword">return</span>;
+    }
+    grid[r][c] = <span class="string">"#"</span>;  <span class="comment">// mark visited</span>
+    dfs(r + <span class="number">1</span>, c);
+    dfs(r - <span class="number">1</span>, c);
+    dfs(r, c + <span class="number">1</span>);
+    dfs(r, c - <span class="number">1</span>);
+  }
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> r = <span class="number">0</span>; r < rows; r++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c < cols; c++) {
+      <span class="keyword">if</span> (grid[r][c] === <span class="string">"1"</span>) {
+        dfs(r, c);
+        islands++;
+      }
+    }
+  }
+
+  <span class="keyword">return</span> islands;
+}</code></pre>
+
+    <!-- FULL SOLUTION: COURSE SCHEDULE -->
+    <h3>207. Course Schedule - Full Solution</h3>
+
+    <p>There are <code>numCourses</code> courses labeled 0 to numCourses-1. Some have prerequisites: <code>prerequisites[i] = [a, b]</code> means you must take course b before course a. Return <code>true</code> if you can finish all courses (no circular dependency).</p>
+
+<pre><code><span class="comment">    Input: numCourses = 4, prerequisites = [[1,0],[2,1],[3,2]]</span>
+    <span class="comment">    0 -> 1 -> 2 -> 3    (take 0 first, then 1, then 2, then 3)</span>
+    <span class="comment">    Output: true</span>
+
+    <span class="comment">    Input: numCourses = 2, prerequisites = [[1,0],[0,1]]</span>
+    <span class="comment">    0 -> 1 -> 0          (circular dependency!)</span>
+    <span class="comment">    Output: false</span></code></pre>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      This is a <strong>cycle detection problem</strong> in a directed graph. If there is a cycle, you cannot complete all courses. Use either topological sort (Kahn's) or DFS cycle detection.
+    </div>
+
+    <pre><span class="lang-label">Python - Kahn's Algorithm (BFS)</span><code><span class="keyword">from</span> collections <span class="keyword">import</span> deque, defaultdict
+
+<span class="keyword">def</span> <span class="function">canFinish</span>(numCourses, prerequisites):
+    <span class="string">"""Can all courses be completed? (No cycles in prereq graph)"""</span>
+    graph = defaultdict(<span class="builtin">list</span>)
+    indegree = [<span class="number">0</span>] * numCourses
+
+    <span class="keyword">for</span> course, prereq <span class="keyword">in</span> prerequisites:
+        graph[prereq].append(course)
+        indegree[course] += <span class="number">1</span>
+
+    <span class="comment"># Start with courses that have no prerequisites</span>
+    queue = deque()
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(numCourses):
+        <span class="keyword">if</span> indegree[i] == <span class="number">0</span>:
+            queue.append(i)
+
+    completed = <span class="number">0</span>
+    <span class="keyword">while</span> queue:
+        course = queue.popleft()
+        completed += <span class="number">1</span>
+
+        <span class="keyword">for</span> next_course <span class="keyword">in</span> graph[course]:
+            indegree[next_course] -= <span class="number">1</span>
+            <span class="keyword">if</span> indegree[next_course] == <span class="number">0</span>:
+                queue.append(next_course)
+
+    <span class="keyword">return</span> completed == numCourses
+
+<span class="comment"># Time: O(V + E)  |  Space: O(V + E)</span>
+
+<span class="builtin">print</span>(canFinish(<span class="number">4</span>, [[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">2</span>]]))  <span class="comment"># True</span>
+<span class="builtin">print</span>(canFinish(<span class="number">2</span>, [[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>]]))        <span class="comment"># False</span></code></pre>
+
+    <pre><span class="lang-label">Python - DFS Cycle Detection</span><code><span class="keyword">def</span> <span class="function">canFinish</span>(numCourses, prerequisites):
+    <span class="string">"""DFS approach with 3-color marking."""</span>
+    graph = defaultdict(<span class="builtin">list</span>)
+    <span class="keyword">for</span> course, prereq <span class="keyword">in</span> prerequisites:
+        graph[prereq].append(course)
+
+    <span class="comment"># 0 = unvisited, 1 = in progress, 2 = done</span>
+    state = [<span class="number">0</span>] * numCourses
+
+    <span class="keyword">def</span> <span class="function">has_cycle</span>(course):
+        <span class="keyword">if</span> state[course] == <span class="number">1</span>:
+            <span class="keyword">return</span> <span class="keyword">True</span>   <span class="comment"># cycle!</span>
+        <span class="keyword">if</span> state[course] == <span class="number">2</span>:
+            <span class="keyword">return</span> <span class="keyword">False</span>  <span class="comment"># already processed</span>
+
+        state[course] = <span class="number">1</span>  <span class="comment"># mark in progress</span>
+
+        <span class="keyword">for</span> next_course <span class="keyword">in</span> graph[course]:
+            <span class="keyword">if</span> has_cycle(next_course):
+                <span class="keyword">return</span> <span class="keyword">True</span>
+
+        state[course] = <span class="number">2</span>  <span class="comment"># mark done</span>
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">for</span> course <span class="keyword">in</span> <span class="builtin">range</span>(numCourses):
+        <span class="keyword">if</span> has_cycle(course):
+            <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">return</span> <span class="keyword">True</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript - Kahn's Algorithm (BFS)</span><code><span class="keyword">function</span> <span class="function">canFinish</span>(numCourses, prerequisites) {
+  <span class="keyword">const</span> graph = Array.from({ length: numCourses }, () => []);
+  <span class="keyword">const</span> indegree = <span class="keyword">new</span> Array(numCourses).fill(<span class="number">0</span>);
+
+  <span class="keyword">for</span> (<span class="keyword">const</span> [course, prereq] <span class="keyword">of</span> prerequisites) {
+    graph[prereq].push(course);
+    indegree[course]++;
+  }
+
+  <span class="keyword">const</span> queue = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < numCourses; i++) {
+    <span class="keyword">if</span> (indegree[i] === <span class="number">0</span>) queue.push(i);
+  }
+
+  <span class="keyword">let</span> completed = <span class="number">0</span>;
+  <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+    <span class="keyword">const</span> course = queue.shift();
+    completed++;
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> next <span class="keyword">of</span> graph[course]) {
+      indegree[next]--;
+      <span class="keyword">if</span> (indegree[next] === <span class="number">0</span>) queue.push(next);
+    }
+  }
+
+  <span class="keyword">return</span> completed === numCourses;
+}
+
+<span class="comment">// Time: O(V + E)  |  Space: O(V + E)</span>
+
+console.log(canFinish(<span class="number">4</span>, [[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">2</span>]]));  <span class="comment">// true</span>
+console.log(canFinish(<span class="number">2</span>, [[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>]]));        <span class="comment">// false</span></code></pre>
+
+    <pre><span class="lang-label">JavaScript - DFS Cycle Detection</span><code><span class="keyword">function</span> <span class="function">canFinish</span>(numCourses, prerequisites) {
+  <span class="keyword">const</span> graph = Array.from({ length: numCourses }, () => []);
+  <span class="keyword">for</span> (<span class="keyword">const</span> [course, prereq] <span class="keyword">of</span> prerequisites) {
+    graph[prereq].push(course);
+  }
+
+  <span class="comment">// 0 = unvisited, 1 = in progress, 2 = done</span>
+  <span class="keyword">const</span> state = <span class="keyword">new</span> Array(numCourses).fill(<span class="number">0</span>);
+
+  <span class="keyword">function</span> <span class="function">hasCycle</span>(course) {
+    <span class="keyword">if</span> (state[course] === <span class="number">1</span>) <span class="keyword">return</span> <span class="keyword">true</span>;   <span class="comment">// cycle!</span>
+    <span class="keyword">if</span> (state[course] === <span class="number">2</span>) <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// done</span>
+
+    state[course] = <span class="number">1</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> next <span class="keyword">of</span> graph[course]) {
+      <span class="keyword">if</span> (hasCycle(next)) <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    state[course] = <span class="number">2</span>;
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  }
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < numCourses; i++) {
+    <span class="keyword">if</span> (hasCycle(i)) <span class="keyword">return</span> <span class="keyword">false</span>;
+  }
+
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</code></pre>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  SECTION 7: PRACTICE QUIZ                                       -->
+  <!-- ============================================================== -->
+  <section id="quiz">
+    <h2>7. Practice Quiz</h2>
+    <div class="quiz">
+
+      <!-- Q1 -->
+      <div class="quiz-q" id="q1">
+        <h4>Q1: What data structure does BFS use?</h4>
+        <button onclick="checkAnswer('q1', this, false)">A) Stack</button>
+        <button onclick="checkAnswer('q1', this, true)">B) Queue</button>
+        <button onclick="checkAnswer('q1', this, false)">C) Priority Queue</button>
+        <button onclick="checkAnswer('q1', this, false)">D) Linked List</button>
+        <div class="explanation">BFS uses a <strong>queue</strong> (FIFO) to explore vertices level by level. DFS uses a stack (or recursion). Dijkstra's uses a priority queue.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-q" id="q2">
+        <h4>Q2: What is the time complexity of BFS and DFS on a graph with V vertices and E edges?</h4>
+        <button onclick="checkAnswer('q2', this, false)">A) O(V)</button>
+        <button onclick="checkAnswer('q2', this, false)">B) O(E)</button>
+        <button onclick="checkAnswer('q2', this, true)">C) O(V + E)</button>
+        <button onclick="checkAnswer('q2', this, false)">D) O(V * E)</button>
+        <div class="explanation">Both BFS and DFS visit each vertex once O(V) and examine each edge once O(E), giving <strong>O(V + E)</strong>.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-q" id="q3">
+        <h4>Q3: Which algorithm finds the shortest path in a weighted graph with non-negative edges?</h4>
+        <button onclick="checkAnswer('q3', this, false)">A) BFS</button>
+        <button onclick="checkAnswer('q3', this, false)">B) DFS</button>
+        <button onclick="checkAnswer('q3', this, true)">C) Dijkstra's Algorithm</button>
+        <button onclick="checkAnswer('q3', this, false)">D) Topological Sort</button>
+        <div class="explanation"><strong>Dijkstra's algorithm</strong> finds shortest paths in weighted graphs (non-negative weights). BFS only works for unweighted shortest paths. For negative weights, use Bellman-Ford.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-q" id="q4">
+        <h4>Q4: In directed cycle detection with 3-color marking, what does encountering a GRAY node mean?</h4>
+        <button onclick="checkAnswer('q4', this, false)">A) The node hasn't been visited</button>
+        <button onclick="checkAnswer('q4', this, true)">B) A back edge exists, meaning there is a cycle</button>
+        <button onclick="checkAnswer('q4', this, false)">C) The node is fully processed</button>
+        <button onclick="checkAnswer('q4', this, false)">D) The node is a leaf</button>
+        <div class="explanation">A GRAY node is currently on the recursion stack (in-progress). Encountering it again means we have found a <strong>back edge</strong> &mdash; a path from a descendant back to an ancestor &mdash; which forms a <strong>cycle</strong>.</div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-q" id="q5">
+        <h4>Q5: For the "Number of Islands" problem, what is the space complexity?</h4>
+        <button onclick="checkAnswer('q5', this, false)">A) O(1)</button>
+        <button onclick="checkAnswer('q5', this, false)">B) O(min(M, N))</button>
+        <button onclick="checkAnswer('q5', this, true)">C) O(M * N)</button>
+        <button onclick="checkAnswer('q5', this, false)">D) O(M + N)</button>
+        <div class="explanation">In the worst case (entire grid is land), BFS queue or DFS recursion stack can hold O(M*N) cells. The visited set also uses O(M*N) space. So overall space complexity is <strong>O(M * N)</strong>.</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <p>Learn DSA &mdash; Built for hands-on learning.</p>
+</footer>
+
+<!-- ========== QUIZ SCRIPT ========== -->
+<script>
+function checkAnswer(questionId, button, isCorrect) {
+  const question = document.getElementById(questionId);
+  const buttons = question.querySelectorAll('button');
+  const explanation = question.querySelector('.explanation');
+
+  // Disable all buttons
+  buttons.forEach(btn => btn.disabled = true);
+
+  if (isCorrect) {
+    button.classList.add('correct');
+  } else {
+    button.classList.add('wrong');
+    // Highlight the correct answer
+    buttons.forEach(btn => {
+      if (btn.onclick && btn.onclick.toString().includes('true')) {
+        btn.classList.add('correct');
+      }
+    });
+  }
+
+  explanation.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

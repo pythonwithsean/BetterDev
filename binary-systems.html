@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary &amp; Number Systems - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html" class="active">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Binary &amp; Number Systems</div>
+    <h1>Binary &amp; Number Systems</h1>
+    <p>How computers actually think. Every image, video, PDF, and line of code you have ever seen is just a massive pile of 0s and 1s. This page teaches you to see the world the way a computer does -- and to manipulate data at the lowest level.</p>
+    <div class="tip-box" style="margin-top: 1rem;">
+      <div class="label">Why This Matters</div>
+      <p>Understanding binary is not optional for serious programmers. Bit manipulation shows up in technical interviews, systems programming, networking, cryptography, graphics, and game dev. If you want to write C++ at a high level, you <strong>need</strong> to think in binary fluently.</p>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is-binary">1. What is Binary?</a>
+    <a href="#counting-in-binary">2. Counting in Binary</a>
+    <a href="#binary-to-decimal">3. Binary to Decimal (and Back)</a>
+    <a href="#hexadecimal">4. Hexadecimal (Base 16)</a>
+    <a href="#octal">5. Octal (Base 8)</a>
+    <a href="#bits-and-bytes">6. Bits, Bytes, and Data Sizes</a>
+    <a href="#bitwise-and">7. Bitwise AND</a>
+    <a href="#bitwise-or">8. Bitwise OR</a>
+    <a href="#bitwise-xor">9. Bitwise XOR</a>
+    <a href="#bitwise-not">10. Bitwise NOT</a>
+    <a href="#bit-shifts">11. Bit Shifting (Left &amp; Right)</a>
+    <a href="#twos-complement">12. Two's Complement (Negative Numbers in Binary)</a>
+    <a href="#bit-tricks">13. Common Bit Manipulation Tricks</a>
+    <a href="#how-data-stored">14. How Data is Actually Stored</a>
+    <a href="#ascii-unicode">15. ASCII &amp; Unicode</a>
+    <a href="#files-bytes">16. Files as Bytes -- PDFs, Images, and More</a>
+    <a href="#cpp-bitwise">17. Bitwise Operations in C++</a>
+    <a href="#quiz">18. Practice Quiz</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: WHAT IS BINARY                                    -->
+  <!-- ============================================================ -->
+  <section id="what-is-binary">
+    <h2>1. What is Binary?</h2>
+
+    <p>You count in <strong>base 10</strong> every day. That means you use 10 digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. When you run out of digits, you carry over to the next place. After 9 comes 10 -- you put a 1 in the "tens" column and start over.</p>
+
+    <p><strong>Binary is base 2.</strong> You only have 2 digits: <strong>0</strong> and <strong>1</strong>. That is it. When you run out (after 1), you carry over. After 1 comes 10 (which means "2" in binary).</p>
+
+    <p>Why only 0 and 1? Because computers are built from billions of tiny switches (transistors) that can only be in two states: <strong>off (0)</strong> or <strong>on (1)</strong>. Binary is not a choice -- it is a physical limitation. Everything a computer does comes down to flipping these switches.</p>
+
+    <div class="memory-diagram">  Think of it like a row of light switches:
+
+  OFF  OFF  OFF  OFF  OFF  OFF  OFF  ON
+   0    0    0    0    0    0    0    1   = 1 in decimal
+
+  OFF  OFF  OFF  OFF  OFF  OFF  ON   OFF
+   0    0    0    0    0    0    1    0   = 2 in decimal
+
+  OFF  OFF  OFF  OFF  OFF  OFF  ON   ON
+   0    0    0    0    0    0    1    1   = 3 in decimal
+
+  OFF  OFF  OFF  OFF  ON   OFF  ON   OFF
+   0    0    0    0    1    0    1    0   = 10 in decimal</div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: COUNTING IN BINARY                                -->
+  <!-- ============================================================ -->
+  <section id="counting-in-binary">
+    <h2>2. Counting in Binary</h2>
+
+    <p>Counting in binary works exactly like counting in decimal, just with fewer digits. Watch the pattern:</p>
+
+    <div class="memory-diagram">  Decimal    Binary     What happened
+  -------    ------     ------------
+     0        0000      All off
+     1        0001      Flip last switch on
+     2        0010      Last switch full, carry left
+     3        0011      Last switch on again
+     4        0100      Both right switches full, carry left again
+     5        0101
+     6        0110
+     7        0111      All three right switches on
+     8        1000      They all reset, carry to the 4th position
+     9        1001
+    10        1010
+    11        1011
+    12        1100
+    13        1101
+    14        1110
+    15        1111      All four switches on = maximum for 4 bits
+    16       10000      Need a 5th bit!</div>
+
+    <div class="tip-box">
+      <div class="label">The Pattern</div>
+      <p>Look at the <strong>rightmost column</strong>: it alternates 0, 1, 0, 1, 0, 1... (every number).<br>
+      The <strong>second column</strong>: 0, 0, 1, 1, 0, 0, 1, 1... (every 2 numbers).<br>
+      The <strong>third column</strong>: 0, 0, 0, 0, 1, 1, 1, 1... (every 4 numbers).<br>
+      Each column doubles the frequency. This is not a coincidence -- each position represents a power of 2.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">How many values can N bits hold?</div>
+      <p>With <strong>1 bit</strong>: 0 or 1 = <strong>2 values</strong><br>
+      With <strong>2 bits</strong>: 00, 01, 10, 11 = <strong>4 values</strong><br>
+      With <strong>3 bits</strong>: 000 through 111 = <strong>8 values</strong><br>
+      With <strong>4 bits</strong>: 0000 through 1111 = <strong>16 values</strong><br>
+      With <strong>8 bits</strong> (1 byte): 0 through 255 = <strong>256 values</strong><br>
+      With <strong>N bits</strong>: <strong>2^N values</strong> (always a power of 2)</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: BINARY TO DECIMAL CONVERSION                      -->
+  <!-- ============================================================ -->
+  <section id="binary-to-decimal">
+    <h2>3. Binary to Decimal (and Back)</h2>
+
+    <h3>Binary to Decimal</h3>
+    <p>Each position in a binary number represents a <strong>power of 2</strong>, starting from 2^0 on the right. To convert, multiply each digit by its power of 2 and add them all up.</p>
+
+    <div class="memory-diagram">  Position values (powers of 2):
+
+  Bit position:    7      6      5      4      3     2     1     0
+  Power of 2:     128     64     32     16      8     4     2     1
+
+  Example: Convert 10110101 to decimal:
+
+  Bit:              1      0      1      1      0     1     0     1
+  Value:          128      0     32     16      0     4     0     1
+                   |                    |             |           |
+                   +--------------------+-------------+-----------+
+                              128 + 32 + 16 + 4 + 1 = 181</div>
+
+    <div class="example-box">
+      <div class="label">More Conversion Examples</div>
+      <ul>
+        <li><strong>1010</strong> = 8 + 0 + 2 + 0 = <strong>10</strong></li>
+        <li><strong>1111</strong> = 8 + 4 + 2 + 1 = <strong>15</strong></li>
+        <li><strong>100000</strong> = 32 = <strong>32</strong></li>
+        <li><strong>11001</strong> = 16 + 8 + 0 + 0 + 1 = <strong>25</strong></li>
+        <li><strong>11111111</strong> = 128+64+32+16+8+4+2+1 = <strong>255</strong></li>
+      </ul>
+    </div>
+
+    <h3>Decimal to Binary</h3>
+    <p>Divide the number by 2 repeatedly. Write down the remainder each time. Read the remainders bottom-to-top.</p>
+
+    <div class="memory-diagram">  Convert 25 to binary:
+
+  25 / 2 = 12  remainder 1  ---+
+  12 / 2 = 6   remainder 0     |
+   6 / 2 = 3   remainder 0     |  Read upwards
+   3 / 2 = 1   remainder 1     |
+   1 / 2 = 0   remainder 1  ---+
+
+  Answer: 11001   (reading remainders from bottom to top)
+
+  Verify: 16 + 8 + 0 + 0 + 1 = 25  ✓</div>
+
+    <div class="tip-box">
+      <div class="label">Faster Method -- Subtract Powers of 2</div>
+      <p>Instead of dividing, just find the largest power of 2 that fits, subtract it, and repeat:</p>
+      <p><strong>Convert 200 to binary:</strong><br>
+      200 - 128 = 72 (128 fits, write 1) --> <code>1_______</code><br>
+      72 - 64 = 8 (64 fits, write 1) --> <code>11______</code><br>
+      8 - 32? No. (write 0) --> <code>110_____</code><br>
+      8 - 16? No. (write 0) --> <code>1100____</code><br>
+      8 - 8 = 0 (8 fits, write 1) --> <code>11001___</code><br>
+      Done! Remaining positions are 0 --> <code>11001000</code><br>
+      Verify: 128 + 64 + 8 = 200 ✓</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: HEXADECIMAL                                       -->
+  <!-- ============================================================ -->
+  <section id="hexadecimal">
+    <h2>4. Hexadecimal (Base 16)</h2>
+
+    <p>Binary is great for computers but annoying for humans. The number 11010110 is hard to read. <strong>Hexadecimal (hex)</strong> solves this by grouping every 4 binary digits into one hex digit. Since 4 bits can represent 0-15, and we only have digits 0-9, we borrow letters A-F for 10-15.</p>
+
+    <div class="memory-diagram">  Hex    Decimal    Binary
+  ---    -------    ------
+   0       0        0000
+   1       1        0001
+   2       2        0010
+   3       3        0011
+   4       4        0100
+   5       5        0101
+   6       6        0110
+   7       7        0111
+   8       8        1000
+   9       9        1001
+   A      10        1010
+   B      11        1011
+   C      12        1100
+   D      13        1101
+   E      14        1110
+   F      15        1111</div>
+
+    <p>Hex numbers are usually written with a <code>0x</code> prefix to distinguish them from decimal. So <code>0xFF</code> means "FF in hex" not "the letters FF."</p>
+
+    <h3>Converting Binary to Hex</h3>
+    <p>Group the binary digits into chunks of 4 (from the right), then convert each chunk:</p>
+
+    <div class="memory-diagram">  Binary:   1101 0110 1010 0011
+  Hex:       D    6    A    3
+
+  So 1101011010100011 in binary = 0xD6A3 in hex
+
+  Another example:
+  Binary:   0010 1111
+  Hex:       2    F
+
+  So 00101111 = 0x2F = 47 in decimal</div>
+
+    <div class="example-box">
+      <div class="label">Where You See Hex Every Day</div>
+      <ul>
+        <li><strong>Colors in CSS/HTML:</strong> #FF0000 = red (FF=255 red, 00=0 green, 00=0 blue)</li>
+        <li><strong>Memory addresses:</strong> 0x7FFE42A0 -- where data lives in RAM</li>
+        <li><strong>MAC addresses:</strong> AA:BB:CC:DD:EE:FF</li>
+        <li><strong>Unicode code points:</strong> U+0041 = the letter "A"</li>
+        <li><strong>Error codes:</strong> 0xDEADBEEF (a famous debug marker)</li>
+        <li><strong>File signatures:</strong> PDF files start with bytes 0x25504446 ("%PDF")</li>
+      </ul>
+    </div>
+
+    <h3>Hex to Decimal</h3>
+    <p>Each hex position is a power of 16. Multiply and add:</p>
+
+    <div class="formula-box">
+      0x2F = (2 x 16) + (F x 1) = 32 + 15 = 47
+      0xFF = (15 x 16) + (15 x 1) = 240 + 15 = 255
+      0x1A3 = (1 x 256) + (10 x 16) + (3 x 1) = 256 + 160 + 3 = 419
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: OCTAL                                             -->
+  <!-- ============================================================ -->
+  <section id="octal">
+    <h2>5. Octal (Base 8)</h2>
+
+    <p>Octal uses digits 0-7. Each octal digit represents exactly 3 binary digits. You will mostly see octal in <strong>Unix/Linux file permissions</strong> (like <code>chmod 755</code>).</p>
+
+    <div class="memory-diagram">  Octal   Decimal   Binary
+  -----   -------   ------
+    0        0       000
+    1        1       001
+    2        2       010
+    3        3       011
+    4        4       100
+    5        5       101
+    6        6       110
+    7        7       111</div>
+
+    <div class="example-box">
+      <div class="label">chmod 755 Explained</div>
+      <p>In Linux, file permissions are 3 groups of 3 bits: owner, group, others.</p>
+      <p><strong>7</strong> = 111 = read(4) + write(2) + execute(1) = all permissions (owner)<br>
+      <strong>5</strong> = 101 = read(4) + execute(1) = read and execute (group)<br>
+      <strong>5</strong> = 101 = read(4) + execute(1) = read and execute (others)</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: BITS AND BYTES                                    -->
+  <!-- ============================================================ -->
+  <section id="bits-and-bytes">
+    <h2>6. Bits, Bytes, and Data Sizes</h2>
+
+    <p>A <strong>bit</strong> is a single 0 or 1. A <strong>byte</strong> is 8 bits grouped together. A byte can represent any value from 0 to 255 (2^8 = 256 possible values). Everything in a computer is measured in bytes.</p>
+
+    <div class="memory-diagram">  1 bit     = 0 or 1                          (2 values)
+  1 byte    = 8 bits                          (256 values: 0-255)
+  1 KB      = 1,024 bytes                     (a short text file)
+  1 MB      = 1,024 KB = 1,048,576 bytes      (a photo)
+  1 GB      = 1,024 MB                        (a movie)
+  1 TB      = 1,024 GB                        (a hard drive)
+
+  Visual: one byte
+
+  +---+---+---+---+---+---+---+---+
+  | 0 | 1 | 1 | 0 | 0 | 1 | 0 | 1 |  = 0x65 = 101 = letter 'e'
+  +---+---+---+---+---+---+---+---+
+  bit7 bit6 bit5 bit4 bit3 bit2 bit1 bit0</div>
+
+    <h3>Common Data Types and Their Sizes</h3>
+    <table>
+      <thead>
+        <tr><th>Type (C++)</th><th>Size</th><th>Range</th><th>Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>bool</code></td><td>1 byte</td><td>true / false</td><td>Flags, conditions</td></tr>
+        <tr><td><code>char</code></td><td>1 byte</td><td>-128 to 127 or 0-255</td><td>Characters, raw bytes</td></tr>
+        <tr><td><code>short</code></td><td>2 bytes</td><td>-32,768 to 32,767</td><td>Small numbers</td></tr>
+        <tr><td><code>int</code></td><td>4 bytes</td><td>-2.1 billion to 2.1 billion</td><td>Most numbers</td></tr>
+        <tr><td><code>long long</code></td><td>8 bytes</td><td>-9.2 quintillion to 9.2 quintillion</td><td>Large numbers</td></tr>
+        <tr><td><code>float</code></td><td>4 bytes</td><td>~7 decimal digits precision</td><td>Approximate decimals</td></tr>
+        <tr><td><code>double</code></td><td>8 bytes</td><td>~15 decimal digits precision</td><td>Precise decimals</td></tr>
+      </tbody>
+    </table>
+
+    <div class="memory-diagram">  How an int (32 bits) looks in memory:
+
+  +-------+-------+-------+-------+
+  |  byte3 |  byte2 |  byte1 |  byte0 |
+  +-------+-------+-------+-------+
+  00000000 00000000 00000000 00101010  = 42
+
+  That is 32 light switches to represent one number.</div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: BITWISE AND                                       -->
+  <!-- ============================================================ -->
+  <section id="bitwise-and">
+    <h2>7. Bitwise AND (&amp;)</h2>
+
+    <p>Bitwise AND compares two numbers <strong>bit by bit</strong>. For each position: if <strong>both</strong> bits are 1, the result is 1. Otherwise, the result is 0. Think of it as: "both must agree to let it through."</p>
+
+    <div class="memory-diagram">  AND Truth Table:        Visual:
+
+  0 AND 0 = 0             A:  1 0 1 1 0 1 1 0    (182)
+  0 AND 1 = 0             B:  1 1 0 1 0 0 1 1    (211)
+  1 AND 0 = 0                 ─────────────────
+  1 AND 1 = 1             A&B: 1 0 0 1 0 0 1 0    (146)
+                                ↑       ↑     ↑
+                           Only where BOTH are 1</div>
+
+    <div class="example-box">
+      <div class="label">Real-World Analogy</div>
+      <p>AND is like two security guards at a door. <strong>Both</strong> must say "yes" for you to get through. If either says "no," you are blocked.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Common Uses of AND</div>
+      <ul>
+        <li><strong>Check if a number is even or odd:</strong> <code>n &amp; 1</code> -- if result is 1, n is odd. If 0, n is even. This works because the last bit is the "1s place" -- odd numbers always have it set.</li>
+        <li><strong>Masking bits:</strong> Use AND with a mask to extract specific bits. <code>color &amp; 0xFF</code> extracts the last 8 bits (blue channel from a color).</li>
+        <li><strong>Clear bits:</strong> AND with 0 forces bits off. <code>n &amp; 0xFFFFFFF0</code> clears the last 4 bits.</li>
+      </ul>
+    </div>
+
+    <div class="memory-diagram">  Example: Is 42 even or odd?
+
+  42 in binary:  0 0 1 0 1 0 1 0
+   1 in binary:  0 0 0 0 0 0 0 1
+                 ─────────────────
+  42 & 1:        0 0 0 0 0 0 0 0  = 0  -->  42 is EVEN
+
+  43 in binary:  0 0 1 0 1 0 1 1
+   1 in binary:  0 0 0 0 0 0 0 1
+                 ─────────────────
+  43 & 1:        0 0 0 0 0 0 0 1  = 1  -->  43 is ODD</div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: BITWISE OR                                        -->
+  <!-- ============================================================ -->
+  <section id="bitwise-or">
+    <h2>8. Bitwise OR (|)</h2>
+
+    <p>Bitwise OR compares two numbers bit by bit. For each position: if <strong>either</strong> bit (or both) is 1, the result is 1. Only if both are 0 does the result stay 0.</p>
+
+    <div class="memory-diagram">  OR Truth Table:         Visual:
+
+  0 OR 0 = 0              A:  1 0 1 1 0 0 1 0    (178)
+  0 OR 1 = 1              B:  0 1 0 0 1 0 0 1    (73)
+  1 OR 0 = 1                  ─────────────────
+  1 OR 1 = 1             A|B: 1 1 1 1 1 0 1 1    (251)
+                                ↑ ↑ ↑ ↑ ↑   ↑ ↑
+                           Anywhere EITHER is 1</div>
+
+    <div class="example-box">
+      <div class="label">Real-World Analogy</div>
+      <p>OR is like two doors to a room. If <strong>either</strong> door is open, you can get in. Only if both are closed are you stuck.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Common Uses of OR</div>
+      <ul>
+        <li><strong>Setting bits:</strong> Use OR to force specific bits to 1. <code>n | 0x01</code> forces the last bit on (makes any number odd).</li>
+        <li><strong>Combining flags:</strong> <code>READ | WRITE | EXECUTE</code> combines permission flags. Each flag is a single bit, OR combines them into one value.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: BITWISE XOR                                       -->
+  <!-- ============================================================ -->
+  <section id="bitwise-xor">
+    <h2>9. Bitwise XOR (^)</h2>
+
+    <p>XOR (exclusive OR) is the most interesting bitwise operation. For each position: if the bits are <strong>different</strong>, the result is 1. If they are the <strong>same</strong>, the result is 0. Think of it as a "difference detector."</p>
+
+    <div class="memory-diagram">  XOR Truth Table:        Visual:
+
+  0 XOR 0 = 0             A:  1 0 1 1 0 1 1 0    (182)
+  0 XOR 1 = 1             B:  1 1 0 1 0 0 1 1    (211)
+  1 XOR 0 = 1                 ─────────────────
+  1 XOR 1 = 0            A^B: 0 1 1 0 0 1 0 1    (101)
+                                ↑ ↑       ↑   ↑
+                           Only where bits DIFFER</div>
+
+    <div class="tip-box">
+      <div class="label">XOR's Magical Properties</div>
+      <ul>
+        <li><strong>a ^ a = 0</strong> -- Any number XORed with itself is zero (all bits are the same, so all become 0)</li>
+        <li><strong>a ^ 0 = a</strong> -- XOR with zero changes nothing (0 never flips a bit)</li>
+        <li><strong>a ^ b ^ b = a</strong> -- XOR is its own inverse! XOR twice with the same value undoes the operation</li>
+        <li><strong>a ^ b = b ^ a</strong> -- Order does not matter (commutative)</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">XOR's Famous Trick: Swap Two Variables Without a Temp</div>
+      <p>You can swap two numbers using only XOR -- no temporary variable needed:</p>
+    </div>
+
+    <div class="memory-diagram">  Start: a = 5 (0101), b = 3 (0011)
+
+  Step 1:  a = a ^ b    a = 0101 ^ 0011 = 0110  (a=6, b=3)
+  Step 2:  b = a ^ b    b = 0110 ^ 0011 = 0101  (a=6, b=5)
+  Step 3:  a = a ^ b    a = 0110 ^ 0101 = 0011  (a=3, b=5)
+
+  Result: a = 3, b = 5  -- Swapped!</div>
+
+    <div class="example-box">
+      <div class="label">XOR Interview Classic: Find the Missing Number</div>
+      <p>Given an array of numbers from 1 to n with one missing, XOR all of them:</p>
+      <p><code>1 ^ 2 ^ 3 ^ 4 ^ 5 = some value</code><br>
+      <code>1 ^ 2 ^ 4 ^ 5 = different value</code> (3 is missing)<br>
+      XOR the two results and you get the missing number! Because every number that appears in both will cancel out (a ^ a = 0), leaving only the missing one.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: BITWISE NOT                                      -->
+  <!-- ============================================================ -->
+  <section id="bitwise-not">
+    <h2>10. Bitwise NOT (~)</h2>
+
+    <p>NOT flips every single bit. Every 0 becomes 1, every 1 becomes 0. It is the only bitwise operation that works on a single number (not two).</p>
+
+    <div class="memory-diagram">  NOT Truth Table:        Visual (8-bit):
+
+  NOT 0 = 1               A:    0 1 0 1 0 1 0 1    (85)
+  NOT 1 = 0               ~A:   1 0 1 0 1 0 1 0    (170)
+                                 ↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕
+                           Every bit gets flipped</div>
+
+    <div class="warning-box">
+      <div class="label">Watch Out -- Signed Numbers</div>
+      <p>In C++ with a 32-bit int, <code>~0</code> does not give you a giant positive number. Because of two's complement (explained later), <code>~0</code> = -1. And <code>~5</code> = -6. The formula is: <strong>~n = -(n + 1)</strong>.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 11: BIT SHIFTS                                       -->
+  <!-- ============================================================ -->
+  <section id="bit-shifts">
+    <h2>11. Bit Shifting (Left &amp; Right)</h2>
+
+    <p>Shifting moves all bits left or right by a certain number of positions. Bits that "fall off" the edge are lost. New bits that enter from the other side are 0.</p>
+
+    <h3>Left Shift (&lt;&lt;)</h3>
+    <p>Shifts all bits to the left. Each left shift <strong>multiplies by 2</strong>.</p>
+
+    <div class="memory-diagram">  5 << 1  (shift left by 1)
+
+  Before:  0 0 0 0 0 1 0 1   = 5
+                    ← ← ← ←
+  After:   0 0 0 0 1 0 1 0   = 10
+
+  5 << 2  (shift left by 2)
+
+  Before:  0 0 0 0 0 1 0 1   = 5
+                  ← ← ← ← ←
+  After:   0 0 0 1 0 1 0 0   = 20
+
+  5 << 3  = 40     (5 x 2 x 2 x 2 = 5 x 8)
+
+  Pattern: n << k  =  n x 2^k</div>
+
+    <h3>Right Shift (&gt;&gt;)</h3>
+    <p>Shifts all bits to the right. Each right shift <strong>divides by 2</strong> (rounding down).</p>
+
+    <div class="memory-diagram">  20 >> 1  (shift right by 1)
+
+  Before:  0 0 0 1 0 1 0 0   = 20
+           → → → →
+  After:   0 0 0 0 1 0 1 0   = 10
+
+  20 >> 2  (shift right by 2)
+
+  Before:  0 0 0 1 0 1 0 0   = 20
+           → → → → →
+  After:   0 0 0 0 0 1 0 1   = 5
+
+  Pattern: n >> k  =  n / 2^k  (integer division, rounds down)</div>
+
+    <div class="tip-box">
+      <div class="label">Why Shifts Are Useful</div>
+      <p><strong>Shifts are extremely fast</strong> -- much faster than multiplication or division. The CPU can shift bits in a single clock cycle. This is why you see them in performance-critical code, game engines, and embedded systems. <code>n &lt;&lt; 1</code> is the same as <code>n * 2</code> but faster.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 12: TWO'S COMPLEMENT                                 -->
+  <!-- ============================================================ -->
+  <section id="twos-complement">
+    <h2>12. Two's Complement (Negative Numbers in Binary)</h2>
+
+    <p>How does a computer store -5 when it only has 0s and 1s? It uses a system called <strong>two's complement</strong>. The leftmost bit is the <strong>sign bit</strong>: 0 = positive, 1 = negative.</p>
+
+    <h3>How to Get the Two's Complement (Make a Number Negative)</h3>
+    <p>Two steps: <strong>flip all the bits</strong> (NOT), then <strong>add 1</strong>.</p>
+
+    <div class="memory-diagram">  Convert 5 to -5 (using 8 bits):
+
+  Step 1: Start with 5:           0 0 0 0 0 1 0 1
+  Step 2: Flip all bits (NOT):    1 1 1 1 1 0 1 0
+  Step 3: Add 1:                  1 1 1 1 1 0 1 1   = -5
+
+  Verify: Add 5 + (-5), should get 0:
+
+      0 0 0 0 0 1 0 1   (5)
+    + 1 1 1 1 1 0 1 1   (-5)
+    ─────────────────
+    1 0 0 0 0 0 0 0 0   (the 1 overflows and is discarded)
+    = 0 0 0 0 0 0 0 0   = 0  ✓</div>
+
+    <div class="example-box">
+      <div class="label">8-Bit Two's Complement Range</div>
+      <p>With 8 bits, you can represent <strong>-128 to +127</strong>:</p>
+    </div>
+
+    <div class="memory-diagram">   0111 1111 = +127  (largest positive)
+   0111 1110 = +126
+   ...
+   0000 0001 = +1
+   0000 0000 =  0
+   1111 1111 = -1   (all 1s = -1, not 255!)
+   1111 1110 = -2
+   ...
+   1000 0001 = -127
+   1000 0000 = -128 (largest negative)</div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 13: BIT TRICKS                                       -->
+  <!-- ============================================================ -->
+  <section id="bit-tricks">
+    <h2>13. Common Bit Manipulation Tricks</h2>
+
+    <p>These are the bit tricks that show up in interviews and real systems code. Each one exploits a specific property of binary.</p>
+
+    <table>
+      <thead>
+        <tr><th>Trick</th><th>Code</th><th>What It Does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Check if even</td><td><code>n &amp; 1 == 0</code></td><td>Last bit is 0 = even</td></tr>
+        <tr><td>Check if odd</td><td><code>n &amp; 1 == 1</code></td><td>Last bit is 1 = odd</td></tr>
+        <tr><td>Multiply by 2</td><td><code>n &lt;&lt; 1</code></td><td>Shift left = double</td></tr>
+        <tr><td>Divide by 2</td><td><code>n &gt;&gt; 1</code></td><td>Shift right = halve</td></tr>
+        <tr><td>Multiply by 2^k</td><td><code>n &lt;&lt; k</code></td><td>Shift left by k positions</td></tr>
+        <tr><td>Check if power of 2</td><td><code>n &amp; (n-1) == 0</code></td><td>Powers of 2 have exactly one 1-bit</td></tr>
+        <tr><td>Get lowest set bit</td><td><code>n &amp; (-n)</code></td><td>Isolates the rightmost 1</td></tr>
+        <tr><td>Turn off lowest set bit</td><td><code>n &amp; (n-1)</code></td><td>Clears the rightmost 1</td></tr>
+        <tr><td>Toggle bit at position k</td><td><code>n ^ (1 &lt;&lt; k)</code></td><td>Flip the kth bit</td></tr>
+        <tr><td>Set bit at position k</td><td><code>n | (1 &lt;&lt; k)</code></td><td>Force kth bit to 1</td></tr>
+        <tr><td>Clear bit at position k</td><td><code>n &amp; ~(1 &lt;&lt; k)</code></td><td>Force kth bit to 0</td></tr>
+        <tr><td>Check bit at position k</td><td><code>(n &gt;&gt; k) &amp; 1</code></td><td>Is the kth bit set?</td></tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Why n &amp; (n-1) == 0 Detects Powers of 2</div>
+      <p>Powers of 2 in binary have exactly one 1-bit:</p>
+    </div>
+
+    <div class="memory-diagram">  n = 8:       1000
+  n - 1 = 7:  0111
+  n & (n-1):  0000  -->  equals 0, so 8 IS a power of 2
+
+  n = 6:       0110
+  n - 1 = 5:  0101
+  n & (n-1):  0100  -->  NOT zero, so 6 is NOT a power of 2
+
+  The pattern: subtracting 1 from a power of 2 flips all bits
+  below the single 1-bit. ANDing them together always gives 0.</div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 14: HOW DATA IS STORED                               -->
+  <!-- ============================================================ -->
+  <section id="how-data-stored">
+    <h2>14. How Data is Actually Stored</h2>
+
+    <p>Everything in your computer -- every photo, song, game, text message, and PDF -- is stored as a sequence of bytes. There is no "text" or "image" at the hardware level. It is all just bytes. The <strong>software</strong> decides how to interpret those bytes.</p>
+
+    <div class="memory-diagram">  The same byte 01000001 (0x41 = 65) could mean:
+
+  As a number:      65
+  As a character:   'A'  (ASCII code 65)
+  As a pixel:       a shade of gray (65 out of 255)
+  As audio:         a sample amplitude
+  As a flag set:    bits 0 and 6 are set
+
+  The BYTE doesn't know what it is. The PROGRAM decides.</div>
+
+    <h3>Endianness: Byte Order Matters</h3>
+    <p>When a number needs more than 1 byte (like a 32-bit int), the question is: which byte comes first in memory? There are two conventions:</p>
+
+    <div class="memory-diagram">  Storing the number 0x12345678 (305,419,896):
+
+  Big-endian (most significant byte first):
+  Address:  0x00   0x01   0x02   0x03
+  Value:    [12]   [34]   [56]   [78]
+  Like reading left to right -- "natural" order
+
+  Little-endian (least significant byte first):
+  Address:  0x00   0x01   0x02   0x03
+  Value:    [78]   [56]   [34]   [12]
+  Reversed! The "little end" comes first
+
+  Most modern CPUs (x86, ARM) use little-endian.
+  Network protocols typically use big-endian.</div>
+
+    <div class="tip-box">
+      <div class="label">Why Little-Endian Exists</div>
+      <p>It seems backward, but little-endian has a practical advantage: the first byte always tells you if a number is even or odd (the least significant byte is at the lowest address). It also makes some hardware operations simpler. You do not need to memorize this -- just know it exists and that it explains why bytes sometimes look "reversed" in memory dumps.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 15: ASCII AND UNICODE                                -->
+  <!-- ============================================================ -->
+  <section id="ascii-unicode">
+    <h2>15. ASCII &amp; Unicode</h2>
+
+    <h3>ASCII -- The Original Character Encoding</h3>
+    <p>ASCII assigns a number (0-127) to each character. It uses 7 bits (usually stored in 1 byte). Here are the important ranges:</p>
+
+    <div class="memory-diagram">  Dec   Hex   Binary     Char    Notes
+  ---   ---   --------   ----    -----
+   32   0x20  0010 0000  ' '     Space
+   48   0x30  0011 0000  '0'     Start of digits (0-9 = 48-57)
+   65   0x41  0100 0001  'A'     Start of uppercase (A-Z = 65-90)
+   97   0x61  0110 0001  'a'     Start of lowercase (a-z = 97-122)
+   10   0x0A  0000 1010  '\n'    Newline
+   13   0x0D  0000 1101  '\r'    Carriage return
+    0   0x00  0000 0000  '\0'    Null terminator (end of string in C/C++)</div>
+
+    <div class="tip-box">
+      <div class="label">Useful ASCII Tricks for Programming</div>
+      <ul>
+        <li><strong>'a' - 'A' = 32</strong> -- The difference between lowercase and uppercase is always 32 (one bit flip!)</li>
+        <li><strong>char ^ 32</strong> flips the case of a letter (toggles bit 5)</li>
+        <li><strong>char | 32</strong> forces lowercase</li>
+        <li><strong>char &amp; ~32</strong> forces uppercase</li>
+        <li><strong>'5' - '0' = 5</strong> -- Subtract '0' to convert a digit character to its numeric value</li>
+      </ul>
+    </div>
+
+    <div class="memory-diagram">  Why XOR 32 toggles case:
+
+  'A' = 0100 0001
+  'a' = 0110 0001
+         ↑
+         bit 5 is the ONLY difference
+
+  'A' ^ 32 = 0100 0001 ^ 0010 0000 = 0110 0001 = 'a'
+  'a' ^ 32 = 0110 0001 ^ 0010 0000 = 0100 0001 = 'A'</div>
+
+    <h3>Unicode -- Characters for Every Language</h3>
+    <p>ASCII only covers English (128 characters). Unicode covers <strong>every writing system on Earth</strong> -- over 150,000 characters including Chinese, Arabic, emoji, and ancient scripts. Unicode assigns each character a "code point" (like U+0041 for 'A').</p>
+
+    <p><strong>UTF-8</strong> is the most common encoding. It uses 1-4 bytes per character: ASCII characters use 1 byte (backward compatible), while other characters use 2-4 bytes. This is why a file with only English text is roughly 1 byte per character, but a file with Chinese or emoji is larger.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 16: FILES AS BYTES                                   -->
+  <!-- ============================================================ -->
+  <section id="files-bytes">
+    <h2>16. Files as Bytes -- PDFs, Images, and More</h2>
+
+    <p>Every file on your computer is just a sequence of bytes. The first few bytes usually identify the file type -- this is called a <strong>magic number</strong> or <strong>file signature</strong>. Software reads these bytes to know what kind of file it is dealing with.</p>
+
+    <div class="memory-diagram">  File signatures (first bytes):
+
+  File Type    Hex Signature              ASCII Reading
+  ---------    -------------------------  -------------
+  PDF          25 50 44 46                %PDF
+  PNG image    89 50 4E 47 0D 0A 1A 0A   .PNG....
+  JPEG image   FF D8 FF                   ...
+  ZIP archive  50 4B 03 04                PK..
+  ELF binary   7F 45 4C 46                .ELF
+  MP3 audio    FF FB  or  49 44 33        ..  or  ID3
+  GIF image    47 49 46 38                GIF8</div>
+
+    <h3>How a PDF is Structured</h3>
+    <p>A PDF is not magic -- it is a structured byte sequence:</p>
+
+    <div class="memory-diagram">  PDF File Structure:
+
+  +---------------------------+
+  |  Header: %PDF-1.7         |   <-- First line, identifies as PDF
+  +---------------------------+
+  |  Body:                    |
+  |  - Object 1 (metadata)   |   <-- Each "object" is a chunk of data
+  |  - Object 2 (page def)   |
+  |  - Object 3 (font info)  |
+  |  - Object 4 (text stream)|   <-- Actual text, compressed as bytes
+  |  - Object 5 (image data) |   <-- Images embedded as raw bytes
+  +---------------------------+
+  |  Cross-reference table    |   <-- Index: "object 1 starts at byte 53"
+  +---------------------------+
+  |  Trailer: startxref 1234  |   <-- Points to the cross-ref table
+  +---------------------------+</div>
+
+    <h3>How Images are Stored</h3>
+
+    <div class="memory-diagram">  An image is a grid of pixels. Each pixel is typically 3 bytes (RGB):
+
+  One pixel:   [R] [G] [B]
+               [FF][00][00]  = pure red    (255, 0, 0)
+               [00][FF][00]  = pure green  (0, 255, 0)
+               [00][00][FF]  = pure blue   (0, 0, 255)
+               [FF][FF][FF]  = white       (255, 255, 255)
+               [00][00][00]  = black       (0, 0, 0)
+
+  A tiny 3x2 image (3 pixels wide, 2 tall):
+
+  Row 0:  [FF0000] [00FF00] [0000FF]     Red  Green  Blue
+  Row 1:  [FFFF00] [FF00FF] [00FFFF]     Yellow Magenta Cyan
+
+  Total size: 3 pixels x 2 rows x 3 bytes/pixel = 18 bytes
+  A 1920x1080 photo: 1920 x 1080 x 3 = 6,220,800 bytes (~6 MB raw)
+  That is why we use compression (JPEG, PNG) to make files smaller.</div>
+
+    <div class="example-box">
+      <div class="label">Reading File Bytes in C++</div>
+    </div>
+
+    <pre><code><span class="comment">// Open a file and read its first 16 bytes</span>
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    std::ifstream file(<span class="string">"document.pdf"</span>, std::ios::binary);
+    <span class="keyword">unsigned char</span> buffer[<span class="number">16</span>];
+    file.read(<span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(buffer), <span class="number">16</span>);
+
+    <span class="comment">// Print each byte as hex</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++) {
+        std::cout &lt;&lt; std::hex &lt;&lt; std::setw(<span class="number">2</span>)
+                  &lt;&lt; std::setfill(<span class="string">'0'</span>) &lt;&lt; (<span class="keyword">int</span>)buffer[i] &lt;&lt; <span class="string">" "</span>;
+    }
+    <span class="comment">// Output: 25 50 44 46 2d 31 2e 37 ... (%PDF-1.7...)</span>
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code><span class="lang-label">C++</span></pre>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      <p>When you "open" a file in a program, you are really just reading a stream of bytes. A text editor interprets those bytes as characters. An image viewer interprets them as pixel colors. A PDF reader interprets them as document structure. The bytes are the same -- only the interpretation changes. <strong>Understanding this makes you a fundamentally better programmer.</strong></p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 17: C++ BITWISE                                      -->
+  <!-- ============================================================ -->
+  <section id="cpp-bitwise">
+    <h2>17. Bitwise Operations in C++</h2>
+
+    <p>Here is every bitwise operator in C++ with examples you can run.</p>
+
+    <table>
+      <thead>
+        <tr><th>Operator</th><th>Symbol</th><th>Example</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AND</td><td><code>&amp;</code></td><td><code>12 &amp; 10</code></td><td><code>8</code> (1100 &amp; 1010 = 1000)</td></tr>
+        <tr><td>OR</td><td><code>|</code></td><td><code>12 | 10</code></td><td><code>14</code> (1100 | 1010 = 1110)</td></tr>
+        <tr><td>XOR</td><td><code>^</code></td><td><code>12 ^ 10</code></td><td><code>6</code> (1100 ^ 1010 = 0110)</td></tr>
+        <tr><td>NOT</td><td><code>~</code></td><td><code>~0</code></td><td><code>-1</code> (all bits flipped)</td></tr>
+        <tr><td>Left shift</td><td><code>&lt;&lt;</code></td><td><code>5 &lt;&lt; 2</code></td><td><code>20</code> (5 x 4)</td></tr>
+        <tr><td>Right shift</td><td><code>&gt;&gt;</code></td><td><code>20 &gt;&gt; 2</code></td><td><code>5</code> (20 / 4)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Practical C++ Examples</h3>
+
+    <pre><code><span class="comment">// Count set bits (number of 1s in binary representation)</span>
+<span class="keyword">int</span> <span class="function">countBits</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">int</span> count = <span class="number">0</span>;
+    <span class="keyword">while</span> (n) {
+        n &= (n - <span class="number">1</span>);  <span class="comment">// Turn off the lowest set bit</span>
+        count++;
+    }
+    <span class="keyword">return</span> count;
+}
+
+<span class="comment">// Or use the built-in:</span>
+<span class="keyword">int</span> bits = <span class="function">__builtin_popcount</span>(<span class="number">42</span>);  <span class="comment">// = 3 (101010 has three 1s)</span></code><span class="lang-label">C++</span></pre>
+
+    <pre><code><span class="comment">// Use bitmask as a set of flags</span>
+<span class="keyword">const int</span> READ    = <span class="number">1</span> &lt;&lt; <span class="number">0</span>;  <span class="comment">// 0001 = 1</span>
+<span class="keyword">const int</span> WRITE   = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;  <span class="comment">// 0010 = 2</span>
+<span class="keyword">const int</span> EXECUTE = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;  <span class="comment">// 0100 = 4</span>
+
+<span class="keyword">int</span> perms = READ | WRITE;           <span class="comment">// 0011 = can read and write</span>
+<span class="keyword">bool</span> canRead = (perms &amp; READ) != <span class="number">0</span>; <span class="comment">// true</span>
+<span class="keyword">bool</span> canExec = (perms &amp; EXECUTE) != <span class="number">0</span>; <span class="comment">// false</span>
+perms |= EXECUTE;                   <span class="comment">// 0111 = add execute</span>
+perms &amp;= ~WRITE;                    <span class="comment">// 0101 = remove write</span></code><span class="lang-label">C++</span></pre>
+
+    <pre><code><span class="comment">// Subset enumeration with bitmasks</span>
+<span class="comment">// Iterate over all subsets of {A, B, C} using a 3-bit mask</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">0</span>; mask &lt; (<span class="number">1</span> &lt;&lt; <span class="number">3</span>); mask++) {
+    <span class="comment">// mask goes: 000, 001, 010, 011, 100, 101, 110, 111</span>
+    <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> &lt;&lt; <span class="number">0</span>)) cout &lt;&lt; <span class="string">"A "</span>;
+    <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> &lt;&lt; <span class="number">1</span>)) cout &lt;&lt; <span class="string">"B "</span>;
+    <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> &lt;&lt; <span class="number">2</span>)) cout &lt;&lt; <span class="string">"C "</span>;
+    cout &lt;&lt; endl;
+}
+<span class="comment">// Output: (empty), A, B, AB, C, AC, BC, ABC</span></code><span class="lang-label">C++</span></pre>
+
+    <pre><code><span class="comment">// Print a number in binary (useful for debugging)</span>
+#include &lt;bitset&gt;
+std::cout &lt;&lt; std::bitset&lt;<span class="number">8</span>&gt;(<span class="number">42</span>) &lt;&lt; std::endl;  <span class="comment">// 00101010</span>
+std::cout &lt;&lt; std::bitset&lt;<span class="number">32</span>&gt;(-<span class="number">1</span>) &lt;&lt; std::endl; <span class="comment">// 11111111111111111111111111111111</span></code><span class="lang-label">C++</span></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 18: QUIZ                                             -->
+  <!-- ============================================================ -->
+  <section id="quiz">
+    <h2>18. Practice Quiz</h2>
+    <p>Test your understanding. Click an answer to check it.</p>
+
+    <div class="quiz">
+
+      <div class="quiz-q">
+        <h4>Q1: What is 1010 in decimal?</h4>
+        <button onclick="checkAnswer(this, false)">12</button>
+        <button onclick="checkAnswer(this, true)">10</button>
+        <button onclick="checkAnswer(this, false)">8</button>
+        <button onclick="checkAnswer(this, false)">14</button>
+        <div class="explanation">
+          <strong>Answer: 10</strong><br>
+          1010 = (1 x 8) + (0 x 4) + (1 x 2) + (0 x 1) = 8 + 2 = 10.
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <h4>Q2: What is 0xFF in decimal?</h4>
+        <button onclick="checkAnswer(this, false)">16</button>
+        <button onclick="checkAnswer(this, false)">128</button>
+        <button onclick="checkAnswer(this, true)">255</button>
+        <button onclick="checkAnswer(this, false)">256</button>
+        <div class="explanation">
+          <strong>Answer: 255</strong><br>
+          0xFF = (15 x 16) + (15 x 1) = 240 + 15 = 255. This is the maximum value of a single byte.
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <h4>Q3: What is 12 &amp; 10 (bitwise AND)?</h4>
+        <button onclick="checkAnswer(this, true)">8</button>
+        <button onclick="checkAnswer(this, false)">14</button>
+        <button onclick="checkAnswer(this, false)">2</button>
+        <button onclick="checkAnswer(this, false)">6</button>
+        <div class="explanation">
+          <strong>Answer: 8</strong><br>
+          12 = 1100, 10 = 1010. AND: 1100 &amp; 1010 = 1000 = 8. Only bit 3 is set in both.
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <h4>Q4: What does n &amp; (n-1) do?</h4>
+        <button onclick="checkAnswer(this, false)">Doubles n</button>
+        <button onclick="checkAnswer(this, true)">Turns off the lowest set bit</button>
+        <button onclick="checkAnswer(this, false)">Checks if n is odd</button>
+        <button onclick="checkAnswer(this, false)">Flips all bits</button>
+        <div class="explanation">
+          <strong>Answer: Turns off the lowest set bit.</strong><br>
+          Subtracting 1 flips the lowest set bit and all bits below it. ANDing with the original clears just that lowest bit. This is one of the most important bit tricks to know.
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <h4>Q5: How many bytes does one pixel in an RGB image use?</h4>
+        <button onclick="checkAnswer(this, false)">1</button>
+        <button onclick="checkAnswer(this, true)">3</button>
+        <button onclick="checkAnswer(this, false)">8</button>
+        <button onclick="checkAnswer(this, false)">4</button>
+        <div class="explanation">
+          <strong>Answer: 3 bytes</strong><br>
+          One byte for Red (0-255), one for Green (0-255), one for Blue (0-255). With an alpha (transparency) channel, it is 4 bytes (RGBA).
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <h4>Q6: What is 5 &lt;&lt; 3?</h4>
+        <button onclick="checkAnswer(this, false)">15</button>
+        <button onclick="checkAnswer(this, false)">8</button>
+        <button onclick="checkAnswer(this, true)">40</button>
+        <button onclick="checkAnswer(this, false)">25</button>
+        <div class="explanation">
+          <strong>Answer: 40</strong><br>
+          Left shift by 3 means multiply by 2^3 = 8. So 5 x 8 = 40. In binary: 00101 becomes 00101000.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+  <p><a href="index.html">Back to Home</a></p>
+</footer>
+
+<script>
+function checkAnswer(btn, correct) {
+  var q = btn.parentElement;
+  var buttons = q.querySelectorAll('button');
+  var explanation = q.querySelector('.explanation');
+
+  buttons.forEach(function(b) { b.disabled = true; });
+
+  if (correct) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach(function(b) {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+  }
+  explanation.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

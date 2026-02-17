@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithm Patterns &mdash; DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html" class="active">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Patterns</div>
+      <h1>Algorithm Patterns</h1>
+      <p>The KEY to solving LeetCode. Learn these patterns and you can solve hundreds of problems.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>On This Page</h4>
+      <a href="#why-patterns">1. Why Patterns Matter</a>
+      <a href="#two-pointers">2. Two Pointers</a>
+      <a href="#sliding-window">3. Sliding Window</a>
+      <a href="#binary-search">4. Binary Search Pattern</a>
+      <a href="#bfs">5. BFS Pattern</a>
+      <a href="#dfs">6. DFS &amp; Backtracking</a>
+      <a href="#prefix-sum">7. Prefix Sum</a>
+      <a href="#monotonic-stack">8. Monotonic Stack</a>
+      <a href="#greedy">9. Greedy</a>
+      <a href="#intervals">10. Interval Problems</a>
+      <a href="#cheat-sheet">11. Pattern Recognition Cheat Sheet</a>
+      <a href="#quiz">12. Practice Quiz</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. WHY PATTERNS MATTER -->
+    <!-- ============================================================ -->
+    <section id="why-patterns">
+      <h2>1. Why Patterns Matter</h2>
+      <p>
+        LeetCode is not about memorizing 500 solutions. If you memorize solutions, you will blank the moment a problem changes even one detail. The real skill is <strong>recognizing patterns</strong> and knowing which technique applies to which type of problem.
+      </p>
+      <ul>
+        <li>There are roughly <strong>15 core patterns</strong> that cover the vast majority of interview problems.</li>
+        <li>Once you learn a pattern, every problem that uses it becomes a variation -- not a brand new puzzle.</li>
+        <li>Patterns give you a <strong>starting framework</strong> so you are never staring at a blank screen.</li>
+        <li>Interviewers do not expect novel algorithms -- they expect you to recognize and apply known techniques.</li>
+      </ul>
+      <div class="tip-box">
+        <div class="label">The Goal</div>
+        <p>Read a problem, identify which pattern it belongs to, then apply that pattern's template and adapt it. That is the entire strategy. This page teaches you the most important patterns with full solutions so you can practice exactly that.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. TWO POINTERS -->
+    <!-- ============================================================ -->
+    <section id="two-pointers">
+      <h2>2. Two Pointers</h2>
+      <p>
+        Use two pointers to scan a data structure (usually an array) from different positions. This often reduces an O(n^2) brute force to O(n).
+      </p>
+      <div class="formula-box">
+        When to use: sorted arrays, find pairs with a condition, in-place operations, palindrome checks
+      </div>
+      <p><strong>Two main types:</strong></p>
+      <ul>
+        <li><strong>Converging pointers</strong> -- one at the start, one at the end, moving toward each other.</li>
+        <li><strong>Same direction pointers</strong> -- both start at the beginning; one moves fast, one moves slow.</li>
+      </ul>
+
+      <!-- Converging Two Pointers -->
+      <h3>Converging Two Pointers</h3>
+
+      <p><strong>Two Sum II (Sorted Array)</strong> -- Given a sorted array and a target, find two numbers that add up to the target.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">two_sum</span>(numbers, target):
+    left, right = <span class="number">0</span>, len(numbers) - <span class="number">1</span>
+    <span class="keyword">while</span> left < right:
+        curr_sum = numbers[left] + numbers[right]
+        <span class="keyword">if</span> curr_sum == target:
+            <span class="keyword">return</span> [left + <span class="number">1</span>, right + <span class="number">1</span>]  <span class="comment"># 1-indexed</span>
+        <span class="keyword">elif</span> curr_sum < target:
+            left += <span class="number">1</span>    <span class="comment"># need bigger sum</span>
+        <span class="keyword">else</span>:
+            right -= <span class="number">1</span>   <span class="comment"># need smaller sum</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">twoSum</span>(numbers, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = numbers.length - <span class="number">1</span>;
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">const</span> sum = numbers[left] + numbers[right];
+        <span class="keyword">if</span> (sum === target) <span class="keyword">return</span> [left + <span class="number">1</span>, right + <span class="number">1</span>];
+        <span class="keyword">else if</span> (sum < target) left++;
+        <span class="keyword">else</span> right--;
+    }
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Why it works</div>
+        <p>Because the array is sorted, if the sum is too small we move <code>left</code> right to increase it. If the sum is too large we move <code>right</code> left to decrease it. We never miss a valid pair because we only eliminate values that cannot be part of the answer.</p>
+      </div>
+
+      <p><strong>Container With Most Water</strong> -- Given height array, find two lines that form the container holding the most water.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_area</span>(height):
+    left, right = <span class="number">0</span>, len(height) - <span class="number">1</span>
+    best = <span class="number">0</span>
+    <span class="keyword">while</span> left < right:
+        width = right - left
+        h = min(height[left], height[right])
+        best = max(best, width * h)
+        <span class="comment"># Move the shorter side -- it's the bottleneck</span>
+        <span class="keyword">if</span> height[left] < height[right]:
+            left += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            right -= <span class="number">1</span>
+    <span class="keyword">return</span> best</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxArea</span>(height) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = height.length - <span class="number">1</span>, best = <span class="number">0</span>;
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">const</span> w = right - left;
+        <span class="keyword">const</span> h = Math.min(height[left], height[right]);
+        best = Math.max(best, w * h);
+        <span class="keyword">if</span> (height[left] < height[right]) left++;
+        <span class="keyword">else</span> right--;
+    }
+    <span class="keyword">return</span> best;
+}</code></pre>
+
+      <p><strong>3Sum</strong> -- Find all unique triplets that sum to zero. Sort the array, fix one number, then use converging two pointers on the remainder. Skip duplicates to avoid repeats. Time O(n^2), Space O(1) extra.</p>
+
+      <!-- Same Direction -->
+      <h3>Same Direction (Fast / Slow)</h3>
+
+      <p><strong>Remove Duplicates from Sorted Array</strong> -- Keep a slow pointer at the position to write, fast pointer scans ahead. When fast finds a new value, write it at slow and advance slow.</p>
+
+      <p><strong>Move Zeroes</strong> -- Same idea: slow pointer tracks the next position for a nonzero value. Fast pointer scans the array. Swap nonzero values to the front.</p>
+
+      <h3>Two Pointers Templates</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Template: Converging Two Pointers</span>
+<span class="keyword">def</span> <span class="function">converging</span>(arr, target):
+    left, right = <span class="number">0</span>, len(arr) - <span class="number">1</span>
+    <span class="keyword">while</span> left < right:
+        <span class="comment"># compute current value from arr[left], arr[right]</span>
+        <span class="keyword">if</span> condition_met:
+            <span class="keyword">return</span> result
+        <span class="keyword">elif</span> need_larger:
+            left += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            right -= <span class="number">1</span>
+
+<span class="comment"># Template: Same Direction (partition / remove)</span>
+<span class="keyword">def</span> <span class="function">same_direction</span>(arr):
+    slow = <span class="number">0</span>
+    <span class="keyword">for</span> fast <span class="keyword">in</span> range(len(arr)):
+        <span class="keyword">if</span> arr[fast] meets_condition:
+            arr[slow] = arr[fast]
+            slow += <span class="number">1</span>
+    <span class="keyword">return</span> slow  <span class="comment"># new length</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Template: Converging Two Pointers</span>
+<span class="keyword">function</span> <span class="function">converging</span>(arr, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>;
+    <span class="keyword">while</span> (left < right) {
+        <span class="comment">// compute current value from arr[left], arr[right]</span>
+        <span class="keyword">if</span> (conditionMet) <span class="keyword">return</span> result;
+        <span class="keyword">else if</span> (needLarger) left++;
+        <span class="keyword">else</span> right--;
+    }
+}
+
+<span class="comment">// Template: Same Direction (partition / remove)</span>
+<span class="keyword">function</span> <span class="function">sameDirection</span>(arr) {
+    <span class="keyword">let</span> slow = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> fast = <span class="number">0</span>; fast < arr.length; fast++) {
+        <span class="keyword">if</span> (arr[fast] meets condition) {
+            arr[slow] = arr[fast];
+            slow++;
+        }
+    }
+    <span class="keyword">return</span> slow;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. SLIDING WINDOW -->
+    <!-- ============================================================ -->
+    <section id="sliding-window">
+      <h2>3. Sliding Window</h2>
+      <p>
+        Maintain a "window" over a contiguous subarray or substring and slide it across the input. This avoids recomputing from scratch each time -- you add the new element and remove the old one.
+      </p>
+      <div class="formula-box">
+        When to use: contiguous subarray/substring problems, "maximum/minimum of size k", "longest/shortest with condition"
+      </div>
+      <p><strong>Two types:</strong></p>
+      <ul>
+        <li><strong>Fixed size window</strong> -- window size k is given. Slide it one position at a time.</li>
+        <li><strong>Variable size window</strong> -- expand until condition breaks, then shrink from the left.</li>
+      </ul>
+
+      <!-- Fixed Size -->
+      <h3>Fixed Size Window</h3>
+      <p><strong>Maximum Sum Subarray of Size K</strong></p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_sum_subarray</span>(arr, k):
+    window_sum = sum(arr[:k])
+    best = window_sum
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]  <span class="comment"># slide: add right, remove left</span>
+        best = max(best, window_sum)
+    <span class="keyword">return</span> best</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSumSubarray</span>(arr, k) {
+    <span class="keyword">let</span> windowSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < k; i++) windowSum += arr[i];
+    <span class="keyword">let</span> best = windowSum;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = k; i < arr.length; i++) {
+        windowSum += arr[i] - arr[i - k];
+        best = Math.max(best, windowSum);
+    }
+    <span class="keyword">return</span> best;
+}</code></pre>
+
+      <!-- Variable Size -->
+      <h3>Variable Size Window</h3>
+      <p><strong>Minimum Size Subarray Sum</strong> -- Find the smallest subarray whose sum is at least the target. Expand right to grow the window, shrink left when the sum is big enough.</p>
+
+      <p><strong>Longest Substring Without Repeating Characters</strong> -- Classic variable window problem. Expand right, if duplicate found, shrink left until valid again.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">length_of_longest_substring</span>(s):
+    seen = {}  <span class="comment"># char -> most recent index</span>
+    left = <span class="number">0</span>
+    best = <span class="number">0</span>
+    <span class="keyword">for</span> right <span class="keyword">in</span> range(len(s)):
+        <span class="keyword">if</span> s[right] <span class="keyword">in</span> seen <span class="keyword">and</span> seen[s[right]] >= left:
+            left = seen[s[right]] + <span class="number">1</span>  <span class="comment"># shrink past the duplicate</span>
+        seen[s[right]] = right
+        best = max(best, right - left + <span class="number">1</span>)
+    <span class="keyword">return</span> best</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">lengthOfLongestSubstring</span>(s) {
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> Map();
+    <span class="keyword">let</span> left = <span class="number">0</span>, best = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> right = <span class="number">0</span>; right < s.length; right++) {
+        <span class="keyword">if</span> (seen.has(s[right]) && seen.get(s[right]) >= left) {
+            left = seen.get(s[right]) + <span class="number">1</span>;
+        }
+        seen.set(s[right], right);
+        best = Math.max(best, right - left + <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> best;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><code>s = "abcabcbb"</code> -- The longest substring without repeating characters is <code>"abc"</code>, length <strong>3</strong>. As we scan, when we hit the second 'a', we jump left past the first 'a'.</p>
+      </div>
+
+      <h3>Sliding Window Templates</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Template: Fixed Size Window</span>
+<span class="keyword">def</span> <span class="function">fixed_window</span>(arr, k):
+    <span class="comment"># Initialize window with first k elements</span>
+    window = compute(arr[<span class="number">0</span>:k])
+    best = window
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(k, len(arr)):
+        window = window + arr[i] - arr[i - k]  <span class="comment"># add new, remove old</span>
+        best = update(best, window)
+    <span class="keyword">return</span> best
+
+<span class="comment"># Template: Variable Size Window</span>
+<span class="keyword">def</span> <span class="function">variable_window</span>(arr):
+    left = <span class="number">0</span>
+    best = <span class="number">0</span>
+    state = {}  <span class="comment"># track window contents</span>
+    <span class="keyword">for</span> right <span class="keyword">in</span> range(len(arr)):
+        <span class="comment"># Expand: add arr[right] to state</span>
+        <span class="keyword">while</span> window_is_invalid(state):
+            <span class="comment"># Shrink: remove arr[left] from state</span>
+            left += <span class="number">1</span>
+        best = max(best, right - left + <span class="number">1</span>)
+    <span class="keyword">return</span> best</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Template: Fixed Size Window</span>
+<span class="keyword">function</span> <span class="function">fixedWindow</span>(arr, k) {
+    <span class="keyword">let</span> window = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < k; i++) window += arr[i];
+    <span class="keyword">let</span> best = window;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = k; i < arr.length; i++) {
+        window += arr[i] - arr[i - k];
+        best = Math.max(best, window);
+    }
+    <span class="keyword">return</span> best;
+}
+
+<span class="comment">// Template: Variable Size Window</span>
+<span class="keyword">function</span> <span class="function">variableWindow</span>(arr) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, best = <span class="number">0</span>;
+    <span class="keyword">const</span> state = <span class="keyword">new</span> Map();
+    <span class="keyword">for</span> (<span class="keyword">let</span> right = <span class="number">0</span>; right < arr.length; right++) {
+        <span class="comment">// Expand: add arr[right] to state</span>
+        <span class="keyword">while</span> (windowIsInvalid(state)) {
+            <span class="comment">// Shrink: remove arr[left] from state</span>
+            left++;
+        }
+        best = Math.max(best, right - left + <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> best;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. BINARY SEARCH PATTERN -->
+    <!-- ============================================================ -->
+    <section id="binary-search">
+      <h2>4. Binary Search Pattern</h2>
+      <p>
+        Binary search is not just for finding an element in a sorted array. The deeper insight is: <strong>any time you can halve a search space</strong>, you can binary search. This includes searching on the answer itself.
+      </p>
+      <div class="formula-box">
+        When to use: sorted data, "minimum/maximum that satisfies condition", search space that can be halved
+      </div>
+
+      <h3>Standard Binary Search Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">binary_search</span>(arr, target):
+    left, right = <span class="number">0</span>, len(arr) - <span class="number">1</span>
+    <span class="keyword">while</span> left <= right:
+        mid = left + (right - left) // <span class="number">2</span>  <span class="comment"># avoids overflow</span>
+        <span class="keyword">if</span> arr[mid] == target:
+            <span class="keyword">return</span> mid
+        <span class="keyword">elif</span> arr[mid] < target:
+            left = mid + <span class="number">1</span>
+        <span class="keyword">else</span>:
+            right = mid - <span class="number">1</span>
+    <span class="keyword">return</span> -<span class="number">1</span>  <span class="comment"># not found</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">binarySearch</span>(arr, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>;
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">const</span> mid = left + Math.floor((right - left) / <span class="number">2</span>);
+        <span class="keyword">if</span> (arr[mid] === target) <span class="keyword">return</span> mid;
+        <span class="keyword">else if</span> (arr[mid] < target) left = mid + <span class="number">1</span>;
+        <span class="keyword">else</span> right = mid - <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> -<span class="number">1</span>;
+}</code></pre>
+
+      <h3>Binary Search on the Answer</h3>
+      <p>
+        Sometimes you are not searching an array -- you are searching a <strong>range of possible answers</strong>. If you can write a function <code>canAchieve(x)</code> that returns true/false, and the answers are monotonic (once true, always true), you can binary search on the answer.
+      </p>
+
+      <p><strong>Koko Eating Bananas</strong> -- Koko has piles of bananas and h hours. Find the minimum eating speed k so she finishes all piles in h hours.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">def</span> <span class="function">min_eating_speed</span>(piles, h):
+    <span class="keyword">def</span> <span class="function">can_finish</span>(speed):
+        hours = sum(math.ceil(p / speed) <span class="keyword">for</span> p <span class="keyword">in</span> piles)
+        <span class="keyword">return</span> hours <= h
+
+    left, right = <span class="number">1</span>, max(piles)
+    <span class="keyword">while</span> left < right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="keyword">if</span> can_finish(mid):
+            right = mid       <span class="comment"># try slower</span>
+        <span class="keyword">else</span>:
+            left = mid + <span class="number">1</span>    <span class="comment"># too slow, go faster</span>
+    <span class="keyword">return</span> left</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">minEatingSpeed</span>(piles, h) {
+    <span class="keyword">function</span> <span class="function">canFinish</span>(speed) {
+        <span class="keyword">let</span> hours = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">const</span> p <span class="keyword">of</span> piles) hours += Math.ceil(p / speed);
+        <span class="keyword">return</span> hours <= h;
+    }
+
+    <span class="keyword">let</span> left = <span class="number">1</span>, right = Math.max(...piles);
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">const</span> mid = Math.floor((left + right) / <span class="number">2</span>);
+        <span class="keyword">if</span> (canFinish(mid)) right = mid;
+        <span class="keyword">else</span> left = mid + <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> left;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><code>piles = [3, 6, 7, 11], h = 8</code> -- Answer is <strong>4</strong>. At speed 4: ceil(3/4)+ceil(6/4)+ceil(7/4)+ceil(11/4) = 1+2+2+3 = 8 hours. Speed 3 would take 10 hours (too slow).</p>
+      </div>
+
+      <p><strong>Capacity to Ship Packages Within D Days</strong> -- Same idea. Binary search on the ship capacity. The <code>canShip(capacity)</code> function simulates loading packages greedily and checks if it fits in D days.</p>
+
+      <h3>Binary Search on Answer Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Template: Binary Search on the Answer</span>
+<span class="keyword">def</span> <span class="function">search_answer</span>(data):
+    <span class="keyword">def</span> <span class="function">is_feasible</span>(x):
+        <span class="comment"># return True if x is a valid answer</span>
+        <span class="keyword">pass</span>
+
+    left, right = min_possible, max_possible
+    <span class="keyword">while</span> left < right:
+        mid = (left + right) // <span class="number">2</span>
+        <span class="keyword">if</span> is_feasible(mid):
+            right = mid       <span class="comment"># try smaller (for minimum)</span>
+        <span class="keyword">else</span>:
+            left = mid + <span class="number">1</span>
+    <span class="keyword">return</span> left</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Template: Binary Search on the Answer</span>
+<span class="keyword">function</span> <span class="function">searchAnswer</span>(data) {
+    <span class="keyword">function</span> <span class="function">isFeasible</span>(x) {
+        <span class="comment">// return true if x is a valid answer</span>
+    }
+
+    <span class="keyword">let</span> left = minPossible, right = maxPossible;
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">const</span> mid = Math.floor((left + right) / <span class="number">2</span>);
+        <span class="keyword">if</span> (isFeasible(mid)) right = mid;
+        <span class="keyword">else</span> left = mid + <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> left;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. BFS PATTERN -->
+    <!-- ============================================================ -->
+    <section id="bfs">
+      <h2>5. BFS Pattern</h2>
+      <p>
+        Breadth-First Search processes nodes level by level using a queue. It is the go-to for <strong>shortest path in unweighted graphs/grids</strong> and level-order traversal in trees.
+      </p>
+      <div class="formula-box">
+        When to use: shortest path (unweighted), level-by-level processing, graph/grid exploration from a source
+      </div>
+
+      <h3>Core BFS Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">bfs</span>(graph, start):
+    queue = deque([start])
+    visited = {start}
+    <span class="keyword">while</span> queue:
+        node = queue.popleft()
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[node]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not in</span> visited:
+                visited.add(neighbor)
+                queue.append(neighbor)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">bfs</span>(graph, start) {
+    <span class="keyword">const</span> queue = [start];
+    <span class="keyword">const</span> visited = <span class="keyword">new</span> Set([start]);
+    <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+        <span class="keyword">const</span> node = queue.shift();
+        <span class="keyword">for</span> (<span class="keyword">const</span> neighbor <span class="keyword">of</span> graph[node]) {
+            <span class="keyword">if</span> (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push(neighbor);
+            }
+        }
+    }
+}</code></pre>
+
+      <h3>Multi-Source BFS</h3>
+      <p>
+        Start BFS from <strong>multiple sources at once</strong> by putting them all in the queue initially. This is key for problems like "distance from nearest X" or "simultaneous spread."
+      </p>
+
+      <p><strong>Rotting Oranges</strong> -- All rotten oranges spread simultaneously. Find the time for all fresh oranges to rot (or -1 if impossible).</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">oranges_rotting</span>(grid):
+    rows, cols = len(grid), len(grid[<span class="number">0</span>])
+    queue = deque()
+    fresh = <span class="number">0</span>
+
+    <span class="comment"># Collect all rotten oranges as starting points</span>
+    <span class="keyword">for</span> r <span class="keyword">in</span> range(rows):
+        <span class="keyword">for</span> c <span class="keyword">in</span> range(cols):
+            <span class="keyword">if</span> grid[r][c] == <span class="number">2</span>:
+                queue.append((r, c))
+            <span class="keyword">elif</span> grid[r][c] == <span class="number">1</span>:
+                fresh += <span class="number">1</span>
+
+    minutes = <span class="number">0</span>
+    directions = [(<span class="number">0</span>,<span class="number">1</span>), (<span class="number">0</span>,-<span class="number">1</span>), (<span class="number">1</span>,<span class="number">0</span>), (-<span class="number">1</span>,<span class="number">0</span>)]
+
+    <span class="keyword">while</span> queue <span class="keyword">and</span> fresh > <span class="number">0</span>:
+        minutes += <span class="number">1</span>
+        <span class="keyword">for</span> _ <span class="keyword">in</span> range(len(queue)):  <span class="comment"># process current level</span>
+            r, c = queue.popleft()
+            <span class="keyword">for</span> dr, dc <span class="keyword">in</span> directions:
+                nr, nc = r + dr, c + dc
+                <span class="keyword">if</span> <span class="number">0</span> <= nr < rows <span class="keyword">and</span> <span class="number">0</span> <= nc < cols <span class="keyword">and</span> grid[nr][nc] == <span class="number">1</span>:
+                    grid[nr][nc] = <span class="number">2</span>
+                    fresh -= <span class="number">1</span>
+                    queue.append((nr, nc))
+
+    <span class="keyword">return</span> minutes <span class="keyword">if</span> fresh == <span class="number">0</span> <span class="keyword">else</span> -<span class="number">1</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">orangesRotting</span>(grid) {
+    <span class="keyword">const</span> rows = grid.length, cols = grid[<span class="number">0</span>].length;
+    <span class="keyword">const</span> queue = [];
+    <span class="keyword">let</span> fresh = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> r = <span class="number">0</span>; r < rows; r++) {
+        <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c < cols; c++) {
+            <span class="keyword">if</span> (grid[r][c] === <span class="number">2</span>) queue.push([r, c]);
+            <span class="keyword">else if</span> (grid[r][c] === <span class="number">1</span>) fresh++;
+        }
+    }
+
+    <span class="keyword">const</span> dirs = [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,-<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[-<span class="number">1</span>,<span class="number">0</span>]];
+    <span class="keyword">let</span> minutes = <span class="number">0</span>;
+
+    <span class="keyword">while</span> (queue.length > <span class="number">0</span> && fresh > <span class="number">0</span>) {
+        minutes++;
+        <span class="keyword">const</span> size = queue.length;
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < size; i++) {
+            <span class="keyword">const</span> [r, c] = queue.shift();
+            <span class="keyword">for</span> (<span class="keyword">const</span> [dr, dc] <span class="keyword">of</span> dirs) {
+                <span class="keyword">const</span> nr = r + dr, nc = c + dc;
+                <span class="keyword">if</span> (nr >= <span class="number">0</span> && nr < rows && nc >= <span class="number">0</span> && nc < cols && grid[nr][nc] === <span class="number">1</span>) {
+                    grid[nr][nc] = <span class="number">2</span>;
+                    fresh--;
+                    queue.push([nr, nc]);
+                }
+            }
+        }
+    }
+    <span class="keyword">return</span> fresh === <span class="number">0</span> ? minutes : -<span class="number">1</span>;
+}</code></pre>
+
+      <h3>Grid BFS</h3>
+      <p>
+        <strong>Number of Islands</strong> -- For each unvisited land cell, run BFS to mark the entire island. Count how many times you start a new BFS.
+      </p>
+      <p>
+        <strong>Shortest Path in Grid</strong> -- BFS naturally finds the shortest path because it explores all cells at distance d before distance d+1. Track distance by processing one level at a time.
+      </p>
+
+      <h3>Grid BFS Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">grid_bfs</span>(grid, start_r, start_c):
+    rows, cols = len(grid), len(grid[<span class="number">0</span>])
+    queue = deque([(start_r, start_c, <span class="number">0</span>)])  <span class="comment"># row, col, distance</span>
+    visited = {(start_r, start_c)}
+    directions = [(<span class="number">0</span>,<span class="number">1</span>), (<span class="number">0</span>,-<span class="number">1</span>), (<span class="number">1</span>,<span class="number">0</span>), (-<span class="number">1</span>,<span class="number">0</span>)]
+
+    <span class="keyword">while</span> queue:
+        r, c, dist = queue.popleft()
+        <span class="keyword">for</span> dr, dc <span class="keyword">in</span> directions:
+            nr, nc = r + dr, c + dc
+            <span class="keyword">if</span> (<span class="number">0</span> <= nr < rows <span class="keyword">and</span> <span class="number">0</span> <= nc < cols
+                    <span class="keyword">and</span> (nr, nc) <span class="keyword">not in</span> visited
+                    <span class="keyword">and</span> grid[nr][nc] != obstacle):
+                visited.add((nr, nc))
+                queue.append((nr, nc, dist + <span class="number">1</span>))</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">gridBFS</span>(grid, startR, startC) {
+    <span class="keyword">const</span> rows = grid.length, cols = grid[<span class="number">0</span>].length;
+    <span class="keyword">const</span> queue = [[startR, startC, <span class="number">0</span>]];
+    <span class="keyword">const</span> visited = <span class="keyword">new</span> Set([<span class="string">`${startR},${startC}`</span>]);
+    <span class="keyword">const</span> dirs = [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,-<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[-<span class="number">1</span>,<span class="number">0</span>]];
+
+    <span class="keyword">while</span> (queue.length > <span class="number">0</span>) {
+        <span class="keyword">const</span> [r, c, dist] = queue.shift();
+        <span class="keyword">for</span> (<span class="keyword">const</span> [dr, dc] <span class="keyword">of</span> dirs) {
+            <span class="keyword">const</span> nr = r + dr, nc = c + dc;
+            <span class="keyword">const</span> key = <span class="string">`${nr},${nc}`</span>;
+            <span class="keyword">if</span> (nr >= <span class="number">0</span> && nr < rows && nc >= <span class="number">0</span> && nc < cols
+                && !visited.has(key) && grid[nr][nc] !== obstacle) {
+                visited.add(key);
+                queue.push([nr, nc, dist + <span class="number">1</span>]);
+            }
+        }
+    }
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. DFS & BACKTRACKING -->
+    <!-- ============================================================ -->
+    <section id="dfs">
+      <h2>6. DFS &amp; Backtracking</h2>
+      <p>
+        Depth-First Search explores as deep as possible before backtracking. It is the natural choice for tree problems, exploring all paths, and generating combinations/permutations.
+      </p>
+      <div class="formula-box">
+        When to use: tree traversals, explore all paths, check connectivity, backtracking (all combinations, permutations, subsets)
+      </div>
+
+      <!-- Tree DFS -->
+      <h3>Tree DFS</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Recursive DFS Template for Binary Trees</span>
+<span class="keyword">def</span> <span class="function">dfs</span>(node):
+    <span class="keyword">if not</span> node:
+        <span class="keyword">return</span> base_case
+    left = dfs(node.left)
+    right = dfs(node.right)
+    <span class="keyword">return</span> combine(node.val, left, right)
+
+<span class="comment"># Maximum Depth of Binary Tree</span>
+<span class="keyword">def</span> <span class="function">max_depth</span>(root):
+    <span class="keyword">if not</span> root:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="keyword">return</span> <span class="number">1</span> + max(max_depth(root.left), max_depth(root.right))</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Recursive DFS Template for Binary Trees</span>
+<span class="keyword">function</span> <span class="function">dfs</span>(node) {
+    <span class="keyword">if</span> (!node) <span class="keyword">return</span> baseCase;
+    <span class="keyword">const</span> left = dfs(node.left);
+    <span class="keyword">const</span> right = dfs(node.right);
+    <span class="keyword">return</span> combine(node.val, left, right);
+}
+
+<span class="comment">// Maximum Depth of Binary Tree</span>
+<span class="keyword">function</span> <span class="function">maxDepth</span>(root) {
+    <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">return</span> <span class="number">1</span> + Math.max(maxDepth(root.left), maxDepth(root.right));
+}</code></pre>
+
+      <!-- Graph DFS -->
+      <h3>Graph DFS</h3>
+      <p><strong>Connected Components</strong> -- Run DFS from each unvisited node. Each DFS call discovers one connected component.</p>
+      <p><strong>Cycle Detection</strong> -- In directed graphs, track nodes in the current DFS path. If you visit a node already on the path, there is a cycle. Use three states: unvisited, in-progress, done.</p>
+
+      <!-- Backtracking -->
+      <h3>Backtracking</h3>
+      <p>
+        Backtracking is DFS with a twist: you <strong>make a choice, recurse, then undo the choice</strong> to try the next option. It generates all valid combinations, permutations, or subsets.
+      </p>
+
+      <p><strong>Subsets</strong> -- Generate all subsets of a set. At each index, choose to include or exclude the element.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">subsets</span>(nums):
+    result = []
+    <span class="keyword">def</span> <span class="function">backtrack</span>(start, current):
+        result.append(current[:])  <span class="comment"># snapshot current state</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(start, len(nums)):
+            current.append(nums[i])       <span class="comment"># choose</span>
+            backtrack(i + <span class="number">1</span>, current)      <span class="comment"># explore</span>
+            current.pop()                  <span class="comment"># un-choose</span>
+    backtrack(<span class="number">0</span>, [])
+    <span class="keyword">return</span> result</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">subsets</span>(nums) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">backtrack</span>(start, current) {
+        result.push([...current]);
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = start; i < nums.length; i++) {
+            current.push(nums[i]);         <span class="comment">// choose</span>
+            backtrack(i + <span class="number">1</span>, current);     <span class="comment">// explore</span>
+            current.pop();                  <span class="comment">// un-choose</span>
+        }
+    }
+    backtrack(<span class="number">0</span>, []);
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <p><strong>Permutations</strong> -- Generate all orderings of the input.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">permute</span>(nums):
+    result = []
+    <span class="keyword">def</span> <span class="function">backtrack</span>(current, remaining):
+        <span class="keyword">if not</span> remaining:
+            result.append(current[:])
+            <span class="keyword">return</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(remaining)):
+            current.append(remaining[i])
+            backtrack(current, remaining[:i] + remaining[i+<span class="number">1</span>:])
+            current.pop()
+    backtrack([], nums)
+    <span class="keyword">return</span> result</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">permute</span>(nums) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">backtrack</span>(current, remaining) {
+        <span class="keyword">if</span> (remaining.length === <span class="number">0</span>) {
+            result.push([...current]);
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < remaining.length; i++) {
+            current.push(remaining[i]);
+            backtrack(current, [...remaining.slice(<span class="number">0</span>, i), ...remaining.slice(i + <span class="number">1</span>)]);
+            current.pop();
+        }
+    }
+    backtrack([], nums);
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <p><strong>Combination Sum</strong> -- Find all combinations that sum to a target, where each number can be used unlimited times. Same backtracking structure, but pass the same <code>start</code> index (not <code>i+1</code>) to allow reuse, and prune when the running sum exceeds the target.</p>
+
+      <h3>Backtracking Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">backtrack_template</span>(candidates):
+    result = []
+    <span class="keyword">def</span> <span class="function">backtrack</span>(start, current, remaining_state):
+        <span class="keyword">if</span> is_valid_solution(current):
+            result.append(current[:])
+            <span class="keyword">return</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(start, len(candidates)):
+            <span class="keyword">if</span> should_prune(candidates[i]):
+                <span class="keyword">continue</span>
+            current.append(candidates[i])       <span class="comment"># choose</span>
+            backtrack(i + <span class="number">1</span>, current, new_state)  <span class="comment"># explore</span>
+            current.pop()                        <span class="comment"># un-choose</span>
+    backtrack(<span class="number">0</span>, [], initial_state)
+    <span class="keyword">return</span> result</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">backtrackTemplate</span>(candidates) {
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">function</span> <span class="function">backtrack</span>(start, current, remainingState) {
+        <span class="keyword">if</span> (isValidSolution(current)) {
+            result.push([...current]);
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = start; i < candidates.length; i++) {
+            <span class="keyword">if</span> (shouldPrune(candidates[i])) <span class="keyword">continue</span>;
+            current.push(candidates[i]);
+            backtrack(i + <span class="number">1</span>, current, newState);
+            current.pop();
+        }
+    }
+    backtrack(<span class="number">0</span>, [], initialState);
+    <span class="keyword">return</span> result;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. PREFIX SUM -->
+    <!-- ============================================================ -->
+    <section id="prefix-sum">
+      <h2>7. Prefix Sum</h2>
+      <p>
+        Precompute a running sum array so you can answer any "sum of subarray from i to j" query in O(1). The prefix sum at index i is the sum of all elements from index 0 through i.
+      </p>
+      <div class="formula-box">
+        prefix[i] = arr[0] + arr[1] + ... + arr[i]<br>
+        sum(arr[left..right]) = prefix[right] - prefix[left - 1]
+      </div>
+      <div class="formula-box">
+        When to use: range sum queries, subarray sum equals k, any problem asking about contiguous subarray sums
+      </div>
+
+      <h3>Subarray Sum Equals K</h3>
+      <p>
+        Count the number of subarrays that sum to k. The brute force is O(n^2). The trick: use a hash map to store how many times each prefix sum has occurred. If <code>current_prefix - k</code> has been seen before, those are valid subarrays.
+      </p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">subarray_sum</span>(nums, k):
+    count = <span class="number">0</span>
+    prefix = <span class="number">0</span>
+    prefix_counts = {<span class="number">0</span>: <span class="number">1</span>}  <span class="comment"># empty prefix sum = 0 seen once</span>
+
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        prefix += num
+        <span class="comment"># If (prefix - k) was seen before, those are valid subarrays</span>
+        count += prefix_counts.get(prefix - k, <span class="number">0</span>)
+        prefix_counts[prefix] = prefix_counts.get(prefix, <span class="number">0</span>) + <span class="number">1</span>
+
+    <span class="keyword">return</span> count</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">subarraySum</span>(nums, k) {
+    <span class="keyword">let</span> count = <span class="number">0</span>, prefix = <span class="number">0</span>;
+    <span class="keyword">const</span> prefixCounts = <span class="keyword">new</span> Map([[<span class="number">0</span>, <span class="number">1</span>]]);
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        prefix += num;
+        count += (prefixCounts.get(prefix - k) || <span class="number">0</span>);
+        prefixCounts.set(prefix, (prefixCounts.get(prefix) || <span class="number">0</span>) + <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> count;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><code>nums = [1, 2, 3], k = 3</code> -- Prefix sums: [1, 3, 6]. At prefix=3, we check 3-3=0 which exists (count 1). At prefix=6, we check 6-3=3 which exists (count 1). Result: <strong>2</strong> subarrays ([1,2] and [3]).</p>
+      </div>
+
+      <h3>Prefix Sum Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Build prefix array</span>
+prefix = [<span class="number">0</span>] * (len(arr) + <span class="number">1</span>)
+<span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):
+    prefix[i + <span class="number">1</span>] = prefix[i] + arr[i]
+
+<span class="comment"># Range sum query: sum from index l to r (inclusive)</span>
+range_sum = prefix[r + <span class="number">1</span>] - prefix[l]
+
+<span class="comment"># Prefix sum + hash map (for subarray sum = k)</span>
+prefix = <span class="number">0</span>
+seen = {<span class="number">0</span>: <span class="number">1</span>}
+<span class="keyword">for</span> num <span class="keyword">in</span> arr:
+    prefix += num
+    <span class="keyword">if</span> prefix - k <span class="keyword">in</span> seen:
+        <span class="comment"># found valid subarrays</span>
+        <span class="keyword">pass</span>
+    seen[prefix] = seen.get(prefix, <span class="number">0</span>) + <span class="number">1</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Build prefix array</span>
+<span class="keyword">const</span> prefix = <span class="keyword">new</span> Array(arr.length + <span class="number">1</span>).fill(<span class="number">0</span>);
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < arr.length; i++) {
+    prefix[i + <span class="number">1</span>] = prefix[i] + arr[i];
+}
+
+<span class="comment">// Range sum query: sum from index l to r (inclusive)</span>
+<span class="keyword">const</span> rangeSum = prefix[r + <span class="number">1</span>] - prefix[l];
+
+<span class="comment">// Prefix sum + hash map (for subarray sum = k)</span>
+<span class="keyword">let</span> pre = <span class="number">0</span>;
+<span class="keyword">const</span> seen = <span class="keyword">new</span> Map([[<span class="number">0</span>, <span class="number">1</span>]]);
+<span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> arr) {
+    pre += num;
+    <span class="keyword">if</span> (seen.has(pre - k)) {
+        <span class="comment">// found valid subarrays</span>
+    }
+    seen.set(pre, (seen.get(pre) || <span class="number">0</span>) + <span class="number">1</span>);
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. MONOTONIC STACK -->
+    <!-- ============================================================ -->
+    <section id="monotonic-stack">
+      <h2>8. Monotonic Stack</h2>
+      <p>
+        A monotonic stack maintains elements in strictly increasing or decreasing order. When a new element violates the order, you pop from the stack -- and the popped elements have found their answer (the new element is their "next greater" or "next smaller").
+      </p>
+      <div class="formula-box">
+        When to use: next greater/smaller element, stock span, histogram area, trapping rain water
+      </div>
+
+      <h3>Daily Temperatures</h3>
+      <p>Given daily temperatures, for each day find how many days until a warmer temperature (or 0 if none).</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">daily_temperatures</span>(temperatures):
+    n = len(temperatures)
+    result = [<span class="number">0</span>] * n
+    stack = []  <span class="comment"># stores indices, monotonically decreasing temps</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        <span class="keyword">while</span> stack <span class="keyword">and</span> temperatures[i] > temperatures[stack[-<span class="number">1</span>]]:
+            prev = stack.pop()
+            result[prev] = i - prev
+        stack.append(i)
+
+    <span class="keyword">return</span> result</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">dailyTemperatures</span>(temperatures) {
+    <span class="keyword">const</span> n = temperatures.length;
+    <span class="keyword">const</span> result = <span class="keyword">new</span> Array(n).fill(<span class="number">0</span>);
+    <span class="keyword">const</span> stack = [];
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < n; i++) {
+        <span class="keyword">while</span> (stack.length > <span class="number">0</span> && temperatures[i] > temperatures[stack[stack.length - <span class="number">1</span>]]) {
+            <span class="keyword">const</span> prev = stack.pop();
+            result[prev] = i - prev;
+        }
+        stack.push(i);
+    }
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><code>temps = [73, 74, 75, 71, 69, 72, 76, 73]</code> -- Output: <code>[1, 1, 4, 2, 1, 1, 0, 0]</code>. After day 0 (73), the next warmer day is day 1 (74), so answer is 1. After day 2 (75), the next warmer day is day 6 (76), so answer is 4.</p>
+      </div>
+
+      <h3>Next Greater Element</h3>
+      <p>
+        Given an array, find the next greater element for each position. Same approach as Daily Temperatures -- maintain a decreasing stack. When you encounter a larger element, pop all smaller elements from the stack: the larger element is their "next greater."
+      </p>
+
+      <h3>Monotonic Stack Template</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Template: Next Greater Element (decreasing stack)</span>
+<span class="keyword">def</span> <span class="function">next_greater</span>(arr):
+    n = len(arr)
+    result = [-<span class="number">1</span>] * n
+    stack = []  <span class="comment"># indices of elements waiting for their answer</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        <span class="keyword">while</span> stack <span class="keyword">and</span> arr[i] > arr[stack[-<span class="number">1</span>]]:
+            idx = stack.pop()
+            result[idx] = arr[i]  <span class="comment"># or (i - idx) for distance</span>
+        stack.append(i)
+    <span class="keyword">return</span> result</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Template: Next Greater Element (decreasing stack)</span>
+<span class="keyword">function</span> <span class="function">nextGreater</span>(arr) {
+    <span class="keyword">const</span> n = arr.length;
+    <span class="keyword">const</span> result = <span class="keyword">new</span> Array(n).fill(-<span class="number">1</span>);
+    <span class="keyword">const</span> stack = [];
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < n; i++) {
+        <span class="keyword">while</span> (stack.length > <span class="number">0</span> && arr[i] > arr[stack[stack.length - <span class="number">1</span>]]) {
+            <span class="keyword">const</span> idx = stack.pop();
+            result[idx] = arr[i];
+        }
+        stack.push(i);
+    }
+    <span class="keyword">return</span> result;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 9. GREEDY -->
+    <!-- ============================================================ -->
+    <section id="greedy">
+      <h2>9. Greedy</h2>
+      <p>
+        A greedy algorithm makes the locally optimal choice at each step, hoping it leads to a globally optimal solution. The key question is always: <strong>can I prove that the greedy choice is safe?</strong>
+      </p>
+      <div class="formula-box">
+        When to use: local optimal leads to global optimal, sorting helps simplify the problem, "minimum number of X" or "maximum number of X"
+      </div>
+      <ul>
+        <li><strong>How to know greedy works:</strong> Can you prove that choosing the "best right now" never hurts? Does an exchange argument work (swapping any other choice makes it worse)?</li>
+        <li><strong>Common signal:</strong> Sort the input and then make greedy passes.</li>
+      </ul>
+
+      <h3>Jump Game</h3>
+      <p>Given an array where each element is the max jump length from that position, determine if you can reach the last index.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">can_jump</span>(nums):
+    farthest = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):
+        <span class="keyword">if</span> i > farthest:
+            <span class="keyword">return</span> <span class="keyword">False</span>  <span class="comment"># can't reach this index</span>
+        farthest = max(farthest, i + nums[i])
+    <span class="keyword">return</span> <span class="keyword">True</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">canJump</span>(nums) {
+    <span class="keyword">let</span> farthest = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < nums.length; i++) {
+        <span class="keyword">if</span> (i > farthest) <span class="keyword">return</span> <span class="keyword">false</span>;
+        farthest = Math.max(farthest, i + nums[i]);
+    }
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Why greedy works here</div>
+        <p>At each step we track the farthest position reachable. If at any point our current position exceeds farthest, we are stuck. Otherwise, we always have at least one path forward. No need to track which path -- just whether any path exists.</p>
+      </div>
+
+      <h3>Merge Intervals</h3>
+      <p>
+        Sort intervals by start time. Scan through them: if the current interval overlaps with the previous one (current.start &lt;= prev.end), merge them by extending the end. Otherwise, start a new group. Greedy because sorting + merging left-to-right never misses an overlap.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 10. INTERVAL PROBLEMS -->
+    <!-- ============================================================ -->
+    <section id="intervals">
+      <h2>10. Interval Problems</h2>
+      <p>
+        Interval problems follow a consistent pattern: <strong>sort by start time</strong>, then process intervals left to right checking for overlaps.
+      </p>
+      <div class="formula-box">
+        Two intervals overlap when: a.start &lt; b.end AND b.start &lt; a.end<br>
+        (or equivalently: a.end &gt; b.start when sorted by start)
+      </div>
+
+      <h3>Merge Intervals</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">merge</span>(intervals):
+    intervals.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>])
+    merged = [intervals[<span class="number">0</span>]]
+
+    <span class="keyword">for</span> start, end <span class="keyword">in</span> intervals[<span class="number">1</span>:]:
+        <span class="keyword">if</span> start <= merged[-<span class="number">1</span>][<span class="number">1</span>]:  <span class="comment"># overlaps with previous</span>
+            merged[-<span class="number">1</span>][<span class="number">1</span>] = max(merged[-<span class="number">1</span>][<span class="number">1</span>], end)  <span class="comment"># extend</span>
+        <span class="keyword">else</span>:
+            merged.append([start, end])  <span class="comment"># no overlap, new interval</span>
+
+    <span class="keyword">return</span> merged</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">merge</span>(intervals) {
+    intervals.sort((a, b) => a[<span class="number">0</span>] - b[<span class="number">0</span>]);
+    <span class="keyword">const</span> merged = [intervals[<span class="number">0</span>]];
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < intervals.length; i++) {
+        <span class="keyword">const</span> [start, end] = intervals[i];
+        <span class="keyword">const</span> prev = merged[merged.length - <span class="number">1</span>];
+        <span class="keyword">if</span> (start <= prev[<span class="number">1</span>]) {
+            prev[<span class="number">1</span>] = Math.max(prev[<span class="number">1</span>], end);
+        } <span class="keyword">else</span> {
+            merged.push([start, end]);
+        }
+    }
+    <span class="keyword">return</span> merged;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p><code>intervals = [[1,3],[2,6],[8,10],[15,18]]</code> -- After sorting (already sorted): [1,3] and [2,6] overlap (2 &lt;= 3), merge to [1,6]. [8,10] and [15,18] do not overlap with anything. Result: <code>[[1,6],[8,10],[15,18]]</code>.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Interval Pattern Variants</div>
+        <p><strong>Insert Interval:</strong> Find the position and merge. <strong>Non-overlapping Intervals:</strong> Count removals (greedy by end time). <strong>Meeting Rooms:</strong> Sort by start, check any overlap. <strong>Meeting Rooms II:</strong> Min-heap for end times, count peak overlaps.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 11. PATTERN RECOGNITION CHEAT SHEET -->
+    <!-- ============================================================ -->
+    <section id="cheat-sheet">
+      <h2>11. Pattern Recognition Cheat Sheet</h2>
+      <p>
+        When you read a problem, look for these clues to identify the right pattern. This is the single most valuable skill for LeetCode.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Clue in Problem</th>
+            <th>Pattern to Try</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"Sorted array"</td>
+            <td><strong>Two Pointers / Binary Search</strong></td>
+            <td>Sorted order lets you eliminate halves or converge pointers</td>
+          </tr>
+          <tr>
+            <td>"Contiguous subarray" or "substring"</td>
+            <td><strong>Sliding Window / Prefix Sum</strong></td>
+            <td>Contiguous means a window can slide across it</td>
+          </tr>
+          <tr>
+            <td>"Shortest path" (unweighted)</td>
+            <td><strong>BFS</strong></td>
+            <td>BFS explores level-by-level, finding shortest path naturally</td>
+          </tr>
+          <tr>
+            <td>"All combinations / permutations / subsets"</td>
+            <td><strong>Backtracking (DFS)</strong></td>
+            <td>Choose-explore-unchoose generates all possibilities</td>
+          </tr>
+          <tr>
+            <td>"K-th largest / smallest"</td>
+            <td><strong>Heap</strong></td>
+            <td>Heap maintains top-k efficiently in O(n log k)</td>
+          </tr>
+          <tr>
+            <td>"Next greater / smaller element"</td>
+            <td><strong>Monotonic Stack</strong></td>
+            <td>Stack pops when order is violated, connecting elements</td>
+          </tr>
+          <tr>
+            <td>"Tree traversal"</td>
+            <td><strong>DFS (recursion)</strong></td>
+            <td>Trees are naturally recursive structures</td>
+          </tr>
+          <tr>
+            <td>"Graph connectivity / components"</td>
+            <td><strong>Union-Find / DFS</strong></td>
+            <td>Track connected components or detect cycles</td>
+          </tr>
+          <tr>
+            <td>"Optimization" (min cost, max profit)</td>
+            <td><strong>DP / Greedy</strong></td>
+            <td>Overlapping subproblems = DP; provably safe local choice = Greedy</td>
+          </tr>
+          <tr>
+            <td>"In-place" modification</td>
+            <td><strong>Two Pointers</strong></td>
+            <td>Read/write pointers partition the array without extra space</td>
+          </tr>
+          <tr>
+            <td>"Intervals" (merge, insert, schedule)</td>
+            <td><strong>Sort + Sweep</strong></td>
+            <td>Sort by start, process left to right</td>
+          </tr>
+          <tr>
+            <td>"Frequency" or "count occurrences"</td>
+            <td><strong>Hash Map</strong></td>
+            <td>O(1) lookups make counting fast</td>
+          </tr>
+          <tr>
+            <td>"Linked list cycle" or "middle element"</td>
+            <td><strong>Fast &amp; Slow Pointers</strong></td>
+            <td>Tortoise and hare detect cycles and find midpoints</td>
+          </tr>
+          <tr>
+            <td>"Level by level" (tree)</td>
+            <td><strong>BFS</strong></td>
+            <td>Queue processes one level at a time</td>
+          </tr>
+          <tr>
+            <td>"Top K frequent"</td>
+            <td><strong>Heap / Bucket Sort</strong></td>
+            <td>Heap for O(n log k), bucket sort for O(n)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <div class="label">Important</div>
+        <p>These are starting points, not guarantees. Some problems combine multiple patterns (e.g., binary search + greedy, sliding window + hash map). The clue tells you where to start; the details tell you how to adapt.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12. PRACTICE QUIZ -->
+    <!-- ============================================================ -->
+    <section id="quiz">
+      <h2>12. Practice Quiz</h2>
+      <p>Given each problem description, identify which algorithm pattern you would use. Think about the clues before clicking an answer.</p>
+
+      <div class="quiz">
+
+        <!-- Q1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: Given a sorted array, find two numbers that add up to a target value.</h4>
+          <button onclick="checkAnswer('q1', this, false)">A) Sliding Window</button>
+          <button onclick="checkAnswer('q1', this, true)">B) Two Pointers (Converging)</button>
+          <button onclick="checkAnswer('q1', this, false)">C) Binary Search on Answer</button>
+          <button onclick="checkAnswer('q1', this, false)">D) BFS</button>
+          <div class="explanation">Correct: <strong>Two Pointers (Converging)</strong>. The array is sorted, so place one pointer at the start and one at the end. If the sum is too small, move left forward. If too large, move right backward. This is the classic Two Sum II pattern.</div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: Find the longest substring of a string that contains at most 2 distinct characters.</h4>
+          <button onclick="checkAnswer('q2', this, false)">A) Two Pointers</button>
+          <button onclick="checkAnswer('q2', this, false)">B) Prefix Sum</button>
+          <button onclick="checkAnswer('q2', this, true)">C) Sliding Window (Variable Size)</button>
+          <button onclick="checkAnswer('q2', this, false)">D) Backtracking</button>
+          <div class="explanation">Correct: <strong>Sliding Window (Variable Size)</strong>. "Longest substring" with a condition on contiguous characters is the textbook signal for a variable-size sliding window. Expand right, shrink left when more than 2 distinct characters are in the window.</div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: In a grid of 0s and 1s, find the shortest path from the top-left corner to the bottom-right corner, moving only through 0s.</h4>
+          <button onclick="checkAnswer('q3', this, true)">A) BFS</button>
+          <button onclick="checkAnswer('q3', this, false)">B) DFS</button>
+          <button onclick="checkAnswer('q3', this, false)">C) Dynamic Programming</button>
+          <button onclick="checkAnswer('q3', this, false)">D) Greedy</button>
+          <div class="explanation">Correct: <strong>BFS</strong>. "Shortest path" in an unweighted grid is the classic signal for BFS. BFS explores all cells at distance d before distance d+1, guaranteeing the first time you reach the destination is the shortest path.</div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: Given an array, for each element find the next element to the right that is larger than it.</h4>
+          <button onclick="checkAnswer('q4', this, false)">A) Two Pointers</button>
+          <button onclick="checkAnswer('q4', this, false)">B) Binary Search</button>
+          <button onclick="checkAnswer('q4', this, false)">C) Sliding Window</button>
+          <button onclick="checkAnswer('q4', this, true)">D) Monotonic Stack</button>
+          <div class="explanation">Correct: <strong>Monotonic Stack</strong>. "Next greater element" is the signature problem for a monotonic decreasing stack. As you scan left to right, pop elements from the stack when you find something larger -- the popped element's next greater is the current element.</div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: Generate all possible subsets of a given set of unique numbers.</h4>
+          <button onclick="checkAnswer('q5', this, false)">A) Sliding Window</button>
+          <button onclick="checkAnswer('q5', this, false)">B) Greedy</button>
+          <button onclick="checkAnswer('q5', this, false)">C) BFS</button>
+          <button onclick="checkAnswer('q5', this, true)">D) Backtracking (DFS)</button>
+          <div class="explanation">Correct: <strong>Backtracking (DFS)</strong>. "Generate all subsets" requires exploring every possible include/exclude decision. This is textbook backtracking: choose an element, recurse, un-choose, and try the next option. The result is all 2^n subsets.</div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers who want to master data structures and algorithms.</p>
+    <p>No ads, no tracking, no paywalls -- just DSA.</p>
+  </footer>
+
+  <script>
+    function checkAnswer(questionId, btn, isCorrect) {
+      const question = document.getElementById(questionId);
+      // If already answered, do nothing
+      if (question.dataset.answered) return;
+      question.dataset.answered = 'true';
+
+      // Disable all buttons and mark the clicked one
+      const buttons = question.querySelectorAll('button');
+      buttons.forEach(b => {
+        b.style.pointerEvents = 'none';
+      });
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        // Also highlight the correct answer
+        buttons.forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      // Show explanation
+      const explanation = question.querySelector('.explanation');
+      explanation.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

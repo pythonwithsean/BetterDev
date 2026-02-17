@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The PythonWithSean 650 - LeetCode Problem List - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="leetcode-650.html" class="active">650 Problems</a>
+    <a href="cpp.html">C++</a>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / The PythonWithSean 650</div>
+      <h1>The PythonWithSean 650</h1>
+      <p>650 curated LeetCode problems organized by topic, from Easy to Hard. Complete this list and you will be ready for any technical interview or competitive programming contest.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">How To Use This List</div>
+      <ul>
+        <li><strong>Go in order by topic.</strong> Complete one topic before moving to the next.</li>
+        <li><strong>Within each topic, do Easy first, then Medium, then Hard.</strong></li>
+        <li><strong>Time yourself:</strong> 15-20 min for Easy, 25-35 min for Medium, 40-50 min for Hard.</li>
+        <li><strong>If stuck after the time limit,</strong> read the editorial, understand it, then redo the problem the next day without looking.</li>
+        <li><strong>Track your progress.</strong> Print this page or keep a spreadsheet. Mark each problem as you complete it.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h4>Topics (650 Problems)</h4>
+      <a href="#arrays">1. Arrays &amp; Hashing (48)</a>
+      <a href="#two-pointers">2. Two Pointers (25)</a>
+      <a href="#sliding-window">3. Sliding Window (22)</a>
+      <a href="#stack">4. Stack (28)</a>
+      <a href="#binary-search">5. Binary Search (28)</a>
+      <a href="#linked-list">6. Linked List (24)</a>
+      <a href="#trees">7. Trees (42)</a>
+      <a href="#tries">8. Tries (10)</a>
+      <a href="#heap">9. Heap / Priority Queue (22)</a>
+      <a href="#backtracking">10. Backtracking (22)</a>
+      <a href="#graphs">11. Graphs (38)</a>
+      <a href="#dp1d">12. 1D Dynamic Programming (38)</a>
+      <a href="#dp2d">13. 2D Dynamic Programming (22)</a>
+      <a href="#greedy">14. Greedy (28)</a>
+      <a href="#intervals">15. Intervals (14)</a>
+      <a href="#math">16. Math &amp; Geometry (28)</a>
+      <a href="#bit">17. Bit Manipulation (18)</a>
+      <a href="#union-find">18. Union Find (12)</a>
+      <a href="#design">19. Design (14)</a>
+      <a href="#string">20. String (30)</a>
+      <a href="#sorting">21. Sorting (15)</a>
+      <a href="#prefix-sum">22. Prefix Sum (14)</a>
+      <a href="#matrix">23. Matrix (15)</a>
+      <a href="#recursion">24. Recursion (12)</a>
+      <a href="#mixed">25. Mixed Hard Problems (81)</a>
+    </div>
+
+    <!-- ======== TOPIC 1: ARRAYS & HASHING ======== -->
+    <section id="arrays">
+      <h2>1. Arrays &amp; Hashing (48)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>1</td><td><a href="https://leetcode.com/problems/two-sum/">Two Sum</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>2</td><td><a href="https://leetcode.com/problems/contains-duplicate/">Contains Duplicate</a></td><td>Easy</td><td>Hash Set</td></tr>
+        <tr><td>3</td><td><a href="https://leetcode.com/problems/valid-anagram/">Valid Anagram</a></td><td>Easy</td><td>Frequency Count</td></tr>
+        <tr><td>4</td><td><a href="https://leetcode.com/problems/concatenation-of-array/">Concatenation of Array</a></td><td>Easy</td><td>Array Basics</td></tr>
+        <tr><td>5</td><td><a href="https://leetcode.com/problems/replace-elements-with-greatest-element-on-right-side/">Replace Elements with Greatest on Right</a></td><td>Easy</td><td>Right to Left</td></tr>
+        <tr><td>6</td><td><a href="https://leetcode.com/problems/is-subsequence/">Is Subsequence</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>7</td><td><a href="https://leetcode.com/problems/length-of-last-word/">Length of Last Word</a></td><td>Easy</td><td>String</td></tr>
+        <tr><td>8</td><td><a href="https://leetcode.com/problems/longest-common-prefix/">Longest Common Prefix</a></td><td>Easy</td><td>String</td></tr>
+        <tr><td>9</td><td><a href="https://leetcode.com/problems/pascals-triangle/">Pascal's Triangle</a></td><td>Easy</td><td>Simulation</td></tr>
+        <tr><td>10</td><td><a href="https://leetcode.com/problems/remove-element/">Remove Element</a></td><td>Easy</td><td>In-Place</td></tr>
+        <tr><td>11</td><td><a href="https://leetcode.com/problems/majority-element/">Majority Element</a></td><td>Easy</td><td>Boyer-Moore</td></tr>
+        <tr><td>12</td><td><a href="https://leetcode.com/problems/roman-to-integer/">Roman to Integer</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>13</td><td><a href="https://leetcode.com/problems/missing-number/">Missing Number</a></td><td>Easy</td><td>Math / XOR</td></tr>
+        <tr><td>14</td><td><a href="https://leetcode.com/problems/next-greater-element-i/">Next Greater Element I</a></td><td>Easy</td><td>Stack + Map</td></tr>
+        <tr><td>15</td><td><a href="https://leetcode.com/problems/unique-email-addresses/">Unique Email Addresses</a></td><td>Easy</td><td>String + Set</td></tr>
+        <tr><td>16</td><td><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/">Remove Duplicates from Sorted Array</a></td><td>Easy</td><td>In-Place</td></tr>
+        <tr><td>17</td><td><a href="https://leetcode.com/problems/range-sum-query-immutable/">Range Sum Query - Immutable</a></td><td>Easy</td><td>Prefix Sum</td></tr>
+        <tr><td>18</td><td><a href="https://leetcode.com/problems/group-anagrams/">Group Anagrams</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>19</td><td><a href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent Elements</a></td><td>Medium</td><td>Bucket Sort</td></tr>
+        <tr><td>20</td><td><a href="https://leetcode.com/problems/product-of-array-except-self/">Product of Array Except Self</a></td><td>Medium</td><td>Prefix/Suffix</td></tr>
+        <tr><td>21</td><td><a href="https://leetcode.com/problems/valid-sudoku/">Valid Sudoku</a></td><td>Medium</td><td>Hash Set</td></tr>
+        <tr><td>22</td><td><a href="https://leetcode.com/problems/encode-and-decode-strings/">Encode and Decode Strings</a></td><td>Medium</td><td>Design</td></tr>
+        <tr><td>23</td><td><a href="https://leetcode.com/problems/longest-consecutive-sequence/">Longest Consecutive Sequence</a></td><td>Medium</td><td>Hash Set</td></tr>
+        <tr><td>24</td><td><a href="https://leetcode.com/problems/sort-colors/">Sort Colors</a></td><td>Medium</td><td>Dutch Flag</td></tr>
+        <tr><td>25</td><td><a href="https://leetcode.com/problems/subarray-sum-equals-k/">Subarray Sum Equals K</a></td><td>Medium</td><td>Prefix Sum + Map</td></tr>
+        <tr><td>26</td><td><a href="https://leetcode.com/problems/find-all-anagrams-in-a-string/">Find All Anagrams in a String</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>27</td><td><a href="https://leetcode.com/problems/determine-if-two-strings-are-close/">Determine if Two Strings Are Close</a></td><td>Medium</td><td>Frequency</td></tr>
+        <tr><td>28</td><td><a href="https://leetcode.com/problems/custom-sort-string/">Custom Sort String</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>29</td><td><a href="https://leetcode.com/problems/hand-of-straights/">Hand of Straights</a></td><td>Medium</td><td>Greedy + Map</td></tr>
+        <tr><td>30</td><td><a href="https://leetcode.com/problems/insert-delete-getrandom-o1/">Insert Delete GetRandom O(1)</a></td><td>Medium</td><td>Hash Map + Array</td></tr>
+        <tr><td>31</td><td><a href="https://leetcode.com/problems/repeated-dna-sequences/">Repeated DNA Sequences</a></td><td>Medium</td><td>Hash Set</td></tr>
+        <tr><td>32</td><td><a href="https://leetcode.com/problems/integer-to-roman/">Integer to Roman</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>33</td><td><a href="https://leetcode.com/problems/rotate-array/">Rotate Array</a></td><td>Medium</td><td>Reverse Trick</td></tr>
+        <tr><td>34</td><td><a href="https://leetcode.com/problems/brick-wall/">Brick Wall</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>35</td><td><a href="https://leetcode.com/problems/push-dominoes/">Push Dominoes</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>36</td><td><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/">Remove Duplicates from Sorted Array II</a></td><td>Medium</td><td>In-Place</td></tr>
+        <tr><td>37</td><td><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/">Best Time to Buy and Sell Stock II</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>38</td><td><a href="https://leetcode.com/problems/spiral-matrix/">Spiral Matrix</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>39</td><td><a href="https://leetcode.com/problems/set-matrix-zeroes/">Set Matrix Zeroes</a></td><td>Medium</td><td>In-Place</td></tr>
+        <tr><td>40</td><td><a href="https://leetcode.com/problems/game-of-life/">Game of Life</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>41</td><td><a href="https://leetcode.com/problems/h-index/">H-Index</a></td><td>Medium</td><td>Sorting / Counting</td></tr>
+        <tr><td>42</td><td><a href="https://leetcode.com/problems/range-sum-query-2d-immutable/">Range Sum Query 2D</a></td><td>Medium</td><td>Prefix Sum 2D</td></tr>
+        <tr><td>43</td><td><a href="https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/">Min Swaps for Balanced String</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>44</td><td><a href="https://leetcode.com/problems/spiral-matrix-ii/">Spiral Matrix II</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>45</td><td><a href="https://leetcode.com/problems/contiguous-array/">Contiguous Array</a></td><td>Medium</td><td>Prefix Sum + Map</td></tr>
+        <tr><td>46</td><td><a href="https://leetcode.com/problems/first-missing-positive/">First Missing Positive</a></td><td>Hard</td><td>Index as Hash</td></tr>
+        <tr><td>47</td><td><a href="https://leetcode.com/problems/naming-a-company/">Naming a Company</a></td><td>Hard</td><td>Hash Set</td></tr>
+        <tr><td>48</td><td><a href="https://leetcode.com/problems/text-justification/">Text Justification</a></td><td>Hard</td><td>Simulation</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 2: TWO POINTERS ======== -->
+    <section id="two-pointers">
+      <h2>2. Two Pointers (25)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>49</td><td><a href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>50</td><td><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">Two Sum II</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>51</td><td><a href="https://leetcode.com/problems/3sum/">3Sum</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>52</td><td><a href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>53</td><td><a href="https://leetcode.com/problems/move-zeroes/">Move Zeroes</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>54</td><td><a href="https://leetcode.com/problems/merge-sorted-array/">Merge Sorted Array</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>55</td><td><a href="https://leetcode.com/problems/reverse-string/">Reverse String</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>56</td><td><a href="https://leetcode.com/problems/squares-of-a-sorted-array/">Squares of a Sorted Array</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>57</td><td><a href="https://leetcode.com/problems/assign-cookies/">Assign Cookies</a></td><td>Easy</td><td>Greedy + Sort</td></tr>
+        <tr><td>58</td><td><a href="https://leetcode.com/problems/backspace-string-compare/">Backspace String Compare</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>59</td><td><a href="https://leetcode.com/problems/intersection-of-two-arrays-ii/">Intersection of Two Arrays II</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>60</td><td><a href="https://leetcode.com/problems/3sum-closest/">3Sum Closest</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>61</td><td><a href="https://leetcode.com/problems/boats-to-save-people/">Boats to Save People</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>62</td><td><a href="https://leetcode.com/problems/partition-labels/">Partition Labels</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>63</td><td><a href="https://leetcode.com/problems/4sum/">4Sum</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>64</td><td><a href="https://leetcode.com/problems/sort-array-by-parity/">Sort Array By Parity</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>65</td><td><a href="https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/">Longest Word in Dict by Deleting</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>66</td><td><a href="https://leetcode.com/problems/minimum-difference-between-highest-and-lowest-of-k-scores/">Min Diff Between K Scores</a></td><td>Easy</td><td>Sort + Window</td></tr>
+        <tr><td>67</td><td><a href="https://leetcode.com/problems/two-sum-iv-input-is-a-bst/">Two Sum IV - BST</a></td><td>Easy</td><td>BST + Set</td></tr>
+        <tr><td>68</td><td><a href="https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/">Subsequences with Sum Condition</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>69</td><td><a href="https://leetcode.com/problems/bag-of-tokens/">Bag of Tokens</a></td><td>Medium</td><td>Sort + Two Ptr</td></tr>
+        <tr><td>70</td><td><a href="https://leetcode.com/problems/string-compression/">String Compression</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>71</td><td><a href="https://leetcode.com/problems/4sum-ii/">4Sum II</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>72</td><td><a href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></td><td>Hard</td><td>Two Pointers</td></tr>
+        <tr><td>73</td><td><a href="https://leetcode.com/problems/shortest-unsorted-continuous-subarray/">Shortest Unsorted Subarray</a></td><td>Medium</td><td>Two Pointers</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 3: SLIDING WINDOW ======== -->
+    <section id="sliding-window">
+      <h2>3. Sliding Window (22)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>74</td><td><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/">Best Time to Buy and Sell Stock</a></td><td>Easy</td><td>Sliding Window</td></tr>
+        <tr><td>75</td><td><a href="https://leetcode.com/problems/contains-duplicate-ii/">Contains Duplicate II</a></td><td>Easy</td><td>Hash Set Window</td></tr>
+        <tr><td>76</td><td><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">Longest Substring Without Repeating Chars</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>77</td><td><a href="https://leetcode.com/problems/longest-repeating-character-replacement/">Longest Repeating Char Replacement</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>78</td><td><a href="https://leetcode.com/problems/permutation-in-string/">Permutation in String</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>79</td><td><a href="https://leetcode.com/problems/minimum-size-subarray-sum/">Minimum Size Subarray Sum</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>80</td><td><a href="https://leetcode.com/problems/fruit-into-baskets/">Fruit Into Baskets</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>81</td><td><a href="https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-size/">Max Vowels in Substring</a></td><td>Medium</td><td>Fixed Window</td></tr>
+        <tr><td>82</td><td><a href="https://leetcode.com/problems/grumpy-bookstore-owner/">Grumpy Bookstore Owner</a></td><td>Medium</td><td>Fixed Window</td></tr>
+        <tr><td>83</td><td><a href="https://leetcode.com/problems/max-consecutive-ones-iii/">Max Consecutive Ones III</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>84</td><td><a href="https://leetcode.com/problems/get-equal-substrings-within-budget/">Equal Substrings Within Budget</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>85</td><td><a href="https://leetcode.com/problems/count-number-of-nice-subarrays/">Count Nice Subarrays</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>86</td><td><a href="https://leetcode.com/problems/binary-subarrays-with-sum/">Binary Subarrays With Sum</a></td><td>Medium</td><td>Prefix Sum / Window</td></tr>
+        <tr><td>87</td><td><a href="https://leetcode.com/problems/frequency-of-the-most-frequent-element/">Frequency of Most Frequent Element</a></td><td>Medium</td><td>Sort + Window</td></tr>
+        <tr><td>88</td><td><a href="https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/">Max Points from Cards</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>89</td><td><a href="https://leetcode.com/problems/maximum-erasure-value/">Maximum Erasure Value</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>90</td><td><a href="https://leetcode.com/problems/minimum-number-of-flips-to-make-the-binary-string-alternating/">Min Flips for Alternating String</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>91</td><td><a href="https://leetcode.com/problems/minimum-window-substring/">Minimum Window Substring</a></td><td>Hard</td><td>Sliding Window</td></tr>
+        <tr><td>92</td><td><a href="https://leetcode.com/problems/sliding-window-maximum/">Sliding Window Maximum</a></td><td>Hard</td><td>Monotonic Deque</td></tr>
+        <tr><td>93</td><td><a href="https://leetcode.com/problems/substring-with-concatenation-of-all-words/">Substring with Concat of All Words</a></td><td>Hard</td><td>Sliding Window</td></tr>
+        <tr><td>94</td><td><a href="https://leetcode.com/problems/subarrays-with-k-different-integers/">Subarrays with K Different Integers</a></td><td>Hard</td><td>Sliding Window</td></tr>
+        <tr><td>95</td><td><a href="https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/">Count Subarrays Max Appears K Times</a></td><td>Medium</td><td>Sliding Window</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 4: STACK ======== -->
+    <section id="stack">
+      <h2>4. Stack (28)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>96</td><td><a href="https://leetcode.com/problems/valid-parentheses/">Valid Parentheses</a></td><td>Easy</td><td>Stack</td></tr>
+        <tr><td>97</td><td><a href="https://leetcode.com/problems/implement-queue-using-stacks/">Implement Queue using Stacks</a></td><td>Easy</td><td>Stack</td></tr>
+        <tr><td>98</td><td><a href="https://leetcode.com/problems/implement-stack-using-queues/">Implement Stack using Queues</a></td><td>Easy</td><td>Queue</td></tr>
+        <tr><td>99</td><td><a href="https://leetcode.com/problems/baseball-game/">Baseball Game</a></td><td>Easy</td><td>Stack</td></tr>
+        <tr><td>100</td><td><a href="https://leetcode.com/problems/min-stack/">Min Stack</a></td><td>Medium</td><td>Stack Design</td></tr>
+        <tr><td>101</td><td><a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/">Evaluate Reverse Polish Notation</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>102</td><td><a href="https://leetcode.com/problems/daily-temperatures/">Daily Temperatures</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>103</td><td><a href="https://leetcode.com/problems/car-fleet/">Car Fleet</a></td><td>Medium</td><td>Stack + Sort</td></tr>
+        <tr><td>104</td><td><a href="https://leetcode.com/problems/asteroid-collision/">Asteroid Collision</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>105</td><td><a href="https://leetcode.com/problems/decode-string/">Decode String</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>106</td><td><a href="https://leetcode.com/problems/removing-stars-from-a-string/">Removing Stars From a String</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>107</td><td><a href="https://leetcode.com/problems/online-stock-span/">Online Stock Span</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>108</td><td><a href="https://leetcode.com/problems/132-pattern/">132 Pattern</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>109</td><td><a href="https://leetcode.com/problems/simplify-path/">Simplify Path</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>110</td><td><a href="https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/">Remove Adjacent Duplicates II</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>111</td><td><a href="https://leetcode.com/problems/remove-k-digits/">Remove K Digits</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>112</td><td><a href="https://leetcode.com/problems/validate-stack-sequences/">Validate Stack Sequences</a></td><td>Medium</td><td>Stack Simulation</td></tr>
+        <tr><td>113</td><td><a href="https://leetcode.com/problems/flatten-nested-list-iterator/">Flatten Nested List Iterator</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>114</td><td><a href="https://leetcode.com/problems/basic-calculator-ii/">Basic Calculator II</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>115</td><td><a href="https://leetcode.com/problems/next-greater-element-ii/">Next Greater Element II</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>116</td><td><a href="https://leetcode.com/problems/sum-of-subarray-minimums/">Sum of Subarray Minimums</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>117</td><td><a href="https://leetcode.com/problems/sum-of-subarray-ranges/">Sum of Subarray Ranges</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>118</td><td><a href="https://leetcode.com/problems/largest-rectangle-in-histogram/">Largest Rectangle in Histogram</a></td><td>Hard</td><td>Monotonic Stack</td></tr>
+        <tr><td>119</td><td><a href="https://leetcode.com/problems/maximal-rectangle/">Maximal Rectangle</a></td><td>Hard</td><td>Stack + DP</td></tr>
+        <tr><td>120</td><td><a href="https://leetcode.com/problems/basic-calculator/">Basic Calculator</a></td><td>Hard</td><td>Stack + Recursion</td></tr>
+        <tr><td>121</td><td><a href="https://leetcode.com/problems/longest-valid-parentheses/">Longest Valid Parentheses</a></td><td>Hard</td><td>Stack / DP</td></tr>
+        <tr><td>122</td><td><a href="https://leetcode.com/problems/maximum-frequency-stack/">Maximum Frequency Stack</a></td><td>Hard</td><td>Stack + Map</td></tr>
+        <tr><td>123</td><td><a href="https://leetcode.com/problems/number-of-visible-people-in-a-queue/">Visible People in Queue</a></td><td>Hard</td><td>Monotonic Stack</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 5: BINARY SEARCH ======== -->
+    <section id="binary-search">
+      <h2>5. Binary Search (28)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>124</td><td><a href="https://leetcode.com/problems/binary-search/">Binary Search</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>125</td><td><a href="https://leetcode.com/problems/search-insert-position/">Search Insert Position</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>126</td><td><a href="https://leetcode.com/problems/guess-number-higher-or-lower/">Guess Number Higher or Lower</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>127</td><td><a href="https://leetcode.com/problems/first-bad-version/">First Bad Version</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>128</td><td><a href="https://leetcode.com/problems/valid-perfect-square/">Valid Perfect Square</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>129</td><td><a href="https://leetcode.com/problems/sqrtx/">Sqrt(x)</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>130</td><td><a href="https://leetcode.com/problems/arranging-coins/">Arranging Coins</a></td><td>Easy</td><td>Binary Search</td></tr>
+        <tr><td>131</td><td><a href="https://leetcode.com/problems/search-a-2d-matrix/">Search a 2D Matrix</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>132</td><td><a href="https://leetcode.com/problems/koko-eating-bananas/">Koko Eating Bananas</a></td><td>Medium</td><td>BS on Answer</td></tr>
+        <tr><td>133</td><td><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">Find Min in Rotated Sorted Array</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>134</td><td><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">Search in Rotated Sorted Array</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>135</td><td><a href="https://leetcode.com/problems/time-based-key-value-store/">Time Based Key-Value Store</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>136</td><td><a href="https://leetcode.com/problems/find-peak-element/">Find Peak Element</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>137</td><td><a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/">First and Last Position</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>138</td><td><a href="https://leetcode.com/problems/search-a-2d-matrix-ii/">Search a 2D Matrix II</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>139</td><td><a href="https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/">Ship Packages in D Days</a></td><td>Medium</td><td>BS on Answer</td></tr>
+        <tr><td>140</td><td><a href="https://leetcode.com/problems/single-element-in-a-sorted-array/">Single Element in Sorted Array</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>141</td><td><a href="https://leetcode.com/problems/successful-pairs-of-spells-and-potions/">Spells and Potions</a></td><td>Medium</td><td>Sort + BS</td></tr>
+        <tr><td>142</td><td><a href="https://leetcode.com/problems/magnetic-force-between-two-balls/">Magnetic Force Between Balls</a></td><td>Medium</td><td>BS on Answer</td></tr>
+        <tr><td>143</td><td><a href="https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/">Min Days for m Bouquets</a></td><td>Medium</td><td>BS on Answer</td></tr>
+        <tr><td>144</td><td><a href="https://leetcode.com/problems/peak-index-in-a-mountain-array/">Peak Index in Mountain Array</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>145</td><td><a href="https://leetcode.com/problems/search-in-rotated-sorted-array-ii/">Search in Rotated Array II</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>146</td><td><a href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/">Kth Smallest in Sorted Matrix</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>147</td><td><a href="https://leetcode.com/problems/median-of-two-sorted-arrays/">Median of Two Sorted Arrays</a></td><td>Hard</td><td>Binary Search</td></tr>
+        <tr><td>148</td><td><a href="https://leetcode.com/problems/split-array-largest-sum/">Split Array Largest Sum</a></td><td>Hard</td><td>BS on Answer</td></tr>
+        <tr><td>149</td><td><a href="https://leetcode.com/problems/find-in-mountain-array/">Find in Mountain Array</a></td><td>Hard</td><td>Binary Search</td></tr>
+        <tr><td>150</td><td><a href="https://leetcode.com/problems/count-of-smaller-numbers-after-self/">Count Smaller After Self</a></td><td>Hard</td><td>Merge Sort / BIT</td></tr>
+        <tr><td>151</td><td><a href="https://leetcode.com/problems/count-of-range-sum/">Count of Range Sum</a></td><td>Hard</td><td>Merge Sort / BS</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 6: LINKED LIST ======== -->
+    <section id="linked-list">
+      <h2>6. Linked List (24)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>152</td><td><a href="https://leetcode.com/problems/reverse-linked-list/">Reverse Linked List</a></td><td>Easy</td><td>Reversal</td></tr>
+        <tr><td>153</td><td><a href="https://leetcode.com/problems/merge-two-sorted-lists/">Merge Two Sorted Lists</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>154</td><td><a href="https://leetcode.com/problems/linked-list-cycle/">Linked List Cycle</a></td><td>Easy</td><td>Fast/Slow</td></tr>
+        <tr><td>155</td><td><a href="https://leetcode.com/problems/palindrome-linked-list/">Palindrome Linked List</a></td><td>Easy</td><td>Fast/Slow + Reverse</td></tr>
+        <tr><td>156</td><td><a href="https://leetcode.com/problems/remove-linked-list-elements/">Remove Linked List Elements</a></td><td>Easy</td><td>Dummy Node</td></tr>
+        <tr><td>157</td><td><a href="https://leetcode.com/problems/intersection-of-two-linked-lists/">Intersection of Two Lists</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>158</td><td><a href="https://leetcode.com/problems/middle-of-the-linked-list/">Middle of the Linked List</a></td><td>Easy</td><td>Fast/Slow</td></tr>
+        <tr><td>159</td><td><a href="https://leetcode.com/problems/reorder-list/">Reorder List</a></td><td>Medium</td><td>Fast/Slow + Reverse</td></tr>
+        <tr><td>160</td><td><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">Remove Nth Node From End</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>161</td><td><a href="https://leetcode.com/problems/add-two-numbers/">Add Two Numbers</a></td><td>Medium</td><td>Math + LL</td></tr>
+        <tr><td>162</td><td><a href="https://leetcode.com/problems/copy-list-with-random-pointer/">Copy List with Random Pointer</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>163</td><td><a href="https://leetcode.com/problems/lru-cache/">LRU Cache</a></td><td>Medium</td><td>DLL + Hash Map</td></tr>
+        <tr><td>164</td><td><a href="https://leetcode.com/problems/swap-nodes-in-pairs/">Swap Nodes in Pairs</a></td><td>Medium</td><td>Pointer Manipulation</td></tr>
+        <tr><td>165</td><td><a href="https://leetcode.com/problems/sort-list/">Sort List</a></td><td>Medium</td><td>Merge Sort</td></tr>
+        <tr><td>166</td><td><a href="https://leetcode.com/problems/partition-list/">Partition List</a></td><td>Medium</td><td>Two Lists</td></tr>
+        <tr><td>167</td><td><a href="https://leetcode.com/problems/linked-list-cycle-ii/">Linked List Cycle II</a></td><td>Medium</td><td>Fast/Slow</td></tr>
+        <tr><td>168</td><td><a href="https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/">Delete Middle Node</a></td><td>Medium</td><td>Fast/Slow</td></tr>
+        <tr><td>169</td><td><a href="https://leetcode.com/problems/odd-even-linked-list/">Odd Even Linked List</a></td><td>Medium</td><td>Pointer Manipulation</td></tr>
+        <tr><td>170</td><td><a href="https://leetcode.com/problems/add-two-numbers-ii/">Add Two Numbers II</a></td><td>Medium</td><td>Stack + LL</td></tr>
+        <tr><td>171</td><td><a href="https://leetcode.com/problems/rotate-list/">Rotate List</a></td><td>Medium</td><td>Cycle + Count</td></tr>
+        <tr><td>172</td><td><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/">Remove Duplicates II</a></td><td>Medium</td><td>Dummy Node</td></tr>
+        <tr><td>173</td><td><a href="https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/">Flatten Multilevel DLL</a></td><td>Medium</td><td>DFS / Stack</td></tr>
+        <tr><td>174</td><td><a href="https://leetcode.com/problems/merge-k-sorted-lists/">Merge k Sorted Lists</a></td><td>Hard</td><td>Heap / Divide &amp; Conquer</td></tr>
+        <tr><td>175</td><td><a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">Reverse Nodes in k-Group</a></td><td>Hard</td><td>Reversal</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 7: TREES ======== -->
+    <section id="trees">
+      <h2>7. Trees (42)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>176</td><td><a href="https://leetcode.com/problems/invert-binary-tree/">Invert Binary Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>177</td><td><a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/">Maximum Depth of Binary Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>178</td><td><a href="https://leetcode.com/problems/same-tree/">Same Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>179</td><td><a href="https://leetcode.com/problems/subtree-of-another-tree/">Subtree of Another Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>180</td><td><a href="https://leetcode.com/problems/diameter-of-binary-tree/">Diameter of Binary Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>181</td><td><a href="https://leetcode.com/problems/balanced-binary-tree/">Balanced Binary Tree</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>182</td><td><a href="https://leetcode.com/problems/path-sum/">Path Sum</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>183</td><td><a href="https://leetcode.com/problems/symmetric-tree/">Symmetric Tree</a></td><td>Easy</td><td>DFS / BFS</td></tr>
+        <tr><td>184</td><td><a href="https://leetcode.com/problems/minimum-depth-of-binary-tree/">Minimum Depth of Binary Tree</a></td><td>Easy</td><td>BFS</td></tr>
+        <tr><td>185</td><td><a href="https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/">Sorted Array to BST</a></td><td>Easy</td><td>Divide &amp; Conquer</td></tr>
+        <tr><td>186</td><td><a href="https://leetcode.com/problems/binary-tree-inorder-traversal/">Binary Tree Inorder Traversal</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>187</td><td><a href="https://leetcode.com/problems/binary-tree-preorder-traversal/">Binary Tree Preorder Traversal</a></td><td>Easy</td><td>DFS</td></tr>
+        <tr><td>188</td><td><a href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/">Count Good Nodes</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>189</td><td><a href="https://leetcode.com/problems/binary-tree-level-order-traversal/">Level Order Traversal</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>190</td><td><a href="https://leetcode.com/problems/binary-tree-right-side-view/">Right Side View</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>191</td><td><a href="https://leetcode.com/problems/validate-binary-search-tree/">Validate BST</a></td><td>Medium</td><td>DFS + Bounds</td></tr>
+        <tr><td>192</td><td><a href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/">Kth Smallest in BST</a></td><td>Medium</td><td>Inorder</td></tr>
+        <tr><td>193</td><td><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">Build Tree from Preorder + Inorder</a></td><td>Medium</td><td>Divide &amp; Conquer</td></tr>
+        <tr><td>194</td><td><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/">LCA of Binary Tree</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>195</td><td><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/">LCA of BST</a></td><td>Medium</td><td>BST Property</td></tr>
+        <tr><td>196</td><td><a href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/">Zigzag Level Order</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>197</td><td><a href="https://leetcode.com/problems/path-sum-ii/">Path Sum II</a></td><td>Medium</td><td>DFS + Backtrack</td></tr>
+        <tr><td>198</td><td><a href="https://leetcode.com/problems/path-sum-iii/">Path Sum III</a></td><td>Medium</td><td>Prefix Sum + DFS</td></tr>
+        <tr><td>199</td><td><a href="https://leetcode.com/problems/sum-root-to-leaf-numbers/">Sum Root to Leaf Numbers</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>200</td><td><a href="https://leetcode.com/problems/binary-search-tree-iterator/">BST Iterator</a></td><td>Medium</td><td>Stack + Inorder</td></tr>
+        <tr><td>201</td><td><a href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node/">Next Right Pointers</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>202</td><td><a href="https://leetcode.com/problems/house-robber-iii/">House Robber III</a></td><td>Medium</td><td>DFS + DP</td></tr>
+        <tr><td>203</td><td><a href="https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/">All Nodes Distance K</a></td><td>Medium</td><td>BFS + Parent Map</td></tr>
+        <tr><td>204</td><td><a href="https://leetcode.com/problems/flatten-binary-tree-to-linked-list/">Flatten Tree to LL</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>205</td><td><a href="https://leetcode.com/problems/maximum-width-of-binary-tree/">Max Width of Binary Tree</a></td><td>Medium</td><td>BFS + Indexing</td></tr>
+        <tr><td>206</td><td><a href="https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/">Time for Tree to Be Infected</a></td><td>Medium</td><td>BFS + Parent Map</td></tr>
+        <tr><td>207</td><td><a href="https://leetcode.com/problems/delete-node-in-a-bst/">Delete Node in BST</a></td><td>Medium</td><td>BST Operations</td></tr>
+        <tr><td>208</td><td><a href="https://leetcode.com/problems/trim-a-binary-search-tree/">Trim a BST</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>209</td><td><a href="https://leetcode.com/problems/unique-binary-search-trees/">Unique BSTs</a></td><td>Medium</td><td>DP (Catalan)</td></tr>
+        <tr><td>210</td><td><a href="https://leetcode.com/problems/count-complete-tree-nodes/">Count Complete Tree Nodes</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>211</td><td><a href="https://leetcode.com/problems/recover-binary-search-tree/">Recover BST</a></td><td>Medium</td><td>Inorder</td></tr>
+        <tr><td>212</td><td><a href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">Build from Inorder + Postorder</a></td><td>Medium</td><td>Divide &amp; Conquer</td></tr>
+        <tr><td>213</td><td><a href="https://leetcode.com/problems/binary-tree-maximum-path-sum/">Binary Tree Max Path Sum</a></td><td>Hard</td><td>DFS</td></tr>
+        <tr><td>214</td><td><a href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/">Serialize and Deserialize Tree</a></td><td>Hard</td><td>BFS / DFS</td></tr>
+        <tr><td>215</td><td><a href="https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/">Vertical Order Traversal</a></td><td>Hard</td><td>BFS + Sort</td></tr>
+        <tr><td>216</td><td><a href="https://leetcode.com/problems/binary-tree-cameras/">Binary Tree Cameras</a></td><td>Hard</td><td>Greedy DFS</td></tr>
+        <tr><td>217</td><td><a href="https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/">Maximum Sum BST</a></td><td>Hard</td><td>DFS</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 8: TRIES ======== -->
+    <section id="tries">
+      <h2>8. Tries (10)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>218</td><td><a href="https://leetcode.com/problems/implement-trie-prefix-tree/">Implement Trie</a></td><td>Medium</td><td>Trie</td></tr>
+        <tr><td>219</td><td><a href="https://leetcode.com/problems/design-add-and-search-words-data-structure/">Add and Search Words</a></td><td>Medium</td><td>Trie + DFS</td></tr>
+        <tr><td>220</td><td><a href="https://leetcode.com/problems/replace-words/">Replace Words</a></td><td>Medium</td><td>Trie</td></tr>
+        <tr><td>221</td><td><a href="https://leetcode.com/problems/map-sum-pairs/">Map Sum Pairs</a></td><td>Medium</td><td>Trie</td></tr>
+        <tr><td>222</td><td><a href="https://leetcode.com/problems/longest-word-in-dictionary/">Longest Word in Dictionary</a></td><td>Medium</td><td>Trie + DFS</td></tr>
+        <tr><td>223</td><td><a href="https://leetcode.com/problems/search-suggestions-system/">Search Suggestions System</a></td><td>Medium</td><td>Trie + Sort</td></tr>
+        <tr><td>224</td><td><a href="https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/">Max XOR of Two Numbers</a></td><td>Medium</td><td>Bitwise Trie</td></tr>
+        <tr><td>225</td><td><a href="https://leetcode.com/problems/word-search-ii/">Word Search II</a></td><td>Hard</td><td>Trie + Backtrack</td></tr>
+        <tr><td>226</td><td><a href="https://leetcode.com/problems/palindrome-pairs/">Palindrome Pairs</a></td><td>Hard</td><td>Trie</td></tr>
+        <tr><td>227</td><td><a href="https://leetcode.com/problems/stream-of-characters/">Stream of Characters</a></td><td>Hard</td><td>Reverse Trie</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 9: HEAP ======== -->
+    <section id="heap">
+      <h2>9. Heap / Priority Queue (22)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>228</td><td><a href="https://leetcode.com/problems/kth-largest-element-in-a-stream/">Kth Largest in Stream</a></td><td>Easy</td><td>Min Heap</td></tr>
+        <tr><td>229</td><td><a href="https://leetcode.com/problems/last-stone-weight/">Last Stone Weight</a></td><td>Easy</td><td>Max Heap</td></tr>
+        <tr><td>230</td><td><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/">Kth Largest in Array</a></td><td>Medium</td><td>Quickselect / Heap</td></tr>
+        <tr><td>231</td><td><a href="https://leetcode.com/problems/k-closest-points-to-origin/">K Closest Points</a></td><td>Medium</td><td>Heap</td></tr>
+        <tr><td>232</td><td><a href="https://leetcode.com/problems/task-scheduler/">Task Scheduler</a></td><td>Medium</td><td>Heap + Queue</td></tr>
+        <tr><td>233</td><td><a href="https://leetcode.com/problems/design-twitter/">Design Twitter</a></td><td>Medium</td><td>Heap + Design</td></tr>
+        <tr><td>234</td><td><a href="https://leetcode.com/problems/reorganize-string/">Reorganize String</a></td><td>Medium</td><td>Heap</td></tr>
+        <tr><td>235</td><td><a href="https://leetcode.com/problems/find-k-pairs-with-smallest-sums/">K Pairs with Smallest Sums</a></td><td>Medium</td><td>Heap</td></tr>
+        <tr><td>236</td><td><a href="https://leetcode.com/problems/seat-reservation-manager/">Seat Reservation Manager</a></td><td>Medium</td><td>Min Heap</td></tr>
+        <tr><td>237</td><td><a href="https://leetcode.com/problems/smallest-number-in-infinite-set/">Smallest in Infinite Set</a></td><td>Medium</td><td>Heap + Set</td></tr>
+        <tr><td>238</td><td><a href="https://leetcode.com/problems/maximum-subsequence-score/">Max Subsequence Score</a></td><td>Medium</td><td>Sort + Heap</td></tr>
+        <tr><td>239</td><td><a href="https://leetcode.com/problems/total-cost-to-hire-k-workers/">Total Cost to Hire K Workers</a></td><td>Medium</td><td>Two Heaps</td></tr>
+        <tr><td>240</td><td><a href="https://leetcode.com/problems/top-k-frequent-words/">Top K Frequent Words</a></td><td>Medium</td><td>Heap</td></tr>
+        <tr><td>241</td><td><a href="https://leetcode.com/problems/sort-characters-by-frequency/">Sort Chars by Frequency</a></td><td>Medium</td><td>Heap / Bucket</td></tr>
+        <tr><td>242</td><td><a href="https://leetcode.com/problems/ugly-number-ii/">Ugly Number II</a></td><td>Medium</td><td>Heap / DP</td></tr>
+        <tr><td>243</td><td><a href="https://leetcode.com/problems/ipo/">IPO</a></td><td>Hard</td><td>Two Heaps</td></tr>
+        <tr><td>244</td><td><a href="https://leetcode.com/problems/find-median-from-data-stream/">Find Median from Data Stream</a></td><td>Hard</td><td>Two Heaps</td></tr>
+        <tr><td>245</td><td><a href="https://leetcode.com/problems/sliding-window-median/">Sliding Window Median</a></td><td>Hard</td><td>Two Heaps</td></tr>
+        <tr><td>246</td><td><a href="https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/">Smallest Range from K Lists</a></td><td>Hard</td><td>Heap</td></tr>
+        <tr><td>247</td><td><a href="https://leetcode.com/problems/trapping-rain-water-ii/">Trapping Rain Water II</a></td><td>Hard</td><td>Heap + BFS</td></tr>
+        <tr><td>248</td><td><a href="https://leetcode.com/problems/process-tasks-using-servers/">Process Tasks Using Servers</a></td><td>Medium</td><td>Two Heaps</td></tr>
+        <tr><td>249</td><td><a href="https://leetcode.com/problems/super-ugly-number/">Super Ugly Number</a></td><td>Medium</td><td>Heap</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 10: BACKTRACKING ======== -->
+    <section id="backtracking">
+      <h2>10. Backtracking (22)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>250</td><td><a href="https://leetcode.com/problems/subsets/">Subsets</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>251</td><td><a href="https://leetcode.com/problems/combination-sum/">Combination Sum</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>252</td><td><a href="https://leetcode.com/problems/permutations/">Permutations</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>253</td><td><a href="https://leetcode.com/problems/subsets-ii/">Subsets II</a></td><td>Medium</td><td>Backtracking + Skip</td></tr>
+        <tr><td>254</td><td><a href="https://leetcode.com/problems/combination-sum-ii/">Combination Sum II</a></td><td>Medium</td><td>Backtracking + Skip</td></tr>
+        <tr><td>255</td><td><a href="https://leetcode.com/problems/permutations-ii/">Permutations II</a></td><td>Medium</td><td>Backtracking + Skip</td></tr>
+        <tr><td>256</td><td><a href="https://leetcode.com/problems/word-search/">Word Search</a></td><td>Medium</td><td>DFS + Backtrack</td></tr>
+        <tr><td>257</td><td><a href="https://leetcode.com/problems/palindrome-partitioning/">Palindrome Partitioning</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>258</td><td><a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">Letter Combos of Phone Number</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>259</td><td><a href="https://leetcode.com/problems/combinations/">Combinations</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>260</td><td><a href="https://leetcode.com/problems/generate-parentheses/">Generate Parentheses</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>261</td><td><a href="https://leetcode.com/problems/restore-ip-addresses/">Restore IP Addresses</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>262</td><td><a href="https://leetcode.com/problems/find-unique-binary-string/">Find Unique Binary String</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>263</td><td><a href="https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/">Max Concat String Unique Chars</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>264</td><td><a href="https://leetcode.com/problems/partition-to-k-equal-sum-subsets/">Partition to K Equal Subsets</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>265</td><td><a href="https://leetcode.com/problems/matchsticks-to-square/">Matchsticks to Square</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>266</td><td><a href="https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values/">Split String Descending</a></td><td>Medium</td><td>Backtracking</td></tr>
+        <tr><td>267</td><td><a href="https://leetcode.com/problems/n-queens/">N-Queens</a></td><td>Hard</td><td>Backtracking</td></tr>
+        <tr><td>268</td><td><a href="https://leetcode.com/problems/n-queens-ii/">N-Queens II</a></td><td>Hard</td><td>Backtracking</td></tr>
+        <tr><td>269</td><td><a href="https://leetcode.com/problems/sudoku-solver/">Sudoku Solver</a></td><td>Hard</td><td>Backtracking</td></tr>
+        <tr><td>270</td><td><a href="https://leetcode.com/problems/expression-add-operators/">Expression Add Operators</a></td><td>Hard</td><td>Backtracking</td></tr>
+        <tr><td>271</td><td><a href="https://leetcode.com/problems/word-break-ii/">Word Break II</a></td><td>Hard</td><td>Backtracking + Memo</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 11: GRAPHS ======== -->
+    <section id="graphs">
+      <h2>11. Graphs (38)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>272</td><td><a href="https://leetcode.com/problems/number-of-islands/">Number of Islands</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>273</td><td><a href="https://leetcode.com/problems/clone-graph/">Clone Graph</a></td><td>Medium</td><td>DFS + Map</td></tr>
+        <tr><td>274</td><td><a href="https://leetcode.com/problems/max-area-of-island/">Max Area of Island</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>275</td><td><a href="https://leetcode.com/problems/pacific-atlantic-water-flow/">Pacific Atlantic Water Flow</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>276</td><td><a href="https://leetcode.com/problems/surrounded-regions/">Surrounded Regions</a></td><td>Medium</td><td>DFS from Border</td></tr>
+        <tr><td>277</td><td><a href="https://leetcode.com/problems/rotting-oranges/">Rotting Oranges</a></td><td>Medium</td><td>Multi-source BFS</td></tr>
+        <tr><td>278</td><td><a href="https://leetcode.com/problems/course-schedule/">Course Schedule</a></td><td>Medium</td><td>Topological Sort</td></tr>
+        <tr><td>279</td><td><a href="https://leetcode.com/problems/course-schedule-ii/">Course Schedule II</a></td><td>Medium</td><td>Topological Sort</td></tr>
+        <tr><td>280</td><td><a href="https://leetcode.com/problems/redundant-connection/">Redundant Connection</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>281</td><td><a href="https://leetcode.com/problems/accounts-merge/">Accounts Merge</a></td><td>Medium</td><td>Union Find / DFS</td></tr>
+        <tr><td>282</td><td><a href="https://leetcode.com/problems/is-graph-bipartite/">Is Graph Bipartite?</a></td><td>Medium</td><td>BFS / DFS Coloring</td></tr>
+        <tr><td>283</td><td><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">Shortest Path in Binary Matrix</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>284</td><td><a href="https://leetcode.com/problems/open-the-lock/">Open the Lock</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>285</td><td><a href="https://leetcode.com/problems/minimum-height-trees/">Minimum Height Trees</a></td><td>Medium</td><td>Topological (Leaf Trim)</td></tr>
+        <tr><td>286</td><td><a href="https://leetcode.com/problems/cheapest-flights-within-k-stops/">Cheapest Flights K Stops</a></td><td>Medium</td><td>Bellman-Ford / BFS</td></tr>
+        <tr><td>287</td><td><a href="https://leetcode.com/problems/network-delay-time/">Network Delay Time</a></td><td>Medium</td><td>Dijkstra</td></tr>
+        <tr><td>288</td><td><a href="https://leetcode.com/problems/min-cost-to-connect-all-points/">Min Cost Connect Points</a></td><td>Medium</td><td>Prim / Kruskal</td></tr>
+        <tr><td>289</td><td><a href="https://leetcode.com/problems/snakes-and-ladders/">Snakes and Ladders</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>290</td><td><a href="https://leetcode.com/problems/evaluate-division/">Evaluate Division</a></td><td>Medium</td><td>DFS / Union Find</td></tr>
+        <tr><td>291</td><td><a href="https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/">Reorder Routes to City Zero</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>292</td><td><a href="https://leetcode.com/problems/find-eventual-safe-states/">Find Eventual Safe States</a></td><td>Medium</td><td>DFS Cycle Detection</td></tr>
+        <tr><td>293</td><td><a href="https://leetcode.com/problems/shortest-bridge/">Shortest Bridge</a></td><td>Medium</td><td>DFS + BFS</td></tr>
+        <tr><td>294</td><td><a href="https://leetcode.com/problems/detonate-the-maximum-bombs/">Detonate Max Bombs</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>295</td><td><a href="https://leetcode.com/problems/keys-and-rooms/">Keys and Rooms</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>296</td><td><a href="https://leetcode.com/problems/number-of-provinces/">Number of Provinces</a></td><td>Medium</td><td>DFS / Union Find</td></tr>
+        <tr><td>297</td><td><a href="https://leetcode.com/problems/find-the-town-judge/">Find the Town Judge</a></td><td>Easy</td><td>Degree Count</td></tr>
+        <tr><td>298</td><td><a href="https://leetcode.com/problems/all-paths-from-source-to-target/">All Paths Source to Target</a></td><td>Medium</td><td>DFS / Backtrack</td></tr>
+        <tr><td>299</td><td><a href="https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/">Min Vertices to Reach All</a></td><td>Medium</td><td>Indegree</td></tr>
+        <tr><td>300</td><td><a href="https://leetcode.com/problems/possible-bipartition/">Possible Bipartition</a></td><td>Medium</td><td>BFS Coloring</td></tr>
+        <tr><td>301</td><td><a href="https://leetcode.com/problems/word-ladder/">Word Ladder</a></td><td>Hard</td><td>BFS</td></tr>
+        <tr><td>302</td><td><a href="https://leetcode.com/problems/swim-in-rising-water/">Swim in Rising Water</a></td><td>Hard</td><td>Dijkstra / BS + BFS</td></tr>
+        <tr><td>303</td><td><a href="https://leetcode.com/problems/alien-dictionary/">Alien Dictionary</a></td><td>Hard</td><td>Topological Sort</td></tr>
+        <tr><td>304</td><td><a href="https://leetcode.com/problems/reconstruct-itinerary/">Reconstruct Itinerary</a></td><td>Hard</td><td>Euler Path DFS</td></tr>
+        <tr><td>305</td><td><a href="https://leetcode.com/problems/word-ladder-ii/">Word Ladder II</a></td><td>Hard</td><td>BFS + Backtrack</td></tr>
+        <tr><td>306</td><td><a href="https://leetcode.com/problems/bus-routes/">Bus Routes</a></td><td>Hard</td><td>BFS</td></tr>
+        <tr><td>307</td><td><a href="https://leetcode.com/problems/critical-connections-in-a-network/">Critical Connections</a></td><td>Hard</td><td>Tarjan's Bridge</td></tr>
+        <tr><td>308</td><td><a href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/">Longest Increasing Path</a></td><td>Hard</td><td>DFS + Memo</td></tr>
+        <tr><td>309</td><td><a href="https://leetcode.com/problems/making-a-large-island/">Making a Large Island</a></td><td>Hard</td><td>DFS + Union</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 12: 1D DP ======== -->
+    <section id="dp1d">
+      <h2>12. 1D Dynamic Programming (38)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>310</td><td><a href="https://leetcode.com/problems/climbing-stairs/">Climbing Stairs</a></td><td>Easy</td><td>Fibonacci-style</td></tr>
+        <tr><td>311</td><td><a href="https://leetcode.com/problems/min-cost-climbing-stairs/">Min Cost Climbing Stairs</a></td><td>Easy</td><td>DP</td></tr>
+        <tr><td>312</td><td><a href="https://leetcode.com/problems/fibonacci-number/">Fibonacci Number</a></td><td>Easy</td><td>DP / Math</td></tr>
+        <tr><td>313</td><td><a href="https://leetcode.com/problems/n-th-tribonacci-number/">N-th Tribonacci Number</a></td><td>Easy</td><td>DP</td></tr>
+        <tr><td>314</td><td><a href="https://leetcode.com/problems/house-robber/">House Robber</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>315</td><td><a href="https://leetcode.com/problems/house-robber-ii/">House Robber II</a></td><td>Medium</td><td>Circular DP</td></tr>
+        <tr><td>316</td><td><a href="https://leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring</a></td><td>Medium</td><td>Expand Center / DP</td></tr>
+        <tr><td>317</td><td><a href="https://leetcode.com/problems/palindromic-substrings/">Palindromic Substrings</a></td><td>Medium</td><td>Expand Center</td></tr>
+        <tr><td>318</td><td><a href="https://leetcode.com/problems/decode-ways/">Decode Ways</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>319</td><td><a href="https://leetcode.com/problems/coin-change/">Coin Change</a></td><td>Medium</td><td>DP (Unbounded)</td></tr>
+        <tr><td>320</td><td><a href="https://leetcode.com/problems/maximum-product-subarray/">Max Product Subarray</a></td><td>Medium</td><td>DP (min/max)</td></tr>
+        <tr><td>321</td><td><a href="https://leetcode.com/problems/word-break/">Word Break</a></td><td>Medium</td><td>DP + Set</td></tr>
+        <tr><td>322</td><td><a href="https://leetcode.com/problems/longest-increasing-subsequence/">Longest Increasing Subsequence</a></td><td>Medium</td><td>DP / Binary Search</td></tr>
+        <tr><td>323</td><td><a href="https://leetcode.com/problems/partition-equal-subset-sum/">Partition Equal Subset Sum</a></td><td>Medium</td><td>0/1 Knapsack</td></tr>
+        <tr><td>324</td><td><a href="https://leetcode.com/problems/maximum-subarray/">Maximum Subarray</a></td><td>Medium</td><td>Kadane's</td></tr>
+        <tr><td>325</td><td><a href="https://leetcode.com/problems/jump-game/">Jump Game</a></td><td>Medium</td><td>Greedy / DP</td></tr>
+        <tr><td>326</td><td><a href="https://leetcode.com/problems/jump-game-ii/">Jump Game II</a></td><td>Medium</td><td>Greedy / DP</td></tr>
+        <tr><td>327</td><td><a href="https://leetcode.com/problems/perfect-squares/">Perfect Squares</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>328</td><td><a href="https://leetcode.com/problems/integer-break/">Integer Break</a></td><td>Medium</td><td>DP / Math</td></tr>
+        <tr><td>329</td><td><a href="https://leetcode.com/problems/combination-sum-iv/">Combination Sum IV</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>330</td><td><a href="https://leetcode.com/problems/delete-and-earn/">Delete and Earn</a></td><td>Medium</td><td>DP (House Robber)</td></tr>
+        <tr><td>331</td><td><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/">Buy Stock with Cooldown</a></td><td>Medium</td><td>State Machine DP</td></tr>
+        <tr><td>332</td><td><a href="https://leetcode.com/problems/minimum-cost-for-tickets/">Minimum Cost for Tickets</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>333</td><td><a href="https://leetcode.com/problems/longest-arithmetic-subsequence/">Longest Arithmetic Subsequence</a></td><td>Medium</td><td>DP + Map</td></tr>
+        <tr><td>334</td><td><a href="https://leetcode.com/problems/count-ways-to-build-good-strings/">Count Ways Good Strings</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>335</td><td><a href="https://leetcode.com/problems/domino-and-tromino-tiling/">Domino and Tromino Tiling</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>336</td><td><a href="https://leetcode.com/problems/solving-questions-with-brainpower/">Solving Questions Brainpower</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>337</td><td><a href="https://leetcode.com/problems/arithmetic-slices/">Arithmetic Slices</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>338</td><td><a href="https://leetcode.com/problems/longest-turbulent-subarray/">Longest Turbulent Subarray</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>339</td><td><a href="https://leetcode.com/problems/target-sum/">Target Sum</a></td><td>Medium</td><td>DP (Subset Sum)</td></tr>
+        <tr><td>340</td><td><a href="https://leetcode.com/problems/extra-characters-in-a-string/">Extra Characters in String</a></td><td>Medium</td><td>DP + Set</td></tr>
+        <tr><td>341</td><td><a href="https://leetcode.com/problems/longest-palindromic-subsequence/">Longest Palindromic Subsequence</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>342</td><td><a href="https://leetcode.com/problems/maximum-length-of-pair-chain/">Max Length Pair Chain</a></td><td>Medium</td><td>DP / Greedy</td></tr>
+        <tr><td>343</td><td><a href="https://leetcode.com/problems/number-of-longest-increasing-subsequence/">Number of LIS</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>344</td><td><a href="https://leetcode.com/problems/wiggle-subsequence/">Wiggle Subsequence</a></td><td>Medium</td><td>DP / Greedy</td></tr>
+        <tr><td>345</td><td><a href="https://leetcode.com/problems/longest-ideal-subsequence/">Longest Ideal Subsequence</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>346</td><td><a href="https://leetcode.com/problems/ones-and-zeroes/">Ones and Zeroes</a></td><td>Medium</td><td>Knapsack DP</td></tr>
+        <tr><td>347</td><td><a href="https://leetcode.com/problems/maximum-number-of-points-with-cost/">Max Points with Cost</a></td><td>Medium</td><td>DP</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 13: 2D DP ======== -->
+    <section id="dp2d">
+      <h2>13. 2D Dynamic Programming (22)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>348</td><td><a href="https://leetcode.com/problems/unique-paths/">Unique Paths</a></td><td>Medium</td><td>Grid DP</td></tr>
+        <tr><td>349</td><td><a href="https://leetcode.com/problems/unique-paths-ii/">Unique Paths II</a></td><td>Medium</td><td>Grid DP</td></tr>
+        <tr><td>350</td><td><a href="https://leetcode.com/problems/longest-common-subsequence/">Longest Common Subsequence</a></td><td>Medium</td><td>2D DP</td></tr>
+        <tr><td>351</td><td><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">Buy Stock with Fee</a></td><td>Medium</td><td>State Machine DP</td></tr>
+        <tr><td>352</td><td><a href="https://leetcode.com/problems/minimum-path-sum/">Minimum Path Sum</a></td><td>Medium</td><td>Grid DP</td></tr>
+        <tr><td>353</td><td><a href="https://leetcode.com/problems/triangle/">Triangle</a></td><td>Medium</td><td>Grid DP</td></tr>
+        <tr><td>354</td><td><a href="https://leetcode.com/problems/maximal-square/">Maximal Square</a></td><td>Medium</td><td>2D DP</td></tr>
+        <tr><td>355</td><td><a href="https://leetcode.com/problems/coin-change-ii/">Coin Change II</a></td><td>Medium</td><td>Unbounded Knapsack</td></tr>
+        <tr><td>356</td><td><a href="https://leetcode.com/problems/interleaving-string/">Interleaving String</a></td><td>Medium</td><td>2D DP</td></tr>
+        <tr><td>357</td><td><a href="https://leetcode.com/problems/stone-game/">Stone Game</a></td><td>Medium</td><td>Interval DP</td></tr>
+        <tr><td>358</td><td><a href="https://leetcode.com/problems/stone-game-ii/">Stone Game II</a></td><td>Medium</td><td>Game DP</td></tr>
+        <tr><td>359</td><td><a href="https://leetcode.com/problems/last-stone-weight-ii/">Last Stone Weight II</a></td><td>Medium</td><td>Knapsack</td></tr>
+        <tr><td>360</td><td><a href="https://leetcode.com/problems/edit-distance/">Edit Distance</a></td><td>Medium</td><td>2D DP</td></tr>
+        <tr><td>361</td><td><a href="https://leetcode.com/problems/regular-expression-matching/">Regular Expression Matching</a></td><td>Hard</td><td>2D DP</td></tr>
+        <tr><td>362</td><td><a href="https://leetcode.com/problems/wildcard-matching/">Wildcard Matching</a></td><td>Hard</td><td>2D DP</td></tr>
+        <tr><td>363</td><td><a href="https://leetcode.com/problems/burst-balloons/">Burst Balloons</a></td><td>Hard</td><td>Interval DP</td></tr>
+        <tr><td>364</td><td><a href="https://leetcode.com/problems/distinct-subsequences/">Distinct Subsequences</a></td><td>Hard</td><td>2D DP</td></tr>
+        <tr><td>365</td><td><a href="https://leetcode.com/problems/stone-game-iii/">Stone Game III</a></td><td>Hard</td><td>Game DP</td></tr>
+        <tr><td>366</td><td><a href="https://leetcode.com/problems/profitable-schemes/">Profitable Schemes</a></td><td>Hard</td><td>3D Knapsack</td></tr>
+        <tr><td>367</td><td><a href="https://leetcode.com/problems/dungeon-game/">Dungeon Game</a></td><td>Hard</td><td>Reverse Grid DP</td></tr>
+        <tr><td>368</td><td><a href="https://leetcode.com/problems/cherry-pickup/">Cherry Pickup</a></td><td>Hard</td><td>3D DP</td></tr>
+        <tr><td>369</td><td><a href="https://leetcode.com/problems/cherry-pickup-ii/">Cherry Pickup II</a></td><td>Hard</td><td>3D DP</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 14: GREEDY ======== -->
+    <section id="greedy">
+      <h2>14. Greedy (28)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>370</td><td><a href="https://leetcode.com/problems/lemonade-change/">Lemonade Change</a></td><td>Easy</td><td>Greedy</td></tr>
+        <tr><td>371</td><td><a href="https://leetcode.com/problems/maximum-units-on-a-truck/">Max Units on a Truck</a></td><td>Easy</td><td>Sort + Greedy</td></tr>
+        <tr><td>372</td><td><a href="https://leetcode.com/problems/array-partition/">Array Partition</a></td><td>Easy</td><td>Sort + Greedy</td></tr>
+        <tr><td>373</td><td><a href="https://leetcode.com/problems/gas-station/">Gas Station</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>374</td><td><a href="https://leetcode.com/problems/non-overlapping-intervals/">Non-overlapping Intervals</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>375</td><td><a href="https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/">Min Arrows to Burst Balloons</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>376</td><td><a href="https://leetcode.com/problems/queue-reconstruction-by-height/">Queue Reconstruction by Height</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>377</td><td><a href="https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/">Min Deletions Unique Frequencies</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>378</td><td><a href="https://leetcode.com/problems/reduce-array-size-to-the-half/">Reduce Array Size to Half</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>379</td><td><a href="https://leetcode.com/problems/longest-happy-string/">Longest Happy String</a></td><td>Medium</td><td>Greedy + Heap</td></tr>
+        <tr><td>380</td><td><a href="https://leetcode.com/problems/advantage-shuffle/">Advantage Shuffle</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>381</td><td><a href="https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks/">Min Rounds All Tasks</a></td><td>Medium</td><td>Greedy + Math</td></tr>
+        <tr><td>382</td><td><a href="https://leetcode.com/problems/maximum-ice-cream-bars/">Max Ice Cream Bars</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>383</td><td><a href="https://leetcode.com/problems/dota2-senate/">Dota2 Senate</a></td><td>Medium</td><td>Greedy + Queue</td></tr>
+        <tr><td>384</td><td><a href="https://leetcode.com/problems/two-city-scheduling/">Two City Scheduling</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>385</td><td><a href="https://leetcode.com/problems/video-stitching/">Video Stitching</a></td><td>Medium</td><td>Greedy</td></tr>
+        <tr><td>386</td><td><a href="https://leetcode.com/problems/largest-number/">Largest Number</a></td><td>Medium</td><td>Custom Sort</td></tr>
+        <tr><td>387</td><td><a href="https://leetcode.com/problems/broken-calculator/">Broken Calculator</a></td><td>Medium</td><td>Reverse Greedy</td></tr>
+        <tr><td>388</td><td><a href="https://leetcode.com/problems/minimize-maximum-of-array/">Minimize Maximum of Array</a></td><td>Medium</td><td>Greedy / BS</td></tr>
+        <tr><td>389</td><td><a href="https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/">Max Length Positive Product</a></td><td>Medium</td><td>Greedy / DP</td></tr>
+        <tr><td>390</td><td><a href="https://leetcode.com/problems/flower-planting-with-no-adjacent/">Flower Planting</a></td><td>Medium</td><td>Greedy + Graph</td></tr>
+        <tr><td>391</td><td><a href="https://leetcode.com/problems/candy/">Candy</a></td><td>Hard</td><td>Two-Pass Greedy</td></tr>
+        <tr><td>392</td><td><a href="https://leetcode.com/problems/minimum-number-of-refueling-stops/">Min Refueling Stops</a></td><td>Hard</td><td>Greedy + Heap</td></tr>
+        <tr><td>393</td><td><a href="https://leetcode.com/problems/earliest-possible-day-of-full-bloom/">Earliest Day Full Bloom</a></td><td>Hard</td><td>Sort + Greedy</td></tr>
+        <tr><td>394</td><td><a href="https://leetcode.com/problems/minimum-cost-to-make-array-equal/">Min Cost Equal Array</a></td><td>Hard</td><td>Weighted Median</td></tr>
+        <tr><td>395</td><td><a href="https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/">Max Events Attended</a></td><td>Medium</td><td>Greedy + Heap</td></tr>
+        <tr><td>396</td><td><a href="https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/">Min Ops Array Continuous</a></td><td>Hard</td><td>Sort + Sliding Window</td></tr>
+        <tr><td>397</td><td><a href="https://leetcode.com/problems/maximum-points-in-an-archery-competition/">Max Points Archery</a></td><td>Medium</td><td>Bitmask / Greedy</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 15: INTERVALS ======== -->
+    <section id="intervals">
+      <h2>15. Intervals (14)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>398</td><td><a href="https://leetcode.com/problems/summary-ranges/">Summary Ranges</a></td><td>Easy</td><td>Intervals</td></tr>
+        <tr><td>399</td><td><a href="https://leetcode.com/problems/merge-intervals/">Merge Intervals</a></td><td>Medium</td><td>Sort + Merge</td></tr>
+        <tr><td>400</td><td><a href="https://leetcode.com/problems/insert-interval/">Insert Interval</a></td><td>Medium</td><td>Intervals</td></tr>
+        <tr><td>401</td><td><a href="https://leetcode.com/problems/interval-list-intersections/">Interval List Intersections</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>402</td><td><a href="https://leetcode.com/problems/remove-covered-intervals/">Remove Covered Intervals</a></td><td>Medium</td><td>Sort + Greedy</td></tr>
+        <tr><td>403</td><td><a href="https://leetcode.com/problems/my-calendar-i/">My Calendar I</a></td><td>Medium</td><td>Binary Search / Sort</td></tr>
+        <tr><td>404</td><td><a href="https://leetcode.com/problems/my-calendar-ii/">My Calendar II</a></td><td>Medium</td><td>Sweep Line</td></tr>
+        <tr><td>405</td><td><a href="https://leetcode.com/problems/car-pooling/">Car Pooling</a></td><td>Medium</td><td>Sweep Line</td></tr>
+        <tr><td>406</td><td><a href="https://leetcode.com/problems/meeting-rooms/">Meeting Rooms</a></td><td>Easy</td><td>Sort + Check</td></tr>
+        <tr><td>407</td><td><a href="https://leetcode.com/problems/meeting-rooms-ii/">Meeting Rooms II</a></td><td>Medium</td><td>Sweep Line / Heap</td></tr>
+        <tr><td>408</td><td><a href="https://leetcode.com/problems/minimum-interval-to-include-each-query/">Min Interval for Queries</a></td><td>Hard</td><td>Sort + Heap</td></tr>
+        <tr><td>409</td><td><a href="https://leetcode.com/problems/data-stream-as-disjoint-intervals/">Data Stream Disjoint Intervals</a></td><td>Hard</td><td>TreeMap / Sort</td></tr>
+        <tr><td>410</td><td><a href="https://leetcode.com/problems/employee-free-time/">Employee Free Time</a></td><td>Hard</td><td>Merge + Sort</td></tr>
+        <tr><td>411</td><td><a href="https://leetcode.com/problems/range-module/">Range Module</a></td><td>Hard</td><td>Segment Tree / Sort</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 16: MATH ======== -->
+    <section id="math">
+      <h2>16. Math &amp; Geometry (28)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>412</td><td><a href="https://leetcode.com/problems/plus-one/">Plus One</a></td><td>Easy</td><td>Math</td></tr>
+        <tr><td>413</td><td><a href="https://leetcode.com/problems/happy-number/">Happy Number</a></td><td>Easy</td><td>Fast/Slow Pointers</td></tr>
+        <tr><td>414</td><td><a href="https://leetcode.com/problems/palindrome-number/">Palindrome Number</a></td><td>Easy</td><td>Math</td></tr>
+        <tr><td>415</td><td><a href="https://leetcode.com/problems/fizz-buzz/">Fizz Buzz</a></td><td>Easy</td><td>Modulo</td></tr>
+        <tr><td>416</td><td><a href="https://leetcode.com/problems/power-of-two/">Power of Two</a></td><td>Easy</td><td>Bit / Math</td></tr>
+        <tr><td>417</td><td><a href="https://leetcode.com/problems/power-of-three/">Power of Three</a></td><td>Easy</td><td>Math</td></tr>
+        <tr><td>418</td><td><a href="https://leetcode.com/problems/add-binary/">Add Binary</a></td><td>Easy</td><td>Math</td></tr>
+        <tr><td>419</td><td><a href="https://leetcode.com/problems/ugly-number/">Ugly Number</a></td><td>Easy</td><td>Math</td></tr>
+        <tr><td>420</td><td><a href="https://leetcode.com/problems/excel-sheet-column-number/">Excel Sheet Column Number</a></td><td>Easy</td><td>Base Conversion</td></tr>
+        <tr><td>421</td><td><a href="https://leetcode.com/problems/excel-sheet-column-title/">Excel Sheet Column Title</a></td><td>Easy</td><td>Base Conversion</td></tr>
+        <tr><td>422</td><td><a href="https://leetcode.com/problems/set-mismatch/">Set Mismatch</a></td><td>Easy</td><td>Math / Hash</td></tr>
+        <tr><td>423</td><td><a href="https://leetcode.com/problems/greatest-common-divisor-of-strings/">GCD of Strings</a></td><td>Easy</td><td>GCD / Math</td></tr>
+        <tr><td>424</td><td><a href="https://leetcode.com/problems/rotate-image/">Rotate Image</a></td><td>Medium</td><td>Matrix Rotation</td></tr>
+        <tr><td>425</td><td><a href="https://leetcode.com/problems/count-primes/">Count Primes</a></td><td>Medium</td><td>Sieve</td></tr>
+        <tr><td>426</td><td><a href="https://leetcode.com/problems/factorial-trailing-zeroes/">Factorial Trailing Zeroes</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>427</td><td><a href="https://leetcode.com/problems/multiply-strings/">Multiply Strings</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>428</td><td><a href="https://leetcode.com/problems/detect-squares/">Detect Squares</a></td><td>Medium</td><td>Hash Map + Geometry</td></tr>
+        <tr><td>429</td><td><a href="https://leetcode.com/problems/powx-n/">Pow(x, n)</a></td><td>Medium</td><td>Fast Exponentiation</td></tr>
+        <tr><td>430</td><td><a href="https://leetcode.com/problems/reverse-integer/">Reverse Integer</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>431</td><td><a href="https://leetcode.com/problems/robot-bounded-in-circle/">Robot Bounded in Circle</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>432</td><td><a href="https://leetcode.com/problems/random-pick-with-weight/">Random Pick with Weight</a></td><td>Medium</td><td>Prefix Sum + BS</td></tr>
+        <tr><td>433</td><td><a href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements/">Min Moves Equal Elements</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>434</td><td><a href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/">Min Moves Equal Elements II</a></td><td>Medium</td><td>Median</td></tr>
+        <tr><td>435</td><td><a href="https://leetcode.com/problems/angle-between-hands-of-a-clock/">Angle Between Clock Hands</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>436</td><td><a href="https://leetcode.com/problems/water-and-jug-problem/">Water and Jug Problem</a></td><td>Medium</td><td>GCD / BFS</td></tr>
+        <tr><td>437</td><td><a href="https://leetcode.com/problems/max-points-on-a-line/">Max Points on a Line</a></td><td>Hard</td><td>Hash Map + Math</td></tr>
+        <tr><td>438</td><td><a href="https://leetcode.com/problems/permutation-sequence/">Permutation Sequence</a></td><td>Hard</td><td>Math (Factorial)</td></tr>
+        <tr><td>439</td><td><a href="https://leetcode.com/problems/integer-to-english-words/">Integer to English Words</a></td><td>Hard</td><td>Recursion</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 17: BIT MANIPULATION ======== -->
+    <section id="bit">
+      <h2>17. Bit Manipulation (18)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>440</td><td><a href="https://leetcode.com/problems/single-number/">Single Number</a></td><td>Easy</td><td>XOR</td></tr>
+        <tr><td>441</td><td><a href="https://leetcode.com/problems/number-of-1-bits/">Number of 1 Bits</a></td><td>Easy</td><td>Bit Count</td></tr>
+        <tr><td>442</td><td><a href="https://leetcode.com/problems/counting-bits/">Counting Bits</a></td><td>Easy</td><td>DP + Bits</td></tr>
+        <tr><td>443</td><td><a href="https://leetcode.com/problems/reverse-bits/">Reverse Bits</a></td><td>Easy</td><td>Bit Manipulation</td></tr>
+        <tr><td>444</td><td><a href="https://leetcode.com/problems/hamming-distance/">Hamming Distance</a></td><td>Easy</td><td>XOR + Count</td></tr>
+        <tr><td>445</td><td><a href="https://leetcode.com/problems/complement-of-base-10-integer/">Complement of Base 10</a></td><td>Easy</td><td>Bit Flip</td></tr>
+        <tr><td>446</td><td><a href="https://leetcode.com/problems/sum-of-two-integers/">Sum of Two Integers</a></td><td>Medium</td><td>Bit Manipulation</td></tr>
+        <tr><td>447</td><td><a href="https://leetcode.com/problems/single-number-ii/">Single Number II</a></td><td>Medium</td><td>Bit Counting</td></tr>
+        <tr><td>448</td><td><a href="https://leetcode.com/problems/single-number-iii/">Single Number III</a></td><td>Medium</td><td>XOR + Partition</td></tr>
+        <tr><td>449</td><td><a href="https://leetcode.com/problems/bitwise-and-of-numbers-range/">Bitwise AND of Range</a></td><td>Medium</td><td>Bit Shift</td></tr>
+        <tr><td>450</td><td><a href="https://leetcode.com/problems/find-the-duplicate-number/">Find the Duplicate Number</a></td><td>Medium</td><td>Fast/Slow / Bits</td></tr>
+        <tr><td>451</td><td><a href="https://leetcode.com/problems/utf-8-validation/">UTF-8 Validation</a></td><td>Medium</td><td>Bit Masking</td></tr>
+        <tr><td>452</td><td><a href="https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/">Min Flips a OR b = c</a></td><td>Medium</td><td>Bit Manipulation</td></tr>
+        <tr><td>453</td><td><a href="https://leetcode.com/problems/xor-queries-of-a-subarray/">XOR Queries of Subarray</a></td><td>Medium</td><td>Prefix XOR</td></tr>
+        <tr><td>454</td><td><a href="https://leetcode.com/problems/total-hamming-distance/">Total Hamming Distance</a></td><td>Medium</td><td>Bit Count</td></tr>
+        <tr><td>455</td><td><a href="https://leetcode.com/problems/gray-code/">Gray Code</a></td><td>Medium</td><td>Bit Manipulation</td></tr>
+        <tr><td>456</td><td><a href="https://leetcode.com/problems/divide-two-integers/">Divide Two Integers</a></td><td>Medium</td><td>Bit Shift</td></tr>
+        <tr><td>457</td><td><a href="https://leetcode.com/problems/decode-xored-permutation/">Decode XORed Permutation</a></td><td>Medium</td><td>XOR</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 18: UNION FIND ======== -->
+    <section id="union-find">
+      <h2>18. Union Find (12)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>458</td><td><a href="https://leetcode.com/problems/longest-consecutive-sequence/">Longest Consecutive Sequence</a></td><td>Medium</td><td>Union Find / Set</td></tr>
+        <tr><td>459</td><td><a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Connected Components</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>460</td><td><a href="https://leetcode.com/problems/graph-valid-tree/">Graph Valid Tree</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>461</td><td><a href="https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/">Most Stones Removed</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>462</td><td><a href="https://leetcode.com/problems/satisfiability-of-equality-equations/">Satisfiability of Equality</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>463</td><td><a href="https://leetcode.com/problems/number-of-operations-to-make-network-connected/">Network Connected</a></td><td>Medium</td><td>Union Find</td></tr>
+        <tr><td>464</td><td><a href="https://leetcode.com/problems/smallest-string-with-swaps/">Smallest String with Swaps</a></td><td>Medium</td><td>Union Find + Sort</td></tr>
+        <tr><td>465</td><td><a href="https://leetcode.com/problems/similar-string-groups/">Similar String Groups</a></td><td>Hard</td><td>Union Find</td></tr>
+        <tr><td>466</td><td><a href="https://leetcode.com/problems/number-of-islands-ii/">Number of Islands II</a></td><td>Hard</td><td>Union Find</td></tr>
+        <tr><td>467</td><td><a href="https://leetcode.com/problems/couples-holding-hands/">Couples Holding Hands</a></td><td>Hard</td><td>Union Find / Greedy</td></tr>
+        <tr><td>468</td><td><a href="https://leetcode.com/problems/minimize-malware-spread/">Minimize Malware Spread</a></td><td>Hard</td><td>Union Find</td></tr>
+        <tr><td>469</td><td><a href="https://leetcode.com/problems/regions-cut-by-slashes/">Regions Cut By Slashes</a></td><td>Medium</td><td>Union Find</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 19: DESIGN ======== -->
+    <section id="design">
+      <h2>19. Design (14)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>470</td><td><a href="https://leetcode.com/problems/design-hashmap/">Design HashMap</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>471</td><td><a href="https://leetcode.com/problems/design-hashset/">Design HashSet</a></td><td>Easy</td><td>Hash Set</td></tr>
+        <tr><td>472</td><td><a href="https://leetcode.com/problems/min-stack/">Min Stack</a></td><td>Medium</td><td>Stack Design</td></tr>
+        <tr><td>473</td><td><a href="https://leetcode.com/problems/lru-cache/">LRU Cache</a></td><td>Medium</td><td>DLL + Map</td></tr>
+        <tr><td>474</td><td><a href="https://leetcode.com/problems/design-browser-history/">Design Browser History</a></td><td>Medium</td><td>Stack / DLL</td></tr>
+        <tr><td>475</td><td><a href="https://leetcode.com/problems/implement-trie-prefix-tree/">Implement Trie</a></td><td>Medium</td><td>Trie</td></tr>
+        <tr><td>476</td><td><a href="https://leetcode.com/problems/design-circular-queue/">Design Circular Queue</a></td><td>Medium</td><td>Array / LL</td></tr>
+        <tr><td>477</td><td><a href="https://leetcode.com/problems/design-underground-system/">Design Underground System</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>478</td><td><a href="https://leetcode.com/problems/snapshot-array/">Snapshot Array</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>479</td><td><a href="https://leetcode.com/problems/online-stock-span/">Online Stock Span</a></td><td>Medium</td><td>Monotonic Stack</td></tr>
+        <tr><td>480</td><td><a href="https://leetcode.com/problems/lfu-cache/">LFU Cache</a></td><td>Hard</td><td>DLL + Map</td></tr>
+        <tr><td>481</td><td><a href="https://leetcode.com/problems/find-median-from-data-stream/">Find Median from Stream</a></td><td>Hard</td><td>Two Heaps</td></tr>
+        <tr><td>482</td><td><a href="https://leetcode.com/problems/design-search-autocomplete-system/">Autocomplete System</a></td><td>Hard</td><td>Trie + Sort</td></tr>
+        <tr><td>483</td><td><a href="https://leetcode.com/problems/all-oone-data-structure/">All O(1) Data Structure</a></td><td>Hard</td><td>DLL + Map</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 20: STRING ======== -->
+    <section id="string">
+      <h2>20. String (30)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>484</td><td><a href="https://leetcode.com/problems/valid-palindrome-ii/">Valid Palindrome II</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>485</td><td><a href="https://leetcode.com/problems/first-unique-character-in-a-string/">First Unique Character</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>486</td><td><a href="https://leetcode.com/problems/reverse-words-in-a-string/">Reverse Words in String</a></td><td>Medium</td><td>String</td></tr>
+        <tr><td>487</td><td><a href="https://leetcode.com/problems/zigzag-conversion/">Zigzag Conversion</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>488</td><td><a href="https://leetcode.com/problems/string-to-integer-atoi/">String to Integer (atoi)</a></td><td>Medium</td><td>Parsing</td></tr>
+        <tr><td>489</td><td><a href="https://leetcode.com/problems/count-and-say/">Count and Say</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>490</td><td><a href="https://leetcode.com/problems/compare-version-numbers/">Compare Version Numbers</a></td><td>Medium</td><td>String Split</td></tr>
+        <tr><td>491</td><td><a href="https://leetcode.com/problems/longest-palindrome/">Longest Palindrome</a></td><td>Easy</td><td>Frequency Count</td></tr>
+        <tr><td>492</td><td><a href="https://leetcode.com/problems/repeated-substring-pattern/">Repeated Substring Pattern</a></td><td>Easy</td><td>String</td></tr>
+        <tr><td>493</td><td><a href="https://leetcode.com/problems/isomorphic-strings/">Isomorphic Strings</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>494</td><td><a href="https://leetcode.com/problems/word-pattern/">Word Pattern</a></td><td>Easy</td><td>Hash Map</td></tr>
+        <tr><td>495</td><td><a href="https://leetcode.com/problems/ransom-note/">Ransom Note</a></td><td>Easy</td><td>Frequency Count</td></tr>
+        <tr><td>496</td><td><a href="https://leetcode.com/problems/implement-strstr/">Implement strStr()</a></td><td>Easy</td><td>String Match</td></tr>
+        <tr><td>497</td><td><a href="https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/">Min Remove Valid Parens</a></td><td>Medium</td><td>Stack / Two Pass</td></tr>
+        <tr><td>498</td><td><a href="https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/">Longest Substr K Repeating</a></td><td>Medium</td><td>Divide &amp; Conquer</td></tr>
+        <tr><td>499</td><td><a href="https://leetcode.com/problems/optimal-partition-of-string/">Optimal Partition of String</a></td><td>Medium</td><td>Greedy + Set</td></tr>
+        <tr><td>500</td><td><a href="https://leetcode.com/problems/group-anagrams/">Group Anagrams</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>501</td><td><a href="https://leetcode.com/problems/string-compression/">String Compression</a></td><td>Medium</td><td>Two Pointers</td></tr>
+        <tr><td>502</td><td><a href="https://leetcode.com/problems/basic-calculator-ii/">Basic Calculator II</a></td><td>Medium</td><td>Stack + Parse</td></tr>
+        <tr><td>503</td><td><a href="https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/">Remove Adjacent Duplicates</a></td><td>Easy</td><td>Stack</td></tr>
+        <tr><td>504</td><td><a href="https://leetcode.com/problems/minimum-penalty-for-a-shop/">Min Penalty for a Shop</a></td><td>Medium</td><td>Prefix Sum</td></tr>
+        <tr><td>505</td><td><a href="https://leetcode.com/problems/bulls-and-cows/">Bulls and Cows</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>506</td><td><a href="https://leetcode.com/problems/number-of-atoms/">Number of Atoms</a></td><td>Hard</td><td>Stack + Parse</td></tr>
+        <tr><td>507</td><td><a href="https://leetcode.com/problems/shortest-palindrome/">Shortest Palindrome</a></td><td>Hard</td><td>KMP / Rolling Hash</td></tr>
+        <tr><td>508</td><td><a href="https://leetcode.com/problems/minimum-window-substring/">Minimum Window Substring</a></td><td>Hard</td><td>Sliding Window</td></tr>
+        <tr><td>509</td><td><a href="https://leetcode.com/problems/distinct-subsequences/">Distinct Subsequences</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>510</td><td><a href="https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/">Count Unique Chars Substrings</a></td><td>Hard</td><td>Math</td></tr>
+        <tr><td>511</td><td><a href="https://leetcode.com/problems/palindrome-partitioning-ii/">Palindrome Partitioning II</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>512</td><td><a href="https://leetcode.com/problems/smallest-window-containing-substring/">Minimum Window Substring</a></td><td>Hard</td><td>Sliding Window</td></tr>
+        <tr><td>513</td><td><a href="https://leetcode.com/problems/reorganize-string/">Reorganize String</a></td><td>Medium</td><td>Heap / Greedy</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 21: SORTING ======== -->
+    <section id="sorting">
+      <h2>21. Sorting (15)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>514</td><td><a href="https://leetcode.com/problems/merge-sorted-array/">Merge Sorted Array</a></td><td>Easy</td><td>Two Pointers</td></tr>
+        <tr><td>515</td><td><a href="https://leetcode.com/problems/valid-anagram/">Valid Anagram</a></td><td>Easy</td><td>Sort / Hash</td></tr>
+        <tr><td>516</td><td><a href="https://leetcode.com/problems/sort-an-array/">Sort an Array</a></td><td>Medium</td><td>Merge Sort</td></tr>
+        <tr><td>517</td><td><a href="https://leetcode.com/problems/sort-list/">Sort List</a></td><td>Medium</td><td>Merge Sort</td></tr>
+        <tr><td>518</td><td><a href="https://leetcode.com/problems/insertion-sort-list/">Insertion Sort List</a></td><td>Medium</td><td>Insertion Sort</td></tr>
+        <tr><td>519</td><td><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/">Kth Largest Element</a></td><td>Medium</td><td>Quickselect</td></tr>
+        <tr><td>520</td><td><a href="https://leetcode.com/problems/wiggle-sort-ii/">Wiggle Sort II</a></td><td>Medium</td><td>Sort + Place</td></tr>
+        <tr><td>521</td><td><a href="https://leetcode.com/problems/largest-number/">Largest Number</a></td><td>Medium</td><td>Custom Comparator</td></tr>
+        <tr><td>522</td><td><a href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent</a></td><td>Medium</td><td>Bucket Sort</td></tr>
+        <tr><td>523</td><td><a href="https://leetcode.com/problems/sort-characters-by-frequency/">Sort Chars by Frequency</a></td><td>Medium</td><td>Bucket Sort</td></tr>
+        <tr><td>524</td><td><a href="https://leetcode.com/problems/relative-sort-array/">Relative Sort Array</a></td><td>Easy</td><td>Counting Sort</td></tr>
+        <tr><td>525</td><td><a href="https://leetcode.com/problems/maximum-gap/">Maximum Gap</a></td><td>Medium</td><td>Radix / Bucket Sort</td></tr>
+        <tr><td>526</td><td><a href="https://leetcode.com/problems/sort-colors/">Sort Colors</a></td><td>Medium</td><td>Dutch Flag</td></tr>
+        <tr><td>527</td><td><a href="https://leetcode.com/problems/pancake-sorting/">Pancake Sorting</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>528</td><td><a href="https://leetcode.com/problems/count-of-smaller-numbers-after-self/">Count Smaller After Self</a></td><td>Hard</td><td>Merge Sort</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 22: PREFIX SUM ======== -->
+    <section id="prefix-sum">
+      <h2>22. Prefix Sum (14)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>529</td><td><a href="https://leetcode.com/problems/running-sum-of-1d-array/">Running Sum of 1D Array</a></td><td>Easy</td><td>Prefix Sum</td></tr>
+        <tr><td>530</td><td><a href="https://leetcode.com/problems/find-pivot-index/">Find Pivot Index</a></td><td>Easy</td><td>Prefix Sum</td></tr>
+        <tr><td>531</td><td><a href="https://leetcode.com/problems/range-sum-query-immutable/">Range Sum Query Immutable</a></td><td>Easy</td><td>Prefix Sum</td></tr>
+        <tr><td>532</td><td><a href="https://leetcode.com/problems/subarray-sum-equals-k/">Subarray Sum Equals K</a></td><td>Medium</td><td>Prefix Sum + Map</td></tr>
+        <tr><td>533</td><td><a href="https://leetcode.com/problems/contiguous-array/">Contiguous Array</a></td><td>Medium</td><td>Prefix Sum + Map</td></tr>
+        <tr><td>534</td><td><a href="https://leetcode.com/problems/product-of-array-except-self/">Product Except Self</a></td><td>Medium</td><td>Prefix / Suffix</td></tr>
+        <tr><td>535</td><td><a href="https://leetcode.com/problems/random-pick-with-weight/">Random Pick with Weight</a></td><td>Medium</td><td>Prefix Sum + BS</td></tr>
+        <tr><td>536</td><td><a href="https://leetcode.com/problems/range-sum-query-2d-immutable/">Range Sum Query 2D</a></td><td>Medium</td><td>2D Prefix Sum</td></tr>
+        <tr><td>537</td><td><a href="https://leetcode.com/problems/minimum-penalty-for-a-shop/">Min Penalty for Shop</a></td><td>Medium</td><td>Prefix Sum</td></tr>
+        <tr><td>538</td><td><a href="https://leetcode.com/problems/path-sum-iii/">Path Sum III</a></td><td>Medium</td><td>Prefix Sum + DFS</td></tr>
+        <tr><td>539</td><td><a href="https://leetcode.com/problems/xor-queries-of-a-subarray/">XOR Queries</a></td><td>Medium</td><td>Prefix XOR</td></tr>
+        <tr><td>540</td><td><a href="https://leetcode.com/problems/number-of-ways-to-split-array/">Ways to Split Array</a></td><td>Medium</td><td>Prefix Sum</td></tr>
+        <tr><td>541</td><td><a href="https://leetcode.com/problems/maximum-sum-of-almost-unique-subarray/">Max Sum Almost Unique Subarray</a></td><td>Medium</td><td>Window + Prefix</td></tr>
+        <tr><td>542</td><td><a href="https://leetcode.com/problems/count-subarrays-with-fixed-bounds/">Count Subarrays Fixed Bounds</a></td><td>Hard</td><td>Sliding Window</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 23: MATRIX ======== -->
+    <section id="matrix">
+      <h2>23. Matrix (15)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>543</td><td><a href="https://leetcode.com/problems/reshape-the-matrix/">Reshape the Matrix</a></td><td>Easy</td><td>Matrix</td></tr>
+        <tr><td>544</td><td><a href="https://leetcode.com/problems/transpose-matrix/">Transpose Matrix</a></td><td>Easy</td><td>Matrix</td></tr>
+        <tr><td>545</td><td><a href="https://leetcode.com/problems/matrix-diagonal-sum/">Matrix Diagonal Sum</a></td><td>Easy</td><td>Matrix</td></tr>
+        <tr><td>546</td><td><a href="https://leetcode.com/problems/rotate-image/">Rotate Image</a></td><td>Medium</td><td>Matrix Rotation</td></tr>
+        <tr><td>547</td><td><a href="https://leetcode.com/problems/spiral-matrix/">Spiral Matrix</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>548</td><td><a href="https://leetcode.com/problems/set-matrix-zeroes/">Set Matrix Zeroes</a></td><td>Medium</td><td>In-Place</td></tr>
+        <tr><td>549</td><td><a href="https://leetcode.com/problems/where-will-the-ball-fall/">Where Will Ball Fall</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>550</td><td><a href="https://leetcode.com/problems/01-matrix/">01 Matrix</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>551</td><td><a href="https://leetcode.com/problems/diagonal-traverse/">Diagonal Traverse</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>552</td><td><a href="https://leetcode.com/problems/toeplitz-matrix/">Toeplitz Matrix</a></td><td>Easy</td><td>Matrix</td></tr>
+        <tr><td>553</td><td><a href="https://leetcode.com/problems/number-of-islands/">Number of Islands</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>554</td><td><a href="https://leetcode.com/problems/surrounded-regions/">Surrounded Regions</a></td><td>Medium</td><td>DFS from Border</td></tr>
+        <tr><td>555</td><td><a href="https://leetcode.com/problems/word-search/">Word Search</a></td><td>Medium</td><td>DFS + Backtrack</td></tr>
+        <tr><td>556</td><td><a href="https://leetcode.com/problems/maximal-square/">Maximal Square</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>557</td><td><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">Shortest Path Binary Matrix</a></td><td>Medium</td><td>BFS</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 24: RECURSION ======== -->
+    <section id="recursion">
+      <h2>24. Recursion (12)</h2>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>558</td><td><a href="https://leetcode.com/problems/power-of-two/">Power of Two</a></td><td>Easy</td><td>Recursion</td></tr>
+        <tr><td>559</td><td><a href="https://leetcode.com/problems/power-of-four/">Power of Four</a></td><td>Easy</td><td>Recursion / Math</td></tr>
+        <tr><td>560</td><td><a href="https://leetcode.com/problems/reverse-linked-list/">Reverse Linked List</a></td><td>Easy</td><td>Recursion</td></tr>
+        <tr><td>561</td><td><a href="https://leetcode.com/problems/swap-nodes-in-pairs/">Swap Nodes in Pairs</a></td><td>Medium</td><td>Recursion</td></tr>
+        <tr><td>562</td><td><a href="https://leetcode.com/problems/merge-two-sorted-lists/">Merge Two Sorted Lists</a></td><td>Easy</td><td>Recursion</td></tr>
+        <tr><td>563</td><td><a href="https://leetcode.com/problems/powx-n/">Pow(x, n)</a></td><td>Medium</td><td>Recursion (D&amp;C)</td></tr>
+        <tr><td>564</td><td><a href="https://leetcode.com/problems/generate-parentheses/">Generate Parentheses</a></td><td>Medium</td><td>Recursion</td></tr>
+        <tr><td>565</td><td><a href="https://leetcode.com/problems/different-ways-to-add-parentheses/">Different Ways to Add Parens</a></td><td>Medium</td><td>Divide &amp; Conquer</td></tr>
+        <tr><td>566</td><td><a href="https://leetcode.com/problems/k-th-symbol-in-grammar/">Kth Symbol in Grammar</a></td><td>Medium</td><td>Recursion</td></tr>
+        <tr><td>567</td><td><a href="https://leetcode.com/problems/predict-the-winner/">Predict the Winner</a></td><td>Medium</td><td>Game Recursion</td></tr>
+        <tr><td>568</td><td><a href="https://leetcode.com/problems/sort-list/">Sort List</a></td><td>Medium</td><td>Merge Sort Recursion</td></tr>
+        <tr><td>569</td><td><a href="https://leetcode.com/problems/strobogrammatic-number-ii/">Strobogrammatic Number II</a></td><td>Medium</td><td>Recursion</td></tr>
+      </table>
+    </section>
+
+    <!-- ======== TOPIC 25: MIXED HARD PROBLEMS ======== -->
+    <section id="mixed">
+      <h2>25. Mixed Hard Problems (41)</h2>
+      <p>These are the problems that test everything you've learned. Complete these and you're elite.</p>
+      <table>
+        <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+        <tr><td>570</td><td><a href="https://leetcode.com/problems/lru-cache/">LRU Cache</a></td><td>Medium</td><td>Design</td></tr>
+        <tr><td>571</td><td><a href="https://leetcode.com/problems/design-circular-deque/">Design Circular Deque</a></td><td>Medium</td><td>Design</td></tr>
+        <tr><td>572</td><td><a href="https://leetcode.com/problems/design-linked-list/">Design Linked List</a></td><td>Medium</td><td>Linked List</td></tr>
+        <tr><td>573</td><td><a href="https://leetcode.com/problems/implement-stack-using-queues/">Implement Stack using Queues</a></td><td>Easy</td><td>Design</td></tr>
+        <tr><td>574</td><td><a href="https://leetcode.com/problems/maximal-network-rank/">Maximal Network Rank</a></td><td>Medium</td><td>Graph</td></tr>
+        <tr><td>575</td><td><a href="https://leetcode.com/problems/minimum-genetic-mutation/">Minimum Genetic Mutation</a></td><td>Medium</td><td>BFS</td></tr>
+        <tr><td>576</td><td><a href="https://leetcode.com/problems/jump-game-iii/">Jump Game III</a></td><td>Medium</td><td>BFS / DFS</td></tr>
+        <tr><td>577</td><td><a href="https://leetcode.com/problems/jump-game-iv/">Jump Game IV</a></td><td>Hard</td><td>BFS</td></tr>
+        <tr><td>578</td><td><a href="https://leetcode.com/problems/maximum-profit-in-job-scheduling/">Max Profit Job Scheduling</a></td><td>Hard</td><td>DP + BS</td></tr>
+        <tr><td>579</td><td><a href="https://leetcode.com/problems/largest-color-value-in-a-directed-graph/">Largest Color Value</a></td><td>Hard</td><td>Topo Sort + DP</td></tr>
+        <tr><td>580</td><td><a href="https://leetcode.com/problems/minimum-cost-to-hire-k-workers/">Min Cost K Workers</a></td><td>Hard</td><td>Sort + Heap</td></tr>
+        <tr><td>581</td><td><a href="https://leetcode.com/problems/count-vowels-permutation/">Count Vowels Permutation</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>582</td><td><a href="https://leetcode.com/problems/frog-jump/">Frog Jump</a></td><td>Hard</td><td>DP + Set</td></tr>
+        <tr><td>583</td><td><a href="https://leetcode.com/problems/strange-printer/">Strange Printer</a></td><td>Hard</td><td>Interval DP</td></tr>
+        <tr><td>584</td><td><a href="https://leetcode.com/problems/minimum-window-subsequence/">Min Window Subsequence</a></td><td>Hard</td><td>Two Pointers / DP</td></tr>
+        <tr><td>585</td><td><a href="https://leetcode.com/problems/concatenated-words/">Concatenated Words</a></td><td>Hard</td><td>DP + Trie</td></tr>
+        <tr><td>586</td><td><a href="https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/">Count Pickup Delivery</a></td><td>Hard</td><td>Math / DP</td></tr>
+        <tr><td>587</td><td><a href="https://leetcode.com/problems/design-graph-with-shortest-path-calculator/">Design Graph Shortest Path</a></td><td>Hard</td><td>Dijkstra</td></tr>
+        <tr><td>588</td><td><a href="https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/">Ways to Arrive at Destination</a></td><td>Medium</td><td>Dijkstra + DP</td></tr>
+        <tr><td>589</td><td><a href="https://leetcode.com/problems/longest-string-chain/">Longest String Chain</a></td><td>Medium</td><td>DP + Map</td></tr>
+        <tr><td>590</td><td><a href="https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/">Min Ops Reduce X to Zero</a></td><td>Medium</td><td>Sliding Window / Prefix</td></tr>
+        <tr><td>591</td><td><a href="https://leetcode.com/problems/where-will-the-ball-fall/">Where Will Ball Fall</a></td><td>Medium</td><td>Simulation</td></tr>
+        <tr><td>592</td><td><a href="https://leetcode.com/problems/number-of-enclaves/">Number of Enclaves</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>593</td><td><a href="https://leetcode.com/problems/count-good-meals/">Count Good Meals</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>594</td><td><a href="https://leetcode.com/problems/find-all-groups-of-farmland/">Find All Farmland</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>595</td><td><a href="https://leetcode.com/problems/stamping-the-sequence/">Stamping the Sequence</a></td><td>Hard</td><td>Greedy (Reverse)</td></tr>
+        <tr><td>596</td><td><a href="https://leetcode.com/problems/count-of-range-sum/">Count of Range Sum</a></td><td>Hard</td><td>Merge Sort</td></tr>
+        <tr><td>597</td><td><a href="https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/">Increasing Paths in Grid</a></td><td>Hard</td><td>DFS + Memo</td></tr>
+        <tr><td>598</td><td><a href="https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/">Min Obstacle Removal</a></td><td>Hard</td><td>0-1 BFS</td></tr>
+        <tr><td>599</td><td><a href="https://leetcode.com/problems/maximize-score-after-n-operations/">Maximize Score N Ops</a></td><td>Hard</td><td>Bitmask DP</td></tr>
+        <tr><td>600</td><td><a href="https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/">Min Days Disconnect Island</a></td><td>Hard</td><td>Articulation Points</td></tr>
+        <tr><td>601</td><td><a href="https://leetcode.com/problems/count-subarrays-with-median-k/">Count Subarrays Median K</a></td><td>Hard</td><td>Hash Map</td></tr>
+        <tr><td>602</td><td><a href="https://leetcode.com/problems/amount-of-new-area-painted-each-day/">Amount Painted Each Day</a></td><td>Hard</td><td>Sweep Line</td></tr>
+        <tr><td>603</td><td><a href="https://leetcode.com/problems/minimum-cost-to-connect-sticks/">Min Cost Connect Sticks</a></td><td>Medium</td><td>Heap</td></tr>
+        <tr><td>604</td><td><a href="https://leetcode.com/problems/next-permutation/">Next Permutation</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>605</td><td><a href="https://leetcode.com/problems/can-place-flowers/">Can Place Flowers</a></td><td>Easy</td><td>Greedy</td></tr>
+        <tr><td>606</td><td><a href="https://leetcode.com/problems/kid-with-the-greatest-number-of-candies/">Kids With Greatest Candies</a></td><td>Easy</td><td>Array</td></tr>
+        <tr><td>607</td><td><a href="https://leetcode.com/problems/number-of-recent-calls/">Number of Recent Calls</a></td><td>Easy</td><td>Queue</td></tr>
+        <tr><td>608</td><td><a href="https://leetcode.com/problems/asteroid-collision/">Asteroid Collision</a></td><td>Medium</td><td>Stack</td></tr>
+        <tr><td>609</td><td><a href="https://leetcode.com/problems/find-the-highest-altitude/">Find Highest Altitude</a></td><td>Easy</td><td>Prefix Sum</td></tr>
+        <tr><td>610</td><td><a href="https://leetcode.com/problems/equal-row-and-column-pairs/">Equal Row &amp; Column Pairs</a></td><td>Medium</td><td>Hash Map</td></tr>
+        <tr><td>611</td><td><a href="https://leetcode.com/problems/find-k-closest-elements/">Find K Closest Elements</a></td><td>Medium</td><td>Binary Search</td></tr>
+        <tr><td>612</td><td><a href="https://leetcode.com/problems/last-day-where-you-can-still-cross/">Last Day Still Cross</a></td><td>Hard</td><td>BS + BFS / UF</td></tr>
+        <tr><td>613</td><td><a href="https://leetcode.com/problems/number-of-good-paths/">Number of Good Paths</a></td><td>Hard</td><td>Union Find + Sort</td></tr>
+        <tr><td>614</td><td><a href="https://leetcode.com/problems/shortest-path-visiting-all-nodes/">Shortest Path All Nodes</a></td><td>Hard</td><td>BFS + Bitmask</td></tr>
+        <tr><td>615</td><td><a href="https://leetcode.com/problems/smallest-sufficient-team/">Smallest Sufficient Team</a></td><td>Hard</td><td>Bitmask DP</td></tr>
+        <tr><td>616</td><td><a href="https://leetcode.com/problems/number-of-music-playlists/">Number of Music Playlists</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>617</td><td><a href="https://leetcode.com/problems/tallest-billboard/">Tallest Billboard</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>618</td><td><a href="https://leetcode.com/problems/count-different-palindromic-subsequences/">Count Palindromic Subseqs</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>619</td><td><a href="https://leetcode.com/problems/minimum-cost-to-cut-a-stick/">Min Cost Cut Stick</a></td><td>Hard</td><td>Interval DP</td></tr>
+        <tr><td>620</td><td><a href="https://leetcode.com/problems/maximum-running-time-of-n-computers/">Max Running Time N Computers</a></td><td>Hard</td><td>BS + Greedy</td></tr>
+        <tr><td>621</td><td><a href="https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/">Min Taps Water Garden</a></td><td>Hard</td><td>Greedy</td></tr>
+        <tr><td>622</td><td><a href="https://leetcode.com/problems/parallel-courses-iii/">Parallel Courses III</a></td><td>Hard</td><td>Topo Sort + DP</td></tr>
+        <tr><td>623</td><td><a href="https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/">Min Time Collect Apples</a></td><td>Medium</td><td>DFS</td></tr>
+        <tr><td>624</td><td><a href="https://leetcode.com/problems/online-election/">Online Election</a></td><td>Medium</td><td>BS + Precompute</td></tr>
+        <tr><td>625</td><td><a href="https://leetcode.com/problems/my-calendar-iii/">My Calendar III</a></td><td>Hard</td><td>Sweep Line</td></tr>
+        <tr><td>626</td><td><a href="https://leetcode.com/problems/number-of-flowers-in-full-bloom/">Flowers in Full Bloom</a></td><td>Hard</td><td>Sort + BS</td></tr>
+        <tr><td>627</td><td><a href="https://leetcode.com/problems/path-with-minimum-effort/">Path with Min Effort</a></td><td>Medium</td><td>Dijkstra / BS+BFS</td></tr>
+        <tr><td>628</td><td><a href="https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/">Critical MST Edges</a></td><td>Hard</td><td>Kruskal + UF</td></tr>
+        <tr><td>629</td><td><a href="https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/">Dice Rolls Target Sum</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>630</td><td><a href="https://leetcode.com/problems/minimum-falling-path-sum/">Min Falling Path Sum</a></td><td>Medium</td><td>DP</td></tr>
+        <tr><td>631</td><td><a href="https://leetcode.com/problems/number-of-closed-islands/">Number of Closed Islands</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>632</td><td><a href="https://leetcode.com/problems/minimum-score-of-a-path-between-two-cities/">Min Score Path</a></td><td>Medium</td><td>BFS / UF</td></tr>
+        <tr><td>633</td><td><a href="https://leetcode.com/problems/constrained-subsequence-sum/">Constrained Subsequence Sum</a></td><td>Hard</td><td>DP + Deque</td></tr>
+        <tr><td>634</td><td><a href="https://leetcode.com/problems/restore-the-array/">Restore the Array</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>635</td><td><a href="https://leetcode.com/problems/sum-of-distances-in-tree/">Sum of Distances in Tree</a></td><td>Hard</td><td>Rerooting DP</td></tr>
+        <tr><td>636</td><td><a href="https://leetcode.com/problems/maximum-profit-in-job-scheduling/">Max Profit Job Scheduling</a></td><td>Hard</td><td>DP + BS</td></tr>
+        <tr><td>637</td><td><a href="https://leetcode.com/problems/largest-color-value-in-a-directed-graph/">Largest Color Value</a></td><td>Hard</td><td>Topo Sort + DP</td></tr>
+        <tr><td>638</td><td><a href="https://leetcode.com/problems/count-vowels-permutation/">Count Vowels Permutation</a></td><td>Hard</td><td>DP</td></tr>
+        <tr><td>639</td><td><a href="https://leetcode.com/problems/frog-jump/">Frog Jump</a></td><td>Hard</td><td>DP + Set</td></tr>
+        <tr><td>640</td><td><a href="https://leetcode.com/problems/strange-printer/">Strange Printer</a></td><td>Hard</td><td>Interval DP</td></tr>
+        <tr><td>641</td><td><a href="https://leetcode.com/problems/concatenated-words/">Concatenated Words</a></td><td>Hard</td><td>DP + Trie</td></tr>
+        <tr><td>642</td><td><a href="https://leetcode.com/problems/minimum-cost-to-hire-k-workers/">Min Cost K Workers</a></td><td>Hard</td><td>Sort + Heap</td></tr>
+        <tr><td>643</td><td><a href="https://leetcode.com/problems/design-graph-with-shortest-path-calculator/">Design Graph Shortest Path</a></td><td>Hard</td><td>Dijkstra</td></tr>
+        <tr><td>644</td><td><a href="https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/">Ways to Arrive at Dest</a></td><td>Medium</td><td>Dijkstra + DP</td></tr>
+        <tr><td>645</td><td><a href="https://leetcode.com/problems/longest-string-chain/">Longest String Chain</a></td><td>Medium</td><td>DP + Map</td></tr>
+        <tr><td>646</td><td><a href="https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/">Min Ops Reduce X to Zero</a></td><td>Medium</td><td>Sliding Window</td></tr>
+        <tr><td>647</td><td><a href="https://leetcode.com/problems/number-of-enclaves/">Number of Enclaves</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>648</td><td><a href="https://leetcode.com/problems/find-all-groups-of-farmland/">Find All Farmland</a></td><td>Medium</td><td>DFS / BFS</td></tr>
+        <tr><td>649</td><td><a href="https://leetcode.com/problems/next-permutation/">Next Permutation</a></td><td>Medium</td><td>Math</td></tr>
+        <tr><td>650</td><td><a href="https://leetcode.com/problems/stamping-the-sequence/">Stamping the Sequence</a></td><td>Hard</td><td>Greedy (Reverse)</td></tr>
+      </table>
+    </section>
+
+    <div class="tip-box" style="margin-top: 2rem;">
+      <div class="label">You've Got This</div>
+      <p>650 problems is a lot. But if you do <strong>3 problems a day</strong>, you'll finish in about <strong>7 months</strong>. That's 7 months to be better than 99% of developers at problem-solving. Start today. One problem at a time.</p>
+      <p style="margin-top: 0.5rem;">Need the foundations first? Start with the <a href="dsa-foundations.html" style="color: #000000; font-weight: 500;">DSA Foundations page</a>.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Better Dev -- The PythonWithSean 650. Built for self-learners who grind.</p>
+  </footer>
+
+</body>
+</html>

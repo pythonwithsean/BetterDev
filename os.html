@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operating Systems - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html" class="active">OS</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Operating Systems</div>
+      <h1>Operating Systems</h1>
+      <p>How your computer actually works under the hood. Processes, syscalls, memory, concurrency, file systems -- explained so you actually understand what happens when you run a program.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Free Textbook</div>
+        <p>This page is a companion to <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/" class="resource-link" target="_blank">Operating Systems: Three Easy Pieces (OSTEP)</a> -- the best free OS textbook. Read it alongside this page for the full picture.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-with-toc">
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#what-is-os">1. What Is an OS?</a>
+        <a href="#processes">2. Processes</a>
+        <a href="#syscalls">3. System Calls</a>
+        <a href="#process-api">4. Process API (fork, exec, wait)</a>
+        <a href="#scheduling">5. CPU Scheduling</a>
+        <a href="#threads">6. Threads &amp; Concurrency</a>
+        <a href="#locks">7. Locks &amp; Synchronization</a>
+        <a href="#deadlocks">8. Deadlocks</a>
+        <a href="#memory">9. Memory &amp; Address Spaces</a>
+        <a href="#paging">10. Paging &amp; Virtual Memory</a>
+        <a href="#io">11. I/O &amp; Devices</a>
+        <a href="#filesystems">12. File Systems</a>
+        <a href="#security">13. OS Security Basics</a>
+        <a href="#linux-commands">14. Essential Linux Commands</a>
+        <a href="#quiz">15. Practice Quiz</a>
+      </div>
+    </aside>
+
+    <div class="content">
+
+      <!-- Mobile TOC -->
+      <div class="toc" style="margin-bottom: 2rem;">
+        <h4>Table of Contents</h4>
+        <a href="#what-is-os">1. What Is an OS?</a>
+        <a href="#processes">2. Processes</a>
+        <a href="#syscalls">3. System Calls</a>
+        <a href="#process-api">4. Process API (fork, exec, wait)</a>
+        <a href="#scheduling">5. CPU Scheduling</a>
+        <a href="#threads">6. Threads &amp; Concurrency</a>
+        <a href="#locks">7. Locks &amp; Synchronization</a>
+        <a href="#deadlocks">8. Deadlocks</a>
+        <a href="#memory">9. Memory &amp; Address Spaces</a>
+        <a href="#paging">10. Paging &amp; Virtual Memory</a>
+        <a href="#io">11. I/O &amp; Devices</a>
+        <a href="#filesystems">12. File Systems</a>
+        <a href="#security">13. OS Security Basics</a>
+        <a href="#linux-commands">14. Essential Linux Commands</a>
+        <a href="#quiz">15. Practice Quiz</a>
+      </div>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 1: WHAT IS AN OS?                                    -->
+<!-- ============================================================ -->
+<section id="what-is-os">
+  <h2>1. What Is an Operating System?</h2>
+
+  <p>An operating system (OS) is a piece of software that sits between your programs and the hardware. When you open a browser, type in a terminal, or save a file, your program doesn't talk to the CPU or disk directly -- it asks the OS to do it.</p>
+
+  <p>The OS has three main jobs:</p>
+
+  <ul>
+    <li><strong>Virtualisation</strong> -- make it look like each program has its own CPU and its own memory, even though they're all sharing the same physical hardware.</li>
+    <li><strong>Concurrency</strong> -- let multiple programs (and multiple threads within a program) run at the same time without stepping on each other.</li>
+    <li><strong>Persistence</strong> -- store data on disk so it survives after your program exits or the machine reboots.</li>
+  </ul>
+
+  <p>These are the "three easy pieces" from the OSTEP textbook. Every concept in this page falls into one of these three buckets.</p>
+
+  <div class="memory-diagram">
+┌─────────────────────────────────┐
+│         Your Programs           │  ← User space (your code runs here)
+│  (browser, editor, game, etc.)  │
+├─────────────────────────────────┤
+│      System Call Interface      │  ← The boundary (syscalls)
+├─────────────────────────────────┤
+│       Operating System          │  ← Kernel space (privileged code)
+│  Process mgmt | Memory | FS    │
+├─────────────────────────────────┤
+│          Hardware               │  ← CPU, RAM, Disk, Network
+│   (physical resources)          │
+└─────────────────────────────────┘</div>
+
+  <h3>User Mode vs Kernel Mode</h3>
+
+  <p>The CPU has (at minimum) two privilege levels:</p>
+
+  <ul>
+    <li><strong>User mode</strong> -- your normal programs run here. They <em>cannot</em> directly access hardware, other processes' memory, or privileged instructions. If they try, the CPU raises a fault.</li>
+    <li><strong>Kernel mode</strong> -- the OS kernel runs here. It has full access to everything: hardware registers, all memory, I/O ports.</li>
+  </ul>
+
+  <p>The only way for a user-mode program to do something privileged (open a file, allocate memory, send a network packet) is to make a <strong>system call</strong>, which we'll cover in section 3.</p>
+
+  <div class="warning-box">
+    <div class="label">Why This Matters</div>
+    <p>This separation is what keeps your computer stable. A buggy program can't crash the whole machine because it literally cannot touch hardware or other processes' memory. The OS acts as a gatekeeper.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 2: PROCESSES                                         -->
+<!-- ============================================================ -->
+<section id="processes">
+  <h2>2. Processes</h2>
+
+  <p>A <strong>process</strong> is a running program. When you double-click an app or type <code>./my_program</code> in a terminal, the OS creates a process for it. Each process gets:</p>
+
+  <ul>
+    <li>Its own <strong>address space</strong> -- its own view of memory (code, stack, heap, data)</li>
+    <li>One or more <strong>threads</strong> of execution</li>
+    <li>Open <strong>file descriptors</strong> (files, sockets, pipes it has open)</li>
+    <li>A <strong>process ID (PID)</strong> -- a unique number identifying it</li>
+    <li>A <strong>state</strong> -- running, ready, or blocked</li>
+  </ul>
+
+  <h3>Process States</h3>
+
+  <p>At any moment, a process is in one of these states:</p>
+
+  <div class="memory-diagram">
+                  ┌──────────┐
+   Created ──→   │  Ready   │ ←──────────────┐
+                  └────┬─────┘                │
+                       │ (scheduler picks it) │ (I/O completes or
+                       ▼                      │  event arrives)
+                  ┌──────────┐          ┌─────┴──────┐
+                  │ Running  │ ──────→  │  Blocked   │
+                  └────┬─────┘ (needs   └────────────┘
+                       │        I/O or
+                       │        waits)
+                       ▼
+                  ┌──────────┐
+                  │Terminated│
+                  └──────────┘</div>
+
+  <ul>
+    <li><strong>Ready</strong> -- the process could run, but the CPU is busy with another process. It's waiting in the ready queue.</li>
+    <li><strong>Running</strong> -- the process is actually executing instructions on the CPU right now.</li>
+    <li><strong>Blocked</strong> -- the process is waiting for something (disk read, network data, user input). It can't run even if the CPU is free.</li>
+  </ul>
+
+  <h3>What's Inside a Process (the PCB)</h3>
+
+  <p>The OS keeps a <strong>Process Control Block (PCB)</strong> for every process. Think of it as a struct:</p>
+
+<pre><code><span class="lang-label">Conceptual</span>
+<span class="keyword">struct</span> PCB {
+    <span class="builtin">int</span>    pid;              <span class="comment">// process ID</span>
+    <span class="builtin">int</span>    state;            <span class="comment">// READY, RUNNING, BLOCKED</span>
+    <span class="builtin">int</span>    priority;         <span class="comment">// scheduling priority</span>
+    regs_t saved_registers;  <span class="comment">// CPU registers when not running</span>
+    <span class="builtin">void</span>*  page_table;       <span class="comment">// pointer to address space info</span>
+    <span class="builtin">int</span>    open_files[<span class="number">256</span>];  <span class="comment">// file descriptor table</span>
+    pid_t  parent_pid;       <span class="comment">// who created this process</span>
+};</code></pre>
+
+  <p>When the OS switches from process A to process B (<strong>context switch</strong>), it saves A's registers into A's PCB, then loads B's registers from B's PCB. This is how the illusion of "every process has its own CPU" works.</p>
+
+  <div class="example-box">
+    <div class="label">Example: Context Switch</div>
+    <p>Process A is running. A timer interrupt fires (every ~1-10ms). The OS:</p>
+    <ol>
+      <li>Saves A's registers (program counter, stack pointer, etc.) into A's PCB</li>
+      <li>Changes A's state from RUNNING to READY</li>
+      <li>Picks process B from the ready queue</li>
+      <li>Loads B's saved registers from B's PCB</li>
+      <li>Changes B's state from READY to RUNNING</li>
+      <li>Jumps to where B left off</li>
+    </ol>
+    <p>This happens thousands of times per second. Each switch takes ~1-10 microseconds.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 3: SYSTEM CALLS                                      -->
+<!-- ============================================================ -->
+<section id="syscalls">
+  <h2>3. System Calls (Syscalls)</h2>
+
+  <p>A <strong>system call</strong> is how your program asks the OS to do something it can't do itself. Your code runs in user mode. It can't touch hardware. So when it needs to open a file, create a process, or send data over the network, it must cross the boundary into kernel mode.</p>
+
+  <h3>How a Syscall Works (Step by Step)</h3>
+
+  <div class="memory-diagram">
+Your program                    Kernel
+─────────────                   ──────
+1. Put syscall number
+   in a register (e.g. rax)
+2. Put arguments in
+   registers (rdi, rsi, rdx..)
+3. Execute special CPU
+   instruction:
+   "syscall" (x86-64)
+   "svc" (ARM)
+   "int 0x80" (old x86)
+         │
+         ▼
+   ┌─── CPU switches to ───┐
+   │    kernel mode         │
+   └────────────────────────┘
+                                4. Kernel looks up syscall
+                                   number in syscall table
+                                5. Runs the handler function
+                                   (e.g. sys_open, sys_read)
+                                6. Returns result
+         │
+         ▼
+   ┌─── CPU switches back ─┐
+   │    to user mode        │
+   └────────────────────────┘
+7. Result is in rax register
+   (or -1 for error + errno)</div>
+
+  <p>The key insight: the <code>syscall</code> instruction is a <em>hardware mechanism</em>. The CPU itself switches privilege levels. Your program can't fake being in kernel mode -- the CPU enforces the boundary.</p>
+
+  <h3>Major Syscall Categories</h3>
+
+  <table>
+    <tr><th>Category</th><th>Syscalls</th><th>What They Do</th></tr>
+    <tr><td><strong>Process</strong></td><td><code>fork</code>, <code>exec</code>, <code>wait</code>, <code>exit</code>, <code>kill</code></td><td>Create, replace, wait for, terminate processes</td></tr>
+    <tr><td><strong>File I/O</strong></td><td><code>open</code>, <code>read</code>, <code>write</code>, <code>close</code>, <code>lseek</code></td><td>Open, read, write, close files</td></tr>
+    <tr><td><strong>Memory</strong></td><td><code>mmap</code>, <code>munmap</code>, <code>brk</code></td><td>Map memory, grow/shrink heap</td></tr>
+    <tr><td><strong>Network</strong></td><td><code>socket</code>, <code>bind</code>, <code>listen</code>, <code>accept</code>, <code>connect</code></td><td>Create sockets, accept connections</td></tr>
+    <tr><td><strong>Info</strong></td><td><code>getpid</code>, <code>getuid</code>, <code>uname</code></td><td>Get process/user/system info</td></tr>
+    <tr><td><strong>Signals</strong></td><td><code>signal</code>, <code>sigaction</code>, <code>kill</code></td><td>Handle async notifications</td></tr>
+    <tr><td><strong>Directory</strong></td><td><code>mkdir</code>, <code>rmdir</code>, <code>chdir</code>, <code>getcwd</code></td><td>Manage directories</td></tr>
+  </table>
+
+  <h3>File Descriptors -- the Universal Handle</h3>
+
+  <p>When you open a file, the OS doesn't give you a pointer to the file. It gives you a small integer called a <strong>file descriptor (fd)</strong>. This is an index into a per-process table of open files.</p>
+
+  <p>Every process starts with three file descriptors already open:</p>
+
+  <div class="formula-box">
+fd 0 = stdin   (standard input -- keyboard by default)
+fd 1 = stdout  (standard output -- terminal by default)
+fd 2 = stderr  (standard error -- terminal by default)
+  </div>
+
+  <p>When you call <code>open("myfile.txt", O_RDONLY)</code>, the kernel finds the next available fd (usually 3) and returns it. All future <code>read()</code> and <code>write()</code> calls use this fd number.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="comment">// Open a file -- returns a file descriptor (small int)</span>
+<span class="builtin">int</span> fd = <span class="function">open</span>(<span class="string">"data.txt"</span>, O_RDONLY);
+<span class="keyword">if</span> (fd == -<span class="number">1</span>) {
+    <span class="function">perror</span>(<span class="string">"open failed"</span>);  <span class="comment">// prints human-readable error</span>
+    <span class="keyword">return</span> <span class="number">1</span>;
+}
+
+<span class="comment">// Read up to 1024 bytes from the file</span>
+<span class="builtin">char</span> buf[<span class="number">1024</span>];
+ssize_t bytes_read = <span class="function">read</span>(fd, buf, <span class="keyword">sizeof</span>(buf));
+
+<span class="comment">// Write to stdout (fd 1)</span>
+<span class="function">write</span>(<span class="number">1</span>, buf, bytes_read);
+
+<span class="comment">// Always close when done</span>
+<span class="function">close</span>(fd);</code></pre>
+
+  <div class="tip-box">
+    <div class="label">Everything is a File</div>
+    <p>Unix's big insight: files, pipes, sockets, terminals, and even devices all use the same <code>read()</code>/<code>write()</code>/<code>close()</code> interface with file descriptors. That's why the same code can read from a file, a network connection, or a pipe -- the fd abstracts the details away.</p>
+  </div>
+
+  <h3>Syscalls vs Library Functions</h3>
+
+  <p>Don't confuse syscalls with C library (libc) functions:</p>
+
+  <ul>
+    <li><code>printf()</code> is a <strong>library function</strong> -- it formats your string in user space, then eventually calls the <code>write()</code> <strong>syscall</strong> to actually output it.</li>
+    <li><code>malloc()</code> is a <strong>library function</strong> -- it manages a pool of memory in user space, and only calls <code>brk()</code> or <code>mmap()</code> syscalls when it needs more from the OS.</li>
+    <li><code>fopen()</code> is a library wrapper around the <code>open()</code> syscall that adds buffering.</li>
+  </ul>
+
+  <p>Library functions are faster because they avoid the user-to-kernel mode switch. Syscalls are expensive (hundreds of nanoseconds each), so libc batches operations to minimise them.</p>
+
+  <div class="example-box">
+    <div class="label">Example: Tracing Syscalls</div>
+    <p>You can see every syscall a program makes using <code>strace</code> on Linux:</p>
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># See all syscalls made by ls</span>
+$ strace ls
+
+<span class="comment"># Count syscalls by type</span>
+$ strace -c ls
+
+<span class="comment"># Trace only file-related syscalls</span>
+$ strace -e trace=file ls
+
+<span class="comment"># Trace a running process by PID</span>
+$ strace -p 1234</code></pre>
+    <p>Try <code>strace -c echo "hello"</code> -- you'll see it makes about 30 syscalls just to print one word. Most are setup (loading libraries, setting up memory).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 4: PROCESS API                                       -->
+<!-- ============================================================ -->
+<section id="process-api">
+  <h2>4. Process API (fork, exec, wait)</h2>
+
+  <p>In Unix/Linux, you create processes using three syscalls that work together: <code>fork()</code>, <code>exec()</code>, and <code>wait()</code>. This design seems odd at first, but it's incredibly powerful.</p>
+
+  <h3>fork() -- Clone Yourself</h3>
+
+  <p><code>fork()</code> creates an <em>exact copy</em> of the current process. The new process (child) gets a copy of the parent's memory, file descriptors, and code. Both processes continue from the same line -- the line after <code>fork()</code>.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;unistd.h&gt;</span>
+
+<span class="builtin">int</span> <span class="function">main</span>() {
+    <span class="function">printf</span>(<span class="string">"Before fork (PID %d)\n"</span>, <span class="function">getpid</span>());
+
+    pid_t pid = <span class="function">fork</span>();
+
+    <span class="keyword">if</span> (pid == <span class="number">0</span>) {
+        <span class="comment">// This runs in the CHILD process</span>
+        <span class="function">printf</span>(<span class="string">"I am the child!  PID = %d, parent = %d\n"</span>,
+               <span class="function">getpid</span>(), <span class="function">getppid</span>());
+    } <span class="keyword">else if</span> (pid > <span class="number">0</span>) {
+        <span class="comment">// This runs in the PARENT process</span>
+        <span class="function">printf</span>(<span class="string">"I am the parent! PID = %d, child = %d\n"</span>,
+               <span class="function">getpid</span>(), pid);
+    } <span class="keyword">else</span> {
+        <span class="comment">// fork() failed</span>
+        <span class="function">perror</span>(<span class="string">"fork"</span>);
+    }
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+  <div class="memory-diagram">
+Before fork():
+  Parent (PID 100) ──→ running main()
+
+After fork():
+  Parent (PID 100) ──→ pid = 200 (child's PID)
+  Child  (PID 200) ──→ pid = 0   (that's how it knows it's the child)</div>
+
+  <p>The trick: <code>fork()</code> returns <strong>twice</strong> -- once in the parent (returns child's PID) and once in the child (returns 0). That's how each process knows who it is.</p>
+
+  <h3>exec() -- Replace Yourself</h3>
+
+  <p><code>exec()</code> replaces the current process's code and memory with a new program. It loads a different executable and starts running it from its <code>main()</code>. The PID stays the same.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;unistd.h&gt;</span>
+
+<span class="builtin">int</span> <span class="function">main</span>() {
+    pid_t pid = <span class="function">fork</span>();
+
+    <span class="keyword">if</span> (pid == <span class="number">0</span>) {
+        <span class="comment">// Child: replace myself with "ls -la"</span>
+        <span class="function">execlp</span>(<span class="string">"ls"</span>, <span class="string">"ls"</span>, <span class="string">"-la"</span>, NULL);
+
+        <span class="comment">// If we get here, exec failed</span>
+        <span class="function">perror</span>(<span class="string">"exec failed"</span>);
+    }
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+  <div class="warning-box">
+    <div class="label">Key Insight</div>
+    <p><code>exec()</code> never returns on success -- the old program is completely gone, replaced by the new one. Any code after <code>exec()</code> only runs if exec failed.</p>
+  </div>
+
+  <h3>wait() -- Wait for Your Child</h3>
+
+  <p><code>wait()</code> blocks the parent until a child process finishes. This lets you run something and get its exit code.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdlib.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;unistd.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;sys/wait.h&gt;</span>
+
+<span class="builtin">int</span> <span class="function">main</span>() {
+    pid_t pid = <span class="function">fork</span>();
+
+    <span class="keyword">if</span> (pid == <span class="number">0</span>) {
+        <span class="comment">// Child</span>
+        <span class="function">printf</span>(<span class="string">"Child doing work...\n"</span>);
+        <span class="function">sleep</span>(<span class="number">2</span>);
+        <span class="function">printf</span>(<span class="string">"Child done!\n"</span>);
+        <span class="function">exit</span>(<span class="number">42</span>);  <span class="comment">// exit with code 42</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// Parent waits for child</span>
+        <span class="builtin">int</span> status;
+        <span class="function">waitpid</span>(pid, &amp;status, <span class="number">0</span>);
+
+        <span class="keyword">if</span> (<span class="function">WIFEXITED</span>(status)) {
+            <span class="function">printf</span>(<span class="string">"Child exited with code %d\n"</span>,
+                   <span class="function">WEXITSTATUS</span>(status));  <span class="comment">// prints 42</span>
+        }
+    }
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+  <h3>How a Shell Works (Putting It Together)</h3>
+
+  <p>Now you can understand how bash/zsh actually works. When you type <code>ls -la</code> in a shell:</p>
+
+  <div class="memory-diagram">
+Shell (PID 100)
+  │
+  ├─ 1. Read your command: "ls -la"
+  ├─ 2. fork()  ──→  Child (PID 200) created
+  │                    │
+  │                    ├─ 3. exec("ls", "ls", "-la")
+  │                    │      (child becomes ls)
+  │                    ├─ 4. ls runs, prints output
+  │                    └─ 5. ls exits
+  │
+  ├─ 6. wait() returns (child done)
+  └─ 7. Print prompt, go to step 1</div>
+
+  <p>This fork+exec pattern is also why redirection (<code>></code>, <code><</code>, <code>|</code>) works. Between the <code>fork()</code> and <code>exec()</code>, the shell can manipulate the child's file descriptors (close stdout, open a file on fd 1) before the new program starts. The new program inherits the modified file descriptors and doesn't even know its output is going to a file instead of the terminal.</p>
+
+  <div class="tip-box">
+    <div class="label">Zombie Processes</div>
+    <p>If a child exits but its parent never calls <code>wait()</code>, the child becomes a <strong>zombie</strong> -- it's dead but its PCB entry stays in the process table (so the parent can check its exit code later). Zombies waste a slot in the process table. If the parent dies too, <code>init</code> (PID 1) adopts the orphan and reaps it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 5: CPU SCHEDULING                                    -->
+<!-- ============================================================ -->
+<section id="scheduling">
+  <h2>5. CPU Scheduling</h2>
+
+  <p>The CPU can only run one process at a time (per core). The <strong>scheduler</strong> decides which process runs next and for how long. The goal: make it feel like everything runs simultaneously.</p>
+
+  <h3>Key Metrics</h3>
+
+  <ul>
+    <li><strong>Turnaround time</strong> = completion time - arrival time (how long from submission to finish)</li>
+    <li><strong>Response time</strong> = first-run time - arrival time (how long until first interaction)</li>
+    <li><strong>Fairness</strong> -- every process gets a reasonable share of CPU</li>
+  </ul>
+
+  <h3>Scheduling Algorithms</h3>
+
+  <table>
+    <tr><th>Algorithm</th><th>How It Works</th><th>Pros / Cons</th></tr>
+    <tr>
+      <td><strong>FIFO</strong></td>
+      <td>First come, first served. Run each job to completion.</td>
+      <td>Simple. But a long job blocks everything behind it (<em>convoy effect</em>).</td>
+    </tr>
+    <tr>
+      <td><strong>SJF</strong></td>
+      <td>Shortest Job First. Run the shortest job next.</td>
+      <td>Optimal turnaround time. But you can't always predict job length.</td>
+    </tr>
+    <tr>
+      <td><strong>Round Robin</strong></td>
+      <td>Give each process a fixed <em>time slice</em> (quantum, e.g. 10ms). Rotate through the ready queue.</td>
+      <td>Good response time. Fair. But poor turnaround for long jobs.</td>
+    </tr>
+    <tr>
+      <td><strong>MLFQ</strong></td>
+      <td>Multi-Level Feedback Queue. Multiple priority queues. New jobs start at highest priority. If a job uses its full time slice, it moves down. I/O-bound jobs stay high.</td>
+      <td>Best of both worlds -- responsive to interactive tasks AND handles long jobs. Used by real OSes.</td>
+    </tr>
+  </table>
+
+  <div class="example-box">
+    <div class="label">Example: Round Robin with quantum = 2</div>
+    <p>Three processes arrive at time 0: A (needs 5 units), B (needs 3 units), C (needs 1 unit).</p>
+<pre><code><span class="lang-label">Timeline</span>
+Time:  0  1  2  3  4  5  6  7  8
+CPU:   A  A  B  B  C  A  A  B  A
+       └──┘  └──┘  │  └──┘  │  │
+       A:2   B:2   C done  B done  A done
+                    t=5     t=8    t=9</code></pre>
+    <p>C finishes at time 5, B at time 8, A at time 9. Compare with FIFO (A, B, C): C wouldn't start until time 8!</p>
+  </div>
+
+  <h3>Preemption</h3>
+
+  <p>Modern schedulers are <strong>preemptive</strong> -- they can forcibly stop a running process and switch to another. This uses a hardware <strong>timer interrupt</strong> that fires periodically (every 1-10ms). When it fires, the OS gets control and can decide to switch processes. Without preemption, a process could hog the CPU forever.</p>
+
+  <div class="tip-box">
+    <div class="label">Linux Uses CFS</div>
+    <p>Linux uses the <strong>Completely Fair Scheduler (CFS)</strong>. It tracks how much CPU time each process has gotten ("virtual runtime") and always runs the process with the <em>least</em> virtual runtime. This ensures fairness over time. It uses a red-black tree to pick the next process in O(log n).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 6: THREADS & CONCURRENCY                             -->
+<!-- ============================================================ -->
+<section id="threads">
+  <h2>6. Threads &amp; Concurrency</h2>
+
+  <p>A <strong>thread</strong> is a lightweight unit of execution within a process. One process can have multiple threads, and they all share the same address space (code, heap, global data). Each thread has its own <strong>stack</strong> and <strong>registers</strong>.</p>
+
+  <h3>Processes vs Threads</h3>
+
+  <table>
+    <tr><th>Aspect</th><th>Process</th><th>Thread</th></tr>
+    <tr><td>Memory</td><td>Separate address space</td><td>Shared address space</td></tr>
+    <tr><td>Creation cost</td><td>Expensive (copy page table)</td><td>Cheap (just a new stack)</td></tr>
+    <tr><td>Communication</td><td>IPC needed (pipes, sockets)</td><td>Read/write shared memory directly</td></tr>
+    <tr><td>Crash impact</td><td>One crash doesn't affect others</td><td>One crash kills all threads in process</td></tr>
+    <tr><td>Context switch</td><td>Slow (switch page table)</td><td>Fast (same page table)</td></tr>
+  </table>
+
+  <div class="memory-diagram">
+Process (PID 100)
+┌──────────────────────────────────┐
+│  Code (shared)                   │
+│  Heap (shared)                   │
+│  Global data (shared)            │
+│                                  │
+│  ┌──────┐  ┌──────┐  ┌──────┐   │
+│  │Stack │  │Stack │  │Stack │   │
+│  │  T1  │  │  T2  │  │  T3  │   │
+│  └──────┘  └──────┘  └──────┘   │
+│  Thread 1  Thread 2  Thread 3   │
+└──────────────────────────────────┘</div>
+
+  <h3>Why Threads Are Useful</h3>
+
+  <ul>
+    <li><strong>Parallelism</strong> -- on a multi-core CPU, threads can run on different cores simultaneously. A 4-core machine can truly run 4 threads at once.</li>
+    <li><strong>Avoiding blocking</strong> -- if one thread is waiting for I/O, other threads keep running. A web server uses one thread per connection so slow clients don't block fast ones.</li>
+    <li><strong>Sharing state</strong> -- threads can share data structures without the complexity of inter-process communication.</li>
+  </ul>
+
+  <h3>Creating Threads (pthreads)</h3>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;pthread.h&gt;</span>
+
+<span class="builtin">void</span>* <span class="function">worker</span>(<span class="builtin">void</span>* arg) {
+    <span class="builtin">int</span> id = *(<span class="builtin">int</span>*)arg;
+    <span class="function">printf</span>(<span class="string">"Thread %d running\n"</span>, id);
+    <span class="keyword">return</span> NULL;
+}
+
+<span class="builtin">int</span> <span class="function">main</span>() {
+    pthread_t threads[<span class="number">4</span>];
+    <span class="builtin">int</span> ids[<span class="number">4</span>] = {<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>};
+
+    <span class="keyword">for</span> (<span class="builtin">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {
+        <span class="function">pthread_create</span>(&amp;threads[i], NULL, worker, &amp;ids[i]);
+    }
+
+    <span class="comment">// Wait for all threads to finish</span>
+    <span class="keyword">for</span> (<span class="builtin">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {
+        <span class="function">pthread_join</span>(threads[i], NULL);
+    }
+    <span class="function">printf</span>(<span class="string">"All threads done\n"</span>);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</code></pre>
+
+  <p>Compile with: <code>gcc -pthread thread_example.c -o thread_example</code></p>
+
+  <h3>The Concurrency Problem: Race Conditions</h3>
+
+  <p>Shared memory is both the best and worst thing about threads. If two threads modify the same variable without coordination, you get a <strong>race condition</strong>.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="builtin">int</span> counter = <span class="number">0</span>;  <span class="comment">// shared between threads</span>
+
+<span class="builtin">void</span>* <span class="function">increment</span>(<span class="builtin">void</span>* arg) {
+    <span class="keyword">for</span> (<span class="builtin">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++) {
+        counter++;  <span class="comment">// NOT atomic! This is actually 3 steps:</span>
+                    <span class="comment">//   1. Load counter from memory into register</span>
+                    <span class="comment">//   2. Add 1 to register</span>
+                    <span class="comment">//   3. Store register back to memory</span>
+    }
+    <span class="keyword">return</span> NULL;
+}
+
+<span class="comment">// If 2 threads run increment(), you'd expect counter = 2,000,000</span>
+<span class="comment">// But you'll get something less -- maybe 1,500,000 -- because</span>
+<span class="comment">// the threads interleave those 3 steps unpredictably</span></code></pre>
+
+  <div class="memory-diagram">
+Thread A                Thread B
+─────────               ─────────
+load counter (= 5)
+                        load counter (= 5)
+add 1 (= 6)
+                        add 1 (= 6)
+store counter (= 6)
+                        store counter (= 6)  ← LOST UPDATE!
+
+Both threads incremented, but counter only went from 5 to 6, not 5 to 7.</div>
+
+  <p>This is why we need locks and synchronisation, covered in the next section.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 7: LOCKS & SYNCHRONIZATION                           -->
+<!-- ============================================================ -->
+<section id="locks">
+  <h2>7. Locks &amp; Synchronization</h2>
+
+  <p>A <strong>lock</strong> (mutex) ensures that only one thread can access a shared resource at a time. The pattern is always the same:</p>
+
+  <div class="formula-box">
+lock(&amp;mutex);
+// critical section -- only one thread at a time here
+// access shared data safely
+unlock(&amp;mutex);
+  </div>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;pthread.h&gt;</span>
+
+<span class="builtin">int</span> counter = <span class="number">0</span>;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
+<span class="builtin">void</span>* <span class="function">increment</span>(<span class="builtin">void</span>* arg) {
+    <span class="keyword">for</span> (<span class="builtin">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++) {
+        <span class="function">pthread_mutex_lock</span>(&amp;lock);
+        counter++;  <span class="comment">// safe now -- only one thread at a time</span>
+        <span class="function">pthread_mutex_unlock</span>(&amp;lock);
+    }
+    <span class="keyword">return</span> NULL;
+}
+<span class="comment">// Now 2 threads will correctly produce counter = 2,000,000</span></code></pre>
+
+  <h3>Condition Variables</h3>
+
+  <p>Sometimes a thread needs to <em>wait</em> for a condition, not just for a lock. A <strong>condition variable</strong> lets a thread sleep until another thread signals it.</p>
+
+  <p>Classic pattern: producer/consumer queue.</p>
+
+<pre><code><span class="lang-label">C</span>
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t  cond = PTHREAD_COND_INITIALIZER;
+<span class="builtin">int</span> ready = <span class="number">0</span>;
+
+<span class="comment">// Thread A: producer</span>
+<span class="function">pthread_mutex_lock</span>(&amp;lock);
+ready = <span class="number">1</span>;
+<span class="function">pthread_cond_signal</span>(&amp;cond);   <span class="comment">// wake up the consumer</span>
+<span class="function">pthread_mutex_unlock</span>(&amp;lock);
+
+<span class="comment">// Thread B: consumer</span>
+<span class="function">pthread_mutex_lock</span>(&amp;lock);
+<span class="keyword">while</span> (!ready) {                <span class="comment">// always use while, not if</span>
+    <span class="function">pthread_cond_wait</span>(&amp;cond, &amp;lock);  <span class="comment">// releases lock, sleeps, re-acquires</span>
+}
+<span class="comment">// ready == 1 here, process the data</span>
+<span class="function">pthread_mutex_unlock</span>(&amp;lock);</code></pre>
+
+  <div class="warning-box">
+    <div class="label">Always Use while, Not if</div>
+    <p>Use <code>while (!condition)</code>, never <code>if (!condition)</code> before <code>cond_wait</code>. The thread can be woken <em>spuriously</em> (without the condition actually being true). The while loop rechecks and goes back to sleep if it was a false alarm.</p>
+  </div>
+
+  <h3>Semaphores</h3>
+
+  <p>A <strong>semaphore</strong> is a generalised lock with a counter. A mutex is a semaphore with value 1. A semaphore with value N lets N threads in simultaneously.</p>
+
+  <div class="formula-box">
+sem_wait(&amp;sem):  if sem > 0, decrement and continue. If sem == 0, block.
+sem_post(&amp;sem):  increment sem. If threads are waiting, wake one up.
+  </div>
+
+  <p>Use case: limit concurrent database connections to 10.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> <span class="string">&lt;semaphore.h&gt;</span>
+
+sem_t pool;
+<span class="function">sem_init</span>(&amp;pool, <span class="number">0</span>, <span class="number">10</span>);  <span class="comment">// allow 10 concurrent connections</span>
+
+<span class="comment">// Each worker thread:</span>
+<span class="function">sem_wait</span>(&amp;pool);      <span class="comment">// decrement (blocks if 0)</span>
+<span class="comment">// ... use the connection ...</span>
+<span class="function">sem_post</span>(&amp;pool);      <span class="comment">// increment (wake up a waiter)</span></code></pre>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 8: DEADLOCKS                                         -->
+<!-- ============================================================ -->
+<section id="deadlocks">
+  <h2>8. Deadlocks</h2>
+
+  <p>A <strong>deadlock</strong> occurs when two or more threads are each waiting for a resource held by another, and none can make progress. Everyone's stuck forever.</p>
+
+  <div class="memory-diagram">
+Thread A                    Thread B
+────────                    ────────
+lock(mutex1)    ✓
+                            lock(mutex2)    ✓
+lock(mutex2)    BLOCKED!
+    (waiting for B)         lock(mutex1)    BLOCKED!
+                                (waiting for A)
+
+    ──→ DEADLOCK! Neither can proceed.</div>
+
+  <h3>Four Conditions for Deadlock</h3>
+
+  <p>ALL four must be true simultaneously for deadlock to occur (Coffman conditions):</p>
+
+  <ol>
+    <li><strong>Mutual exclusion</strong> -- resources can't be shared (only one thread holds a lock at a time)</li>
+    <li><strong>Hold and wait</strong> -- a thread holds one resource while waiting for another</li>
+    <li><strong>No preemption</strong> -- you can't forcibly take a lock from a thread</li>
+    <li><strong>Circular wait</strong> -- A waits for B, B waits for C, C waits for A</li>
+  </ol>
+
+  <p>Break any one condition and deadlock becomes impossible.</p>
+
+  <h3>Prevention Strategies</h3>
+
+  <table>
+    <tr><th>Strategy</th><th>How</th><th>Breaks Which Condition</th></tr>
+    <tr><td>Lock ordering</td><td>Always acquire locks in the same global order</td><td>Circular wait</td></tr>
+    <tr><td>Lock all at once</td><td>Grab all needed locks atomically before doing work</td><td>Hold and wait</td></tr>
+    <tr><td>Try-lock</td><td>Use <code>trylock()</code> -- if you can't get the lock, release everything and retry</td><td>Hold and wait</td></tr>
+    <tr><td>Single lock</td><td>Use one big lock instead of many fine-grained ones</td><td>Circular wait (but hurts performance)</td></tr>
+  </table>
+
+  <div class="tip-box">
+    <div class="label">Practical Advice</div>
+    <p><strong>Lock ordering</strong> is the most common real-world solution. If every thread always locks mutex1 before mutex2, circular wait is impossible. Assign a global order to all locks and enforce it everywhere.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 9: MEMORY & ADDRESS SPACES                           -->
+<!-- ============================================================ -->
+<section id="memory">
+  <h2>9. Memory &amp; Address Spaces</h2>
+
+  <p>Every process thinks it has its own private, contiguous block of memory starting at address 0. This is a <strong>virtual address space</strong> -- an illusion created by the OS and hardware.</p>
+
+  <h3>Layout of a Process's Address Space</h3>
+
+  <div class="memory-diagram">
+High addresses
+┌─────────────────────────┐ 0xFFFFFFFF...
+│         Stack           │ ← Local variables, function call frames
+│           ↓             │    Grows downward
+│                         │
+│       (free space)      │
+│                         │
+│           ↑             │
+│          Heap           │ ← malloc/new allocations
+│                         │    Grows upward
+├─────────────────────────┤
+│     BSS (uninit data)   │ ← Global vars initialized to 0
+├─────────────────────────┤
+│     Data (init data)    │ ← Global vars with initial values
+├─────────────────────────┤
+│         Code            │ ← Your compiled machine instructions
+│        (Text)           │    (read-only)
+└─────────────────────────┘ 0x00000000
+Low addresses</div>
+
+  <h3>Virtual vs Physical Addresses</h3>
+
+  <p>When your program accesses address <code>0x00401000</code>, that's a <strong>virtual address</strong>. The CPU's Memory Management Unit (MMU) translates it to a <strong>physical address</strong> in actual RAM. Different processes can use the same virtual address but they map to different physical locations.</p>
+
+  <div class="memory-diagram">
+Process A                        Physical RAM
+Virtual addr 0x1000  ──────→    Physical addr 0x50000
+Virtual addr 0x2000  ──────→    Physical addr 0x80000
+
+Process B
+Virtual addr 0x1000  ──────→    Physical addr 0xA0000  (different!)
+Virtual addr 0x2000  ──────→    Physical addr 0xC0000  (different!)</div>
+
+  <p>This is why processes can't read each other's memory -- their virtual address 0x1000 maps to completely different physical locations.</p>
+
+  <h3>Stack vs Heap</h3>
+
+  <table>
+    <tr><th>Stack</th><th>Heap</th></tr>
+    <tr><td>Automatic allocation/deallocation</td><td>Manual (<code>malloc</code>/<code>free</code>, <code>new</code>/<code>delete</code>)</td></tr>
+    <tr><td>Very fast (just move stack pointer)</td><td>Slower (search for free block)</td></tr>
+    <tr><td>Fixed size (~1-8 MB typically)</td><td>Can grow to fill available memory</td></tr>
+    <tr><td>Local variables, function args</td><td>Dynamic data, objects, arrays of unknown size</td></tr>
+    <tr><td>LIFO order</td><td>Any order</td></tr>
+  </table>
+
+  <h3>The malloc/free Dance</h3>
+
+  <p><code>malloc()</code> doesn't always make a syscall. It manages a <em>free list</em> of previously-freed blocks in user space. Only when it runs out does it call <code>sbrk()</code> or <code>mmap()</code> to ask the kernel for more memory.</p>
+
+<pre><code><span class="lang-label">C</span>
+<span class="comment">// Allocate 100 ints on the heap</span>
+<span class="builtin">int</span>* arr = <span class="function">malloc</span>(<span class="number">100</span> * <span class="keyword">sizeof</span>(<span class="builtin">int</span>));
+<span class="keyword">if</span> (!arr) { <span class="comment">/* out of memory */</span> }
+
+arr[<span class="number">0</span>] = <span class="number">42</span>;
+arr[<span class="number">99</span>] = <span class="number">99</span>;
+
+<span class="comment">// MUST free when done -- OS doesn't free it for you (until process exits)</span>
+<span class="function">free</span>(arr);
+arr = NULL;  <span class="comment">// good practice: avoid dangling pointer</span></code></pre>
+
+  <div class="warning-box">
+    <div class="label">Common Memory Bugs</div>
+    <ul>
+      <li><strong>Memory leak</strong> -- <code>malloc()</code> without <code>free()</code>. Memory usage grows forever.</li>
+      <li><strong>Use after free</strong> -- access memory after <code>free()</code>. Undefined behavior.</li>
+      <li><strong>Double free</strong> -- call <code>free()</code> twice on the same pointer. Corrupts the allocator.</li>
+      <li><strong>Buffer overflow</strong> -- write past the end of an array. Can overwrite other data or code.</li>
+    </ul>
+    <p>Use <code>valgrind</code> to detect these: <code>valgrind ./my_program</code></p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 10: PAGING & VIRTUAL MEMORY                          -->
+<!-- ============================================================ -->
+<section id="paging">
+  <h2>10. Paging &amp; Virtual Memory</h2>
+
+  <p>The OS divides both virtual and physical memory into fixed-size chunks called <strong>pages</strong> (typically 4 KB). The mapping from virtual pages to physical frames is stored in a <strong>page table</strong>.</p>
+
+  <h3>Address Translation</h3>
+
+  <div class="formula-box">
+Virtual address = Page Number + Offset within page
+
+Example with 4 KB (4096-byte) pages:
+  Virtual address 0x00005A30
+  Page number = 0x00005A30 / 4096 = 0x5  (page 5)
+  Offset      = 0x00005A30 % 4096 = 0xA30 (byte 2608 within the page)
+
+  Look up page 5 in page table → physical frame 0x7C
+  Physical address = 0x7C * 4096 + 0xA30 = 0x7CA30
+  </div>
+
+  <h3>Page Table Entry</h3>
+
+  <p>Each entry in the page table contains:</p>
+
+  <ul>
+    <li><strong>Physical frame number</strong> -- where this page lives in RAM</li>
+    <li><strong>Valid bit</strong> -- is this page actually in RAM? (0 = not mapped or swapped out)</li>
+    <li><strong>Protection bits</strong> -- read/write/execute permissions</li>
+    <li><strong>Dirty bit</strong> -- has this page been modified? (needs writing to disk before eviction)</li>
+    <li><strong>Referenced bit</strong> -- has this page been accessed recently?</li>
+  </ul>
+
+  <h3>TLB -- Making It Fast</h3>
+
+  <p>Looking up the page table on every memory access would be unbearably slow. The <strong>Translation Lookaside Buffer (TLB)</strong> is a tiny, ultra-fast cache inside the CPU that stores recent page-to-frame translations.</p>
+
+  <div class="memory-diagram">
+CPU generates virtual address
+         │
+         ▼
+    ┌─────────┐   HIT (fast path, ~1 ns)
+    │   TLB   │ ──────────────────────→ Physical address → RAM
+    └────┬────┘
+         │ MISS
+         ▼
+    ┌──────────┐
+    │Page Table│ ──→ Physical address → RAM
+    │ (in RAM) │     (also update TLB for next time)
+    └──────────┘</div>
+
+  <p>TLB hit rates are typically 99%+. A TLB miss costs ~10-100 ns (page table walk). A page fault (page not in RAM at all) costs ~1-10 ms (load from disk).</p>
+
+  <h3>Page Faults &amp; Swapping</h3>
+
+  <p>If a page's valid bit is 0, accessing it causes a <strong>page fault</strong>. The OS handles it:</p>
+
+  <ol>
+    <li>Program accesses a virtual address whose page isn't in RAM</li>
+    <li>CPU raises a page fault exception</li>
+    <li>OS checks: is this a valid address? If not → segfault (kill the process)</li>
+    <li>If valid but swapped to disk → OS finds a free frame (or evicts another page)</li>
+    <li>OS reads the page from disk into the free frame</li>
+    <li>OS updates the page table entry with the new frame number</li>
+    <li>Process resumes the instruction that faulted</li>
+  </ol>
+
+  <p>This is how you can use more memory than you physically have -- the OS transparently swaps pages to/from disk. But disk is ~100,000x slower than RAM, so heavy swapping (thrashing) makes everything crawl.</p>
+
+  <div class="tip-box">
+    <div class="label">Why Programs Start Slowly</div>
+    <p>When you launch a program, the OS doesn't load all its pages into RAM immediately. It uses <strong>demand paging</strong> -- pages are only loaded when first accessed. That's why the first run of a function is slower (page fault) but subsequent runs are fast (page already in RAM).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 11: I/O & DEVICES                                    -->
+<!-- ============================================================ -->
+<section id="io">
+  <h2>11. I/O &amp; Devices</h2>
+
+  <p>The OS manages all hardware devices: disks, keyboards, network cards, GPUs, USB devices. Programs never talk to devices directly -- they go through the OS using syscalls and device drivers.</p>
+
+  <h3>How I/O Works</h3>
+
+  <p>There are two main approaches:</p>
+
+  <ul>
+    <li><strong>Polling (programmed I/O)</strong> -- the CPU repeatedly checks "is the device ready yet?" Wastes CPU cycles spinning in a loop.</li>
+    <li><strong>Interrupts</strong> -- the device notifies the CPU when it's done by sending an <em>interrupt</em>. The CPU can do other work while waiting. This is what modern systems use.</li>
+  </ul>
+
+  <div class="memory-diagram">
+Polling:                          Interrupts:
+CPU: "Ready?" → No               CPU: "Start read" → does other work
+CPU: "Ready?" → No                    ...
+CPU: "Ready?" → No               Device: "INTERRUPT! Data ready"
+CPU: "Ready?" → Yes!             CPU: handles data
+CPU: reads data
+
+(wastes CPU)                      (efficient)</div>
+
+  <h3>DMA (Direct Memory Access)</h3>
+
+  <p>For large data transfers (reading a file from disk), the CPU doesn't copy each byte itself. Instead, it sets up a <strong>DMA controller</strong> that transfers data directly from the device to RAM. The CPU is free to run other processes during the transfer. When DMA finishes, it sends an interrupt.</p>
+
+  <h3>Device Drivers</h3>
+
+  <p>Each hardware device has a <strong>driver</strong> -- kernel code that knows how to talk to that specific device. The OS provides a standard interface (read, write, ioctl) and the driver translates to device-specific commands. About 70% of OS code is device drivers.</p>
+
+  <div class="memory-diagram">
+Application
+    │ read(fd, buf, n)
+    ▼
+Generic File System Layer
+    │
+    ▼
+Device Driver (e.g., NVMe driver)
+    │ sends specific hardware commands
+    ▼
+Physical Device (SSD)</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 12: FILE SYSTEMS                                     -->
+<!-- ============================================================ -->
+<section id="filesystems">
+  <h2>12. File Systems</h2>
+
+  <p>A file system organises data on disk into files and directories. It answers: where on the physical disk is byte 50,000 of <code>/home/you/report.pdf</code>?</p>
+
+  <h3>Key Abstractions</h3>
+
+  <ul>
+    <li><strong>File</strong> -- a named sequence of bytes. Nothing more. The OS doesn't care what's in it (text, binary, image). That's the application's job.</li>
+    <li><strong>Directory</strong> -- a special file that contains a list of (name, inode number) pairs.</li>
+    <li><strong>Inode</strong> -- a data structure that stores a file's metadata (size, permissions, timestamps) and the locations of its data blocks on disk. Every file has exactly one inode.</li>
+  </ul>
+
+  <h3>Inode Structure</h3>
+
+  <div class="memory-diagram">
+Inode #42
+┌──────────────────────────┐
+│ type: regular file       │
+│ size: 15,360 bytes       │
+│ permissions: rwxr-xr-x   │
+│ owner: user1             │
+│ timestamps: ctime/mtime  │
+│ link count: 1            │
+├──────────────────────────┤
+│ direct pointers:         │
+│   block 100              │  → 4 KB of data
+│   block 204              │  → 4 KB of data
+│   block 307              │  → 4 KB of data (last ~3 KB)
+│   ...                    │
+├──────────────────────────┤
+│ indirect pointer → block │  → points to block of pointers
+│ double indirect  → block │  → points to blocks of pointers
+│ triple indirect  → block │  → for very large files
+└──────────────────────────┘</div>
+
+  <p>Small files (a few KB) use direct pointers. Large files use indirect pointers (a block that contains more pointers). This is how Unix handles files from 1 byte to terabytes with the same inode structure.</p>
+
+  <h3>Creating a File (What Actually Happens)</h3>
+
+  <p>When you run <code>touch newfile.txt</code>:</p>
+
+  <ol>
+    <li>OS finds a free inode in the inode bitmap</li>
+    <li>Initialises the inode (size=0, permissions, timestamps)</li>
+    <li>Adds entry <code>("newfile.txt", inode_number)</code> to the parent directory</li>
+    <li>Updates the parent directory's modification time</li>
+  </ol>
+
+  <p>When you write data to it, the OS also allocates data blocks from the data bitmap.</p>
+
+  <h3>Hard Links vs Symbolic Links</h3>
+
+  <table>
+    <tr><th>Hard Link</th><th>Symbolic (Soft) Link</th></tr>
+    <tr><td>Another directory entry pointing to the same inode</td><td>A separate file whose content is a path to the target</td></tr>
+    <tr><td>Same file, different name. Deleting one name doesn't delete the data (until link count = 0)</td><td>A shortcut. If the target is deleted, the symlink is broken</td></tr>
+    <tr><td>Can't cross filesystem boundaries</td><td>Can point anywhere, even across filesystems</td></tr>
+    <tr><td><code>ln original.txt hardlink.txt</code></td><td><code>ln -s original.txt symlink.txt</code></td></tr>
+  </table>
+
+  <h3>Crash Consistency: Journaling</h3>
+
+  <p>What if the machine crashes mid-write? A file system write might need to update 3 things: the inode, a data block, and the bitmap. If only some of these complete before the crash, the disk is inconsistent.</p>
+
+  <p><strong>Journaling</strong> (used by ext4, NTFS, HFS+) solves this:</p>
+
+  <ol>
+    <li>Write a <strong>journal entry</strong> describing all planned changes</li>
+    <li>Write the journal entry to a special area on disk</li>
+    <li>Commit the journal entry (mark it complete)</li>
+    <li>Apply the changes to the actual file system locations</li>
+    <li>Delete the journal entry</li>
+  </ol>
+
+  <p>If the machine crashes at any point, on reboot the OS replays any committed journal entries. This guarantees the file system is always consistent.</p>
+
+  <div class="tip-box">
+    <div class="label">Common Linux File Systems</div>
+    <ul>
+      <li><strong>ext4</strong> -- the default. Journaling, mature, reliable. Good for most uses.</li>
+      <li><strong>XFS</strong> -- good for large files and parallel I/O. Used by many servers.</li>
+      <li><strong>Btrfs</strong> -- copy-on-write, snapshots, checksums. Modern but less battle-tested.</li>
+      <li><strong>tmpfs</strong> -- in-memory filesystem. Files in <code>/tmp</code> often live here (super fast, lost on reboot).</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 13: OS SECURITY BASICS                               -->
+<!-- ============================================================ -->
+<section id="security">
+  <h2>13. OS Security Basics</h2>
+
+  <p>The OS is the ultimate gatekeeper. Every security boundary on your machine is enforced by the kernel.</p>
+
+  <h3>Users &amp; Permissions</h3>
+
+  <p>Every file has an owner, a group, and permission bits:</p>
+
+  <div class="formula-box">
+-rwxr-xr-- 1 alice devs 4096 Jan 15 10:30 script.sh
+│├─┤├─┤├─┤
+│ │  │  └── Others: read only (r--)
+│ │  └───── Group (devs): read + execute (r-x)
+│ └──────── Owner (alice): read + write + execute (rwx)
+└────────── File type: - = regular, d = directory, l = symlink
+  </div>
+
+  <p>Numeric form: r=4, w=2, x=1. So <code>rwxr-xr--</code> = 754.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Change permissions</span>
+chmod 755 script.sh      <span class="comment"># rwxr-xr-x</span>
+chmod u+x script.sh      <span class="comment"># add execute for owner</span>
+chmod go-w secret.txt    <span class="comment"># remove write for group and others</span>
+
+<span class="comment"># Change ownership</span>
+chown alice:devs file.txt
+
+<span class="comment"># The root user (UID 0) bypasses all permission checks</span></code></pre>
+
+  <h3>Privilege Escalation</h3>
+
+  <ul>
+    <li><strong>setuid bit</strong> -- when set on an executable, it runs as the file's <em>owner</em>, not the user who launched it. This is how <code>passwd</code> (owned by root) can modify <code>/etc/shadow</code> even when run by a normal user. <code>chmod u+s file</code></li>
+    <li><strong>sudo</strong> -- runs a single command as root, after checking <code>/etc/sudoers</code>.</li>
+    <li><strong>capabilities</strong> -- fine-grained alternative to root. Instead of all-or-nothing, a process can be granted just the ability to bind to low ports, or just the ability to read raw packets.</li>
+  </ul>
+
+  <h3>Process Isolation</h3>
+
+  <p>The OS enforces isolation between processes via:</p>
+
+  <ul>
+    <li><strong>Virtual memory</strong> -- each process has its own page table. Process A literally cannot address Process B's memory.</li>
+    <li><strong>User/kernel mode</strong> -- user-mode code cannot execute privileged instructions.</li>
+    <li><strong>File permissions</strong> -- processes inherit the UID of the user who launched them and can only access files that user has permission for.</li>
+    <li><strong>Namespaces</strong> (Linux) -- isolate what a process can see: its own PID space, network stack, mount points. This is the foundation of containers (Docker).</li>
+    <li><strong>cgroups</strong> (Linux) -- limit how much CPU, memory, and I/O a process can use.</li>
+  </ul>
+
+  <div class="warning-box">
+    <div class="label">Buffer Overflows &amp; Security</div>
+    <p>A buffer overflow in C/C++ can let an attacker overwrite the return address on the stack, redirecting execution to malicious code. Modern defenses:</p>
+    <ul>
+      <li><strong>ASLR</strong> -- randomise memory layout so attackers can't predict addresses.</li>
+      <li><strong>Stack canaries</strong> -- place a known value before the return address; detect overwrites.</li>
+      <li><strong>NX bit</strong> -- mark the stack as non-executable so injected code can't run.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 14: ESSENTIAL LINUX COMMANDS                         -->
+<!-- ============================================================ -->
+<section id="linux-commands">
+  <h2>14. Essential Linux Commands</h2>
+
+  <p>These commands let you observe and control everything we've discussed. Every developer should know these.</p>
+
+  <h3>Process Commands</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># List all processes</span>
+ps aux
+
+<span class="comment"># Interactive process viewer (top on steroids)</span>
+htop
+
+<span class="comment"># Show process tree (parent-child relationships)</span>
+pstree -p
+
+<span class="comment"># Send signals to processes</span>
+kill -SIGTERM 1234    <span class="comment"># politely ask PID 1234 to exit</span>
+kill -SIGKILL 1234    <span class="comment"># forcibly kill (can't be caught)</span>
+kill -SIGSTOP 1234    <span class="comment"># pause the process</span>
+kill -SIGCONT 1234    <span class="comment"># resume the process</span>
+
+<span class="comment"># Run a process in the background</span>
+./long_task &amp;
+
+<span class="comment"># See what syscalls a process is making</span>
+strace -p 1234
+
+<span class="comment"># See open files and sockets for a process</span>
+lsof -p 1234</code></pre>
+
+  <h3>Memory Commands</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Show system memory usage</span>
+free -h
+
+<span class="comment"># Show memory map of a process</span>
+cat /proc/1234/maps
+
+<span class="comment"># Show memory usage per process</span>
+ps aux --sort=-%mem | head
+
+<span class="comment"># Check for memory leaks</span>
+valgrind --leak-check=full ./my_program</code></pre>
+
+  <h3>Filesystem Commands</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Show disk usage</span>
+df -h               <span class="comment"># filesystem-level</span>
+du -sh /path/to/dir <span class="comment"># directory-level</span>
+
+<span class="comment"># Show inode info</span>
+stat filename        <span class="comment"># shows inode number, size, permissions, timestamps</span>
+ls -i                <span class="comment"># show inode numbers in listing</span>
+
+<span class="comment"># Show mounted filesystems</span>
+mount | column -t
+lsblk                <span class="comment"># show block devices</span>
+
+<span class="comment"># File type detection</span>
+file mystery_file    <span class="comment"># "ELF 64-bit executable" or "ASCII text" etc.</span></code></pre>
+
+  <h3>Network Commands</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Show open ports and connections</span>
+ss -tulnp            <span class="comment"># (or netstat -tulnp on older systems)</span>
+
+<span class="comment"># Show network interfaces</span>
+ip addr
+
+<span class="comment"># DNS lookup</span>
+dig example.com
+
+<span class="comment"># Trace network path</span>
+traceroute example.com</code></pre>
+
+  <h3>The /proc Filesystem</h3>
+
+  <p><code>/proc</code> is a virtual filesystem -- it doesn't exist on disk. It's the kernel exposing its internal data structures as files. Everything about your running system is in here.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Info about process 1234</span>
+/proc/1234/status   <span class="comment"># state, memory, threads</span>
+/proc/1234/cmdline  <span class="comment"># command that started it</span>
+/proc/1234/maps     <span class="comment"># memory map (every region of the address space)</span>
+/proc/1234/fd/      <span class="comment"># directory of open file descriptors (symlinks to files)</span>
+
+<span class="comment"># System-wide info</span>
+/proc/cpuinfo       <span class="comment"># CPU details</span>
+/proc/meminfo       <span class="comment"># memory details</span>
+/proc/uptime        <span class="comment"># how long the system has been running</span></code></pre>
+
+  <div class="tip-box">
+    <div class="label">OSTEP Labs</div>
+    <p>The OSTEP textbook has excellent hands-on labs where you write parts of an OS. If you want to really understand this stuff, do the projects at <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/" class="resource-link" target="_blank">pages.cs.wisc.edu/~remzi/OSTEP/</a>. The xv6 labs (a teaching OS written in C for RISC-V) are especially valuable.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 15: QUIZ                                             -->
+<!-- ============================================================ -->
+<section id="quiz">
+  <h2>15. Practice Quiz</h2>
+
+  <div class="quiz">
+    <div class="quiz-q" data-answer="1">
+      <h4>Q1: What is the only way for a user-mode program to perform a privileged operation (like opening a file)?</h4>
+      <button onclick="checkAnswer(this, 0)">Directly access the hardware registers</button>
+      <button onclick="checkAnswer(this, 1)">Make a system call</button>
+      <button onclick="checkAnswer(this, 2)">Switch to kernel mode using a special user-space function</button>
+      <button onclick="checkAnswer(this, 3)">Ask another process to do it</button>
+      <div class="explanation">System calls are the only gate from user mode to kernel mode. The CPU instruction (syscall/svc/int) triggers a hardware-enforced privilege switch. User-mode code cannot directly access hardware or switch to kernel mode on its own.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <h4>Q2: What does fork() return to the child process?</h4>
+      <button onclick="checkAnswer(this, 0)">The parent's PID</button>
+      <button onclick="checkAnswer(this, 1)">The child's own PID</button>
+      <button onclick="checkAnswer(this, 2)">0</button>
+      <button onclick="checkAnswer(this, 3)">-1</button>
+      <div class="explanation">fork() returns 0 to the child process and the child's PID to the parent process. This is how each process knows which one it is after the fork. -1 means fork failed.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <h4>Q3: What are the standard file descriptors 0, 1, and 2?</h4>
+      <button onclick="checkAnswer(this, 0)">stdin, stderr, stdout</button>
+      <button onclick="checkAnswer(this, 1)">stdout, stdin, stderr</button>
+      <button onclick="checkAnswer(this, 2)">stderr, stdout, stdin</button>
+      <button onclick="checkAnswer(this, 3)">stdin, stdout, stderr</button>
+      <div class="explanation">fd 0 = stdin (standard input), fd 1 = stdout (standard output), fd 2 = stderr (standard error). This convention is universal across Unix/Linux.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <h4>Q4: Two threads try to increment a shared counter 1,000,000 times each. Without synchronisation, the final count is likely:</h4>
+      <button onclick="checkAnswer(this, 0)">Exactly 2,000,000</button>
+      <button onclick="checkAnswer(this, 1)">Less than 2,000,000 (unpredictable)</button>
+      <button onclick="checkAnswer(this, 2)">Exactly 1,000,000</button>
+      <button onclick="checkAnswer(this, 3)">The program crashes</button>
+      <div class="explanation">Without a lock, the increment operation (load, add, store) is not atomic. Threads interleave these steps, causing lost updates. The result is less than 2,000,000 and different each run -- a classic race condition.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <h4>Q5: Which scheduling algorithm gives each process a fixed time slice and rotates through the ready queue?</h4>
+      <button onclick="checkAnswer(this, 0)">Round Robin</button>
+      <button onclick="checkAnswer(this, 1)">Shortest Job First</button>
+      <button onclick="checkAnswer(this, 2)">FIFO</button>
+      <button onclick="checkAnswer(this, 3)">Priority Scheduling</button>
+      <div class="explanation">Round Robin gives each process a quantum (time slice). When it expires, the process goes to the back of the queue and the next one runs. It's fair and gives good response time.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <h4>Q6: What is a page fault?</h4>
+      <button onclick="checkAnswer(this, 0)">An error in the page table data structure</button>
+      <button onclick="checkAnswer(this, 1)">When a process tries to access another process's memory</button>
+      <button onclick="checkAnswer(this, 2)">When a process accesses a virtual page that isn't currently in physical RAM</button>
+      <button onclick="checkAnswer(this, 3)">When the TLB runs out of entries</button>
+      <div class="explanation">A page fault occurs when the accessed page's valid bit is 0 (not in RAM). The OS handles it by loading the page from disk (or killing the process if the address is invalid). This is how demand paging and swapping work.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <h4>Q7: What is the purpose of journaling in a file system?</h4>
+      <button onclick="checkAnswer(this, 0)">Speed up file reads by caching</button>
+      <button onclick="checkAnswer(this, 1)">Ensure consistency after a crash by logging changes before applying them</button>
+      <button onclick="checkAnswer(this, 2)">Encrypt file data for security</button>
+      <button onclick="checkAnswer(this, 3)">Compress files to save disk space</button>
+      <div class="explanation">Journaling writes planned changes to a log before applying them. If the system crashes mid-write, the journal is replayed on reboot to bring the filesystem to a consistent state. ext4, NTFS, and HFS+ all use journaling.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <h4>Q8: Which of these is NOT one of the four conditions required for deadlock?</h4>
+      <button onclick="checkAnswer(this, 0)">Mutual exclusion</button>
+      <button onclick="checkAnswer(this, 1)">Hold and wait</button>
+      <button onclick="checkAnswer(this, 2)">Circular wait</button>
+      <button onclick="checkAnswer(this, 3)">Starvation</button>
+      <div class="explanation">The four Coffman conditions are: mutual exclusion, hold and wait, no preemption, and circular wait. Starvation (a process never getting CPU time) is a different problem -- it doesn't cause deadlock.</div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+  </footer>
+
+  <script>
+  function checkAnswer(btn, idx) {
+    const q = btn.parentElement;
+    if (q.classList.contains('answered')) return;
+    q.classList.add('answered');
+    const correct = parseInt(q.dataset.answer);
+    const buttons = q.querySelectorAll('button');
+    if (idx === correct) {
+      btn.classList.add('correct');
+    } else {
+      btn.classList.add('wrong');
+      buttons[correct].classList.add('correct');
+    }
+    q.querySelector('.explanation').style.display = 'block';
+  }
+  </script>
+
+</body>
+</html>

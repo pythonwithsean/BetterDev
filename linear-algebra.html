@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Algebra - Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html" class="active">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Linear Algebra</div>
+      <h1>Linear Algebra</h1>
+      <p>Vectors, matrices, and transformations -- the math that powers everything from 3D graphics to neural networks.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#what-is-linear-algebra">1. What is Linear Algebra?</a>
+      <a href="#vectors">2. Vectors</a>
+      <a href="#matrices">3. Matrices</a>
+      <a href="#matrix-operations-cs">4. Matrix Operations for CS</a>
+      <a href="#determinant">5. Determinant</a>
+      <a href="#inverse-matrix">6. Inverse Matrix</a>
+      <a href="#eigenvalues-eigenvectors">7. Eigenvalues and Eigenvectors</a>
+      <a href="#linear-transformations">8. Linear Transformations</a>
+      <a href="#cs-applications">9. Practical CS Applications</a>
+      <a href="#practice-quiz">10. Practice Quiz</a>
+    </div>
+
+    <!-- =============================== -->
+    <!-- SECTION 1: What is Linear Algebra? -->
+    <!-- =============================== -->
+    <section id="what-is-linear-algebra">
+      <h2>1. What is Linear Algebra?</h2>
+
+      <p>
+        Linear algebra is the branch of mathematics that deals with <strong>vectors</strong> (ordered lists of numbers), <strong>matrices</strong> (grids of numbers), and <strong>linear transformations</strong> (functions that move, stretch, and rotate space). If regular algebra is about solving for one unknown number, linear algebra is about solving for many unknowns at once -- and understanding the structure of the space they live in.
+      </p>
+
+      <p>
+        Think of it this way: a single variable <code>x</code> is just a number on a number line. But in the real world, data almost never comes as a single number. An image is a grid of pixel values. A point in 3D space has three coordinates. A neural network has millions of parameters. Linear algebra gives you the tools to work with all of that at once, efficiently and elegantly.
+      </p>
+
+      <div class="tip-box">
+        <div class="label">Think of it like this</div>
+        <p>Regular algebra deals with single numbers. Linear algebra deals with <strong>lists and grids of numbers</strong>. That's it at its core. A vector is a list, a matrix is a grid, and the operations tell you how to combine and transform them.</p>
+      </div>
+
+      <h3>Why CS Needs Linear Algebra</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>CS Field</th>
+            <th>How Linear Algebra is Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Machine Learning / AI</td>
+            <td>Neural networks are built from matrix multiplications. Training involves gradient vectors. Data lives in high-dimensional vector spaces.</td>
+          </tr>
+          <tr>
+            <td>Computer Graphics</td>
+            <td>Every rotation, scaling, and projection in 3D graphics is a matrix operation. GPUs are literally designed for matrix math.</td>
+          </tr>
+          <tr>
+            <td>Game Development</td>
+            <td>Character positions are vectors. Camera angles, physics simulations, and collision detection all use linear algebra.</td>
+          </tr>
+          <tr>
+            <td>Data Science</td>
+            <td>Datasets are matrices. PCA (dimensionality reduction) uses eigenvectors. Recommendation systems use matrix factorization.</td>
+          </tr>
+          <tr>
+            <td>Image Processing</td>
+            <td>Images are matrices of pixels. Filters (blur, sharpen, edge detect) are matrix operations called convolutions.</td>
+          </tr>
+          <tr>
+            <td>Cryptography</td>
+            <td>Many encryption schemes (like Hill cipher) rely on matrix operations and modular arithmetic.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>Linear algebra has a reputation for being abstract and hard. That reputation comes from how it's traditionally taught -- theorem-proof style with no applications. On this page we focus on <strong>what things mean</strong> and <strong>how they're used in code</strong>. You will understand this.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 2: Vectors -->
+    <!-- =============================== -->
+    <section id="vectors">
+      <h2>2. Vectors</h2>
+
+      <p>
+        A <strong>vector</strong> is an ordered list of numbers. That's the whole definition. In 2D, a vector has two components. In 3D, three. In machine learning, vectors can have thousands or millions of components.
+      </p>
+
+      <div class="formula-box">
+        v = [v<sub>1</sub>, v<sub>2</sub>, v<sub>3</sub>]&nbsp;&nbsp;&nbsp;(a 3D vector)<br><br>
+        Examples:<br>
+        Position in 2D: p = [3, 5]<br>
+        RGB color: c = [255, 128, 0]<br>
+        Word embedding: w = [0.2, -0.5, 0.8, 0.1, ...]
+      </div>
+
+      <p>
+        Geometrically, you can think of a 2D or 3D vector as an arrow pointing from the origin to a point. The vector [3, 2] points 3 units right and 2 units up. But vectors don't have to be spatial -- they can represent anything: colors, audio samples, user preferences, word meanings.
+      </p>
+
+      <h3>Vector Addition and Subtraction</h3>
+
+      <p>
+        To add or subtract vectors, you just add or subtract their corresponding components. Both vectors must have the same number of components.
+      </p>
+
+      <div class="formula-box">
+        a + b = [a<sub>1</sub> + b<sub>1</sub>, a<sub>2</sub> + b<sub>2</sub>, a<sub>3</sub> + b<sub>3</sub>]<br>
+        a - b = [a<sub>1</sub> - b<sub>1</sub>, a<sub>2</sub> - b<sub>2</sub>, a<sub>3</sub> - b<sub>3</sub>]
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Vector Addition</div>
+        <p><strong>Problem:</strong> Add vectors a = [2, 5, -1] and b = [3, -2, 4]</p>
+        <p>
+          a + b = [2+3, 5+(-2), -1+4]<br>
+          a + b = [5, 3, 3]
+        </p>
+        <p><strong>CS context:</strong> If a player moves [2, 5, -1] then [3, -2, 4], their total displacement is [5, 3, 3].</p>
+      </div>
+
+      <h3>Scalar Multiplication</h3>
+
+      <p>
+        A <strong>scalar</strong> is just a regular number (as opposed to a vector). Multiplying a vector by a scalar multiplies every component by that number.
+      </p>
+
+      <div class="formula-box">
+        k * v = [k * v<sub>1</sub>, k * v<sub>2</sub>, k * v<sub>3</sub>]
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Scalar Multiplication</div>
+        <p><strong>Problem:</strong> Multiply v = [4, -2, 6] by scalar 3</p>
+        <p>
+          3 * v = [3*4, 3*(-2), 3*6]<br>
+          3 * v = [12, -6, 18]
+        </p>
+        <p><strong>CS context:</strong> Scaling a velocity vector by 3 makes the object move 3 times faster in the same direction.</p>
+      </div>
+
+      <h3>Magnitude (Length)</h3>
+
+      <p>
+        The <strong>magnitude</strong> (or length or norm) of a vector tells you how long it is. It's the distance from the origin to the point the vector represents.
+      </p>
+
+      <div class="formula-box">
+        ||v|| = &radic;(v<sub>1</sub>&sup2; + v<sub>2</sub>&sup2; + v<sub>3</sub>&sup2; + ...)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Vector Magnitude</div>
+        <p><strong>Problem:</strong> Find the magnitude of v = [3, 4]</p>
+        <p>
+          ||v|| = &radic;(3&sup2; + 4&sup2;)<br>
+          ||v|| = &radic;(9 + 16)<br>
+          ||v|| = &radic;25<br>
+          ||v|| = 5
+        </p>
+        <p><strong>CS context:</strong> If v represents a velocity, then ||v|| = 5 is the speed (how fast, ignoring direction).</p>
+      </div>
+
+      <h3>Unit Vectors</h3>
+
+      <p>
+        A <strong>unit vector</strong> is a vector with magnitude 1. It represents a pure direction with no scaling. To make any vector into a unit vector, divide it by its magnitude.
+      </p>
+
+      <div class="formula-box">
+        v&#770; = v / ||v||
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Unit Vector</div>
+        <p><strong>Problem:</strong> Find the unit vector of v = [3, 4]</p>
+        <p>
+          ||v|| = 5 (from previous example)<br>
+          v&#770; = [3/5, 4/5] = [0.6, 0.8]
+        </p>
+        <p>Check: &radic;(0.6&sup2; + 0.8&sup2;) = &radic;(0.36 + 0.64) = &radic;1 = 1</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>Unit vectors come up constantly in game dev and graphics. When you want to move a character "toward the enemy" at a fixed speed, you compute the direction vector (enemy_pos - player_pos), normalize it to a unit vector, then multiply by the speed. Direction times speed equals velocity.</p>
+      </div>
+
+      <h3>Dot Product</h3>
+
+      <p>
+        The <strong>dot product</strong> (or scalar product) takes two vectors and returns a <strong>single number</strong>. You multiply corresponding components and add them up.
+      </p>
+
+      <div class="formula-box">
+        a &middot; b = a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + a<sub>3</sub>b<sub>3</sub> + ...
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Dot Product</div>
+        <p><strong>Problem:</strong> Find the dot product of a = [2, 3, -1] and b = [4, -1, 5]</p>
+        <p>
+          a &middot; b = (2)(4) + (3)(-1) + (-1)(5)<br>
+          a &middot; b = 8 + (-3) + (-5)<br>
+          a &middot; b = 0
+        </p>
+        <p><strong>Note:</strong> When the dot product is 0, the vectors are <strong>perpendicular</strong> (orthogonal).</p>
+      </div>
+
+      <h3>Geometric Meaning of Dot Product</h3>
+
+      <p>
+        The dot product tells you how much two vectors point in the same direction. It connects to the angle between them through this formula:
+      </p>
+
+      <div class="formula-box">
+        cos(&theta;) = (a &middot; b) / (||a|| * ||b||)
+      </div>
+
+      <ul>
+        <li>If dot product > 0: vectors point roughly the <strong>same direction</strong> (angle &lt; 90 degrees)</li>
+        <li>If dot product = 0: vectors are <strong>perpendicular</strong> (angle = 90 degrees)</li>
+        <li>If dot product &lt; 0: vectors point in roughly <strong>opposite directions</strong> (angle > 90 degrees)</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Example: Angle Between Vectors</div>
+        <p><strong>Problem:</strong> Find the angle between a = [1, 0] and b = [1, 1]</p>
+        <p>
+          a &middot; b = (1)(1) + (0)(1) = 1<br>
+          ||a|| = &radic;(1 + 0) = 1<br>
+          ||b|| = &radic;(1 + 1) = &radic;2<br>
+          cos(&theta;) = 1 / (1 * &radic;2) = 1/&radic;2<br>
+          &theta; = 45 degrees
+        </p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>The dot product is everywhere in CS. In <strong>lighting calculations</strong>, you dot the surface normal with the light direction to figure out how bright a surface is. In <strong>recommendation engines</strong>, you dot a user preference vector with a product feature vector to predict how much they'll like it. In <strong>NLP</strong>, cosine similarity (which uses dot product) measures how similar two word embeddings are.</p>
+      </div>
+
+      <h3>Cross Product (3D Only)</h3>
+
+      <p>
+        The <strong>cross product</strong> takes two 3D vectors and returns a <strong>new vector</strong> that is perpendicular to both inputs. It's mainly used in 3D graphics for computing surface normals.
+      </p>
+
+      <div class="formula-box">
+        a &times; b = [<br>
+        &nbsp;&nbsp;a<sub>2</sub>b<sub>3</sub> - a<sub>3</sub>b<sub>2</sub>,<br>
+        &nbsp;&nbsp;a<sub>3</sub>b<sub>1</sub> - a<sub>1</sub>b<sub>3</sub>,<br>
+        &nbsp;&nbsp;a<sub>1</sub>b<sub>2</sub> - a<sub>2</sub>b<sub>1</sub><br>
+        ]
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Cross Product</div>
+        <p><strong>Problem:</strong> Find the cross product of a = [1, 0, 0] and b = [0, 1, 0]</p>
+        <p>
+          a &times; b = [(0)(0) - (0)(1), (0)(0) - (1)(0), (1)(1) - (0)(0)]<br>
+          a &times; b = [0, 0, 1]
+        </p>
+        <p><strong>CS context:</strong> The x-axis crossed with the y-axis gives the z-axis. This is how 3D coordinate systems are defined.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>The cross product is <strong>not commutative</strong>: a &times; b = -(b &times; a). The order matters -- it flips the direction of the result. Also, the cross product only works in 3D.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 3: Matrices -->
+    <!-- =============================== -->
+    <section id="matrices">
+      <h2>3. Matrices</h2>
+
+      <p>
+        A <strong>matrix</strong> is a rectangular grid of numbers arranged in rows and columns. Just as a vector is a list, a matrix is a table. We describe a matrix by its dimensions: an <strong>m &times; n</strong> matrix has <strong>m rows</strong> and <strong>n columns</strong>.
+      </p>
+
+      <div class="formula-box">
+        A (2&times;3 matrix) =<br><br>
+        | 1 &nbsp; 2 &nbsp; 3 |<br>
+        | 4 &nbsp; 5 &nbsp; 6 |<br><br>
+        2 rows, 3 columns
+      </div>
+
+      <p>
+        Matrices show up everywhere in CS: an image is a matrix of pixel values, a spreadsheet is a matrix, a neural network layer is defined by a weight matrix, and a 3D transformation is a 4&times;4 matrix.
+      </p>
+
+      <h3>Matrix Addition and Subtraction</h3>
+
+      <p>
+        Just like vectors, you add/subtract matrices element by element. Both matrices must have the <strong>same dimensions</strong>.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example: Matrix Addition</div>
+        <p><strong>Problem:</strong> Add matrices A and B</p>
+        <p>
+          A = | 1 &nbsp; 2 | &nbsp;&nbsp; B = | 5 &nbsp; 6 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp; 4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 7 &nbsp; 8 |<br><br>
+          A + B = | 1+5 &nbsp; 2+6 | = | 6 &nbsp;&nbsp; 8 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3+7 &nbsp; 4+8 | &nbsp;&nbsp;| 10 &nbsp; 12 |
+        </p>
+      </div>
+
+      <h3>Scalar Multiplication</h3>
+
+      <p>
+        Multiply every element in the matrix by the scalar.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example: Scalar Multiplication</div>
+        <p>
+          3 * | 1 &nbsp; 2 | = | 3 &nbsp;&nbsp; 6 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 4 &nbsp; 5 | &nbsp;&nbsp;| 12 &nbsp; 15 |
+        </p>
+      </div>
+
+      <h3>Matrix Multiplication</h3>
+
+      <p>
+        This is the big one. Matrix multiplication is <strong>not</strong> element-wise. It uses a "row times column" pattern. Each entry in the result is the <strong>dot product</strong> of a row from the first matrix with a column from the second matrix.
+      </p>
+
+      <div class="formula-box">
+        If A is m&times;n and B is n&times;p, then AB is m&times;p<br><br>
+        (AB)<sub>ij</sub> = Row i of A &middot; Column j of B<br><br>
+        Key requirement: number of columns in A must equal number of rows in B
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Critical Rule</div>
+        <p>Matrix multiplication requires the <strong>inner dimensions to match</strong>. A (2&times;<strong>3</strong>) matrix can multiply a (<strong>3</strong>&times;4) matrix, giving a (2&times;4) result. But a (2&times;3) CANNOT multiply a (2&times;4) because 3 does not equal 2.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Matrix Multiplication (Step by Step)</div>
+        <p><strong>Problem:</strong> Multiply A (2&times;3) by B (3&times;2)</p>
+        <p>
+          A = | 1 &nbsp; 2 &nbsp; 3 | &nbsp;&nbsp; B = | 7 &nbsp;&nbsp; 8 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 4 &nbsp; 5 &nbsp; 6 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 9 &nbsp;&nbsp; 10 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 11 &nbsp; 12 |<br><br>
+          Result will be 2&times;2.<br><br>
+          <strong>Position (1,1):</strong> Row 1 of A &middot; Col 1 of B<br>
+          = (1)(7) + (2)(9) + (3)(11) = 7 + 18 + 33 = <strong>58</strong><br><br>
+          <strong>Position (1,2):</strong> Row 1 of A &middot; Col 2 of B<br>
+          = (1)(8) + (2)(10) + (3)(12) = 8 + 20 + 36 = <strong>64</strong><br><br>
+          <strong>Position (2,1):</strong> Row 2 of A &middot; Col 1 of B<br>
+          = (4)(7) + (5)(9) + (6)(11) = 28 + 45 + 66 = <strong>139</strong><br><br>
+          <strong>Position (2,2):</strong> Row 2 of A &middot; Col 2 of B<br>
+          = (4)(8) + (5)(10) + (6)(12) = 32 + 50 + 72 = <strong>154</strong><br><br>
+          AB = | 58 &nbsp;&nbsp; 64 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 139 &nbsp; 154 |
+        </p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning: Not Commutative</div>
+        <p>Matrix multiplication is <strong>NOT commutative</strong>: AB does not equal BA. In fact, even if AB is defined, BA might not be (because the dimensions might not match the other way). This matters in graphics -- applying rotation then translation gives a different result than translation then rotation.</p>
+      </div>
+
+      <h3>Identity Matrix</h3>
+
+      <p>
+        The <strong>identity matrix</strong> (I) is the matrix equivalent of the number 1. It's a square matrix with 1s on the diagonal and 0s everywhere else. Multiplying any matrix by I leaves it unchanged.
+      </p>
+
+      <div class="formula-box">
+        I (3&times;3) =<br><br>
+        | 1 &nbsp; 0 &nbsp; 0 |<br>
+        | 0 &nbsp; 1 &nbsp; 0 |<br>
+        | 0 &nbsp; 0 &nbsp; 1 |<br><br>
+        A * I = A &nbsp;&nbsp; and &nbsp;&nbsp; I * A = A
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>In 3D graphics, the identity matrix represents "no transformation." When you reset a model's transform, you set it to the identity matrix. Every transformation starts from identity.</p>
+      </div>
+
+      <h3>Transpose</h3>
+
+      <p>
+        The <strong>transpose</strong> of a matrix (written A<sup>T</sup>) flips rows and columns. Row 1 becomes column 1, row 2 becomes column 2, and so on. An m&times;n matrix becomes n&times;m.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example: Transpose</div>
+        <p>
+          A = | 1 &nbsp; 2 &nbsp; 3 | &nbsp;&nbsp;&nbsp; A<sup>T</sup> = | 1 &nbsp; 4 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 4 &nbsp; 5 &nbsp; 6 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2 &nbsp; 5 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp; 6 |
+        </p>
+        <p>The 2&times;3 matrix became a 3&times;2 matrix.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Complete Matrix Operations</div>
+        <p><strong>Problem:</strong> Given A = | 2 &nbsp; 1 | and B = | 0 &nbsp; 3 |, find 2A - B</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp; 4 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1 &nbsp; 2 |</p>
+        <p>
+          <strong>Step 1:</strong> Compute 2A<br>
+          2A = | 4 &nbsp; 2 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 6 &nbsp; 8 |<br><br>
+          <strong>Step 2:</strong> Subtract B<br>
+          2A - B = | 4-0 &nbsp; 2-3 | = | 4 &nbsp; -1 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 6-1 &nbsp; 8-2 | &nbsp;&nbsp;| 5 &nbsp;&nbsp; 6 |
+        </p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 4: Matrix Operations for CS -->
+    <!-- =============================== -->
+    <section id="matrix-operations-cs">
+      <h2>4. Matrix Operations for CS</h2>
+
+      <h3>Systems of Equations as Ax = b</h3>
+
+      <p>
+        One of the most powerful uses of matrices is representing and solving systems of linear equations. Instead of writing out multiple equations, you pack everything into a single matrix equation.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Example: System to Matrix Form</div>
+        <p><strong>System of equations:</strong></p>
+        <p>
+          2x + 3y = 7<br>
+          4x - y = 1
+        </p>
+        <p><strong>Matrix form Ax = b:</strong></p>
+        <p>
+          | 2 &nbsp;&nbsp; 3 | &nbsp; | x | &nbsp;&nbsp; | 7 |<br>
+          | 4 &nbsp; -1 | * | y | = | 1 |<br><br>
+          A = coefficient matrix, x = unknowns vector, b = constants vector
+        </p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Matters</div>
+        <p>This isn't just a notation trick. Phrasing problems as Ax = b lets you use matrix operations to solve them -- and computers are incredibly fast at matrix operations. This is how physics simulators solve thousands of equations simultaneously, and how machine learning models find optimal parameters.</p>
+      </div>
+
+      <h3>Gaussian Elimination (Row Reduction)</h3>
+
+      <p>
+        <strong>Gaussian elimination</strong> is a systematic method for solving systems of equations by transforming the matrix into a simpler form. You create an <strong>augmented matrix</strong> (A with b appended) and perform row operations until the solution is clear.
+      </p>
+
+      <p>The three allowed <strong>row operations</strong> are:</p>
+      <ol>
+        <li><strong>Swap</strong> two rows</li>
+        <li><strong>Multiply</strong> a row by a nonzero constant</li>
+        <li><strong>Add</strong> a multiple of one row to another row</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="label">Example: Gaussian Elimination (Step by Step)</div>
+        <p><strong>Problem:</strong> Solve the system</p>
+        <p>
+          x + y + z = 6<br>
+          2x + 3y + z = 14<br>
+          x + y + 2z = 9
+        </p>
+        <p><strong>Step 1:</strong> Write the augmented matrix</p>
+        <p>
+          | 1 &nbsp; 1 &nbsp; 1 &nbsp; | &nbsp; 6 |<br>
+          | 2 &nbsp; 3 &nbsp; 1 &nbsp; | &nbsp; 14 |<br>
+          | 1 &nbsp; 1 &nbsp; 2 &nbsp; | &nbsp; 9 |
+        </p>
+        <p><strong>Step 2:</strong> R2 = R2 - 2*R1 (eliminate x from row 2)</p>
+        <p>
+          | 1 &nbsp; 1 &nbsp; 1 &nbsp;&nbsp; | &nbsp; 6 |<br>
+          | 0 &nbsp; 1 &nbsp; -1 &nbsp; | &nbsp; 2 |<br>
+          | 1 &nbsp; 1 &nbsp; 2 &nbsp;&nbsp; | &nbsp; 9 |
+        </p>
+        <p><strong>Step 3:</strong> R3 = R3 - R1 (eliminate x from row 3)</p>
+        <p>
+          | 1 &nbsp; 1 &nbsp; 1 &nbsp;&nbsp; | &nbsp; 6 |<br>
+          | 0 &nbsp; 1 &nbsp; -1 &nbsp; | &nbsp; 2 |<br>
+          | 0 &nbsp; 0 &nbsp; 1 &nbsp;&nbsp; | &nbsp; 3 |
+        </p>
+        <p><strong>Step 4:</strong> Back-substitute from the bottom</p>
+        <p>
+          Row 3: z = 3<br>
+          Row 2: y - z = 2 &rarr; y = 2 + 3 = 5<br>
+          Row 1: x + y + z = 6 &rarr; x = 6 - 5 - 3 = -2
+        </p>
+        <p><strong>Solution:</strong> x = -2, y = 5, z = 3</p>
+        <p><strong>Verify:</strong> (-2) + 5 + 3 = 6, 2(-2) + 3(5) + 3 = 14, (-2) + 5 + 2(3) = 9</p>
+      </div>
+
+      <h3>Row Echelon Form</h3>
+
+      <p>
+        The goal of Gaussian elimination is to reach <strong>row echelon form</strong>, where:
+      </p>
+      <ul>
+        <li>All zero rows are at the bottom</li>
+        <li>The first nonzero entry in each row (called the <strong>pivot</strong>) is to the right of the pivot in the row above</li>
+        <li>The matrix forms a "staircase" pattern</li>
+      </ul>
+
+      <div class="formula-box">
+        Row Echelon Form (staircase pattern):<br><br>
+        | <strong>1</strong> &nbsp; * &nbsp; * &nbsp; * |<br>
+        | 0 &nbsp; <strong>1</strong> &nbsp; * &nbsp; * |<br>
+        | 0 &nbsp; 0 &nbsp; <strong>1</strong> &nbsp; * |<br>
+        | 0 &nbsp; 0 &nbsp; 0 &nbsp; 0 |<br><br>
+        (* = any number, <strong>bold</strong> = pivots)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>In practice, you rarely hand-compute Gaussian elimination. Libraries like NumPy handle it. But understanding the process is essential for debugging numerical issues, understanding computational complexity (it's O(n&sup3;)), and knowing when a system has no solution or infinite solutions.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 5: Determinant -->
+    <!-- =============================== -->
+    <section id="determinant">
+      <h2>5. Determinant</h2>
+
+      <p>
+        The <strong>determinant</strong> is a single number computed from a square matrix that tells you important things about the matrix. Think of it as a measure of how much the matrix "stretches" or "squishes" space.
+      </p>
+
+      <h3>2&times;2 Determinant</h3>
+
+      <div class="formula-box">
+        For A = | a &nbsp; b |<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| c &nbsp; d |<br><br>
+        det(A) = ad - bc
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: 2&times;2 Determinant</div>
+        <p><strong>Problem:</strong> Find det(A) where A = | 3 &nbsp; 2 |</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1 &nbsp; 4 |</p>
+        <p>
+          det(A) = (3)(4) - (2)(1)<br>
+          det(A) = 12 - 2<br>
+          det(A) = <strong>10</strong>
+        </p>
+      </div>
+
+      <h3>What the Determinant Means</h3>
+
+      <p>
+        Geometrically, the determinant represents the <strong>scaling factor for area (2D) or volume (3D)</strong> when you apply the matrix as a transformation.
+      </p>
+
+      <ul>
+        <li><strong>|det| > 1:</strong> The transformation <strong>expands</strong> area/volume</li>
+        <li><strong>|det| = 1:</strong> Area/volume is <strong>preserved</strong> (like rotation)</li>
+        <li><strong>0 &lt; |det| &lt; 1:</strong> The transformation <strong>shrinks</strong> area/volume</li>
+        <li><strong>det = 0:</strong> The transformation <strong>collapses</strong> a dimension (the matrix is <strong>singular</strong>)</li>
+        <li><strong>det &lt; 0:</strong> The transformation <strong>flips</strong> orientation (like a reflection)</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Example: Determinant of a Scaling Matrix</div>
+        <p>
+          Scaling by 2 in x and 3 in y:<br>
+          A = | 2 &nbsp; 0 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 0 &nbsp; 3 |<br><br>
+          det(A) = (2)(3) - (0)(0) = 6
+        </p>
+        <p>A 1&times;1 unit square becomes a 2&times;3 rectangle. Area goes from 1 to 6. The determinant is 6.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Singular Matrix (det = 0)</div>
+        <p>
+          A = | 2 &nbsp; 4 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 1 &nbsp; 2 |<br><br>
+          det(A) = (2)(2) - (4)(1) = 4 - 4 = <strong>0</strong>
+        </p>
+        <p>This matrix has no inverse. Row 1 is just 2 times row 2 -- the rows are "linearly dependent." The transformation collapses 2D space into a line.</p>
+      </div>
+
+      <h3>3&times;3 Determinant</h3>
+
+      <p>
+        For larger matrices, you expand along a row or column (cofactor expansion). For a 3&times;3 matrix:
+      </p>
+
+      <div class="formula-box">
+        For A = | a &nbsp; b &nbsp; c |<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| d &nbsp; e &nbsp; f |<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| g &nbsp; h &nbsp; i |<br><br>
+        det(A) = a(ei - fh) - b(di - fg) + c(dh - eg)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: 3&times;3 Determinant</div>
+        <p>
+          A = | 1 &nbsp; 2 &nbsp; 3 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 4 &nbsp; 5 &nbsp; 6 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 7 &nbsp; 8 &nbsp; 0 |<br><br>
+          det(A) = 1(5*0 - 6*8) - 2(4*0 - 6*7) + 3(4*8 - 5*7)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1(0 - 48) - 2(0 - 42) + 3(32 - 35)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= -48 + 84 + (-9)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <strong>27</strong>
+        </p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>Computing determinants by cofactor expansion gets extremely expensive for large matrices -- it's O(n!) in the naive approach. Real libraries use LU decomposition (based on Gaussian elimination) which is O(n&sup3;). You should understand what determinants mean, but let NumPy compute them.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 6: Inverse Matrix -->
+    <!-- =============================== -->
+    <section id="inverse-matrix">
+      <h2>6. Inverse Matrix</h2>
+
+      <p>
+        The <strong>inverse</strong> of a matrix A, written A<sup>-1</sup>, is the matrix that "undoes" A. When you multiply A by its inverse, you get the identity matrix.
+      </p>
+
+      <div class="formula-box">
+        A * A<sup>-1</sup> = I &nbsp;&nbsp; and &nbsp;&nbsp; A<sup>-1</sup> * A = I
+      </div>
+
+      <p>
+        Think of it like division for matrices. If multiplication by A transforms space in some way, multiplication by A<sup>-1</sup> reverses that transformation exactly.
+      </p>
+
+      <h3>When Does the Inverse Exist?</h3>
+
+      <p>
+        A matrix has an inverse <strong>if and only if</strong> its determinant is not zero. If det(A) = 0, the matrix is called <strong>singular</strong> and has no inverse. This makes intuitive sense: if A collapses a dimension (det = 0), you can't recover the lost information.
+      </p>
+
+      <h3>2&times;2 Inverse Formula</h3>
+
+      <div class="formula-box">
+        For A = | a &nbsp; b | &nbsp;&nbsp; with det(A) = ad - bc &ne; 0<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| c &nbsp; d |<br><br>
+        A<sup>-1</sup> = (1 / det(A)) * | &nbsp;d &nbsp; -b |<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| -c &nbsp;&nbsp; a |<br><br>
+        Steps: swap a and d, negate b and c, divide by determinant
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Finding a 2&times;2 Inverse</div>
+        <p>
+          <strong>Problem:</strong> Find A<sup>-1</sup> where A = | 4 &nbsp; 7 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2 &nbsp; 6 |
+        </p>
+        <p>
+          <strong>Step 1:</strong> det(A) = (4)(6) - (7)(2) = 24 - 14 = 10<br><br>
+          <strong>Step 2:</strong> Apply formula<br>
+          A<sup>-1</sup> = (1/10) * | &nbsp;6 &nbsp; -7 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| -2 &nbsp;&nbsp; 4 |<br><br>
+          A<sup>-1</sup> = | &nbsp;0.6 &nbsp; -0.7 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| -0.2 &nbsp;&nbsp; 0.4 |
+        </p>
+        <p>
+          <strong>Verify:</strong> A * A<sup>-1</sup> should equal I<br>
+          | 4 &nbsp; 7 | * | &nbsp;0.6 &nbsp; -0.7 | = | 4(0.6)+7(-0.2) &nbsp;&nbsp; 4(-0.7)+7(0.4) |<br>
+          | 2 &nbsp; 6 | &nbsp;&nbsp;| -0.2 &nbsp;&nbsp; 0.4 | &nbsp;&nbsp;| 2(0.6)+6(-0.2) &nbsp;&nbsp; 2(-0.7)+6(0.4) |<br><br>
+          = | 2.4-1.4 &nbsp; -2.8+2.8 | = | 1 &nbsp; 0 |<br>
+          &nbsp;&nbsp;| 1.2-1.2 &nbsp; -1.4+2.4 | &nbsp;&nbsp;| 0 &nbsp; 1 |
+        </p>
+      </div>
+
+      <h3>Using the Inverse to Solve Systems</h3>
+
+      <p>
+        If you have the equation Ax = b and you know A<sup>-1</sup>, you can solve for x directly:
+      </p>
+
+      <div class="formula-box">
+        Ax = b<br>
+        A<sup>-1</sup>Ax = A<sup>-1</sup>b<br>
+        Ix = A<sup>-1</sup>b<br>
+        <strong>x = A<sup>-1</sup>b</strong>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Solving with Inverse</div>
+        <p><strong>Problem:</strong> Solve using the inverse from above</p>
+        <p>
+          4x + 7y = 5<br>
+          2x + 6y = 4
+        </p>
+        <p>
+          x = A<sup>-1</sup>b = | &nbsp;0.6 &nbsp; -0.7 | * | 5 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| -0.2 &nbsp;&nbsp; 0.4 | &nbsp;&nbsp;| 4 |<br><br>
+          x = | 0.6(5) + (-0.7)(4) | = | 3 - 2.8 | = | 0.2 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| -0.2(5) + 0.4(4) &nbsp;| &nbsp;&nbsp;| -1 + 1.6 | &nbsp;&nbsp;| 0.6 |
+        </p>
+        <p><strong>Solution:</strong> x = 0.2, y = 0.6</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>In practice, solving Ax = b by computing A<sup>-1</sup> explicitly is <strong>inefficient and numerically unstable</strong>. Real code uses LU decomposition or other factorization methods. In NumPy, use <code>np.linalg.solve(A, b)</code> instead of <code>np.linalg.inv(A) @ b</code>. But the inverse concept is still essential for understanding the theory.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 7: Eigenvalues and Eigenvectors -->
+    <!-- =============================== -->
+    <section id="eigenvalues-eigenvectors">
+      <h2>7. Eigenvalues and Eigenvectors</h2>
+
+      <p>
+        This is the concept that makes most students panic, but the idea is surprisingly simple. When you multiply most vectors by a matrix, they change both direction and magnitude. But some special vectors only get <strong>scaled</strong> -- they keep pointing in the same direction. These are <strong>eigenvectors</strong>, and the scaling factor is the <strong>eigenvalue</strong>.
+      </p>
+
+      <div class="formula-box">
+        Av = &lambda;v<br><br>
+        A = the matrix<br>
+        v = eigenvector (direction doesn't change)<br>
+        &lambda; = eigenvalue (the scaling factor)
+      </div>
+
+      <p>
+        In words: "When I apply transformation A to vector v, I get back the same vector v, just scaled by &lambda;."
+      </p>
+
+      <h3>How to Find Eigenvalues</h3>
+
+      <p>
+        Starting from Av = &lambda;v, we rearrange:
+      </p>
+
+      <div class="formula-box">
+        Av = &lambda;v<br>
+        Av - &lambda;v = 0<br>
+        (A - &lambda;I)v = 0<br><br>
+        For nonzero v to exist: <strong>det(A - &lambda;I) = 0</strong><br><br>
+        This is called the <strong>characteristic equation</strong>.
+        Solving it gives you the eigenvalues (&lambda; values).
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Finding Eigenvalues and Eigenvectors</div>
+        <p><strong>Problem:</strong> Find eigenvalues and eigenvectors of</p>
+        <p>
+          A = | 4 &nbsp; 1 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 2 &nbsp; 3 |
+        </p>
+        <p><strong>Step 1:</strong> Set up A - &lambda;I</p>
+        <p>
+          A - &lambda;I = | 4-&lambda; &nbsp;&nbsp; 1 &nbsp;&nbsp; |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2 &nbsp;&nbsp;&nbsp;&nbsp; 3-&lambda; |
+        </p>
+        <p><strong>Step 2:</strong> Set determinant to zero</p>
+        <p>
+          det(A - &lambda;I) = (4-&lambda;)(3-&lambda;) - (1)(2) = 0<br>
+          12 - 4&lambda; - 3&lambda; + &lambda;&sup2; - 2 = 0<br>
+          &lambda;&sup2; - 7&lambda; + 10 = 0<br>
+          (&lambda; - 5)(&lambda; - 2) = 0
+        </p>
+        <p><strong>Eigenvalues:</strong> &lambda;<sub>1</sub> = 5, &lambda;<sub>2</sub> = 2</p>
+
+        <p><strong>Step 3:</strong> Find eigenvectors for each &lambda;</p>
+
+        <p>
+          <strong>For &lambda;<sub>1</sub> = 5:</strong> Solve (A - 5I)v = 0<br>
+          | -1 &nbsp;&nbsp; 1 | * | v<sub>1</sub> | = | 0 |<br>
+          | &nbsp;2 &nbsp; -2 | &nbsp;&nbsp;| v<sub>2</sub> | &nbsp;&nbsp;| 0 |<br><br>
+          -v<sub>1</sub> + v<sub>2</sub> = 0 &rarr; v<sub>2</sub> = v<sub>1</sub><br>
+          <strong>Eigenvector:</strong> v<sub>1</sub> = [1, 1] (or any scalar multiple)
+        </p>
+
+        <p>
+          <strong>For &lambda;<sub>2</sub> = 2:</strong> Solve (A - 2I)v = 0<br>
+          | 2 &nbsp; 1 | * | v<sub>1</sub> | = | 0 |<br>
+          | 2 &nbsp; 1 | &nbsp;&nbsp;| v<sub>2</sub> | &nbsp;&nbsp;| 0 |<br><br>
+          2v<sub>1</sub> + v<sub>2</sub> = 0 &rarr; v<sub>2</sub> = -2v<sub>1</sub><br>
+          <strong>Eigenvector:</strong> v<sub>2</sub> = [1, -2] (or any scalar multiple)
+        </p>
+
+        <p><strong>Verification for &lambda;<sub>1</sub> = 5, v = [1, 1]:</strong></p>
+        <p>
+          Av = | 4 &nbsp; 1 | * | 1 | = | 5 | = 5 * | 1 | = &lambda;v
+          <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2 &nbsp; 3 | &nbsp;&nbsp;| 1 | &nbsp;&nbsp;| 5 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1 |
+        </p>
+      </div>
+
+      <h3>Why CS Cares About Eigenvalues</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Application</th>
+            <th>How Eigenvalues/Eigenvectors Are Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google PageRank</td>
+            <td>Web pages are nodes in a giant matrix. The principal eigenvector of the link matrix gives page importance rankings.</td>
+          </tr>
+          <tr>
+            <td>PCA (Data Science)</td>
+            <td>Eigenvectors of the covariance matrix point in the directions of greatest variance. This lets you reduce dimensionality while keeping the most important patterns.</td>
+          </tr>
+          <tr>
+            <td>Stability Analysis</td>
+            <td>If all eigenvalues of a system's matrix have magnitude &lt; 1, the system is stable. Used in control systems and simulation.</td>
+          </tr>
+          <tr>
+            <td>Image Compression</td>
+            <td>SVD (closely related to eigendecomposition) lets you approximate images using only the most significant components.</td>
+          </tr>
+          <tr>
+            <td>Graph Algorithms</td>
+            <td>Eigenvalues of the adjacency matrix reveal graph properties like connectivity and clustering structure (spectral graph theory).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Intuition</div>
+        <p>Think of eigenvectors as the "natural axes" of a transformation. A matrix might do complicated things to most vectors, but along its eigenvectors, the action is simple: just stretching. Eigenvalues tell you how much stretching happens along each axis. This is why they simplify so many problems -- they reveal the matrix's fundamental behavior.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 8: Linear Transformations -->
+    <!-- =============================== -->
+    <section id="linear-transformations">
+      <h2>8. Linear Transformations</h2>
+
+      <p>
+        Every matrix represents a <strong>linear transformation</strong> -- a function that takes vectors in, moves/stretches/rotates them, and outputs new vectors. When you multiply a vector by a matrix, you're applying that transformation. This is the connection between abstract matrix math and real visual/spatial effects.
+      </p>
+
+      <h3>Common 2D Transformation Matrices</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Transformation</th>
+            <th>Matrix</th>
+            <th>Effect</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Rotation by &theta;</td>
+            <td>| cos&theta; &nbsp; -sin&theta; |<br>| sin&theta; &nbsp;&nbsp; cos&theta; |</td>
+            <td>Rotates all points by angle &theta; around the origin</td>
+          </tr>
+          <tr>
+            <td>Scaling</td>
+            <td>| s<sub>x</sub> &nbsp; 0 &nbsp; |<br>| 0 &nbsp;&nbsp; s<sub>y</sub> |</td>
+            <td>Stretches x by s<sub>x</sub> and y by s<sub>y</sub></td>
+          </tr>
+          <tr>
+            <td>Reflection (x-axis)</td>
+            <td>| 1 &nbsp;&nbsp; 0 |<br>| 0 &nbsp; -1 |</td>
+            <td>Flips vertically (negates y)</td>
+          </tr>
+          <tr>
+            <td>Reflection (y-axis)</td>
+            <td>| -1 &nbsp; 0 |<br>| &nbsp;0 &nbsp; 1 |</td>
+            <td>Flips horizontally (negates x)</td>
+          </tr>
+          <tr>
+            <td>Shear (horizontal)</td>
+            <td>| 1 &nbsp; k |<br>| 0 &nbsp; 1 |</td>
+            <td>Slants by factor k along x-axis</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Example: 90-Degree Rotation</div>
+        <p><strong>Problem:</strong> Rotate the point [3, 1] by 90 degrees counterclockwise</p>
+        <p>
+          &theta; = 90 degrees, so cos(90) = 0, sin(90) = 1<br><br>
+          R = | 0 &nbsp; -1 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 1 &nbsp;&nbsp; 0 |<br><br>
+          R * [3, 1] = | 0*3 + (-1)*1 | = | -1 |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1*3 + 0*1 &nbsp;&nbsp;| &nbsp;&nbsp;| &nbsp;3 |
+        </p>
+        <p>The point [3, 1] rotated to [-1, 3]. You can verify this is correct: the distance from origin is preserved (&radic;10 in both cases), and the angle increased by 90 degrees.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example: Scaling Transformation</div>
+        <p><strong>Problem:</strong> Scale point [2, 3] by 2x horizontally and 0.5x vertically</p>
+        <p>
+          S = | 2 &nbsp;&nbsp; 0 &nbsp;&nbsp; |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;| 0 &nbsp;&nbsp; 0.5 |<br><br>
+          S * [2, 3] = | 2*2 + 0*3 &nbsp;&nbsp;&nbsp;| = | 4 &nbsp;&nbsp; |<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 0*2 + 0.5*3 | &nbsp;&nbsp;| 1.5 |
+        </p>
+        <p>The x-coordinate doubled and the y-coordinate halved.</p>
+      </div>
+
+      <h3>Composition = Matrix Multiplication</h3>
+
+      <p>
+        Here's the elegant part: applying two transformations in sequence is the same as multiplying their matrices together. If you want to first scale, then rotate, you compute R * S and use the resulting matrix.
+      </p>
+
+      <div class="formula-box">
+        Apply S first, then R:<br>
+        result = R * (S * v) = (R * S) * v<br><br>
+        The combined transformation matrix is: T = R * S<br><br>
+        Order matters! R*S (scale then rotate) is different from S*R (rotate then scale)
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>When composing transformations, read right to left. In T = R * S, the vector first gets multiplied by S (scaling), then the result gets multiplied by R (rotation). The rightmost matrix acts first. This trips up everyone at first.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>In 3D graphics, objects go through a chain of transformations: <strong>Model</strong> (position in world) &rarr; <strong>View</strong> (camera perspective) &rarr; <strong>Projection</strong> (3D to 2D screen). The MVP matrix (Model-View-Projection) is the product of all three. GPUs compute millions of these matrix multiplications per frame -- it's what they're built for.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 9: Practical CS Applications -->
+    <!-- =============================== -->
+    <section id="cs-applications">
+      <h2>9. Practical CS Applications</h2>
+
+      <h3>Neural Networks</h3>
+
+      <p>
+        A neural network layer is fundamentally a matrix multiplication followed by an activation function. The <strong>weights</strong> between layers form a matrix. The <strong>forward pass</strong> (computing the output) is just repeated matrix-vector multiplication.
+      </p>
+
+      <div class="formula-box">
+        Layer output = activation(W * x + b)<br><br>
+        W = weight matrix (learned during training)<br>
+        x = input vector<br>
+        b = bias vector<br>
+        activation = nonlinear function (ReLU, sigmoid, etc.)
+      </div>
+
+      <p>
+        Training adjusts the weights using <strong>gradients</strong> (vectors of partial derivatives), and the gradient computation involves matrix transposes and chain-rule multiplications. The entire deep learning stack is linear algebra plus calculus.
+      </p>
+
+      <h3>Image Processing</h3>
+
+      <p>
+        A grayscale image is literally a matrix where each entry is a pixel brightness (0-255). Color images are three matrices stacked (R, G, B channels). <strong>Convolution</strong> -- the core operation in image filters and CNNs -- slides a small matrix (the <strong>kernel</strong>) across the image and computes dot products at each position.
+      </p>
+
+      <div class="formula-box">
+        Edge detection kernel:&nbsp;&nbsp;&nbsp;&nbsp;Blur kernel:<br><br>
+        | -1 &nbsp; -1 &nbsp; -1 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1/9 &nbsp; 1/9 &nbsp; 1/9 |<br>
+        | -1 &nbsp;&nbsp; 8 &nbsp; -1 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1/9 &nbsp; 1/9 &nbsp; 1/9 |<br>
+        | -1 &nbsp; -1 &nbsp; -1 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1/9 &nbsp; 1/9 &nbsp; 1/9 |
+      </div>
+
+      <h3>Recommendation Systems</h3>
+
+      <p>
+        Netflix, Spotify, and Amazon use <strong>matrix factorization</strong> for recommendations. You have a giant matrix of users &times; items, mostly empty (users have only rated a few things). The trick: decompose this into two smaller matrices -- one capturing user preferences, one capturing item features. The product approximates the full matrix, filling in the blanks with predictions.
+      </p>
+
+      <div class="formula-box">
+        R &asymp; U * V<sup>T</sup><br><br>
+        R = ratings matrix (users &times; items, mostly unknown)<br>
+        U = user matrix (users &times; features)<br>
+        V = item matrix (items &times; features)<br><br>
+        Predicted rating for user i, item j = row i of U &middot; row j of V
+      </div>
+
+      <h3>3D Graphics Pipeline</h3>
+
+      <p>
+        Every vertex in a 3D scene goes through a chain of 4&times;4 matrix transformations. Using 4&times;4 matrices (instead of 3&times;3) through a technique called <strong>homogeneous coordinates</strong> lets you represent translation as a matrix multiplication too.
+      </p>
+
+      <div class="formula-box">
+        final_position = Projection * View * Model * vertex_position<br><br>
+        Model: object's position, rotation, scale in the world<br>
+        View: where the camera is and which direction it's looking<br>
+        Projection: converts 3D to 2D (perspective or orthographic)
+      </div>
+
+      <h3>Python / NumPy Code Example</h3>
+
+      <pre><code><span class="lang-label">Python</span><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="comment"># --- Vectors ---</span>
+a = np.array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>])
+b = np.array([<span class="number">4</span>, <span class="number">-1</span>, <span class="number">5</span>])
+
+<span class="builtin">print</span>(<span class="string">"Addition:"</span>, a + b)          <span class="comment"># [6, 2, 4]</span>
+<span class="builtin">print</span>(<span class="string">"Dot product:"</span>, np.dot(a, b)) <span class="comment"># 0 (perpendicular!)</span>
+<span class="builtin">print</span>(<span class="string">"Magnitude:"</span>, np.linalg.norm(a)) <span class="comment"># 3.742</span>
+
+<span class="comment"># --- Matrices ---</span>
+A = np.array([[<span class="number">1</span>, <span class="number">2</span>],
+              [<span class="number">3</span>, <span class="number">4</span>]])
+B = np.array([[<span class="number">5</span>, <span class="number">6</span>],
+              [<span class="number">7</span>, <span class="number">8</span>]])
+
+<span class="builtin">print</span>(<span class="string">"Matrix multiply:"</span>, A @ B)  <span class="comment"># @ is matrix multiply</span>
+<span class="builtin">print</span>(<span class="string">"Transpose:"</span>, A.T)
+<span class="builtin">print</span>(<span class="string">"Determinant:"</span>, np.linalg.det(A))  <span class="comment"># -2.0</span>
+<span class="builtin">print</span>(<span class="string">"Inverse:"</span>, np.linalg.inv(A))
+
+<span class="comment"># --- Solving Ax = b ---</span>
+A = np.array([[<span class="number">2</span>, <span class="number">3</span>],
+              [<span class="number">4</span>, <span class="number">-1</span>]])
+b = np.array([<span class="number">7</span>, <span class="number">1</span>])
+
+x = np.linalg.solve(A, b)  <span class="comment"># Better than inv(A) @ b</span>
+<span class="builtin">print</span>(<span class="string">"Solution:"</span>, x)  <span class="comment"># [1. 1.667]</span>
+
+<span class="comment"># --- Eigenvalues ---</span>
+A = np.array([[<span class="number">4</span>, <span class="number">1</span>],
+              [<span class="number">2</span>, <span class="number">3</span>]])
+eigenvalues, eigenvectors = np.linalg.eig(A)
+<span class="builtin">print</span>(<span class="string">"Eigenvalues:"</span>, eigenvalues)    <span class="comment"># [5. 2.]</span>
+<span class="builtin">print</span>(<span class="string">"Eigenvectors:"</span>, eigenvectors)  <span class="comment"># columns are eigenvectors</span>
+
+<span class="comment"># --- 2D Rotation ---</span>
+<span class="keyword">import</span> math
+theta = math.radians(<span class="number">90</span>)
+R = np.array([[math.cos(theta), -math.sin(theta)],
+              [math.sin(theta),  math.cos(theta)]])
+point = np.array([<span class="number">3</span>, <span class="number">1</span>])
+<span class="builtin">print</span>(<span class="string">"Rotated:"</span>, R @ point)  <span class="comment"># [-1, 3]</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">CS Tip</div>
+        <p>NumPy's <code>@</code> operator is matrix multiplication (same as <code>np.matmul</code>). The <code>*</code> operator on arrays is element-wise multiplication, which is NOT the same thing. This distinction trips up beginners constantly. Use <code>@</code> for matrix math, <code>*</code> for element-wise operations.</p>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION 10: Practice Quiz -->
+    <!-- =============================== -->
+    <section id="practice-quiz">
+      <h2>10. Practice Quiz</h2>
+
+      <p>Test your understanding of the key linear algebra concepts. Click the answer you think is correct.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q1: What is the dot product of a = [1, 3, -2] and b = [4, -1, 5]?</h4>
+          <button onclick="checkAnswer(this, false)">A) [4, -3, -10]</button>
+          <button onclick="checkAnswer(this, false)">B) 11</button>
+          <button onclick="checkAnswer(this, true)">C) -9</button>
+          <button onclick="checkAnswer(this, false)">D) 9</button>
+          <div class="explanation">
+            <strong>Answer: C) -9</strong><br>
+            a &middot; b = (1)(4) + (3)(-1) + (-2)(5) = 4 - 3 - 10 = -9.<br>
+            Option A is wrong because the dot product returns a single number, not a vector.
+            The dot product is a sum of element-wise products.
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q2: If A is a 3&times;4 matrix and B is a 4&times;2 matrix, what is the size of AB?</h4>
+          <button onclick="checkAnswer(this, true)">A) 3&times;2</button>
+          <button onclick="checkAnswer(this, false)">B) 4&times;4</button>
+          <button onclick="checkAnswer(this, false)">C) 3&times;4</button>
+          <button onclick="checkAnswer(this, false)">D) Not defined</button>
+          <div class="explanation">
+            <strong>Answer: A) 3&times;2</strong><br>
+            Matrix multiplication (m&times;n)(n&times;p) = (m&times;p). Here (3&times;4)(4&times;2) = 3&times;2.
+            The inner dimensions (4 and 4) must match (they do), and you take the outer dimensions for the result.
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q3: What does a determinant of 0 tell you about a matrix?</h4>
+          <button onclick="checkAnswer(this, false)">A) The matrix is the identity matrix</button>
+          <button onclick="checkAnswer(this, false)">B) The matrix represents a rotation</button>
+          <button onclick="checkAnswer(this, true)">C) The matrix has no inverse (singular)</button>
+          <button onclick="checkAnswer(this, false)">D) The matrix is symmetric</button>
+          <div class="explanation">
+            <strong>Answer: C) The matrix has no inverse (singular)</strong><br>
+            When det(A) = 0, the matrix collapses at least one dimension (it squishes space to a lower dimension).
+            This means the transformation loses information and cannot be reversed. Therefore, A<sup>-1</sup> does not exist.
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q4: In the equation Av = &lambda;v, what is &lambda;?</h4>
+          <button onclick="checkAnswer(this, false)">A) An eigenvector</button>
+          <button onclick="checkAnswer(this, true)">B) An eigenvalue (the scalar that the eigenvector is scaled by)</button>
+          <button onclick="checkAnswer(this, false)">C) The determinant of A</button>
+          <button onclick="checkAnswer(this, false)">D) The inverse of A</button>
+          <div class="explanation">
+            <strong>Answer: B) An eigenvalue</strong><br>
+            In Av = &lambda;v, when you apply matrix A to eigenvector v, the vector keeps its direction
+            but gets scaled by the factor &lambda;. This scalar &lambda; is called the eigenvalue. Each eigenvalue has
+            a corresponding eigenvector (or family of eigenvectors).
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" data-answered="">
+          <h4>Q5: In a neural network, what role does a weight matrix W play in the equation output = activation(Wx + b)?</h4>
+          <button onclick="checkAnswer(this, false)">A) It stores the training data</button>
+          <button onclick="checkAnswer(this, true)">B) It applies a linear transformation to the input vector</button>
+          <button onclick="checkAnswer(this, false)">C) It computes the determinant of the input</button>
+          <button onclick="checkAnswer(this, false)">D) It normalizes the input to unit length</button>
+          <div class="explanation">
+            <strong>Answer: B) It applies a linear transformation to the input vector</strong><br>
+            The weight matrix W transforms the input x through matrix-vector multiplication. This is a linear
+            transformation -- it rotates, scales, and projects the input into a new space. The bias b shifts the result,
+            and the activation function adds the nonlinearity that lets neural networks learn complex patterns.
+            Training adjusts W so this transformation becomes useful for the task.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered) return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

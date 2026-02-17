@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrays &amp; Strings - Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html" class="active">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Arrays &amp; Strings</div>
+      <h1>Arrays &amp; Strings</h1>
+      <p>The most fundamental data structure in programming. Master arrays and you have the foundation for everything else in DSA.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#what-is-array">1. What is an Array?</a>
+      <a href="#time-complexity">2. Time Complexity</a>
+      <a href="#basic-operations">3. Basic Operations with Code</a>
+      <a href="#techniques">4. Common Array Techniques</a>
+      <a href="#strings">5. Strings</a>
+      <a href="#leetcode">6. LeetCode Problems to Practice</a>
+      <a href="#quiz">7. Practice Quiz</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: What is an Array? -->
+    <!-- ============================================================ -->
+    <section id="what-is-array">
+      <h2>1. What is an Array?</h2>
+
+      <p>
+        An <strong>array</strong> is a collection of elements stored in <strong>contiguous (adjacent) memory locations</strong>. Because the elements sit right next to each other in memory, you can jump to any element instantly if you know its index. This is why array access is O(1) -- the computer calculates the exact memory address with simple arithmetic.
+      </p>
+
+      <div class="formula-box">
+        address(arr[i]) = base_address + (i * element_size)
+      </div>
+
+      <h3>Fixed-Size vs Dynamic Arrays</h3>
+      <p>
+        In low-level languages like C or Java, arrays have a <strong>fixed size</strong> -- you declare how many elements they hold at creation and that is it. You cannot grow or shrink them.
+      </p>
+      <p>
+        In Python and JavaScript, you work with <strong>dynamic arrays</strong> (Python's <code>list</code>, JavaScript's <code>Array</code>). These automatically resize when you add more elements than the current capacity allows. Under the hood, they allocate a new, larger block of memory and copy everything over. This resizing is why appending is <strong>O(1) amortized</strong> -- most appends are instant, but occasionally one triggers a costly resize.
+      </p>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>Do not confuse "array" in C (fixed, contiguous, typed) with Python's <code>list</code> (dynamic, can hold mixed types). When interviewers say "array," they typically mean the logical concept -- an indexed, ordered collection -- regardless of language.</p>
+      </div>
+
+      <h3>Memory Layout</h3>
+      <p>Here is how an array of integers looks in memory. Each cell is the same size, and the index determines the offset from the base address:</p>
+
+      <div class="memory-diagram">
+  Memory Address:  0x1000    0x1004    0x1008    0x100C    0x1010
+                 +----------+----------+----------+----------+----------+
+  arr =          |    10    |    20    |    30    |    40    |    50    |
+                 +----------+----------+----------+----------+----------+
+  Index:            [0]        [1]        [2]        [3]        [4]
+
+  To access arr[3]:
+    address = 0x1000 + (3 * 4 bytes) = 0x100C  -->  value: 40
+    This is why random access is O(1) -- just one multiplication and one addition.
+      </div>
+
+      <h3>Why O(1) Random Access Matters</h3>
+      <p>
+        Because every element is the same size and stored contiguously, accessing <code>arr[0]</code> and <code>arr[999999]</code> takes the exact same amount of time. No scanning, no traversal -- just a direct memory lookup. This is the superpower of arrays compared to linked lists, where you would need to walk through every node.
+      </p>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Arrays are cache-friendly. Because elements are adjacent in memory, your CPU cache loads nearby elements automatically. Iterating through an array is one of the fastest operations a computer can do.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: Time Complexity -->
+    <!-- ============================================================ -->
+    <section id="time-complexity">
+      <h2>2. Time Complexity</h2>
+
+      <p>Understanding the time complexity of every operation is critical. This table is your cheat sheet for array operations:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Fixed-Size Array</th>
+            <th>Dynamic Array</th>
+            <th>Why?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Access by index</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>Direct address calculation</td>
+          </tr>
+          <tr>
+            <td>Search (unsorted)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>Must check each element</td>
+          </tr>
+          <tr>
+            <td>Search (sorted)</td>
+            <td>O(log n)</td>
+            <td>O(log n)</td>
+            <td>Binary search</td>
+          </tr>
+          <tr>
+            <td>Insert at end</td>
+            <td>N/A (fixed size)</td>
+            <td>O(1) amortized</td>
+            <td>Occasional resize costs O(n)</td>
+          </tr>
+          <tr>
+            <td>Insert at index</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>Must shift elements right</td>
+          </tr>
+          <tr>
+            <td>Delete from end</td>
+            <td>N/A</td>
+            <td>O(1)</td>
+            <td>No shifting needed</td>
+          </tr>
+          <tr>
+            <td>Delete at index</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>Must shift elements left</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="formula-box">
+        Space complexity: O(n) -- arrays store n elements
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example -- Why Insert at Index is O(n)</div>
+        <p>To insert <code>99</code> at index 2 in <code>[10, 20, 30, 40, 50]</code>:</p>
+        <p>Step 1: Shift 30, 40, 50 one position right.</p>
+        <p>Step 2: Place 99 at index 2.</p>
+        <p>Result: <code>[10, 20, 99, 30, 40, 50]</code>. In the worst case (inserting at index 0), you shift all n elements.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: Basic Operations with Code -->
+    <!-- ============================================================ -->
+    <section id="basic-operations">
+      <h2>3. Basic Operations with Code</h2>
+
+      <!-- Creating Arrays -->
+      <h3>Creating Arrays</h3>
+      <p>Both Python and JavaScript create dynamic arrays with similar syntax:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Create an array (list in Python)</span>
+arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+
+<span class="comment"># Create an empty array</span>
+empty = []
+
+<span class="comment"># Create array of n zeros</span>
+zeros = [<span class="number">0</span>] * <span class="number">10</span>
+
+<span class="comment"># Create array with list comprehension</span>
+squares = [i**<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>)]
+<span class="comment"># [0, 1, 4, 9, 16]</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Create an array</span>
+<span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="comment">// Create an empty array</span>
+<span class="keyword">const</span> empty = [];
+
+<span class="comment">// Create array of n zeros</span>
+<span class="keyword">const</span> zeros = <span class="keyword">new</span> <span class="builtin">Array</span>(<span class="number">10</span>).<span class="function">fill</span>(<span class="number">0</span>);
+
+<span class="comment">// Create array with Array.from</span>
+<span class="keyword">const</span> squares = <span class="builtin">Array</span>.<span class="function">from</span>(
+  {<span class="function">length</span>: <span class="number">5</span>}, (_, i) => i ** <span class="number">2</span>
+);
+<span class="comment">// [0, 1, 4, 9, 16]</span></code></pre>
+      </div>
+
+      <!-- Accessing Elements -->
+      <h3>Accessing Elements</h3>
+      <p>Access any element in O(1) using its index. Arrays are zero-indexed in both languages:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
+
+<span class="comment"># Access by index</span>
+first = arr[<span class="number">0</span>]       <span class="comment"># 10</span>
+third = arr[<span class="number">2</span>]       <span class="comment"># 30</span>
+
+<span class="comment"># Negative indexing (Python-only!)</span>
+last = arr[-<span class="number">1</span>]       <span class="comment"># 50</span>
+second_last = arr[-<span class="number">2</span>] <span class="comment"># 40</span>
+
+<span class="comment"># Length</span>
+size = <span class="builtin">len</span>(arr)      <span class="comment"># 5</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>];
+
+<span class="comment">// Access by index</span>
+<span class="keyword">const</span> first = arr[<span class="number">0</span>];       <span class="comment">// 10</span>
+<span class="keyword">const</span> third = arr[<span class="number">2</span>];       <span class="comment">// 30</span>
+
+<span class="comment">// Last element (no negative indexing)</span>
+<span class="keyword">const</span> last = arr[arr.<span class="function">length</span> - <span class="number">1</span>]; <span class="comment">// 50</span>
+<span class="comment">// Or use .at() in modern JS</span>
+<span class="keyword">const</span> alsoLast = arr.<span class="function">at</span>(-<span class="number">1</span>);  <span class="comment">// 50</span>
+
+<span class="comment">// Length</span>
+<span class="keyword">const</span> size = arr.<span class="function">length</span>;    <span class="comment">// 5</span></code></pre>
+      </div>
+
+      <!-- Traversal -->
+      <h3>Traversal</h3>
+      <p>Traversal means visiting every element. There are multiple ways to loop through an array:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]
+
+<span class="comment"># Method 1: Simple for loop</span>
+<span class="keyword">for</span> val <span class="keyword">in</span> arr:
+    <span class="builtin">print</span>(val)
+
+<span class="comment"># Method 2: With index using enumerate</span>
+<span class="keyword">for</span> i, val <span class="keyword">in</span> <span class="builtin">enumerate</span>(arr):
+    <span class="builtin">print</span>(<span class="string">f"Index </span>{i}<span class="string">: </span>{val}<span class="string">"</span>)
+
+<span class="comment"># Method 3: Index-based loop</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr)):
+    <span class="builtin">print</span>(arr[i])
+
+<span class="comment"># Method 4: While loop</span>
+i = <span class="number">0</span>
+<span class="keyword">while</span> i < <span class="builtin">len</span>(arr):
+    <span class="builtin">print</span>(arr[i])
+    i += <span class="number">1</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>];
+
+<span class="comment">// Method 1: for...of loop</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> val <span class="keyword">of</span> arr) {
+    console.<span class="function">log</span>(val);
+}
+
+<span class="comment">// Method 2: forEach with index</span>
+arr.<span class="function">forEach</span>((val, i) => {
+    console.<span class="function">log</span>(<span class="string">`Index ${i}: ${val}`</span>);
+});
+
+<span class="comment">// Method 3: Classic for loop</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < arr.<span class="function">length</span>; i++) {
+    console.<span class="function">log</span>(arr[i]);
+}
+
+<span class="comment">// Method 4: While loop</span>
+<span class="keyword">let</span> i = <span class="number">0</span>;
+<span class="keyword">while</span> (i < arr.<span class="function">length</span>) {
+    console.<span class="function">log</span>(arr[i]);
+    i++;
+}</code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>In Python, prefer <code>for val in arr</code> for simple iteration and <code>for i, val in enumerate(arr)</code> when you need the index. The <code>range(len(arr))</code> pattern is considered less Pythonic but is sometimes necessary for two-pointer patterns.</p>
+      </div>
+
+      <!-- Inserting -->
+      <h3>Inserting Elements</h3>
+      <p>Adding elements to a dynamic array:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+
+<span class="comment"># Append to end -- O(1) amortized</span>
+arr.<span class="function">append</span>(<span class="number">4</span>)
+<span class="comment"># [1, 2, 3, 4]</span>
+
+<span class="comment"># Insert at specific index -- O(n)</span>
+arr.<span class="function">insert</span>(<span class="number">1</span>, <span class="number">99</span>)
+<span class="comment"># [1, 99, 2, 3, 4]</span>
+
+<span class="comment"># Extend with another list -- O(k)</span>
+arr.<span class="function">extend</span>([<span class="number">5</span>, <span class="number">6</span>])
+<span class="comment"># [1, 99, 2, 3, 4, 5, 6]</span>
+
+<span class="comment"># Concatenation (creates new list)</span>
+new_arr = arr + [<span class="number">7</span>, <span class="number">8</span>]</code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+
+<span class="comment">// Push to end -- O(1) amortized</span>
+arr.<span class="function">push</span>(<span class="number">4</span>);
+<span class="comment">// [1, 2, 3, 4]</span>
+
+<span class="comment">// Insert at specific index -- O(n)</span>
+arr.<span class="function">splice</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">99</span>);
+<span class="comment">// [1, 99, 2, 3, 4]</span>
+
+<span class="comment">// Push multiple elements</span>
+arr.<span class="function">push</span>(<span class="number">5</span>, <span class="number">6</span>);
+<span class="comment">// [1, 99, 2, 3, 4, 5, 6]</span>
+
+<span class="comment">// Unshift to front -- O(n)</span>
+arr.<span class="function">unshift</span>(<span class="number">0</span>);
+<span class="comment">// [0, 1, 99, 2, 3, 4, 5, 6]</span></code></pre>
+      </div>
+
+      <!-- Deleting -->
+      <h3>Deleting Elements</h3>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
+
+<span class="comment"># Pop last element -- O(1)</span>
+last = arr.<span class="function">pop</span>()
+<span class="comment"># last = 50, arr = [10, 20, 30, 40]</span>
+
+<span class="comment"># Pop at specific index -- O(n)</span>
+second = arr.<span class="function">pop</span>(<span class="number">1</span>)
+<span class="comment"># second = 20, arr = [10, 30, 40]</span>
+
+<span class="comment"># Remove by value -- O(n)</span>
+arr.<span class="function">remove</span>(<span class="number">30</span>)
+<span class="comment"># arr = [10, 40]</span>
+
+<span class="comment"># Delete by index</span>
+<span class="keyword">del</span> arr[<span class="number">0</span>]
+<span class="comment"># arr = [40]</span>
+
+<span class="comment"># Clear entire list</span>
+arr.<span class="function">clear</span>()
+<span class="comment"># arr = []</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>];
+
+<span class="comment">// Pop last element -- O(1)</span>
+<span class="keyword">const</span> last = arr.<span class="function">pop</span>();
+<span class="comment">// last = 50, arr = [10, 20, 30, 40]</span>
+
+<span class="comment">// Remove at index using splice -- O(n)</span>
+<span class="keyword">const</span> removed = arr.<span class="function">splice</span>(<span class="number">1</span>, <span class="number">1</span>);
+<span class="comment">// removed = [20], arr = [10, 30, 40]</span>
+
+<span class="comment">// Shift removes first element -- O(n)</span>
+<span class="keyword">const</span> first = arr.<span class="function">shift</span>();
+<span class="comment">// first = 10, arr = [30, 40]</span>
+
+<span class="comment">// Filter to remove by value -- O(n)</span>
+<span class="keyword">let</span> filtered = arr.<span class="function">filter</span>(x => x !== <span class="number">30</span>);
+<span class="comment">// filtered = [40]</span>
+
+<span class="comment">// Clear entire array</span>
+arr.<span class="function">length</span> = <span class="number">0</span>;
+<span class="comment">// arr = []</span></code></pre>
+      </div>
+
+      <!-- Slicing -->
+      <h3>Slicing</h3>
+      <p>Slicing extracts a sub-array without modifying the original. Both languages use start-inclusive, end-exclusive ranges:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
+
+<span class="comment"># Basic slice: arr[start:end]</span>
+sub = arr[<span class="number">1</span>:<span class="number">4</span>]
+<span class="comment"># [20, 30, 40]</span>
+
+<span class="comment"># From beginning</span>
+first_three = arr[:<span class="number">3</span>]
+<span class="comment"># [10, 20, 30]</span>
+
+<span class="comment"># To end</span>
+last_two = arr[<span class="number">3</span>:]
+<span class="comment"># [40, 50]</span>
+
+<span class="comment"># With step</span>
+every_other = arr[::<span class="number">2</span>]
+<span class="comment"># [10, 30, 50]</span>
+
+<span class="comment"># Reverse an array</span>
+reversed_arr = arr[::-<span class="number">1</span>]
+<span class="comment"># [50, 40, 30, 20, 10]</span>
+
+<span class="comment"># Shallow copy</span>
+copy = arr[:]</code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>];
+
+<span class="comment">// Basic slice: arr.slice(start, end)</span>
+<span class="keyword">const</span> sub = arr.<span class="function">slice</span>(<span class="number">1</span>, <span class="number">4</span>);
+<span class="comment">// [20, 30, 40]</span>
+
+<span class="comment">// From beginning</span>
+<span class="keyword">const</span> firstThree = arr.<span class="function">slice</span>(<span class="number">0</span>, <span class="number">3</span>);
+<span class="comment">// [10, 20, 30]</span>
+
+<span class="comment">// To end</span>
+<span class="keyword">const</span> lastTwo = arr.<span class="function">slice</span>(<span class="number">3</span>);
+<span class="comment">// [40, 50]</span>
+
+<span class="comment">// No step parameter -- use filter</span>
+<span class="keyword">const</span> everyOther = arr.<span class="function">filter</span>(
+  (_, i) => i % <span class="number">2</span> === <span class="number">0</span>
+);
+<span class="comment">// [10, 30, 50]</span>
+
+<span class="comment">// Reverse (mutates original!)</span>
+<span class="keyword">const</span> rev = [...arr].<span class="function">reverse</span>();
+<span class="comment">// [50, 40, 30, 20, 10]</span>
+
+<span class="comment">// Shallow copy</span>
+<span class="keyword">const</span> copy = [...arr];</code></pre>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>In JavaScript, <code>.reverse()</code> mutates the original array. Always spread into a new array first with <code>[...arr].reverse()</code> if you need to preserve the original. Python's <code>arr[::-1]</code> creates a new list and does not mutate.</p>
+      </div>
+
+      <!-- Searching -->
+      <h3>Searching (Linear Search)</h3>
+      <p>Linear search checks each element one by one. It is O(n) in the worst case:</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">linear_search</span>(arr, target):
+    <span class="string">"""Return index of target, or -1 if not found."""</span>
+    <span class="keyword">for</span> i, val <span class="keyword">in</span> <span class="builtin">enumerate</span>(arr):
+        <span class="keyword">if</span> val == target:
+            <span class="keyword">return</span> i
+    <span class="keyword">return</span> -<span class="number">1</span>
+
+<span class="comment"># Usage</span>
+arr = [<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>]
+idx = <span class="function">linear_search</span>(arr, <span class="number">8</span>)  <span class="comment"># 2</span>
+idx = <span class="function">linear_search</span>(arr, <span class="number">7</span>)  <span class="comment"># -1</span>
+
+<span class="comment"># Built-in alternatives:</span>
+<span class="number">8</span> <span class="keyword">in</span> arr          <span class="comment"># True (O(n))</span>
+arr.<span class="function">index</span>(<span class="number">8</span>)       <span class="comment"># 2 (raises ValueError if not found)</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">linearSearch</span>(arr, target) {
+    <span class="comment">// Return index of target, or -1</span>
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < arr.<span class="function">length</span>; i++) {
+        <span class="keyword">if</span> (arr[i] === target) {
+            <span class="keyword">return</span> i;
+        }
+    }
+    <span class="keyword">return</span> -<span class="number">1</span>;
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> arr = [<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>];
+<span class="function">linearSearch</span>(arr, <span class="number">8</span>);  <span class="comment">// 2</span>
+<span class="function">linearSearch</span>(arr, <span class="number">7</span>);  <span class="comment">// -1</span>
+
+<span class="comment">// Built-in alternatives:</span>
+arr.<span class="function">includes</span>(<span class="number">8</span>);      <span class="comment">// true (O(n))</span>
+arr.<span class="function">indexOf</span>(<span class="number">8</span>);       <span class="comment">// 2 (-1 if not found)</span></code></pre>
+      </div>
+
+      <!-- Sorting -->
+      <h3>Sorting</h3>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+arr = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>]
+
+<span class="comment"># Sort in-place -- O(n log n)</span>
+arr.<span class="function">sort</span>()
+<span class="comment"># arr = [1, 2, 3, 5, 8, 9]</span>
+
+<span class="comment"># Sort descending</span>
+arr.<span class="function">sort</span>(reverse=<span class="keyword">True</span>)
+<span class="comment"># arr = [9, 8, 5, 3, 2, 1]</span>
+
+<span class="comment"># Create new sorted list (original unchanged)</span>
+original = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>]
+new_sorted = <span class="builtin">sorted</span>(original)
+<span class="comment"># original = [5, 2, 8]</span>
+<span class="comment"># new_sorted = [2, 5, 8]</span>
+
+<span class="comment"># Sort with custom key</span>
+words = [<span class="string">"banana"</span>, <span class="string">"fig"</span>, <span class="string">"cherry"</span>]
+words.<span class="function">sort</span>(key=<span class="builtin">len</span>)
+<span class="comment"># ["fig", "banana", "cherry"]</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> arr = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>];
+
+<span class="comment">// Sort in-place -- O(n log n)</span>
+<span class="comment">// WARNING: default sort is lexicographic!</span>
+arr.<span class="function">sort</span>((a, b) => a - b);
+<span class="comment">// arr = [1, 2, 3, 5, 8, 9]</span>
+
+<span class="comment">// Sort descending</span>
+arr.<span class="function">sort</span>((a, b) => b - a);
+<span class="comment">// arr = [9, 8, 5, 3, 2, 1]</span>
+
+<span class="comment">// Create new sorted array</span>
+<span class="keyword">const</span> original = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>];
+<span class="keyword">const</span> newSorted = [...original].<span class="function">sort</span>(
+  (a, b) => a - b
+);
+<span class="comment">// original = [5, 2, 8] (unchanged)</span>
+
+<span class="comment">// Sort with custom comparator</span>
+<span class="keyword">const</span> words = [<span class="string">"banana"</span>, <span class="string">"fig"</span>, <span class="string">"cherry"</span>];
+words.<span class="function">sort</span>((a, b) => a.<span class="function">length</span> - b.<span class="function">length</span>);
+<span class="comment">// ["fig", "banana", "cherry"]</span></code></pre>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Critical JavaScript Gotcha</div>
+        <p>JavaScript's default <code>.sort()</code> converts elements to strings and sorts lexicographically. This means <code>[10, 9, 80].sort()</code> gives <code>[10, 80, 9]</code> -- not <code>[9, 10, 80]</code>. <strong>Always pass a comparator</strong> when sorting numbers: <code>arr.sort((a, b) => a - b)</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: Common Array Techniques -->
+    <!-- ============================================================ -->
+    <section id="techniques">
+      <h2>4. Common Array Techniques</h2>
+
+      <p>These three techniques show up in the majority of array interview problems. Learn them deeply and you will recognize them instantly.</p>
+
+      <!-- Two Pointers -->
+      <h3 id="two-pointers">Two Pointers</h3>
+      <p>
+        The <strong>two-pointer technique</strong> uses two indices that move through the array, typically from opposite ends or at different speeds. It reduces brute-force O(n^2) solutions to O(n) by eliminating redundant comparisons.
+      </p>
+
+      <div class="formula-box">
+        When to use Two Pointers:
+        - Array is sorted (or can be sorted)
+        - You need to find a pair/triplet that satisfies a condition
+        - You need to compare elements from both ends
+        - You need to partition or rearrange in-place
+      </div>
+
+      <p><strong>Example: Two Sum on a Sorted Array</strong></p>
+      <p>Given a sorted array and a target, find two numbers that add up to the target. Return their indices.</p>
+
+      <div class="example-box">
+        <div class="label">Walkthrough</div>
+        <p><code>arr = [1, 3, 5, 7, 11, 15]</code>, <code>target = 12</code></p>
+        <p>Left pointer at index 0 (value 1), right pointer at index 5 (value 15).</p>
+        <p>1 + 15 = 16 > 12 --> Move right pointer left.</p>
+        <p>1 + 11 = 12 = target --> Found it! Return [0, 4].</p>
+        <p>Key insight: if the sum is too big, decreasing the right side makes it smaller. If the sum is too small, increasing the left side makes it bigger.</p>
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">two_sum_sorted</span>(arr, target):
+    <span class="string">"""
+    Find two numbers in sorted array
+    that add up to target.
+    Returns their indices.
+    """</span>
+    left = <span class="number">0</span>
+    right = <span class="builtin">len</span>(arr) - <span class="number">1</span>
+
+    <span class="keyword">while</span> left < right:
+        current_sum = arr[left] + arr[right]
+
+        <span class="keyword">if</span> current_sum == target:
+            <span class="keyword">return</span> [left, right]
+        <span class="keyword">elif</span> current_sum < target:
+            left += <span class="number">1</span>   <span class="comment"># Need bigger sum</span>
+        <span class="keyword">else</span>:
+            right -= <span class="number">1</span>  <span class="comment"># Need smaller sum</span>
+
+    <span class="keyword">return</span> []  <span class="comment"># No pair found</span>
+
+<span class="comment"># Usage</span>
+arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>]
+<span class="builtin">print</span>(<span class="function">two_sum_sorted</span>(arr, <span class="number">12</span>))
+<span class="comment"># [0, 4]  (arr[0] + arr[4] = 1 + 11 = 12)</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">twoSumSorted</span>(arr, target) {
+    <span class="comment">/**
+     * Find two numbers in sorted array
+     * that add up to target.
+     * Returns their indices.
+     */</span>
+    <span class="keyword">let</span> left = <span class="number">0</span>;
+    <span class="keyword">let</span> right = arr.<span class="function">length</span> - <span class="number">1</span>;
+
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">const</span> sum = arr[left] + arr[right];
+
+        <span class="keyword">if</span> (sum === target) {
+            <span class="keyword">return</span> [left, right];
+        } <span class="keyword">else if</span> (sum < target) {
+            left++;   <span class="comment">// Need bigger sum</span>
+        } <span class="keyword">else</span> {
+            right--;  <span class="comment">// Need smaller sum</span>
+        }
+    }
+
+    <span class="keyword">return</span> [];  <span class="comment">// No pair found</span>
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>];
+console.<span class="function">log</span>(<span class="function">twoSumSorted</span>(arr, <span class="number">12</span>));
+<span class="comment">// [0, 4]  (arr[0] + arr[4] = 1 + 11 = 12)</span></code></pre>
+      </div>
+
+      <div class="formula-box">
+        Two Pointers Complexity:  Time O(n)  |  Space O(1)
+      </div>
+
+      <!-- Sliding Window -->
+      <h3 id="sliding-window">Sliding Window</h3>
+      <p>
+        The <strong>sliding window</strong> technique maintains a "window" (a contiguous sub-array) that slides across the array. Instead of recomputing the entire window from scratch at every position, you add the new element entering the window and remove the element leaving it. This turns O(n*k) brute-force into O(n).
+      </p>
+
+      <div class="formula-box">
+        When to use Sliding Window:
+        - Problem involves contiguous sub-arrays/substrings
+        - You need to find max/min sum of size k
+        - You need longest/shortest sub-array with some property
+        - Fixed window: size k is given
+        - Variable window: find optimal size that satisfies condition
+      </div>
+
+      <p><strong>Example: Maximum Sum Subarray of Size k</strong></p>
+      <p>Given an array and a window size k, find the maximum sum of any contiguous subarray of length k.</p>
+
+      <div class="example-box">
+        <div class="label">Walkthrough</div>
+        <p><code>arr = [2, 1, 5, 1, 3, 2]</code>, <code>k = 3</code></p>
+        <p>Window [2, 1, 5] = 8</p>
+        <p>Slide: remove 2, add 1 --> [1, 5, 1] = 7</p>
+        <p>Slide: remove 1, add 3 --> [5, 1, 3] = 9</p>
+        <p>Slide: remove 5, add 2 --> [1, 3, 2] = 6</p>
+        <p>Maximum sum = 9</p>
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_sum_subarray</span>(arr, k):
+    <span class="string">"""
+    Find maximum sum of any contiguous
+    subarray of size k.
+    """</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(arr) < k:
+        <span class="keyword">return</span> <span class="number">0</span>
+
+    <span class="comment"># Calculate sum of first window</span>
+    window_sum = <span class="builtin">sum</span>(arr[:k])
+    max_sum = window_sum
+
+    <span class="comment"># Slide the window</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(k, <span class="builtin">len</span>(arr)):
+        <span class="comment"># Add new element, remove old</span>
+        window_sum += arr[i] - arr[i - k]
+        max_sum = <span class="builtin">max</span>(max_sum, window_sum)
+
+    <span class="keyword">return</span> max_sum
+
+<span class="comment"># Usage</span>
+arr = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>]
+<span class="builtin">print</span>(<span class="function">max_sum_subarray</span>(arr, <span class="number">3</span>))
+<span class="comment"># 9  (subarray [5, 1, 3])</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSumSubarray</span>(arr, k) {
+    <span class="comment">/**
+     * Find maximum sum of any contiguous
+     * subarray of size k.
+     */</span>
+    <span class="keyword">if</span> (arr.<span class="function">length</span> < k) <span class="keyword">return</span> <span class="number">0</span>;
+
+    <span class="comment">// Calculate sum of first window</span>
+    <span class="keyword">let</span> windowSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < k; i++) {
+        windowSum += arr[i];
+    }
+    <span class="keyword">let</span> maxSum = windowSum;
+
+    <span class="comment">// Slide the window</span>
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = k; i < arr.<span class="function">length</span>; i++) {
+        <span class="comment">// Add new element, remove old</span>
+        windowSum += arr[i] - arr[i - k];
+        maxSum = Math.<span class="function">max</span>(maxSum, windowSum);
+    }
+
+    <span class="keyword">return</span> maxSum;
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> arr = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>];
+console.<span class="function">log</span>(<span class="function">maxSumSubarray</span>(arr, <span class="number">3</span>));
+<span class="comment">// 9  (subarray [5, 1, 3])</span></code></pre>
+      </div>
+
+      <div class="formula-box">
+        Sliding Window Complexity:  Time O(n)  |  Space O(1)
+      </div>
+
+      <!-- Prefix Sum -->
+      <h3 id="prefix-sum">Prefix Sum</h3>
+      <p>
+        A <strong>prefix sum</strong> array stores the cumulative sum up to each index. Once built (O(n) time), you can answer any "sum of elements from index i to j" query in O(1) time. Without prefix sums, each range sum query would take O(n).
+      </p>
+
+      <div class="formula-box">
+        prefix[0] = 0
+        prefix[i] = arr[0] + arr[1] + ... + arr[i-1]
+
+        sum(arr[i..j]) = prefix[j+1] - prefix[i]
+      </div>
+
+      <div class="example-box">
+        <div class="label">Walkthrough</div>
+        <p><code>arr = [2, 4, 6, 8, 10]</code></p>
+        <p><code>prefix = [0, 2, 6, 12, 20, 30]</code></p>
+        <p>Sum from index 1 to 3 = prefix[4] - prefix[1] = 20 - 2 = 18</p>
+        <p>Verify: arr[1] + arr[2] + arr[3] = 4 + 6 + 8 = 18</p>
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">build_prefix_sum</span>(arr):
+    <span class="string">"""Build prefix sum array."""</span>
+    prefix = [<span class="number">0</span>] * (<span class="builtin">len</span>(arr) + <span class="number">1</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(arr)):
+        prefix[i + <span class="number">1</span>] = prefix[i] + arr[i]
+    <span class="keyword">return</span> prefix
+
+<span class="keyword">def</span> <span class="function">range_sum</span>(prefix, i, j):
+    <span class="string">"""Sum of arr[i..j] in O(1)."""</span>
+    <span class="keyword">return</span> prefix[j + <span class="number">1</span>] - prefix[i]
+
+<span class="comment"># Usage</span>
+arr = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]
+prefix = <span class="function">build_prefix_sum</span>(arr)
+<span class="comment"># prefix = [0, 2, 6, 12, 20, 30]</span>
+
+<span class="builtin">print</span>(<span class="function">range_sum</span>(prefix, <span class="number">1</span>, <span class="number">3</span>))
+<span class="comment"># 18  (4 + 6 + 8)</span>
+
+<span class="builtin">print</span>(<span class="function">range_sum</span>(prefix, <span class="number">0</span>, <span class="number">4</span>))
+<span class="comment"># 30  (2 + 4 + 6 + 8 + 10)</span>
+
+<span class="builtin">print</span>(<span class="function">range_sum</span>(prefix, <span class="number">2</span>, <span class="number">2</span>))
+<span class="comment"># 6   (just arr[2])</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">buildPrefixSum</span>(arr) {
+    <span class="comment">/** Build prefix sum array. */</span>
+    <span class="keyword">const</span> prefix = <span class="keyword">new</span> <span class="builtin">Array</span>(arr.<span class="function">length</span> + <span class="number">1</span>).<span class="function">fill</span>(<span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < arr.<span class="function">length</span>; i++) {
+        prefix[i + <span class="number">1</span>] = prefix[i] + arr[i];
+    }
+    <span class="keyword">return</span> prefix;
+}
+
+<span class="keyword">function</span> <span class="function">rangeSum</span>(prefix, i, j) {
+    <span class="comment">/** Sum of arr[i..j] in O(1). */</span>
+    <span class="keyword">return</span> prefix[j + <span class="number">1</span>] - prefix[i];
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> arr = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>];
+<span class="keyword">const</span> prefix = <span class="function">buildPrefixSum</span>(arr);
+<span class="comment">// prefix = [0, 2, 6, 12, 20, 30]</span>
+
+console.<span class="function">log</span>(<span class="function">rangeSum</span>(prefix, <span class="number">1</span>, <span class="number">3</span>));
+<span class="comment">// 18  (4 + 6 + 8)</span>
+
+console.<span class="function">log</span>(<span class="function">rangeSum</span>(prefix, <span class="number">0</span>, <span class="number">4</span>));
+<span class="comment">// 30  (2 + 4 + 6 + 8 + 10)</span>
+
+console.<span class="function">log</span>(<span class="function">rangeSum</span>(prefix, <span class="number">2</span>, <span class="number">2</span>));
+<span class="comment">// 6   (just arr[2])</span></code></pre>
+      </div>
+
+      <div class="formula-box">
+        Prefix Sum Complexity:
+        Build: O(n) time, O(n) space
+        Each query: O(1) time
+        Total for q queries: O(n + q)  vs  O(n * q) brute force
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Prefix sums appear in disguise in many problems. Anytime you see "sum of subarray" or "range query," think prefix sums. The technique extends to 2D arrays (prefix sum matrices) for submatrix sum queries.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: Strings -->
+    <!-- ============================================================ -->
+    <section id="strings">
+      <h2>5. Strings</h2>
+
+      <h3>Strings as Arrays of Characters</h3>
+      <p>
+        A string is essentially a sequence (array) of characters. You can index into a string, iterate over it, and slice it just like an array. However, strings have one critical difference in both Python and JavaScript: they are <strong>immutable</strong>.
+      </p>
+
+      <div class="warning-box">
+        <div class="label">Immutability</div>
+        <p>In both Python and JavaScript, strings <strong>cannot be modified in-place</strong>. Every "modification" creates a new string. This means string concatenation in a loop is O(n^2) because each concatenation creates a new string and copies all previous characters.</p>
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+s = <span class="string">"hello"</span>
+
+<span class="comment"># Strings are immutable</span>
+<span class="comment"># s[0] = "H"  # TypeError!</span>
+
+<span class="comment"># Index access (just like arrays)</span>
+first = s[<span class="number">0</span>]   <span class="comment"># "h"</span>
+last = s[-<span class="number">1</span>]    <span class="comment"># "o"</span>
+
+<span class="comment"># Iterate like an array</span>
+<span class="keyword">for</span> char <span class="keyword">in</span> s:
+    <span class="builtin">print</span>(char)
+
+<span class="comment"># To "modify," convert to list first</span>
+chars = <span class="builtin">list</span>(s)       <span class="comment"># ['h','e','l','l','o']</span>
+chars[<span class="number">0</span>] = <span class="string">"H"</span>
+s = <span class="string">""</span>.<span class="function">join</span>(chars)   <span class="comment"># "Hello"</span>
+
+<span class="comment"># Efficient concatenation: use join</span>
+parts = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>]
+result = <span class="string">""</span>.<span class="function">join</span>(parts) <span class="comment"># "abc" -- O(n)</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> s = <span class="string">"hello"</span>;
+
+<span class="comment">// Strings are immutable</span>
+<span class="comment">// s[0] = "H";  // Silently fails!</span>
+
+<span class="comment">// Index access (just like arrays)</span>
+<span class="keyword">const</span> first = s[<span class="number">0</span>];        <span class="comment">// "h"</span>
+<span class="keyword">const</span> last = s[s.<span class="function">length</span> - <span class="number">1</span>]; <span class="comment">// "o"</span>
+
+<span class="comment">// Iterate like an array</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> s) {
+    console.<span class="function">log</span>(char);
+}
+
+<span class="comment">// To "modify," convert to array first</span>
+<span class="keyword">const</span> chars = s.<span class="function">split</span>(<span class="string">""</span>);
+chars[<span class="number">0</span>] = <span class="string">"H"</span>;
+<span class="keyword">const</span> newS = chars.<span class="function">join</span>(<span class="string">""</span>); <span class="comment">// "Hello"</span>
+
+<span class="comment">// Efficient concatenation: use join</span>
+<span class="keyword">const</span> parts = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>];
+<span class="keyword">const</span> result = parts.<span class="function">join</span>(<span class="string">""</span>); <span class="comment">// "abc"</span></code></pre>
+      </div>
+
+      <h3>Reverse a String</h3>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">reverse_string</span>(s):
+    <span class="string">"""Reverse a string."""</span>
+    <span class="keyword">return</span> s[::-<span class="number">1</span>]
+
+<span class="comment"># Or manually with two pointers:</span>
+<span class="keyword">def</span> <span class="function">reverse_string_manual</span>(s):
+    chars = <span class="builtin">list</span>(s)
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(chars) - <span class="number">1</span>
+    <span class="keyword">while</span> left < right:
+        chars[left], chars[right] = (
+            chars[right], chars[left]
+        )
+        left += <span class="number">1</span>
+        right -= <span class="number">1</span>
+    <span class="keyword">return</span> <span class="string">""</span>.<span class="function">join</span>(chars)
+
+<span class="builtin">print</span>(<span class="function">reverse_string</span>(<span class="string">"hello"</span>))
+<span class="comment"># "olleh"</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">reverseString</span>(s) {
+    <span class="comment">/** Reverse a string. */</span>
+    <span class="keyword">return</span> s.<span class="function">split</span>(<span class="string">""</span>).<span class="function">reverse</span>().<span class="function">join</span>(<span class="string">""</span>);
+}
+
+<span class="comment">// Or manually with two pointers:</span>
+<span class="keyword">function</span> <span class="function">reverseStringManual</span>(s) {
+    <span class="keyword">const</span> chars = s.<span class="function">split</span>(<span class="string">""</span>);
+    <span class="keyword">let</span> left = <span class="number">0</span>;
+    <span class="keyword">let</span> right = chars.<span class="function">length</span> - <span class="number">1</span>;
+    <span class="keyword">while</span> (left < right) {
+        [chars[left], chars[right]] =
+            [chars[right], chars[left]];
+        left++;
+        right--;
+    }
+    <span class="keyword">return</span> chars.<span class="function">join</span>(<span class="string">""</span>);
+}
+
+console.<span class="function">log</span>(<span class="function">reverseString</span>(<span class="string">"hello"</span>));
+<span class="comment">// "olleh"</span></code></pre>
+      </div>
+
+      <h3>Check Palindrome</h3>
+      <p>A palindrome reads the same forwards and backwards (e.g., "racecar", "madam").</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">is_palindrome</span>(s):
+    <span class="string">"""Check if string is a palindrome."""</span>
+    <span class="comment"># Clean: lowercase, letters/digits only</span>
+    s = <span class="string">""</span>.<span class="function">join</span>(
+        c.<span class="function">lower</span>() <span class="keyword">for</span> c <span class="keyword">in</span> s <span class="keyword">if</span> c.<span class="function">isalnum</span>()
+    )
+    <span class="keyword">return</span> s == s[::-<span class="number">1</span>]
+
+<span class="comment"># Two-pointer approach (O(1) extra space):</span>
+<span class="keyword">def</span> <span class="function">is_palindrome_tp</span>(s):
+    s = <span class="string">""</span>.<span class="function">join</span>(
+        c.<span class="function">lower</span>() <span class="keyword">for</span> c <span class="keyword">in</span> s <span class="keyword">if</span> c.<span class="function">isalnum</span>()
+    )
+    left, right = <span class="number">0</span>, <span class="builtin">len</span>(s) - <span class="number">1</span>
+    <span class="keyword">while</span> left < right:
+        <span class="keyword">if</span> s[left] != s[right]:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        left += <span class="number">1</span>
+        right -= <span class="number">1</span>
+    <span class="keyword">return</span> <span class="keyword">True</span>
+
+<span class="builtin">print</span>(<span class="function">is_palindrome</span>(<span class="string">"racecar"</span>))   <span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">is_palindrome</span>(<span class="string">"hello"</span>))     <span class="comment"># False</span>
+<span class="builtin">print</span>(<span class="function">is_palindrome</span>(<span class="string">"A man, a plan, a canal: Panama"</span>))
+<span class="comment"># True</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isPalindrome</span>(s) {
+    <span class="comment">/** Check if string is a palindrome. */</span>
+    <span class="comment">// Clean: lowercase, letters/digits only</span>
+    s = s.<span class="function">toLowerCase</span>().<span class="function">replace</span>(
+        /[^a-z0-9]/g, <span class="string">""</span>
+    );
+    <span class="keyword">return</span> s === s.<span class="function">split</span>(<span class="string">""</span>).<span class="function">reverse</span>().<span class="function">join</span>(<span class="string">""</span>);
+}
+
+<span class="comment">// Two-pointer approach:</span>
+<span class="keyword">function</span> <span class="function">isPalindromeTP</span>(s) {
+    s = s.<span class="function">toLowerCase</span>().<span class="function">replace</span>(
+        /[^a-z0-9]/g, <span class="string">""</span>
+    );
+    <span class="keyword">let</span> left = <span class="number">0</span>;
+    <span class="keyword">let</span> right = s.<span class="function">length</span> - <span class="number">1</span>;
+    <span class="keyword">while</span> (left < right) {
+        <span class="keyword">if</span> (s[left] !== s[right]) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+        left++;
+        right--;
+    }
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+console.<span class="function">log</span>(<span class="function">isPalindrome</span>(<span class="string">"racecar"</span>));  <span class="comment">// true</span>
+console.<span class="function">log</span>(<span class="function">isPalindrome</span>(<span class="string">"hello"</span>));    <span class="comment">// false</span>
+console.<span class="function">log</span>(<span class="function">isPalindrome</span>(
+    <span class="string">"A man, a plan, a canal: Panama"</span>
+)); <span class="comment">// true</span></code></pre>
+      </div>
+
+      <h3>Anagram Check</h3>
+      <p>Two strings are anagrams if they contain exactly the same characters in any order (e.g., "listen" and "silent").</p>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">is_anagram</span>(s1, s2):
+    <span class="string">"""Check if two strings are anagrams."""</span>
+    <span class="comment"># Method 1: Sort and compare -- O(n log n)</span>
+    <span class="keyword">return</span> <span class="builtin">sorted</span>(s1.<span class="function">lower</span>()) == <span class="builtin">sorted</span>(s2.<span class="function">lower</span>())
+
+<span class="keyword">def</span> <span class="function">is_anagram_optimal</span>(s1, s2):
+    <span class="string">"""O(n) using character frequency."""</span>
+    <span class="keyword">if</span> <span class="builtin">len</span>(s1) != <span class="builtin">len</span>(s2):
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="comment"># Count character frequencies</span>
+    count = {}
+    <span class="keyword">for</span> c <span class="keyword">in</span> s1.<span class="function">lower</span>():
+        count[c] = count.<span class="function">get</span>(c, <span class="number">0</span>) + <span class="number">1</span>
+    <span class="keyword">for</span> c <span class="keyword">in</span> s2.<span class="function">lower</span>():
+        count[c] = count.<span class="function">get</span>(c, <span class="number">0</span>) - <span class="number">1</span>
+        <span class="keyword">if</span> count[c] < <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">return</span> <span class="keyword">True</span>
+
+<span class="builtin">print</span>(<span class="function">is_anagram</span>(<span class="string">"listen"</span>, <span class="string">"silent"</span>))
+<span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">is_anagram</span>(<span class="string">"hello"</span>, <span class="string">"world"</span>))
+<span class="comment"># False</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isAnagram</span>(s1, s2) {
+    <span class="comment">/** Check if two strings are anagrams. */</span>
+    <span class="comment">// Method 1: Sort and compare -- O(n log n)</span>
+    <span class="keyword">const</span> sort = s =>
+        s.<span class="function">toLowerCase</span>().<span class="function">split</span>(<span class="string">""</span>).<span class="function">sort</span>().<span class="function">join</span>(<span class="string">""</span>);
+    <span class="keyword">return</span> <span class="function">sort</span>(s1) === <span class="function">sort</span>(s2);
+}
+
+<span class="keyword">function</span> <span class="function">isAnagramOptimal</span>(s1, s2) {
+    <span class="comment">/** O(n) using character frequency. */</span>
+    <span class="keyword">if</span> (s1.<span class="function">length</span> !== s2.<span class="function">length</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+
+    <span class="keyword">const</span> count = {};
+    <span class="keyword">for</span> (<span class="keyword">const</span> c <span class="keyword">of</span> s1.<span class="function">toLowerCase</span>()) {
+        count[c] = (count[c] || <span class="number">0</span>) + <span class="number">1</span>;
+    }
+    <span class="keyword">for</span> (<span class="keyword">const</span> c <span class="keyword">of</span> s2.<span class="function">toLowerCase</span>()) {
+        <span class="keyword">if</span> (!count[c]) <span class="keyword">return</span> <span class="keyword">false</span>;
+        count[c]--;
+    }
+
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+console.<span class="function">log</span>(<span class="function">isAnagram</span>(<span class="string">"listen"</span>, <span class="string">"silent"</span>));
+<span class="comment">// true</span>
+console.<span class="function">log</span>(<span class="function">isAnagram</span>(<span class="string">"hello"</span>, <span class="string">"world"</span>));
+<span class="comment">// false</span></code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Interview Tip</div>
+        <p>The sorting approach (<code>O(n log n)</code>) is simpler to write and fewer lines. The frequency-count approach (<code>O(n)</code>) is optimal. In an interview, mention both and implement the optimal one. The interviewer wants to see that you know the tradeoff.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: LeetCode Problems -->
+    <!-- ============================================================ -->
+    <section id="leetcode">
+      <h2>6. LeetCode Problems to Practice</h2>
+
+      <p>These are the essential array/string problems ordered by difficulty. Solve them in order for the best learning experience.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Difficulty</th>
+            <th>Key Technique</th>
+            <th>Approach Hint</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Two Sum</strong></td>
+            <td><span class="diff-easy">Easy</span></td>
+            <td>Hash Map</td>
+            <td>Store complement in hash map as you iterate</td>
+          </tr>
+          <tr>
+            <td><strong>Best Time to Buy and Sell Stock</strong></td>
+            <td><span class="diff-easy">Easy</span></td>
+            <td>Tracking Min</td>
+            <td>Track minimum price seen so far, compute max profit at each step</td>
+          </tr>
+          <tr>
+            <td><strong>Contains Duplicate</strong></td>
+            <td><span class="diff-easy">Easy</span></td>
+            <td>Set</td>
+            <td>Add to set; if element already in set, return true</td>
+          </tr>
+          <tr>
+            <td><strong>Maximum Subarray</strong></td>
+            <td><span class="diff-medium">Medium</span></td>
+            <td>Kadane's Algorithm</td>
+            <td>At each index, decide: extend current subarray or start fresh</td>
+          </tr>
+          <tr>
+            <td><strong>Product of Array Except Self</strong></td>
+            <td><span class="diff-medium">Medium</span></td>
+            <td>Prefix / Suffix</td>
+            <td>Build prefix product from left, then multiply with suffix from right</td>
+          </tr>
+          <tr>
+            <td><strong>3Sum</strong></td>
+            <td><span class="diff-medium">Medium</span></td>
+            <td>Sort + Two Pointers</td>
+            <td>Sort array, fix one number, use two pointers on remaining</td>
+          </tr>
+          <tr>
+            <td><strong>Container With Most Water</strong></td>
+            <td><span class="diff-medium">Medium</span></td>
+            <td>Two Pointers</td>
+            <td>Start from edges; move the shorter pointer inward</td>
+          </tr>
+          <tr>
+            <td><strong>Merge Intervals</strong></td>
+            <td><span class="diff-medium">Medium</span></td>
+            <td>Sorting</td>
+            <td>Sort by start time, merge overlapping intervals greedily</td>
+          </tr>
+          <tr>
+            <td><strong>Trapping Rain Water</strong></td>
+            <td><span class="diff-hard">Hard</span></td>
+            <td>Two Pointers / Stack</td>
+            <td>Water at each index = min(max_left, max_right) - height[i]</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Full Solution: Two Sum -->
+      <h3>Full Solution: Two Sum</h3>
+      <p><strong>Problem:</strong> Given an array of integers <code>nums</code> and a <code>target</code>, return the indices of the two numbers that add up to the target. You may assume each input has exactly one solution.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Input: <code>nums = [2, 7, 11, 15]</code>, <code>target = 9</code></p>
+        <p>Output: <code>[0, 1]</code> because <code>nums[0] + nums[1] = 2 + 7 = 9</code></p>
+      </div>
+
+      <p><strong>Approach:</strong> For each number, its complement is <code>target - number</code>. We store each number we have seen in a hash map. If the complement of the current number exists in the map, we found our pair.</p>
+
+      <div class="formula-box">
+        Brute force: Check every pair --> O(n^2)
+        Hash map: One pass, store seen values --> O(n) time, O(n) space
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">two_sum</span>(nums, target):
+    <span class="string">"""
+    LeetCode 1 - Two Sum
+    Return indices of two numbers that
+    add up to target.
+    Time: O(n) | Space: O(n)
+    """</span>
+    <span class="comment"># Map: value -> index</span>
+    seen = {}
+
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="builtin">enumerate</span>(nums):
+        complement = target - num
+
+        <span class="comment"># Have we seen the complement?</span>
+        <span class="keyword">if</span> complement <span class="keyword">in</span> seen:
+            <span class="keyword">return</span> [seen[complement], i]
+
+        <span class="comment"># Store current number and index</span>
+        seen[num] = i
+
+    <span class="keyword">return</span> []  <span class="comment"># No solution</span>
+
+<span class="comment"># Test cases</span>
+<span class="builtin">print</span>(<span class="function">two_sum</span>([<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>], <span class="number">9</span>))
+<span class="comment"># [0, 1]</span>
+
+<span class="builtin">print</span>(<span class="function">two_sum</span>([<span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>], <span class="number">6</span>))
+<span class="comment"># [1, 2]</span>
+
+<span class="builtin">print</span>(<span class="function">two_sum</span>([<span class="number">3</span>, <span class="number">3</span>], <span class="number">6</span>))
+<span class="comment"># [0, 1]</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">twoSum</span>(nums, target) {
+    <span class="comment">/**
+     * LeetCode 1 - Two Sum
+     * Return indices of two numbers that
+     * add up to target.
+     * Time: O(n) | Space: O(n)
+     */</span>
+    <span class="comment">// Map: value -> index</span>
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> <span class="builtin">Map</span>();
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < nums.<span class="function">length</span>; i++) {
+        <span class="keyword">const</span> complement = target - nums[i];
+
+        <span class="comment">// Have we seen the complement?</span>
+        <span class="keyword">if</span> (seen.<span class="function">has</span>(complement)) {
+            <span class="keyword">return</span> [seen.<span class="function">get</span>(complement), i];
+        }
+
+        <span class="comment">// Store current number and index</span>
+        seen.<span class="function">set</span>(nums[i], i);
+    }
+
+    <span class="keyword">return</span> [];  <span class="comment">// No solution</span>
+}
+
+<span class="comment">// Test cases</span>
+console.<span class="function">log</span>(<span class="function">twoSum</span>([<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>], <span class="number">9</span>));
+<span class="comment">// [0, 1]</span>
+
+console.<span class="function">log</span>(<span class="function">twoSum</span>([<span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>], <span class="number">6</span>));
+<span class="comment">// [1, 2]</span>
+
+console.<span class="function">log</span>(<span class="function">twoSum</span>([<span class="number">3</span>, <span class="number">3</span>], <span class="number">6</span>));
+<span class="comment">// [0, 1]</span></code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why This Works</div>
+        <p>At index <code>i</code>, we ask: "Have I already seen a number that, combined with <code>nums[i]</code>, equals the target?" The hash map lookup is O(1), so the total time is O(n). We only need one pass through the array.</p>
+      </div>
+
+      <!-- Full Solution: Maximum Subarray -->
+      <h3>Full Solution: Maximum Subarray (Kadane's Algorithm)</h3>
+      <p><strong>Problem:</strong> Given an integer array <code>nums</code>, find the contiguous subarray with the largest sum and return its sum.</p>
+
+      <div class="example-box">
+        <div class="label">Example</div>
+        <p>Input: <code>nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]</code></p>
+        <p>Output: <code>6</code> (subarray <code>[4, -1, 2, 1]</code> has the largest sum)</p>
+      </div>
+
+      <p><strong>Approach (Kadane's Algorithm):</strong> At each index, you make a simple decision: either extend the current subarray by adding the current element, or start a new subarray from the current element. You pick whichever gives a larger value. Track the global maximum as you go.</p>
+
+      <div class="formula-box">
+        Kadane's core logic:
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum     = max(max_sum, current_sum)
+
+        If current_sum + nums[i] < nums[i], the running sum is negative
+        and "drags down" the current element. Better to start fresh.
+      </div>
+
+      <div class="code-pair">
+        <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_subarray</span>(nums):
+    <span class="string">"""
+    LeetCode 53 - Maximum Subarray
+    Kadane's Algorithm.
+    Time: O(n) | Space: O(1)
+    """</span>
+    current_sum = nums[<span class="number">0</span>]
+    max_sum = nums[<span class="number">0</span>]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(nums)):
+        <span class="comment"># Extend or start fresh?</span>
+        current_sum = <span class="builtin">max</span>(
+            nums[i],
+            current_sum + nums[i]
+        )
+        <span class="comment"># Update global max</span>
+        max_sum = <span class="builtin">max</span>(max_sum, current_sum)
+
+    <span class="keyword">return</span> max_sum
+
+<span class="comment"># Test cases</span>
+<span class="builtin">print</span>(<span class="function">max_subarray</span>(
+    [-<span class="number">2</span>, <span class="number">1</span>, -<span class="number">3</span>, <span class="number">4</span>, -<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, -<span class="number">5</span>, <span class="number">4</span>]
+))
+<span class="comment"># 6  (subarray [4, -1, 2, 1])</span>
+
+<span class="builtin">print</span>(<span class="function">max_subarray</span>([<span class="number">1</span>]))
+<span class="comment"># 1</span>
+
+<span class="builtin">print</span>(<span class="function">max_subarray</span>([-<span class="number">1</span>, -<span class="number">2</span>, -<span class="number">3</span>]))
+<span class="comment"># -1  (least negative = largest)</span>
+
+<span class="builtin">print</span>(<span class="function">max_subarray</span>([<span class="number">5</span>, <span class="number">4</span>, -<span class="number">1</span>, <span class="number">7</span>, <span class="number">8</span>]))
+<span class="comment"># 23  (entire array)</span></code></pre>
+
+        <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSubarray</span>(nums) {
+    <span class="comment">/**
+     * LeetCode 53 - Maximum Subarray
+     * Kadane's Algorithm.
+     * Time: O(n) | Space: O(1)
+     */</span>
+    <span class="keyword">let</span> currentSum = nums[<span class="number">0</span>];
+    <span class="keyword">let</span> maxSum = nums[<span class="number">0</span>];
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < nums.<span class="function">length</span>; i++) {
+        <span class="comment">// Extend or start fresh?</span>
+        currentSum = Math.<span class="function">max</span>(
+            nums[i],
+            currentSum + nums[i]
+        );
+        <span class="comment">// Update global max</span>
+        maxSum = Math.<span class="function">max</span>(maxSum, currentSum);
+    }
+
+    <span class="keyword">return</span> maxSum;
+}
+
+<span class="comment">// Test cases</span>
+console.<span class="function">log</span>(<span class="function">maxSubarray</span>(
+    [-<span class="number">2</span>, <span class="number">1</span>, -<span class="number">3</span>, <span class="number">4</span>, -<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, -<span class="number">5</span>, <span class="number">4</span>]
+));
+<span class="comment">// 6  (subarray [4, -1, 2, 1])</span>
+
+console.<span class="function">log</span>(<span class="function">maxSubarray</span>([<span class="number">1</span>]));
+<span class="comment">// 1</span>
+
+console.<span class="function">log</span>(<span class="function">maxSubarray</span>([-<span class="number">1</span>, -<span class="number">2</span>, -<span class="number">3</span>]));
+<span class="comment">// -1  (least negative = largest)</span>
+
+console.<span class="function">log</span>(<span class="function">maxSubarray</span>([<span class="number">5</span>, <span class="number">4</span>, -<span class="number">1</span>, <span class="number">7</span>, <span class="number">8</span>]));
+<span class="comment">// 23  (entire array)</span></code></pre>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Step-by-Step Trace</div>
+        <p><code>nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]</code></p>
+        <p>&nbsp;</p>
+        <p>i=0: current=-2, max=-2</p>
+        <p>i=1: max(1, -2+1) = max(1, -1) = 1, max=1</p>
+        <p>i=2: max(-3, 1-3) = max(-3, -2) = -2, max=1</p>
+        <p>i=3: max(4, -2+4) = max(4, 2) = 4, max=4</p>
+        <p>i=4: max(-1, 4-1) = max(-1, 3) = 3, max=4</p>
+        <p>i=5: max(2, 3+2) = max(2, 5) = 5, max=5</p>
+        <p>i=6: max(1, 5+1) = max(1, 6) = <strong>6</strong>, max=<strong>6</strong></p>
+        <p>i=7: max(-5, 6-5) = max(-5, 1) = 1, max=6</p>
+        <p>i=8: max(4, 1+4) = max(4, 5) = 5, max=6</p>
+        <p>&nbsp;</p>
+        <p>Answer: 6 (subarray [4, -1, 2, 1] from indices 3 to 6)</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: Practice Quiz -->
+    <!-- ============================================================ -->
+    <section id="quiz">
+      <h2>7. Practice Quiz</h2>
+
+      <p>Test your understanding of arrays and strings. Click an answer to check it.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q">
+          <h4>Q1: What is the time complexity of accessing an element by index in an array?</h4>
+          <button onclick="checkAnswer(this, false)">A) O(n)</button>
+          <button onclick="checkAnswer(this, true)">B) O(1)</button>
+          <button onclick="checkAnswer(this, false)">C) O(log n)</button>
+          <button onclick="checkAnswer(this, false)">D) O(n log n)</button>
+          <div class="explanation">
+            <strong>B) O(1).</strong> Arrays store elements contiguously in memory. The address of any element can be computed directly: <code>base_address + (index * element_size)</code>. This is a single arithmetic operation regardless of array size, making it constant time.
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q">
+          <h4>Q2: You have a sorted array and need to find two numbers that add up to a target. Which technique is most efficient?</h4>
+          <button onclick="checkAnswer(this, false)">A) Nested loops (brute force)</button>
+          <button onclick="checkAnswer(this, false)">B) Binary search for each element</button>
+          <button onclick="checkAnswer(this, true)">C) Two pointers from opposite ends</button>
+          <button onclick="checkAnswer(this, false)">D) Sliding window</button>
+          <div class="explanation">
+            <strong>C) Two pointers.</strong> Since the array is sorted, start with pointers at both ends. If the sum is too small, move the left pointer right. If too large, move the right pointer left. This finds the pair in O(n) time with O(1) space -- better than brute force O(n^2) and binary search O(n log n).
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q">
+          <h4>Q3: What happens when you insert an element at the beginning of a dynamic array of size n?</h4>
+          <button onclick="checkAnswer(this, false)">A) O(1) -- just place it at index 0</button>
+          <button onclick="checkAnswer(this, true)">B) O(n) -- all existing elements must shift right</button>
+          <button onclick="checkAnswer(this, false)">C) O(log n) -- binary placement</button>
+          <button onclick="checkAnswer(this, false)">D) O(n^2) -- each element shifts independently</button>
+          <div class="explanation">
+            <strong>B) O(n).</strong> To make room at index 0, every existing element must be copied one position to the right. With n elements, that is n shift operations. This is why inserting at the beginning of an array is expensive -- and why linked lists exist for frequent front-insertions.
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q">
+          <h4>Q4: In Kadane's Algorithm for Maximum Subarray, what decision is made at each index?</h4>
+          <button onclick="checkAnswer(this, false)">A) Whether to skip the current element entirely</button>
+          <button onclick="checkAnswer(this, true)">B) Whether to extend the current subarray or start a new one</button>
+          <button onclick="checkAnswer(this, false)">C) Whether to sort the remaining elements</button>
+          <button onclick="checkAnswer(this, false)">D) Whether to use prefix sum or brute force</button>
+          <div class="explanation">
+            <strong>B) Extend or start new.</strong> At each index i, Kadane's computes <code>max(nums[i], current_sum + nums[i])</code>. If the running sum has gone negative, adding to it would only drag down the current element, so it is better to start a fresh subarray from the current element.
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q">
+          <h4>Q5: Why is string concatenation in a loop (e.g., <code>s += char</code>) considered O(n^2) in Python?</h4>
+          <button onclick="checkAnswer(this, false)">A) Python strings are mutable, so each modification locks the GIL</button>
+          <button onclick="checkAnswer(this, true)">B) Strings are immutable, so each concatenation creates a new string and copies all previous characters</button>
+          <button onclick="checkAnswer(this, false)">C) The garbage collector runs after each concatenation</button>
+          <button onclick="checkAnswer(this, false)">D) Python uses UTF-32 encoding which is 4x slower</button>
+          <div class="explanation">
+            <strong>B) Immutability causes copying.</strong> Since strings cannot be modified in-place, <code>s += char</code> creates an entirely new string and copies all existing characters plus the new one. After n iterations, you have copied 1 + 2 + 3 + ... + n = n(n+1)/2 characters total, which is O(n^2). The fix: collect characters in a list and use <code>"".join(list)</code> at the end for O(n) total.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>LearnDSA -- Built for self-taught programmers who want to master data structures and algorithms.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered) return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

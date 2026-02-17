@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacks &amp; Queues | Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html" class="active">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Stacks &amp; Queues</div>
+      <h1>Stacks &amp; Queues</h1>
+      <p>Linear data structures with restricted access patterns -- the backbone of parsing, traversal, and scheduling algorithms.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>On This Page</h4>
+      <a href="#stacks">1. Stacks (LIFO)</a>
+      <a href="#stack-impl">2. Stack Implementations</a>
+      <a href="#stack-problems">3. Common Stack Problems</a>
+      <a href="#queues">4. Queues (FIFO)</a>
+      <a href="#queue-impl">5. Queue Implementations</a>
+      <a href="#queue-problems">6. Common Queue Problems</a>
+      <a href="#deque">7. Deque (Double-Ended Queue)</a>
+      <a href="#priority-queue">8. Priority Queue / Heap</a>
+      <a href="#complexity">9. Time Complexity Table</a>
+      <a href="#applications">10. Real-World Applications</a>
+      <a href="#leetcode">11. LeetCode Problems</a>
+      <a href="#quiz">12. Practice Quiz</a>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: STACKS                            -->
+    <!-- ============================================ -->
+    <section id="stacks">
+      <h2>1. Stacks (LIFO - Last In, First Out)</h2>
+
+      <p>
+        A <strong>stack</strong> is a linear data structure that follows the <strong>LIFO</strong> principle: the last element added is the first one removed. Think of a stack of plates -- you can only add or remove plates from the top.
+      </p>
+
+      <div class="formula-box">  | 3 | &larr; top (last in, first out)
+  | 2 |
+  | 1 |
+  +---+</div>
+
+      <p>Every stack supports these core operations, and they all run in <strong>O(1)</strong> time:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>push(x)</code></td><td>Add element <code>x</code> to the top</td><td>O(1)</td></tr>
+          <tr><td><code>pop()</code></td><td>Remove and return the top element</td><td>O(1)</td></tr>
+          <tr><td><code>peek()</code> / <code>top()</code></td><td>Return the top element without removing it</td><td>O(1)</td></tr>
+          <tr><td><code>isEmpty()</code></td><td>Check if the stack is empty</td><td>O(1)</td></tr>
+          <tr><td><code>size()</code></td><td>Return the number of elements</td><td>O(1)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Analogy</div>
+        <p>
+          Imagine a stack of plates in a cafeteria. You always grab the plate on top (pop), and new clean plates go on top (push). You never pull from the middle or bottom -- that would collapse the stack. This restricted access is what makes stacks powerful for tracking "most recent" state.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: STACK IMPLEMENTATIONS             -->
+    <!-- ============================================ -->
+    <section id="stack-impl">
+      <h2>2. Stack Implementations</h2>
+
+      <h3>Python: Using a List</h3>
+      <p>Python lists support <code>append()</code> and <code>pop()</code> at the end in amortized O(1). This is the simplest stack implementation.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Stack using a Python list</span>
+stack = []
+
+stack.<span class="function">append</span>(<span class="number">1</span>)   <span class="comment"># push 1</span>
+stack.<span class="function">append</span>(<span class="number">2</span>)   <span class="comment"># push 2</span>
+stack.<span class="function">append</span>(<span class="number">3</span>)   <span class="comment"># push 3</span>
+
+<span class="builtin">print</span>(stack[<span class="number">-1</span>])   <span class="comment"># peek: 3</span>
+<span class="builtin">print</span>(stack.<span class="function">pop</span>()) <span class="comment"># pop: 3</span>
+<span class="builtin">print</span>(stack)        <span class="comment"># [1, 2]</span>
+<span class="builtin">print</span>(<span class="builtin">len</span>(stack))   <span class="comment"># size: 2</span>
+<span class="builtin">print</span>(<span class="keyword">not</span> stack)    <span class="comment"># isEmpty: False</span></code></pre>
+
+      <h3>Python: Using collections.deque</h3>
+      <p>A <code>deque</code> (double-ended queue) gives guaranteed O(1) for both ends. Slightly more robust than a plain list.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+stack = <span class="function">deque</span>()
+
+stack.<span class="function">append</span>(<span class="number">1</span>)     <span class="comment"># push</span>
+stack.<span class="function">append</span>(<span class="number">2</span>)
+stack.<span class="function">append</span>(<span class="number">3</span>)
+
+<span class="builtin">print</span>(stack[<span class="number">-1</span>])     <span class="comment"># peek: 3</span>
+<span class="builtin">print</span>(stack.<span class="function">pop</span>())   <span class="comment"># pop: 3</span>
+<span class="builtin">print</span>(<span class="builtin">len</span>(stack))     <span class="comment"># size: 2</span></code></pre>
+
+      <h3>JavaScript: Using an Array</h3>
+      <p>JavaScript arrays have built-in <code>push()</code> and <code>pop()</code> methods that work in O(1).</p>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Stack using a JavaScript array</span>
+<span class="keyword">const</span> stack = [];
+
+stack.<span class="function">push</span>(<span class="number">1</span>);    <span class="comment">// push 1</span>
+stack.<span class="function">push</span>(<span class="number">2</span>);    <span class="comment">// push 2</span>
+stack.<span class="function">push</span>(<span class="number">3</span>);    <span class="comment">// push 3</span>
+
+console.<span class="function">log</span>(stack[stack.length - <span class="number">1</span>]); <span class="comment">// peek: 3</span>
+console.<span class="function">log</span>(stack.<span class="function">pop</span>());             <span class="comment">// pop: 3</span>
+console.<span class="function">log</span>(stack);                   <span class="comment">// [1, 2]</span>
+console.<span class="function">log</span>(stack.length);            <span class="comment">// size: 2</span>
+console.<span class="function">log</span>(stack.length === <span class="number">0</span>);      <span class="comment">// isEmpty: false</span></code></pre>
+
+      <h3>Full Stack Class: Python</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Stack</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>._data = []
+
+    <span class="keyword">def</span> <span class="function">push</span>(<span class="builtin">self</span>, val):
+        <span class="builtin">self</span>._data.<span class="function">append</span>(val)
+
+    <span class="keyword">def</span> <span class="function">pop</span>(<span class="builtin">self</span>):
+        <span class="keyword">if</span> <span class="builtin">self</span>.<span class="function">is_empty</span>():
+            <span class="keyword">raise</span> <span class="builtin">IndexError</span>(<span class="string">"pop from empty stack"</span>)
+        <span class="keyword">return</span> <span class="builtin">self</span>._data.<span class="function">pop</span>()
+
+    <span class="keyword">def</span> <span class="function">peek</span>(<span class="builtin">self</span>):
+        <span class="keyword">if</span> <span class="builtin">self</span>.<span class="function">is_empty</span>():
+            <span class="keyword">raise</span> <span class="builtin">IndexError</span>(<span class="string">"peek from empty stack"</span>)
+        <span class="keyword">return</span> <span class="builtin">self</span>._data[<span class="number">-1</span>]
+
+    <span class="keyword">def</span> <span class="function">is_empty</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="builtin">len</span>(<span class="builtin">self</span>._data) == <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">size</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="builtin">len</span>(<span class="builtin">self</span>._data)
+
+    <span class="keyword">def</span> <span class="function">__repr__</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="string">f"Stack(</span>{<span class="builtin">self</span>._data}<span class="string">)"</span>
+
+
+<span class="comment"># Usage</span>
+s = <span class="function">Stack</span>()
+s.<span class="function">push</span>(<span class="number">10</span>)
+s.<span class="function">push</span>(<span class="number">20</span>)
+s.<span class="function">push</span>(<span class="number">30</span>)
+<span class="builtin">print</span>(s.<span class="function">peek</span>())      <span class="comment"># 30</span>
+<span class="builtin">print</span>(s.<span class="function">pop</span>())       <span class="comment"># 30</span>
+<span class="builtin">print</span>(s.<span class="function">size</span>())      <span class="comment"># 2</span>
+<span class="builtin">print</span>(s.<span class="function">is_empty</span>())  <span class="comment"># False</span></code></pre>
+
+      <h3>Full Stack Class: JavaScript</h3>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">Stack</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>._data = [];
+    }
+
+    <span class="function">push</span>(val) {
+        <span class="keyword">this</span>._data.<span class="function">push</span>(val);
+    }
+
+    <span class="function">pop</span>() {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="builtin">Error</span>(<span class="string">"pop from empty stack"</span>);
+        }
+        <span class="keyword">return</span> <span class="keyword">this</span>._data.<span class="function">pop</span>();
+    }
+
+    <span class="function">peek</span>() {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="builtin">Error</span>(<span class="string">"peek from empty stack"</span>);
+        }
+        <span class="keyword">return</span> <span class="keyword">this</span>._data[<span class="keyword">this</span>._data.length - <span class="number">1</span>];
+    }
+
+    <span class="function">isEmpty</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>._data.length === <span class="number">0</span>;
+    }
+
+    <span class="function">size</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>._data.length;
+    }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> s = <span class="keyword">new</span> <span class="function">Stack</span>();
+s.<span class="function">push</span>(<span class="number">10</span>);
+s.<span class="function">push</span>(<span class="number">20</span>);
+s.<span class="function">push</span>(<span class="number">30</span>);
+console.<span class="function">log</span>(s.<span class="function">peek</span>());     <span class="comment">// 30</span>
+console.<span class="function">log</span>(s.<span class="function">pop</span>());      <span class="comment">// 30</span>
+console.<span class="function">log</span>(s.<span class="function">size</span>());     <span class="comment">// 2</span>
+console.<span class="function">log</span>(s.<span class="function">isEmpty</span>());  <span class="comment">// false</span></code></pre>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: COMMON STACK PROBLEMS             -->
+    <!-- ============================================ -->
+    <section id="stack-problems">
+      <h2>3. Common Stack Problems</h2>
+
+      <!-- Valid Parentheses -->
+      <h3>Problem 1: Valid Parentheses</h3>
+      <p>
+        Given a string containing just the characters <code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>[</code>, and <code>]</code>, determine if the input string is valid. An input string is valid if every open bracket is closed by the same type, and in the correct order.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Approach</div>
+        <p>
+          Use a stack. For every opening bracket, push it. For every closing bracket, check that the stack is not empty and that the top of the stack is the matching opening bracket. If it does not match or the stack is empty, return false. At the end, the stack must be empty.
+        </p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">isValid</span>(s: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+    stack = []
+    pairs = {<span class="string">')'</span>: <span class="string">'('</span>, <span class="string">'}'</span>: <span class="string">'{'</span>, <span class="string">']'</span>: <span class="string">'['</span>}
+
+    <span class="keyword">for</span> char <span class="keyword">in</span> s:
+        <span class="keyword">if</span> char <span class="keyword">in</span> pairs:
+            <span class="comment"># Closing bracket -- check the top of stack</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> stack <span class="keyword">or</span> stack[<span class="number">-1</span>] != pairs[char]:
+                <span class="keyword">return</span> <span class="keyword">False</span>
+            stack.<span class="function">pop</span>()
+        <span class="keyword">else</span>:
+            <span class="comment"># Opening bracket -- push onto stack</span>
+            stack.<span class="function">append</span>(char)
+
+    <span class="keyword">return</span> <span class="builtin">len</span>(stack) == <span class="number">0</span>
+
+<span class="comment"># Examples</span>
+<span class="builtin">print</span>(<span class="function">isValid</span>(<span class="string">"()"</span>))       <span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">isValid</span>(<span class="string">"()[]{}"</span>))   <span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">isValid</span>(<span class="string">"(]"</span>))       <span class="comment"># False</span>
+<span class="builtin">print</span>(<span class="function">isValid</span>(<span class="string">"([)]"</span>))     <span class="comment"># False</span>
+<span class="builtin">print</span>(<span class="function">isValid</span>(<span class="string">"{[]}"</span>))     <span class="comment"># True</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isValid</span>(s) {
+    <span class="keyword">const</span> stack = [];
+    <span class="keyword">const</span> pairs = { <span class="string">')'</span>: <span class="string">'('</span>, <span class="string">'}'</span>: <span class="string">'{'</span>, <span class="string">']'</span>: <span class="string">'['</span> };
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> s) {
+        <span class="keyword">if</span> (pairs[char]) {
+            <span class="comment">// Closing bracket -- check the top of stack</span>
+            <span class="keyword">if</span> (!stack.length || stack[stack.length - <span class="number">1</span>] !== pairs[char]) {
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+            }
+            stack.<span class="function">pop</span>();
+        } <span class="keyword">else</span> {
+            <span class="comment">// Opening bracket -- push onto stack</span>
+            stack.<span class="function">push</span>(char);
+        }
+    }
+
+    <span class="keyword">return</span> stack.length === <span class="number">0</span>;
+}
+
+<span class="comment">// Examples</span>
+console.<span class="function">log</span>(<span class="function">isValid</span>(<span class="string">"()"</span>));       <span class="comment">// true</span>
+console.<span class="function">log</span>(<span class="function">isValid</span>(<span class="string">"()[]{}"</span>));   <span class="comment">// true</span>
+console.<span class="function">log</span>(<span class="function">isValid</span>(<span class="string">"(]"</span>));       <span class="comment">// false</span>
+console.<span class="function">log</span>(<span class="function">isValid</span>(<span class="string">"([)]"</span>));     <span class="comment">// false</span>
+console.<span class="function">log</span>(<span class="function">isValid</span>(<span class="string">"{[]}"</span>));     <span class="comment">// true</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(n) -- single pass through the string. <strong>Space:</strong> O(n) -- worst case the entire string is opening brackets.</p>
+      </div>
+
+      <!-- Min Stack -->
+      <h3>Problem 2: Min Stack</h3>
+      <p>
+        Design a stack that supports <code>push</code>, <code>pop</code>, <code>top</code>, and retrieving the minimum element -- all in O(1) time.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Approach</div>
+        <p>
+          Maintain two stacks: the main stack and a <strong>min stack</strong>. Whenever you push, also push the current minimum onto the min stack. When you pop, pop from both. The top of the min stack always holds the current minimum.
+        </p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">MinStack</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>.stack = []
+        <span class="builtin">self</span>.min_stack = []
+
+    <span class="keyword">def</span> <span class="function">push</span>(<span class="builtin">self</span>, val: <span class="builtin">int</span>) -> <span class="keyword">None</span>:
+        <span class="builtin">self</span>.stack.<span class="function">append</span>(val)
+        <span class="comment"># Push the new minimum onto min_stack</span>
+        current_min = <span class="builtin">min</span>(val, <span class="builtin">self</span>.min_stack[<span class="number">-1</span>] <span class="keyword">if</span> <span class="builtin">self</span>.min_stack <span class="keyword">else</span> <span class="builtin">float</span>(<span class="string">'inf'</span>))
+        <span class="builtin">self</span>.min_stack.<span class="function">append</span>(current_min)
+
+    <span class="keyword">def</span> <span class="function">pop</span>(<span class="builtin">self</span>) -> <span class="keyword">None</span>:
+        <span class="builtin">self</span>.stack.<span class="function">pop</span>()
+        <span class="builtin">self</span>.min_stack.<span class="function">pop</span>()
+
+    <span class="keyword">def</span> <span class="function">top</span>(<span class="builtin">self</span>) -> <span class="builtin">int</span>:
+        <span class="keyword">return</span> <span class="builtin">self</span>.stack[<span class="number">-1</span>]
+
+    <span class="keyword">def</span> <span class="function">getMin</span>(<span class="builtin">self</span>) -> <span class="builtin">int</span>:
+        <span class="keyword">return</span> <span class="builtin">self</span>.min_stack[<span class="number">-1</span>]
+
+<span class="comment"># Usage</span>
+ms = <span class="function">MinStack</span>()
+ms.<span class="function">push</span>(<span class="number">-2</span>)
+ms.<span class="function">push</span>(<span class="number">0</span>)
+ms.<span class="function">push</span>(<span class="number">-3</span>)
+<span class="builtin">print</span>(ms.<span class="function">getMin</span>())  <span class="comment"># -3</span>
+ms.<span class="function">pop</span>()
+<span class="builtin">print</span>(ms.<span class="function">top</span>())     <span class="comment"># 0</span>
+<span class="builtin">print</span>(ms.<span class="function">getMin</span>())  <span class="comment"># -2</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">MinStack</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.stack = [];
+        <span class="keyword">this</span>.minStack = [];
+    }
+
+    <span class="function">push</span>(val) {
+        <span class="keyword">this</span>.stack.<span class="function">push</span>(val);
+        <span class="keyword">const</span> currentMin = <span class="keyword">this</span>.minStack.length
+            ? Math.<span class="function">min</span>(val, <span class="keyword">this</span>.minStack[<span class="keyword">this</span>.minStack.length - <span class="number">1</span>])
+            : val;
+        <span class="keyword">this</span>.minStack.<span class="function">push</span>(currentMin);
+    }
+
+    <span class="function">pop</span>() {
+        <span class="keyword">this</span>.stack.<span class="function">pop</span>();
+        <span class="keyword">this</span>.minStack.<span class="function">pop</span>();
+    }
+
+    <span class="function">top</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.stack[<span class="keyword">this</span>.stack.length - <span class="number">1</span>];
+    }
+
+    <span class="function">getMin</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.minStack[<span class="keyword">this</span>.minStack.length - <span class="number">1</span>];
+    }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> ms = <span class="keyword">new</span> <span class="function">MinStack</span>();
+ms.<span class="function">push</span>(<span class="number">-2</span>);
+ms.<span class="function">push</span>(<span class="number">0</span>);
+ms.<span class="function">push</span>(<span class="number">-3</span>);
+console.<span class="function">log</span>(ms.<span class="function">getMin</span>());  <span class="comment">// -3</span>
+ms.<span class="function">pop</span>();
+console.<span class="function">log</span>(ms.<span class="function">top</span>());     <span class="comment">// 0</span>
+console.<span class="function">log</span>(ms.<span class="function">getMin</span>());  <span class="comment">// -2</span></code></pre>
+
+      <!-- Evaluate Reverse Polish Notation -->
+      <h3>Problem 3: Evaluate Reverse Polish Notation</h3>
+      <p>
+        Evaluate an expression in Reverse Polish Notation (postfix). Valid operators are <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>. Each operand may be an integer or another expression. Division truncates toward zero.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Approach</div>
+        <p>
+          Iterate through the tokens. If the token is a number, push it onto the stack. If it is an operator, pop two operands, apply the operator (second popped is the left operand), and push the result back. At the end, the stack holds the final answer.
+        </p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">evalRPN</span>(tokens: <span class="builtin">list</span>[<span class="builtin">str</span>]) -> <span class="builtin">int</span>:
+    stack = []
+
+    <span class="keyword">for</span> token <span class="keyword">in</span> tokens:
+        <span class="keyword">if</span> token <span class="keyword">in</span> {<span class="string">'+'</span>, <span class="string">'-'</span>, <span class="string">'*'</span>, <span class="string">'/'</span>}:
+            b = stack.<span class="function">pop</span>()  <span class="comment"># right operand</span>
+            a = stack.<span class="function">pop</span>()  <span class="comment"># left operand</span>
+            <span class="keyword">if</span> token == <span class="string">'+'</span>:
+                stack.<span class="function">append</span>(a + b)
+            <span class="keyword">elif</span> token == <span class="string">'-'</span>:
+                stack.<span class="function">append</span>(a - b)
+            <span class="keyword">elif</span> token == <span class="string">'*'</span>:
+                stack.<span class="function">append</span>(a * b)
+            <span class="keyword">else</span>:
+                <span class="comment"># Truncate toward zero (not floor division)</span>
+                stack.<span class="function">append</span>(<span class="builtin">int</span>(a / b))
+        <span class="keyword">else</span>:
+            stack.<span class="function">append</span>(<span class="builtin">int</span>(token))
+
+    <span class="keyword">return</span> stack[<span class="number">0</span>]
+
+<span class="comment"># Example: ["2","1","+","3","*"] = ((2 + 1) * 3) = 9</span>
+<span class="builtin">print</span>(<span class="function">evalRPN</span>([<span class="string">"2"</span>,<span class="string">"1"</span>,<span class="string">"+"</span>,<span class="string">"3"</span>,<span class="string">"*"</span>]))  <span class="comment"># 9</span>
+
+<span class="comment"># Example: ["4","13","5","/","+"] = (4 + (13 / 5)) = 6</span>
+<span class="builtin">print</span>(<span class="function">evalRPN</span>([<span class="string">"4"</span>,<span class="string">"13"</span>,<span class="string">"5"</span>,<span class="string">"/"</span>,<span class="string">"+"</span>]))  <span class="comment"># 6</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">evalRPN</span>(tokens) {
+    <span class="keyword">const</span> stack = [];
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> token <span class="keyword">of</span> tokens) {
+        <span class="keyword">if</span> ([<span class="string">"+"</span>, <span class="string">"-"</span>, <span class="string">"*"</span>, <span class="string">"/"</span>].<span class="function">includes</span>(token)) {
+            <span class="keyword">const</span> b = stack.<span class="function">pop</span>();  <span class="comment">// right operand</span>
+            <span class="keyword">const</span> a = stack.<span class="function">pop</span>();  <span class="comment">// left operand</span>
+            <span class="keyword">switch</span> (token) {
+                <span class="keyword">case</span> <span class="string">"+"</span>: stack.<span class="function">push</span>(a + b); <span class="keyword">break</span>;
+                <span class="keyword">case</span> <span class="string">"-"</span>: stack.<span class="function">push</span>(a - b); <span class="keyword">break</span>;
+                <span class="keyword">case</span> <span class="string">"*"</span>: stack.<span class="function">push</span>(a * b); <span class="keyword">break</span>;
+                <span class="keyword">case</span> <span class="string">"/"</span>: stack.<span class="function">push</span>(Math.<span class="function">trunc</span>(a / b)); <span class="keyword">break</span>;
+            }
+        } <span class="keyword">else</span> {
+            stack.<span class="function">push</span>(Number(token));
+        }
+    }
+
+    <span class="keyword">return</span> stack[<span class="number">0</span>];
+}
+
+<span class="comment">// Example</span>
+console.<span class="function">log</span>(<span class="function">evalRPN</span>([<span class="string">"2"</span>,<span class="string">"1"</span>,<span class="string">"+"</span>,<span class="string">"3"</span>,<span class="string">"*"</span>]));  <span class="comment">// 9</span></code></pre>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: QUEUES                            -->
+    <!-- ============================================ -->
+    <section id="queues">
+      <h2>4. Queues (FIFO - First In, First Out)</h2>
+
+      <p>
+        A <strong>queue</strong> is a linear data structure that follows the <strong>FIFO</strong> principle: the first element added is the first one removed. Think of a line at a store -- the first person in line gets served first.
+      </p>
+
+      <div class="formula-box">  front &rarr; [1] [2] [3] &larr; back
+           dequeue              enqueue</div>
+
+      <p>Every queue supports these core operations, all in <strong>O(1)</strong> time:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>enqueue(x)</code></td><td>Add element <code>x</code> to the back</td><td>O(1)</td></tr>
+          <tr><td><code>dequeue()</code></td><td>Remove and return the front element</td><td>O(1)</td></tr>
+          <tr><td><code>front()</code> / <code>peek()</code></td><td>Return the front element without removing it</td><td>O(1)</td></tr>
+          <tr><td><code>isEmpty()</code></td><td>Check if the queue is empty</td><td>O(1)</td></tr>
+          <tr><td><code>size()</code></td><td>Return the number of elements</td><td>O(1)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="example-box">
+        <div class="label">Analogy</div>
+        <p>
+          A queue is like a line at a grocery store. The first customer in line is the first to be served. New customers join at the back. Nobody cuts the line -- that is the FIFO guarantee.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: QUEUE IMPLEMENTATIONS             -->
+    <!-- ============================================ -->
+    <section id="queue-impl">
+      <h2>5. Queue Implementations</h2>
+
+      <div class="warning-box">
+        <div class="label">Warning</div>
+        <p>In Python, do NOT use <code>list.pop(0)</code> as a dequeue operation. Removing from the front of a list is <strong>O(n)</strong> because every remaining element must shift left. Always use <code>collections.deque</code> for queues.</p>
+      </div>
+
+      <h3>Python: Using collections.deque</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+queue = <span class="function">deque</span>()
+
+queue.<span class="function">append</span>(<span class="number">1</span>)        <span class="comment"># enqueue 1</span>
+queue.<span class="function">append</span>(<span class="number">2</span>)        <span class="comment"># enqueue 2</span>
+queue.<span class="function">append</span>(<span class="number">3</span>)        <span class="comment"># enqueue 3</span>
+
+<span class="builtin">print</span>(queue[<span class="number">0</span>])        <span class="comment"># front/peek: 1</span>
+<span class="builtin">print</span>(queue.<span class="function">popleft</span>()) <span class="comment"># dequeue: 1 (O(1)!)</span>
+<span class="builtin">print</span>(queue)            <span class="comment"># deque([2, 3])</span>
+<span class="builtin">print</span>(<span class="builtin">len</span>(queue))       <span class="comment"># size: 2</span></code></pre>
+
+      <h3>JavaScript: Using an Array</h3>
+      <p>JavaScript arrays do not have a built-in O(1) dequeue. <code>shift()</code> is O(n) but works fine for small inputs. For performance-critical code, use a linked-list based queue.</p>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Simple queue with array (shift is O(n) but fine for small sizes)</span>
+<span class="keyword">const</span> queue = [];
+
+queue.<span class="function">push</span>(<span class="number">1</span>);     <span class="comment">// enqueue 1</span>
+queue.<span class="function">push</span>(<span class="number">2</span>);     <span class="comment">// enqueue 2</span>
+queue.<span class="function">push</span>(<span class="number">3</span>);     <span class="comment">// enqueue 3</span>
+
+console.<span class="function">log</span>(queue[<span class="number">0</span>]);      <span class="comment">// front: 1</span>
+console.<span class="function">log</span>(queue.<span class="function">shift</span>()); <span class="comment">// dequeue: 1 (O(n))</span>
+console.<span class="function">log</span>(queue);          <span class="comment">// [2, 3]</span>
+console.<span class="function">log</span>(queue.length);   <span class="comment">// 2</span></code></pre>
+
+      <h3>Full Queue Class: Python</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">class</span> <span class="function">Queue</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">self</span>._data = <span class="function">deque</span>()
+
+    <span class="keyword">def</span> <span class="function">enqueue</span>(<span class="builtin">self</span>, val):
+        <span class="builtin">self</span>._data.<span class="function">append</span>(val)
+
+    <span class="keyword">def</span> <span class="function">dequeue</span>(<span class="builtin">self</span>):
+        <span class="keyword">if</span> <span class="builtin">self</span>.<span class="function">is_empty</span>():
+            <span class="keyword">raise</span> <span class="builtin">IndexError</span>(<span class="string">"dequeue from empty queue"</span>)
+        <span class="keyword">return</span> <span class="builtin">self</span>._data.<span class="function">popleft</span>()
+
+    <span class="keyword">def</span> <span class="function">front</span>(<span class="builtin">self</span>):
+        <span class="keyword">if</span> <span class="builtin">self</span>.<span class="function">is_empty</span>():
+            <span class="keyword">raise</span> <span class="builtin">IndexError</span>(<span class="string">"front from empty queue"</span>)
+        <span class="keyword">return</span> <span class="builtin">self</span>._data[<span class="number">0</span>]
+
+    <span class="keyword">def</span> <span class="function">is_empty</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="builtin">len</span>(<span class="builtin">self</span>._data) == <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">size</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="builtin">len</span>(<span class="builtin">self</span>._data)
+
+    <span class="keyword">def</span> <span class="function">__repr__</span>(<span class="builtin">self</span>):
+        <span class="keyword">return</span> <span class="string">f"Queue(</span>{<span class="builtin">list</span>(<span class="builtin">self</span>._data)}<span class="string">)"</span>
+
+
+<span class="comment"># Usage</span>
+q = <span class="function">Queue</span>()
+q.<span class="function">enqueue</span>(<span class="number">10</span>)
+q.<span class="function">enqueue</span>(<span class="number">20</span>)
+q.<span class="function">enqueue</span>(<span class="number">30</span>)
+<span class="builtin">print</span>(q.<span class="function">front</span>())      <span class="comment"># 10</span>
+<span class="builtin">print</span>(q.<span class="function">dequeue</span>())    <span class="comment"># 10</span>
+<span class="builtin">print</span>(q.<span class="function">size</span>())       <span class="comment"># 2</span></code></pre>
+
+      <h3>Full Queue Class: JavaScript</h3>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">Queue</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>._data = {};
+        <span class="keyword">this</span>._head = <span class="number">0</span>;
+        <span class="keyword">this</span>._tail = <span class="number">0</span>;
+    }
+
+    <span class="function">enqueue</span>(val) {
+        <span class="keyword">this</span>._data[<span class="keyword">this</span>._tail] = val;
+        <span class="keyword">this</span>._tail++;
+    }
+
+    <span class="function">dequeue</span>() {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="builtin">Error</span>(<span class="string">"dequeue from empty queue"</span>);
+        }
+        <span class="keyword">const</span> val = <span class="keyword">this</span>._data[<span class="keyword">this</span>._head];
+        <span class="keyword">delete</span> <span class="keyword">this</span>._data[<span class="keyword">this</span>._head];
+        <span class="keyword">this</span>._head++;
+        <span class="keyword">return</span> val;
+    }
+
+    <span class="function">front</span>() {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="builtin">Error</span>(<span class="string">"front from empty queue"</span>);
+        }
+        <span class="keyword">return</span> <span class="keyword">this</span>._data[<span class="keyword">this</span>._head];
+    }
+
+    <span class="function">isEmpty</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>._tail - <span class="keyword">this</span>._head === <span class="number">0</span>;
+    }
+
+    <span class="function">size</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>._tail - <span class="keyword">this</span>._head;
+    }
+}
+
+<span class="comment">// Usage -- O(1) enqueue and dequeue using object index trick</span>
+<span class="keyword">const</span> q = <span class="keyword">new</span> <span class="function">Queue</span>();
+q.<span class="function">enqueue</span>(<span class="number">10</span>);
+q.<span class="function">enqueue</span>(<span class="number">20</span>);
+q.<span class="function">enqueue</span>(<span class="number">30</span>);
+console.<span class="function">log</span>(q.<span class="function">front</span>());    <span class="comment">// 10</span>
+console.<span class="function">log</span>(q.<span class="function">dequeue</span>());  <span class="comment">// 10</span>
+console.<span class="function">log</span>(q.<span class="function">size</span>());     <span class="comment">// 2</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Why the object trick?</div>
+        <p>
+          The JS <code>Queue</code> class above uses an object with numeric keys and a head/tail pointer instead of an array. This gives true O(1) dequeue -- no shifting elements. The trade-off is slightly more code, but it is the correct approach for performance-sensitive applications.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: QUEUE PROBLEMS                    -->
+    <!-- ============================================ -->
+    <section id="queue-problems">
+      <h2>6. Common Queue Problems</h2>
+
+      <h3>BFS Traversal (Breadth-First Search)</h3>
+      <p>
+        Queues are the backbone of BFS. You start at a source node, enqueue it, then repeatedly dequeue a node, process it, and enqueue its unvisited neighbors. This guarantees level-by-level exploration.
+      </p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">bfs</span>(graph, start):
+    visited = {start}
+    queue = <span class="function">deque</span>([start])
+    order = []
+
+    <span class="keyword">while</span> queue:
+        node = queue.<span class="function">popleft</span>()
+        order.<span class="function">append</span>(node)
+
+        <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph[node]:
+            <span class="keyword">if</span> neighbor <span class="keyword">not</span> <span class="keyword">in</span> visited:
+                visited.<span class="function">add</span>(neighbor)
+                queue.<span class="function">append</span>(neighbor)
+
+    <span class="keyword">return</span> order
+
+<span class="comment"># Example graph (adjacency list)</span>
+graph = {
+    <span class="string">'A'</span>: [<span class="string">'B'</span>, <span class="string">'C'</span>],
+    <span class="string">'B'</span>: [<span class="string">'A'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>],
+    <span class="string">'C'</span>: [<span class="string">'A'</span>, <span class="string">'F'</span>],
+    <span class="string">'D'</span>: [<span class="string">'B'</span>],
+    <span class="string">'E'</span>: [<span class="string">'B'</span>, <span class="string">'F'</span>],
+    <span class="string">'F'</span>: [<span class="string">'C'</span>, <span class="string">'E'</span>],
+}
+<span class="builtin">print</span>(<span class="function">bfs</span>(graph, <span class="string">'A'</span>))  <span class="comment"># ['A', 'B', 'C', 'D', 'E', 'F']</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Deep Dive</div>
+        <p>BFS is covered in depth on the <a href="trees.html" class="resource-link">Trees</a> and <a href="graphs.html" class="resource-link">Graphs</a> pages. The key takeaway here: <strong>BFS uses a queue, DFS uses a stack.</strong></p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: DEQUE                             -->
+    <!-- ============================================ -->
+    <section id="deque">
+      <h2>7. Deque (Double-Ended Queue)</h2>
+
+      <p>
+        A <strong>deque</strong> (pronounced "deck") allows insertion and removal from <strong>both ends</strong> in O(1). It combines the powers of a stack and a queue.
+      </p>
+
+      <div class="formula-box">  &larr; pop_front / push_front  [1] [2] [3]  push_back / pop_back &rarr;</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>push_front(x)</code></td><td>Add to the front</td><td>O(1)</td></tr>
+          <tr><td><code>push_back(x)</code></td><td>Add to the back</td><td>O(1)</td></tr>
+          <tr><td><code>pop_front()</code></td><td>Remove from the front</td><td>O(1)</td></tr>
+          <tr><td><code>pop_back()</code></td><td>Remove from the back</td><td>O(1)</td></tr>
+          <tr><td><code>front()</code> / <code>back()</code></td><td>Peek at either end</td><td>O(1)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Python: collections.deque</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+dq = <span class="function">deque</span>()
+
+dq.<span class="function">append</span>(<span class="number">2</span>)        <span class="comment"># push_back:  [2]</span>
+dq.<span class="function">append</span>(<span class="number">3</span>)        <span class="comment"># push_back:  [2, 3]</span>
+dq.<span class="function">appendleft</span>(<span class="number">1</span>)    <span class="comment"># push_front: [1, 2, 3]</span>
+
+<span class="builtin">print</span>(dq[<span class="number">0</span>])         <span class="comment"># front: 1</span>
+<span class="builtin">print</span>(dq[<span class="number">-1</span>])        <span class="comment"># back: 3</span>
+<span class="builtin">print</span>(dq.<span class="function">popleft</span>())  <span class="comment"># pop_front: 1 -> [2, 3]</span>
+<span class="builtin">print</span>(dq.<span class="function">pop</span>())      <span class="comment"># pop_back:  3 -> [2]</span></code></pre>
+
+      <h3>JavaScript: Array or Custom Implementation</h3>
+      <p>JavaScript does not have a built-in deque. You can use an array (with <code>unshift</code>/<code>shift</code> being O(n)) or implement with a doubly linked list for O(1) on both ends.</p>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Simple deque using array (unshift/shift are O(n))</span>
+<span class="keyword">const</span> dq = [];
+
+dq.<span class="function">push</span>(<span class="number">2</span>);        <span class="comment">// push_back:  [2]</span>
+dq.<span class="function">push</span>(<span class="number">3</span>);        <span class="comment">// push_back:  [2, 3]</span>
+dq.<span class="function">unshift</span>(<span class="number">1</span>);     <span class="comment">// push_front: [1, 2, 3]  (O(n))</span>
+
+console.<span class="function">log</span>(dq[<span class="number">0</span>]);            <span class="comment">// front: 1</span>
+console.<span class="function">log</span>(dq[dq.length - <span class="number">1</span>]); <span class="comment">// back: 3</span>
+console.<span class="function">log</span>(dq.<span class="function">shift</span>());       <span class="comment">// pop_front: 1 (O(n))</span>
+console.<span class="function">log</span>(dq.<span class="function">pop</span>());         <span class="comment">// pop_back:  3</span></code></pre>
+
+      <h3>When to Use a Deque</h3>
+      <p>The classic use case is the <strong>Sliding Window Maximum</strong> problem. You maintain a monotonic deque where the front always holds the index of the current window's maximum. As the window slides, you pop from both ends to maintain the invariant.</p>
+
+      <div class="tip-box">
+        <div class="label">Interview Pattern</div>
+        <p>Whenever you see "sliding window" combined with "maximum" or "minimum," think <strong>monotonic deque</strong>. This pattern appears in problems like Sliding Window Maximum (LC 239) and Shortest Subarray with Sum at Least K (LC 862).</p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 8: PRIORITY QUEUE                    -->
+    <!-- ============================================ -->
+    <section id="priority-queue">
+      <h2>8. Priority Queue / Heap (Brief Intro)</h2>
+
+      <p>
+        A <strong>priority queue</strong> is not technically a queue -- it does not follow FIFO. Instead, elements are dequeued in <strong>priority order</strong> (smallest or largest first). Under the hood, it is typically implemented as a <strong>binary heap</strong>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Insert</td><td>O(log n)</td></tr>
+          <tr><td>Extract min/max</td><td>O(log n)</td></tr>
+          <tr><td>Peek min/max</td><td>O(1)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Python: heapq Module</h3>
+      <p>Python's <code>heapq</code> provides a min-heap. To get a max-heap, negate the values.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="comment"># Min-heap</span>
+heap = []
+heapq.<span class="function">heappush</span>(heap, <span class="number">3</span>)
+heapq.<span class="function">heappush</span>(heap, <span class="number">1</span>)
+heapq.<span class="function">heappush</span>(heap, <span class="number">2</span>)
+
+<span class="builtin">print</span>(heap[<span class="number">0</span>])               <span class="comment"># peek min: 1</span>
+<span class="builtin">print</span>(heapq.<span class="function">heappop</span>(heap))  <span class="comment"># extract min: 1</span>
+<span class="builtin">print</span>(heapq.<span class="function">heappop</span>(heap))  <span class="comment"># extract min: 2</span>
+
+<span class="comment"># Max-heap trick: negate values</span>
+max_heap = []
+heapq.<span class="function">heappush</span>(max_heap, <span class="number">-3</span>)
+heapq.<span class="function">heappush</span>(max_heap, <span class="number">-1</span>)
+heapq.<span class="function">heappush</span>(max_heap, <span class="number">-2</span>)
+<span class="builtin">print</span>(-heapq.<span class="function">heappop</span>(max_heap))  <span class="comment"># extract max: 3</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Full Coverage</div>
+        <p>Heaps, priority queues, and heap sort are covered in depth on the <a href="advanced.html" class="resource-link">Advanced</a> page. This section is just to show you the concept and API.</p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 9: TIME COMPLEXITY TABLE             -->
+    <!-- ============================================ -->
+    <section id="complexity">
+      <h2>9. Time Complexity Comparison</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Stack</th>
+            <th>Queue</th>
+            <th>Deque</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Push / Enqueue</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Pop / Dequeue</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Peek / Front</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Search</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td>isEmpty</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+          <tr>
+            <td>Size</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+            <td>O(1)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Key Takeaway</div>
+        <p>Stacks, queues, and deques all give you O(1) for their primary operations. The only O(n) operation is searching -- which you rarely need to do. If you are searching a stack or queue, you probably need a different data structure (like a hash set).</p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 10: REAL-WORLD APPLICATIONS          -->
+    <!-- ============================================ -->
+    <section id="applications">
+      <h2>10. Real-World Applications</h2>
+
+      <h3>Stack Applications</h3>
+      <ul>
+        <li><strong>Undo/Redo</strong> -- Text editors push each action onto a stack. Undo pops the last action; redo pops from a separate stack.</li>
+        <li><strong>Browser Back Button</strong> -- Each page you visit is pushed onto a stack. Clicking back pops the current page and shows the previous one.</li>
+        <li><strong>Call Stack</strong> -- When a function calls another function, the return address is pushed onto the call stack. When the function returns, the address is popped.</li>
+        <li><strong>DFS (Depth-First Search)</strong> -- Uses a stack (or recursion, which uses the call stack) to explore as deep as possible before backtracking.</li>
+        <li><strong>Expression Parsing</strong> -- Compilers use stacks to evaluate arithmetic expressions, convert infix to postfix, and match brackets.</li>
+      </ul>
+
+      <h3>Queue Applications</h3>
+      <ul>
+        <li><strong>BFS (Breadth-First Search)</strong> -- Uses a queue to explore nodes level by level, finding shortest paths in unweighted graphs.</li>
+        <li><strong>Task Scheduling</strong> -- Operating systems use queues to schedule processes (FIFO scheduling, round-robin with time slices).</li>
+        <li><strong>Print Queue</strong> -- Documents sent to a printer are processed in the order they arrive.</li>
+        <li><strong>Message Queues</strong> -- Systems like RabbitMQ and Kafka use queues to decouple producers from consumers in distributed systems.</li>
+        <li><strong>Web Server Request Handling</strong> -- Incoming HTTP requests are queued and processed in order.</li>
+      </ul>
+
+      <h3>Deque Applications</h3>
+      <ul>
+        <li><strong>Sliding Window Problems</strong> -- Maintaining a monotonic deque for efficient window maximum/minimum queries.</li>
+        <li><strong>Work Stealing</strong> -- In parallel computing, threads steal tasks from the back of other threads' deques.</li>
+        <li><strong>Palindrome Checking</strong> -- Compare characters from both ends simultaneously.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 11: LEETCODE PROBLEMS                -->
+    <!-- ============================================ -->
+    <section id="leetcode">
+      <h2>11. LeetCode Problems</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Difficulty</th>
+            <th>Key Concept</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Valid Parentheses (LC 20)</td><td><span class="tag green">Easy</span></td><td>Stack</td></tr>
+          <tr><td>Min Stack (LC 155)</td><td><span class="tag orange">Medium</span></td><td>Two stacks</td></tr>
+          <tr><td>Implement Queue using Stacks (LC 232)</td><td><span class="tag green">Easy</span></td><td>Two stacks</td></tr>
+          <tr><td>Implement Stack using Queues (LC 225)</td><td><span class="tag green">Easy</span></td><td>Two queues or single queue</td></tr>
+          <tr><td>Daily Temperatures (LC 739)</td><td><span class="tag orange">Medium</span></td><td>Monotonic stack</td></tr>
+          <tr><td>Sliding Window Maximum (LC 239)</td><td><span class="tag red">Hard</span></td><td>Monotonic deque</td></tr>
+          <tr><td>Evaluate Reverse Polish Notation (LC 150)</td><td><span class="tag orange">Medium</span></td><td>Stack</td></tr>
+        </tbody>
+      </table>
+
+      <!-- FULL SOLUTION: Valid Parentheses -->
+      <h3>Full Solution: Valid Parentheses (LC 20)</h3>
+      <p><strong>Problem:</strong> Given a string <code>s</code> containing just the characters <code>( ) { } [ ]</code>, determine if the input string is valid.</p>
+
+      <div class="example-box">
+        <div class="label">Strategy</div>
+        <p>
+          <strong>1.</strong> Create a hash map of closing-to-opening bracket pairs.<br>
+          <strong>2.</strong> Iterate through each character. If it is an opening bracket, push it.<br>
+          <strong>3.</strong> If it is a closing bracket, check that the stack is not empty AND the top matches the expected opening bracket.<br>
+          <strong>4.</strong> At the end, the stack must be empty (all brackets matched).
+        </p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">isValid</span>(s: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+    stack = []
+    pairs = {<span class="string">')'</span>: <span class="string">'('</span>, <span class="string">'}'</span>: <span class="string">'{'</span>, <span class="string">']'</span>: <span class="string">'['</span>}
+
+    <span class="keyword">for</span> char <span class="keyword">in</span> s:
+        <span class="keyword">if</span> char <span class="keyword">in</span> pairs:
+            <span class="comment"># It's a closing bracket</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> stack <span class="keyword">or</span> stack[<span class="number">-1</span>] != pairs[char]:
+                <span class="keyword">return</span> <span class="keyword">False</span>
+            stack.<span class="function">pop</span>()
+        <span class="keyword">else</span>:
+            <span class="comment"># It's an opening bracket</span>
+            stack.<span class="function">append</span>(char)
+
+    <span class="keyword">return</span> <span class="builtin">len</span>(stack) == <span class="number">0</span>
+
+<span class="comment"># Time: O(n)  |  Space: O(n)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isValid</span>(s) {
+    <span class="keyword">const</span> stack = [];
+    <span class="keyword">const</span> pairs = { <span class="string">")"</span>: <span class="string">"("</span>, <span class="string">"}"</span>: <span class="string">"{"</span>, <span class="string">"]"</span>: <span class="string">"["</span> };
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> s) {
+        <span class="keyword">if</span> (pairs[char]) {
+            <span class="keyword">if</span> (!stack.length || stack[stack.length - <span class="number">1</span>] !== pairs[char]) {
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+            }
+            stack.<span class="function">pop</span>();
+        } <span class="keyword">else</span> {
+            stack.<span class="function">push</span>(char);
+        }
+    }
+
+    <span class="keyword">return</span> stack.length === <span class="number">0</span>;
+}
+
+<span class="comment">// Time: O(n)  |  Space: O(n)</span></code></pre>
+
+      <!-- FULL SOLUTION: Daily Temperatures -->
+      <h3>Full Solution: Daily Temperatures (LC 739)</h3>
+      <p>
+        <strong>Problem:</strong> Given an array of integers <code>temperatures</code>, return an array <code>answer</code> where <code>answer[i]</code> is the number of days you have to wait after the <code>i</code>-th day to get a warmer temperature. If there is no future day with a warmer temperature, set <code>answer[i] = 0</code>.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Strategy - Monotonic Stack</div>
+        <p>
+          <strong>1.</strong> Use a stack that stores indices of temperatures (not the values themselves).<br>
+          <strong>2.</strong> Iterate through each day. While the current temperature is warmer than the temperature at the index on top of the stack, pop from the stack and compute the difference in indices.<br>
+          <strong>3.</strong> Push the current index onto the stack.<br>
+          <strong>4.</strong> The stack maintains a monotonically decreasing sequence of temperatures. Every element gets pushed once and popped once, so total work is O(n).
+        </p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">dailyTemperatures</span>(temperatures: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    n = <span class="builtin">len</span>(temperatures)
+    answer = [<span class="number">0</span>] * n
+    stack = []  <span class="comment"># stores indices</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="comment"># While current temp is warmer than temp at stack top</span>
+        <span class="keyword">while</span> stack <span class="keyword">and</span> temperatures[i] > temperatures[stack[<span class="number">-1</span>]]:
+            prev_idx = stack.<span class="function">pop</span>()
+            answer[prev_idx] = i - prev_idx
+        stack.<span class="function">append</span>(i)
+
+    <span class="keyword">return</span> answer
+
+<span class="comment"># Example</span>
+temps = [<span class="number">73</span>, <span class="number">74</span>, <span class="number">75</span>, <span class="number">71</span>, <span class="number">69</span>, <span class="number">72</span>, <span class="number">76</span>, <span class="number">73</span>]
+<span class="builtin">print</span>(<span class="function">dailyTemperatures</span>(temps))
+<span class="comment"># Output: [1, 1, 4, 2, 1, 1, 0, 0]</span>
+<span class="comment">#</span>
+<span class="comment"># Day 0 (73): next warmer is day 1 (74) -> 1 day</span>
+<span class="comment"># Day 1 (74): next warmer is day 2 (75) -> 1 day</span>
+<span class="comment"># Day 2 (75): next warmer is day 6 (76) -> 4 days</span>
+<span class="comment"># Day 3 (71): next warmer is day 5 (72) -> 2 days</span>
+<span class="comment"># Day 4 (69): next warmer is day 5 (72) -> 1 day</span>
+<span class="comment"># Day 5 (72): next warmer is day 6 (76) -> 1 day</span>
+<span class="comment"># Day 6 (76): no warmer day -> 0</span>
+<span class="comment"># Day 7 (73): no warmer day -> 0</span>
+
+<span class="comment"># Time: O(n)  |  Space: O(n)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">dailyTemperatures</span>(temperatures) {
+    <span class="keyword">const</span> n = temperatures.length;
+    <span class="keyword">const</span> answer = <span class="keyword">new</span> <span class="builtin">Array</span>(n).<span class="function">fill</span>(<span class="number">0</span>);
+    <span class="keyword">const</span> stack = []; <span class="comment">// stores indices</span>
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="comment">// While current temp is warmer than temp at stack top</span>
+        <span class="keyword">while</span> (stack.length &amp;&amp; temperatures[i] &gt; temperatures[stack[stack.length - <span class="number">1</span>]]) {
+            <span class="keyword">const</span> prevIdx = stack.<span class="function">pop</span>();
+            answer[prevIdx] = i - prevIdx;
+        }
+        stack.<span class="function">push</span>(i);
+    }
+
+    <span class="keyword">return</span> answer;
+}
+
+<span class="comment">// Example</span>
+<span class="keyword">const</span> temps = [<span class="number">73</span>, <span class="number">74</span>, <span class="number">75</span>, <span class="number">71</span>, <span class="number">69</span>, <span class="number">72</span>, <span class="number">76</span>, <span class="number">73</span>];
+console.<span class="function">log</span>(<span class="function">dailyTemperatures</span>(temps));
+<span class="comment">// Output: [1, 1, 4, 2, 1, 1, 0, 0]</span>
+
+<span class="comment">// Time: O(n)  |  Space: O(n)</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Monotonic Stack Pattern</div>
+        <p>
+          The Daily Temperatures problem is the classic intro to the <strong>monotonic stack</strong> pattern. The key insight: the stack maintains a decreasing sequence. When you encounter a larger element, you pop and resolve all the smaller ones that were "waiting" for a bigger value. This pattern shows up in Next Greater Element, Largest Rectangle in Histogram, and Trapping Rain Water.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 12: PRACTICE QUIZ                    -->
+    <!-- ============================================ -->
+    <section id="quiz">
+      <h2>12. Practice Quiz</h2>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: What does LIFO stand for?</h4>
+          <button onclick="checkAnswer('q1', this, false)">A) Last In, First Out... of the queue</button>
+          <button onclick="checkAnswer('q1', this, true)">B) Last In, First Out</button>
+          <button onclick="checkAnswer('q1', this, false)">C) Last Index, First Output</button>
+          <button onclick="checkAnswer('q1', this, false)">D) Linked In, FIFO Out</button>
+          <div class="explanation">LIFO stands for <strong>Last In, First Out</strong>. This is the defining property of a stack -- the most recently added element is the first one removed, just like a stack of plates.</div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: Why should you NOT use <code>list.pop(0)</code> as a dequeue operation in Python?</h4>
+          <button onclick="checkAnswer('q2', this, false)">A) It raises a TypeError</button>
+          <button onclick="checkAnswer('q2', this, false)">B) It returns the wrong element</button>
+          <button onclick="checkAnswer('q2', this, true)">C) It is O(n) because all remaining elements must shift left</button>
+          <button onclick="checkAnswer('q2', this, false)">D) It only works with strings, not integers</button>
+          <div class="explanation">Removing from the front of a Python list is <strong>O(n)</strong> because every element after index 0 must be shifted one position to the left. Use <code>collections.deque</code> with <code>popleft()</code> for O(1) dequeue.</div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: Which data structure does BFS (Breadth-First Search) use?</h4>
+          <button onclick="checkAnswer('q3', this, false)">A) Stack</button>
+          <button onclick="checkAnswer('q3', this, true)">B) Queue</button>
+          <button onclick="checkAnswer('q3', this, false)">C) Priority Queue</button>
+          <button onclick="checkAnswer('q3', this, false)">D) Hash Map</button>
+          <div class="explanation">BFS uses a <strong>queue</strong> to explore nodes level by level. DFS uses a stack (or recursion). This is one of the most fundamental facts in algorithms -- remember: <strong>BFS = Queue, DFS = Stack</strong>.</div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: In the Daily Temperatures problem, what does the monotonic stack store?</h4>
+          <button onclick="checkAnswer('q4', this, false)">A) Temperature values in increasing order</button>
+          <button onclick="checkAnswer('q4', this, false)">B) Temperature values in decreasing order</button>
+          <button onclick="checkAnswer('q4', this, true)">C) Indices of temperatures in decreasing temperature order</button>
+          <button onclick="checkAnswer('q4', this, false)">D) Pairs of (temperature, index) in random order</button>
+          <div class="explanation">The monotonic stack stores <strong>indices</strong> (not values) where the corresponding temperatures form a decreasing sequence. When a warmer temperature arrives, we pop indices and compute the day difference. Storing indices lets us calculate the "how many days" answer directly.</div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: What is the time complexity of getting the minimum from a Min Stack?</h4>
+          <button onclick="checkAnswer('q5', this, true)">A) O(1)</button>
+          <button onclick="checkAnswer('q5', this, false)">B) O(log n)</button>
+          <button onclick="checkAnswer('q5', this, false)">C) O(n)</button>
+          <button onclick="checkAnswer('q5', this, false)">D) O(n log n)</button>
+          <div class="explanation">The Min Stack maintains a separate stack that tracks the current minimum at each level. The top of the min stack always holds the current minimum, so <code>getMin()</code> is <strong>O(1)</strong>. This is the whole point of the two-stack approach -- you trade O(n) extra space for O(1) min queries.</div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers learning data structures and algorithms from scratch.</p>
+    <p>No ads, no tracking, no paywalls -- just DSA.</p>
+  </footer>
+
+  <script>
+    function checkAnswer(questionId, button, isCorrect) {
+      const question = document.getElementById(questionId);
+      const buttons = question.querySelectorAll('button');
+      const explanation = question.querySelector('.explanation');
+
+      // Disable all buttons after answering
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.cursor = 'default';
+      });
+
+      if (isCorrect) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        // Highlight the correct answer
+        buttons.forEach(btn => {
+          if (btn.getAttribute('onclick').includes('true')) {
+            btn.classList.add('correct');
+          }
+        });
+      }
+
+      // Show explanation
+      explanation.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

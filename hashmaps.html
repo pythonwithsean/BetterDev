@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Maps & Sets | Learn DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html" class="active">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Hash Maps &amp; Sets</div>
+    <h1>Hash Maps &amp; Sets</h1>
+    <p>Master the most versatile data structure in coding interviews &mdash; O(1) lookups, frequency counting, complement patterns, and more.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is-hashmap">1. What is a Hash Map?</a>
+    <a href="#time-complexity">2. Time Complexity</a>
+    <a href="#hashmaps-python-js">3. Hash Maps in Python and JS</a>
+    <a href="#hash-sets">4. Hash Sets</a>
+    <a href="#common-patterns">5. Common Hash Map Patterns</a>
+    <a href="#when-to-use">6. When to Use Hash Maps</a>
+    <a href="#leetcode-problems">7. LeetCode Problems</a>
+    <a href="#implement-from-scratch">8. Implementing a Hash Map from Scratch</a>
+    <a href="#quiz">9. Practice Quiz</a>
+  </div>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 1 : WHAT IS A HASH MAP?                                   -->
+  <!-- ================================================================== -->
+  <section id="what-is-hashmap">
+    <h2>1. What is a Hash Map?</h2>
+
+    <p>A <strong>hash map</strong> (also called a <strong>hash table</strong>) is a data structure that stores <strong>key-value pairs</strong>. It allows you to associate a value with a unique key and retrieve that value later in near-constant time.</p>
+
+    <div class="tip-box">
+      <div class="label">Different names, same idea</div>
+      <ul>
+        <li><strong>Python</strong> &mdash; <code>dict</code> (dictionary)</li>
+        <li><strong>JavaScript</strong> &mdash; plain <code>Object</code> or <code>Map</code></li>
+        <li><strong>Java</strong> &mdash; <code>HashMap</code></li>
+        <li><strong>C++</strong> &mdash; <code>unordered_map</code></li>
+        <li><strong>General CS</strong> &mdash; hash table, associative array</li>
+      </ul>
+    </div>
+
+    <h3>How Hashing Works</h3>
+
+    <p>Under the hood a hash map is backed by an <strong>array</strong>. When you insert a key, a <strong>hash function</strong> converts the key into an integer, and that integer is mapped to an index in the array (usually via modulo). The value is then stored at that index.</p>
+
+    <div class="formula-box">
+      index = hash(key) % array_length
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step-by-step example</div>
+      <p>Suppose our internal array has 8 slots and we want to store <code>"alice" -> 90</code>.</p>
+      <ol>
+        <li>Compute hash: <code>hash("alice")</code> returns, say, <code>7572839183</code></li>
+        <li>Find index: <code>7572839183 % 8 = 7</code></li>
+        <li>Store the pair <code>("alice", 90)</code> at slot 7</li>
+      </ol>
+      <p>Later, to look up <code>"alice"</code>, we repeat the same hash and go directly to slot 7 &mdash; <strong>O(1)</strong>.</p>
+    </div>
+
+    <h3>Visual Representation</h3>
+
+    <pre><code><span class="comment">/* Hash Table with 8 buckets */</span>
+
+  Key        hash(key) % 8    Bucket
+  -------    --------------   ----------------------------
+  "alice"    7                [0] ->
+  "bob"      3                [1] ->
+  "charlie"  1                [2] ->
+  "diana"    3  (collision!)  [3] -> ("bob",85) -> ("diana",92)
+  "eve"      5                [4] ->
+                              [5] -> ("eve",78)
+                              [6] ->
+                              [7] -> ("alice",90)
+
+  Bucket 1:  ("charlie", 88)
+  Bucket 3:  ("bob", 85) -> ("diana", 92)   <span class="comment">// chained</span></code></pre>
+
+    <h3>Collision Handling</h3>
+
+    <p>A <strong>collision</strong> occurs when two different keys hash to the same index. There are two main strategies for resolving collisions:</p>
+
+    <h3>1. Chaining (Separate Chaining)</h3>
+    <p>Each bucket holds a <strong>linked list</strong> (or another collection). When a collision happens, the new key-value pair is appended to the list at that bucket.</p>
+
+    <ul>
+      <li><strong>Pros:</strong> Simple to implement. Never "runs out" of space.</li>
+      <li><strong>Cons:</strong> Uses extra memory for pointers. If many keys hash to the same bucket, lookups degrade to O(n).</li>
+    </ul>
+
+    <pre><code><span class="comment"># Chaining: bucket 3 has two entries</span>
+bucket[3] -> [("bob", 85)] -> [("diana", 92)] -> None</code></pre>
+
+    <h3>2. Open Addressing (Linear Probing)</h3>
+    <p>All entries live directly in the array. When a collision occurs, the algorithm <strong>probes</strong> forward to the next empty slot.</p>
+
+    <ul>
+      <li><strong>Pros:</strong> Better cache performance (everything in one array). No extra memory for pointers.</li>
+      <li><strong>Cons:</strong> Clustering can degrade performance. The table needs to be resized before it gets too full (load factor).</li>
+    </ul>
+
+    <pre><code><span class="comment"># Open Addressing: "diana" finds slot 3 taken, probes to slot 4</span>
+[0]         [1] charlie  [2]         [3] bob     [4] diana   [5] eve   [6]   [7] alice</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Load Factor</div>
+      <p>The <strong>load factor</strong> = (number of entries) / (number of buckets). When it exceeds a threshold (often 0.75), the hash map <strong>resizes</strong> (typically doubles) and rehashes all entries. This keeps operations near O(1) on average.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 2 : TIME COMPLEXITY                                       -->
+  <!-- ================================================================== -->
+  <section id="time-complexity">
+    <h2>2. Time Complexity</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Average</th>
+          <th>Worst Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Insert</td><td><strong>O(1)</strong></td><td>O(n)</td></tr>
+        <tr><td>Lookup</td><td><strong>O(1)</strong></td><td>O(n)</td></tr>
+        <tr><td>Delete</td><td><strong>O(1)</strong></td><td>O(n)</td></tr>
+        <tr><td>Space</td><td><strong>O(n)</strong></td><td>O(n)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Why Worst Case is O(n)</h3>
+
+    <p>If every single key hashes to the <strong>same bucket</strong>, the hash map degrades into a linked list. Every lookup would need to traverse all <em>n</em> elements &mdash; hence O(n).</p>
+
+    <div class="example-box">
+      <div class="label">Worst-case scenario</div>
+      <pre><code><span class="comment"># All keys hash to bucket 0:</span>
+bucket[0] -> ("a", 1) -> ("b", 2) -> ("c", 3) -> ... -> ("z", 26)
+
+<span class="comment"># Looking up "z" requires traversing all 26 entries</span></code></pre>
+    </div>
+
+    <h3>Why We Usually Say O(1)</h3>
+
+    <p>In practice, a good hash function distributes keys <strong>uniformly</strong> across buckets. With a reasonable load factor, the expected number of items per bucket is a small constant. This is called <strong>amortized O(1)</strong> &mdash; on average, each operation takes constant time.</p>
+
+    <div class="formula-box">
+      Average time per operation = O(1 + load_factor) = O(1) when load_factor is bounded
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Interview tip</div>
+      <p>For coding interviews, always state hash map operations as <strong>O(1) average, O(n) worst case</strong>. Most interviewers accept O(1) unless they specifically ask about worst case.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 3 : HASH MAPS IN PYTHON AND JS                           -->
+  <!-- ================================================================== -->
+  <section id="hashmaps-python-js">
+    <h2>3. Hash Maps in Python and JS</h2>
+
+    <!-- ---- PYTHON ---- -->
+    <h3>Python: <code>dict</code></h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># --- Creating ---</span>
+d = {}                            <span class="comment"># empty dict</span>
+d = {<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: <span class="number">25</span>}  <span class="comment"># with initial values</span>
+d = dict(name=<span class="string">"Alice"</span>, age=<span class="number">25</span>)     <span class="comment"># using dict() constructor</span>
+
+<span class="comment"># --- Accessing ---</span>
+d[<span class="string">"name"</span>]                         <span class="comment"># "Alice"  (KeyError if missing)</span>
+d.get(<span class="string">"name"</span>)                      <span class="comment"># "Alice"  (None if missing)</span>
+d.get(<span class="string">"gpa"</span>, <span class="number">0.0</span>)                  <span class="comment"># 0.0      (default if missing)</span>
+
+<span class="comment"># --- Inserting / Updating ---</span>
+d[<span class="string">"grade"</span>] = <span class="string">"A"</span>                   <span class="comment"># add new key</span>
+d[<span class="string">"age"</span>] = <span class="number">26</span>                      <span class="comment"># update existing key</span>
+
+<span class="comment"># --- Deleting ---</span>
+<span class="keyword">del</span> d[<span class="string">"grade"</span>]                     <span class="comment"># remove key (KeyError if missing)</span>
+d.pop(<span class="string">"grade"</span>, <span class="keyword">None</span>)               <span class="comment"># remove key (no error if missing)</span>
+
+<span class="comment"># --- Checking membership ---</span>
+<span class="string">"name"</span> <span class="keyword">in</span> d                        <span class="comment"># True</span>
+<span class="string">"gpa"</span> <span class="keyword">not in</span> d                    <span class="comment"># True</span>
+
+<span class="comment"># --- Iterating ---</span>
+<span class="keyword">for</span> key <span class="keyword">in</span> d:
+    <span class="builtin">print</span>(key)                    <span class="comment"># "name", "age"</span>
+
+<span class="keyword">for</span> key, value <span class="keyword">in</span> d.items():
+    <span class="builtin">print</span>(key, value)             <span class="comment"># "name" "Alice", "age" 26</span>
+
+<span class="keyword">for</span> val <span class="keyword">in</span> d.values():
+    <span class="builtin">print</span>(val)                    <span class="comment"># "Alice", 26</span>
+
+<span class="keyword">for</span> key <span class="keyword">in</span> d.keys():
+    <span class="builtin">print</span>(key)                    <span class="comment"># "name", "age"</span>
+
+<span class="comment"># --- Useful methods ---</span>
+<span class="builtin">len</span>(d)                             <span class="comment"># 2</span>
+d.update({<span class="string">"gpa"</span>: <span class="number">3.9</span>})             <span class="comment"># merge another dict</span></code></pre>
+
+    <h3>Python: <code>defaultdict</code> and <code>Counter</code></h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict, Counter
+
+<span class="comment"># --- defaultdict: auto-creates default values for missing keys ---</span>
+freq = defaultdict(<span class="builtin">int</span>)           <span class="comment"># default value is 0</span>
+<span class="keyword">for</span> char <span class="keyword">in</span> <span class="string">"hello"</span>:
+    freq[char] += <span class="number">1</span>
+<span class="comment"># freq = {'h': 1, 'e': 1, 'l': 2, 'o': 1}</span>
+
+groups = defaultdict(<span class="builtin">list</span>)         <span class="comment"># default value is []</span>
+groups[<span class="string">"fruits"</span>].append(<span class="string">"apple"</span>)   <span class="comment"># no need to check if key exists</span>
+groups[<span class="string">"fruits"</span>].append(<span class="string">"banana"</span>)
+
+<span class="comment"># --- Counter: count elements in one line ---</span>
+count = Counter(<span class="string">"abracadabra"</span>)
+<span class="comment"># Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})</span>
+
+count.most_common(<span class="number">2</span>)              <span class="comment"># [('a', 5), ('b', 2)]</span>
+
+<span class="comment"># Counter from a list</span>
+nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]
+count = Counter(nums)
+<span class="comment"># Counter({3: 3, 2: 2, 1: 1})</span></code></pre>
+
+    <!-- ---- JAVASCRIPT ---- -->
+    <h3>JavaScript: Object vs Map</h3>
+
+    <div class="warning-box">
+      <div class="label">When to use Map vs Object</div>
+      <ul>
+        <li><strong>Use <code>Map</code></strong> when keys are not strings (numbers, objects, etc.), when you need to preserve insertion order, or when you frequently add/remove keys.</li>
+        <li><strong>Use plain <code>Object</code></strong> for simple string-keyed config, JSON-compatible data, or when you need object destructuring.</li>
+      </ul>
+    </div>
+
+    <h3>JavaScript: Object</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// --- Creating ---</span>
+<span class="keyword">const</span> obj = {};
+<span class="keyword">const</span> obj2 = { <span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: <span class="number">25</span> };
+
+<span class="comment">// --- Accessing ---</span>
+obj2[<span class="string">"name"</span>];                      <span class="comment">// "Alice"</span>
+obj2.name;                          <span class="comment">// "Alice"  (dot notation)</span>
+
+<span class="comment">// --- Inserting / Updating ---</span>
+obj2[<span class="string">"grade"</span>] = <span class="string">"A"</span>;
+obj2.grade = <span class="string">"A"</span>;
+
+<span class="comment">// --- Deleting ---</span>
+<span class="keyword">delete</span> obj2.grade;
+
+<span class="comment">// --- Checking ---</span>
+<span class="string">"name"</span> <span class="keyword">in</span> obj2;                     <span class="comment">// true</span>
+obj2.hasOwnProperty(<span class="string">"name"</span>);        <span class="comment">// true</span>
+
+<span class="comment">// --- Iterating ---</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> obj2) {
+    <span class="builtin">console</span>.log(key, obj2[key]);
+}
+Object.keys(obj2);                  <span class="comment">// ["name", "age"]</span>
+Object.values(obj2);                <span class="comment">// ["Alice", 25]</span>
+Object.entries(obj2);               <span class="comment">// [["name","Alice"], ["age",25]]</span></code></pre>
+
+    <h3>JavaScript: Map</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// --- Creating ---</span>
+<span class="keyword">const</span> map = <span class="keyword">new</span> <span class="builtin">Map</span>();
+<span class="keyword">const</span> map2 = <span class="keyword">new</span> <span class="builtin">Map</span>([
+    [<span class="string">"name"</span>, <span class="string">"Alice"</span>],
+    [<span class="string">"age"</span>, <span class="number">25</span>]
+]);
+
+<span class="comment">// --- Operations ---</span>
+map2.set(<span class="string">"grade"</span>, <span class="string">"A"</span>);             <span class="comment">// insert / update</span>
+map2.get(<span class="string">"name"</span>);                    <span class="comment">// "Alice"</span>
+map2.has(<span class="string">"name"</span>);                    <span class="comment">// true</span>
+map2.delete(<span class="string">"grade"</span>);               <span class="comment">// remove</span>
+map2.size;                           <span class="comment">// 2</span>
+
+<span class="comment">// --- Iterating ---</span>
+map2.forEach((value, key) => {
+    <span class="builtin">console</span>.log(key, value);
+});
+
+<span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> map2) {
+    <span class="builtin">console</span>.log(key, value);
+}
+
+<span class="comment">// --- Keys can be ANY type ---</span>
+<span class="keyword">const</span> objKey = { id: <span class="number">1</span> };
+map.set(objKey, <span class="string">"object as key"</span>);    <span class="comment">// works!</span>
+map.set(<span class="number">42</span>, <span class="string">"number as key"</span>);        <span class="comment">// works!</span>
+
+<span class="comment">// --- Convert to/from array ---</span>
+<span class="keyword">const</span> arr = [...map2];               <span class="comment">// [["name","Alice"], ["age",25]]</span>
+<span class="keyword">const</span> fromArr = <span class="keyword">new</span> <span class="builtin">Map</span>(arr);       <span class="comment">// back to Map</span></code></pre>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 4 : HASH SETS                                             -->
+  <!-- ================================================================== -->
+  <section id="hash-sets">
+    <h2>4. Hash Sets</h2>
+
+    <p>A <strong>hash set</strong> is like a hash map but it stores <strong>only keys</strong> &mdash; no associated values. It answers one question fast: <em>"Is this element in the collection?"</em></p>
+
+    <h3>Python: <code>set</code></h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># --- Creating ---</span>
+s = <span class="builtin">set</span>()                          <span class="comment"># empty set (NOT {} which is a dict)</span>
+s = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}                        <span class="comment"># set with values</span>
+s = <span class="builtin">set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>])                <span class="comment"># from list (duplicates removed)</span>
+
+<span class="comment"># --- Operations ---</span>
+s.add(<span class="number">4</span>)                             <span class="comment"># add element</span>
+s.remove(<span class="number">4</span>)                          <span class="comment"># remove (KeyError if missing)</span>
+s.discard(<span class="number">4</span>)                         <span class="comment"># remove (no error if missing)</span>
+<span class="number">3</span> <span class="keyword">in</span> s                              <span class="comment"># True  (O(1) lookup)</span>
+<span class="builtin">len</span>(s)                              <span class="comment"># 3</span>
+
+<span class="comment"># --- Set Operations ---</span>
+a = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
+b = {<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>}
+
+a | b                               <span class="comment"># Union:        {1, 2, 3, 4}</span>
+a.union(b)                          <span class="comment"># Union:        {1, 2, 3, 4}</span>
+
+a & b                               <span class="comment"># Intersection: {2, 3}</span>
+a.intersection(b)                   <span class="comment"># Intersection: {2, 3}</span>
+
+a - b                               <span class="comment"># Difference:   {1}</span>
+a.difference(b)                     <span class="comment"># Difference:   {1}</span>
+
+a ^ b                               <span class="comment"># Symmetric difference: {1, 4}</span>
+a.symmetric_difference(b)           <span class="comment"># Symmetric difference: {1, 4}</span>
+
+a.issubset(b)                       <span class="comment"># False</span>
+a.issuperset(b)                     <span class="comment"># False</span></code></pre>
+
+    <h3>JavaScript: <code>Set</code></h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// --- Creating ---</span>
+<span class="keyword">const</span> s = <span class="keyword">new</span> <span class="builtin">Set</span>();
+<span class="keyword">const</span> s2 = <span class="keyword">new</span> <span class="builtin">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>]);   <span class="comment">// {1, 2, 3}  (duplicates removed)</span>
+
+<span class="comment">// --- Operations ---</span>
+s2.add(<span class="number">4</span>);                           <span class="comment">// add element</span>
+s2.delete(<span class="number">4</span>);                        <span class="comment">// remove element (returns boolean)</span>
+s2.has(<span class="number">3</span>);                            <span class="comment">// true  (O(1) lookup)</span>
+s2.size;                             <span class="comment">// 3</span>
+
+<span class="comment">// --- Iterating ---</span>
+s2.forEach(val => <span class="builtin">console</span>.log(val));
+<span class="keyword">for</span> (<span class="keyword">const</span> val <span class="keyword">of</span> s2) { <span class="builtin">console</span>.log(val); }
+
+<span class="comment">// --- Set Operations (manual in JS) ---</span>
+<span class="keyword">const</span> a = <span class="keyword">new</span> <span class="builtin">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+<span class="keyword">const</span> b = <span class="keyword">new</span> <span class="builtin">Set</span>([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);
+
+<span class="comment">// Union</span>
+<span class="keyword">const</span> union = <span class="keyword">new</span> <span class="builtin">Set</span>([...a, ...b]);              <span class="comment">// {1, 2, 3, 4}</span>
+
+<span class="comment">// Intersection</span>
+<span class="keyword">const</span> inter = <span class="keyword">new</span> <span class="builtin">Set</span>([...a].filter(x => b.has(x))); <span class="comment">// {2, 3}</span>
+
+<span class="comment">// Difference (a - b)</span>
+<span class="keyword">const</span> diff = <span class="keyword">new</span> <span class="builtin">Set</span>([...a].filter(x => !b.has(x))); <span class="comment">// {1}</span>
+
+<span class="comment">// Symmetric Difference</span>
+<span class="keyword">const</span> symDiff = <span class="keyword">new</span> <span class="builtin">Set</span>(
+    [...a].filter(x => !b.has(x)).concat([...b].filter(x => !a.has(x)))
+); <span class="comment">// {1, 4}</span>
+
+<span class="comment">// Convert to array</span>
+<span class="keyword">const</span> arr = [...s2];                  <span class="comment">// [1, 2, 3]</span>
+<span class="keyword">const</span> arr2 = Array.from(s2);          <span class="comment">// [1, 2, 3]</span></code></pre>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 5 : COMMON HASH MAP PATTERNS                             -->
+  <!-- ================================================================== -->
+  <section id="common-patterns">
+    <h2>5. Common Hash Map Patterns</h2>
+
+    <!-- Pattern: Frequency Counter -->
+    <h3>Pattern 1: Frequency Counter</h3>
+
+    <p>Count how often each element appears. This is the single most common hash map pattern in interviews.</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">frequency_count</span>(nums):
+    freq = {}
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        freq[num] = freq.get(num, <span class="number">0</span>) + <span class="number">1</span>
+    <span class="keyword">return</span> freq
+
+<span class="comment"># Or with Counter:</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+freq = Counter(nums)
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(frequency_count([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]))
+<span class="comment"># {1: 1, 2: 2, 3: 3}</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">frequencyCount</span>(nums) {
+    <span class="keyword">const</span> freq = <span class="keyword">new</span> <span class="builtin">Map</span>();
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        freq.set(num, (freq.get(num) || <span class="number">0</span>) + <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> freq;
+}
+
+<span class="comment">// Example</span>
+<span class="builtin">console</span>.log(frequencyCount([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]));
+<span class="comment">// Map { 1 => 1, 2 => 2, 3 => 3 }</span></code></pre>
+
+    <!-- Pattern: Two Sum -->
+    <h3>Pattern 2: Two Sum (The Classic)</h3>
+
+    <p>Given an array of integers and a target, return the <strong>indices</strong> of the two numbers that add up to the target.</p>
+
+    <div class="formula-box">
+      Key insight: For each number <code>num</code>, check if <code>target - num</code> already exists in the hash map.
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why hash map beats brute force</div>
+      <p><strong>Brute force:</strong> Check every pair &mdash; O(n^2).<br>
+      <strong>Hash map:</strong> One pass, store complements &mdash; O(n).</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">two_sum</span>(nums, target):
+    <span class="comment"># Map: number -> its index</span>
+    seen = {}
+
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="builtin">enumerate</span>(nums):
+        complement = target - num       <span class="comment"># what we need to find</span>
+
+        <span class="keyword">if</span> complement <span class="keyword">in</span> seen:           <span class="comment"># have we seen it before?</span>
+            <span class="keyword">return</span> [seen[complement], i]  <span class="comment"># return both indices</span>
+
+        seen[num] = i                   <span class="comment"># store current number and index</span>
+
+    <span class="keyword">return</span> []                           <span class="comment"># no solution found</span>
+
+<span class="comment"># --- Walk-through ---</span>
+<span class="comment"># nums = [2, 7, 11, 15], target = 9</span>
+<span class="comment">#</span>
+<span class="comment"># i=0: num=2,  comp=7,  seen={}        -> not found, store {2: 0}</span>
+<span class="comment"># i=1: num=7,  comp=2,  seen={2: 0}    -> FOUND! return [0, 1]</span>
+
+<span class="builtin">print</span>(two_sum([<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>], <span class="number">9</span>))    <span class="comment"># [0, 1]</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">twoSum</span>(nums, target) {
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> <span class="builtin">Map</span>();            <span class="comment">// number -> index</span>
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < nums.length; i++) {
+        <span class="keyword">const</span> complement = target - nums[i]; <span class="comment">// what we need</span>
+
+        <span class="keyword">if</span> (seen.has(complement)) {      <span class="comment">// have we seen it?</span>
+            <span class="keyword">return</span> [seen.get(complement), i]; <span class="comment">// return both indices</span>
+        }
+
+        seen.set(nums[i], i);           <span class="comment">// store current number</span>
+    }
+
+    <span class="keyword">return</span> [];                          <span class="comment">// no solution</span>
+}
+
+<span class="comment">// Walk-through:</span>
+<span class="comment">// nums = [2, 7, 11, 15], target = 9</span>
+<span class="comment">//</span>
+<span class="comment">// i=0: num=2,  comp=7,  seen=Map{}         -> not found, store {2->0}</span>
+<span class="comment">// i=1: num=7,  comp=2,  seen=Map{2->0}     -> FOUND! return [0, 1]</span>
+
+<span class="builtin">console</span>.log(twoSum([<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>], <span class="number">9</span>)); <span class="comment">// [0, 1]</span></code></pre>
+
+    <!-- Pattern: Group Anagrams -->
+    <h3>Pattern 3: Group Anagrams</h3>
+
+    <p>Given an array of strings, group anagrams together. Two strings are anagrams if they contain the same characters in any order.</p>
+
+    <div class="formula-box">
+      Key insight: Sort each string to get a canonical key. Anagrams share the same sorted form.
+      <br>"eat" -> "aet", "tea" -> "aet", "ate" -> "aet" -- all map to "aet"
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">group_anagrams</span>(strs):
+    groups = defaultdict(<span class="builtin">list</span>)
+
+    <span class="keyword">for</span> s <span class="keyword">in</span> strs:
+        <span class="comment"># Sort the string to create a canonical key</span>
+        key = <span class="builtin">tuple</span>(<span class="builtin">sorted</span>(s))        <span class="comment"># tuple because lists can't be dict keys</span>
+        groups[key].append(s)
+
+    <span class="keyword">return</span> <span class="builtin">list</span>(groups.values())
+
+<span class="comment"># --- Walk-through ---</span>
+<span class="comment"># strs = ["eat", "tea", "tan", "ate", "nat", "bat"]</span>
+<span class="comment">#</span>
+<span class="comment"># "eat" -> sorted = ('a','e','t') -> groups[('a','e','t')] = ["eat"]</span>
+<span class="comment"># "tea" -> sorted = ('a','e','t') -> groups[('a','e','t')] = ["eat","tea"]</span>
+<span class="comment"># "tan" -> sorted = ('a','n','t') -> groups[('a','n','t')] = ["tan"]</span>
+<span class="comment"># "ate" -> sorted = ('a','e','t') -> groups[('a','e','t')] = ["eat","tea","ate"]</span>
+<span class="comment"># "nat" -> sorted = ('a','n','t') -> groups[('a','n','t')] = ["tan","nat"]</span>
+<span class="comment"># "bat" -> sorted = ('a','b','t') -> groups[('a','b','t')] = ["bat"]</span>
+<span class="comment">#</span>
+<span class="comment"># Result: [["eat","tea","ate"], ["tan","nat"], ["bat"]]</span>
+
+<span class="builtin">print</span>(group_anagrams([<span class="string">"eat"</span>,<span class="string">"tea"</span>,<span class="string">"tan"</span>,<span class="string">"ate"</span>,<span class="string">"nat"</span>,<span class="string">"bat"</span>]))</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">groupAnagrams</span>(strs) {
+    <span class="keyword">const</span> groups = <span class="keyword">new</span> <span class="builtin">Map</span>();
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> s <span class="keyword">of</span> strs) {
+        <span class="comment">// Sort the string to create a canonical key</span>
+        <span class="keyword">const</span> key = s.split(<span class="string">""</span>).sort().join(<span class="string">""</span>);
+
+        <span class="keyword">if</span> (!groups.has(key)) {
+            groups.set(key, []);
+        }
+        groups.get(key).push(s);
+    }
+
+    <span class="keyword">return</span> [...groups.values()];
+}
+
+<span class="comment">// Walk-through:</span>
+<span class="comment">// "eat" -> sorted = "aet" -> groups{"aet": ["eat"]}</span>
+<span class="comment">// "tea" -> sorted = "aet" -> groups{"aet": ["eat","tea"]}</span>
+<span class="comment">// "tan" -> sorted = "ant" -> groups{"ant": ["tan"]}</span>
+<span class="comment">// "ate" -> sorted = "aet" -> groups{"aet": ["eat","tea","ate"]}</span>
+<span class="comment">// "nat" -> sorted = "ant" -> groups{"ant": ["tan","nat"]}</span>
+<span class="comment">// "bat" -> sorted = "abt" -> groups{"abt": ["bat"]}</span>
+<span class="comment">//</span>
+<span class="comment">// Result: [["eat","tea","ate"], ["tan","nat"], ["bat"]]</span>
+
+<span class="builtin">console</span>.log(groupAnagrams([<span class="string">"eat"</span>,<span class="string">"tea"</span>,<span class="string">"tan"</span>,<span class="string">"ate"</span>,<span class="string">"nat"</span>,<span class="string">"bat"</span>]));</code></pre>
+
+    <!-- Pattern: Checking for Duplicates -->
+    <h3>Pattern 4: Checking for Duplicates</h3>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">contains_duplicate</span>(nums):
+    seen = <span class="builtin">set</span>()
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        <span class="keyword">if</span> num <span class="keyword">in</span> seen:
+            <span class="keyword">return</span> <span class="keyword">True</span>
+        seen.add(num)
+    <span class="keyword">return</span> <span class="keyword">False</span>
+
+<span class="comment"># One-liner alternative:</span>
+<span class="keyword">def</span> <span class="function">contains_duplicate</span>(nums):
+    <span class="keyword">return</span> <span class="builtin">len</span>(nums) != <span class="builtin">len</span>(<span class="builtin">set</span>(nums))</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">containsDuplicate</span>(nums) {
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> <span class="builtin">Set</span>();
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        <span class="keyword">if</span> (seen.has(num)) <span class="keyword">return</span> <span class="keyword">true</span>;
+        seen.add(num);
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+
+<span class="comment">// One-liner alternative:</span>
+<span class="keyword">const</span> <span class="function">containsDuplicate</span> = nums => <span class="keyword">new</span> <span class="builtin">Set</span>(nums).size !== nums.length;</code></pre>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 6 : WHEN TO USE HASH MAPS                                -->
+  <!-- ================================================================== -->
+  <section id="when-to-use">
+    <h2>6. When to Use Hash Maps</h2>
+
+    <p>Reach for a hash map (or hash set) when you see these patterns in a problem:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Use</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>O(1) lookups</strong></td>
+          <td>Hash map / set</td>
+          <td>"Have we seen this element before?"</td>
+        </tr>
+        <tr>
+          <td><strong>Counting frequencies</strong></td>
+          <td>Hash map</td>
+          <td>"How many times does each char appear?"</td>
+        </tr>
+        <tr>
+          <td><strong>Caching / memoization</strong></td>
+          <td>Hash map</td>
+          <td>"Store computed results to avoid recalculation"</td>
+        </tr>
+        <tr>
+          <td><strong>Mapping relationships</strong></td>
+          <td>Hash map</td>
+          <td>"Map each node to its parent"</td>
+        </tr>
+        <tr>
+          <td><strong>Removing duplicates</strong></td>
+          <td>Hash set</td>
+          <td>"Return unique elements only"</td>
+        </tr>
+        <tr>
+          <td><strong>Complement problems</strong></td>
+          <td>Hash map</td>
+          <td>"Find two numbers that sum to target"</td>
+        </tr>
+        <tr>
+          <td><strong>Grouping</strong></td>
+          <td>Hash map of lists</td>
+          <td>"Group anagrams", "group by category"</td>
+        </tr>
+        <tr>
+          <td><strong>Prefix sums</strong></td>
+          <td>Hash map</td>
+          <td>"Subarray sum equals K"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Interview heuristic</div>
+      <p>If the brute force is O(n^2) because of nested "find" operations, a hash map can almost always bring it down to <strong>O(n)</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 7 : LEETCODE PROBLEMS                                     -->
+  <!-- ================================================================== -->
+  <section id="leetcode-problems">
+    <h2>7. LeetCode Problems</h2>
+
+    <p>Essential hash map problems ordered from easy to medium. Practice these to build pattern recognition.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Problem</th>
+          <th>Difficulty</th>
+          <th>Pattern</th>
+          <th>Key Idea</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://leetcode.com/problems/two-sum/" class="resource-link">Two Sum</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Complement lookup</td>
+          <td>Store num->index, check if target-num exists</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/valid-anagram/" class="resource-link">Valid Anagram</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Frequency counter</td>
+          <td>Compare character frequencies of both strings</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/contains-duplicate/" class="resource-link">Contains Duplicate</a></td>
+          <td><span class="tag green">Easy</span></td>
+          <td>Set membership</td>
+          <td>Add to set; if already present, duplicate found</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/group-anagrams/" class="resource-link">Group Anagrams</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Sorted key grouping</td>
+          <td>Sort each word as key, group values in a list</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/top-k-frequent-elements/" class="resource-link">Top K Frequent Elements</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Freq map + bucket sort</td>
+          <td>Count frequencies, then use bucket sort or heap for top K</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/longest-consecutive-sequence/" class="resource-link">Longest Consecutive Sequence</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Set + sequence start</td>
+          <td>Put all in set; only start counting from sequence beginnings</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/subarray-sum-equals-k/" class="resource-link">Subarray Sum Equals K</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Prefix sum + hash map</td>
+          <td>Store prefix_sum->count; check if prefix_sum - k exists</td>
+        </tr>
+        <tr>
+          <td><a href="https://leetcode.com/problems/lru-cache/" class="resource-link">LRU Cache</a></td>
+          <td><span class="tag orange">Medium</span></td>
+          <td>Hash map + doubly linked list</td>
+          <td>O(1) access via map, O(1) eviction via linked list</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Full Solution: Two Sum</h3>
+
+    <div class="example-box">
+      <div class="label">Problem statement</div>
+      <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>. You may assume each input has exactly one solution.</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">twoSum</span>(nums, target):
+    seen = {}                           <span class="comment"># value -> index</span>
+
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="builtin">enumerate</span>(nums):
+        complement = target - num       <span class="comment"># the number we need</span>
+
+        <span class="keyword">if</span> complement <span class="keyword">in</span> seen:           <span class="comment"># O(1) lookup</span>
+            <span class="keyword">return</span> [seen[complement], i]
+
+        seen[num] = i                   <span class="comment"># store for future lookups</span>
+
+    <span class="keyword">return</span> []
+
+<span class="comment"># Time:  O(n) - single pass through array</span>
+<span class="comment"># Space: O(n) - hash map stores up to n entries</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">var</span> <span class="function">twoSum</span> = <span class="keyword">function</span>(nums, target) {
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> <span class="builtin">Map</span>();           <span class="comment">// value -> index</span>
+
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < nums.length; i++) {
+        <span class="keyword">const</span> complement = target - nums[i]; <span class="comment">// the number we need</span>
+
+        <span class="keyword">if</span> (seen.has(complement)) {      <span class="comment">// O(1) lookup</span>
+            <span class="keyword">return</span> [seen.get(complement), i];
+        }
+
+        seen.set(nums[i], i);           <span class="comment">// store for future lookups</span>
+    }
+
+    <span class="keyword">return</span> [];
+};
+
+<span class="comment">// Time:  O(n) - single pass through array</span>
+<span class="comment">// Space: O(n) - Map stores up to n entries</span></code></pre>
+
+    <h3>Full Solution: Group Anagrams</h3>
+
+    <div class="example-box">
+      <div class="label">Problem statement</div>
+      <p>Given an array of strings <code>strs</code>, group the anagrams together. You can return the answer in any order.</p>
+      <p><strong>Example:</strong> <code>["eat","tea","tan","ate","nat","bat"]</code> returns <code>[["eat","tea","ate"],["tan","nat"],["bat"]]</code></p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">groupAnagrams</span>(strs):
+    groups = defaultdict(<span class="builtin">list</span>)       <span class="comment"># sorted_key -> [original strings]</span>
+
+    <span class="keyword">for</span> s <span class="keyword">in</span> strs:
+        key = <span class="builtin">tuple</span>(<span class="builtin">sorted</span>(s))        <span class="comment"># O(k log k) where k = len(s)</span>
+        groups[key].append(s)
+
+    <span class="keyword">return</span> <span class="builtin">list</span>(groups.values())
+
+<span class="comment"># Time:  O(n * k log k) where n = number of strings, k = max string length</span>
+<span class="comment"># Space: O(n * k) for storing all strings in groups</span>
+
+<span class="comment"># --- Alternative: character count key (avoids sorting) ---</span>
+<span class="keyword">def</span> <span class="function">groupAnagrams</span>(strs):
+    groups = defaultdict(<span class="builtin">list</span>)
+
+    <span class="keyword">for</span> s <span class="keyword">in</span> strs:
+        <span class="comment"># Count frequency of each letter as key</span>
+        count = [<span class="number">0</span>] * <span class="number">26</span>
+        <span class="keyword">for</span> c <span class="keyword">in</span> s:
+            count[<span class="builtin">ord</span>(c) - <span class="builtin">ord</span>(<span class="string">'a'</span>)] += <span class="number">1</span>
+        groups[<span class="builtin">tuple</span>(count)].append(s)
+
+    <span class="keyword">return</span> <span class="builtin">list</span>(groups.values())
+
+<span class="comment"># Time:  O(n * k) - no sorting needed</span>
+<span class="comment"># Space: O(n * k)</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">var</span> <span class="function">groupAnagrams</span> = <span class="keyword">function</span>(strs) {
+    <span class="keyword">const</span> groups = <span class="keyword">new</span> <span class="builtin">Map</span>();        <span class="comment">// sorted_key -> [original strings]</span>
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> s <span class="keyword">of</span> strs) {
+        <span class="keyword">const</span> key = s.split(<span class="string">""</span>).sort().join(<span class="string">""</span>); <span class="comment">// O(k log k)</span>
+
+        <span class="keyword">if</span> (!groups.has(key)) {
+            groups.set(key, []);
+        }
+        groups.get(key).push(s);
+    }
+
+    <span class="keyword">return</span> [...groups.values()];
+};
+
+<span class="comment">// Time:  O(n * k log k)</span>
+<span class="comment">// Space: O(n * k)</span>
+
+<span class="comment">// --- Alternative: character count key ---</span>
+<span class="keyword">var</span> <span class="function">groupAnagrams</span> = <span class="keyword">function</span>(strs) {
+    <span class="keyword">const</span> groups = <span class="keyword">new</span> <span class="builtin">Map</span>();
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> s <span class="keyword">of</span> strs) {
+        <span class="keyword">const</span> count = <span class="keyword">new</span> Array(<span class="number">26</span>).fill(<span class="number">0</span>);
+        <span class="keyword">for</span> (<span class="keyword">const</span> c <span class="keyword">of</span> s) {
+            count[c.charCodeAt(<span class="number">0</span>) - <span class="number">97</span>]++;
+        }
+        <span class="keyword">const</span> key = count.join(<span class="string">","</span>);    <span class="comment">// "1,0,0,...,1,0" as string key</span>
+
+        <span class="keyword">if</span> (!groups.has(key)) {
+            groups.set(key, []);
+        }
+        groups.get(key).push(s);
+    }
+
+    <span class="keyword">return</span> [...groups.values()];
+};
+
+<span class="comment">// Time:  O(n * k)</span>
+<span class="comment">// Space: O(n * k)</span></code></pre>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 8 : IMPLEMENTING FROM SCRATCH                             -->
+  <!-- ================================================================== -->
+  <section id="implement-from-scratch">
+    <h2>8. Implementing a Hash Map from Scratch</h2>
+
+    <p>Building your own hash map helps you understand the internals. Here is a simplified but educational implementation using <strong>chaining</strong> (array of linked lists).</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">HashMap</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, capacity=<span class="number">16</span>):
+        self.capacity = capacity
+        self.size = <span class="number">0</span>
+        self.buckets = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(capacity)]
+
+    <span class="keyword">def</span> <span class="function">_hash</span>(self, key):
+        <span class="string">"""Convert key to bucket index."""</span>
+        <span class="keyword">return</span> <span class="builtin">hash</span>(key) % self.capacity
+
+    <span class="keyword">def</span> <span class="function">put</span>(self, key, value):
+        <span class="string">"""Insert or update a key-value pair."""</span>
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        <span class="comment"># Check if key already exists in this bucket</span>
+        <span class="keyword">for</span> i, (k, v) <span class="keyword">in</span> <span class="builtin">enumerate</span>(bucket):
+            <span class="keyword">if</span> k == key:
+                bucket[i] = (key, value)   <span class="comment"># update existing</span>
+                <span class="keyword">return</span>
+
+        <span class="comment"># Key not found, add new entry</span>
+        bucket.append((key, value))
+        self.size += <span class="number">1</span>
+
+        <span class="comment"># Resize if load factor exceeds 0.75</span>
+        <span class="keyword">if</span> self.size / self.capacity > <span class="number">0.75</span>:
+            self._resize()
+
+    <span class="keyword">def</span> <span class="function">get</span>(self, key, default=<span class="keyword">None</span>):
+        <span class="string">"""Retrieve value by key. Returns default if not found."""</span>
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        <span class="keyword">for</span> k, v <span class="keyword">in</span> bucket:
+            <span class="keyword">if</span> k == key:
+                <span class="keyword">return</span> v
+
+        <span class="keyword">return</span> default
+
+    <span class="keyword">def</span> <span class="function">remove</span>(self, key):
+        <span class="string">"""Remove a key-value pair. Returns True if removed."""</span>
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        <span class="keyword">for</span> i, (k, v) <span class="keyword">in</span> <span class="builtin">enumerate</span>(bucket):
+            <span class="keyword">if</span> k == key:
+                bucket.pop(i)
+                self.size -= <span class="number">1</span>
+                <span class="keyword">return</span> <span class="keyword">True</span>
+
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="keyword">def</span> <span class="function">contains</span>(self, key):
+        <span class="string">"""Check if key exists."""</span>
+        <span class="keyword">return</span> self.get(key) <span class="keyword">is not</span> <span class="keyword">None</span>
+
+    <span class="keyword">def</span> <span class="function">_resize</span>(self):
+        <span class="string">"""Double capacity and rehash all entries."""</span>
+        old_buckets = self.buckets
+        self.capacity *= <span class="number">2</span>
+        self.size = <span class="number">0</span>
+        self.buckets = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(self.capacity)]
+
+        <span class="keyword">for</span> bucket <span class="keyword">in</span> old_buckets:
+            <span class="keyword">for</span> key, value <span class="keyword">in</span> bucket:
+                self.put(key, value)
+
+    <span class="keyword">def</span> <span class="function">__repr__</span>(self):
+        items = []
+        <span class="keyword">for</span> bucket <span class="keyword">in</span> self.buckets:
+            <span class="keyword">for</span> k, v <span class="keyword">in</span> bucket:
+                items.append(<span class="string">f"</span>{k}<span class="string">: </span>{v}<span class="string">"</span>)
+        <span class="keyword">return</span> <span class="string">"HashMap({"</span> + <span class="string">", "</span>.join(items) + <span class="string">"})"</span>
+
+
+<span class="comment"># --- Test it out ---</span>
+hm = HashMap()
+hm.put(<span class="string">"alice"</span>, <span class="number">90</span>)
+hm.put(<span class="string">"bob"</span>, <span class="number">85</span>)
+hm.put(<span class="string">"charlie"</span>, <span class="number">88</span>)
+
+<span class="builtin">print</span>(hm.get(<span class="string">"alice"</span>))              <span class="comment"># 90</span>
+<span class="builtin">print</span>(hm.get(<span class="string">"bob"</span>))                <span class="comment"># 85</span>
+<span class="builtin">print</span>(hm.get(<span class="string">"unknown"</span>, <span class="number">-1</span>))       <span class="comment"># -1</span>
+<span class="builtin">print</span>(hm.contains(<span class="string">"charlie"</span>))       <span class="comment"># True</span>
+
+hm.put(<span class="string">"alice"</span>, <span class="number">95</span>)                  <span class="comment"># update Alice's score</span>
+<span class="builtin">print</span>(hm.get(<span class="string">"alice"</span>))              <span class="comment"># 95</span>
+
+hm.remove(<span class="string">"bob"</span>)
+<span class="builtin">print</span>(hm.contains(<span class="string">"bob"</span>))          <span class="comment"># False</span>
+<span class="builtin">print</span>(hm)                           <span class="comment"># HashMap({alice: 95, charlie: 88})</span></code></pre>
+
+    <div class="tip-box">
+      <div class="label">What this implementation shows</div>
+      <ul>
+        <li><strong>Hashing:</strong> <code>hash(key) % capacity</code> maps any key to a bucket index</li>
+        <li><strong>Chaining:</strong> Each bucket is a list of (key, value) pairs</li>
+        <li><strong>Collision handling:</strong> Multiple entries can share a bucket</li>
+        <li><strong>Resizing:</strong> When load factor > 0.75, we double capacity and rehash everything</li>
+        <li><strong>O(1) average:</strong> With good distribution, each bucket has ~1 entry</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Production vs interview</div>
+      <p>This implementation is for learning. Real hash maps (like Python's <code>dict</code>) use open addressing, better hash functions, and many optimizations. But the core ideas are the same, and this is the level of detail interviewers expect.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!--  SECTION 9 : PRACTICE QUIZ                                         -->
+  <!-- ================================================================== -->
+  <section id="quiz">
+    <h2>9. Practice Quiz</h2>
+
+    <div class="quiz">
+
+      <!-- Question 1 -->
+      <div class="quiz-q" id="q1">
+        <h4>Q1: What is the average time complexity of looking up a key in a hash map?</h4>
+        <button onclick="checkAnswer('q1', this, false)">A) O(n)</button>
+        <button onclick="checkAnswer('q1', this, true)">B) O(1)</button>
+        <button onclick="checkAnswer('q1', this, false)">C) O(log n)</button>
+        <button onclick="checkAnswer('q1', this, false)">D) O(n log n)</button>
+        <div class="explanation">Hash maps provide O(1) average-case lookup by computing a hash of the key and going directly to the corresponding bucket. Worst case is O(n) if all keys collide, but with a good hash function this is extremely rare.</div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="quiz-q" id="q2">
+        <h4>Q2: You need to find two numbers in an array that add up to a target. What data structure reduces this from O(n^2) to O(n)?</h4>
+        <button onclick="checkAnswer('q2', this, false)">A) Stack</button>
+        <button onclick="checkAnswer('q2', this, false)">B) Binary search tree</button>
+        <button onclick="checkAnswer('q2', this, true)">C) Hash map</button>
+        <button onclick="checkAnswer('q2', this, false)">D) Queue</button>
+        <div class="explanation">A hash map stores each number as you iterate. For each new number, you check if its complement (target - num) already exists in the map in O(1), giving an overall O(n) solution.</div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="quiz-q" id="q3">
+        <h4>Q3: What happens when two different keys hash to the same index?</h4>
+        <button onclick="checkAnswer('q3', this, false)">A) The second key overwrites the first</button>
+        <button onclick="checkAnswer('q3', this, false)">B) An error is thrown</button>
+        <button onclick="checkAnswer('q3', this, true)">C) A collision occurs and must be resolved (e.g., chaining or open addressing)</button>
+        <button onclick="checkAnswer('q3', this, false)">D) The hash map automatically doubles in size</button>
+        <div class="explanation">When two keys hash to the same index, it is called a collision. The hash map resolves it using a strategy like chaining (storing both entries in a linked list at that bucket) or open addressing (probing for the next empty slot).</div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="quiz-q" id="q4">
+        <h4>Q4: In Python, what is the correct way to safely get a value from a dict with a default?</h4>
+        <button onclick="checkAnswer('q4', this, false)">A) <code>d["key"] or default</code></button>
+        <button onclick="checkAnswer('q4', this, true)">B) <code>d.get("key", default)</code></button>
+        <button onclick="checkAnswer('q4', this, false)">C) <code>d.fetch("key", default)</code></button>
+        <button onclick="checkAnswer('q4', this, false)">D) <code>d.find("key", default)</code></button>
+        <div class="explanation"><code>d.get("key", default)</code> returns the value if the key exists, or <code>default</code> if it does not. Option A would raise a KeyError if the key is missing (the <code>or</code> only helps if the value is falsy, not if the key is absent). Options C and D are not valid dict methods.</div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="quiz-q" id="q5">
+        <h4>Q5: When grouping anagrams, what is the key insight for the hash map approach?</h4>
+        <button onclick="checkAnswer('q5', this, false)">A) Compare every pair of strings character by character</button>
+        <button onclick="checkAnswer('q5', this, true)">B) Sort each string to create a canonical key; anagrams share the same sorted form</button>
+        <button onclick="checkAnswer('q5', this, false)">C) Use the length of each string as the hash map key</button>
+        <button onclick="checkAnswer('q5', this, false)">D) Convert each string to its ASCII sum as the key</button>
+        <div class="explanation">Sorting each string produces a canonical representation: "eat", "tea", and "ate" all become "aet". Using this sorted string as a hash map key groups all anagrams together. Using string length (C) would group non-anagrams, and ASCII sums (D) would cause false collisions (e.g., "ad" and "bc" have the same sum).</div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /.container -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>Built for learning. Keep grinding. <a href="index.html">Back to Home</a></p>
+</footer>
+
+<!-- ===== QUIZ SCRIPT ===== -->
+<script>
+function checkAnswer(qId, btn, isCorrect) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('button');
+  const explanation = question.querySelector('.explanation');
+
+  // Prevent multiple answers
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  // Disable all buttons
+  buttons.forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    // Highlight the correct answer
+    buttons.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) {
+        b.classList.add('correct');
+      }
+    });
+  }
+
+  // Show explanation
+  explanation.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Data Structures &amp; Techniques | DSA - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html" class="active">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Advanced</div>
+      <h1>Advanced Data Structures &amp; Techniques</h1>
+      <p>Heaps, tries, union-find, monotonic stacks, segment trees, bit manipulation, and math tricks. Everything that doesn't fit neatly into the other pages but is still important for interviews.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#heaps">1. Heaps / Priority Queue</a>
+      <a href="#tries">2. Tries (Prefix Trees)</a>
+      <a href="#union-find">3. Union-Find (Disjoint Set Union)</a>
+      <a href="#monotonic">4. Monotonic Stack / Monotonic Queue</a>
+      <a href="#segment-tree">5. Segment Tree</a>
+      <a href="#bit-manipulation">6. Bit Manipulation</a>
+      <a href="#math">7. Math for Interviews</a>
+      <a href="#quiz">8. Practice Quiz</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. HEAPS / PRIORITY QUEUE -->
+    <!-- ============================================================ -->
+    <section id="heaps">
+      <h2>1. Heaps / Priority Queue</h2>
+
+      <h3>What is a Heap?</h3>
+      <p>
+        A <strong>heap</strong> is a <strong>complete binary tree</strong> that satisfies the heap property. It is the data structure behind a priority queue -- it lets you efficiently access, insert, and remove the minimum (or maximum) element.
+      </p>
+      <ul>
+        <li><strong>Min-heap:</strong> Every parent node is less than or equal to its children. The smallest element is always at the root.</li>
+        <li><strong>Max-heap:</strong> Every parent node is greater than or equal to its children. The largest element is always at the root.</li>
+        <li><strong>Complete binary tree:</strong> Every level is fully filled except possibly the last, which is filled left to right.</li>
+        <li><strong>Array storage:</strong> Heaps are stored as arrays. For a node at index <code>i</code>:
+          <ul>
+            <li>Parent: <code>Math.floor((i - 1) / 2)</code></li>
+            <li>Left child: <code>2 * i + 1</code></li>
+            <li>Right child: <code>2 * i + 2</code></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Visual: Min-Heap</div>
+<pre><code>           1              Array: [1, 3, 5, 7, 8, 9, 6]
+         /   \
+        3     5           Index:  0  1  2  3  4  5  6
+       / \   / \
+      7   8 9   6         Parent of index 4 (value 8):
+                            floor((4-1)/2) = index 1 (value 3)
+
+                          Children of index 1 (value 3):
+                            2*1+1 = index 3 (value 7)
+                            2*1+2 = index 4 (value 8)</code></pre>
+      </div>
+
+      <h3>Time Complexity</h3>
+      <table>
+        <thead>
+          <tr><th>Operation</th><th>Time</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Insert (push)</td><td><code>O(log n)</code></td><td>Add at end, bubble up</td></tr>
+          <tr><td>Extract min/max (pop)</td><td><code>O(log n)</code></td><td>Remove root, bubble down</td></tr>
+          <tr><td>Peek min/max</td><td><code>O(1)</code></td><td>Root element</td></tr>
+          <tr><td>Build heap from array</td><td><code>O(n)</code></td><td>Not O(n log n) -- sift down approach</td></tr>
+          <tr><td>Search</td><td><code>O(n)</code></td><td>No ordering guarantee beyond parent-child</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Using Heaps in Python</h3>
+      <p>
+        Python provides the <code>heapq</code> module which implements a <strong>min-heap</strong> by default. There is no built-in max-heap, but you can negate values as a workaround.
+      </p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="comment"># --- Min-Heap ---</span>
+heap = []
+
+<span class="comment"># Push elements</span>
+heapq.heappush(heap, <span class="number">5</span>)
+heapq.heappush(heap, <span class="number">2</span>)
+heapq.heappush(heap, <span class="number">8</span>)
+heapq.heappush(heap, <span class="number">1</span>)
+<span class="builtin">print</span>(heap)        <span class="comment"># [1, 2, 8, 5]</span>
+
+<span class="comment"># Peek at smallest</span>
+<span class="builtin">print</span>(heap[<span class="number">0</span>])     <span class="comment"># 1</span>
+
+<span class="comment"># Pop smallest</span>
+smallest = heapq.heappop(heap)
+<span class="builtin">print</span>(smallest)    <span class="comment"># 1</span>
+<span class="builtin">print</span>(heap)        <span class="comment"># [2, 5, 8]</span>
+
+<span class="comment"># Build heap from existing list (in-place, O(n))</span>
+nums = [<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>]
+heapq.heapify(nums)
+<span class="builtin">print</span>(nums)        <span class="comment"># [1, 2, 8, 5, 3]</span>
+
+<span class="comment"># --- Max-Heap (negate values) ---</span>
+max_heap = []
+<span class="keyword">for</span> val <span class="keyword">in</span> [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>]:
+    heapq.heappush(max_heap, -val)
+
+largest = -heapq.heappop(max_heap)
+<span class="builtin">print</span>(largest)     <span class="comment"># 8</span>
+
+<span class="comment"># --- Heap with tuples (priority, value) ---</span>
+tasks = []
+heapq.heappush(tasks, (<span class="number">3</span>, <span class="string">"low priority"</span>))
+heapq.heappush(tasks, (<span class="number">1</span>, <span class="string">"high priority"</span>))
+heapq.heappush(tasks, (<span class="number">2</span>, <span class="string">"medium priority"</span>))
+
+<span class="builtin">print</span>(heapq.heappop(tasks))  <span class="comment"># (1, 'high priority')</span></code></pre>
+
+      <h3>Using Heaps in JavaScript</h3>
+      <p>
+        JavaScript has <strong>no built-in heap</strong>. You need to implement one yourself. Here is a clean MinHeap class you can use in interviews.
+      </p>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">MinHeap</span> {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.data = [];
+  }
+
+  <span class="function">size</span>()    { <span class="keyword">return</span> <span class="keyword">this</span>.data.length; }
+  <span class="function">peek</span>()    { <span class="keyword">return</span> <span class="keyword">this</span>.data[<span class="number">0</span>]; }
+  <span class="function">isEmpty</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.data.length === <span class="number">0</span>; }
+
+  <span class="function">push</span>(val) {
+    <span class="keyword">this</span>.data.push(val);
+    <span class="keyword">this</span>._bubbleUp(<span class="keyword">this</span>.data.length - <span class="number">1</span>);
+  }
+
+  <span class="function">pop</span>() {
+    <span class="keyword">const</span> top = <span class="keyword">this</span>.data[<span class="number">0</span>];
+    <span class="keyword">const</span> last = <span class="keyword">this</span>.data.pop();
+    <span class="keyword">if</span> (<span class="keyword">this</span>.data.length > <span class="number">0</span>) {
+      <span class="keyword">this</span>.data[<span class="number">0</span>] = last;
+      <span class="keyword">this</span>._sinkDown(<span class="number">0</span>);
+    }
+    <span class="keyword">return</span> top;
+  }
+
+  <span class="function">_bubbleUp</span>(i) {
+    <span class="keyword">while</span> (i > <span class="number">0</span>) {
+      <span class="keyword">const</span> parent = Math.floor((i - <span class="number">1</span>) / <span class="number">2</span>);
+      <span class="keyword">if</span> (<span class="keyword">this</span>.data[i] >= <span class="keyword">this</span>.data[parent]) <span class="keyword">break</span>;
+      [<span class="keyword">this</span>.data[i], <span class="keyword">this</span>.data[parent]] =
+        [<span class="keyword">this</span>.data[parent], <span class="keyword">this</span>.data[i]];
+      i = parent;
+    }
+  }
+
+  <span class="function">_sinkDown</span>(i) {
+    <span class="keyword">const</span> n = <span class="keyword">this</span>.data.length;
+    <span class="keyword">while</span> (<span class="keyword">true</span>) {
+      <span class="keyword">let</span> smallest = i;
+      <span class="keyword">const</span> left  = <span class="number">2</span> * i + <span class="number">1</span>;
+      <span class="keyword">const</span> right = <span class="number">2</span> * i + <span class="number">2</span>;
+      <span class="keyword">if</span> (left  &lt; n &amp;&amp; <span class="keyword">this</span>.data[left]  &lt; <span class="keyword">this</span>.data[smallest]) smallest = left;
+      <span class="keyword">if</span> (right &lt; n &amp;&amp; <span class="keyword">this</span>.data[right] &lt; <span class="keyword">this</span>.data[smallest]) smallest = right;
+      <span class="keyword">if</span> (smallest === i) <span class="keyword">break</span>;
+      [<span class="keyword">this</span>.data[i], <span class="keyword">this</span>.data[smallest]] =
+        [<span class="keyword">this</span>.data[smallest], <span class="keyword">this</span>.data[i]];
+      i = smallest;
+    }
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> heap = <span class="keyword">new</span> <span class="function">MinHeap</span>();
+heap.push(<span class="number">5</span>);
+heap.push(<span class="number">2</span>);
+heap.push(<span class="number">8</span>);
+heap.push(<span class="number">1</span>);
+console.log(heap.peek()); <span class="comment">// 1</span>
+console.log(heap.pop());  <span class="comment">// 1</span>
+console.log(heap.pop());  <span class="comment">// 2</span></code></pre>
+
+      <h3>Common Heap Problems</h3>
+
+      <h3>Kth Largest Element in an Array</h3>
+      <p>
+        Given an integer array <code>nums</code> and an integer <code>k</code>, return the <code>k</code>th largest element. Use a min-heap of size <code>k</code> -- the top is always the kth largest.
+      </p>
+      <div class="formula-box">Time: O(n log k) &nbsp; | &nbsp; Space: O(k)</div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">findKthLargest</span>(nums, k):
+    <span class="comment"># Min-heap of size k</span>
+    heap = nums[:k]
+    heapq.heapify(heap)       <span class="comment"># O(k)</span>
+
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums[k:]:
+        <span class="keyword">if</span> num > heap[<span class="number">0</span>]:     <span class="comment"># bigger than current kth largest?</span>
+            heapq.heapreplace(heap, num)  <span class="comment"># pop smallest, push num</span>
+
+    <span class="keyword">return</span> heap[<span class="number">0</span>]           <span class="comment"># root = kth largest</span>
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">findKthLargest</span>([<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">4</span>], <span class="number">2</span>))  <span class="comment"># 5</span>
+<span class="builtin">print</span>(<span class="function">findKthLargest</span>([<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">6</span>], <span class="number">4</span>))  <span class="comment"># 4</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">findKthLargest</span>(nums, k) {
+  <span class="keyword">const</span> heap = <span class="keyword">new</span> <span class="function">MinHeap</span>();
+
+  <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+    heap.push(num);
+    <span class="keyword">if</span> (heap.size() > k) {
+      heap.pop(); <span class="comment">// remove smallest, keep k largest</span>
+    }
+  }
+
+  <span class="keyword">return</span> heap.peek(); <span class="comment">// kth largest</span>
+}
+
+console.log(<span class="function">findKthLargest</span>([<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">4</span>], <span class="number">2</span>)); <span class="comment">// 5</span></code></pre>
+
+      <h3>Top K Frequent Elements</h3>
+      <p>
+        Given an integer array <code>nums</code> and an integer <code>k</code>, return the <code>k</code> most frequent elements. Count frequencies with a hash map, then use a min-heap of size <code>k</code>.
+      </p>
+      <div class="formula-box">Time: O(n log k) &nbsp; | &nbsp; Space: O(n)</div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+<span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+
+<span class="keyword">def</span> <span class="function">topKFrequent</span>(nums, k):
+    count = Counter(nums)
+    <span class="comment"># nlargest returns k items with highest count</span>
+    <span class="keyword">return</span> heapq.nlargest(k, count.keys(), key=count.get)
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">topKFrequent</span>([<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="number">2</span>))  <span class="comment"># [1, 2]</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">topKFrequent</span>(nums, k) {
+  <span class="keyword">const</span> freq = <span class="keyword">new</span> Map();
+  <span class="keyword">for</span> (<span class="keyword">const</span> n <span class="keyword">of</span> nums) {
+    freq.set(n, (freq.get(n) || <span class="number">0</span>) + <span class="number">1</span>);
+  }
+
+  <span class="comment">// Bucket sort approach: index = frequency</span>
+  <span class="keyword">const</span> buckets = Array.from({ length: nums.length + <span class="number">1</span> }, () => []);
+  <span class="keyword">for</span> (<span class="keyword">const</span> [num, count] <span class="keyword">of</span> freq) {
+    buckets[count].push(num);
+  }
+
+  <span class="keyword">const</span> result = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = buckets.length - <span class="number">1</span>; i >= <span class="number">0</span> &amp;&amp; result.length &lt; k; i--) {
+    result.push(...buckets[i]);
+  }
+  <span class="keyword">return</span> result.slice(<span class="number">0</span>, k);
+}
+
+console.log(<span class="function">topKFrequent</span>([<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="number">2</span>)); <span class="comment">// [1, 2]</span></code></pre>
+
+      <h3>Merge K Sorted Lists</h3>
+      <p>
+        Push the head of each list into a min-heap. Pop the smallest, add it to the result, and push the next node from that list. Repeat until the heap is empty.
+      </p>
+      <div class="formula-box">Time: O(n log k) where n = total nodes, k = number of lists</div>
+
+      <h3>Find Median from Data Stream</h3>
+      <p>
+        Use <strong>two heaps</strong>: a max-heap for the lower half and a min-heap for the upper half. Keep them balanced (sizes differ by at most 1). The median is the top of the larger heap, or the average of both tops.
+      </p>
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>The two-heap pattern is extremely common. Any time you need to track the median or partition data into "small" and "large" halves, think two heaps.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. TRIES (PREFIX TREES) -->
+    <!-- ============================================================ -->
+    <section id="tries">
+      <h2>2. Tries (Prefix Trees)</h2>
+
+      <h3>What is a Trie?</h3>
+      <p>
+        A <strong>trie</strong> (pronounced "try") is a tree-like data structure where each path from the root to a node represents a prefix of a word. Each node has children (one per character), and nodes can be marked as the end of a word.
+      </p>
+      <ul>
+        <li>The root node is empty (represents the empty string).</li>
+        <li>Each edge represents a single character.</li>
+        <li>Words that share a prefix share the same path from the root.</li>
+        <li>Lookup, insert, and prefix search are all <code>O(m)</code> where <code>m</code> is the length of the word.</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Visual: Trie with "cat", "car", "card"</div>
+<pre><code>        (root)
+          |
+          c
+          |
+          a
+         / \
+        t   r
+        *   *
+            |
+            d
+            *
+
+    * = end of word
+
+    "cat"  : root -> c -> a -> t*
+    "car"  : root -> c -> a -> r*
+    "card" : root -> c -> a -> r -> d*
+
+    Searching "ca" : root -> c -> a (found prefix, not a complete word)
+    Searching "cab": root -> c -> a -> b (no 'b' child -- not found)</code></pre>
+      </div>
+
+      <h3>Implementation</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">TrieNode</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.children = {}       <span class="comment"># char -> TrieNode</span>
+        self.is_end = <span class="keyword">False</span>     <span class="comment"># marks end of a word</span>
+
+
+<span class="keyword">class</span> <span class="function">Trie</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.root = TrieNode()
+
+    <span class="keyword">def</span> <span class="function">insert</span>(self, word):
+        <span class="string">"""Insert a word into the trie. O(m)"""</span>
+        node = self.root
+        <span class="keyword">for</span> ch <span class="keyword">in</span> word:
+            <span class="keyword">if</span> ch <span class="keyword">not</span> <span class="keyword">in</span> node.children:
+                node.children[ch] = TrieNode()
+            node = node.children[ch]
+        node.is_end = <span class="keyword">True</span>
+
+    <span class="keyword">def</span> <span class="function">search</span>(self, word):
+        <span class="string">"""Return True if the exact word is in the trie. O(m)"""</span>
+        node = self._find(word)
+        <span class="keyword">return</span> node <span class="keyword">is not</span> <span class="keyword">None</span> <span class="keyword">and</span> node.is_end
+
+    <span class="keyword">def</span> <span class="function">startsWith</span>(self, prefix):
+        <span class="string">"""Return True if any word starts with the prefix. O(m)"""</span>
+        <span class="keyword">return</span> self._find(prefix) <span class="keyword">is not</span> <span class="keyword">None</span>
+
+    <span class="keyword">def</span> <span class="function">_find</span>(self, prefix):
+        <span class="string">"""Traverse trie following the prefix. Return last node or None."""</span>
+        node = self.root
+        <span class="keyword">for</span> ch <span class="keyword">in</span> prefix:
+            <span class="keyword">if</span> ch <span class="keyword">not</span> <span class="keyword">in</span> node.children:
+                <span class="keyword">return</span> <span class="keyword">None</span>
+            node = node.children[ch]
+        <span class="keyword">return</span> node
+
+<span class="comment"># Usage</span>
+trie = Trie()
+trie.insert(<span class="string">"cat"</span>)
+trie.insert(<span class="string">"car"</span>)
+trie.insert(<span class="string">"card"</span>)
+
+<span class="builtin">print</span>(trie.search(<span class="string">"car"</span>))        <span class="comment"># True</span>
+<span class="builtin">print</span>(trie.search(<span class="string">"ca"</span>))         <span class="comment"># False (not a complete word)</span>
+<span class="builtin">print</span>(trie.startsWith(<span class="string">"ca"</span>))     <span class="comment"># True</span>
+<span class="builtin">print</span>(trie.startsWith(<span class="string">"dog"</span>))    <span class="comment"># False</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">TrieNode</span> {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.children = {};   <span class="comment">// char -> TrieNode</span>
+    <span class="keyword">this</span>.isEnd = <span class="keyword">false</span>;   <span class="comment">// marks end of a word</span>
+  }
+}
+
+<span class="keyword">class</span> <span class="function">Trie</span> {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.root = <span class="keyword">new</span> <span class="function">TrieNode</span>();
+  }
+
+  <span class="comment">/** Insert a word into the trie. O(m) */</span>
+  <span class="function">insert</span>(word) {
+    <span class="keyword">let</span> node = <span class="keyword">this</span>.root;
+    <span class="keyword">for</span> (<span class="keyword">const</span> ch <span class="keyword">of</span> word) {
+      <span class="keyword">if</span> (!node.children[ch]) {
+        node.children[ch] = <span class="keyword">new</span> <span class="function">TrieNode</span>();
+      }
+      node = node.children[ch];
+    }
+    node.isEnd = <span class="keyword">true</span>;
+  }
+
+  <span class="comment">/** Return true if the exact word is in the trie. O(m) */</span>
+  <span class="function">search</span>(word) {
+    <span class="keyword">const</span> node = <span class="keyword">this</span>._find(word);
+    <span class="keyword">return</span> node !== <span class="keyword">null</span> &amp;&amp; node.isEnd;
+  }
+
+  <span class="comment">/** Return true if any word starts with the prefix. O(m) */</span>
+  <span class="function">startsWith</span>(prefix) {
+    <span class="keyword">return</span> <span class="keyword">this</span>._find(prefix) !== <span class="keyword">null</span>;
+  }
+
+  <span class="function">_find</span>(prefix) {
+    <span class="keyword">let</span> node = <span class="keyword">this</span>.root;
+    <span class="keyword">for</span> (<span class="keyword">const</span> ch <span class="keyword">of</span> prefix) {
+      <span class="keyword">if</span> (!node.children[ch]) <span class="keyword">return</span> <span class="keyword">null</span>;
+      node = node.children[ch];
+    }
+    <span class="keyword">return</span> node;
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> trie = <span class="keyword">new</span> <span class="function">Trie</span>();
+trie.insert(<span class="string">"cat"</span>);
+trie.insert(<span class="string">"car"</span>);
+trie.insert(<span class="string">"card"</span>);
+
+console.log(trie.search(<span class="string">"car"</span>));       <span class="comment">// true</span>
+console.log(trie.search(<span class="string">"ca"</span>));        <span class="comment">// false</span>
+console.log(trie.startsWith(<span class="string">"ca"</span>));    <span class="comment">// true</span>
+console.log(trie.startsWith(<span class="string">"dog"</span>));   <span class="comment">// false</span></code></pre>
+
+      <h3>Applications</h3>
+      <ul>
+        <li><strong>Autocomplete:</strong> Traverse to the prefix node, then DFS to find all completions.</li>
+        <li><strong>Spell checking:</strong> Check if a word exists; suggest corrections via similar paths.</li>
+        <li><strong>IP routing:</strong> Longest prefix matching in routers (binary trie).</li>
+        <li><strong>Word search problems:</strong> Build a trie of target words, then DFS on the board.</li>
+      </ul>
+
+      <h3>LeetCode: Implement Trie (Medium)</h3>
+      <p>The implementation above is the complete solution for <strong>LeetCode 208: Implement Trie</strong>. The key insight is using a dictionary (or object) of children at each node, plus a boolean flag for word endings.</p>
+
+      <h3>LeetCode: Word Search II (Hard)</h3>
+      <p>
+        Build a trie from all target words. Then for each cell in the board, DFS while following the trie. This prunes invalid paths early instead of searching for each word separately. The trie turns an O(words * cells * 4^L) brute force into something much faster.
+      </p>
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>For Word Search II, also remove trie nodes once all words through them are found. This optimization (pruning found words from the trie) prevents redundant exploration.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. UNION-FIND (DISJOINT SET UNION) -->
+    <!-- ============================================================ -->
+    <section id="union-find">
+      <h2>3. Union-Find (Disjoint Set Union)</h2>
+
+      <h3>What is Union-Find?</h3>
+      <p>
+        <strong>Union-Find</strong> (also called Disjoint Set Union or DSU) is a data structure that tracks a set of elements partitioned into disjoint (non-overlapping) groups. It supports two operations efficiently:
+      </p>
+      <ul>
+        <li><strong>Find(x):</strong> Which group does element x belong to? (Returns the group's representative/root.)</li>
+        <li><strong>Union(x, y):</strong> Merge the groups containing x and y into one group.</li>
+      </ul>
+      <p>
+        With <strong>path compression</strong> and <strong>union by rank</strong>, both operations run in nearly <code>O(1)</code> amortized time -- specifically <code>O(alpha(n))</code> where alpha is the inverse Ackermann function, which is effectively constant for any practical input size.
+      </p>
+
+      <div class="formula-box">
+        Find: O(alpha(n)) ~ O(1) amortized &nbsp; | &nbsp; Union: O(alpha(n)) ~ O(1) amortized
+      </div>
+
+      <h3>Implementation</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">UnionFind</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.parent = <span class="builtin">list</span>(<span class="builtin">range</span>(n))  <span class="comment"># each element is its own root</span>
+        self.rank = [<span class="number">0</span>] * n             <span class="comment"># rank for union by rank</span>
+        self.count = n                   <span class="comment"># number of disjoint sets</span>
+
+    <span class="keyword">def</span> <span class="function">find</span>(self, x):
+        <span class="string">"""Find root of x with path compression."""</span>
+        <span class="keyword">if</span> self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  <span class="comment"># path compression</span>
+        <span class="keyword">return</span> self.parent[x]
+
+    <span class="keyword">def</span> <span class="function">union</span>(self, x, y):
+        <span class="string">"""Merge sets containing x and y. Return False if already same set."""</span>
+        rx, ry = self.find(x), self.find(y)
+        <span class="keyword">if</span> rx == ry:
+            <span class="keyword">return</span> <span class="keyword">False</span>  <span class="comment"># already connected</span>
+
+        <span class="comment"># Union by rank: attach smaller tree under larger</span>
+        <span class="keyword">if</span> self.rank[rx] &lt; self.rank[ry]:
+            rx, ry = ry, rx
+        self.parent[ry] = rx
+        <span class="keyword">if</span> self.rank[rx] == self.rank[ry]:
+            self.rank[rx] += <span class="number">1</span>
+
+        self.count -= <span class="number">1</span>
+        <span class="keyword">return</span> <span class="keyword">True</span>
+
+    <span class="keyword">def</span> <span class="function">connected</span>(self, x, y):
+        <span class="string">"""Check if x and y are in the same set."""</span>
+        <span class="keyword">return</span> self.find(x) == self.find(y)
+
+<span class="comment"># Usage</span>
+uf = UnionFind(<span class="number">5</span>)   <span class="comment"># elements: 0, 1, 2, 3, 4</span>
+uf.union(<span class="number">0</span>, <span class="number">1</span>)       <span class="comment"># merge {0} and {1}</span>
+uf.union(<span class="number">2</span>, <span class="number">3</span>)       <span class="comment"># merge {2} and {3}</span>
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># True</span>
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">2</span>))  <span class="comment"># False</span>
+uf.union(<span class="number">1</span>, <span class="number">3</span>)       <span class="comment"># merge {0,1} and {2,3}</span>
+<span class="builtin">print</span>(uf.connected(<span class="number">0</span>, <span class="number">2</span>))  <span class="comment"># True</span>
+<span class="builtin">print</span>(uf.count)            <span class="comment"># 2 (groups: {0,1,2,3} and {4})</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">UnionFind</span> {
+  <span class="function">constructor</span>(n) {
+    <span class="keyword">this</span>.parent = Array.from({ length: n }, (_, i) => i);
+    <span class="keyword">this</span>.rank = <span class="keyword">new</span> Array(n).fill(<span class="number">0</span>);
+    <span class="keyword">this</span>.count = n; <span class="comment">// number of disjoint sets</span>
+  }
+
+  <span class="function">find</span>(x) {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.parent[x] !== x) {
+      <span class="keyword">this</span>.parent[x] = <span class="keyword">this</span>.find(<span class="keyword">this</span>.parent[x]); <span class="comment">// path compression</span>
+    }
+    <span class="keyword">return</span> <span class="keyword">this</span>.parent[x];
+  }
+
+  <span class="function">union</span>(x, y) {
+    <span class="keyword">let</span> rx = <span class="keyword">this</span>.find(x), ry = <span class="keyword">this</span>.find(y);
+    <span class="keyword">if</span> (rx === ry) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// already connected</span>
+
+    <span class="comment">// Union by rank</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.rank[rx] &lt; <span class="keyword">this</span>.rank[ry]) [rx, ry] = [ry, rx];
+    <span class="keyword">this</span>.parent[ry] = rx;
+    <span class="keyword">if</span> (<span class="keyword">this</span>.rank[rx] === <span class="keyword">this</span>.rank[ry]) <span class="keyword">this</span>.rank[rx]++;
+
+    <span class="keyword">this</span>.count--;
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="function">connected</span>(x, y) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.find(x) === <span class="keyword">this</span>.find(y);
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> uf = <span class="keyword">new</span> <span class="function">UnionFind</span>(<span class="number">5</span>);
+uf.union(<span class="number">0</span>, <span class="number">1</span>);
+uf.union(<span class="number">2</span>, <span class="number">3</span>);
+console.log(uf.connected(<span class="number">0</span>, <span class="number">1</span>)); <span class="comment">// true</span>
+console.log(uf.connected(<span class="number">0</span>, <span class="number">2</span>)); <span class="comment">// false</span>
+uf.union(<span class="number">1</span>, <span class="number">3</span>);
+console.log(uf.connected(<span class="number">0</span>, <span class="number">2</span>)); <span class="comment">// true</span>
+console.log(uf.count);            <span class="comment">// 2</span></code></pre>
+
+      <h3>Applications</h3>
+      <ul>
+        <li><strong>Number of connected components:</strong> Union all edges, then check <code>uf.count</code>.</li>
+        <li><strong>Cycle detection in undirected graph:</strong> If <code>union(u, v)</code> returns false, there is a cycle (u and v are already connected).</li>
+        <li><strong>Kruskal's MST algorithm:</strong> Sort edges by weight, union vertices; skip if already connected.</li>
+      </ul>
+
+      <h3>LeetCode: Number of Provinces (Medium)</h3>
+      <p>
+        Given an adjacency matrix <code>isConnected</code> where <code>isConnected[i][j] = 1</code> means city i and city j are directly connected, return the number of provinces (connected components).
+      </p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">findCircleNum</span>(isConnected):
+    n = <span class="builtin">len</span>(isConnected)
+    uf = UnionFind(n)
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i + <span class="number">1</span>, n):
+            <span class="keyword">if</span> isConnected[i][j] == <span class="number">1</span>:
+                uf.union(i, j)
+
+    <span class="keyword">return</span> uf.count
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">findCircleNum</span>([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]]))  <span class="comment"># 2</span>
+<span class="builtin">print</span>(<span class="function">findCircleNum</span>([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]]))  <span class="comment"># 3</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">findCircleNum</span>(isConnected) {
+  <span class="keyword">const</span> n = isConnected.length;
+  <span class="keyword">const</span> uf = <span class="keyword">new</span> <span class="function">UnionFind</span>(n);
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; n; j++) {
+      <span class="keyword">if</span> (isConnected[i][j] === <span class="number">1</span>) {
+        uf.union(i, j);
+      }
+    }
+  }
+
+  <span class="keyword">return</span> uf.count;
+}
+
+console.log(<span class="function">findCircleNum</span>([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]])); <span class="comment">// 2</span></code></pre>
+
+      <h3>LeetCode: Redundant Connection (Medium)</h3>
+      <p>
+        Given a graph that was a tree plus one extra edge, find that extra edge. Process edges in order; the first edge where <code>union(u, v)</code> returns false (both already connected) is the answer. This is a direct application of cycle detection with Union-Find.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. MONOTONIC STACK / MONOTONIC QUEUE -->
+    <!-- ============================================================ -->
+    <section id="monotonic">
+      <h2>4. Monotonic Stack / Monotonic Queue</h2>
+
+      <h3>Monotonic Stack</h3>
+      <p>
+        A <strong>monotonic stack</strong> is a stack that maintains its elements in either strictly increasing or strictly decreasing order. When you push a new element, you first pop all elements that violate the monotonic property.
+      </p>
+      <p>
+        <strong>When to use:</strong> Any problem asking for the "next greater element", "next smaller element", "previous greater/smaller", or "how many days until a warmer temperature". The key pattern is: <em>for each element, find the nearest element that is larger/smaller</em>.
+      </p>
+
+      <div class="formula-box">Time: O(n) -- each element is pushed and popped at most once</div>
+
+      <h3>Template: Next Greater Element</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">nextGreaterElement</span>(nums):
+    <span class="string">"""For each element, find the next element that is strictly greater.
+    Return -1 if no such element exists."""</span>
+    n = <span class="builtin">len</span>(nums)
+    result = [-<span class="number">1</span>] * n
+    stack = []  <span class="comment"># stores indices, values decrease from bottom to top</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="comment"># While current element is greater than stack top</span>
+        <span class="keyword">while</span> stack <span class="keyword">and</span> nums[i] > nums[stack[-<span class="number">1</span>]]:
+            idx = stack.pop()
+            result[idx] = nums[i]  <span class="comment"># nums[i] is the next greater for nums[idx]</span>
+        stack.append(i)
+
+    <span class="keyword">return</span> result
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">nextGreaterElement</span>([<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>]))
+<span class="comment"># [4, 2, 4, -1, -1]</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">nextGreaterElement</span>(nums) {
+  <span class="keyword">const</span> n = nums.length;
+  <span class="keyword">const</span> result = <span class="keyword">new</span> Array(n).fill(-<span class="number">1</span>);
+  <span class="keyword">const</span> stack = []; <span class="comment">// stores indices</span>
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) {
+    <span class="keyword">while</span> (stack.length &amp;&amp; nums[i] > nums[stack[stack.length - <span class="number">1</span>]]) {
+      <span class="keyword">const</span> idx = stack.pop();
+      result[idx] = nums[i];
+    }
+    stack.push(i);
+  }
+
+  <span class="keyword">return</span> result;
+}
+
+console.log(<span class="function">nextGreaterElement</span>([<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>]));
+<span class="comment">// [4, 2, 4, -1, -1]</span></code></pre>
+
+      <h3>Daily Temperatures</h3>
+      <p>
+        Given an array of daily temperatures, return an array where <code>answer[i]</code> is the number of days until a warmer temperature. This is the "next greater element" pattern but returning the index distance instead of the value.
+      </p>
+
+      <h3>Monotonic Deque (Sliding Window Maximum)</h3>
+      <p>
+        A <strong>monotonic deque</strong> maintains elements in decreasing order. The front of the deque is always the maximum in the current window. When the window slides, we remove elements that fall out of the window from the front and maintain the decreasing order from the back.
+      </p>
+
+      <h3>Sliding Window Maximum -- Full Solution</h3>
+      <p>
+        Given an array <code>nums</code> and window size <code>k</code>, return the maximum value in each sliding window of size <code>k</code>.
+      </p>
+      <div class="formula-box">Time: O(n) &nbsp; | &nbsp; Space: O(k)</div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">maxSlidingWindow</span>(nums, k):
+    dq = deque()   <span class="comment"># stores indices, values decreasing front-to-back</span>
+    result = []
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(nums)):
+        <span class="comment"># Remove elements outside the window</span>
+        <span class="keyword">while</span> dq <span class="keyword">and</span> dq[<span class="number">0</span>] &lt; i - k + <span class="number">1</span>:
+            dq.popleft()
+
+        <span class="comment"># Remove elements smaller than current (they can't be max)</span>
+        <span class="keyword">while</span> dq <span class="keyword">and</span> nums[dq[-<span class="number">1</span>]] &lt; nums[i]:
+            dq.pop()
+
+        dq.append(i)
+
+        <span class="comment"># Window is fully formed starting at i = k - 1</span>
+        <span class="keyword">if</span> i >= k - <span class="number">1</span>:
+            result.append(nums[dq[<span class="number">0</span>]])
+
+    <span class="keyword">return</span> result
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">maxSlidingWindow</span>([<span class="number">1</span>,<span class="number">3</span>,-<span class="number">1</span>,-<span class="number">3</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>], <span class="number">3</span>))
+<span class="comment"># [3, 3, 5, 5, 6, 7]</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSlidingWindow</span>(nums, k) {
+  <span class="keyword">const</span> dq = [];    <span class="comment">// indices, values decreasing front-to-back</span>
+  <span class="keyword">const</span> result = [];
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++) {
+    <span class="comment">// Remove elements outside window</span>
+    <span class="keyword">while</span> (dq.length &amp;&amp; dq[<span class="number">0</span>] &lt; i - k + <span class="number">1</span>) {
+      dq.shift();
+    }
+
+    <span class="comment">// Remove elements smaller than current</span>
+    <span class="keyword">while</span> (dq.length &amp;&amp; nums[dq[dq.length - <span class="number">1</span>]] &lt; nums[i]) {
+      dq.pop();
+    }
+
+    dq.push(i);
+
+    <span class="keyword">if</span> (i >= k - <span class="number">1</span>) {
+      result.push(nums[dq[<span class="number">0</span>]]);
+    }
+  }
+
+  <span class="keyword">return</span> result;
+}
+
+console.log(<span class="function">maxSlidingWindow</span>([<span class="number">1</span>,<span class="number">3</span>,-<span class="number">1</span>,-<span class="number">3</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>], <span class="number">3</span>));
+<span class="comment">// [3, 3, 5, 5, 6, 7]</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>The monotonic stack/deque pattern feels unnatural at first. The key insight: the stack stores <strong>indices of candidates</strong> that might still be useful. Once an element can never be the answer (because a better candidate arrived), it gets popped. Each element enters and leaves the stack at most once, giving O(n) total.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. SEGMENT TREE -->
+    <!-- ============================================================ -->
+    <section id="segment-tree">
+      <h2>5. Segment Tree (Brief)</h2>
+
+      <p>
+        A <strong>segment tree</strong> is a binary tree used for storing information about intervals (segments) of an array. It allows for efficient range queries (sum, min, max over a subarray) and point updates.
+      </p>
+
+      <ul>
+        <li><strong>Query</strong> (range sum/min/max): <code>O(log n)</code></li>
+        <li><strong>Update</strong> (change a single element): <code>O(log n)</code></li>
+        <li><strong>Build:</strong> <code>O(n)</code></li>
+        <li><strong>Space:</strong> <code>O(n)</code></li>
+      </ul>
+
+      <p>
+        <strong>When you need it:</strong> When a problem requires both range queries (sum of subarray, minimum in range) AND point updates. If you only need range queries without updates, a prefix sum array works. If you only need updates without queries, a simple array works. Segment trees solve the case where you need <em>both</em>.
+      </p>
+
+      <div class="formula-box">
+        Prefix sum: O(1) query, O(n) update<br>
+        Segment tree: O(log n) query, O(log n) update -- the best of both worlds
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">SegmentTree</span>:
+    <span class="string">"""Segment tree for range sum queries with point updates."""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, nums):
+        self.n = <span class="builtin">len</span>(nums)
+        self.tree = [<span class="number">0</span>] * (<span class="number">2</span> * self.n)
+        <span class="comment"># Build: place values in leaves, then fill parents</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(self.n):
+            self.tree[self.n + i] = nums[i]
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(self.n - <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>):
+            self.tree[i] = self.tree[<span class="number">2</span> * i] + self.tree[<span class="number">2</span> * i + <span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, index, value):
+        <span class="string">"""Set nums[index] = value. O(log n)"""</span>
+        i = index + self.n
+        self.tree[i] = value
+        <span class="keyword">while</span> i > <span class="number">1</span>:
+            i //= <span class="number">2</span>
+            self.tree[i] = self.tree[<span class="number">2</span> * i] + self.tree[<span class="number">2</span> * i + <span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, left, right):
+        <span class="string">"""Sum of nums[left..right] inclusive. O(log n)"""</span>
+        res = <span class="number">0</span>
+        l, r = left + self.n, right + self.n + <span class="number">1</span>
+        <span class="keyword">while</span> l &lt; r:
+            <span class="keyword">if</span> l &amp; <span class="number">1</span>:
+                res += self.tree[l]
+                l += <span class="number">1</span>
+            <span class="keyword">if</span> r &amp; <span class="number">1</span>:
+                r -= <span class="number">1</span>
+                res += self.tree[r]
+            l >>= <span class="number">1</span>
+            r >>= <span class="number">1</span>
+        <span class="keyword">return</span> res
+
+<span class="comment"># Usage</span>
+nums = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>]
+st = SegmentTree(nums)
+<span class="builtin">print</span>(st.query(<span class="number">1</span>, <span class="number">3</span>))   <span class="comment"># 15 (3 + 5 + 7)</span>
+st.update(<span class="number">2</span>, <span class="number">10</span>)        <span class="comment"># change index 2 from 5 to 10</span>
+<span class="builtin">print</span>(st.query(<span class="number">1</span>, <span class="number">3</span>))   <span class="comment"># 20 (3 + 10 + 7)</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Interview Note</div>
+        <p>Segment trees are <strong>rarely asked in interviews</strong> at most companies. They appear more in competitive programming and at companies with algorithm-heavy interviews. Know what they are and when to use them, but don't prioritize implementing one from scratch unless you are targeting competitive programming roles.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. BIT MANIPULATION -->
+    <!-- ============================================================ -->
+    <section id="bit-manipulation">
+      <h2>6. Bit Manipulation</h2>
+
+      <h3>Binary Representation</h3>
+      <p>
+        Computers store numbers in binary (base 2). Each digit is a <strong>bit</strong> (0 or 1). Understanding how to work with bits directly lets you solve certain problems with extreme efficiency -- O(1) space and blazing fast operations.
+      </p>
+
+      <div class="example-box">
+        <div class="label">Binary Basics</div>
+<pre><code>Decimal   Binary     How to read it
+  0       0000       no bits set
+  1       0001       2^0 = 1
+  5       0101       2^2 + 2^0 = 4 + 1 = 5
+  10      1010       2^3 + 2^1 = 8 + 2 = 10
+  15      1111       2^3 + 2^2 + 2^1 + 2^0 = 8+4+2+1 = 15
+  255     11111111   all 8 bits set</code></pre>
+      </div>
+
+      <h3>Common Bitwise Operators</h3>
+      <table>
+        <thead>
+          <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>&amp;</code></td><td>AND</td><td><code>5 &amp; 3</code> (0101 &amp; 0011)</td><td><code>1</code> (0001)</td></tr>
+          <tr><td><code>|</code></td><td>OR</td><td><code>5 | 3</code> (0101 | 0011)</td><td><code>7</code> (0111)</td></tr>
+          <tr><td><code>^</code></td><td>XOR</td><td><code>5 ^ 3</code> (0101 ^ 0011)</td><td><code>6</code> (0110)</td></tr>
+          <tr><td><code>~</code></td><td>NOT</td><td><code>~5</code></td><td><code>-6</code> (flips all bits)</td></tr>
+          <tr><td><code>&lt;&lt;</code></td><td>Left shift</td><td><code>3 &lt;&lt; 2</code></td><td><code>12</code> (multiply by 4)</td></tr>
+          <tr><td><code>&gt;&gt;</code></td><td>Right shift</td><td><code>12 &gt;&gt; 2</code></td><td><code>3</code> (divide by 4)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Useful Bit Tricks</h3>
+
+      <h3>Check if Power of 2</h3>
+      <p>A power of 2 has exactly one bit set. <code>n &amp; (n - 1)</code> clears the lowest set bit. If the result is 0, only one bit was set.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">isPowerOfTwo</span>(n):
+    <span class="keyword">return</span> n > <span class="number">0</span> <span class="keyword">and</span> (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span>
+
+<span class="builtin">print</span>(<span class="function">isPowerOfTwo</span>(<span class="number">16</span>))  <span class="comment"># True  (10000 &amp; 01111 = 0)</span>
+<span class="builtin">print</span>(<span class="function">isPowerOfTwo</span>(<span class="number">18</span>))  <span class="comment"># False (10010 &amp; 10001 = 10000)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isPowerOfTwo</span>(n) {
+  <span class="keyword">return</span> n > <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) === <span class="number">0</span>;
+}
+
+console.log(<span class="function">isPowerOfTwo</span>(<span class="number">16</span>)); <span class="comment">// true</span>
+console.log(<span class="function">isPowerOfTwo</span>(<span class="number">18</span>)); <span class="comment">// false</span></code></pre>
+
+      <h3>Get, Set, and Clear a Bit</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">getBit</span>(n, pos):
+    <span class="string">"""Check if bit at position pos is set (0-indexed from right)."""</span>
+    <span class="keyword">return</span> (n >> pos) &amp; <span class="number">1</span>
+
+<span class="keyword">def</span> <span class="function">setBit</span>(n, pos):
+    <span class="string">"""Set bit at position pos to 1."""</span>
+    <span class="keyword">return</span> n | (<span class="number">1</span> &lt;&lt; pos)
+
+<span class="keyword">def</span> <span class="function">clearBit</span>(n, pos):
+    <span class="string">"""Clear bit at position pos to 0."""</span>
+    <span class="keyword">return</span> n &amp; ~(<span class="number">1</span> &lt;&lt; pos)
+
+<span class="comment"># Example: n = 10 (1010 in binary)</span>
+<span class="builtin">print</span>(<span class="function">getBit</span>(<span class="number">10</span>, <span class="number">1</span>))    <span class="comment"># 1 (bit at position 1 is set)</span>
+<span class="builtin">print</span>(<span class="function">getBit</span>(<span class="number">10</span>, <span class="number">2</span>))    <span class="comment"># 0 (bit at position 2 is not set)</span>
+<span class="builtin">print</span>(<span class="function">setBit</span>(<span class="number">10</span>, <span class="number">2</span>))    <span class="comment"># 14 (1110)</span>
+<span class="builtin">print</span>(<span class="function">clearBit</span>(<span class="number">10</span>, <span class="number">1</span>))  <span class="comment"># 8  (1000)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">getBit</span>(n, pos)   { <span class="keyword">return</span> (n >> pos) &amp; <span class="number">1</span>; }
+<span class="keyword">function</span> <span class="function">setBit</span>(n, pos)   { <span class="keyword">return</span> n | (<span class="number">1</span> &lt;&lt; pos); }
+<span class="keyword">function</span> <span class="function">clearBit</span>(n, pos) { <span class="keyword">return</span> n &amp; ~(<span class="number">1</span> &lt;&lt; pos); }
+
+console.log(<span class="function">getBit</span>(<span class="number">10</span>, <span class="number">1</span>));   <span class="comment">// 1</span>
+console.log(<span class="function">setBit</span>(<span class="number">10</span>, <span class="number">2</span>));   <span class="comment">// 14</span>
+console.log(<span class="function">clearBit</span>(<span class="number">10</span>, <span class="number">1</span>)); <span class="comment">// 8</span></code></pre>
+
+      <h3>Count Set Bits (Brian Kernighan's Algorithm)</h3>
+      <p>
+        <code>n &amp; (n - 1)</code> removes the lowest set bit. Keep doing it until n is 0, counting each step.
+      </p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">countBits</span>(n):
+    count = <span class="number">0</span>
+    <span class="keyword">while</span> n:
+        n &amp;= (n - <span class="number">1</span>)  <span class="comment"># remove lowest set bit</span>
+        count += <span class="number">1</span>
+    <span class="keyword">return</span> count
+
+<span class="builtin">print</span>(<span class="function">countBits</span>(<span class="number">11</span>))  <span class="comment"># 3 (1011 has three 1-bits)</span>
+<span class="builtin">print</span>(<span class="function">countBits</span>(<span class="number">7</span>))   <span class="comment"># 3 (0111 has three 1-bits)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">countBits</span>(n) {
+  <span class="keyword">let</span> count = <span class="number">0</span>;
+  <span class="keyword">while</span> (n) {
+    n &amp;= (n - <span class="number">1</span>);
+    count++;
+  }
+  <span class="keyword">return</span> count;
+}
+
+console.log(<span class="function">countBits</span>(<span class="number">11</span>)); <span class="comment">// 3</span>
+console.log(<span class="function">countBits</span>(<span class="number">7</span>));  <span class="comment">// 3</span></code></pre>
+
+      <h3>XOR Tricks</h3>
+      <p>XOR has two key properties that make it magical for certain problems:</p>
+      <ul>
+        <li><code>a ^ a = 0</code> (XOR with itself cancels out)</li>
+        <li><code>a ^ 0 = a</code> (XOR with zero gives itself)</li>
+        <li>XOR is commutative and associative: order does not matter</li>
+      </ul>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Single Number: every element appears twice except one. Find it.</span>
+<span class="keyword">def</span> <span class="function">singleNumber</span>(nums):
+    result = <span class="number">0</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        result ^= num  <span class="comment"># pairs cancel out, only single remains</span>
+    <span class="keyword">return</span> result
+
+<span class="builtin">print</span>(<span class="function">singleNumber</span>([<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>]))  <span class="comment"># 4</span>
+
+<span class="comment"># Missing Number: array has 0..n with one missing. Find it.</span>
+<span class="keyword">def</span> <span class="function">missingNumber</span>(nums):
+    result = <span class="builtin">len</span>(nums)  <span class="comment"># start with n</span>
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="builtin">enumerate</span>(nums):
+        result ^= i ^ num  <span class="comment"># XOR index and value</span>
+    <span class="keyword">return</span> result
+
+<span class="builtin">print</span>(<span class="function">missingNumber</span>([<span class="number">3</span>, <span class="number">0</span>, <span class="number">1</span>]))  <span class="comment"># 2</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Single Number</span>
+<span class="keyword">function</span> <span class="function">singleNumber</span>(nums) {
+  <span class="keyword">let</span> result = <span class="number">0</span>;
+  <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+    result ^= num;
+  }
+  <span class="keyword">return</span> result;
+}
+
+console.log(<span class="function">singleNumber</span>([<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>])); <span class="comment">// 4</span>
+
+<span class="comment">// Missing Number</span>
+<span class="keyword">function</span> <span class="function">missingNumber</span>(nums) {
+  <span class="keyword">let</span> result = nums.length;
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++) {
+    result ^= i ^ nums[i];
+  }
+  <span class="keyword">return</span> result;
+}
+
+console.log(<span class="function">missingNumber</span>([<span class="number">3</span>, <span class="number">0</span>, <span class="number">1</span>])); <span class="comment">// 2</span></code></pre>
+
+      <h3>LeetCode Bit Manipulation Problems</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Difficulty</th><th>Key Technique</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single Number (136)</td><td>Easy</td><td>XOR all elements -- pairs cancel</td></tr>
+          <tr><td>Number of 1 Bits (191)</td><td>Easy</td><td>Brian Kernighan: <code>n &amp;= n-1</code></td></tr>
+          <tr><td>Counting Bits (338)</td><td>Easy</td><td>DP: <code>bits[i] = bits[i &gt;&gt; 1] + (i &amp; 1)</code></td></tr>
+          <tr><td>Reverse Bits (190)</td><td>Easy</td><td>Shift and build result bit by bit</td></tr>
+          <tr><td>Missing Number (268)</td><td>Easy</td><td>XOR indices with values</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>Most bit manipulation interview questions are Easy difficulty. The trick is recognizing that bits apply at all. If a problem says "every element appears twice except one" or "find the missing number", think XOR immediately.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. MATH FOR INTERVIEWS -->
+    <!-- ============================================================ -->
+    <section id="math">
+      <h2>7. Math for Interviews</h2>
+
+      <p>You don't need to be a math whiz for coding interviews, but these few algorithms and tricks come up regularly.</p>
+
+      <h3>GCD (Euclidean Algorithm)</h3>
+      <p>The greatest common divisor of two numbers. Used in fraction simplification, LCM calculation, and various number theory problems.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="comment"># Built-in (Python 3.5+)</span>
+<span class="builtin">print</span>(math.gcd(<span class="number">12</span>, <span class="number">8</span>))   <span class="comment"># 4</span>
+
+<span class="comment"># Manual Euclidean algorithm</span>
+<span class="keyword">def</span> <span class="function">gcd</span>(a, b):
+    <span class="keyword">while</span> b:
+        a, b = b, a % b
+    <span class="keyword">return</span> a
+
+<span class="builtin">print</span>(<span class="function">gcd</span>(<span class="number">12</span>, <span class="number">8</span>))   <span class="comment"># 4</span>
+<span class="builtin">print</span>(<span class="function">gcd</span>(<span class="number">54</span>, <span class="number">24</span>))  <span class="comment"># 6</span>
+
+<span class="comment"># LCM using GCD</span>
+<span class="keyword">def</span> <span class="function">lcm</span>(a, b):
+    <span class="keyword">return</span> a * b // <span class="function">gcd</span>(a, b)
+
+<span class="builtin">print</span>(<span class="function">lcm</span>(<span class="number">4</span>, <span class="number">6</span>))  <span class="comment"># 12</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">gcd</span>(a, b) {
+  <span class="keyword">while</span> (b) {
+    [a, b] = [b, a % b];
+  }
+  <span class="keyword">return</span> a;
+}
+
+<span class="keyword">function</span> <span class="function">lcm</span>(a, b) {
+  <span class="keyword">return</span> (a * b) / <span class="function">gcd</span>(a, b);
+}
+
+console.log(<span class="function">gcd</span>(<span class="number">12</span>, <span class="number">8</span>));  <span class="comment">// 4</span>
+console.log(<span class="function">lcm</span>(<span class="number">4</span>, <span class="number">6</span>));   <span class="comment">// 12</span></code></pre>
+
+      <h3>Power of 2, 3, 4 Checks</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Power of 2: exactly one bit set</span>
+<span class="keyword">def</span> <span class="function">isPowerOf2</span>(n):
+    <span class="keyword">return</span> n > <span class="number">0</span> <span class="keyword">and</span> (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span>
+
+<span class="comment"># Power of 3: largest power of 3 in int range is 3^19 = 1162261467</span>
+<span class="keyword">def</span> <span class="function">isPowerOf3</span>(n):
+    <span class="keyword">return</span> n > <span class="number">0</span> <span class="keyword">and</span> <span class="number">1162261467</span> % n == <span class="number">0</span>
+
+<span class="comment"># Power of 4: power of 2 AND only even-position bits set</span>
+<span class="keyword">def</span> <span class="function">isPowerOf4</span>(n):
+    <span class="keyword">return</span> n > <span class="number">0</span> <span class="keyword">and</span> (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span> <span class="keyword">and</span> (n &amp; <span class="number">0x55555555</span>) != <span class="number">0</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isPowerOf2</span>(n) { <span class="keyword">return</span> n > <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) === <span class="number">0</span>; }
+<span class="keyword">function</span> <span class="function">isPowerOf3</span>(n) { <span class="keyword">return</span> n > <span class="number">0</span> &amp;&amp; <span class="number">1162261467</span> % n === <span class="number">0</span>; }
+<span class="keyword">function</span> <span class="function">isPowerOf4</span>(n) {
+  <span class="keyword">return</span> n > <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) === <span class="number">0</span> &amp;&amp; (n &amp; <span class="number">0x55555555</span>) !== <span class="number">0</span>;
+}</code></pre>
+
+      <h3>Sieve of Eratosthenes</h3>
+      <p>Find all prime numbers up to a given limit. Time complexity is <code>O(n log log n)</code>, which is nearly linear.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">sieve</span>(limit):
+    <span class="string">"""Return list of all primes up to limit."""</span>
+    is_prime = [<span class="keyword">True</span>] * (limit + <span class="number">1</span>)
+    is_prime[<span class="number">0</span>] = is_prime[<span class="number">1</span>] = <span class="keyword">False</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, <span class="builtin">int</span>(limit**<span class="number">0.5</span>) + <span class="number">1</span>):
+        <span class="keyword">if</span> is_prime[i]:
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i * i, limit + <span class="number">1</span>, i):
+                is_prime[j] = <span class="keyword">False</span>
+
+    <span class="keyword">return</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, limit + <span class="number">1</span>) <span class="keyword">if</span> is_prime[i]]
+
+<span class="builtin">print</span>(<span class="function">sieve</span>(<span class="number">30</span>))
+<span class="comment"># [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">sieve</span>(limit) {
+  <span class="keyword">const</span> isPrime = <span class="keyword">new</span> Array(limit + <span class="number">1</span>).fill(<span class="keyword">true</span>);
+  isPrime[<span class="number">0</span>] = isPrime[<span class="number">1</span>] = <span class="keyword">false</span>;
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i * i &lt;= limit; i++) {
+    <span class="keyword">if</span> (isPrime[i]) {
+      <span class="keyword">for</span> (<span class="keyword">let</span> j = i * i; j &lt;= limit; j += i) {
+        isPrime[j] = <span class="keyword">false</span>;
+      }
+    }
+  }
+
+  <span class="keyword">const</span> primes = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= limit; i++) {
+    <span class="keyword">if</span> (isPrime[i]) primes.push(i);
+  }
+  <span class="keyword">return</span> primes;
+}
+
+console.log(<span class="function">sieve</span>(<span class="number">30</span>));
+<span class="comment">// [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]</span></code></pre>
+
+      <h3>Modular Arithmetic</h3>
+      <p>When problems say "return the answer modulo 10^9 + 7", use these rules:</p>
+
+      <pre><code><span class="lang-label">Python</span>
+MOD = <span class="number">10</span>**<span class="number">9</span> + <span class="number">7</span>
+
+<span class="comment"># Addition</span>
+(a + b) % MOD
+
+<span class="comment"># Subtraction (add MOD to avoid negatives)</span>
+(a - b + MOD) % MOD
+
+<span class="comment"># Multiplication</span>
+(a * b) % MOD
+
+<span class="comment"># Exponentiation (fast power)</span>
+<span class="builtin">pow</span>(a, b, MOD)  <span class="comment"># Python built-in: computes (a^b) % MOD efficiently</span>
+
+<span class="comment"># Division: multiply by modular inverse</span>
+<span class="comment"># a / b mod p = a * pow(b, p-2, p) mod p  (when p is prime)</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> MOD = <span class="number">1_000_000_007</span>;
+
+<span class="comment">// Addition</span>
+(a + b) % MOD;
+
+<span class="comment">// Subtraction</span>
+((a - b) % MOD + MOD) % MOD;
+
+<span class="comment">// Multiplication -- use BigInt for large numbers</span>
+Number(BigInt(a) * BigInt(b) % BigInt(MOD));
+
+<span class="comment">// Fast exponentiation</span>
+<span class="keyword">function</span> <span class="function">modPow</span>(base, exp, mod) {
+  <span class="keyword">let</span> result = <span class="number">1</span>n;
+  base = BigInt(base) % BigInt(mod);
+  exp = BigInt(exp);
+  mod = BigInt(mod);
+  <span class="keyword">while</span> (exp > <span class="number">0</span>n) {
+    <span class="keyword">if</span> (exp % <span class="number">2</span>n === <span class="number">1</span>n) result = result * base % mod;
+    exp >>= <span class="number">1</span>n;
+    base = base * base % mod;
+  }
+  <span class="keyword">return</span> Number(result);
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Tip</div>
+        <p>The MOD constant <code>10^9 + 7</code> appears in almost every competitive programming and some interview problems. It is a prime number, which means modular inverses exist, and it fits in a 32-bit integer, which prevents overflow when multiplying two such numbers in a 64-bit integer.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. PRACTICE QUIZ -->
+    <!-- ============================================================ -->
+    <section id="quiz">
+      <h2>8. Practice Quiz</h2>
+      <p>Test your understanding of the advanced topics covered on this page.</p>
+
+      <div class="quiz">
+
+        <!-- Question 1 -->
+        <div class="quiz-q" id="q1">
+          <h4>Q1: What is the time complexity of extracting the minimum element from a min-heap?</h4>
+          <button onclick="checkAnswer('q1', this, false)">O(1)</button>
+          <button onclick="checkAnswer('q1', this, true)">O(log n)</button>
+          <button onclick="checkAnswer('q1', this, false)">O(n)</button>
+          <button onclick="checkAnswer('q1', this, false)">O(n log n)</button>
+          <div class="explanation">
+            Peeking at the min is O(1), but <strong>extracting</strong> (removing) it requires replacing the root with the last element and then sifting down through the tree, which takes O(log n). Don't confuse peek with extract!
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-q" id="q2">
+          <h4>Q2: In a trie containing the words "app", "apple", and "apply", how many nodes are marked as end-of-word?</h4>
+          <button onclick="checkAnswer('q2', this, false)">1</button>
+          <button onclick="checkAnswer('q2', this, false)">2</button>
+          <button onclick="checkAnswer('q2', this, true)">3</button>
+          <button onclick="checkAnswer('q2', this, false)">5</button>
+          <div class="explanation">
+            Each complete word gets its own end-of-word marker. "app" ends at the second 'p' node, "apple" ends at the 'e' node, and "apply" ends at the 'y' node. The shared prefix "appl" does NOT count because it is not a complete word on its own. So 3 nodes are marked.
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-q" id="q3">
+          <h4>Q3: What does the expression <code>n &amp; (n - 1)</code> do?</h4>
+          <button onclick="checkAnswer('q3', this, false)">Doubles the number</button>
+          <button onclick="checkAnswer('q3', this, true)">Clears the lowest set bit</button>
+          <button onclick="checkAnswer('q3', this, false)">Counts the number of set bits</button>
+          <button onclick="checkAnswer('q3', this, false)">Flips all bits</button>
+          <div class="explanation">
+            <code>n - 1</code> flips all bits from the lowest set bit downward. ANDing with n clears that lowest set bit. For example: <code>12 (1100) &amp; 11 (1011) = 8 (1000)</code>. This is used in Brian Kernighan's bit counting algorithm and to check for powers of 2.
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-q" id="q4">
+          <h4>Q4: In Union-Find, what is the purpose of "path compression"?</h4>
+          <button onclick="checkAnswer('q4', this, false)">It reduces the number of union operations needed</button>
+          <button onclick="checkAnswer('q4', this, true)">It flattens the tree so future find() calls are faster</button>
+          <button onclick="checkAnswer('q4', this, false)">It ensures the tree is always balanced</button>
+          <button onclick="checkAnswer('q4', this, false)">It prevents cycles in the tree structure</button>
+          <div class="explanation">
+            Path compression makes every node on the path from x to the root point directly to the root during a find() call. This flattens the tree structure, so subsequent find() calls on the same nodes are nearly O(1). Combined with union by rank, it gives amortized O(alpha(n)) per operation.
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-q" id="q5">
+          <h4>Q5: What is the time complexity of the monotonic stack approach for finding the "next greater element" for all n elements?</h4>
+          <button onclick="checkAnswer('q5', this, true)">O(n)</button>
+          <button onclick="checkAnswer('q5', this, false)">O(n log n)</button>
+          <button onclick="checkAnswer('q5', this, false)">O(n^2)</button>
+          <button onclick="checkAnswer('q5', this, false)">O(n * k) where k is the stack size</button>
+          <div class="explanation">
+            Despite the nested while loop inside the for loop, the total work is O(n) because each element is pushed onto the stack exactly once and popped at most once. The total number of push and pop operations across all iterations is at most 2n, giving O(n) overall.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers who want to master data structures and algorithms.</p>
+    <p>No ads, no tracking, no paywalls -- just DSA.</p>
+  </footer>
+
+  <script>
+    function checkAnswer(qId, btn, isCorrect) {
+      const question = document.getElementById(qId);
+      // If already answered, do nothing
+      if (question.dataset.answered) return;
+      question.dataset.answered = 'true';
+
+      // Mark the clicked button
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+      // If wrong, also highlight the correct answer
+      if (!isCorrect) {
+        const buttons = question.querySelectorAll('button');
+        buttons.forEach(function(b) {
+          // Find the correct button by calling the onclick and checking
+          // We use a data attribute approach instead
+        });
+        // Re-iterate to find correct one
+        buttons.forEach(function(b) {
+          const onclickStr = b.getAttribute('onclick');
+          if (onclickStr && onclickStr.includes('true')) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      // Show explanation
+      const explanation = question.querySelector('.explanation');
+      if (explanation) {
+        explanation.style.display = 'block';
+      }
+
+      // Disable all buttons in this question
+      const allButtons = question.querySelectorAll('button');
+      allButtons.forEach(function(b) { b.style.pointerEvents = 'none'; });
+    }
+  </script>
+
+</body>
+</html>
