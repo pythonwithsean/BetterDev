@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Design -- The Complete Framework - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html" class="active">System Design</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb">Home / System Design</div>
+      <h1>System Design -- The Complete Framework</h1>
+      <p class="subtitle">System design is how you think about building software at scale before you write a single line of code. It's the skill that separates someone who can build a feature from someone who can build a system.</p>
+    </div>
+
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ul>
+        <li><a href="#requirements">Step 1: Gather Requirements</a></li>
+        <li><a href="#estimation">Step 2: Back-of-Envelope Estimation</a></li>
+        <li><a href="#high-level">Step 3: High-Level Design</a></li>
+        <li><a href="#detailed">Step 4: Detailed Component Design</a></li>
+        <li><a href="#deep-dive">Step 5: Deep Dive</a></li>
+        <li><a href="#building-blocks">Core System Design Building Blocks</a></li>
+        <li><a href="#tradeoffs">Step 6: Trade-Offs and Failure Scenarios</a></li>
+        <li><a href="#framework">Interview Framework</a></li>
+        <li><a href="#common-problems">Common System Design Problems</a></li>
+      </ul>
+    </div>
+
+    <section id="system-design">
+    <p>System design is <strong>how you think about building software at scale</strong> before you write a single line of code. It's the skill that separates someone who can build a feature from someone who can build a system. Interviewers use it to test whether you can reason about trade-offs, and companies need it to build products that don't collapse under real-world load.</p>
+
+    <div class="warning-box">
+      <div class="label">Why System Design Matters Even If You're Junior</div>
+      <p>You don't need to be a principal engineer to benefit from system design thinking. Every time you make a decision -- "should I store this in memory or in a database?", "should this be synchronous or async?", "what happens if this service goes down?" -- you're doing system design. The framework below gives you a structured way to think through these decisions instead of guessing.</p>
+    </div>
+
+    <h3 id="requirements">Step 1: Gather Requirements (The Most Important Step)</h3>
+    <p>Most people jump straight to drawing boxes and arrows. <strong>Don't.</strong> The first 5-10 minutes of any system design should be spent understanding what you're actually building. There are two types of requirements:</p>
+
+    <div class="example-box">
+      <div class="label">Functional Requirements (FR) -- "What does it DO?"</div>
+      <p>Functional requirements describe the <strong>features and behaviors</strong> of the system. They answer: "What can the user do? What does the system need to support?"</p>
+<pre><code>// Example: Design a URL shortener (like bit.ly)
+
+Functional Requirements:
+1. Users can submit a long URL and get a short URL back
+2. When someone visits the short URL, they are redirected to the original
+3. Users can optionally set a custom short code ("mylink" instead of "x7Kp2")
+4. Short links expire after a configurable time (default: never)
+5. Users can see analytics (click count, referrers, geolocation)
+
+// How to extract these in an interview:
+// Ask: "Who are the users?" (anonymous? logged in? admins?)
+// Ask: "What are the core actions?" (create, read, update, delete)
+// Ask: "What's the most important use case?" (focus on this first)
+// Ask: "What can we leave out for v1?" (reduces scope)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Non-Functional Requirements (NFR) -- "How well does it do it?"</div>
+      <p>Non-functional requirements describe the <strong>quality attributes</strong> of the system. They constrain HOW you build it.</p>
+<pre><code>// Example: URL shortener NFRs
+
+Non-Functional Requirements:
+1. AVAILABILITY -- System should be 99.9% uptime (8.7 hours downtime/year)
+2. LATENCY -- URL redirect should complete in &lt; 100ms (p99)
+3. THROUGHPUT -- Handle 10,000 redirects per second, 100 new URLs per second
+4. SCALABILITY -- Support 1 billion stored URLs
+5. DURABILITY -- Once a URL is created, it must never be lost
+6. CONSISTENCY -- A newly created short URL should work within 1 second
+
+// Key NFR categories to always consider:
+// - Availability: What uptime % do we need? (99.9% vs 99.99% is 10x harder)
+// - Latency: What response time is acceptable? (p50, p95, p99)
+// - Throughput: How many requests per second? (reads vs writes)
+// - Storage: How much data? How fast does it grow?
+// - Consistency: Can users see stale data? For how long?
+// - Security: Authentication? Authorization? Encryption?
+// - Cost: Budget constraints? (affects technology choices)</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">The Questions to Always Ask</div>
+      <ul>
+        <li><strong>"How many users?"</strong> -- 1,000 users vs 100 million users = completely different architectures</li>
+        <li><strong>"Read-heavy or write-heavy?"</strong> -- Determines caching strategy, database choice, replication</li>
+        <li><strong>"What's the data size?"</strong> -- Fits in one DB? Need sharding? Need object storage?</li>
+        <li><strong>"What consistency level?"</strong> -- Banking needs strong consistency. Social media feed can be eventually consistent.</li>
+        <li><strong>"What are the peak loads?"</strong> -- Black Friday traffic? Viral tweets? Design for the peak, not the average.</li>
+        <li><strong>"What can fail?"</strong> -- And what happens when it does? Graceful degradation vs hard failure.</li>
+      </ul>
+    </div>
+
+    <h3 id="estimation">Step 2: Back-of-Envelope Estimation</h3>
+    <p>Before choosing technologies, estimate the scale. These rough calculations tell you whether you need one server or a thousand.</p>
+
+    <div class="example-box">
+      <div class="label">Estimation Example: URL Shortener</div>
+<pre><code>// Given: 100 million URLs created per month, 100:1 read/write ratio
+
+// WRITES (new URLs)
+100M URLs / month
+= 100M / (30 days * 24 hours * 3600 seconds)
+= 100M / 2.6M
+≈ 40 URLs created per second
+
+// READS (redirects)
+100:1 ratio → 40 * 100 = 4,000 redirects per second
+
+// STORAGE
+Each URL record: short_code (7 bytes) + long_url (avg 200 bytes)
+                + created_at (8 bytes) + metadata (100 bytes) ≈ 315 bytes
+Per month: 100M * 315 bytes = 31.5 GB
+Per year:  31.5 * 12 ≈ 378 GB
+Over 5 years: ~1.9 TB
+
+// This tells us:
+// - Write throughput is low (40/s) -- single database can handle this
+// - Read throughput is moderate (4,000/s) -- needs caching
+// - Storage is manageable (~2TB over 5 years) -- fits on one machine
+// - We should optimize for reads (caching, read replicas)
+
+// Key numbers to memorize:
+// 1 day  = 86,400 seconds  ≈ 100K seconds
+// 1 month = 2.6M seconds
+// 1 year  = 31.5M seconds
+// 1 KB = 1,000 bytes (for estimation purposes)
+// 1 MB = 1,000 KB, 1 GB = 1,000 MB, 1 TB = 1,000 GB
+
+// Read latencies to know:
+// RAM access:            ~100 nanoseconds
+// SSD random read:       ~100 microseconds
+// Network round trip:    ~0.5 milliseconds (same datacenter)
+// SSD sequential 1MB:    ~1 millisecond
+// HDD sequential 1MB:    ~20 milliseconds
+// Cross-continent RTT:   ~150 milliseconds</code></pre>
+    </div>
+
+    <h3 id="high-level">Step 3: High-Level Design</h3>
+    <p>Now draw the big picture. Start with the simplest architecture that could work, then evolve it to handle the requirements.</p>
+
+    <div class="example-box">
+      <div class="label">URL Shortener -- Architecture Evolution</div>
+<pre><code>// V1: SIMPLEST POSSIBLE (works for small scale)
+//
+// [Client] → [Web Server] → [Database (PostgreSQL)]
+//
+// - Single server, single database
+// - Works for thousands of users
+// - Single point of failure
+
+// V2: ADD CACHING (handle read-heavy load)
+//
+// [Client] → [Load Balancer] → [Web Server 1] → [Cache (Redis)]
+//                             → [Web Server 2]      ↓ (miss)
+//                             → [Web Server 3] → [Database]
+//
+// - Multiple servers behind a load balancer
+// - Redis caches popular URLs (most URLs follow Zipf's law)
+// - Cache hit rate of 80%+ reduces DB load by 5x
+
+// V3: ADD READ REPLICAS (scale reads further)
+//
+// [Client] → [CDN] → [Load Balancer] → [Servers]
+//                                          ↓
+//                                       [Cache]
+//                                          ↓ (miss)
+//                                    [DB Primary] → [Replica 1]
+//                                                 → [Replica 2]
+//
+// - CDN handles static assets and can cache redirect responses
+// - Database reads go to replicas
+// - Only writes go to primary
+
+// V4: FULL SCALE (billions of URLs)
+//
+// [Client] → [CDN]
+//               ↓
+// [API Gateway / Load Balancer]
+//      ↓              ↓
+// [URL Service]   [Analytics Service]  ← Separate concerns
+//      ↓              ↓
+// [Redis Cache]   [Kafka Queue]        ← Async analytics
+//      ↓              ↓
+// [Sharded DB]    [ClickHouse]         ← Different DBs for different needs</code></pre>
+    </div>
+
+    <h3 id="detailed">Step 4: Detailed Component Design</h3>
+    <p>Zoom into each component and explain how it works internally.</p>
+
+    <div class="example-box">
+      <div class="label">API Design -- Define Your Interfaces First</div>
+<pre><code>// REST API for URL Shortener
+
+// Create short URL
+POST /api/v1/urls
+Request:  { "long_url": "https://example.com/very/long/path", "custom_code": "mylink", "ttl": 86400 }
+Response: { "short_url": "https://sho.rt/x7Kp2", "code": "x7Kp2", "expires_at": "2024-02-18T..." }
+Status:   201 Created
+
+// Redirect (the hot path -- must be fast)
+GET /:code
+Response: 301 Moved Permanently (cacheable) or 302 Found (not cached)
+Header:   Location: https://example.com/very/long/path
+
+// Get analytics
+GET /api/v1/urls/:code/stats
+Response: { "clicks": 15234, "created_at": "...", "top_referrers": [...] }
+
+// Delete URL
+DELETE /api/v1/urls/:code
+Response: 204 No Content
+
+// Key API design decisions:
+// - 301 vs 302 redirect: 301 is cached by browsers (fewer hits to your server,
+//   but you lose analytics). 302 always hits your server (accurate analytics).
+// - API versioning: /api/v1/ lets you evolve without breaking clients
+// - Rate limiting: Prevent abuse (100 creates per hour per user)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Data Model Design</div>
+<pre><code>// Schema for URL shortener
+
+CREATE TABLE urls (
+  id          BIGSERIAL PRIMARY KEY,
+  code        VARCHAR(10) UNIQUE NOT NULL,  -- "x7Kp2"
+  long_url    TEXT NOT NULL,                -- Original URL
+  user_id     BIGINT REFERENCES users(id),  -- NULL for anonymous
+  created_at  TIMESTAMP DEFAULT NOW(),
+  expires_at  TIMESTAMP,                    -- NULL = never expires
+  click_count BIGINT DEFAULT 0              -- Denormalized for speed
+);
+
+CREATE INDEX idx_urls_code ON urls (code);  -- Primary lookup path
+CREATE INDEX idx_urls_user ON urls (user_id, created_at DESC);
+
+// Separate table for analytics (write-heavy, different access pattern)
+CREATE TABLE clicks (
+  id          BIGSERIAL PRIMARY KEY,
+  url_id      BIGINT REFERENCES urls(id),
+  clicked_at  TIMESTAMP DEFAULT NOW(),
+  ip_address  INET,
+  user_agent  TEXT,
+  referrer    TEXT,
+  country     VARCHAR(2)
+);
+
+// This table grows FAST (millions of rows/day)
+// Options: partition by date, move to ClickHouse/TimescaleDB, or
+// use Kafka → batch processor → aggregated analytics table
+
+// Key data model decisions:
+// - Separate URLs from clicks (different read/write patterns)
+// - Index on 'code' for O(log n) lookups
+// - click_count denormalized on urls table to avoid COUNT(*) on clicks
+// - Consider: NoSQL (DynamoDB) for URLs if you only need key-value lookup</code></pre>
+    </div>
+
+    <h3 id="deep-dive">Step 5: Deep Dive -- Handling the Hard Parts</h3>
+
+    <div class="example-box">
+      <div class="label">Short Code Generation -- Multiple Approaches</div>
+<pre><code>// APPROACH 1: Hash-based
+// MD5/SHA256 the long URL, take first 7 characters
+const crypto = require("crypto");
+function generateCode(longUrl) {
+  const hash = crypto.createHash("md5").update(longUrl).digest("base62");
+  return hash.substring(0, 7);  // "x7Kp2mR"
+}
+// Problem: Collisions. Two different URLs could produce the same 7-char hash.
+// Solution: Check for collision, if found, append a counter and re-hash.
+
+// APPROACH 2: Counter-based (auto-increment ID → base62)
+// ID 1000000 → base62 → "4C92"
+function idToBase62(id) {
+  const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
+  while (id > 0) {
+    result = chars[id % 62] + result;
+    id = Math.floor(id / 62);
+  }
+  return result;
+}
+// Problem: Predictable (sequential). User can guess other URLs.
+// Solution: Shuffle with a bijective mapping or use random IDs.
+
+// APPROACH 3: Pre-generated random codes
+// Background worker generates millions of random codes and stores them
+// When a user creates a URL, grab the next unused code from the pool
+// No collision checking needed, no computation at request time
+
+// With 7 characters of base62: 62^7 = 3.5 TRILLION possible codes
+// Even with 1 billion URLs, collision probability is negligible</code></pre>
+    </div>
+
+    <h3 id="building-blocks">Core System Design Building Blocks</h3>
+    <p>These components appear in almost every system design. Understand what each one does, when to use it, and the trade-offs.</p>
+
+    <div class="example-box">
+      <div class="label">Load Balancer</div>
+<pre><code>// Distributes incoming traffic across multiple servers
+// Why: no single server can handle all traffic; provides redundancy
+
+// Algorithms:
+// Round Robin:      1→A, 2→B, 3→C, 4→A, 5→B, 6→C (simple, even distribution)
+// Least Connections: Send to server with fewest active connections (better for uneven work)
+// IP Hash:          Same client IP always goes to same server (session stickiness)
+// Weighted:         Server A gets 3x traffic of Server B (different hardware)
+
+// Layer 4 (TCP) vs Layer 7 (HTTP):
+// L4: Routes based on IP/port. Fast but dumb (can't inspect HTTP headers)
+// L7: Routes based on URL, headers, cookies. Slower but smart (route /api to API servers,
+//     /static to CDN, etc.)
+
+// Tools: nginx, HAProxy, AWS ALB/NLB, Cloudflare</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Caching Strategies</div>
+<pre><code>// CACHE-ASIDE (Lazy Loading) -- Most common
+// 1. App checks cache. Hit? Return cached data.
+// 2. Miss? Query database, store result in cache, return data.
+// Pro: Only caches data that's actually requested
+// Con: First request always slow (cache miss). Stale data possible.
+
+async function getUser(id) {
+  let user = await cache.get(`user:${id}`);
+  if (!user) {
+    user = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    await cache.set(`user:${id}`, user, { ex: 300 }); // TTL: 5 min
+  }
+  return user;
+}
+
+// WRITE-THROUGH -- Write to cache AND database simultaneously
+// Pro: Cache is always up to date
+// Con: Write latency increases (two writes per operation)
+
+async function updateUser(id, data) {
+  await db.query("UPDATE users SET ... WHERE id = $1", [id]);
+  await cache.set(`user:${id}`, data);  // Both updated atomically
+}
+
+// WRITE-BEHIND (Write-Back) -- Write to cache, async write to DB
+// Pro: Very fast writes (only writing to memory)
+// Con: Data loss if cache crashes before DB write
+// Use for: analytics, activity logs, non-critical data
+
+// Cache eviction policies:
+// LRU (Least Recently Used) -- Remove items not accessed recently (most common)
+// LFU (Least Frequently Used) -- Remove items accessed least often
+// TTL (Time-To-Live) -- Remove items after a fixed time</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Message Queues &amp; Event-Driven Architecture</div>
+<pre><code>// A message queue decouples producers from consumers
+// Producer sends a message → Queue stores it → Consumer processes it later
+
+// WHY: If processing takes 30 seconds (video encoding, sending emails,
+// generating reports), you don't want the user waiting 30 seconds.
+// Instead: accept the request, queue the work, respond immediately.
+
+// Example: User uploads a video
+// WITHOUT queue:
+app.post("/upload", async (req, res) => {
+  await saveVideo(req.file);           // 100ms
+  await transcodeToMP4(req.file);      // 30 seconds -- USER WAITS
+  await generateThumbnail(req.file);   // 5 seconds  -- USER STILL WAITING
+  await notifyFollowers(user);         // 2 seconds
+  res.json({ success: true });         // User waited 37 seconds total
+});
+
+// WITH queue:
+app.post("/upload", async (req, res) => {
+  const videoId = await saveVideo(req.file);  // 100ms
+  await queue.publish("video.uploaded", { videoId, userId: req.user.id });
+  res.json({ status: "processing", videoId });  // User gets response in 100ms
+});
+
+// Separate workers process the queue:
+queue.subscribe("video.uploaded", async (msg) => {
+  await transcodeToMP4(msg.videoId);
+  await generateThumbnail(msg.videoId);
+  await notifyFollowers(msg.userId);
+  await updateStatus(msg.videoId, "ready");
+});
+
+// Popular message queues:
+// Redis (simple, fast, but messages can be lost)
+// RabbitMQ (reliable, feature-rich, AMQP protocol)
+// Kafka (distributed log, massive throughput, event sourcing)
+// AWS SQS (managed, no infrastructure to run)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">CDN (Content Delivery Network)</div>
+<pre><code>// A CDN caches your content on servers worldwide ("edge nodes")
+// so users download from a nearby server instead of your origin
+
+// WITHOUT CDN:
+// User in Tokyo → request travels to your server in Virginia → 200ms latency
+
+// WITH CDN:
+// User in Tokyo → hits CDN edge in Tokyo → 20ms latency (10x faster)
+
+// What to put on a CDN:
+// - Static files: JS, CSS, images, fonts, videos
+// - API responses that don't change often (product catalogs, blog posts)
+// - Redirect responses (for a URL shortener)
+
+// CDN cache headers (you control what gets cached and for how long):
+res.set("Cache-Control", "public, max-age=86400");     // Cache 24 hours
+res.set("Cache-Control", "private, no-cache");          // Don't cache (user-specific data)
+res.set("Cache-Control", "public, s-maxage=3600");      // CDN caches 1hr, browser doesn't
+
+// Cache invalidation:
+// - Versioned URLs: /app.a1b2c3.js (new hash = new URL = automatic cache bust)
+// - Purge API: Tell the CDN to drop specific cached items
+// - Short TTLs: Cache for 60 seconds, accept slightly stale data
+
+// Popular CDNs: Cloudflare, AWS CloudFront, Fastly, Vercel Edge</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Rate Limiting &amp; Throttling</div>
+<pre><code>// Protects your system from abuse and overload
+
+// Token Bucket algorithm (most common):
+// Bucket holds N tokens. Each request consumes 1 token.
+// Tokens are added at a fixed rate (e.g., 10/second).
+// If bucket is empty, request is rejected (429 Too Many Requests).
+
+// Implementation with Redis:
+async function rateLimit(userId, maxRequests, windowSeconds) {
+  const key = `rate:${userId}`;
+  const current = await redis.incr(key);
+
+  if (current === 1) {
+    await redis.expire(key, windowSeconds);
+  }
+
+  if (current > maxRequests) {
+    const ttl = await redis.ttl(key);
+    return {
+      allowed: false,
+      retryAfter: ttl,
+    };
+  }
+
+  return {
+    allowed: true,
+    remaining: maxRequests - current,
+  };
+}
+
+// Express middleware:
+app.use(async (req, res, next) => {
+  const result = await rateLimit(req.ip, 100, 60); // 100 req/min
+  res.set("X-RateLimit-Remaining", result.remaining);
+
+  if (!result.allowed) {
+    res.set("Retry-After", result.retryAfter);
+    return res.status(429).json({ error: "Too many requests" });
+  }
+  next();
+});
+
+// Different limits for different users/endpoints:
+// Anonymous: 60 req/min
+// Authenticated: 600 req/min
+// Premium: 6000 req/min
+// POST /api/upload: 10 req/min (expensive operation)</code></pre>
+    </div>
+
+    <h3 id="tradeoffs">Step 6: Address Trade-Offs and Failure Scenarios</h3>
+    <p>Good system design acknowledges what can go wrong and how the system handles it. This is what separates "I drew some boxes" from actual engineering.</p>
+
+    <div class="example-box">
+      <div class="label">CAP Theorem -- The Fundamental Trade-Off</div>
+<pre><code>// In a distributed system, you can only guarantee 2 of 3:
+//
+// C = Consistency    -- Every read gets the most recent write
+// A = Availability   -- Every request gets a response (even if stale)
+// P = Partition Tolerance -- System works even if network splits
+//
+// You MUST choose P (networks fail in practice), so the real choice is:
+//
+// CP (Consistency + Partition Tolerance):
+//   If network splits, refuse to serve requests rather than serve stale data
+//   Example: Banking systems, inventory systems
+//   Tools: PostgreSQL, MongoDB (with majority writes), etcd, ZooKeeper
+//
+// AP (Availability + Partition Tolerance):
+//   If network splits, serve potentially stale data rather than go down
+//   Example: Social media feeds, DNS, shopping carts
+//   Tools: Cassandra, DynamoDB, CouchDB
+//
+// In practice, most systems are neither purely CP nor AP.
+// They make different trade-offs for different operations:
+// - User authentication: CP (must be consistent)
+// - News feed: AP (stale by a few seconds is fine)
+// - Shopping cart: AP (don't lose the cart even if stale)
+// - Payment processing: CP (never process a payment twice)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Failure Scenarios to Always Discuss</div>
+<pre><code>// 1. SINGLE POINT OF FAILURE (SPOF)
+// "What happens if this component dies?"
+// Fix: Redundancy. Run 2+ instances of everything critical.
+// Database: primary + replicas. Servers: behind load balancer.
+// Cache: Redis Sentinel or Redis Cluster for failover.
+
+// 2. THUNDERING HERD
+// Cache key expires. 10,000 requests hit the database simultaneously.
+// Fix: Cache stampede protection -- lock so only 1 request rebuilds cache.
+async function getWithLock(key) {
+  let value = await cache.get(key);
+  if (value) return value;
+
+  const lock = await cache.set(`lock:${key}`, "1", "EX", 5, "NX");
+  if (lock) {
+    value = await db.query(/* ... */);
+    await cache.set(key, value, "EX", 300);
+  } else {
+    await sleep(50);           // Wait for other request to populate cache
+    return cache.get(key);     // Try again
+  }
+}
+
+// 3. HOT KEY PROBLEM
+// One cache key gets 90% of all requests (celebrity profile, viral post)
+// Single Redis node becomes bottleneck
+// Fix: Replicate hot keys across multiple Redis nodes with random suffix
+
+// 4. DATA LOSS
+// Server dies, taking in-memory data with it
+// Fix: WAL (Write-Ahead Log), replication, regular backups
+// Rule: If losing this data would be bad, it must be on disk before you ack.
+
+// 5. CASCADING FAILURE
+// Service A is slow → Service B times out waiting → B backs up → C backs up
+// Fix: Circuit breaker pattern, timeouts, bulkheads
+// If Service A fails 50% of requests, stop calling it for 30 seconds.</code></pre>
+    </div>
+
+    <h3 id="framework">System Design Interview Framework -- Putting It All Together</h3>
+    <div class="example-box">
+      <div class="label">The 45-Minute Framework</div>
+<pre><code>// MINUTES 0-5: REQUIREMENTS GATHERING
+// Ask questions. Define functional and non-functional requirements.
+// Scope the problem. What's in v1? What's out of scope?
+
+// MINUTES 5-10: ESTIMATION
+// Back-of-envelope math. How many users? QPS? Storage?
+// This determines whether you need 1 server or 1000.
+
+// MINUTES 10-25: HIGH-LEVEL DESIGN
+// Draw the main components: clients, servers, databases, caches, queues
+// Define the API (endpoints, request/response formats)
+// Define the data model (tables, relationships, indexes)
+// Walk through the main user flows
+
+// MINUTES 25-40: DEEP DIVE
+// Pick 2-3 interesting components and go deep
+// - How does X handle 10x traffic?
+// - How does Y handle failures?
+// - What's the caching strategy?
+// - How do you handle data consistency?
+
+// MINUTES 40-45: TRADE-OFFS AND WRAP-UP
+// What are the bottlenecks?
+// What would you change for 10x scale?
+// What are the operational concerns? (monitoring, alerting, deployment)
+
+// GOLDEN RULES:
+// 1. Don't over-engineer. Start simple, add complexity only when needed.
+// 2. Justify every component. "Why Redis?" "Because our read QPS is 50K
+//    and PostgreSQL can handle ~5K. We need a caching layer."
+// 3. Talk about trade-offs. There are no perfect solutions.
+// 4. Use real numbers. "We need ~2TB of storage" is better than "a lot."
+// 5. Consider operational complexity. A simple system you can debug
+//    beats a complex one you can't.</code></pre>
+    </div>
+
+    <h3 id="common-problems">Common System Design Problems -- Quick Reference</h3>
+    <div class="example-box">
+      <div class="label">Systems You Should Know How to Design</div>
+<pre><code>// URL SHORTENER
+// Key: hash/counter for short codes, Redis for hot URLs, 301 vs 302
+
+// RATE LIMITER
+// Key: token bucket or sliding window, Redis for distributed counting
+
+// CHAT SYSTEM (WhatsApp/Slack)
+// Key: WebSockets for real-time, message queue for delivery, last-seen tracking
+// Hard part: group chats at scale, offline message delivery, read receipts
+
+// NEWS FEED (Twitter/Instagram)
+// Key: fan-out-on-write (pre-compute feeds) vs fan-out-on-read (compute on demand)
+// Trade-off: write amplification vs read latency
+// Celebrity problem: hybrid approach (fan-out-on-read for users with 10M+ followers)
+
+// FILE STORAGE (Dropbox/Google Drive)
+// Key: chunk files into blocks, deduplicate, sync client with server
+// Hard part: conflict resolution (two users edit same file), efficient sync
+
+// VIDEO STREAMING (YouTube/Netflix)
+// Key: transcode to multiple resolutions/bitrates, CDN for delivery, adaptive bitrate
+// Hard part: live streaming (low latency), recommendation engine
+
+// SEARCH ENGINE (Google)
+// Key: inverted index (word → list of documents containing it), PageRank for ranking
+// Hard part: crawling the web, keeping index fresh, handling queries with spelling errors
+
+// NOTIFICATION SYSTEM
+// Key: multiple channels (push, email, SMS), user preferences, delivery guarantees
+// Hard part: at-most-once vs at-least-once delivery, priority queues, rate limiting
+
+// E-COMMERCE (Amazon checkout)
+// Key: inventory reservation (not just checking), payment processing, order state machine
+// Hard part: preventing overselling, handling payment failures, distributed transactions</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">System Design Cheat Sheet</div>
+      <ul>
+        <li><strong>Step 1:</strong> Functional Requirements -- what does it do?</li>
+        <li><strong>Step 2:</strong> Non-Functional Requirements -- how well does it do it?</li>
+        <li><strong>Step 3:</strong> Back-of-envelope estimation -- how big is this?</li>
+        <li><strong>Step 4:</strong> High-level design -- boxes, arrows, data flow</li>
+        <li><strong>Step 5:</strong> API design -- endpoints, request/response</li>
+        <li><strong>Step 6:</strong> Data model -- tables, indexes, relationships</li>
+        <li><strong>Step 7:</strong> Deep dive -- scaling, caching, failure handling</li>
+        <li><strong>Step 8:</strong> Trade-offs -- CAP, consistency vs availability, complexity vs simplicity</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The Most Important Advice</div>
+      <p>System design is not about memorizing architectures. It's about <strong>reasoning through trade-offs</strong>. The interviewer (or your tech lead) cares more about HOW you think than WHAT you draw. When you say "I'd use Redis here," they want to hear "because our read throughput is 50K QPS, our data fits in memory at ~10GB, and we can tolerate stale data for up to 60 seconds -- which makes a TTL-based cache appropriate." That reasoning is the skill. The boxes and arrows are just notation.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Where to Practice System Design</div>
+      <ul>
+        <li><strong><a href="https://github.com/donnemartin/system-design-primer" target="_blank">System Design Primer (GitHub)</a></strong> -- The most comprehensive free resource. Start here.</li>
+        <li><strong><a href="https://www.youtube.com/c/SystemDesignInterview" target="_blank">System Design Interview (YouTube)</a></strong> -- Visual walkthroughs of common problems.</li>
+        <li><strong>Designing Data-Intensive Applications (Martin Kleppmann)</strong> -- The bible of system design. Read chapters 1-9 at minimum.</li>
+        <li><strong><a href="https://bytebytego.com" target="_blank">ByteByteGo</a></strong> -- Paid but excellent visual system design course by Alex Xu.</li>
+        <li><strong><a href="https://highscalability.com" target="_blank">High Scalability</a></strong> -- Real-world architecture case studies from major companies.</li>
+      </ul>
+    </div>
+  </section>
+  </div>
+
+  <footer>
+    <p>MathPath -- Learn mathematics from the ground up.</p>
+    <p><a href="index.html">Back to Home</a></p>
+  </footer>
+</body>
+</html>
