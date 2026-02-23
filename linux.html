@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Linux - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html" class="active">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; <a href="os.html">Operating Systems</a> &rsaquo; Learn Linux</div>
+      <h1>Learn Linux</h1>
+      <p>Stop blindly copying and pasting commands. Understand what Linux actually is, how the kernel and shell work, what every directory does, how to use the terminal properly, and how to write your own Bash scripts. Built for Pop!_OS users who want to actually know their system.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">You're Running Pop!_OS</div>
+        <p>Pop!_OS is an Ubuntu-based Linux distribution made by System76. Everything on this page applies directly to your system. When we say "Ubuntu" or "Debian", it applies to Pop!_OS too -- they share the same package manager (apt), the same directory structure, and the same underlying kernel.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-with-toc">
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#what-is-linux">1. What Is Linux?</a>
+        <a href="#unix-vs-linux">2. Unix vs Linux</a>
+        <a href="#distros">3. Linux Distros &amp; Pop!_OS</a>
+        <a href="#kernel">4. The Kernel</a>
+        <a href="#shell">5. The Shell</a>
+        <a href="#terminal">6. Terminal &amp; ANSI Escape Codes</a>
+        <a href="#directory-structure">7. Linux Directory Structure</a>
+        <a href="#users-permissions">8. Users &amp; Permissions</a>
+        <a href="#package-management">9. Package Management (apt)</a>
+        <a href="#bash-basics">10. Bash Scripting Basics</a>
+        <a href="#bashrc">11. .bashrc &amp; Shell Configuration</a>
+        <a href="#essential-commands">12. Essential Commands Cheat Sheet</a>
+        <a href="#environment">13. Environment Variables &amp; PATH</a>
+        <a href="#processes-services">14. Processes &amp; Services</a>
+        <a href="#quiz">15. Practice Quiz</a>
+      </div>
+    </aside>
+
+    <div class="content">
+
+      <!-- Mobile TOC -->
+      <div class="toc" style="margin-bottom: 2rem;">
+        <h4>Table of Contents</h4>
+        <a href="#what-is-linux">1. What Is Linux?</a>
+        <a href="#unix-vs-linux">2. Unix vs Linux</a>
+        <a href="#distros">3. Linux Distros &amp; Pop!_OS</a>
+        <a href="#kernel">4. The Kernel</a>
+        <a href="#shell">5. The Shell</a>
+        <a href="#terminal">6. Terminal &amp; ANSI Escape Codes</a>
+        <a href="#directory-structure">7. Linux Directory Structure</a>
+        <a href="#users-permissions">8. Users &amp; Permissions</a>
+        <a href="#package-management">9. Package Management (apt)</a>
+        <a href="#bash-basics">10. Bash Scripting Basics</a>
+        <a href="#bashrc">11. .bashrc &amp; Shell Configuration</a>
+        <a href="#essential-commands">12. Essential Commands Cheat Sheet</a>
+        <a href="#environment">13. Environment Variables &amp; PATH</a>
+        <a href="#processes-services">14. Processes &amp; Services</a>
+        <a href="#quiz">15. Practice Quiz</a>
+      </div>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 1: WHAT IS LINUX?                                    -->
+<!-- ============================================================ -->
+<section id="what-is-linux">
+  <h2>1. What Is Linux?</h2>
+
+  <p><strong>Linux</strong> is an operating system kernel -- the core piece of software that talks to your hardware (CPU, RAM, disk, GPU) and lets programs run on top of it. It was created in 1991 by Linus Torvalds, a Finnish computer science student, as a free alternative to the expensive Unix operating systems that universities and companies used.</p>
+
+  <p>When people say "Linux" they usually mean a complete operating system built around the Linux kernel. Technically, the full stack is:</p>
+
+  <div class="memory-diagram">
+┌─────────────────────────────────────┐
+│  Your Applications                  │  ← Firefox, VS Code, terminal, etc.
+│  (GUI apps, CLI tools, scripts)     │
+├─────────────────────────────────────┤
+│  Desktop Environment                │  ← COSMIC (Pop!_OS), GNOME, KDE
+│  (window manager, panels, themes)   │
+├─────────────────────────────────────┤
+│  System Libraries &amp; Utilities       │  ← GNU coreutils, glibc, systemd
+│  (ls, cp, cat, bash, apt, etc.)     │
+├─────────────────────────────────────┤
+│  Linux Kernel                       │  ← The actual "Linux" part
+│  (process mgmt, memory, drivers,    │
+│   filesystems, networking)          │
+├─────────────────────────────────────┤
+│  Hardware                           │  ← CPU, RAM, SSD, GPU, NIC
+└─────────────────────────────────────┘</div>
+
+  <p>The kernel alone isn't useful -- you need all the tools around it (shell, file utilities, package manager, display server) to have a working system. That's why some people call it <strong>GNU/Linux</strong> -- because most of those utilities come from the GNU project (started by Richard Stallman in 1983).</p>
+
+  <h3>Why Linux Matters for Developers</h3>
+
+  <ul>
+    <li><strong>Servers run Linux</strong> -- over 96% of the world's top web servers run Linux. If you deploy code, you're deploying to Linux.</li>
+    <li><strong>It's open source</strong> -- you can read the kernel source code, modify it, and understand exactly what your computer is doing. No black boxes.</li>
+    <li><strong>The terminal is first-class</strong> -- unlike Windows where the terminal is an afterthought, Linux was built around the command line. Most development tools assume a Unix-like environment.</li>
+    <li><strong>Containers are Linux</strong> -- Docker, Kubernetes, and all container tech runs on the Linux kernel (namespaces + cgroups).</li>
+    <li><strong>It's free</strong> -- no license costs, no activation keys, no forced updates.</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="label">Open Source Means You Can Learn</div>
+    <p>Every command you run on Linux is open source. Curious how <code>ls</code> works? You can read the actual C source code. Wondering what <code>apt</code> does when it installs a package? You can read the Python source. This is incredibly powerful for learning.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 2: UNIX VS LINUX                                     -->
+<!-- ============================================================ -->
+<section id="unix-vs-linux">
+  <h2>2. Unix vs Linux</h2>
+
+  <p>You'll hear "Unix" and "Linux" used interchangeably, but they're different things with a shared history.</p>
+
+  <h3>The History (Quick Version)</h3>
+
+  <ol>
+    <li><strong>1969</strong> -- Ken Thompson and Dennis Ritchie create Unix at AT&amp;T Bell Labs. It's written in C (which Ritchie also created). Unix introduces revolutionary ideas: "everything is a file", pipes, a hierarchical filesystem, and the shell.</li>
+    <li><strong>1970s-80s</strong> -- Unix spreads to universities. Different versions appear: BSD (Berkeley), System V (AT&amp;T), SunOS, HP-UX, AIX. Each is proprietary and expensive.</li>
+    <li><strong>1983</strong> -- Richard Stallman starts the GNU project to create a free Unix-like system. He builds all the user-space tools (compiler, shell, utilities) but the kernel (GNU Hurd) is never finished.</li>
+    <li><strong>1991</strong> -- Linus Torvalds writes the Linux kernel as a hobby project. Combined with GNU tools, it becomes a complete free Unix-like operating system.</li>
+    <li><strong>Today</strong> -- Linux dominates servers, phones (Android), embedded devices, supercomputers (100% of the top 500), and is increasingly popular on desktops.</li>
+  </ol>
+
+  <h3>Key Differences</h3>
+
+  <table>
+    <tr><th>Aspect</th><th>Unix</th><th>Linux</th></tr>
+    <tr><td>Origin</td><td>AT&amp;T Bell Labs, 1969</td><td>Linus Torvalds, 1991</td></tr>
+    <tr><td>License</td><td>Proprietary (mostly)</td><td>GPL (free and open source)</td></tr>
+    <tr><td>Source code</td><td>Closed (mostly)</td><td>Fully open</td></tr>
+    <tr><td>Cost</td><td>Expensive licenses</td><td>Free</td></tr>
+    <tr><td>Examples</td><td>macOS, Solaris, HP-UX, AIX</td><td>Ubuntu, Fedora, Pop!_OS, Arch, Debian</td></tr>
+    <tr><td>Kernel</td><td>Various (XNU for macOS, etc.)</td><td>Linux kernel</td></tr>
+    <tr><td>Hardware</td><td>Often tied to specific hardware</td><td>Runs on almost anything</td></tr>
+    <tr><td>POSIX</td><td>Certified POSIX compliant</td><td>Mostly POSIX compliant (not certified)</td></tr>
+  </table>
+
+  <h3>Unix-like vs Unix</h3>
+
+  <p>Linux is <strong>Unix-like</strong> -- it behaves like Unix, follows similar conventions, and programs written for Unix usually work on Linux. But it's not Unix. It doesn't share any code with the original AT&amp;T Unix. It was written from scratch.</p>
+
+  <p><strong>macOS</strong> is actually certified Unix. Under the hood, macOS runs a Unix kernel called XNU (derived from BSD). That's why the macOS terminal feels similar to Linux -- they share Unix roots.</p>
+
+  <h3>POSIX -- The Standard</h3>
+
+  <p><strong>POSIX</strong> (Portable Operating System Interface) is a set of standards that defines how a Unix-like operating system should behave. It specifies things like:</p>
+
+  <ul>
+    <li>What system calls must exist (open, read, write, fork, exec...)</li>
+    <li>How the shell should work</li>
+    <li>What utilities must be available (ls, grep, awk, sed...)</li>
+    <li>How regular expressions work</li>
+  </ul>
+
+  <p>Both Unix systems and Linux follow POSIX (mostly). This is why shell scripts and command-line tools work across different Unix-like systems.</p>
+
+  <div class="warning-box">
+    <div class="label">Key Takeaway</div>
+    <p>Linux is a free, open-source reimplementation of Unix ideas. It's not Unix, but it works like Unix. When a tutorial says "Unix/Linux" or "POSIX", the commands will work on your Pop!_OS system.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 3: DISTROS & POP!_OS                                 -->
+<!-- ============================================================ -->
+<section id="distros">
+  <h2>3. Linux Distros &amp; Pop!_OS</h2>
+
+  <p>A <strong>Linux distribution (distro)</strong> is a complete operating system built around the Linux kernel. Different distros package different software, use different package managers, and target different users. But they all share the same kernel.</p>
+
+  <h3>The Family Tree</h3>
+
+  <div class="memory-diagram">
+Linux Kernel
+    │
+    ├── Debian ─────────── Ubuntu ─────── Pop!_OS  ← YOU ARE HERE
+    │                          │
+    │                          ├── Linux Mint
+    │                          └── Elementary OS
+    │
+    ├── Red Hat (RHEL) ──── Fedora
+    │                          │
+    │                          └── CentOS / Rocky Linux
+    │
+    ├── Arch Linux ─────── Manjaro
+    │                          └── EndeavourOS
+    │
+    ├── SUSE ───────────── openSUSE
+    │
+    ├── Gentoo
+    │
+    └── Slackware (oldest active distro)</div>
+
+  <h3>Major Distro Families</h3>
+
+  <table>
+    <tr><th>Family</th><th>Package Manager</th><th>Package Format</th><th>Notable Distros</th></tr>
+    <tr><td><strong>Debian</strong></td><td>apt / dpkg</td><td>.deb</td><td>Debian, Ubuntu, Pop!_OS, Mint</td></tr>
+    <tr><td><strong>Red Hat</strong></td><td>dnf / rpm</td><td>.rpm</td><td>Fedora, RHEL, CentOS, Rocky</td></tr>
+    <tr><td><strong>Arch</strong></td><td>pacman</td><td>.pkg.tar.zst</td><td>Arch, Manjaro, EndeavourOS</td></tr>
+    <tr><td><strong>SUSE</strong></td><td>zypper / rpm</td><td>.rpm</td><td>openSUSE Tumbleweed/Leap</td></tr>
+  </table>
+
+  <h3>Your Distro: Pop!_OS</h3>
+
+  <p>Pop!_OS is made by <strong>System76</strong>, a company that builds Linux laptops and desktops. Here's what makes it special:</p>
+
+  <ul>
+    <li><strong>Based on Ubuntu</strong> -- which is based on Debian. So you can use <code>apt</code> to install packages, and most Ubuntu tutorials work on Pop!_OS.</li>
+    <li><strong>COSMIC desktop</strong> -- System76 built their own desktop environment. It has auto-tiling windows, a clean design, and is written in Rust.</li>
+    <li><strong>Pop!_Shop</strong> -- a graphical app store (Flatpak-based) for installing software.</li>
+    <li><strong>Built for developers</strong> -- comes with good defaults, GPU switching for NVIDIA/AMD, and recovery partition.</li>
+    <li><strong>systemd-boot</strong> -- uses systemd-boot instead of GRUB as the bootloader (simpler and faster).</li>
+  </ul>
+
+  <p>To check your system info:</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># What distro are you running?</span>
+$ cat /etc/os-release
+NAME="Pop!_OS"
+VERSION="22.04 LTS"
+ID=pop
+ID_LIKE="ubuntu debian"
+
+<span class="comment"># What kernel version?</span>
+$ uname -r
+6.17.9-76061709-generic
+
+<span class="comment"># System architecture</span>
+$ uname -m
+x86_64
+
+<span class="comment"># All system info in one shot</span>
+$ hostnamectl</code></pre>
+
+  <div class="tip-box">
+    <div class="label">Ubuntu Compatibility</div>
+    <p>Since Pop!_OS is based on Ubuntu, you can use Ubuntu PPAs, Ubuntu tutorials, and Ubuntu .deb packages. If you're searching for how to do something, search "Ubuntu" + your question -- it will almost always work on Pop!_OS too.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 4: THE KERNEL                                        -->
+<!-- ============================================================ -->
+<section id="kernel">
+  <h2>4. The Kernel</h2>
+
+  <p>The <strong>kernel</strong> is the core of the operating system. It's the one piece of software that runs in <strong>kernel mode</strong> (privileged mode) with full access to hardware. Everything else -- your browser, your terminal, your text editor -- runs in user mode and must ask the kernel for permission to do anything hardware-related.</p>
+
+  <h3>What the Kernel Does</h3>
+
+  <div class="memory-diagram">
+                    THE LINUX KERNEL
+┌─────────────────────────────────────────────┐
+│                                             │
+│  Process Management                         │
+│  ├── Create/destroy processes (fork/exit)   │
+│  ├── Schedule which process runs next       │
+│  └── Context switching between processes    │
+│                                             │
+│  Memory Management                          │
+│  ├── Virtual memory (page tables)           │
+│  ├── Allocate/free physical memory          │
+│  └── Swap pages to/from disk               │
+│                                             │
+│  Device Drivers                             │
+│  ├── Talk to hardware (GPU, NIC, USB)       │
+│  ├── Expose devices as files in /dev        │
+│  └── Handle interrupts from devices         │
+│                                             │
+│  File Systems                               │
+│  ├── ext4, btrfs, xfs, ntfs, fat32         │
+│  ├── Virtual filesystems (/proc, /sys)      │
+│  └── File permissions enforcement           │
+│                                             │
+│  Networking                                 │
+│  ├── TCP/IP stack                           │
+│  ├── Socket API                             │
+│  ├── Firewall (netfilter/iptables)          │
+│  └── Network device drivers                 │
+│                                             │
+│  Security                                   │
+│  ├── User/group permissions                 │
+│  ├── Namespaces (containers)                │
+│  ├── cgroups (resource limits)              │
+│  └── SELinux/AppArmor                       │
+│                                             │
+└─────────────────────────────────────────────┘</div>
+
+  <h3>How Programs Talk to the Kernel</h3>
+
+  <p>Programs can't call kernel functions directly. They use <strong>system calls (syscalls)</strong> -- a special CPU instruction that switches from user mode to kernel mode. When you call <code>open()</code>, <code>read()</code>, <code>write()</code>, <code>fork()</code>, etc., you're making syscalls. (See the <a href="os.html#syscalls" class="resource-link">OS page section on syscalls</a> for the full details.)</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># See kernel version</span>
+$ uname -r
+6.17.9-76061709-generic
+
+<span class="comment"># See kernel messages (hardware detection, driver loading, errors)</span>
+$ dmesg | tail -20
+
+<span class="comment"># See loaded kernel modules (drivers)</span>
+$ lsmod
+
+<span class="comment"># Kernel configuration</span>
+$ cat /boot/config-$(uname -r) | head
+
+<span class="comment"># See kernel parameters</span>
+$ sysctl -a | head</code></pre>
+
+  <h3>Monolithic vs Microkernel</h3>
+
+  <p>Linux is a <strong>monolithic kernel</strong> -- all the core services (process management, file systems, device drivers, networking) run in kernel space. This is fast because there's no overhead of message passing between components.</p>
+
+  <p>The alternative is a <strong>microkernel</strong> (like GNU Hurd or MINIX) where only the bare minimum runs in kernel mode and everything else runs as user-space servers. More secure and modular, but slower due to inter-process communication overhead.</p>
+
+  <p>Linux uses <strong>loadable kernel modules</strong> as a middle ground -- drivers can be loaded and unloaded at runtime without rebooting:</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># List loaded modules</span>
+$ lsmod
+
+<span class="comment"># Info about a module</span>
+$ modinfo nvidia
+
+<span class="comment"># Load a module (requires sudo)</span>
+$ sudo modprobe module_name
+
+<span class="comment"># Unload a module</span>
+$ sudo rmmod module_name</code></pre>
+
+  <div class="warning-box">
+    <div class="label">The Kernel Is Not the OS</div>
+    <p>The kernel is just one part of the operating system. It manages hardware and provides services. But without a shell, file utilities, a package manager, and a desktop environment, a kernel alone is useless. That's what distros provide -- everything around the kernel to make a usable system.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 5: THE SHELL                                         -->
+<!-- ============================================================ -->
+<section id="shell">
+  <h2>5. The Shell</h2>
+
+  <p>The <strong>shell</strong> is a program that reads commands you type, interprets them, and asks the kernel to execute them. It's the text-based interface between you and the operating system. When you open a terminal on Pop!_OS, the shell is the program running inside it.</p>
+
+  <h3>How the Shell Works</h3>
+
+  <div class="memory-diagram">
+You type: ls -la /home
+
+     ┌──────────────┐
+     │   Terminal    │  ← The window (GUI application)
+     │  Emulator     │     (e.g., GNOME Terminal, Alacritty)
+     └──────┬───────┘
+            │ sends keystrokes
+            ▼
+     ┌──────────────┐
+     │    Shell      │  ← The interpreter (e.g., bash, zsh)
+     │   (bash)      │     Parses "ls -la /home"
+     └──────┬───────┘
+            │ fork() + exec("ls", "-la", "/home")
+            ▼
+     ┌──────────────┐
+     │   Kernel      │  ← Creates process, runs ls binary
+     └──────┬───────┘
+            │ ls reads directory, writes to stdout
+            ▼
+     Output appears in your terminal</div>
+
+  <p>The shell is NOT the terminal. The <strong>terminal emulator</strong> is the GUI window. The <strong>shell</strong> is the program running inside it that actually processes your commands.</p>
+
+  <h3>Common Shells</h3>
+
+  <table>
+    <tr><th>Shell</th><th>Binary</th><th>Notes</th></tr>
+    <tr><td><strong>bash</strong></td><td>/bin/bash</td><td>Bourne Again Shell. Default on most Linux distros including Pop!_OS. The one you should learn first.</td></tr>
+    <tr><td><strong>zsh</strong></td><td>/bin/zsh</td><td>Z Shell. Default on macOS. More features than bash (better autocomplete, themes). Compatible with bash mostly.</td></tr>
+    <tr><td><strong>fish</strong></td><td>/usr/bin/fish</td><td>Friendly Interactive Shell. Great autosuggestions and syntax highlighting out of the box. NOT bash-compatible.</td></tr>
+    <tr><td><strong>sh</strong></td><td>/bin/sh</td><td>Bourne Shell (POSIX shell). Minimal. Used for scripts that need maximum portability.</td></tr>
+    <tr><td><strong>dash</strong></td><td>/bin/dash</td><td>Debian Almquist Shell. What <code>/bin/sh</code> points to on Debian/Ubuntu/Pop!_OS. Very fast, minimal.</td></tr>
+  </table>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># What shell am I using?</span>
+$ echo $SHELL
+/bin/bash
+
+<span class="comment"># What shells are installed?</span>
+$ cat /etc/shells
+
+<span class="comment"># Change your default shell to zsh</span>
+$ chsh -s /bin/zsh
+
+<span class="comment"># Temporarily use a different shell</span>
+$ zsh        <span class="comment"># starts zsh session</span>
+$ exit       <span class="comment"># back to previous shell</span></code></pre>
+
+  <h3>Shell Features You Should Know</h3>
+
+  <h4>Tab Completion</h4>
+  <p>Press <code>Tab</code> to autocomplete commands, file names, and paths. Press <code>Tab</code> twice to see all possibilities. This is the single most important productivity feature. Stop typing full file names.</p>
+
+  <h4>Command History</h4>
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Search history (most useful shortcut in bash)</span>
+Ctrl+R  then type part of a previous command
+
+<span class="comment"># Show recent commands</span>
+$ history | tail -20
+
+<span class="comment"># Re-run the last command</span>
+$ !!
+
+<span class="comment"># Re-run last command starting with "git"</span>
+$ !git
+
+<span class="comment"># Run previous command with sudo</span>
+$ sudo !!</code></pre>
+
+  <h4>Pipes and Redirection</h4>
+  <p>This is the <em>fundamental</em> Unix philosophy: small programs that do one thing well, connected together with pipes.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Pipe: send stdout of one command to stdin of another</span>
+$ ls -la | grep ".txt"           <span class="comment"># list files, filter for .txt</span>
+$ cat log.txt | sort | uniq -c   <span class="comment"># count unique lines</span>
+$ ps aux | grep firefox          <span class="comment"># find firefox processes</span>
+
+<span class="comment"># Redirect stdout to a file (overwrites)</span>
+$ echo "hello" > output.txt
+
+<span class="comment"># Redirect stdout to a file (appends)</span>
+$ echo "world" >> output.txt
+
+<span class="comment"># Redirect stderr to a file</span>
+$ ./my_script 2> errors.txt
+
+<span class="comment"># Redirect both stdout and stderr</span>
+$ ./my_script > output.txt 2>&amp;1
+
+<span class="comment"># Discard output (send to /dev/null -- the void)</span>
+$ ./noisy_program > /dev/null 2>&amp;1
+
+<span class="comment"># Use a file as stdin</span>
+$ sort < unsorted.txt</code></pre>
+
+  <h4>Keyboard Shortcuts (Bash)</h4>
+
+  <table>
+    <tr><th>Shortcut</th><th>What It Does</th></tr>
+    <tr><td><code>Ctrl+C</code></td><td>Kill the current running command (sends SIGINT)</td></tr>
+    <tr><td><code>Ctrl+D</code></td><td>Exit the shell / send EOF</td></tr>
+    <tr><td><code>Ctrl+Z</code></td><td>Suspend the current process (put it in background)</td></tr>
+    <tr><td><code>Ctrl+L</code></td><td>Clear the screen</td></tr>
+    <tr><td><code>Ctrl+A</code></td><td>Move cursor to beginning of line</td></tr>
+    <tr><td><code>Ctrl+E</code></td><td>Move cursor to end of line</td></tr>
+    <tr><td><code>Ctrl+W</code></td><td>Delete the word before the cursor</td></tr>
+    <tr><td><code>Ctrl+U</code></td><td>Delete from cursor to beginning of line</td></tr>
+    <tr><td><code>Ctrl+R</code></td><td>Reverse search through command history</td></tr>
+    <tr><td><code>Alt+.</code></td><td>Insert the last argument of the previous command</td></tr>
+  </table>
+
+  <div class="tip-box">
+    <div class="label">Start With Bash</div>
+    <p>Learn bash first. It's the default everywhere, all tutorials assume it, and scripts are written in it. Once you're comfortable, try zsh or fish for your interactive shell -- but always know bash because that's what servers run.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 6: TERMINAL & ANSI ESCAPE CODES                     -->
+<!-- ============================================================ -->
+<section id="terminal">
+  <h2>6. Terminal &amp; ANSI Escape Codes</h2>
+
+  <p>The <strong>terminal emulator</strong> (GNOME Terminal, Alacritty, kitty, etc.) is a GUI application that emulates the old hardware terminals from the 1970s. It displays text, accepts keyboard input, and understands special character sequences called <strong>ANSI escape codes</strong>.</p>
+
+  <h3>What's a Terminal?</h3>
+
+  <div class="memory-diagram">
+The Old Days (1970s):                   Today:
+┌──────────────────┐                  ┌──────────────────┐
+│  VT100 Terminal  │  physical        │  Terminal         │  software
+│  (hardware)      │  device          │  Emulator (GUI)   │  application
+│                  │                  │                   │
+│  CRT screen      │                  │  ┌─────────────┐ │
+│  + keyboard      │                  │  │   Shell      │ │
+│  connected via   │                  │  │  (bash/zsh)  │ │
+│  serial cable    │                  │  └─────────────┘ │
+│  to mainframe    │                  │                   │
+└──────────────────┘                  └──────────────────┘</div>
+
+  <p>Terminal emulators pretend to be those old hardware terminals. The protocol they use (ANSI escape sequences) is the same one from the 1970s VT100 terminal, just extended over the decades.</p>
+
+  <h3>ANSI Escape Codes</h3>
+
+  <p>An <strong>ANSI escape code</strong> is a special sequence of characters that starts with <code>ESC[</code> (escape character followed by <code>[</code>). The terminal interprets these sequences as formatting commands instead of printing them as text.</p>
+
+  <p>The escape character is <code>\033</code> (octal), <code>\x1b</code> (hex), or <code>\e</code> (bash shorthand). It's ASCII code 27.</p>
+
+  <h4>Text Colors</h4>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Format: \033[CODEm  (the 'm' at the end is required)</span>
+
+<span class="comment"># Basic colors (foreground)</span>
+echo -e "\033[31mRed text\033[0m"
+echo -e "\033[32mGreen text\033[0m"
+echo -e "\033[33mYellow text\033[0m"
+echo -e "\033[34mBlue text\033[0m"
+echo -e "\033[35mMagenta text\033[0m"
+echo -e "\033[36mCyan text\033[0m"
+
+<span class="comment"># \033[0m resets formatting back to default (always reset!)</span>
+
+<span class="comment"># Background colors (add 10 to the foreground code)</span>
+echo -e "\033[41mRed background\033[0m"
+echo -e "\033[42mGreen background\033[0m"
+
+<span class="comment"># Bold, underline, etc.</span>
+echo -e "\033[1mBold\033[0m"
+echo -e "\033[4mUnderlined\033[0m"
+echo -e "\033[1;31mBold Red\033[0m"
+
+<span class="comment"># Combine multiple styles with semicolons</span>
+echo -e "\033[1;4;33mBold underlined yellow\033[0m"</code></pre>
+
+  <h4>Color Code Reference</h4>
+
+  <table>
+    <tr><th>Code</th><th>Foreground</th><th>Background</th></tr>
+    <tr><td>30 / 40</td><td>Black</td><td>Black</td></tr>
+    <tr><td>31 / 41</td><td>Red</td><td>Red</td></tr>
+    <tr><td>32 / 42</td><td>Green</td><td>Green</td></tr>
+    <tr><td>33 / 43</td><td>Yellow</td><td>Yellow</td></tr>
+    <tr><td>34 / 44</td><td>Blue</td><td>Blue</td></tr>
+    <tr><td>35 / 45</td><td>Magenta</td><td>Magenta</td></tr>
+    <tr><td>36 / 46</td><td>Cyan</td><td>Cyan</td></tr>
+    <tr><td>37 / 47</td><td>White</td><td>White</td></tr>
+  </table>
+
+  <table>
+    <tr><th>Code</th><th>Effect</th></tr>
+    <tr><td>0</td><td>Reset all formatting</td></tr>
+    <tr><td>1</td><td>Bold / bright</td></tr>
+    <tr><td>2</td><td>Dim</td></tr>
+    <tr><td>4</td><td>Underline</td></tr>
+    <tr><td>5</td><td>Blink (not supported everywhere)</td></tr>
+    <tr><td>7</td><td>Reverse (swap foreground/background)</td></tr>
+  </table>
+
+  <h4>256 Color and True Color</h4>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># 256 color mode: \033[38;5;COLORm (foreground)</span>
+echo -e "\033[38;5;208mOrange text (color 208)\033[0m"
+echo -e "\033[48;5;21mBlue background (color 21)\033[0m"
+
+<span class="comment"># True color (24-bit RGB): \033[38;2;R;G;Bm</span>
+echo -e "\033[38;2;255;100;0mRGB orange\033[0m"
+echo -e "\033[48;2;0;50;100mRGB dark blue bg\033[0m"</code></pre>
+
+  <h4>Cursor Movement</h4>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Move cursor up/down/forward/back</span>
+echo -e "\033[2A"     <span class="comment"># move up 2 lines</span>
+echo -e "\033[3B"     <span class="comment"># move down 3 lines</span>
+echo -e "\033[5C"     <span class="comment"># move forward 5 columns</span>
+echo -e "\033[2D"     <span class="comment"># move back 2 columns</span>
+
+<span class="comment"># Move to specific position (row;column)</span>
+echo -e "\033[10;20H" <span class="comment"># move to row 10, column 20</span>
+
+<span class="comment"># Clear screen</span>
+echo -e "\033[2J"     <span class="comment"># clear entire screen</span>
+echo -e "\033[K"      <span class="comment"># clear from cursor to end of line</span>
+
+<span class="comment"># Save and restore cursor position</span>
+echo -e "\033[s"      <span class="comment"># save position</span>
+echo -e "\033[u"      <span class="comment"># restore position</span></code></pre>
+
+  <h4>Why ANSI Codes Matter</h4>
+
+  <p>ANSI codes are how every colorful CLI tool works:</p>
+  <ul>
+    <li><code>ls --color</code> uses ANSI codes to color directories blue, executables green, etc.</li>
+    <li><code>git diff</code> uses red/green ANSI codes for removed/added lines</li>
+    <li>Your shell prompt (PS1) uses ANSI codes for colors</li>
+    <li>Progress bars in <code>npm install</code>, <code>pip install</code> use cursor movement codes</li>
+    <li>Text editors like <code>vim</code> and <code>nano</code> use ANSI codes to render the entire UI</li>
+  </ul>
+
+  <div class="example-box">
+    <div class="label">Try It: Custom Colored Prompt</div>
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># A colorful bash prompt with username, directory, and git branch</span>
+export PS1="\[\033[1;32m\]\u\[\033[0m\]@\[\033[1;34m\]\h\[\033[0m\]:\[\033[1;33m\]\w\[\033[0m\]\$ "
+
+<span class="comment"># \u = username, \h = hostname, \w = working directory</span>
+<span class="comment"># \[...\] tells bash not to count these characters for line wrapping</span></code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 7: LINUX DIRECTORY STRUCTURE                         -->
+<!-- ============================================================ -->
+<section id="directory-structure">
+  <h2>7. Linux Directory Structure (FHS)</h2>
+
+  <p>Linux uses a single directory tree starting from <code>/</code> (root). There are no drive letters like <code>C:\</code> on Windows. Everything -- your files, devices, running processes -- lives somewhere in this tree. The layout follows the <strong>Filesystem Hierarchy Standard (FHS)</strong>.</p>
+
+  <div class="memory-diagram">
+/                           ← Root of everything
+├── bin/                    ← Essential command binaries (ls, cp, cat, bash)
+├── sbin/                   ← System binaries (fdisk, iptables, mount)
+├── boot/                   ← Kernel and bootloader files
+├── dev/                    ← Device files (every hardware device is a file here)
+│   ├── sda                 ← First hard drive
+│   ├── sda1                ← First partition of first drive
+│   ├── null                ← The void (discards anything written to it)
+│   ├── zero                ← Infinite stream of zero bytes
+│   ├── random              ← Random bytes (for encryption keys etc.)
+│   └── tty                 ← Your terminal
+├── etc/                    ← System configuration files (text files you edit)
+│   ├── fstab               ← Filesystem mount points
+│   ├── hostname            ← Your computer's name
+│   ├── hosts               ← Local DNS overrides
+│   ├── passwd              ← User account info
+│   ├── shadow              ← Password hashes (root only)
+│   ├── apt/                ← APT package manager config
+│   │   └── sources.list.d/ ← Package repository URLs
+│   └── systemd/            ← Service configuration
+├── home/                   ← User home directories
+│   └── sean/               ← YOUR stuff lives here
+│       ├── Desktop/
+│       ├── Documents/
+│       ├── Downloads/
+│       ├── .bashrc          ← Your shell configuration
+│       ├── .config/         ← App configs (XDG standard)
+│       ├── .local/          ← User-installed programs and data
+│       └── .ssh/            ← SSH keys
+├── lib/                    ← Shared libraries (like .dll on Windows)
+├── media/                  ← Auto-mounted removable drives (USB, CD)
+├── mnt/                    ← Manually mounted filesystems
+├── opt/                    ← Optional third-party software
+├── proc/                   ← Virtual filesystem -- running process info
+│   ├── cpuinfo             ← CPU details
+│   ├── meminfo             ← Memory details
+│   └── [pid]/              ← Info about each running process
+├── root/                   ← Root user's home directory (not /home/root)
+├── run/                    ← Runtime data (PIDs, sockets) -- cleared on reboot
+├── srv/                    ← Data for services (web server files, etc.)
+├── sys/                    ← Virtual filesystem -- hardware/driver info
+├── tmp/                    ← Temporary files (cleared on reboot)
+├── usr/                    ← User programs and data (read-only)
+│   ├── bin/                ← Most user commands (git, python, gcc, node)
+│   ├── lib/                ← Libraries for /usr/bin programs
+│   ├── local/              ← Locally compiled software
+│   │   ├── bin/            ← Your manually installed programs
+│   │   └── lib/
+│   ├── share/              ← Architecture-independent data (docs, icons)
+│   └── include/            ← C/C++ header files
+└── var/                    ← Variable data (changes during operation)
+    ├── log/                ← System logs
+    │   ├── syslog          ← General system log
+    │   └── auth.log        ← Authentication log
+    ├── cache/              ← Application caches (apt downloads etc.)
+    ├── lib/                ← Variable state data (databases, package info)
+    └── tmp/                ← Persistent temp files (survives reboot)</div>
+
+  <h3>The Most Important Directories for You</h3>
+
+  <table>
+    <tr><th>Directory</th><th>What You Use It For</th></tr>
+    <tr><td><code>~</code> (home)</td><td>Your files, projects, configs. <code>cd ~</code> or just <code>cd</code> goes here.</td></tr>
+    <tr><td><code>/etc</code></td><td>When you need to configure system software (nginx, ssh, network, etc.)</td></tr>
+    <tr><td><code>/var/log</code></td><td>When something breaks -- check the logs here.</td></tr>
+    <tr><td><code>/tmp</code></td><td>Throw temporary files here. Cleared on reboot.</td></tr>
+    <tr><td><code>/usr/bin</code></td><td>Where most programs live. <code>which python3</code> shows you the exact path.</td></tr>
+    <tr><td><code>/dev</code></td><td>Device files. <code>/dev/null</code> is your best friend for discarding output.</td></tr>
+    <tr><td><code>/proc</code></td><td>Process and system info. <code>cat /proc/cpuinfo</code> shows CPU details.</td></tr>
+  </table>
+
+  <h3>Everything Is a File</h3>
+
+  <p>This is the fundamental Unix philosophy. In Linux, <em>everything</em> is represented as a file:</p>
+
+  <ul>
+    <li><strong>Regular files</strong> -- text, images, binaries. The obvious ones.</li>
+    <li><strong>Directories</strong> -- special files that contain lists of other files.</li>
+    <li><strong>Device files</strong> (<code>/dev/sda</code>) -- reading/writing these talks directly to hardware.</li>
+    <li><strong>Pipes</strong> (<code>|</code>) -- connect the output of one program to the input of another.</li>
+    <li><strong>Sockets</strong> -- network connections and inter-process communication.</li>
+    <li><strong>Symlinks</strong> -- pointers to other files.</li>
+    <li><strong>Process info</strong> (<code>/proc/1234/status</code>) -- kernel data exposed as readable files.</li>
+  </ul>
+
+  <div class="example-box">
+    <div class="label">Example: Exploring Your System</div>
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># How much disk space is each top-level directory using?</span>
+$ sudo du -sh /* 2>/dev/null | sort -hr | head -10
+
+<span class="comment"># What's in /dev? (your devices)</span>
+$ ls /dev | head -20
+
+<span class="comment"># Read your CPU info (it's just a "file")</span>
+$ cat /proc/cpuinfo | grep "model name" | head -1
+
+<span class="comment"># How long has your system been running?</span>
+$ cat /proc/uptime
+
+<span class="comment"># What filesystems are mounted?</span>
+$ df -h</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 8: USERS & PERMISSIONS                               -->
+<!-- ============================================================ -->
+<section id="users-permissions">
+  <h2>8. Users &amp; Permissions</h2>
+
+  <p>Linux is a multi-user system. Every file is owned by a user and a group, and has permission bits that control who can read, write, or execute it.</p>
+
+  <h3>Users and Groups</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Who am I?</span>
+$ whoami
+sean
+
+<span class="comment"># What groups am I in?</span>
+$ groups
+sean adm cdrom sudo dip plugdev lpadmin
+
+<span class="comment"># User info (from /etc/passwd)</span>
+$ id
+uid=1000(sean) gid=1000(sean) groups=1000(sean),27(sudo),...
+
+<span class="comment"># The root user (UID 0) can do ANYTHING</span>
+<span class="comment"># Use sudo to run commands as root</span>
+$ sudo apt update</code></pre>
+
+  <h3>Permission Bits</h3>
+
+  <div class="formula-box">
+$ ls -la
+drwxr-xr-x 2 sean sean 4096 Feb 23 10:30 Documents
+-rw-r--r-- 1 sean sean  156 Feb 23 10:30 notes.txt
+-rwxr-xr-x 1 sean sean  892 Feb 23 10:30 script.sh
+lrwxrwxrwx 1 sean sean   11 Feb 23 10:30 link -> target.txt
+
+│├─┤├─┤├─┤
+│ │  │  └── Others (everyone else)
+│ │  └───── Group
+│ └──────── Owner
+└────────── Type: d=dir, -=file, l=symlink
+
+r = read (4)    w = write (2)    x = execute (1)
+  </div>
+
+  <p>For <strong>files</strong>: r = read the contents, w = modify it, x = run it as a program.</p>
+  <p>For <strong>directories</strong>: r = list contents (ls), w = create/delete files inside, x = enter the directory (cd).</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Change permissions (numeric)</span>
+$ chmod 755 script.sh    <span class="comment"># rwxr-xr-x (owner: all, group/others: read+exec)</span>
+$ chmod 644 notes.txt    <span class="comment"># rw-r--r-- (owner: read+write, group/others: read)</span>
+$ chmod 700 private/     <span class="comment"># rwx------ (owner only)</span>
+
+<span class="comment"># Change permissions (symbolic)</span>
+$ chmod +x script.sh     <span class="comment"># add execute for everyone</span>
+$ chmod u+x script.sh    <span class="comment"># add execute for owner only</span>
+$ chmod go-w file.txt    <span class="comment"># remove write for group and others</span>
+
+<span class="comment"># Change ownership</span>
+$ sudo chown sean:sean file.txt
+$ sudo chown -R sean:sean directory/   <span class="comment"># recursive</span></code></pre>
+
+  <h3>sudo -- Doing Things as Root</h3>
+
+  <p><code>sudo</code> (superuser do) runs a single command as root. Your user must be in the <code>sudo</code> group. On Pop!_OS, your first user is automatically in the sudo group.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Install software (needs root)</span>
+$ sudo apt install git
+
+<span class="comment"># Edit a system config file</span>
+$ sudo nano /etc/hosts
+
+<span class="comment"># Become root for multiple commands (use sparingly)</span>
+$ sudo -i         <span class="comment"># opens a root shell</span>
+# exit            <span class="comment"># go back to your user</span>
+
+<span class="comment"># Run the last command with sudo</span>
+$ apt update      <span class="comment"># oops, permission denied</span>
+$ sudo !!         <span class="comment"># runs "sudo apt update"</span></code></pre>
+
+  <div class="warning-box">
+    <div class="label">Don't Run Everything as Root</div>
+    <p>Only use <code>sudo</code> when you actually need elevated privileges (installing software, editing system files, managing services). Running everyday commands as root is dangerous -- a typo like <code>sudo rm -rf /</code> would destroy your entire system. The permission system exists to protect you from yourself.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 9: PACKAGE MANAGEMENT (APT)                          -->
+<!-- ============================================================ -->
+<section id="package-management">
+  <h2>9. Package Management (apt)</h2>
+
+  <p>On Linux, you don't download .exe files from websites. Instead, you use a <strong>package manager</strong> that downloads, installs, updates, and removes software from trusted <strong>repositories</strong> (servers that host packages).</p>
+
+  <p>Pop!_OS uses <code>apt</code> (Advanced Package Tool) because it's Debian/Ubuntu-based. Packages are <code>.deb</code> files.</p>
+
+  <h3>How apt Works</h3>
+
+  <div class="memory-diagram">
+Your machine                          Remote repository
+────────────                          (e.g., archive.ubuntu.com)
+                                      ┌──────────────────────┐
+$ sudo apt update  ──────────────→    │  Package lists       │
+  (downloads package lists)           │  (what's available)  │
+                                      └──────────────────────┘
+$ sudo apt install git ──────────→    ┌──────────────────────┐
+  (downloads .deb files)              │  .deb package files   │
+  installs them locally               │  (actual software)   │
+                                      └──────────────────────┘
+
+apt handles:
+  - Downloading packages
+  - Resolving dependencies (git needs libcurl, libz, etc.)
+  - Installing files to correct locations
+  - Tracking what's installed
+  - Upgrading and removing packages</div>
+
+  <h3>Essential apt Commands</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># === ALWAYS UPDATE FIRST ===</span>
+$ sudo apt update              <span class="comment"># refresh package lists (what's available)</span>
+$ sudo apt upgrade             <span class="comment"># upgrade all installed packages</span>
+$ sudo apt full-upgrade        <span class="comment"># upgrade + handle dependency changes</span>
+
+<span class="comment"># === INSTALL ===</span>
+$ sudo apt install git         <span class="comment"># install a package</span>
+$ sudo apt install git curl wget  <span class="comment"># install multiple at once</span>
+$ sudo apt install -y git      <span class="comment"># auto-answer yes to prompts</span>
+
+<span class="comment"># === REMOVE ===</span>
+$ sudo apt remove firefox      <span class="comment"># remove package (keeps config files)</span>
+$ sudo apt purge firefox       <span class="comment"># remove package + config files</span>
+$ sudo apt autoremove           <span class="comment"># remove unused dependencies</span>
+
+<span class="comment"># === SEARCH ===</span>
+$ apt search "text editor"     <span class="comment"># search for packages</span>
+$ apt show git                 <span class="comment"># show details about a package</span>
+$ apt list --installed         <span class="comment"># list all installed packages</span>
+$ apt list --installed | grep python  <span class="comment"># find installed python packages</span>
+
+<span class="comment"># === INFO ===</span>
+$ dpkg -L git                  <span class="comment"># list all files installed by a package</span>
+$ dpkg -S /usr/bin/git         <span class="comment"># which package owns this file?</span>
+$ apt policy git               <span class="comment"># show installed and available versions</span></code></pre>
+
+  <h3>Repositories (PPAs)</h3>
+
+  <p>Sometimes the version in the default repositories is old. You can add extra <strong>PPAs</strong> (Personal Package Archives) for newer or third-party software:</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Add a PPA (example: newer version of something)</span>
+$ sudo add-apt-repository ppa:some-ppa/name
+$ sudo apt update
+$ sudo apt install package-name
+
+<span class="comment"># Remove a PPA</span>
+$ sudo add-apt-repository --remove ppa:some-ppa/name</code></pre>
+
+  <h3>Other Ways to Install Software on Pop!_OS</h3>
+
+  <table>
+    <tr><th>Method</th><th>Command</th><th>When to Use</th></tr>
+    <tr><td><strong>apt</strong></td><td><code>sudo apt install</code></td><td>Default. Use this first.</td></tr>
+    <tr><td><strong>Flatpak</strong></td><td><code>flatpak install</code></td><td>Sandboxed apps. Pop!_Shop uses this. Good for GUI apps.</td></tr>
+    <tr><td><strong>Snap</strong></td><td><code>snap install</code></td><td>Canonical's format. Some apps only available here.</td></tr>
+    <tr><td><strong>.deb file</strong></td><td><code>sudo dpkg -i file.deb</code></td><td>Downloaded .deb from a website (e.g., VS Code, Discord).</td></tr>
+    <tr><td><strong>AppImage</strong></td><td><code>chmod +x app.AppImage &amp;&amp; ./app.AppImage</code></td><td>Portable apps. Just download and run.</td></tr>
+    <tr><td><strong>From source</strong></td><td><code>./configure &amp;&amp; make &amp;&amp; sudo make install</code></td><td>Last resort. Compiling from source code.</td></tr>
+  </table>
+
+  <div class="tip-box">
+    <div class="label">Keep Your System Updated</div>
+    <p>Run <code>sudo apt update &amp;&amp; sudo apt upgrade</code> regularly (at least weekly). This gets you security patches and bug fixes. Pop!_OS also shows updates in the system tray. Don't ignore them -- they include kernel and security updates.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 10: BASH SCRIPTING BASICS                            -->
+<!-- ============================================================ -->
+<section id="bash-basics">
+  <h2>10. Bash Scripting Basics</h2>
+
+  <p>A <strong>Bash script</strong> is a text file containing a series of commands that bash executes one by one. Instead of typing commands manually, you write them in a file and run the file. This lets you automate repetitive tasks.</p>
+
+  <h3>Your First Script</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+<span class="comment"># The first line (shebang) tells the OS to use bash to run this file</span>
+
+<span class="comment"># Print a greeting</span>
+echo <span class="string">"Hello, $(whoami)!"</span>
+echo <span class="string">"Today is $(date +%A)"</span>
+echo <span class="string">"You are in: $(pwd)"</span></code></pre>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Save as greeting.sh, make executable, then run</span>
+$ chmod +x greeting.sh
+$ ./greeting.sh
+Hello, sean!
+Today is Sunday
+You are in: /home/sean</code></pre>
+
+  <h3>Variables</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Assign variables (NO spaces around =)</span>
+name=<span class="string">"Sean"</span>
+age=<span class="number">25</span>
+directory=<span class="string">"/home/sean"</span>
+
+<span class="comment"># Use variables with $ prefix</span>
+echo <span class="string">"Name: $name"</span>
+echo <span class="string">"Age: $age"</span>
+
+<span class="comment"># Curly braces for clarity (needed when variable is next to other text)</span>
+echo <span class="string">"${name}'s files are in ${directory}"</span>
+
+<span class="comment"># Command substitution: capture command output in a variable</span>
+current_date=$(<span class="function">date</span> +%Y-%m-%d)
+file_count=$(<span class="function">ls</span> | <span class="function">wc</span> -l)
+echo <span class="string">"Date: $current_date, Files in current dir: $file_count"</span>
+
+<span class="comment"># Read user input</span>
+read -p <span class="string">"Enter your name: "</span> user_name
+echo <span class="string">"Hello, $user_name!"</span></code></pre>
+
+  <div class="warning-box">
+    <div class="label">No Spaces Around =</div>
+    <p><code>name="Sean"</code> works. <code>name = "Sean"</code> does NOT -- bash thinks <code>name</code> is a command. This catches everyone at first.</p>
+  </div>
+
+  <h3>Conditionals (if/else)</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Check if a file exists</span>
+<span class="keyword">if</span> [ -f <span class="string">"$HOME/.bashrc"</span> ]; <span class="keyword">then</span>
+    echo <span class="string">".bashrc exists"</span>
+<span class="keyword">else</span>
+    echo <span class="string">".bashrc not found"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Check if a directory exists</span>
+<span class="keyword">if</span> [ -d <span class="string">"/tmp"</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"/tmp is a directory"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># String comparison</span>
+name=<span class="string">"sean"</span>
+<span class="keyword">if</span> [ <span class="string">"$name"</span> = <span class="string">"sean"</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"Hello Sean!"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Number comparison</span>
+count=<span class="number">5</span>
+<span class="keyword">if</span> [ <span class="string">"$count"</span> -gt <span class="number">3</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"Count is greater than 3"</span>
+<span class="keyword">elif</span> [ <span class="string">"$count"</span> -eq <span class="number">3</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"Count is exactly 3"</span>
+<span class="keyword">else</span>
+    echo <span class="string">"Count is less than 3"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Check if a command exists</span>
+<span class="keyword">if</span> command -v git &amp;>/dev/null; <span class="keyword">then</span>
+    echo <span class="string">"git is installed: $(git --version)"</span>
+<span class="keyword">else</span>
+    echo <span class="string">"git is not installed"</span>
+<span class="keyword">fi</span></code></pre>
+
+  <h4>Test Operators Reference</h4>
+
+  <table>
+    <tr><th>Operator</th><th>Meaning</th></tr>
+    <tr><td><code>-f file</code></td><td>File exists and is a regular file</td></tr>
+    <tr><td><code>-d dir</code></td><td>Directory exists</td></tr>
+    <tr><td><code>-e path</code></td><td>Path exists (file or directory)</td></tr>
+    <tr><td><code>-r file</code></td><td>File is readable</td></tr>
+    <tr><td><code>-w file</code></td><td>File is writable</td></tr>
+    <tr><td><code>-x file</code></td><td>File is executable</td></tr>
+    <tr><td><code>-z "$var"</code></td><td>String is empty</td></tr>
+    <tr><td><code>-n "$var"</code></td><td>String is not empty</td></tr>
+    <tr><td><code>"$a" = "$b"</code></td><td>Strings are equal</td></tr>
+    <tr><td><code>"$a" != "$b"</code></td><td>Strings are not equal</td></tr>
+    <tr><td><code>$a -eq $b</code></td><td>Numbers are equal</td></tr>
+    <tr><td><code>$a -ne $b</code></td><td>Numbers are not equal</td></tr>
+    <tr><td><code>$a -gt $b</code></td><td>a greater than b</td></tr>
+    <tr><td><code>$a -lt $b</code></td><td>a less than b</td></tr>
+    <tr><td><code>$a -ge $b</code></td><td>a greater than or equal to b</td></tr>
+    <tr><td><code>$a -le $b</code></td><td>a less than or equal to b</td></tr>
+  </table>
+
+  <h3>Loops</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># For loop (iterate over a list)</span>
+<span class="keyword">for</span> fruit <span class="keyword">in</span> apple banana cherry; <span class="keyword">do</span>
+    echo <span class="string">"I like $fruit"</span>
+<span class="keyword">done</span>
+
+<span class="comment"># For loop (iterate over files)</span>
+<span class="keyword">for</span> file <span class="keyword">in</span> *.txt; <span class="keyword">do</span>
+    echo <span class="string">"Processing: $file"</span>
+    wc -l <span class="string">"$file"</span>
+<span class="keyword">done</span>
+
+<span class="comment"># For loop (C-style, count from 1 to 5)</span>
+<span class="keyword">for</span> (( i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++ )); <span class="keyword">do</span>
+    echo <span class="string">"Count: $i"</span>
+<span class="keyword">done</span>
+
+<span class="comment"># While loop</span>
+count=<span class="number">0</span>
+<span class="keyword">while</span> [ <span class="string">"$count"</span> -lt <span class="number">5</span> ]; <span class="keyword">do</span>
+    echo <span class="string">"Count is $count"</span>
+    count=$(( count + <span class="number">1</span> ))
+<span class="keyword">done</span>
+
+<span class="comment"># Read a file line by line</span>
+<span class="keyword">while</span> IFS= read -r line; <span class="keyword">do</span>
+    echo <span class="string">"Line: $line"</span>
+<span class="keyword">done</span> &lt; input.txt</code></pre>
+
+  <h3>Functions</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Define a function</span>
+<span class="function">greet</span>() {
+    <span class="keyword">local</span> name=<span class="string">"$1"</span>    <span class="comment"># $1 is the first argument</span>
+    echo <span class="string">"Hello, $name!"</span>
+}
+
+<span class="comment"># Call it</span>
+greet <span class="string">"Sean"</span>
+greet <span class="string">"World"</span>
+
+<span class="comment"># Function with return value (actually exit code, 0-255)</span>
+<span class="function">is_even</span>() {
+    <span class="keyword">if</span> (( $<span class="number">1</span> % <span class="number">2</span> == <span class="number">0</span> )); <span class="keyword">then</span>
+        <span class="keyword">return</span> <span class="number">0</span>   <span class="comment"># success (true)</span>
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> <span class="number">1</span>   <span class="comment"># failure (false)</span>
+    <span class="keyword">fi</span>
+}
+
+<span class="keyword">if</span> is_even <span class="number">4</span>; <span class="keyword">then</span>
+    echo <span class="string">"4 is even"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Function that outputs a value (capture with $())</span>
+<span class="function">get_extension</span>() {
+    echo <span class="string">"${1##*.}"</span>    <span class="comment"># parameter expansion: get text after last .</span>
+}
+
+ext=$(get_extension <span class="string">"photo.jpg"</span>)
+echo <span class="string">"Extension: $ext"</span>   <span class="comment"># jpg</span></code></pre>
+
+  <h3>Script Arguments</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+<span class="comment"># Save as args.sh</span>
+
+echo <span class="string">"Script name: $0"</span>
+echo <span class="string">"First arg:   $1"</span>
+echo <span class="string">"Second arg:  $2"</span>
+echo <span class="string">"All args:    $@"</span>
+echo <span class="string">"Num of args: $#"</span>
+echo <span class="string">"Exit code of last command: $?"</span>
+
+<span class="comment"># Usage: ./args.sh hello world</span>
+<span class="comment"># Script name: ./args.sh</span>
+<span class="comment"># First arg:   hello</span>
+<span class="comment"># Second arg:  world</span>
+<span class="comment"># All args:    hello world</span>
+<span class="comment"># Num of args: 2</span></code></pre>
+
+  <div class="example-box">
+    <div class="label">Practical Script: Backup Your Projects</div>
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment">#!/bin/bash</span>
+<span class="comment"># backup.sh -- backup a directory to a timestamped tar.gz</span>
+
+<span class="keyword">if</span> [ -z <span class="string">"$1"</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"Usage: $0 &lt;directory&gt;"</span>
+    exit <span class="number">1</span>
+<span class="keyword">fi</span>
+
+<span class="keyword">if</span> [ ! -d <span class="string">"$1"</span> ]; <span class="keyword">then</span>
+    echo <span class="string">"Error: '$1' is not a directory"</span>
+    exit <span class="number">1</span>
+<span class="keyword">fi</span>
+
+timestamp=$(date +%Y%m%d_%H%M%S)
+dirname=$(basename <span class="string">"$1"</span>)
+backup_file=<span class="string">"${dirname}_backup_${timestamp}.tar.gz"</span>
+
+tar -czf <span class="string">"$backup_file"</span> <span class="string">"$1"</span>
+echo <span class="string">"Backup created: $backup_file ($(du -h "$backup_file" | cut -f1))"</span></code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 11: .BASHRC & SHELL CONFIGURATION                    -->
+<!-- ============================================================ -->
+<section id="bashrc">
+  <h2>11. .bashrc &amp; Shell Configuration</h2>
+
+  <p>When you open a terminal, bash reads configuration files to set up your environment. The most important one is <code>~/.bashrc</code> -- this is where you customise your shell experience.</p>
+
+  <h3>Which Files Are Read and When</h3>
+
+  <table>
+    <tr><th>File</th><th>When It's Read</th><th>What It's For</th></tr>
+    <tr><td><code>~/.bashrc</code></td><td>Every new interactive non-login shell (opening a terminal)</td><td>Aliases, functions, prompt, shell options. <strong>This is the main one.</strong></td></tr>
+    <tr><td><code>~/.bash_profile</code></td><td>Login shells only (SSH, tty login, first terminal on some systems)</td><td>Environment variables (PATH, etc.). Usually sources .bashrc.</td></tr>
+    <tr><td><code>~/.profile</code></td><td>Login shells (if no .bash_profile exists)</td><td>Same as .bash_profile. Used by Pop!_OS by default.</td></tr>
+    <tr><td><code>/etc/bash.bashrc</code></td><td>Every interactive bash shell</td><td>System-wide defaults. Don't edit this -- use your ~/.bashrc.</td></tr>
+    <tr><td><code>/etc/profile</code></td><td>All login shells</td><td>System-wide login setup.</td></tr>
+  </table>
+
+  <div class="memory-diagram">
+When you open a terminal on Pop!_OS:
+
+1. /etc/profile           (system-wide login setup)
+2. ~/.profile             (your login setup -- sets PATH etc.)
+   └── sources ~/.bashrc  (your interactive shell setup)
+3. ~/.bashrc              (aliases, prompt, functions)
+
+When you SSH into a machine:
+  Same order, but it's a "login shell" so .bash_profile/.profile
+  are guaranteed to run.</div>
+
+  <h3>What to Put in .bashrc</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment"># === ALIASES ===</span>
+<span class="comment"># Shortcuts for commands you type frequently</span>
+
+alias ll=<span class="string">'ls -alF'</span>
+alias la=<span class="string">'ls -A'</span>
+alias l=<span class="string">'ls -CF'</span>
+
+<span class="comment"># Safety aliases (ask before overwriting)</span>
+alias cp=<span class="string">'cp -i'</span>
+alias mv=<span class="string">'mv -i'</span>
+alias rm=<span class="string">'rm -i'</span>
+
+<span class="comment"># Git shortcuts</span>
+alias gs=<span class="string">'git status'</span>
+alias ga=<span class="string">'git add'</span>
+alias gc=<span class="string">'git commit'</span>
+alias gp=<span class="string">'git push'</span>
+alias gl=<span class="string">'git log --oneline --graph -10'</span>
+alias gd=<span class="string">'git diff'</span>
+
+<span class="comment"># Navigation shortcuts</span>
+alias ..=<span class="string">'cd ..'</span>
+alias ...=<span class="string">'cd ../..'</span>
+alias dev=<span class="string">'cd ~/Documents/dev'</span>
+
+<span class="comment"># System shortcuts</span>
+alias update=<span class="string">'sudo apt update &amp;&amp; sudo apt upgrade'</span>
+alias ports=<span class="string">'ss -tulnp'</span>
+alias myip=<span class="string">'curl -s ifconfig.me'</span>
+
+<span class="comment"># === FUNCTIONS ===</span>
+<span class="comment"># More powerful than aliases</span>
+
+<span class="comment"># Create a directory and cd into it</span>
+<span class="function">mkcd</span>() {
+    mkdir -p <span class="string">"$1"</span> &amp;&amp; cd <span class="string">"$1"</span>
+}
+
+<span class="comment"># Extract any archive</span>
+<span class="function">extract</span>() {
+    <span class="keyword">case</span> <span class="string">"$1"</span> <span class="keyword">in</span>
+        *.tar.gz|*.tgz)  tar -xzf <span class="string">"$1"</span> ;;
+        *.tar.bz2)       tar -xjf <span class="string">"$1"</span> ;;
+        *.tar.xz)        tar -xJf <span class="string">"$1"</span> ;;
+        *.zip)           unzip <span class="string">"$1"</span> ;;
+        *.gz)            gunzip <span class="string">"$1"</span> ;;
+        *.7z)            7z x <span class="string">"$1"</span> ;;
+        *)               echo <span class="string">"Unknown format: $1"</span> ;;
+    <span class="keyword">esac</span>
+}
+
+<span class="comment"># === SHELL OPTIONS ===</span>
+shopt -s histappend        <span class="comment"># append to history, don't overwrite</span>
+shopt -s cdspell           <span class="comment"># autocorrect small typos in cd</span>
+shopt -s autocd            <span class="comment"># type a directory name to cd into it</span>
+
+<span class="comment"># === HISTORY ===</span>
+HISTSIZE=<span class="number">10000</span>             <span class="comment"># remember 10000 commands</span>
+HISTFILESIZE=<span class="number">20000</span>         <span class="comment"># store 20000 in history file</span>
+HISTCONTROL=ignoredups:erasedups  <span class="comment"># no duplicate entries</span>
+
+<span class="comment"># === CUSTOM PROMPT ===</span>
+<span class="comment"># Green user, blue directory, $ sign</span>
+PS1=<span class="string">'\[\033[1;32m\]\u\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ '</span></code></pre>
+
+  <h3>Applying Changes</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># After editing .bashrc, apply changes without restarting terminal</span>
+$ source ~/.bashrc
+<span class="comment"># or</span>
+$ . ~/.bashrc
+
+<span class="comment"># Open .bashrc to edit</span>
+$ nano ~/.bashrc
+<span class="comment"># or</span>
+$ code ~/.bashrc    <span class="comment"># if you have VS Code</span></code></pre>
+
+  <div class="tip-box">
+    <div class="label">Start Simple</div>
+    <p>Don't copy a huge .bashrc from the internet. Start with a few aliases you'll actually use. Add more as you find yourself typing the same things repeatedly. Your .bashrc should be <em>yours</em> -- customised to your workflow.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 12: ESSENTIAL COMMANDS CHEAT SHEET                   -->
+<!-- ============================================================ -->
+<section id="essential-commands">
+  <h2>12. Essential Commands Cheat Sheet</h2>
+
+  <p>These are the commands you'll use daily. Master them and you'll never feel lost in a terminal again.</p>
+
+  <h3>Navigation &amp; Files</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Where am I?</span>
+$ pwd                        <span class="comment"># print working directory</span>
+
+<span class="comment"># Move around</span>
+$ cd /path/to/dir            <span class="comment"># go to directory</span>
+$ cd ~                       <span class="comment"># go home (or just: cd)</span>
+$ cd ..                      <span class="comment"># go up one level</span>
+$ cd -                       <span class="comment"># go to previous directory</span>
+
+<span class="comment"># List files</span>
+$ ls                         <span class="comment"># basic listing</span>
+$ ls -la                     <span class="comment"># detailed + hidden files</span>
+$ ls -lh                     <span class="comment"># human-readable file sizes</span>
+$ ls -lt                     <span class="comment"># sorted by modification time</span>
+
+<span class="comment"># Create</span>
+$ touch file.txt             <span class="comment"># create empty file (or update timestamp)</span>
+$ mkdir mydir                <span class="comment"># create directory</span>
+$ mkdir -p a/b/c             <span class="comment"># create nested directories</span>
+
+<span class="comment"># Copy</span>
+$ cp source.txt dest.txt     <span class="comment"># copy file</span>
+$ cp -r source_dir/ dest/    <span class="comment"># copy directory recursively</span>
+
+<span class="comment"># Move / Rename</span>
+$ mv old.txt new.txt         <span class="comment"># rename</span>
+$ mv file.txt ~/Documents/   <span class="comment"># move</span>
+
+<span class="comment"># Delete</span>
+$ rm file.txt                <span class="comment"># delete file</span>
+$ rm -r directory/           <span class="comment"># delete directory and contents</span>
+$ rm -i file.txt             <span class="comment"># ask for confirmation first</span></code></pre>
+
+  <h3>Reading &amp; Searching Files</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Read entire file</span>
+$ cat file.txt               <span class="comment"># print to screen</span>
+$ less file.txt              <span class="comment"># scrollable viewer (q to quit)</span>
+
+<span class="comment"># Read parts of a file</span>
+$ head -20 file.txt          <span class="comment"># first 20 lines</span>
+$ tail -20 file.txt          <span class="comment"># last 20 lines</span>
+$ tail -f logfile.txt        <span class="comment"># follow (live updates -- great for logs)</span>
+
+<span class="comment"># Search inside files</span>
+$ grep "pattern" file.txt    <span class="comment"># find lines matching pattern</span>
+$ grep -r "TODO" .           <span class="comment"># search recursively in all files</span>
+$ grep -i "error" log.txt    <span class="comment"># case-insensitive search</span>
+$ grep -n "function" *.js    <span class="comment"># show line numbers</span>
+$ grep -c "error" log.txt    <span class="comment"># count matches</span>
+
+<span class="comment"># Find files by name</span>
+$ find . -name "*.py"        <span class="comment"># find all .py files</span>
+$ find / -name "nginx.conf"  <span class="comment"># find a config file</span>
+$ find . -type d -name node_modules  <span class="comment"># find directories</span>
+$ find . -size +100M         <span class="comment"># files larger than 100MB</span>
+
+<span class="comment"># Count lines/words/characters</span>
+$ wc -l file.txt             <span class="comment"># count lines</span>
+$ wc -w file.txt             <span class="comment"># count words</span></code></pre>
+
+  <h3>Disk &amp; System Info</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Disk usage</span>
+$ df -h                      <span class="comment"># filesystem usage</span>
+$ du -sh ~/Documents         <span class="comment"># directory size</span>
+$ du -sh */ | sort -hr       <span class="comment"># biggest directories first</span>
+
+<span class="comment"># System info</span>
+$ uname -a                   <span class="comment"># kernel and system info</span>
+$ lsb_release -a             <span class="comment"># distro info</span>
+$ free -h                    <span class="comment"># memory usage</span>
+$ uptime                     <span class="comment"># how long the system has been running</span>
+$ nproc                      <span class="comment"># number of CPU cores</span>
+
+<span class="comment"># Who and what</span>
+$ whoami                     <span class="comment"># current user</span>
+$ hostname                   <span class="comment"># machine name</span>
+$ which python3              <span class="comment"># full path of a command</span>
+$ type ls                    <span class="comment"># is it an alias, function, or binary?</span></code></pre>
+
+  <h3>Text Processing</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Sort lines</span>
+$ sort file.txt              <span class="comment"># alphabetical sort</span>
+$ sort -n file.txt           <span class="comment"># numeric sort</span>
+$ sort -r file.txt           <span class="comment"># reverse sort</span>
+
+<span class="comment"># Remove duplicates (input must be sorted)</span>
+$ sort file.txt | uniq       <span class="comment"># unique lines</span>
+$ sort file.txt | uniq -c    <span class="comment"># count occurrences</span>
+
+<span class="comment"># Cut columns from data</span>
+$ cut -d',' -f1,3 data.csv   <span class="comment"># extract columns 1 and 3 from CSV</span>
+$ cut -d':' -f1 /etc/passwd  <span class="comment"># list all usernames</span>
+
+<span class="comment"># Stream editor (search and replace)</span>
+$ sed 's/old/new/g' file.txt         <span class="comment"># replace all occurrences</span>
+$ sed -i 's/old/new/g' file.txt      <span class="comment"># edit file in-place</span>
+
+<span class="comment"># Awk (powerful text processing)</span>
+$ awk '{print $1}' file.txt          <span class="comment"># print first column</span>
+$ awk -F',' '{print $2}' data.csv    <span class="comment"># print second column of CSV</span></code></pre>
+
+  <h3>Networking</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Download files</span>
+$ wget https://example.com/file.tar.gz
+$ curl -O https://example.com/file.tar.gz
+
+<span class="comment"># Make HTTP requests</span>
+$ curl https://api.example.com/data
+$ curl -X POST -d '{"key":"value"}' https://api.example.com
+
+<span class="comment"># Network info</span>
+$ ip addr                    <span class="comment"># show IP addresses</span>
+$ ping google.com            <span class="comment"># test connectivity</span>
+$ ss -tulnp                  <span class="comment"># show open ports</span>
+$ dig example.com            <span class="comment"># DNS lookup</span></code></pre>
+
+  <div class="tip-box">
+    <div class="label">Use man Pages</div>
+    <p>Every command has a manual page. Type <code>man ls</code> to read the full documentation for <code>ls</code>. Press <code>q</code> to quit. Use <code>/pattern</code> to search within the man page. If man pages are too dense, try <code>tldr ls</code> (install with <code>sudo apt install tldr</code>) for simplified examples.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 13: ENVIRONMENT VARIABLES & PATH                     -->
+<!-- ============================================================ -->
+<section id="environment">
+  <h2>13. Environment Variables &amp; PATH</h2>
+
+  <p><strong>Environment variables</strong> are key-value pairs that every process inherits from its parent. They configure how programs behave without editing config files.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># See all environment variables</span>
+$ env
+
+<span class="comment"># See a specific one</span>
+$ echo $HOME          <span class="comment"># /home/sean</span>
+$ echo $USER          <span class="comment"># sean</span>
+$ echo $SHELL         <span class="comment"># /bin/bash</span>
+$ echo $TERM          <span class="comment"># xterm-256color</span>
+$ echo $EDITOR        <span class="comment"># (your default text editor)</span>
+$ echo $LANG          <span class="comment"># en_US.UTF-8</span>
+
+<span class="comment"># Set a variable (current session only)</span>
+$ export MY_VAR=<span class="string">"hello"</span>
+$ echo $MY_VAR        <span class="comment"># hello</span>
+
+<span class="comment"># Set permanently (add to ~/.bashrc)</span>
+export EDITOR=<span class="string">"nano"</span>
+export MY_API_KEY=<span class="string">"abc123"</span></code></pre>
+
+  <h3>PATH -- The Most Important Variable</h3>
+
+  <p><code>PATH</code> is a colon-separated list of directories where the shell looks for executables. When you type <code>git</code>, the shell searches each directory in PATH left-to-right until it finds a <code>git</code> binary.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># See your PATH</span>
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin
+
+<span class="comment"># See it one directory per line</span>
+$ echo $PATH | tr ':' '\n'
+/usr/local/bin
+/usr/bin
+/bin
+/usr/local/sbin
+/usr/sbin
+
+<span class="comment"># Where is a command located?</span>
+$ which python3        <span class="comment"># /usr/bin/python3</span>
+$ which git            <span class="comment"># /usr/bin/git</span>
+
+<span class="comment"># Add a directory to PATH (in ~/.bashrc)</span>
+export PATH=<span class="string">"$HOME/.local/bin:$PATH"</span>
+
+<span class="comment"># This prepends your local bin directory, so programs</span>
+<span class="comment"># installed there are found before system ones</span></code></pre>
+
+  <div class="memory-diagram">
+You type: git status
+
+Shell searches PATH directories in order:
+  /usr/local/bin/git  → not found
+  /usr/bin/git        → FOUND! Execute this one.
+
+If git isn't in any PATH directory:
+  bash: git: command not found</div>
+
+  <h3>Common PATH Additions</h3>
+
+<pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Add these to ~/.bashrc if you need them</span>
+
+<span class="comment"># Your personal scripts</span>
+export PATH=<span class="string">"$HOME/.local/bin:$PATH"</span>
+
+<span class="comment"># Node.js (nvm)</span>
+export NVM_DIR=<span class="string">"$HOME/.nvm"</span>
+[ -s <span class="string">"$NVM_DIR/nvm.sh"</span> ] &amp;&amp; . <span class="string">"$NVM_DIR/nvm.sh"</span>
+
+<span class="comment"># Go</span>
+export PATH=<span class="string">"$PATH:/usr/local/go/bin"</span>
+export PATH=<span class="string">"$PATH:$HOME/go/bin"</span>
+
+<span class="comment"># Rust (cargo)</span>
+export PATH=<span class="string">"$HOME/.cargo/bin:$PATH"</span>
+
+<span class="comment"># Python (pip --user installs)</span>
+export PATH=<span class="string">"$HOME/.local/bin:$PATH"</span></code></pre>
+
+  <div class="warning-box">
+    <div class="label">command not found?</div>
+    <p>If you install something and get "command not found", it means the binary isn't in your PATH. Find where it was installed (<code>find / -name "binary_name" 2>/dev/null</code>) and add that directory to your PATH in ~/.bashrc.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 14: PROCESSES & SERVICES                             -->
+<!-- ============================================================ -->
+<section id="processes-services">
+  <h2>14. Processes &amp; Services</h2>
+
+  <p>Every running program is a <strong>process</strong>. The <a href="os.html#processes" class="resource-link">OS page covers processes in depth</a> -- here we focus on practical commands for managing them on your Pop!_OS system.</p>
+
+  <h3>Viewing Processes</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># See all running processes</span>
+$ ps aux                     <span class="comment"># classic Unix format</span>
+$ ps aux | grep firefox      <span class="comment"># find a specific process</span>
+
+<span class="comment"># Interactive process viewer (much better than ps)</span>
+$ htop                       <span class="comment"># install: sudo apt install htop</span>
+
+<span class="comment"># Process tree (shows parent-child relationships)</span>
+$ pstree -p
+
+<span class="comment"># What's using the most CPU?</span>
+$ ps aux --sort=-%cpu | head -10
+
+<span class="comment"># What's using the most memory?</span>
+$ ps aux --sort=-%mem | head -10</code></pre>
+
+  <h3>Managing Processes</h3>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Run a command in the background</span>
+$ ./long_task &amp;              <span class="comment"># & puts it in the background</span>
+$ jobs                       <span class="comment"># list background jobs</span>
+$ fg %1                      <span class="comment"># bring job 1 to foreground</span>
+
+<span class="comment"># Ctrl+Z to suspend a running process, then:</span>
+$ bg                         <span class="comment"># resume it in the background</span>
+
+<span class="comment"># Kill processes</span>
+$ kill 1234                  <span class="comment"># send SIGTERM (polite: "please stop")</span>
+$ kill -9 1234               <span class="comment"># send SIGKILL (force kill -- can't be ignored)</span>
+$ killall firefox            <span class="comment"># kill all processes named firefox</span>
+$ pkill -f "python server"   <span class="comment"># kill processes matching a pattern</span></code></pre>
+
+  <h3>systemd -- Managing Services</h3>
+
+  <p>Pop!_OS uses <strong>systemd</strong> to manage services (background programs that start automatically). Web servers, databases, SSH, bluetooth -- all managed by systemd.</p>
+
+<pre><code><span class="lang-label">Shell</span>
+<span class="comment"># Check status of a service</span>
+$ systemctl status nginx
+$ systemctl status ssh
+$ systemctl status bluetooth
+
+<span class="comment"># Start / stop / restart a service</span>
+$ sudo systemctl start nginx
+$ sudo systemctl stop nginx
+$ sudo systemctl restart nginx
+
+<span class="comment"># Enable (start on boot) / disable</span>
+$ sudo systemctl enable nginx      <span class="comment"># start automatically on boot</span>
+$ sudo systemctl disable nginx     <span class="comment"># don't start on boot</span>
+
+<span class="comment"># List all running services</span>
+$ systemctl list-units --type=service --state=running
+
+<span class="comment"># See service logs (journalctl)</span>
+$ journalctl -u nginx              <span class="comment"># logs for nginx</span>
+$ journalctl -u nginx --since today
+$ journalctl -f                    <span class="comment"># follow all logs in real-time</span></code></pre>
+
+  <div class="tip-box">
+    <div class="label">systemctl vs service</div>
+    <p>You might see older tutorials use <code>sudo service nginx restart</code>. That still works (it's a compatibility wrapper), but <code>systemctl</code> is the modern way and gives you more control.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 15: QUIZ                                             -->
+<!-- ============================================================ -->
+<section id="quiz">
+  <h2>15. Practice Quiz</h2>
+
+  <div class="quiz">
+    <div class="quiz-q" data-answer="2">
+      <h4>Q1: What is the Linux kernel?</h4>
+      <button onclick="checkAnswer(this, 0)">A complete operating system including GUI and applications</button>
+      <button onclick="checkAnswer(this, 1)">A shell that interprets your commands</button>
+      <button onclick="checkAnswer(this, 2)">The core software that manages hardware and lets programs run</button>
+      <button onclick="checkAnswer(this, 3)">A package manager for installing software</button>
+      <div class="explanation">The kernel is the core piece of software that runs in privileged mode and manages hardware (CPU, RAM, devices), processes, memory, and file systems. It's just one component of a full operating system -- you need a shell, utilities, and applications on top of it.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <h4>Q2: What is the main difference between Unix and Linux?</h4>
+      <button onclick="checkAnswer(this, 0)">Unix is for servers, Linux is for desktops</button>
+      <button onclick="checkAnswer(this, 1)">Unix is proprietary; Linux is free and open source</button>
+      <button onclick="checkAnswer(this, 2)">Linux is older than Unix</button>
+      <button onclick="checkAnswer(this, 3)">Unix uses bash, Linux uses sh</button>
+      <div class="explanation">Unix (1969) is proprietary and commercial. Linux (1991) is a free, open-source reimplementation of Unix ideas. Linux doesn't share code with Unix -- Linus Torvalds wrote it from scratch. Both follow similar conventions (POSIX), which is why commands work on both.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <h4>Q3: Which package manager does Pop!_OS use?</h4>
+      <button onclick="checkAnswer(this, 0)">apt (Advanced Package Tool)</button>
+      <button onclick="checkAnswer(this, 1)">pacman</button>
+      <button onclick="checkAnswer(this, 2)">dnf</button>
+      <button onclick="checkAnswer(this, 3)">zypper</button>
+      <div class="explanation">Pop!_OS is based on Ubuntu, which is based on Debian. The entire Debian family uses apt/dpkg for package management with .deb packages. pacman is for Arch, dnf is for Fedora/RHEL, and zypper is for openSUSE.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <h4>Q4: What is the difference between a terminal and a shell?</h4>
+      <button onclick="checkAnswer(this, 0)">They are the same thing</button>
+      <button onclick="checkAnswer(this, 1)">A terminal runs programs; a shell displays text</button>
+      <button onclick="checkAnswer(this, 2)">A shell is hardware; a terminal is software</button>
+      <button onclick="checkAnswer(this, 3)">A terminal is the GUI window; a shell is the command interpreter running inside it</button>
+      <div class="explanation">The terminal emulator (GNOME Terminal, Alacritty, etc.) is the GUI window that displays text and accepts keyboard input. The shell (bash, zsh, fish) is the program running inside the terminal that interprets your commands and talks to the kernel.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <h4>Q5: What does the PATH environment variable do?</h4>
+      <button onclick="checkAnswer(this, 0)">Stores the current working directory</button>
+      <button onclick="checkAnswer(this, 1)">Lists directories where the shell searches for executable commands</button>
+      <button onclick="checkAnswer(this, 2)">Defines the route network packets take</button>
+      <button onclick="checkAnswer(this, 3)">Points to the home directory</button>
+      <div class="explanation">PATH is a colon-separated list of directories. When you type a command like "git", the shell searches each directory in PATH from left to right until it finds a matching executable. If it's not in any PATH directory, you get "command not found".</div>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <h4>Q6: Where do user home directories live on Linux?</h4>
+      <button onclick="checkAnswer(this, 0)">/root</button>
+      <button onclick="checkAnswer(this, 1)">/usr/home</button>
+      <button onclick="checkAnswer(this, 2)">/home</button>
+      <button onclick="checkAnswer(this, 3)">/users</button>
+      <div class="explanation">/home contains all regular user home directories (e.g., /home/sean). The root user is special -- its home directory is /root (not /home/root). /usr is for system programs, not user data.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <h4>Q7: What does "chmod 755 script.sh" do?</h4>
+      <button onclick="checkAnswer(this, 0)">Owner: read+write+execute, Group/Others: read+execute</button>
+      <button onclick="checkAnswer(this, 1)">Everyone gets full access</button>
+      <button onclick="checkAnswer(this, 2)">Only the owner can access the file</button>
+      <button onclick="checkAnswer(this, 3)">Deletes the file's permissions</button>
+      <div class="explanation">In octal notation: 7=rwx (4+2+1), 5=r-x (4+0+1). So 755 means the owner gets read+write+execute, while group and others get read+execute. This is the standard permission for scripts and programs that everyone should be able to run.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <h4>Q8: What happens when you type "sudo apt update"?</h4>
+      <button onclick="checkAnswer(this, 0)">Installs all available updates</button>
+      <button onclick="checkAnswer(this, 1)">Updates the Linux kernel</button>
+      <button onclick="checkAnswer(this, 2)">Removes old packages</button>
+      <button onclick="checkAnswer(this, 3)">Downloads the latest package lists from repositories (doesn't install anything)</button>
+      <div class="explanation">"apt update" only refreshes the local list of available packages from the remote repositories. It does NOT install or upgrade anything. You need "apt upgrade" to actually install the updates. Always run "apt update" before "apt upgrade" to make sure you're getting the latest versions.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <h4>Q9: What is the shebang line (#!/bin/bash) at the top of a script?</h4>
+      <button onclick="checkAnswer(this, 0)">A comment that's ignored</button>
+      <button onclick="checkAnswer(this, 1)">Tells the OS which interpreter to use to run this script</button>
+      <button onclick="checkAnswer(this, 2)">Sets the file permissions to executable</button>
+      <button onclick="checkAnswer(this, 3)">Imports the bash library</button>
+      <div class="explanation">The shebang (#!) on the first line tells the operating system which program to use as the interpreter. #!/bin/bash means "run this file using bash". #!/usr/bin/python3 would mean "run this using Python 3". Without it, the OS doesn't know how to execute the script.</div>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <h4>Q10: What does /dev/null do?</h4>
+      <button onclick="checkAnswer(this, 0)">Stores temporary files</button>
+      <button onclick="checkAnswer(this, 1)">Points to the null device driver</button>
+      <button onclick="checkAnswer(this, 2)">Discards anything written to it (a data black hole)</button>
+      <button onclick="checkAnswer(this, 3)">Generates null bytes</button>
+      <div class="explanation">/dev/null is a special device file that discards everything written to it and returns nothing when read. It's used to silence output: "command > /dev/null 2>&amp;1" runs a command but throws away all output and errors. /dev/zero is the one that generates null bytes.</div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+  </footer>
+
+  <script>
+  function checkAnswer(btn, idx) {
+    const q = btn.parentElement;
+    if (q.classList.contains('answered')) return;
+    q.classList.add('answered');
+    const correct = parseInt(q.dataset.answer);
+    const buttons = q.querySelectorAll('button');
+    if (idx === correct) {
+      btn.classList.add('correct');
+    } else {
+      btn.classList.add('wrong');
+      buttons[correct].classList.add('correct');
+    }
+    q.querySelector('.explanation').style.display = 'block';
+  }
+  </script>
+
+</body>
+</html>
