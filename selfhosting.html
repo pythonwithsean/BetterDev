@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VPS Setup &amp; Self-Hosting - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+    <a href="selfhosting.html" class="active">Self-Hosting</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / VPS Setup &amp; Self-Hosting</div>
+    <h1>VPS Setup &amp; Self-Hosting</h1>
+    <p>Learn how to set up a VPS from scratch, secure it, deploy your apps, and self-host services using tools like Coolify, Caddy, and Docker. Stop paying $20/month for Vercel Pro when a $5 VPS can do it all.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#why-selfhost">1. Why Self-Host?</a>
+    <a href="#choosing-vps">2. Choosing a VPS Provider</a>
+    <a href="#initial-setup">3. Initial Server Setup</a>
+    <a href="#ssh">4. SSH Keys &amp; Secure Access</a>
+    <a href="#firewall">5. Firewall &amp; Security Hardening</a>
+    <a href="#domains-dns">6. Domains &amp; DNS</a>
+    <a href="#reverse-proxy">7. Reverse Proxy (Caddy &amp; Nginx)</a>
+    <a href="#ssl">8. SSL/TLS with Let's Encrypt</a>
+    <a href="#docker-on-vps">9. Docker on Your VPS</a>
+    <a href="#coolify">10. Coolify -- Your Own PaaS</a>
+    <a href="#other-tools">11. Other Self-Hosting Tools</a>
+    <a href="#monitoring">12. Monitoring &amp; Logs</a>
+    <a href="#backups">13. Backups</a>
+    <a href="#example-deploy">14. Full Example: Deploy a Next.js App</a>
+    <a href="#cheatsheet">15. Command Cheat Sheet</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: WHY SELF-HOST                                     -->
+  <!-- ============================================================ -->
+  <section id="why-selfhost">
+    <h2>1. Why Self-Host?</h2>
+
+    <p>Every time you deploy to Vercel, Netlify, or Railway, you're using <strong>someone else's server</strong>. Self-hosting means running your own server and controlling the entire stack. Here's why that matters:</p>
+
+    <table>
+      <tr>
+        <th>Managed Platforms</th>
+        <th>Self-Hosting</th>
+      </tr>
+      <tr>
+        <td>Easy to start, expensive to scale</td>
+        <td>Small learning curve, cheap forever</td>
+      </tr>
+      <tr>
+        <td>Vendor lock-in (proprietary configs)</td>
+        <td>Standard Linux -- works anywhere</td>
+      </tr>
+      <tr>
+        <td>Limited control over infra</td>
+        <td>Full root access, install anything</td>
+      </tr>
+      <tr>
+        <td>Bandwidth/build limits on free tiers</td>
+        <td>No artificial limits</td>
+      </tr>
+      <tr>
+        <td>$20+/month for Pro features</td>
+        <td>$4-6/month for a full VPS</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">When to Self-Host vs Use Managed</div>
+      <p><strong>Self-host</strong> when you want to learn infrastructure, save money at scale, host multiple projects on one server, or need full control. <strong>Use managed platforms</strong> for quick prototypes, when you have zero time for ops, or when your team has no Linux experience and can't afford downtime.</p>
+    </div>
+
+    <p>Self-hosting teaches you Linux, networking, Docker, DNS, security, and deployment -- skills that make you a significantly more capable developer and a stronger hire.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: CHOOSING A VPS                                    -->
+  <!-- ============================================================ -->
+  <section id="choosing-vps">
+    <h2>2. Choosing a VPS Provider</h2>
+
+    <p>A <strong>VPS</strong> (Virtual Private Server) is a virtual machine running on shared hardware. You get root access to your own isolated Linux environment. Here are the best options:</p>
+
+    <table>
+      <tr>
+        <th>Provider</th>
+        <th>Cheapest Plan</th>
+        <th>Strengths</th>
+        <th>Best For</th>
+      </tr>
+      <tr>
+        <td><strong>Hetzner</strong></td>
+        <td>~$4/mo (2 vCPU, 4GB RAM)</td>
+        <td>Best price-to-performance ratio, EU data centers, great ARM options</td>
+        <td>Most self-hosters, best value</td>
+      </tr>
+      <tr>
+        <td><strong>DigitalOcean</strong></td>
+        <td>$6/mo (1 vCPU, 1GB RAM)</td>
+        <td>Excellent docs, simple UI, large community</td>
+        <td>Beginners, good tutorials</td>
+      </tr>
+      <tr>
+        <td><strong>Linode (Akamai)</strong></td>
+        <td>$5/mo (1 vCPU, 1GB RAM)</td>
+        <td>Reliable, good support, competitive pricing</td>
+        <td>General purpose</td>
+      </tr>
+      <tr>
+        <td><strong>Vultr</strong></td>
+        <td>$6/mo (1 vCPU, 1GB RAM)</td>
+        <td>Many locations, bare metal options</td>
+        <td>Global coverage</td>
+      </tr>
+      <tr>
+        <td><strong>Oracle Cloud</strong></td>
+        <td>Free tier (4 ARM cores, 24GB RAM)</td>
+        <td>Insanely generous free tier</td>
+        <td>Learning/experimenting (unreliable availability)</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Recommendation</div>
+      <p><strong>Start with Hetzner.</strong> Their CX22 (2 vCPU, 4GB RAM, 40GB SSD) at ~$4/month is unbeatable. Choose Ubuntu 24.04 LTS as your OS. Pick the closest data center to your users (Falkenstein or Helsinki for EU, Ashburn for US East).</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: INITIAL SERVER SETUP                              -->
+  <!-- ============================================================ -->
+  <section id="initial-setup">
+    <h2>3. Initial Server Setup</h2>
+
+    <p>You just created a VPS. Here's the step-by-step to go from a fresh Ubuntu install to a secure, ready-to-deploy server.</p>
+
+    <h3>Step 1: Log In as Root</h3>
+    <p>Your provider gives you a root password or lets you add an SSH key during creation. Connect for the first time:</p>
+
+    <pre><code># Replace with your server's IP address
+ssh root@YOUR_SERVER_IP</code></pre>
+
+    <h3>Step 2: Update the System</h3>
+    <pre><code>apt update && apt upgrade -y</code></pre>
+
+    <h3>Step 3: Create a Non-Root User</h3>
+    <p>Never run everything as root. Create a regular user with sudo privileges:</p>
+
+    <pre><code># Create user
+adduser deploy
+
+# Add to sudo group
+usermod -aG sudo deploy</code></pre>
+
+    <h3>Step 4: Set the Hostname</h3>
+    <pre><code>hostnamectl set-hostname myserver</code></pre>
+
+    <h3>Step 5: Set the Timezone</h3>
+    <pre><code>timedatectl set-timezone UTC</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Why UTC?</div>
+      <p>Always set servers to UTC. Your logs, cron jobs, and timestamps stay consistent regardless of where you or your users are. Convert to local time in your application layer.</p>
+    </div>
+
+    <h3>Step 6: Install Essential Packages</h3>
+    <pre><code>apt install -y curl wget git unzip htop ufw fail2ban</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: SSH                                               -->
+  <!-- ============================================================ -->
+  <section id="ssh">
+    <h2>4. SSH Keys &amp; Secure Access</h2>
+
+    <p>Passwords are weak. SSH keys are cryptographic key pairs -- a <strong>private key</strong> (stays on your machine) and a <strong>public key</strong> (goes on the server). The server can verify you hold the private key without it ever crossing the network.</p>
+
+    <h3>Generate an SSH Key (On Your Local Machine)</h3>
+    <pre><code># Generate Ed25519 key (recommended over RSA)
+ssh-keygen -t ed25519 -C "your@email.com"
+
+# This creates:
+# ~/.ssh/id_ed25519       (private key -- NEVER share this)
+# ~/.ssh/id_ed25519.pub   (public key -- goes on server)</code></pre>
+
+    <h3>Copy the Public Key to Your Server</h3>
+    <pre><code># Method 1: ssh-copy-id (easiest)
+ssh-copy-id deploy@YOUR_SERVER_IP
+
+# Method 2: Manual
+cat ~/.ssh/id_ed25519.pub | ssh root@YOUR_SERVER_IP "mkdir -p /home/deploy/.ssh && cat >> /home/deploy/.ssh/authorized_keys"</code></pre>
+
+    <h3>Lock Down SSH (On the Server)</h3>
+    <p>Edit the SSH config to disable password login and root login:</p>
+
+    <pre><code>sudo nano /etc/ssh/sshd_config</code></pre>
+
+    <p>Find and change these lines:</p>
+    <pre><code># Disable password authentication
+PasswordAuthentication no
+
+# Disable root login
+PermitRootLogin no
+
+# Optional: change default port (makes automated scanners miss you)
+# Port 2222</code></pre>
+
+    <p>Restart SSH:</p>
+    <pre><code>sudo systemctl restart sshd</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Don't Lock Yourself Out</div>
+      <p>Before disabling password auth, open a <strong>second terminal</strong> and verify you can log in with your SSH key as the <code>deploy</code> user. If you disable passwords and your key doesn't work, you'll be locked out permanently.</p>
+    </div>
+
+    <h3>SSH Config File (On Your Local Machine)</h3>
+    <p>Save connection details so you can type <code>ssh myserver</code> instead of the full command:</p>
+
+    <pre><code># ~/.ssh/config
+Host myserver
+    HostName YOUR_SERVER_IP
+    User deploy
+    IdentityFile ~/.ssh/id_ed25519
+    # Port 2222  (if you changed the port)</code></pre>
+
+    <p>Now just run:</p>
+    <pre><code>ssh myserver</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: FIREWALL & SECURITY                               -->
+  <!-- ============================================================ -->
+  <section id="firewall">
+    <h2>5. Firewall &amp; Security Hardening</h2>
+
+    <h3>UFW (Uncomplicated Firewall)</h3>
+    <p>UFW is a frontend for iptables that makes firewall rules human-readable:</p>
+
+    <pre><code># Allow SSH (do this FIRST or you'll lock yourself out)
+sudo ufw allow OpenSSH
+
+# Allow HTTP and HTTPS
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Enable the firewall
+sudo ufw enable
+
+# Check status
+sudo ufw status verbose</code></pre>
+
+    <div class="example-box">
+      <div class="label">UFW Status Output</div>
+      <pre><code>Status: active
+
+To                         Action      From
+--                         ------      ----
+OpenSSH                    ALLOW       Anywhere
+80/tcp                     ALLOW       Anywhere
+443/tcp                    ALLOW       Anywhere</code></pre>
+    </div>
+
+    <h3>Fail2Ban</h3>
+    <p>Fail2Ban watches log files and bans IPs that show malicious signs (like brute-force SSH attempts):</p>
+
+    <pre><code># It's already installed from our earlier step
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+
+# Check banned IPs
+sudo fail2ban-client status sshd</code></pre>
+
+    <h3>Automatic Security Updates</h3>
+    <pre><code>sudo apt install -y unattended-upgrades
+sudo dpkg-reconfigure -plow unattended-upgrades</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Security Checklist</div>
+      <p>1. SSH key auth only (no passwords). 2. Non-root user with sudo. 3. UFW firewall enabled. 4. Fail2Ban running. 5. Auto security updates. 6. Keep software updated. This covers 95% of threats for a personal VPS.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: DOMAINS & DNS                                     -->
+  <!-- ============================================================ -->
+  <section id="domains-dns">
+    <h2>6. Domains &amp; DNS</h2>
+
+    <p>DNS (Domain Name System) translates human-readable domain names to IP addresses. To point your domain at your VPS, you need to create DNS records.</p>
+
+    <h3>Where to Buy Domains</h3>
+    <table>
+      <tr>
+        <th>Registrar</th>
+        <th>Why</th>
+      </tr>
+      <tr>
+        <td><strong>Cloudflare Registrar</strong></td>
+        <td>At-cost pricing (no markup), free DNS, free proxy/CDN</td>
+      </tr>
+      <tr>
+        <td><strong>Namecheap</strong></td>
+        <td>Good prices, easy UI, free WhoisGuard</td>
+      </tr>
+      <tr>
+        <td><strong>Porkbun</strong></td>
+        <td>Cheapest for many TLDs, clean interface</td>
+      </tr>
+    </table>
+
+    <h3>Essential DNS Records</h3>
+    <table>
+      <tr>
+        <th>Record Type</th>
+        <th>Name</th>
+        <th>Value</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td><strong>A</strong></td>
+        <td>@</td>
+        <td>YOUR_SERVER_IP</td>
+        <td>Points <code>yourdomain.com</code> to your server</td>
+      </tr>
+      <tr>
+        <td><strong>A</strong></td>
+        <td>*</td>
+        <td>YOUR_SERVER_IP</td>
+        <td>Wildcard -- points <code>*.yourdomain.com</code> to your server</td>
+      </tr>
+      <tr>
+        <td><strong>CNAME</strong></td>
+        <td>www</td>
+        <td>yourdomain.com</td>
+        <td>Points <code>www.yourdomain.com</code> to root domain</td>
+      </tr>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Example: Cloudflare DNS Setup</div>
+      <pre><code>Type    Name    Content           Proxy    TTL
+A       @       203.0.113.42      DNS only Auto
+A       *       203.0.113.42      DNS only Auto
+CNAME   www     yourdomain.com    DNS only Auto</code></pre>
+      <p>Set proxy to "DNS only" (grey cloud) if you're handling SSL yourself with Caddy or Let's Encrypt. Use "Proxied" (orange cloud) if you want Cloudflare's CDN and DDoS protection.</p>
+    </div>
+
+    <h3>Verify DNS Propagation</h3>
+    <pre><code># Check if your domain resolves to your IP
+dig yourdomain.com +short
+
+# Or use nslookup
+nslookup yourdomain.com</code></pre>
+
+    <div class="tip-box">
+      <div class="label">DNS Propagation</div>
+      <p>DNS changes can take 5 minutes to 48 hours to propagate worldwide, but usually it's under 30 minutes. If you're using Cloudflare DNS, changes are nearly instant.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: REVERSE PROXY                                     -->
+  <!-- ============================================================ -->
+  <section id="reverse-proxy">
+    <h2>7. Reverse Proxy (Caddy &amp; Nginx)</h2>
+
+    <p>A <strong>reverse proxy</strong> sits in front of your applications and routes incoming requests to the right service. It handles SSL, load balancing, and lets you run multiple apps on one server.</p>
+
+    <div class="example-box">
+      <div class="label">How It Works</div>
+      <pre><code>Internet
+   │
+   ▼
+┌──────────────────┐
+│   Reverse Proxy   │  ← Listens on ports 80 &amp; 443
+│   (Caddy/Nginx)   │
+└──────┬───────────┘
+       │
+   ┌───┼────────────────┐
+   ▼   ▼                ▼
+:3000  :8080           :5000
+App 1  App 2           App 3
+(Next) (API)           (Flask)
+
+app1.yourdomain.com → :3000
+api.yourdomain.com  → :8080
+app3.yourdomain.com → :5000</code></pre>
+    </div>
+
+    <h3>Option A: Caddy (Recommended)</h3>
+    <p>Caddy is a modern web server that <strong>automatically handles SSL</strong> via Let's Encrypt. Zero config for HTTPS. This is the easiest option.</p>
+
+    <h4>Install Caddy</h4>
+    <pre><code>sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy</code></pre>
+
+    <h4>Caddyfile Configuration</h4>
+    <pre><code># /etc/caddy/Caddyfile
+
+# App 1 -- Next.js running on port 3000
+app1.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+
+# App 2 -- API running on port 8080
+api.yourdomain.com {
+    reverse_proxy localhost:8080
+}
+
+# Static site
+yourdomain.com {
+    root * /var/www/mysite
+    file_server
+}</code></pre>
+
+    <p>That's it. Caddy automatically provisions SSL certificates. Reload with:</p>
+    <pre><code>sudo systemctl reload caddy</code></pre>
+
+    <h3>Option B: Nginx</h3>
+    <p>Nginx is the industry standard. More config required, but maximum flexibility.</p>
+
+    <h4>Install Nginx</h4>
+    <pre><code>sudo apt install -y nginx</code></pre>
+
+    <h4>Nginx Site Configuration</h4>
+    <pre><code># /etc/nginx/sites-available/app1
+server {
+    listen 80;
+    server_name app1.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</code></pre>
+
+    <pre><code># Enable the site
+sudo ln -s /etc/nginx/sites-available/app1 /etc/nginx/sites-enabled/
+sudo nginx -t          # Test config
+sudo systemctl reload nginx</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Caddy vs Nginx</div>
+      <p><strong>Use Caddy</strong> for personal projects and when you want zero SSL hassle. <strong>Use Nginx</strong> when you need advanced features (rate limiting, caching, complex rewrites) or when you're in a team that already uses it. Both are production-ready.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: SSL/TLS                                           -->
+  <!-- ============================================================ -->
+  <section id="ssl">
+    <h2>8. SSL/TLS with Let's Encrypt</h2>
+
+    <p>SSL/TLS encrypts traffic between your users and your server. <strong>Let's Encrypt</strong> provides free, auto-renewing SSL certificates.</p>
+
+    <div class="tip-box">
+      <div class="label">If You're Using Caddy</div>
+      <p>Skip this section. Caddy handles SSL automatically -- it provisions and renews Let's Encrypt certificates for every domain in your Caddyfile with zero configuration.</p>
+    </div>
+
+    <h3>Certbot (For Nginx)</h3>
+    <pre><code># Install Certbot
+sudo apt install -y certbot python3-certbot-nginx
+
+# Get a certificate (Certbot auto-configures Nginx)
+sudo certbot --nginx -d app1.yourdomain.com -d api.yourdomain.com
+
+# Test auto-renewal
+sudo certbot renew --dry-run</code></pre>
+
+    <p>Certbot adds a cron job that automatically renews certificates before they expire (every 90 days).</p>
+
+    <h3>Verify SSL</h3>
+    <pre><code># Check certificate details
+curl -vI https://app1.yourdomain.com 2>&amp;1 | grep -A5 "Server certificate"
+
+# Or use openssl
+openssl s_client -connect app1.yourdomain.com:443 -servername app1.yourdomain.com</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: DOCKER ON YOUR VPS                                -->
+  <!-- ============================================================ -->
+  <section id="docker-on-vps">
+    <h2>9. Docker on Your VPS</h2>
+
+    <p>Docker is the standard way to deploy applications on a VPS. Instead of installing dependencies directly on the server, you package everything into containers. Check the <a href="docker.html">Docker page</a> for fundamentals -- this section covers VPS-specific setup.</p>
+
+    <h3>Install Docker</h3>
+    <pre><code># Install Docker using the official convenience script
+curl -fsSL https://get.docker.com | sh
+
+# Add your user to the docker group (no sudo needed for docker commands)
+sudo usermod -aG docker deploy
+
+# Log out and back in for group changes to take effect
+exit
+ssh myserver
+
+# Verify
+docker --version
+docker compose version</code></pre>
+
+    <h3>Docker Compose on a VPS</h3>
+    <p>A typical production setup with Docker Compose:</p>
+
+    <pre><code># docker-compose.yml
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:pass@db:5432/myapp
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=myapp
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:</code></pre>
+
+    <pre><code># Deploy
+docker compose up -d
+
+# View logs
+docker compose logs -f app
+
+# Update and redeploy
+git pull
+docker compose up -d --build</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Environment Variables in Production</div>
+      <p>Never hardcode secrets in <code>docker-compose.yml</code>. Use a <code>.env</code> file (and add it to <code>.gitignore</code>) or Docker secrets. The example above uses inline values for clarity only.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: COOLIFY                                          -->
+  <!-- ============================================================ -->
+  <section id="coolify">
+    <h2>10. Coolify -- Your Own PaaS</h2>
+
+    <p><strong>Coolify</strong> is an open-source, self-hosted alternative to Vercel, Netlify, and Heroku. It gives you a web UI to deploy applications, databases, and services with automatic SSL, GitHub integration, and zero-downtime deployments -- all running on your own VPS.</p>
+
+    <div class="example-box">
+      <div class="label">What Coolify Replaces</div>
+      <pre><code>Vercel / Netlify    → Frontend deployments with preview URLs
+Heroku / Railway    → Backend app hosting with env vars
+PlanetScale / Neon  → Managed databases (Postgres, MySQL, Redis)
+GitHub Actions      → Build &amp; deploy pipelines
+
+All of this in ONE tool, on YOUR server, for $0/month in software costs.</code></pre>
+    </div>
+
+    <h3>Install Coolify</h3>
+    <p>Coolify has a one-line installer. Run this on a <strong>fresh VPS</strong> (or one where ports 80/443 aren't already in use):</p>
+
+    <pre><code>curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash</code></pre>
+
+    <p>After installation, access the Coolify dashboard at <code>http://YOUR_SERVER_IP:8000</code>. Set up your admin account on first visit.</p>
+
+    <h3>What Coolify Can Deploy</h3>
+    <table>
+      <tr>
+        <th>Type</th>
+        <th>Examples</th>
+      </tr>
+      <tr>
+        <td><strong>Apps from Git</strong></td>
+        <td>Next.js, Nuxt, SvelteKit, Express, Django, Rails, Go, Rust -- anything with a Dockerfile or Nixpacks</td>
+      </tr>
+      <tr>
+        <td><strong>Docker Compose</strong></td>
+        <td>Paste your docker-compose.yml and Coolify manages it</td>
+      </tr>
+      <tr>
+        <td><strong>Databases</strong></td>
+        <td>PostgreSQL, MySQL, MariaDB, MongoDB, Redis, Dragonfly</td>
+      </tr>
+      <tr>
+        <td><strong>One-Click Services</strong></td>
+        <td>Plausible Analytics, Umami, Ghost, WordPress, Gitea, Minio, n8n, Uptime Kuma</td>
+      </tr>
+    </table>
+
+    <h3>Deploy a Next.js App with Coolify</h3>
+    <div class="roadmap">
+      <div class="roadmap-step">
+        <div class="step-num">1</div>
+        <div class="step-label">Connect GitHub</div>
+        <div class="step-desc">Settings → Sources → Add GitHub App. Authorize Coolify to access your repos.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">2</div>
+        <div class="step-label">Add New Resource</div>
+        <div class="step-desc">Projects → Add Resource → Public/Private Repository. Select your Next.js repo.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">3</div>
+        <div class="step-label">Configure</div>
+        <div class="step-desc">Set build pack to Nixpacks (auto-detects Next.js), add environment variables, set the domain.</div>
+      </div>
+      <div class="roadmap-step">
+        <div class="step-num">4</div>
+        <div class="step-label">Deploy</div>
+        <div class="step-desc">Click Deploy. Coolify builds your app, provisions SSL, and starts the container. Future pushes auto-deploy.</div>
+      </div>
+    </div>
+
+    <h3>Coolify Features</h3>
+    <ul>
+      <li><strong>Automatic SSL</strong> -- Let's Encrypt certificates provisioned and renewed automatically</li>
+      <li><strong>GitHub/GitLab webhooks</strong> -- Push to deploy, just like Vercel</li>
+      <li><strong>Preview deployments</strong> -- Auto-deploy pull requests to preview URLs</li>
+      <li><strong>Databases as a service</strong> -- Spin up Postgres, Redis, etc. with one click</li>
+      <li><strong>Environment variables</strong> -- Manage secrets through the UI</li>
+      <li><strong>Logs and monitoring</strong> -- View container logs from the dashboard</li>
+      <li><strong>Multi-server</strong> -- Manage multiple VPS from one Coolify instance</li>
+      <li><strong>Backups</strong> -- Scheduled database backups to S3-compatible storage</li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="label">Coolify System Requirements</div>
+      <p>Minimum: 2 CPU cores, 2GB RAM. Recommended: 2+ CPU cores, 4GB+ RAM. Coolify itself uses Docker, Traefik (as its built-in reverse proxy), and a SQLite/PostgreSQL database. A Hetzner CX22 ($4/mo) is perfect for this.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 11: OTHER TOOLS                                      -->
+  <!-- ============================================================ -->
+  <section id="other-tools">
+    <h2>11. Other Self-Hosting Tools</h2>
+
+    <h3>Deployment &amp; Management</h3>
+    <table>
+      <tr>
+        <th>Tool</th>
+        <th>What It Does</th>
+        <th>When to Use</th>
+      </tr>
+      <tr>
+        <td><strong>Coolify</strong></td>
+        <td>Full PaaS -- deploy apps, databases, services from Git</td>
+        <td>You want a Vercel-like experience on your own server</td>
+      </tr>
+      <tr>
+        <td><strong>Dokku</strong></td>
+        <td>Mini Heroku -- Git push to deploy with buildpacks</td>
+        <td>You love Heroku's <code>git push</code> workflow</td>
+      </tr>
+      <tr>
+        <td><strong>CapRover</strong></td>
+        <td>PaaS with web UI, one-click apps, and cluster support</td>
+        <td>Alternative to Coolify with Docker Swarm support</td>
+      </tr>
+      <tr>
+        <td><strong>Portainer</strong></td>
+        <td>Docker management UI -- see containers, logs, networks</td>
+        <td>You want a visual way to manage Docker</td>
+      </tr>
+    </table>
+
+    <h3>Monitoring &amp; Analytics</h3>
+    <table>
+      <tr>
+        <th>Tool</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td><strong>Uptime Kuma</strong></td>
+        <td>Self-hosted uptime monitoring with notifications (Slack, Discord, email)</td>
+      </tr>
+      <tr>
+        <td><strong>Plausible Analytics</strong></td>
+        <td>Privacy-friendly Google Analytics alternative</td>
+      </tr>
+      <tr>
+        <td><strong>Umami</strong></td>
+        <td>Simple, fast, privacy-focused web analytics</td>
+      </tr>
+      <tr>
+        <td><strong>Grafana + Prometheus</strong></td>
+        <td>Full metrics collection and dashboard visualization</td>
+      </tr>
+    </table>
+
+    <h3>Useful Self-Hosted Services</h3>
+    <table>
+      <tr>
+        <th>Tool</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td><strong>Gitea / Forgejo</strong></td>
+        <td>Self-hosted Git (lightweight GitHub alternative)</td>
+      </tr>
+      <tr>
+        <td><strong>Minio</strong></td>
+        <td>S3-compatible object storage</td>
+      </tr>
+      <tr>
+        <td><strong>Vaultwarden</strong></td>
+        <td>Self-hosted Bitwarden password manager</td>
+      </tr>
+      <tr>
+        <td><strong>Traefik</strong></td>
+        <td>Cloud-native reverse proxy with auto-discovery for Docker containers</td>
+      </tr>
+      <tr>
+        <td><strong>n8n</strong></td>
+        <td>Self-hosted workflow automation (Zapier alternative)</td>
+      </tr>
+      <tr>
+        <td><strong>Ghost</strong></td>
+        <td>Self-hosted blog/newsletter platform</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">One Server, Many Services</div>
+      <p>With Docker and a reverse proxy, you can run 10+ services on a single $4/month VPS. Each gets its own subdomain (e.g., <code>git.yourdomain.com</code>, <code>analytics.yourdomain.com</code>, <code>status.yourdomain.com</code>) and automatic SSL.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 12: MONITORING                                       -->
+  <!-- ============================================================ -->
+  <section id="monitoring">
+    <h2>12. Monitoring &amp; Logs</h2>
+
+    <h3>Basic Server Monitoring</h3>
+    <pre><code># Check disk usage
+df -h
+
+# Check memory usage
+free -h
+
+# Check CPU and processes
+htop
+
+# Check who's logged in
+who
+
+# Check system uptime
+uptime</code></pre>
+
+    <h3>Docker Logs</h3>
+    <pre><code># View logs for a specific container
+docker logs -f --tail 100 container_name
+
+# View logs for all services in a compose stack
+docker compose logs -f
+
+# View logs with timestamps
+docker compose logs -f -t</code></pre>
+
+    <h3>Uptime Kuma (Recommended)</h3>
+    <p>Deploy with a single Docker command:</p>
+
+    <pre><code>docker run -d \
+  --name uptime-kuma \
+  --restart unless-stopped \
+  -p 3001:3001 \
+  -v uptime-kuma:/app/data \
+  louislam/uptime-kuma:1</code></pre>
+
+    <p>Then point <code>status.yourdomain.com</code> at port 3001 via your reverse proxy. You get a status page and notifications for when your apps go down.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 13: BACKUPS                                          -->
+  <!-- ============================================================ -->
+  <section id="backups">
+    <h2>13. Backups</h2>
+
+    <p>If it's not backed up, it doesn't exist. Here's a practical backup strategy for a VPS.</p>
+
+    <h3>What to Back Up</h3>
+    <ul>
+      <li><strong>Databases</strong> -- The most critical. Data you can't regenerate.</li>
+      <li><strong>Docker volumes</strong> -- Persistent data for your containers.</li>
+      <li><strong>Config files</strong> -- Caddyfile, nginx configs, docker-compose files, .env files.</li>
+      <li><strong>Application code</strong> -- Already in Git, so this is covered.</li>
+    </ul>
+
+    <h3>Database Backups</h3>
+    <pre><code># PostgreSQL dump
+docker exec my-postgres pg_dumpall -U postgres > backup_$(date +%Y%m%d).sql
+
+# MySQL dump
+docker exec my-mysql mysqldump -u root -p --all-databases > backup_$(date +%Y%m%d).sql</code></pre>
+
+    <h3>Automated Backup Script</h3>
+    <pre><code>#!/bin/bash
+# /home/deploy/backup.sh
+
+BACKUP_DIR="/home/deploy/backups"
+DATE=$(date +%Y%m%d_%H%M%S)
+mkdir -p "$BACKUP_DIR"
+
+# Dump PostgreSQL
+docker exec postgres pg_dumpall -U postgres > "$BACKUP_DIR/db_$DATE.sql"
+
+# Compress
+gzip "$BACKUP_DIR/db_$DATE.sql"
+
+# Delete backups older than 7 days
+find "$BACKUP_DIR" -name "*.gz" -mtime +7 -delete
+
+echo "Backup complete: db_$DATE.sql.gz"</code></pre>
+
+    <pre><code># Make it executable
+chmod +x /home/deploy/backup.sh
+
+# Add to crontab (runs daily at 3 AM)
+crontab -e
+# Add this line:
+0 3 * * * /home/deploy/backup.sh >> /home/deploy/backups/backup.log 2>&amp;1</code></pre>
+
+    <h3>Off-Site Backups</h3>
+    <p>Local backups aren't enough -- if the VPS dies, so do your backups. Send them off-site:</p>
+
+    <pre><code># Sync to another server
+rsync -avz /home/deploy/backups/ backup-user@other-server:/backups/
+
+# Or upload to S3-compatible storage (Backblaze B2, Cloudflare R2, Minio)
+# Using rclone:
+rclone sync /home/deploy/backups/ remote:my-backups/</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Coolify Backups</div>
+      <p>If you're using Coolify, it has built-in scheduled database backups to S3-compatible storage. Configure it in the Coolify dashboard under each database's settings -- no scripts needed.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 14: FULL EXAMPLE                                     -->
+  <!-- ============================================================ -->
+  <section id="example-deploy">
+    <h2>14. Full Example: Deploy a Next.js App</h2>
+
+    <p>Let's put it all together. You have a Next.js app on GitHub and a fresh VPS. Here's the manual approach (without Coolify).</p>
+
+    <h3>Step-by-Step</h3>
+
+    <pre><code># 1. SSH into your server
+ssh myserver
+
+# 2. Install Docker (if not already)
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker deploy
+exit && ssh myserver
+
+# 3. Install Caddy
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update && sudo apt install caddy
+
+# 4. Clone your repo
+cd /home/deploy
+git clone https://github.com/yourusername/my-nextjs-app.git
+cd my-nextjs-app
+
+# 5. Create a Dockerfile (if you don't have one)
+cat &lt;&lt; 'DOCKERFILE' &gt; Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]
+DOCKERFILE
+
+# 6. Create docker-compose.yml
+cat &lt;&lt; 'COMPOSE' &gt; docker-compose.yml
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+COMPOSE
+
+# 7. Build and start
+docker compose up -d --build
+
+# 8. Configure Caddy
+sudo tee /etc/caddy/Caddyfile &lt;&lt; 'CADDY'
+myapp.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+CADDY
+
+sudo systemctl reload caddy</code></pre>
+
+    <p>Your app is now live at <code>https://myapp.yourdomain.com</code> with automatic SSL.</p>
+
+    <h3>Simple Redeployment</h3>
+    <pre><code># Create a deploy script
+cat &lt;&lt; 'DEPLOY' &gt; /home/deploy/my-nextjs-app/deploy.sh
+#!/bin/bash
+cd /home/deploy/my-nextjs-app
+git pull
+docker compose up -d --build
+echo "Deployed at $(date)"
+DEPLOY
+
+chmod +x /home/deploy/my-nextjs-app/deploy.sh
+
+# Redeploy anytime:
+./deploy.sh</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Or Just Use Coolify</div>
+      <p>The manual approach above is great for learning. But for day-to-day use, Coolify does all of this automatically -- connect your repo, set a domain, and push to deploy. No scripts, no manual Docker builds.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 15: CHEAT SHEET                                      -->
+  <!-- ============================================================ -->
+  <section id="cheatsheet">
+    <h2>15. Command Cheat Sheet</h2>
+
+    <h3>Server Management</h3>
+    <table>
+      <tr><th>Command</th><th>What It Does</th></tr>
+      <tr><td><code>ssh myserver</code></td><td>Connect to your server</td></tr>
+      <tr><td><code>sudo apt update && sudo apt upgrade -y</code></td><td>Update all packages</td></tr>
+      <tr><td><code>df -h</code></td><td>Check disk space</td></tr>
+      <tr><td><code>free -h</code></td><td>Check memory usage</td></tr>
+      <tr><td><code>htop</code></td><td>Interactive process viewer</td></tr>
+      <tr><td><code>sudo reboot</code></td><td>Restart the server</td></tr>
+      <tr><td><code>uptime</code></td><td>Check how long server has been running</td></tr>
+    </table>
+
+    <h3>Firewall (UFW)</h3>
+    <table>
+      <tr><th>Command</th><th>What It Does</th></tr>
+      <tr><td><code>sudo ufw status</code></td><td>Show firewall rules</td></tr>
+      <tr><td><code>sudo ufw allow 80/tcp</code></td><td>Open a port</td></tr>
+      <tr><td><code>sudo ufw deny 8080/tcp</code></td><td>Block a port</td></tr>
+      <tr><td><code>sudo ufw delete allow 8080/tcp</code></td><td>Remove a rule</td></tr>
+    </table>
+
+    <h3>Docker (VPS-Specific)</h3>
+    <table>
+      <tr><th>Command</th><th>What It Does</th></tr>
+      <tr><td><code>docker compose up -d</code></td><td>Start all services in background</td></tr>
+      <tr><td><code>docker compose up -d --build</code></td><td>Rebuild and restart</td></tr>
+      <tr><td><code>docker compose logs -f</code></td><td>Follow logs for all services</td></tr>
+      <tr><td><code>docker compose down</code></td><td>Stop all services</td></tr>
+      <tr><td><code>docker system prune -af</code></td><td>Clean up unused images/containers</td></tr>
+      <tr><td><code>docker stats</code></td><td>Live resource usage per container</td></tr>
+    </table>
+
+    <h3>Caddy</h3>
+    <table>
+      <tr><th>Command</th><th>What It Does</th></tr>
+      <tr><td><code>sudo systemctl reload caddy</code></td><td>Reload config without downtime</td></tr>
+      <tr><td><code>sudo systemctl restart caddy</code></td><td>Full restart</td></tr>
+      <tr><td><code>sudo caddy validate --config /etc/caddy/Caddyfile</code></td><td>Validate config syntax</td></tr>
+      <tr><td><code>journalctl -u caddy -f</code></td><td>View Caddy logs</td></tr>
+    </table>
+
+    <h3>SSL &amp; DNS</h3>
+    <table>
+      <tr><th>Command</th><th>What It Does</th></tr>
+      <tr><td><code>dig yourdomain.com +short</code></td><td>Check DNS resolution</td></tr>
+      <tr><td><code>sudo certbot --nginx -d domain.com</code></td><td>Get SSL cert for Nginx</td></tr>
+      <tr><td><code>sudo certbot renew --dry-run</code></td><td>Test certificate renewal</td></tr>
+      <tr><td><code>curl -I https://yourdomain.com</code></td><td>Check SSL headers</td></tr>
+    </table>
+
+    <div class="example-box">
+      <div class="label">The $4/Month Stack</div>
+      <p>Here's what you can run on a single Hetzner CX22 ($4/month):</p>
+      <pre><code>Coolify          → Deploy &amp; manage everything
+Next.js App      → Your main web app
+PostgreSQL       → Database
+Redis            → Caching
+Uptime Kuma      → Monitoring
+Plausible        → Analytics
+Vaultwarden      → Password manager
+
+Total cost: ~$4/month + ~$10/year for a domain
+vs. Vercel Pro + PlanetScale + Railway = $60+/month</code></pre>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+</footer>
+
+</body>
+</html>

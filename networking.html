@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Networking Fundamentals - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html" class="active">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+    <a href="selfhosting.html">Self-Hosting</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Networking</div>
+    <h1>Networking Fundamentals</h1>
+    <p>Every line of code you deploy eventually talks over a network. Understanding how data actually moves between machines -- from the physical cables to HTTP headers -- is what separates developers who can debug production from those who stare at "connection refused" and panic.</p>
+  </div>
+
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#how-internet-works">1. How the Internet Actually Works</a>
+    <a href="#osi-model">2. The OSI Model</a>
+    <a href="#tcp-ip-model">3. The TCP/IP Model</a>
+    <a href="#ip-addresses">4. IP Addresses &amp; Subnets</a>
+    <a href="#dns">5. DNS -- The Internet's Phone Book</a>
+    <a href="#tcp-vs-udp">6. TCP vs UDP</a>
+    <a href="#http">7. HTTP/HTTPS</a>
+    <a href="#tls">8. TLS/SSL -- How Encryption Works</a>
+    <a href="#websockets">9. WebSockets &amp; Real-Time Communication</a>
+    <a href="#api-protocols">10. REST vs GraphQL vs gRPC</a>
+    <a href="#common-ports">11. Common Ports</a>
+    <a href="#debugging-tools">12. Network Debugging Tools</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: HOW THE INTERNET ACTUALLY WORKS                  -->
+  <!-- ============================================================ -->
+  <section id="how-internet-works">
+    <h2>1. How the Internet Actually Works</h2>
+    <p>The internet is not a cloud. It is a physical network of cables, routers, and switches that span the globe. When you visit a website, your data travels through copper wires, fiber optic cables (including ones laid across the ocean floor), and radio waves -- bouncing between dozens of machines before it reaches the server and comes back.</p>
+
+    <div class="example-box">
+      <div class="label">The Journey of a Single Request</div>
+<pre><code>You type "example.com" in your browser. Here is what actually happens:
+
+1. YOUR DEVICE
+   Browser asks the OS: "What's the IP address for example.com?"
+   OS checks its local DNS cache. Cache miss.
+
+2. YOUR ROUTER
+   Request goes to your home router via WiFi or Ethernet.
+   Router checks its DNS cache. Cache miss.
+   Router forwards to your ISP's DNS resolver.
+
+3. YOUR ISP (Internet Service Provider)
+   ISP's DNS resolver asks the root DNS servers,
+   then the .com TLD servers, then example.com's
+   authoritative nameserver. Gets back: 93.184.216.34
+
+4. THE ROUTE TO THE SERVER
+   Your device now sends a TCP packet to 93.184.216.34.
+   The packet travels through:
+     - Your router
+     - ISP's local network
+     - ISP's backbone (high-speed fiber)
+     - Internet Exchange Point (IXP) -- where ISPs exchange traffic
+     - Possibly undersea cables (if the server is on another continent)
+     - The server's ISP / cloud provider network
+     - The server's data center
+     - The actual physical server
+
+5. THE SERVER RESPONDS
+   The server processes your request and sends back HTML.
+   The response takes the same journey in reverse.
+   Total round-trip time: 20-300ms depending on distance.
+
+6. YOUR BROWSER RENDERS
+   Browser parses HTML, discovers CSS/JS/images, and sends
+   more requests for each one. Each follows the same path.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Key Physical Infrastructure</div>
+      <ul>
+        <li><strong>Undersea cables:</strong> Over 550 cables on the ocean floor carry 99% of intercontinental internet traffic. Not satellites -- cables. A break in a major cable can disrupt internet for entire countries.</li>
+        <li><strong>Internet Exchange Points (IXPs):</strong> Physical buildings where ISPs connect their networks to exchange traffic directly, instead of routing through a third party. Major IXPs handle terabits per second.</li>
+        <li><strong>Data centers:</strong> Warehouses full of servers. Major cloud providers (AWS, Google, Azure) have data centers on every continent except Antarctica.</li>
+        <li><strong>The "last mile":</strong> The connection from the ISP to your home. This is usually the slowest part -- fiber optic, cable (coax), DSL, or cellular.</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Why This Matters for Developers</div>
+      <p>Understanding the physical layer explains latency. Light in fiber travels at about 200,000 km/s. New York to London is 5,500 km. The absolute minimum round trip time is ~55ms -- and real-world routing adds more. This is why CDNs exist: you cannot beat the speed of light, so you put servers closer to users.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: THE OSI MODEL                                    -->
+  <!-- ============================================================ -->
+  <section id="osi-model">
+    <h2>2. The OSI Model</h2>
+    <p>The OSI (Open Systems Interconnection) model is a conceptual framework that breaks network communication into 7 layers. Each layer has a specific job and talks only to the layers directly above and below it. Think of it like sending a letter: you write the letter (application), put it in an envelope (presentation), address it (session), hand it to the post office (transport), they route it (network), load it on a truck (data link), and the truck drives on a road (physical).</p>
+
+    <div class="example-box">
+      <div class="label">The 7 Layers -- From Top to Bottom</div>
+<pre><code>Layer 7: APPLICATION    -- What the user interacts with
+Layer 6: PRESENTATION   -- Data format and encryption
+Layer 5: SESSION         -- Managing connections
+Layer 4: TRANSPORT       -- Reliable delivery (TCP/UDP)
+Layer 3: NETWORK         -- Routing across networks (IP)
+Layer 2: DATA LINK       -- Communication on a local network (Ethernet, WiFi)
+Layer 1: PHYSICAL        -- Actual electrical signals, light, radio waves
+
+Mnemonic (top-down): "All People Seem To Need Data Processing"
+Mnemonic (bottom-up): "Please Do Not Throw Sausage Pizza Away"</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Each Layer Explained with Real Examples</div>
+<pre><code>LAYER 7: APPLICATION
+  What it does:  The protocols your applications speak
+  Protocols:     HTTP, HTTPS, FTP, SMTP, DNS, SSH, MQTT
+  Example:       Your browser sends "GET /index.html HTTP/1.1"
+  Developer note: This is where you spend most of your time
+
+LAYER 6: PRESENTATION
+  What it does:  Data translation, encryption, compression
+  Handles:       SSL/TLS encryption, character encoding (UTF-8),
+                 data serialization (JSON, XML, Protocol Buffers)
+  Example:       TLS encrypts your HTTP request before sending
+  Developer note: Often merged with Layer 7 in practice
+
+LAYER 5: SESSION
+  What it does:  Establishes, manages, and terminates connections
+  Handles:       Session tokens, authentication state, socket management
+  Example:       A WebSocket session stays open while you chat
+  Developer note: Also often merged with Layer 7 in practice
+
+LAYER 4: TRANSPORT
+  What it does:  End-to-end communication between processes
+  Protocols:     TCP (reliable, ordered) and UDP (fast, unreliable)
+  Key concept:   PORTS -- TCP port 443 for HTTPS, port 80 for HTTP
+  Example:       TCP breaks your data into segments, numbers them,
+                 and ensures they arrive in order with nothing missing
+
+LAYER 3: NETWORK
+  What it does:  Routes packets across different networks
+  Protocols:     IP (IPv4, IPv6), ICMP (ping), routing protocols
+  Key concept:   IP ADDRESSES -- every device gets a unique address
+  Example:       Your packet to 93.184.216.34 gets routed through
+                 10+ routers to reach the destination
+
+LAYER 2: DATA LINK
+  What it does:  Communication between devices on the same local network
+  Protocols:     Ethernet (802.3), WiFi (802.11), ARP
+  Key concept:   MAC ADDRESSES -- hardware address burned into your NIC
+  Example:       Your laptop's WiFi card sends a frame to your router.
+                 The frame has your MAC address and the router's MAC.
+
+LAYER 1: PHYSICAL
+  What it does:  Transmits raw bits (0s and 1s) over a physical medium
+  Media:         Copper wire, fiber optic, radio waves (WiFi, 5G)
+  Example:       Electrical voltage changes on an Ethernet cable
+                 represent individual bits. High voltage = 1, low = 0.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">How Data Travels Down and Up the Stack</div>
+<pre><code>SENDING (encapsulation -- each layer wraps the data from above):
+
+  Application layer:  [HTTP request data]
+  Transport layer:    [TCP header | HTTP request data]
+  Network layer:      [IP header | TCP header | HTTP request data]
+  Data link layer:    [Ethernet header | IP header | TCP | HTTP data | Ethernet trailer]
+  Physical layer:     01001010110010110... (raw bits on the wire)
+
+Each layer adds its own header (and sometimes trailer) around the data.
+This is called ENCAPSULATION.
+
+RECEIVING (decapsulation -- each layer strips its header):
+
+  Physical layer:     Raw bits arrive
+  Data link layer:    Strips Ethernet header, passes IP packet up
+  Network layer:      Strips IP header, passes TCP segment up
+  Transport layer:    Strips TCP header, passes HTTP data up
+  Application layer:  Your browser receives the HTTP response
+
+The beauty: each layer only cares about its own headers.
+TCP doesn't know or care that it's carrying HTTP inside.
+IP doesn't know or care that it's carrying TCP inside.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why the OSI Model Matters for Developers</div>
+      <ul>
+        <li><strong>Debugging:</strong> "Connection refused" is Layer 4 (TCP). "404 Not Found" is Layer 7 (HTTP). "No route to host" is Layer 3 (IP). Knowing the layer tells you where to look.</li>
+        <li><strong>Load balancers:</strong> Layer 4 load balancers route by IP/port. Layer 7 load balancers can inspect HTTP headers and route by URL path.</li>
+        <li><strong>Firewalls:</strong> Can operate at Layer 3 (block IP ranges), Layer 4 (block ports), or Layer 7 (block specific HTTP methods).</li>
+        <li><strong>Interviews:</strong> "Explain the OSI model" is one of the most common networking interview questions. Know it cold.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: TCP/IP MODEL                                     -->
+  <!-- ============================================================ -->
+  <section id="tcp-ip-model">
+    <h2>3. The TCP/IP Model</h2>
+    <p>The OSI model is a teaching tool. The TCP/IP model is what the internet actually uses. It has 4 layers instead of 7, and it's the practical model that every network engineer and developer works with daily.</p>
+
+    <div class="example-box">
+      <div class="label">TCP/IP vs OSI -- Side by Side</div>
+<pre><code>OSI Model (7 layers)          TCP/IP Model (4 layers)
+====================          =======================
+7. Application    ─┐
+6. Presentation    ├──────►   4. Application (HTTP, DNS, FTP, SSH)
+5. Session        ─┘
+4. Transport      ──────────► 3. Transport (TCP, UDP)
+3. Network        ──────────► 2. Internet (IP, ICMP, ARP)
+2. Data Link      ─┐
+1. Physical       ─┴────────► 1. Network Access (Ethernet, WiFi)
+
+The TCP/IP model merges Layers 5-7 into "Application" because
+in practice, the distinctions between them are blurry.
+It also merges Layers 1-2 into "Network Access."
+
+When people say "TCP/IP," they mean the entire protocol suite --
+not just TCP and IP. It includes HTTP, DNS, UDP, ICMP, ARP,
+and hundreds of other protocols that make the internet work.</code></pre>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>TCP/IP Layer</th>
+          <th>Protocols</th>
+          <th>What It Does</th>
+          <th>Data Unit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Application</td>
+          <td>HTTP, HTTPS, DNS, FTP, SSH, SMTP</td>
+          <td>Application-specific communication</td>
+          <td>Message / Data</td>
+        </tr>
+        <tr>
+          <td>Transport</td>
+          <td>TCP, UDP</td>
+          <td>Process-to-process delivery, reliability</td>
+          <td>Segment (TCP) / Datagram (UDP)</td>
+        </tr>
+        <tr>
+          <td>Internet</td>
+          <td>IP, ICMP, ARP</td>
+          <td>Addressing and routing across networks</td>
+          <td>Packet</td>
+        </tr>
+        <tr>
+          <td>Network Access</td>
+          <td>Ethernet, WiFi, PPP</td>
+          <td>Physical transmission on local network</td>
+          <td>Frame</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Which Model Should You Use?</div>
+      <ul>
+        <li><strong>Use the OSI model</strong> when discussing concepts, teaching, or in interviews. It is more granular and widely referenced.</li>
+        <li><strong>Use the TCP/IP model</strong> when building or debugging real systems. It maps directly to how software is actually implemented.</li>
+        <li><strong>In practice:</strong> Most developers think in terms of "application layer" (HTTP), "transport layer" (TCP/UDP), and "network layer" (IP). The other layers rarely come up unless you are doing low-level network programming.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: IP ADDRESSES & SUBNETS                           -->
+  <!-- ============================================================ -->
+  <section id="ip-addresses">
+    <h2>4. IP Addresses &amp; Subnets</h2>
+    <p>Every device on a network needs a unique address, just like every house needs a street address for mail delivery. IP (Internet Protocol) addresses are those addresses. Understanding them is essential for configuring servers, debugging connectivity, and designing network architectures.</p>
+
+    <h3>IPv4</h3>
+    <p>IPv4 addresses are 32 bits, written as four numbers (0-255) separated by dots. Each number is one byte (8 bits). There are 2^32 = about 4.3 billion possible addresses. That sounds like a lot, but it is not enough -- the world has more devices than IPv4 addresses.</p>
+
+    <div class="example-box">
+      <div class="label">IPv4 Address Anatomy</div>
+<pre><code>IP Address:  192.168.1.100
+
+Binary:      11000000.10101000.00000001.01100100
+             ^^^^^^^^ ^^^^^^^^ ^^^^^^^^ ^^^^^^^^
+             192      168      1        100
+
+Each "octet" is 8 bits (1 byte), range: 0-255
+Total: 32 bits = 4 bytes
+
+Special addresses:
+  0.0.0.0        -- "This network" (used when a device doesn't know its IP yet)
+  127.0.0.1      -- Localhost (loopback -- your own machine)
+  255.255.255.255 -- Broadcast (send to everyone on the local network)
+  169.254.x.x    -- Link-local (auto-assigned when DHCP fails)</code></pre>
+    </div>
+
+    <h3>Private vs Public IP Addresses</h3>
+    <div class="example-box">
+      <div class="label">Reserved Private Ranges</div>
+<pre><code>PRIVATE IP RANGES (cannot be routed on the public internet):
+
+  10.0.0.0    -- 10.255.255.255     (10.0.0.0/8)       16.7 million addresses
+  172.16.0.0  -- 172.31.255.255     (172.16.0.0/12)     1 million addresses
+  192.168.0.0 -- 192.168.255.255    (192.168.0.0/16)    65,536 addresses
+
+Your home network uses private IPs (usually 192.168.x.x).
+Your router has ONE public IP from your ISP.
+All your devices share that public IP using NAT.
+
+PUBLIC IPs are globally unique and routable on the internet.
+Your web server at DigitalOcean or AWS has a public IP
+that anyone in the world can reach.
+
+How NAT (Network Address Translation) works:
+
+  Inside your home:
+    Laptop: 192.168.1.10 ─┐
+    Phone:  192.168.1.11  ├─► Router (192.168.1.1) ─► ISP ─► Internet
+    TV:     192.168.1.12 ─┘   Public IP: 73.45.123.89
+
+  When your laptop visits example.com:
+    Outgoing: src=192.168.1.10 ──► Router rewrites to src=73.45.123.89
+    Incoming: dst=73.45.123.89 ──► Router rewrites to dst=192.168.1.10
+
+  The router keeps a NAT table mapping internal IP:port to external IP:port.
+  This is why all your devices can share one public IP.</code></pre>
+    </div>
+
+    <h3>Subnet Masks and CIDR Notation</h3>
+    <div class="example-box">
+      <div class="label">How Subnets Divide Networks</div>
+<pre><code>A subnet mask tells you which part of an IP is the NETWORK
+and which part is the HOST.
+
+IP:          192.168.1.100
+Subnet mask: 255.255.255.0
+
+Binary:
+  IP:   11000000.10101000.00000001.01100100
+  Mask: 11111111.11111111.11111111.00000000
+        ├── NETWORK (first 24 bits) ──┤├HOST┤
+
+Network address: 192.168.1.0   (all host bits = 0)
+Broadcast:       192.168.1.255 (all host bits = 1)
+Usable hosts:    192.168.1.1 -- 192.168.1.254 (254 devices)
+
+CIDR notation is shorthand: 192.168.1.0/24
+The "/24" means "the first 24 bits are the network part."
+
+Common CIDR blocks:
+  /8   = 255.0.0.0       = 16,777,214 hosts  (huge, like 10.0.0.0/8)
+  /16  = 255.255.0.0     = 65,534 hosts       (medium)
+  /24  = 255.255.255.0   = 254 hosts           (typical LAN)
+  /28  = 255.255.255.240 = 14 hosts            (small subnet)
+  /32  = 255.255.255.255 = 1 host              (single IP, used in routing)
+
+Why subnetting matters for developers:
+  - AWS VPCs use CIDR blocks: "Give me a /16 network (65K IPs)"
+  - Docker networks: containers get IPs from a subnet (172.17.0.0/16)
+  - Firewall rules: "Allow traffic from 10.0.0.0/8" means any 10.x.x.x
+  - Kubernetes: pods get IPs from a cluster CIDR range</code></pre>
+    </div>
+
+    <h3>IPv6</h3>
+    <div class="example-box">
+      <div class="label">The Future (and Present) of IP Addressing</div>
+<pre><code>IPv4 has 4.3 billion addresses. The world has 15+ billion connected devices.
+We ran out of IPv4 addresses years ago. IPv6 fixes this.
+
+IPv6: 128 bits = 340 undecillion addresses (3.4 x 10^38)
+That's enough to give every grain of sand on Earth its own IP.
+
+Format: eight groups of four hex digits, separated by colons
+  Full:    2001:0db8:85a3:0000:0000:8a2e:0370:7334
+  Short:   2001:db8:85a3::8a2e:370:7334
+           (leading zeros dropped, consecutive zero groups = ::)
+
+Special addresses:
+  ::1           -- Loopback (like 127.0.0.1 in IPv4)
+  fe80::/10     -- Link-local (like 169.254.x.x)
+  ::ffff:0:0/96 -- IPv4-mapped IPv6 (e.g., ::ffff:192.168.1.1)
+
+Why adoption is slow:
+  - NAT made IPv4 livable (one public IP for a whole network)
+  - Upgrading every router, firewall, and app is expensive
+  - IPv4 and IPv6 are NOT compatible -- you need dual-stack or tunneling
+  - Most cloud providers support both, but many apps are still IPv4-only
+
+As a developer: ensure your apps work with both.
+  - Don't hardcode IPv4 formats in validators
+  - Use libraries that handle both (Node's net module, Go's net package)
+  - Configure your servers to listen on both (:: for IPv6, 0.0.0.0 for IPv4)</code></pre>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: DNS                                              -->
+  <!-- ============================================================ -->
+  <section id="dns">
+    <h2>5. DNS -- The Internet's Phone Book</h2>
+    <p>Humans remember names (google.com). Computers use numbers (142.250.80.46). DNS (Domain Name System) translates between the two. It is one of the most critical pieces of internet infrastructure -- if DNS is down, the internet feels "broken" even though the servers are fine.</p>
+
+    <div class="example-box">
+      <div class="label">DNS Resolution Step by Step</div>
+<pre><code>You type "www.example.com" in your browser. Here is the full DNS lookup:
+
+1. BROWSER CACHE
+   Browser checks its own DNS cache.
+   "Have I looked up www.example.com recently?" No.
+
+2. OS CACHE
+   Browser asks the operating system.
+   OS checks /etc/hosts file and its DNS cache. Not there.
+
+3. RECURSIVE RESOLVER (your ISP's DNS server, or 8.8.8.8, or 1.1.1.1)
+   OS sends a DNS query to the configured resolver.
+   The resolver does the heavy lifting:
+
+4. ROOT NAMESERVER (13 root server clusters worldwide)
+   Resolver asks: "Where is www.example.com?"
+   Root says: "I don't know, but .com is handled by these TLD servers."
+
+5. TLD NAMESERVER (.com, .org, .io, etc.)
+   Resolver asks the .com TLD server: "Where is example.com?"
+   TLD says: "example.com's nameservers are ns1.example.com (93.184.216.34)"
+
+6. AUTHORITATIVE NAMESERVER (the domain owner's DNS server)
+   Resolver asks example.com's nameserver: "What is www.example.com?"
+   Authoritative NS responds: "It's 93.184.216.34, TTL=3600"
+
+7. RESULT CACHED AND RETURNED
+   Resolver caches the answer for 3600 seconds (1 hour).
+   Returns the IP to your OS, which caches it too.
+   Browser connects to 93.184.216.34.
+
+Total time: 20-100ms (first lookup). Subsequent lookups: ~0ms (cached).
+
+   Browser ──► OS ──► Recursive Resolver ──► Root NS
+                                          ──► .com TLD NS
+                                          ──► example.com Auth NS
+                                          ◄── 93.184.216.34 (answer)</code></pre>
+    </div>
+
+    <h3>DNS Record Types</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Record</th>
+          <th>Purpose</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>A</code></td>
+          <td>Maps domain to IPv4 address</td>
+          <td><code>example.com. A 93.184.216.34</code></td>
+        </tr>
+        <tr>
+          <td><code>AAAA</code></td>
+          <td>Maps domain to IPv6 address</td>
+          <td><code>example.com. AAAA 2606:2800:220:1:...</code></td>
+        </tr>
+        <tr>
+          <td><code>CNAME</code></td>
+          <td>Alias -- points one domain to another</td>
+          <td><code>www.example.com. CNAME example.com.</code></td>
+        </tr>
+        <tr>
+          <td><code>MX</code></td>
+          <td>Mail server for the domain</td>
+          <td><code>example.com. MX 10 mail.example.com.</code></td>
+        </tr>
+        <tr>
+          <td><code>TXT</code></td>
+          <td>Arbitrary text (SPF, DKIM, verification)</td>
+          <td><code>example.com. TXT "v=spf1 include:_spf.google.com ~all"</code></td>
+        </tr>
+        <tr>
+          <td><code>NS</code></td>
+          <td>Nameserver for the domain</td>
+          <td><code>example.com. NS ns1.example.com.</code></td>
+        </tr>
+        <tr>
+          <td><code>SRV</code></td>
+          <td>Service location (port and host)</td>
+          <td><code>_sip._tcp.example.com. SRV 10 60 5060 sip.example.com.</code></td>
+        </tr>
+        <tr>
+          <td><code>PTR</code></td>
+          <td>Reverse lookup (IP to domain)</td>
+          <td><code>34.216.184.93.in-addr.arpa. PTR example.com.</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">TTL and DNS Caching</div>
+<pre><code>TTL (Time To Live) tells resolvers how long to cache a record.
+
+example.com.  3600  IN  A  93.184.216.34
+              ^^^^
+              TTL = 3600 seconds (1 hour)
+
+After 1 hour, resolvers must re-query for a fresh answer.
+
+LOW TTL (60-300 seconds):
+  - Records update quickly (good for failover, blue-green deploys)
+  - More DNS queries (slightly slower for users)
+  - Use when you expect to change the IP frequently
+
+HIGH TTL (3600-86400 seconds):
+  - Fewer DNS queries (faster for users, less load on nameservers)
+  - Changes propagate slowly (could take hours)
+  - Use for stable infrastructure
+
+COMMON MISTAKE: Setting TTL to 86400 (24 hours), then doing a
+server migration and wondering why users still hit the old IP.
+Lower your TTL to 60 seconds BEFORE a migration, wait 24 hours
+for old caches to expire, do the migration, then raise TTL back.</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">DNS Security Concerns</div>
+      <p>Traditional DNS is unencrypted -- your ISP (and anyone on your network) can see every domain you visit. Modern alternatives:</p>
+      <ul>
+        <li><strong>DNS over HTTPS (DoH):</strong> DNS queries sent over HTTPS. Used by Firefox and Chrome. Hides queries from ISPs.</li>
+        <li><strong>DNS over TLS (DoT):</strong> DNS queries encrypted with TLS on port 853. Used by Android and systemd-resolved.</li>
+        <li><strong>DNSSEC:</strong> Cryptographically signs DNS records to prevent spoofing. Verifies the response came from the real nameserver.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: TCP VS UDP                                       -->
+  <!-- ============================================================ -->
+  <section id="tcp-vs-udp">
+    <h2>6. TCP vs UDP</h2>
+    <p>TCP and UDP are the two main transport layer protocols. They solve fundamentally different problems: TCP guarantees delivery at the cost of speed. UDP prioritizes speed at the cost of reliability. Every application makes this tradeoff.</p>
+
+    <h3>TCP -- Transmission Control Protocol</h3>
+    <div class="example-box">
+      <div class="label">The Three-Way Handshake</div>
+<pre><code>Before any data is sent, TCP establishes a connection:
+
+  Client                         Server
+    |                               |
+    |──── SYN (seq=100) ──────────►|   1. "I want to connect"
+    |                               |
+    |◄─── SYN-ACK (seq=300,ack=101)|   2. "OK, I acknowledge your SYN"
+    |                               |
+    |──── ACK (ack=301) ──────────►|   3. "I acknowledge your SYN-ACK"
+    |                               |
+    |   Connection established.     |
+    |   Now data can flow.          |
+
+Why three steps?
+  - Both sides must agree on initial sequence numbers
+  - Prevents old/duplicate connection attempts from being accepted
+  - Each side confirms it can send AND receive
+
+After data transfer, connection is closed with a four-way FIN handshake:
+  Client: FIN ──►  Server: ACK ──►  Server: FIN ──►  Client: ACK</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">How TCP Guarantees Reliability</div>
+<pre><code>TCP provides several guarantees that UDP does not:
+
+1. ORDERING
+   Data is split into segments, each numbered with a sequence number.
+   If segment 3 arrives before segment 2, TCP holds it and waits.
+   Your application always receives data in the correct order.
+
+2. ACKNOWLEDGMENT
+   Every segment must be acknowledged. If the sender doesn't get
+   an ACK within a timeout, it retransmits the segment.
+
+   Client: [Data seq=1] ──►  Server: [ACK=2] ──►
+   Client: [Data seq=2] ──►  (lost!)
+   Client: (timeout, retransmit) [Data seq=2] ──►  Server: [ACK=3] ──►
+
+3. FLOW CONTROL (Window Size)
+   Receiver tells sender: "I can buffer 64KB right now."
+   If the receiver is slow, it shrinks the window. Sender slows down.
+   Prevents the sender from overwhelming the receiver.
+
+4. CONGESTION CONTROL
+   TCP starts slow (small window), then ramps up.
+   If packets are lost, TCP assumes network congestion and backs off.
+   Algorithms: Slow Start, Congestion Avoidance, Fast Retransmit.
+
+5. ERROR DETECTION
+   Each segment has a checksum. If bits got corrupted in transit,
+   the receiver detects it and drops the segment (sender retransmits).</code></pre>
+    </div>
+
+    <h3>UDP -- User Datagram Protocol</h3>
+    <div class="example-box">
+      <div class="label">UDP: Fire and Forget</div>
+<pre><code>UDP is dead simple:
+  - No connection setup (no handshake)
+  - No guaranteed delivery (packets can be lost)
+  - No ordering (packets can arrive out of order)
+  - No congestion control (sender blasts at full speed)
+  - Minimal overhead (8-byte header vs TCP's 20-byte header)
+
+UDP packet structure:
+  ┌──────────────┬──────────────┐
+  │ Source Port   │ Dest Port    │  4 bytes
+  ├──────────────┼──────────────┤
+  │ Length        │ Checksum     │  4 bytes
+  ├──────────────┴──────────────┤
+  │         Payload             │  Variable
+  └─────────────────────────────┘
+
+Total header: 8 bytes. That's it.
+TCP header: 20-60 bytes. Plus handshake. Plus acknowledgments.
+
+UDP is fast because it does almost nothing.
+If you need reliability with UDP, YOU implement it in your application.</code></pre>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>TCP</th>
+          <th>UDP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Connection</td>
+          <td>Connection-oriented (handshake required)</td>
+          <td>Connectionless (just send)</td>
+        </tr>
+        <tr>
+          <td>Reliability</td>
+          <td>Guaranteed delivery, retransmission</td>
+          <td>Best-effort, packets may be lost</td>
+        </tr>
+        <tr>
+          <td>Ordering</td>
+          <td>Data arrives in order</td>
+          <td>No ordering guarantee</td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td>Slower (overhead from reliability)</td>
+          <td>Faster (minimal overhead)</td>
+        </tr>
+        <tr>
+          <td>Header size</td>
+          <td>20-60 bytes</td>
+          <td>8 bytes</td>
+        </tr>
+        <tr>
+          <td>Use cases</td>
+          <td>HTTP, email, file transfer, SSH</td>
+          <td>Video streaming, gaming, DNS, VoIP</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">When to Use Each</div>
+      <ul>
+        <li><strong>Use TCP when</strong> you cannot afford to lose data: web pages, API calls, file downloads, email, database connections.</li>
+        <li><strong>Use UDP when</strong> speed matters more than completeness: live video, voice calls (VoIP), online games, DNS lookups, IoT sensor data.</li>
+        <li><strong>Modern twist:</strong> QUIC (used by HTTP/3) is built on UDP but adds reliability at the application layer. It gets TCP-like guarantees with UDP-like performance by avoiding TCP's head-of-line blocking.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: HTTP/HTTPS                                       -->
+  <!-- ============================================================ -->
+  <section id="http">
+    <h2>7. HTTP/HTTPS</h2>
+    <p>HTTP (HyperText Transfer Protocol) is the protocol your browser and APIs speak. It is a request-response protocol: the client sends a request, the server sends a response. Every web developer uses HTTP every day, but few understand what is actually on the wire.</p>
+
+    <div class="example-box">
+      <div class="label">Anatomy of an HTTP Request</div>
+<pre><code>GET /api/users?page=2 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+User-Agent: Mozilla/5.0 (X11; Linux x86_64)
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+
+[Request line]     GET /api/users?page=2 HTTP/1.1
+  - Method:        GET
+  - Path:          /api/users
+  - Query string:  ?page=2
+  - HTTP version:  HTTP/1.1
+
+[Headers]          Key: Value pairs with metadata
+  - Host:          Which server (required in HTTP/1.1)
+  - Accept:        What response format the client wants
+  - Authorization: Credentials (bearer token, API key)
+  - User-Agent:    What client is making the request
+
+[Body]             (empty for GET, present for POST/PUT/PATCH)
+
+
+Anatomy of an HTTP Response:
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 245
+Cache-Control: max-age=60
+Set-Cookie: session=abc123; HttpOnly; Secure
+
+{"users": [{"id": 1, "name": "Sean"}, {"id": 2, "name": "Alex"}]}
+
+[Status line]      HTTP/1.1 200 OK
+  - HTTP version:  HTTP/1.1
+  - Status code:   200
+  - Reason phrase: OK
+
+[Headers]          Response metadata
+[Body]             The actual data</code></pre>
+    </div>
+
+    <h3>HTTP Methods</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Purpose</th>
+          <th>Has Body</th>
+          <th>Idempotent</th>
+          <th>Safe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>GET</code></td>
+          <td>Read / retrieve a resource</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td>Create a new resource</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code>PUT</code></td>
+          <td>Replace an entire resource</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code>PATCH</code></td>
+          <td>Partially update a resource</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code>DELETE</code></td>
+          <td>Remove a resource</td>
+          <td>Optional</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code>HEAD</code></td>
+          <td>GET without body (check headers only)</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code>OPTIONS</code></td>
+          <td>What methods are allowed (CORS preflight)</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Idempotent vs Safe -- Why It Matters</div>
+<pre><code>SAFE: Calling it doesn't change anything on the server.
+  GET /users -- safe (just reading)
+  DELETE /users/5 -- NOT safe (deletes data)
+
+IDEMPOTENT: Calling it once or 100 times has the same result.
+  GET /users -- idempotent (always returns same data)
+  PUT /users/5 {name:"Sean"} -- idempotent (result is the same)
+  DELETE /users/5 -- idempotent (user is deleted, calling again changes nothing)
+  POST /users {name:"Sean"} -- NOT idempotent (creates a new user each time!)
+
+Why this matters:
+  - Network timeout on a POST? DON'T automatically retry (might create duplicates)
+  - Network timeout on a PUT? Safe to retry (same result)
+  - This is why payment APIs use idempotency keys:
+    POST /payments {amount: 50, idempotency_key: "abc123"}
+    If you retry with the same key, the server returns the existing payment
+    instead of charging twice.</code></pre>
+    </div>
+
+    <h3>HTTP Status Codes</h3>
+    <div class="example-box">
+      <div class="label">Every Status Code You Need to Know</div>
+<pre><code>1xx INFORMATIONAL (rare, mostly protocol-level)
+  100 Continue          -- "I got your headers, send the body"
+  101 Switching Protocols -- "Upgrading to WebSocket"
+
+2xx SUCCESS
+  200 OK                -- Standard success response
+  201 Created           -- Resource created (POST response)
+  204 No Content        -- Success, but no body (DELETE response)
+
+3xx REDIRECTION
+  301 Moved Permanently -- URL changed forever (cached by browsers)
+  302 Found             -- Temporary redirect (not cached)
+  304 Not Modified      -- Use your cached version (saves bandwidth)
+  307 Temporary Redirect -- Like 302 but preserves HTTP method
+  308 Permanent Redirect -- Like 301 but preserves HTTP method
+
+4xx CLIENT ERROR (the request was wrong)
+  400 Bad Request       -- Malformed request (missing field, bad JSON)
+  401 Unauthorized      -- Not authenticated (no credentials or expired)
+  403 Forbidden         -- Authenticated but not authorized (no permission)
+  404 Not Found         -- Resource doesn't exist
+  405 Method Not Allowed -- Wrong HTTP method (POST to a GET-only endpoint)
+  409 Conflict          -- Conflict with current state (duplicate username)
+  413 Payload Too Large -- Request body exceeds server's limit
+  422 Unprocessable Entity -- Valid syntax but invalid data (validation errors)
+  429 Too Many Requests -- Rate limited
+
+5xx SERVER ERROR (the server failed)
+  500 Internal Server Error -- Generic server crash
+  502 Bad Gateway       -- Proxy/load balancer got bad response from upstream
+  503 Service Unavailable -- Server overloaded or in maintenance
+  504 Gateway Timeout   -- Proxy didn't get a response from upstream in time</code></pre>
+    </div>
+
+    <h3>HTTP/1.1 vs HTTP/2 vs HTTP/3</h3>
+    <div class="example-box">
+      <div class="label">The Evolution of HTTP</div>
+<pre><code>HTTP/1.1 (1997 -- still widely used):
+  - One request per TCP connection at a time
+  - Workaround: browsers open 6 parallel connections per domain
+  - Text-based protocol (human-readable headers)
+  - Head-of-line blocking: slow response blocks all others on that connection
+  - Keep-Alive: reuse connection for multiple requests (sequential)
+
+HTTP/2 (2015 -- widely adopted):
+  - MULTIPLEXING: multiple requests on ONE TCP connection simultaneously
+  - Binary protocol (faster to parse, not human-readable)
+  - Header compression (HPACK) -- headers often repeat, compress them
+  - Server Push: server sends resources before client requests them
+  - Stream prioritization: important resources first
+  - Still TCP, so TCP-level head-of-line blocking remains
+
+HTTP/3 (2022 -- growing adoption):
+  - Built on QUIC (UDP-based transport)
+  - NO head-of-line blocking (lost packet affects only its stream)
+  - Faster connection setup (0-RTT or 1-RTT vs TCP's 1-3 RTT)
+  - Built-in encryption (TLS 1.3 is mandatory)
+  - Better for mobile (connection survives IP changes)
+  - Used by: Google, Facebook, Cloudflare
+
+Performance comparison (loading a web page with 50 resources):
+  HTTP/1.1: ~6 TCP connections, waterfall of requests       SLOW
+  HTTP/2:   1 TCP connection, all 50 requests in parallel   FAST
+  HTTP/3:   1 QUIC connection, parallel + no HOL blocking   FASTEST</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Cookies, Sessions, and Headers Developers Should Know</div>
+      <ul>
+        <li><strong>Set-Cookie / Cookie:</strong> Server sends <code>Set-Cookie: session=abc; HttpOnly; Secure; SameSite=Strict</code>. Browser sends <code>Cookie: session=abc</code> on every subsequent request.</li>
+        <li><strong>Cache-Control:</strong> Controls caching. <code>no-store</code> = never cache. <code>max-age=3600</code> = cache for 1 hour. <code>public</code> = CDN can cache. <code>private</code> = only browser can cache.</li>
+        <li><strong>Content-Type:</strong> Tells the receiver the format. <code>application/json</code>, <code>text/html</code>, <code>multipart/form-data</code>.</li>
+        <li><strong>CORS headers:</strong> <code>Access-Control-Allow-Origin</code> controls which domains can call your API from a browser.</li>
+        <li><strong>ETag / If-None-Match:</strong> Efficient caching. Server sends a hash of the response. Client sends it back on next request. If unchanged, server returns 304 (no body, save bandwidth).</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: TLS/SSL                                          -->
+  <!-- ============================================================ -->
+  <section id="tls">
+    <h2>8. TLS/SSL -- How Encryption Works</h2>
+    <p>TLS (Transport Layer Security) is what puts the "S" in HTTPS. It encrypts the connection between client and server so that no one in the middle -- your ISP, a hacker on the WiFi, a government -- can read or modify the data. SSL is the old name (deprecated). TLS is the current standard (TLS 1.3 as of 2018).</p>
+
+    <div class="example-box">
+      <div class="label">The TLS 1.3 Handshake</div>
+<pre><code>Before encrypted data flows, client and server must agree on
+encryption keys. This is the TLS handshake:
+
+  Client                              Server
+    |                                    |
+    |── ClientHello ───────────────────►|
+    |   (supported ciphers, random,     |
+    |    key share, SNI)                |
+    |                                    |
+    |◄────────────────── ServerHello ───|
+    |   (chosen cipher, random,         |
+    |    key share, certificate,        |
+    |    finished)                       |
+    |                                    |
+    |── Finished ──────────────────────►|
+    |                                    |
+    |◄═══════ Encrypted data ══════════►|
+
+TLS 1.3 completes in 1 round-trip (1-RTT).
+TLS 1.2 took 2 round-trips (2-RTT).
+TLS 1.3 with 0-RTT resumption: 0 round-trips for repeat connections!
+
+What happens in each step:
+
+1. CLIENT HELLO: "I support these ciphers: AES-256-GCM, ChaCha20.
+   Here is my key share (Diffie-Hellman). I want to connect to
+   api.example.com (SNI = Server Name Indication)."
+
+2. SERVER HELLO: "I chose AES-256-GCM. Here is my certificate
+   proving I'm really api.example.com. Here is my key share.
+   Together our key shares create a shared secret that only we know."
+
+3. FINISHED: Both sides derive encryption keys from the shared secret.
+   All subsequent data is encrypted with AES-256-GCM.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Certificates and Certificate Authorities</div>
+<pre><code>How does the client know the server is legit and not an impersonator?
+CERTIFICATES.
+
+A TLS certificate contains:
+  - Domain name (e.g., example.com)
+  - Public key (for key exchange)
+  - Issuer (who signed this certificate)
+  - Validity period (not before / not after)
+  - Digital signature from the CA
+
+CERTIFICATE CHAIN:
+  Your browser trusts ~150 ROOT Certificate Authorities (CAs).
+  CAs sign intermediate certificates. Intermediates sign your cert.
+
+  [Root CA: DigiCert]           -- pre-installed in your browser/OS
+       |
+  [Intermediate CA: DigiCert G2] -- signed by root
+       |
+  [Your cert: example.com]       -- signed by intermediate
+
+  Browser verifies: "example.com cert signed by DigiCert G2,
+  which is signed by DigiCert root, which I trust. Chain valid."
+
+Getting a certificate:
+  1. Let's Encrypt (free, automated, 90-day certificates)
+     $ certbot --nginx -d example.com
+
+  2. Paid CAs (DigiCert, Comodo) for extended validation (EV)
+     EV certs require identity verification (company name in browser)
+
+  3. Self-signed (for development only -- browsers will show warnings)
+     $ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Why HTTPS Everywhere</div>
+      <p>Without HTTPS, anyone between you and the server can:</p>
+      <ul>
+        <li><strong>Read everything:</strong> Passwords, API tokens, personal data -- all in plain text on the wire.</li>
+        <li><strong>Modify responses:</strong> ISPs have injected ads into HTTP pages. Attackers can inject malicious JavaScript.</li>
+        <li><strong>Impersonate servers:</strong> A rogue WiFi hotspot can pretend to be your bank and steal credentials.</li>
+      </ul>
+      <p>Modern browsers mark HTTP sites as "Not Secure." HTTP/2 and HTTP/3 require HTTPS. There is no good reason to serve anything over plain HTTP in production.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: WEBSOCKETS & REAL-TIME                           -->
+  <!-- ============================================================ -->
+  <section id="websockets">
+    <h2>9. WebSockets &amp; Real-Time Communication</h2>
+    <p>HTTP is request-response: the client asks, the server answers, and the connection is done. But what about chat apps, live dashboards, multiplayer games, and real-time notifications? You need the server to push data to the client without waiting for a request. That is where WebSockets come in.</p>
+
+    <div class="example-box">
+      <div class="label">HTTP vs WebSocket -- The Core Difference</div>
+<pre><code>HTTP (half-duplex, request-response):
+  Client: "Any new messages?" ──► Server: "No."
+  Client: "Any new messages?" ──► Server: "No."
+  Client: "Any new messages?" ──► Server: "Yes, here's one."
+  Client: "Any new messages?" ──► Server: "No."
+  (client must keep asking -- polling)
+
+WebSocket (full-duplex, persistent connection):
+  Client: "Let's upgrade to WebSocket" ──► Server: "OK, upgraded"
+  [Connection stays open]
+  Server: "New message: Hello!" ──► Client
+  Client: "I'm typing..." ──► Server
+  Server: "New message: How are you?" ──► Client
+  (either side can send at any time)
+
+WebSocket upgrade handshake (starts as HTTP, then upgrades):
+
+  GET /chat HTTP/1.1
+  Host: example.com
+  Upgrade: websocket
+  Connection: Upgrade
+  Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+  Sec-WebSocket-Version: 13
+
+  HTTP/1.1 101 Switching Protocols
+  Upgrade: websocket
+  Connection: Upgrade
+  Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+
+After the 101 response, the connection is no longer HTTP.
+It is a persistent, bidirectional WebSocket connection.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">WebSocket in Practice (Node.js)</div>
+<pre><code>// Server (using the 'ws' library)
+const WebSocket = require("ws");
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on("connection", (ws) => {
+  console.log("Client connected");
+
+  ws.on("message", (data) => {
+    const message = JSON.parse(data);
+    console.log("Received:", message);
+
+    // Broadcast to all connected clients
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({
+          user: message.user,
+          text: message.text,
+          timestamp: Date.now(),
+        }));
+      }
+    });
+  });
+
+  ws.on("close", () => console.log("Client disconnected"));
+});
+
+// Client (browser)
+const ws = new WebSocket("wss://example.com/chat");
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({ user: "Sean", text: "Hello!" }));
+};
+
+ws.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  displayMessage(message);
+};
+
+ws.onclose = () => {
+  console.log("Disconnected. Reconnecting...");
+  setTimeout(connect, 3000);  // Auto-reconnect
+};</code></pre>
+    </div>
+
+    <h3>Alternatives to WebSockets</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Technique</th>
+          <th>Direction</th>
+          <th>When to Use</th>
+          <th>Pros</th>
+          <th>Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Long Polling</strong></td>
+          <td>Server to client</td>
+          <td>Simple notifications, legacy support</td>
+          <td>Works everywhere, simple</td>
+          <td>High latency, wastes connections</td>
+        </tr>
+        <tr>
+          <td><strong>SSE (Server-Sent Events)</strong></td>
+          <td>Server to client only</td>
+          <td>Live feeds, dashboards, notifications</td>
+          <td>Simple API, auto-reconnect, HTTP-based</td>
+          <td>One-directional, limited to text</td>
+        </tr>
+        <tr>
+          <td><strong>WebSocket</strong></td>
+          <td>Bidirectional</td>
+          <td>Chat, gaming, collaborative editing</td>
+          <td>Low latency, full-duplex, binary support</td>
+          <td>More complex, doesn't work through some proxies</td>
+        </tr>
+        <tr>
+          <td><strong>WebTransport</strong></td>
+          <td>Bidirectional</td>
+          <td>Gaming, streaming (emerging)</td>
+          <td>HTTP/3 based, unreliable + reliable streams</td>
+          <td>New, limited browser support</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Server-Sent Events -- The Simpler Alternative</div>
+<pre><code>// SSE is perfect when you only need server-to-client streaming.
+// It's simpler than WebSockets and works over regular HTTP.
+
+// Server (Express)
+app.get("/events", (req, res) => {
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+  });
+
+  // Send event every 2 seconds
+  const interval = setInterval(() => {
+    res.write(`data: ${JSON.stringify({ time: Date.now() })}\n\n`);
+  }, 2000);
+
+  req.on("close", () => clearInterval(interval));
+});
+
+// Client (browser -- built-in API, no library needed)
+const source = new EventSource("/events");
+source.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log("Server says:", data);
+};
+
+// SSE automatically reconnects if the connection drops.
+// Use SSE for: live scores, stock tickers, notification feeds.
+// Use WebSockets for: chat, games, anything needing client-to-server.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Choosing the Right Real-Time Approach</div>
+      <ul>
+        <li><strong>Notifications / live feeds:</strong> SSE. Simple, reliable, auto-reconnect.</li>
+        <li><strong>Chat / messaging:</strong> WebSocket. Need bidirectional communication.</li>
+        <li><strong>Collaborative editing (Google Docs):</strong> WebSocket + CRDTs or OT (operational transforms).</li>
+        <li><strong>Online gaming:</strong> WebSocket or WebTransport. Need low latency and binary data.</li>
+        <li><strong>Simple "is there new data?":</strong> Polling (check every 30 seconds). Don't over-engineer.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: REST VS GRAPHQL VS GRPC                         -->
+  <!-- ============================================================ -->
+  <section id="api-protocols">
+    <h2>10. REST vs GraphQL vs gRPC</h2>
+    <p>These are three different approaches to designing APIs. Each makes different tradeoffs between simplicity, flexibility, and performance. There is no universally "best" choice -- it depends on your use case.</p>
+
+    <div class="example-box">
+      <div class="label">The Same Operation in Three Styles</div>
+<pre><code>// Get a user's name and their last 3 orders
+
+// ─── REST ───
+GET /api/users/42
+GET /api/users/42/orders?limit=3
+// Two requests. Server decides what fields to return.
+// You get ALL fields whether you need them or not (over-fetching).
+
+// ─── GraphQL ───
+POST /graphql
+{
+  "query": "{
+    user(id: 42) {
+      name
+      orders(last: 3) {
+        id
+        total
+        status
+      }
+    }
+  }"
+}
+// ONE request. Client specifies exactly which fields it wants.
+// No over-fetching, no under-fetching.
+
+// ─── gRPC ───
+// Defined in a .proto file:
+service UserService {
+  rpc GetUser (GetUserRequest) returns (UserResponse);
+  rpc GetOrders (GetOrdersRequest) returns (OrdersResponse);
+}
+
+message GetUserRequest { int32 id = 1; }
+message UserResponse { string name = 1; }
+// Uses Protocol Buffers (binary serialization). Extremely fast.
+// Strongly typed. Code is auto-generated from .proto files.</code></pre>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>REST</th>
+          <th>GraphQL</th>
+          <th>gRPC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Transport</td>
+          <td>HTTP (any method)</td>
+          <td>HTTP (usually POST)</td>
+          <td>HTTP/2 (binary frames)</td>
+        </tr>
+        <tr>
+          <td>Data format</td>
+          <td>JSON (usually)</td>
+          <td>JSON</td>
+          <td>Protocol Buffers (binary)</td>
+        </tr>
+        <tr>
+          <td>Schema / contract</td>
+          <td>Optional (OpenAPI/Swagger)</td>
+          <td>Required (GraphQL schema)</td>
+          <td>Required (.proto files)</td>
+        </tr>
+        <tr>
+          <td>Fetching</td>
+          <td>Fixed response shape per endpoint</td>
+          <td>Client specifies exact fields</td>
+          <td>Fixed response per RPC method</td>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td>Good</td>
+          <td>Good (but parsing overhead)</td>
+          <td>Excellent (binary, streaming)</td>
+        </tr>
+        <tr>
+          <td>Streaming</td>
+          <td>Limited (SSE, chunked)</td>
+          <td>Subscriptions (WebSocket)</td>
+          <td>Built-in bidirectional streaming</td>
+        </tr>
+        <tr>
+          <td>Browser support</td>
+          <td>Native</td>
+          <td>Native (it's just HTTP)</td>
+          <td>Requires grpc-web proxy</td>
+        </tr>
+        <tr>
+          <td>Learning curve</td>
+          <td>Low</td>
+          <td>Medium</td>
+          <td>Medium-High</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Public APIs, CRUD apps, simple services</td>
+          <td>Mobile apps, complex UIs, multiple clients</td>
+          <td>Microservices, internal APIs, high performance</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">When to Use Each</div>
+      <ul>
+        <li><strong>REST:</strong> Your default choice. Simple, well-understood, great tooling. Use for public APIs, CRUD applications, and when your team knows REST well.</li>
+        <li><strong>GraphQL:</strong> When you have multiple clients (web, mobile, smartwatch) that need different data shapes. When over-fetching or under-fetching is a real problem. When you want a single endpoint instead of dozens.</li>
+        <li><strong>gRPC:</strong> For service-to-service communication in microservices. When you need maximum performance (binary serialization is 5-10x faster than JSON). When you need streaming (real-time data feeds between services).</li>
+        <li><strong>Many companies use all three:</strong> gRPC between backend services, GraphQL as a gateway for frontend clients, REST for public/partner APIs.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 11: COMMON PORTS                                    -->
+  <!-- ============================================================ -->
+  <section id="common-ports">
+    <h2>11. Common Ports</h2>
+    <p>A port is a 16-bit number (0-65535) that identifies a specific process on a machine. IP addresses identify the machine; ports identify which application on that machine should receive the traffic. Think of the IP as the building's street address and the port as the apartment number.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Port</th>
+          <th>Protocol</th>
+          <th>What It's For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>20, 21</td><td>FTP</td><td>File Transfer Protocol (20=data, 21=control)</td></tr>
+        <tr><td>22</td><td>SSH</td><td>Secure Shell (remote login, SCP, SFTP)</td></tr>
+        <tr><td>23</td><td>Telnet</td><td>Unencrypted remote login (don't use this)</td></tr>
+        <tr><td>25</td><td>SMTP</td><td>Sending email (server to server)</td></tr>
+        <tr><td>53</td><td>DNS</td><td>Domain name resolution (UDP and TCP)</td></tr>
+        <tr><td>80</td><td>HTTP</td><td>Unencrypted web traffic</td></tr>
+        <tr><td>110</td><td>POP3</td><td>Retrieving email (download and delete)</td></tr>
+        <tr><td>143</td><td>IMAP</td><td>Retrieving email (sync, keep on server)</td></tr>
+        <tr><td>443</td><td>HTTPS</td><td>Encrypted web traffic (TLS)</td></tr>
+        <tr><td>465 / 587</td><td>SMTPS / Submission</td><td>Encrypted email sending</td></tr>
+        <tr><td>993</td><td>IMAPS</td><td>Encrypted IMAP</td></tr>
+        <tr><td>995</td><td>POP3S</td><td>Encrypted POP3</td></tr>
+        <tr><td>3000</td><td>Dev servers</td><td>Common default for Node.js, React dev server</td></tr>
+        <tr><td>3306</td><td>MySQL</td><td>MySQL / MariaDB database</td></tr>
+        <tr><td>5432</td><td>PostgreSQL</td><td>PostgreSQL database</td></tr>
+        <tr><td>5672</td><td>AMQP</td><td>RabbitMQ message broker</td></tr>
+        <tr><td>6379</td><td>Redis</td><td>Redis in-memory data store</td></tr>
+        <tr><td>8080</td><td>HTTP (alt)</td><td>Common alternative HTTP port for dev/proxies</td></tr>
+        <tr><td>8443</td><td>HTTPS (alt)</td><td>Alternative HTTPS port</td></tr>
+        <tr><td>9092</td><td>Kafka</td><td>Apache Kafka message broker</td></tr>
+        <tr><td>27017</td><td>MongoDB</td><td>MongoDB database</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">Port Security</div>
+      <ul>
+        <li><strong>Ports 0-1023</strong> are "well-known" and require root/admin to bind on Unix systems.</li>
+        <li><strong>Never expose database ports</strong> (3306, 5432, 27017, 6379) to the public internet. Bind them to localhost or a private network.</li>
+        <li><strong>Use firewalls</strong> (iptables, ufw, security groups) to allow only the ports your application needs. A common setup: allow 22 (SSH), 80 (HTTP), 443 (HTTPS) -- block everything else.</li>
+        <li><strong>Don't rely on non-standard ports for security</strong> ("security through obscurity"). Running SSH on port 2222 reduces noise but doesn't stop a determined attacker.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 12: NETWORK DEBUGGING TOOLS                         -->
+  <!-- ============================================================ -->
+  <section id="debugging-tools">
+    <h2>12. Network Debugging Tools</h2>
+    <p>When something goes wrong with your network -- and it will -- you need the right tools to diagnose the problem. These tools are the stethoscope, thermometer, and X-ray machine of network debugging. Learn them before you need them.</p>
+
+    <div class="example-box">
+      <div class="label">ping -- Is the host reachable?</div>
+<pre><code># Basic connectivity test (uses ICMP echo)
+$ ping example.com
+PING example.com (93.184.216.34): 56 data bytes
+64 bytes from 93.184.216.34: icmp_seq=0 ttl=56 time=11.632 ms
+64 bytes from 93.184.216.34: icmp_seq=1 ttl=56 time=11.726 ms
+
+# What it tells you:
+#   - Host is reachable (you got a response)
+#   - Round-trip time: ~11ms (latency)
+#   - TTL=56: packet went through ~8 hops (started at 64)
+
+# Ping a specific number of times
+$ ping -c 4 example.com
+
+# Common issues:
+#   - "Request timeout": host is down OR firewall blocks ICMP
+#   - High/variable latency: network congestion or routing issues
+#   - "Unknown host": DNS resolution failed</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">traceroute -- What path do packets take?</div>
+<pre><code># Shows every router (hop) between you and the destination
+$ traceroute example.com
+ 1  192.168.1.1 (192.168.1.1)      1.234 ms  -- your router
+ 2  10.0.0.1 (10.0.0.1)            8.456 ms  -- ISP's first router
+ 3  72.14.213.105                   10.234 ms -- ISP backbone
+ 4  108.170.248.1                   11.567 ms -- Google peering
+ 5  93.184.216.34                   12.890 ms -- destination
+
+# Use traceroute to identify:
+#   - Where latency spikes (hop 2 to 3 = ISP problem)
+#   - Where packets are being dropped (*** = no response)
+#   - Whether traffic is taking an unexpected route
+
+# On Linux, use traceroute. On macOS, use traceroute.
+# On Windows, use tracert.
+# mtr combines ping + traceroute in real-time:
+$ mtr example.com</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">nslookup and dig -- DNS debugging</div>
+<pre><code># nslookup: quick DNS lookup
+$ nslookup example.com
+Server:    1.1.1.1
+Address:   1.1.1.1#53
+
+Non-authoritative answer:
+Name:      example.com
+Address:   93.184.216.34
+
+# dig: detailed DNS lookup (more info than nslookup)
+$ dig example.com
+
+;; ANSWER SECTION:
+example.com.    3600    IN    A    93.184.216.34
+
+;; Query time: 23 msec
+;; SERVER: 1.1.1.1#53
+
+# Look up specific record types
+$ dig example.com MX          # mail servers
+$ dig example.com AAAA        # IPv6 address
+$ dig example.com NS          # nameservers
+$ dig example.com TXT         # TXT records (SPF, DKIM)
+
+# Trace the full DNS resolution path
+$ dig +trace example.com
+
+# Query a specific DNS server
+$ dig @8.8.8.8 example.com   # ask Google's DNS
+$ dig @1.1.1.1 example.com   # ask Cloudflare's DNS
+
+# Check if DNS propagation is complete after a change:
+# Query multiple resolvers and compare answers</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">curl -- The Swiss Army knife of HTTP</div>
+<pre><code># Simple GET request
+$ curl https://api.example.com/users
+
+# Show response headers
+$ curl -I https://example.com
+HTTP/2 200
+content-type: text/html
+content-length: 1256
+cache-control: max-age=604800
+
+# Verbose mode (see full request/response including TLS handshake)
+$ curl -v https://example.com
+
+# POST with JSON body
+$ curl -X POST https://api.example.com/users \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-token" \
+  -d '{"name": "Sean", "email": "sean@example.com"}'
+
+# Follow redirects
+$ curl -L http://example.com    # follows 301/302 redirects
+
+# Download a file
+$ curl -O https://example.com/file.zip
+
+# Measure timing (DNS, connect, TLS, first byte, total)
+$ curl -w "\nDNS: %{time_namelookup}s\nConnect: %{time_connect}s\n\
+TLS: %{time_appconnect}s\nFirst byte: %{time_starttransfer}s\n\
+Total: %{time_total}s\n" -o /dev/null -s https://example.com
+
+# Output:
+# DNS: 0.012s
+# Connect: 0.045s
+# TLS: 0.089s
+# First byte: 0.134s
+# Total: 0.156s</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">netstat and ss -- What's listening on my machine?</div>
+<pre><code># ss is the modern replacement for netstat (faster, more info)
+
+# Show all listening TCP ports
+$ ss -tlnp
+State   Recv-Q  Send-Q  Local Address:Port   Peer Address:Port  Process
+LISTEN  0       128     0.0.0.0:22            0.0.0.0:*          sshd
+LISTEN  0       511     0.0.0.0:80            0.0.0.0:*          nginx
+LISTEN  0       511     127.0.0.1:3000        0.0.0.0:*          node
+LISTEN  0       128     127.0.0.1:5432        0.0.0.0:*          postgres
+
+# Flags: -t=TCP, -l=listening, -n=numeric (no DNS), -p=process name
+
+# Show all established connections
+$ ss -tnp
+
+# Show what's using a specific port
+$ ss -tlnp | grep :3000
+# or
+$ lsof -i :3000
+
+# netstat equivalent (if ss is not available)
+$ netstat -tlnp
+
+# Common debugging scenario:
+# "My app won't start -- port 3000 already in use"
+$ ss -tlnp | grep :3000
+# Find the PID and kill it, or use a different port</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">tcpdump -- Capture packets on the wire</div>
+<pre><code># tcpdump captures raw network traffic. Powerful but noisy.
+
+# Capture all traffic on port 80
+$ sudo tcpdump -i any port 80
+
+# Capture traffic to/from a specific host
+$ sudo tcpdump -i any host 93.184.216.34
+
+# Capture and save to a file (open in Wireshark later)
+$ sudo tcpdump -i any -w capture.pcap port 443
+
+# Show packet contents in ASCII
+$ sudo tcpdump -i any -A port 80
+
+# Capture DNS traffic
+$ sudo tcpdump -i any port 53
+
+# Capture only SYN packets (new TCP connections)
+$ sudo tcpdump -i any 'tcp[tcpflags] & tcp-syn != 0'
+
+# When to use tcpdump:
+#   - Debugging mysterious connection issues
+#   - Verifying traffic is actually encrypted (HTTPS)
+#   - Checking if packets are reaching your server at all
+#   - Analyzing protocol behavior (TCP retransmissions, etc.)
+
+# Wireshark: GUI version of tcpdump. Same pcap files.
+# Much easier to use for complex analysis (filtering, following streams,
+# decoding protocols). Install it on your development machine.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Network Debugging Cheat Sheet</div>
+      <ul>
+        <li><strong>"Is the server up?"</strong> -- <code>ping server.com</code></li>
+        <li><strong>"Where is the latency?"</strong> -- <code>traceroute server.com</code> or <code>mtr server.com</code></li>
+        <li><strong>"Is DNS working?"</strong> -- <code>dig server.com</code> or <code>nslookup server.com</code></li>
+        <li><strong>"Is the HTTP endpoint working?"</strong> -- <code>curl -v https://server.com/api/health</code></li>
+        <li><strong>"What's listening on my machine?"</strong> -- <code>ss -tlnp</code></li>
+        <li><strong>"What port is my app using?"</strong> -- <code>ss -tlnp | grep :3000</code> or <code>lsof -i :3000</code></li>
+        <li><strong>"Are packets actually being sent?"</strong> -- <code>sudo tcpdump -i any port 443</code></li>
+        <li><strong>"How long does each network phase take?"</strong> -- <code>curl -w "..." -o /dev/null -s</code> (timing)</li>
+        <li><strong>"Is my firewall blocking traffic?"</strong> -- <code>sudo iptables -L -n</code> or check cloud security groups</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The Debugging Thought Process</div>
+      <p>When something network-related breaks, work up from the bottom of the stack:</p>
+      <ol>
+        <li><strong>Layer 1-2: Can you reach the machine?</strong> <code>ping</code> the IP address (not the domain). If this fails, it's a connectivity or firewall issue.</li>
+        <li><strong>Layer 3: Is DNS working?</strong> <code>dig</code> the domain. If the IP is wrong, it's a DNS problem.</li>
+        <li><strong>Layer 4: Is the port open?</strong> <code>ss -tlnp</code> on the server. <code>telnet host port</code> from the client. If connection refused, the service isn't running or a firewall is blocking it.</li>
+        <li><strong>Layer 7: Is the application responding correctly?</strong> <code>curl -v</code> to see the full HTTP exchange. Check status codes, headers, and response body.</li>
+      </ol>
+      <p>This bottom-up approach prevents you from spending an hour debugging your application code when the real problem is a misconfigured firewall.</p>
+    </div>
+  </section>
+
+</div><!-- end .container -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+  <p><a href="index.html">Back to Home</a></p>
+</footer>
+
+</body>
+</html>

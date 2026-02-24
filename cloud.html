@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud &amp; Infrastructure - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html" class="active">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+    <a href="selfhosting.html">Self-Hosting</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Cloud &amp; Infrastructure</div>
+    <h1>Cloud &amp; Infrastructure</h1>
+    <p>Everything you need to understand about cloud computing -- what it actually is, why it exists, how the major providers compare, and the core services that power every modern application. No marketing fluff, just the concepts and practical knowledge you need to deploy, scale, and operate real software.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#what-is-cloud">1. What Is "The Cloud"?</a>
+    <a href="#cloud-providers">2. Cloud Providers (AWS, GCP, Azure)</a>
+    <a href="#core-services">3. Core Cloud Services</a>
+    <a href="#service-models">4. IaaS vs PaaS vs SaaS vs FaaS</a>
+    <a href="#serverless">5. Serverless</a>
+    <a href="#cicd">6. CI/CD (Continuous Integration &amp; Deployment)</a>
+    <a href="#iac">7. Infrastructure as Code</a>
+    <a href="#load-balancers">8. Load Balancers</a>
+    <a href="#cdns">9. CDNs (Content Delivery Networks)</a>
+    <a href="#object-storage">10. Object Storage</a>
+    <a href="#managed-databases">11. Managed Databases</a>
+    <a href="#cloud-costs">12. Cloud Costs &amp; Avoiding Bill Shock</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: WHAT IS THE CLOUD                                -->
+  <!-- ============================================================ -->
+  <section id="what-is-cloud">
+    <h2>1. What Is "The Cloud"?</h2>
+
+    <p>Strip away all the marketing, and "the cloud" is just <strong>other people's computers that you rent</strong>. That's it. When you deploy your app to AWS, your code runs on a physical server sitting in a warehouse (called a data center) owned by Amazon. You don't buy the server. You don't maintain the server. You pay for how much you use.</p>
+
+    <div class="example-box">
+      <div class="label">The Restaurant Analogy</div>
+      <p>Running your own servers is like <strong>owning a restaurant</strong>. You buy the building, install the kitchen, hire staff, handle plumbing when it breaks, pay rent even when nobody is eating. It's total control but total responsibility.</p>
+      <p>Using the cloud is like <strong>renting a commercial kitchen</strong>. You show up, cook your food, serve your customers, and leave. Someone else handles the building, the electricity, the fire suppression system, and the plumbing. You just pay for the time and space you use.</p>
+      <p>The tradeoff: you give up some control (you can't knock out a wall to expand), but you gain speed (start cooking tomorrow, not in 6 months after construction) and flexibility (rent a bigger kitchen next month if business grows).</p>
+    </div>
+
+    <h3>What Does a Data Center Actually Look Like?</h3>
+    <p>A data center is a massive building full of racks of servers, connected by fiber optic cables, cooled by industrial HVAC systems, and backed by redundant power supplies (including diesel generators for when the grid fails). AWS alone operates 100+ data centers worldwide. Each one looks like this:</p>
+
+    <pre><code>  DATA CENTER
+  +-------------------------------------------------+
+  |                                                 |
+  |   +-------+  +-------+  +-------+  +-------+   |
+  |   | Rack  |  | Rack  |  | Rack  |  | Rack  |   |
+  |   |Server1|  |Server1|  |Server1|  |Server1|   |
+  |   |Server2|  |Server2|  |Server2|  |Server2|   |
+  |   |Server3|  |Server3|  |Server3|  |Server3|   |
+  |   |  ...  |  |  ...  |  |  ...  |  |  ...  |   |
+  |   +---+---+  +---+---+  +---+---+  +---+---+   |
+  |       |          |          |          |        |
+  |   +---+----------+----------+----------+---+    |
+  |   |         Network Switch Layer           |    |
+  |   +---+------------------------------------+    |
+  |       |                                         |
+  |   +---+---+   +----------+   +-----------+     |
+  |   |Router |   |  Cooling |   |  Backup   |     |
+  |   |to ISP |   |  System  |   |  Power    |     |
+  |   +-------+   +----------+   +-----------+     |
+  |                                                 |
+  +-------------------------------------------------+
+        |
+  To the internet (your users)</code></pre>
+
+    <h3>Why the Cloud Exists</h3>
+    <p>Before the cloud, if you wanted to launch a web app, you had to:</p>
+    <ul>
+      <li><strong>Buy physical servers</strong> -- $5,000-$50,000 per machine, weeks of lead time</li>
+      <li><strong>Rent rack space</strong> in a data center (or build your own)</li>
+      <li><strong>Hire sysadmins</strong> to maintain hardware, replace failed disks, patch OSes</li>
+      <li><strong>Guess your capacity</strong> -- buy too few servers and you crash on launch day, buy too many and you waste money</li>
+      <li><strong>Handle disasters</strong> -- what happens when a server catches fire? When the building floods?</li>
+    </ul>
+
+    <p>The cloud eliminates all of this. You click a button (or run a command), and a virtual server appears in seconds. Need 10 more? Click 10 more times. Traffic drops? Turn them off and stop paying. This is <strong>elastic computing</strong>, and it changed how software is built.</p>
+
+    <div class="tip-box">
+      <div class="label">Key Cloud Concepts</div>
+      <ul>
+        <li><strong>On-demand:</strong> Get resources instantly, pay as you go</li>
+        <li><strong>Elastic:</strong> Scale up when you need more, scale down when you don't</li>
+        <li><strong>Regions:</strong> Data centers in different geographic locations (us-east-1, eu-west-1, ap-southeast-1). Deploy close to your users for lower latency.</li>
+        <li><strong>Availability Zones (AZs):</strong> Separate physical buildings within a region. If one AZ loses power, your app stays up in another AZ.</li>
+        <li><strong>Multi-region:</strong> Deploy in multiple regions for global coverage and disaster recovery</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The Cloud Is Not Magic</div>
+      <p>Your code still runs on physical hardware. Hard drives still fail. Networks still have latency. Servers still crash. The cloud doesn't eliminate infrastructure problems -- it makes them <em>someone else's problem</em> and gives you tools to handle failures gracefully (redundancy, auto-scaling, health checks). But if you design your app assuming nothing ever fails, you'll have a bad time, cloud or not.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: CLOUD PROVIDERS                                  -->
+  <!-- ============================================================ -->
+  <section id="cloud-providers">
+    <h2>2. Cloud Providers (AWS, GCP, Azure)</h2>
+
+    <p>Three companies dominate cloud computing: <strong>AWS</strong> (Amazon), <strong>Azure</strong> (Microsoft), and <strong>GCP</strong> (Google). Together they hold about 65% of the market. There are also strong alternatives: DigitalOcean, Linode (now Akamai), Hetzner, Vultr, and Cloudflare.</p>
+
+    <h3>The Big Three Compared</h3>
+    <table>
+      <tr>
+        <th>Aspect</th>
+        <th>AWS</th>
+        <th>GCP</th>
+        <th>Azure</th>
+      </tr>
+      <tr>
+        <td>Market share</td>
+        <td>~31% (largest)</td>
+        <td>~12%</td>
+        <td>~25%</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Everything. Most services, most mature.</td>
+        <td>Data/ML, Kubernetes, developer UX</td>
+        <td>Enterprise, Windows/.NET, Office 365 integration</td>
+      </tr>
+      <tr>
+        <td>Compute</td>
+        <td>EC2</td>
+        <td>Compute Engine</td>
+        <td>Virtual Machines</td>
+      </tr>
+      <tr>
+        <td>Object Storage</td>
+        <td>S3</td>
+        <td>Cloud Storage</td>
+        <td>Blob Storage</td>
+      </tr>
+      <tr>
+        <td>Serverless</td>
+        <td>Lambda</td>
+        <td>Cloud Functions</td>
+        <td>Azure Functions</td>
+      </tr>
+      <tr>
+        <td>Managed K8s</td>
+        <td>EKS</td>
+        <td>GKE (best K8s experience)</td>
+        <td>AKS</td>
+      </tr>
+      <tr>
+        <td>Managed DB</td>
+        <td>RDS, DynamoDB, Aurora</td>
+        <td>Cloud SQL, Spanner, Firestore</td>
+        <td>Azure SQL, Cosmos DB</td>
+      </tr>
+      <tr>
+        <td>CDN</td>
+        <td>CloudFront</td>
+        <td>Cloud CDN</td>
+        <td>Azure CDN</td>
+      </tr>
+      <tr>
+        <td>Free tier</td>
+        <td>12-month free tier + always-free tier</td>
+        <td>$300 credit for 90 days + always-free tier</td>
+        <td>$200 credit for 30 days + always-free tier</td>
+      </tr>
+      <tr>
+        <td>CLI</td>
+        <td><code>aws</code></td>
+        <td><code>gcloud</code></td>
+        <td><code>az</code></td>
+      </tr>
+      <tr>
+        <td>Pricing</td>
+        <td>Complex, many hidden costs</td>
+        <td>Simpler, per-second billing</td>
+        <td>Complex, enterprise-oriented</td>
+      </tr>
+      <tr>
+        <td>Learning curve</td>
+        <td>Steepest -- 200+ services</td>
+        <td>Moderate -- cleaner console</td>
+        <td>Moderate -- if you know Microsoft ecosystem</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Which One Should You Learn?</div>
+      <p><strong>For jobs:</strong> Learn AWS. It has the most market share, the most job listings, and the most services. Knowing AWS makes you employable almost anywhere.</p>
+      <p><strong>For startups:</strong> GCP often has the best developer experience and generous free tiers. Their Kubernetes offering (GKE) is best-in-class since Google invented Kubernetes.</p>
+      <p><strong>For enterprise:</strong> If the company already uses Microsoft (Active Directory, Office 365, .NET), Azure is the natural choice because of deep integration.</p>
+      <p><strong>For personal projects:</strong> DigitalOcean, Hetzner, or Vultr. Simpler, cheaper, and you'll learn more about infrastructure because there's less hand-holding.</p>
+    </div>
+
+    <h3>Service Name Rosetta Stone</h3>
+    <p>Every provider has the same core services -- they just give them different names. Here's how to translate:</p>
+    <table>
+      <tr>
+        <th>What You Need</th>
+        <th>AWS</th>
+        <th>GCP</th>
+        <th>Azure</th>
+      </tr>
+      <tr>
+        <td>Virtual server</td>
+        <td>EC2</td>
+        <td>Compute Engine</td>
+        <td>Virtual Machines</td>
+      </tr>
+      <tr>
+        <td>Object storage</td>
+        <td>S3</td>
+        <td>Cloud Storage</td>
+        <td>Blob Storage</td>
+      </tr>
+      <tr>
+        <td>SQL database</td>
+        <td>RDS</td>
+        <td>Cloud SQL</td>
+        <td>Azure SQL</td>
+      </tr>
+      <tr>
+        <td>NoSQL database</td>
+        <td>DynamoDB</td>
+        <td>Firestore</td>
+        <td>Cosmos DB</td>
+      </tr>
+      <tr>
+        <td>Serverless functions</td>
+        <td>Lambda</td>
+        <td>Cloud Functions</td>
+        <td>Azure Functions</td>
+      </tr>
+      <tr>
+        <td>Container orchestration</td>
+        <td>ECS / EKS</td>
+        <td>Cloud Run / GKE</td>
+        <td>ACI / AKS</td>
+      </tr>
+      <tr>
+        <td>Message queue</td>
+        <td>SQS</td>
+        <td>Pub/Sub</td>
+        <td>Service Bus</td>
+      </tr>
+      <tr>
+        <td>DNS</td>
+        <td>Route 53</td>
+        <td>Cloud DNS</td>
+        <td>Azure DNS</td>
+      </tr>
+      <tr>
+        <td>Secret management</td>
+        <td>Secrets Manager</td>
+        <td>Secret Manager</td>
+        <td>Key Vault</td>
+      </tr>
+      <tr>
+        <td>IAM (permissions)</td>
+        <td>IAM</td>
+        <td>IAM</td>
+        <td>Entra ID (was Azure AD)</td>
+      </tr>
+    </table>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: CORE CLOUD SERVICES                              -->
+  <!-- ============================================================ -->
+  <section id="core-services">
+    <h2>3. Core Cloud Services</h2>
+
+    <p>Every cloud provider offers hundreds of services, but you only need to understand about 5-6 core ones to be productive. Everything else is built on top of these fundamentals.</p>
+
+    <h3>Compute (EC2 / VMs)</h3>
+    <p>A virtual machine in the cloud. You choose the CPU, RAM, and disk size. You get root access. It's like having a remote computer you can SSH into. This is the most fundamental cloud service -- everything else can theoretically run on a VM.</p>
+
+    <pre><code># Launch an EC2 instance (AWS CLI)
+aws ec2 run-instances \
+  --image-id ami-0c55b159cbfafe1f0 \
+  --instance-type t3.micro \
+  --key-name my-key-pair \
+  --security-group-ids sg-0123456789abcdef0
+
+# SSH into it
+ssh -i my-key-pair.pem ec2-user@54.123.45.67
+
+# Common instance types (AWS):
+# t3.micro  -- 2 vCPU,  1 GB RAM  -- free tier, dev/test
+# t3.medium -- 2 vCPU,  4 GB RAM  -- small apps
+# m6i.large -- 2 vCPU,  8 GB RAM  -- general purpose
+# c6i.large -- 2 vCPU,  4 GB RAM  -- CPU-intensive (compute-optimized)
+# r6i.large -- 2 vCPU, 16 GB RAM  -- memory-intensive (databases, caching)</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Instance Type Naming (AWS)</div>
+      <p>The naming follows a pattern: <code>t3.micro</code> = <strong>t</strong> (family: burstable) + <strong>3</strong> (generation) + <strong>micro</strong> (size). Families: <strong>t</strong> = burstable (cheap, good for variable workloads), <strong>m</strong> = general purpose, <strong>c</strong> = compute-optimized, <strong>r</strong> = memory-optimized, <strong>g/p</strong> = GPU instances.</p>
+    </div>
+
+    <h3>Storage (S3 / Blob)</h3>
+    <p>Object storage for files of any size -- images, videos, backups, logs, static websites. You upload objects into "buckets" (containers). Each object gets a unique key (like a file path). S3 has 99.999999999% (eleven 9s) durability -- meaning if you store 10 million objects, you might lose 1 every 10,000 years.</p>
+
+    <pre><code># Upload a file to S3
+aws s3 cp ./backup.tar.gz s3://my-bucket/backups/backup-2024-01-15.tar.gz
+
+# List bucket contents
+aws s3 ls s3://my-bucket/backups/
+
+# Download a file
+aws s3 cp s3://my-bucket/backups/backup-2024-01-15.tar.gz ./
+
+# Sync a directory (like rsync)
+aws s3 sync ./dist s3://my-website-bucket/ --delete</code></pre>
+
+    <h3>Databases (RDS)</h3>
+    <p>Managed database services. You pick the engine (PostgreSQL, MySQL, etc.) and the instance size. The cloud provider handles backups, patching, replication, and failover. You just connect and run queries.</p>
+
+    <pre><code># What "managed" means -- the provider handles:
+# - Automated daily backups (point-in-time recovery)
+# - OS and database engine patching
+# - Multi-AZ failover (automatic switch to standby if primary dies)
+# - Read replicas (for scaling reads)
+# - Monitoring and alerts
+# - Storage auto-scaling
+
+# You handle:
+# - Schema design
+# - Query optimization
+# - Application-level connection pooling
+# - Access control (who can connect)</code></pre>
+
+    <h3>Networking (VPC)</h3>
+    <p>A <strong>Virtual Private Cloud</strong> is your own private network in the cloud. It's like having your own isolated section of the data center. You control which resources can talk to each other, which can access the internet, and which ports are open.</p>
+
+    <pre><code>  YOUR VPC (10.0.0.0/16)
+  +---------------------------------------------------+
+  |                                                   |
+  |  Public Subnet (10.0.1.0/24)                      |
+  |  +---------------------------------------------+  |
+  |  | Load Balancer  --->  Web Server (EC2)        |  |
+  |  +---------------------------------------------+  |
+  |         |                                         |
+  |  Private Subnet (10.0.2.0/24)                     |
+  |  +---------------------------------------------+  |
+  |  | App Server (EC2)  --->  Database (RDS)       |  |
+  |  +---------------------------------------------+  |
+  |                                                   |
+  +---------------------------------------------------+
+        |
+   Internet Gateway (only public subnet has access)</code></pre>
+
+    <div class="example-box">
+      <div class="label">Why VPC Matters</div>
+      <p>Without a VPC, your database would be directly accessible from the internet. Anyone could try to connect. With a VPC, your database sits in a <strong>private subnet</strong> with no internet access. Only your app servers in the same VPC can reach it. The load balancer sits in a <strong>public subnet</strong> and forwards traffic to the app servers. This is defense in depth -- even if someone compromises your web server, they can't directly access the database from outside.</p>
+    </div>
+
+    <h3>CDN (CloudFront / Cloud CDN)</h3>
+    <p>A Content Delivery Network caches your content at <strong>edge locations</strong> around the world. When a user in Tokyo requests your image, they get it from a server in Tokyo instead of your origin server in Virginia. This reduces latency from ~200ms to ~20ms. More on this in <a href="#cdns">Section 9</a>.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: SERVICE MODELS                                   -->
+  <!-- ============================================================ -->
+  <section id="service-models">
+    <h2>4. IaaS vs PaaS vs SaaS vs FaaS</h2>
+
+    <p>These acronyms describe <strong>how much the provider manages for you</strong>. Think of it as a spectrum from "you manage everything" to "you manage nothing".</p>
+
+    <pre><code>  What YOU manage vs what the PROVIDER manages:
+
+  On-Premise   IaaS         PaaS         FaaS         SaaS
+  (you own     (rent        (rent        (rent        (rent
+   everything)  hardware)    platform)    functions)   software)
+
+  +----------+ +----------+ +----------+ +----------+ +----------+
+  |   App    | |   App    | |   App    | | Function | |          |
+  +----------+ +----------+ +----------+ +----------+ |          |
+  | Runtime  | | Runtime  | |##########| |##########| |          |
+  +----------+ +----------+ +----------+ +----------+ |  Gmail   |
+  |    OS    | |    OS    | |##########| |##########| |  Slack   |
+  +----------+ +----------+ +----------+ +----------+ | Shopify  |
+  |   Disk   | |##########| |##########| |##########| |          |
+  +----------+ +----------+ +----------+ +----------+ |          |
+  | Network  | |##########| |##########| |##########| |          |
+  +----------+ +----------+ +----------+ +----------+ +----------+
+
+  [  = You manage ]     [## = Provider manages ]</code></pre>
+
+    <h3>IaaS -- Infrastructure as a Service</h3>
+    <p>You rent the hardware (virtual machines, networking, storage). You install and manage everything on top: the OS, runtime, app, security patches.</p>
+    <p><strong>Examples:</strong> AWS EC2, GCP Compute Engine, DigitalOcean Droplets, Hetzner Cloud</p>
+    <p><strong>Use when:</strong> You need full control. Custom OS configurations. Running software that doesn't fit into platform constraints. You have the ops expertise to manage it.</p>
+
+    <div class="example-box">
+      <div class="label">IaaS in Practice</div>
+      <pre><code># You spin up a VM, then you're responsible for everything:
+ssh root@your-server
+apt update && apt upgrade              # You patch the OS
+apt install nodejs nginx postgresql    # You install dependencies
+git clone your-repo && npm install     # You deploy your code
+systemctl enable nginx                 # You configure the web server
+certbot --nginx                        # You manage SSL certificates
+# ...and you set up monitoring, backups, firewalls, log rotation</code></pre>
+    </div>
+
+    <h3>PaaS -- Platform as a Service</h3>
+    <p>You give the provider your code, and they handle the rest -- servers, OS, runtime, scaling, SSL, deployments. You just <code>git push</code>.</p>
+    <p><strong>Examples:</strong> Heroku, Vercel, Netlify, Railway, Render, Fly.io, Google App Engine</p>
+    <p><strong>Use when:</strong> You want to ship fast without managing infrastructure. Small teams. Prototypes. Apps that fit standard patterns.</p>
+
+    <div class="example-box">
+      <div class="label">PaaS in Practice</div>
+      <pre><code># Heroku: deploy a Node.js app
+git push heroku main
+# That's it. Heroku detects Node.js, installs dependencies,
+# starts your server, gives you a URL, handles SSL, and scales.
+
+# Vercel: deploy a Next.js app
+vercel --prod
+# Builds, deploys to edge network, SSL, custom domain, done.
+
+# Railway: deploy anything with a Dockerfile
+railway up
+# Detects Dockerfile, builds, deploys, gives you a URL.</code></pre>
+    </div>
+
+    <h3>SaaS -- Software as a Service</h3>
+    <p>You don't manage anything. You just use the software through a browser or API. The provider handles everything -- infrastructure, updates, security, availability.</p>
+    <p><strong>Examples:</strong> Gmail, Slack, Shopify, GitHub, Notion, Stripe, Twilio</p>
+    <p><strong>Use when:</strong> The software does what you need out of the box. You're a user, not a builder (for that specific function).</p>
+
+    <h3>FaaS -- Functions as a Service</h3>
+    <p>You write individual functions. The provider runs them when triggered (HTTP request, file upload, timer, queue message). No servers to manage. You pay per execution, not per hour. More on this in <a href="#serverless">Section 5</a>.</p>
+    <p><strong>Examples:</strong> AWS Lambda, Google Cloud Functions, Cloudflare Workers, Azure Functions</p>
+
+    <table>
+      <tr>
+        <th>Model</th>
+        <th>You Manage</th>
+        <th>Provider Manages</th>
+        <th>Cost Model</th>
+        <th>Best For</th>
+      </tr>
+      <tr>
+        <td><strong>IaaS</strong></td>
+        <td>OS, runtime, app, data</td>
+        <td>Hardware, network, storage</td>
+        <td>Per hour/second (VM runs)</td>
+        <td>Full control, custom setups</td>
+      </tr>
+      <tr>
+        <td><strong>PaaS</strong></td>
+        <td>App, data</td>
+        <td>Everything else</td>
+        <td>Per dyno/instance + usage</td>
+        <td>Fast deployment, small teams</td>
+      </tr>
+      <tr>
+        <td><strong>FaaS</strong></td>
+        <td>Individual functions</td>
+        <td>Everything else</td>
+        <td>Per invocation + duration</td>
+        <td>Event-driven, sporadic workloads</td>
+      </tr>
+      <tr>
+        <td><strong>SaaS</strong></td>
+        <td>Configuration, data</td>
+        <td>Everything</td>
+        <td>Per user/month or per usage</td>
+        <td>Standard business tools</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">The PaaS Trap</div>
+      <p>PaaS is amazing for getting started but can become expensive at scale. Heroku's free tier is gone, and a basic production setup (2 dynos + managed Postgres + Redis) can run $100+/month -- the same workload on a $20/month VPS. Many startups start on PaaS for speed, then migrate to IaaS or containers as they grow. Plan for this migration path from day one.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: SERVERLESS                                       -->
+  <!-- ============================================================ -->
+  <section id="serverless">
+    <h2>5. Serverless</h2>
+
+    <p>Serverless is the most misnamed concept in computing. There <em>are</em> servers -- you just don't think about them. You write a function, upload it, and the cloud provider runs it whenever it's triggered. You don't provision VMs, you don't manage scaling, you don't patch anything. You pay only when your code actually runs.</p>
+
+    <div class="example-box">
+      <div class="label">The Vending Machine Analogy</div>
+      <p>A traditional server is like <strong>a restaurant kitchen</strong>: it's running all the time, waiting for orders, costing money even when nobody is eating. A serverless function is like a <strong>vending machine</strong>: it does nothing until someone presses a button. It serves the request, then goes idle. You don't pay for idle time.</p>
+    </div>
+
+    <h3>AWS Lambda Example</h3>
+    <pre><code>// handler.js -- an AWS Lambda function
+// This function runs when triggered (HTTP request, S3 upload, etc.)
+
+exports.handler = async (event) => {
+  // event contains the trigger data (request body, S3 event, etc.)
+  const name = event.queryStringParameters?.name || "World";
+
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: `Hello, ${name}!`,
+      timestamp: new Date().toISOString(),
+    }),
+  };
+};
+
+// Deploy with AWS CLI:
+// aws lambda create-function \
+//   --function-name hello \
+//   --runtime nodejs20.x \
+//   --handler handler.handler \
+//   --zip-file fileb://function.zip \
+//   --role arn:aws:iam::123456789:role/lambda-role</code></pre>
+
+    <h3>Cloudflare Workers Example</h3>
+    <pre><code>// worker.js -- runs at the edge (200+ locations worldwide)
+// Response time: ~10ms because it runs near the user
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/hello") {
+      return new Response(JSON.stringify({ message: "Hello from the edge!" }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response("Not Found", { status: 404 });
+  },
+};
+
+// Deploy: wrangler deploy</code></pre>
+
+    <h3>Cold Starts -- The Serverless Tax</h3>
+    <p>When a serverless function hasn't been called recently, the provider needs to spin up a new execution environment (load your code, initialize the runtime, run your initialization code). This is called a <strong>cold start</strong>, and it adds latency to the first request.</p>
+
+    <table>
+      <tr>
+        <th>Runtime</th>
+        <th>Cold Start Time</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>Node.js</td>
+        <td>100-500ms</td>
+        <td>Fast, good default choice</td>
+      </tr>
+      <tr>
+        <td>Python</td>
+        <td>200-600ms</td>
+        <td>Depends on imports (numpy is heavy)</td>
+      </tr>
+      <tr>
+        <td>Go</td>
+        <td>50-200ms</td>
+        <td>Compiled binary, fastest cold starts</td>
+      </tr>
+      <tr>
+        <td>Java</td>
+        <td>1-5 seconds</td>
+        <td>JVM startup is heavy; use GraalVM to improve</td>
+      </tr>
+      <tr>
+        <td>Cloudflare Workers</td>
+        <td>&lt;5ms</td>
+        <td>V8 isolates, not containers -- nearly instant</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Reducing Cold Starts</div>
+      <ul>
+        <li><strong>Provisioned concurrency (Lambda):</strong> Keep N instances warm. Costs more but eliminates cold starts.</li>
+        <li><strong>Small bundles:</strong> Less code to load = faster cold start. Tree-shake your dependencies.</li>
+        <li><strong>Avoid heavy imports:</strong> Don't import the entire AWS SDK when you only need S3.</li>
+        <li><strong>Use compiled languages:</strong> Go has the fastest cold starts. Rust is also excellent.</li>
+        <li><strong>Edge runtimes:</strong> Cloudflare Workers, Deno Deploy, and Vercel Edge Functions use V8 isolates instead of containers. Cold starts are near-zero.</li>
+      </ul>
+    </div>
+
+    <h3>When to Use Serverless (and When NOT To)</h3>
+    <table>
+      <tr>
+        <th>Good Fit</th>
+        <th>Bad Fit</th>
+      </tr>
+      <tr>
+        <td>API endpoints with variable traffic</td>
+        <td>Long-running processes (&gt;15 min)</td>
+      </tr>
+      <tr>
+        <td>Event processing (file uploads, webhooks)</td>
+        <td>WebSocket connections</td>
+      </tr>
+      <tr>
+        <td>Scheduled tasks (cron jobs)</td>
+        <td>Stateful applications</td>
+      </tr>
+      <tr>
+        <td>Image/video processing triggers</td>
+        <td>High-throughput, consistent traffic</td>
+      </tr>
+      <tr>
+        <td>Low-traffic APIs (pay $0 when idle)</td>
+        <td>Applications needing &lt;10ms latency on every request</td>
+      </tr>
+      <tr>
+        <td>MVP / prototypes (ship fast, worry later)</td>
+        <td>Complex apps with many interconnected services</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">The Serverless Cost Crossover</div>
+      <p>Serverless is cheap for low traffic (you pay nothing when idle). But at high, consistent traffic, it gets expensive. A Lambda function handling 10 million requests/month with 500ms average duration costs roughly $30-50/month. That same workload on a $5/month VPS would handle it easily. Serverless is cheaper below a threshold and more expensive above it. That crossover point varies, but for many apps it's around 1-5 million requests/month.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: CI/CD                                            -->
+  <!-- ============================================================ -->
+  <section id="cicd">
+    <h2>6. CI/CD (Continuous Integration &amp; Deployment)</h2>
+
+    <p>CI/CD automates the process of testing, building, and deploying your code. Without it, deployments are manual, error-prone, and scary. With it, you push code to Git and it automatically gets tested and deployed. This is how professional teams ship software.</p>
+
+    <div class="example-box">
+      <div class="label">What CI and CD Actually Mean</div>
+      <p><strong>Continuous Integration (CI):</strong> Every time you push code, automated tests run. If tests fail, the build fails and you know immediately. This catches bugs before they reach production. The "continuous" part means it happens on every push, not once a week.</p>
+      <p><strong>Continuous Delivery (CD):</strong> After CI passes, the code is automatically packaged and ready to deploy. A human clicks "deploy" to push to production.</p>
+      <p><strong>Continuous Deployment (also CD):</strong> After CI passes, the code automatically deploys to production with no human intervention. This is what most modern teams aim for.</p>
+    </div>
+
+    <pre><code>  Developer pushes code to GitHub
+       |
+       v
+  +--------------------+
+  |  CI Pipeline Runs  |  (automated)
+  |  - Install deps    |
+  |  - Lint code       |
+  |  - Run tests       |
+  |  - Build project   |
+  +---------+----------+
+            |
+       Tests pass?
+       /         \
+     YES          NO
+      |            |
+      v            v
+  +--------+   +----------+
+  | Deploy |   | Notify   |
+  | to     |   | developer|
+  | prod   |   | (fix it) |
+  +--------+   +----------+</code></pre>
+
+    <h3>GitHub Actions -- The Most Common CI/CD Tool</h3>
+    <p>GitHub Actions runs workflows defined in YAML files inside your repo (<code>.github/workflows/</code>). Workflows are triggered by events (push, pull request, schedule, manual). Each workflow has jobs, and each job has steps.</p>
+
+    <pre><code># .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+# When to run
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest      # GitHub provides the VM
+
+    steps:
+      # 1. Check out your code
+      - uses: actions/checkout@v4
+
+      # 2. Set up Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'           # Cache node_modules between runs
+
+      # 3. Install dependencies
+      - run: npm ci
+
+      # 4. Lint
+      - run: npm run lint
+
+      # 5. Run tests
+      - run: npm test
+
+      # 6. Build
+      - run: npm run build
+
+  deploy:
+    needs: test                  # Only runs if "test" job passes
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only deploy from main branch
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build
+
+      # Deploy to your hosting provider
+      - name: Deploy to production
+        run: |
+          npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}</code></pre>
+
+    <div class="example-box">
+      <div class="label">Line-by-Line Breakdown</div>
+      <p><code>on: push/pull_request</code> -- Trigger this workflow when someone pushes to main or opens a PR against main.</p>
+      <p><code>runs-on: ubuntu-latest</code> -- GitHub spins up a fresh Ubuntu VM for this job. It's destroyed after the job finishes. You get 2,000 free minutes/month on the free plan.</p>
+      <p><code>uses: actions/checkout@v4</code> -- A pre-built action that clones your repo into the VM. Without this, the VM has no code.</p>
+      <p><code>cache: 'npm'</code> -- Caches <code>node_modules</code> between workflow runs. Instead of downloading all dependencies every time (30-60 seconds), it restores from cache (2-3 seconds).</p>
+      <p><code>needs: test</code> -- The deploy job won't start until the test job succeeds. If tests fail, deploy is skipped.</p>
+      <p><code>${{ secrets.VERCEL_TOKEN }}</code> -- GitHub Secrets store sensitive values (API keys, tokens). You set them in your repo settings. They're never exposed in logs.</p>
+    </div>
+
+    <h3>A Real-World Workflow: Docker Build + Deploy</h3>
+    <pre><code># .github/workflows/deploy.yml
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Log into Docker Hub (or ECR, GHCR)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      # Build and push Docker image
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myuser/myapp:latest,myuser/myapp:${{ github.sha }}
+
+      # Deploy to server via SSH
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: deploy
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull myuser/myapp:latest
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d --name myapp \
+              -p 80:3000 \
+              --env-file /home/deploy/.env \
+              myuser/myapp:latest</code></pre>
+
+    <div class="tip-box">
+      <div class="label">CI/CD Best Practices</div>
+      <ul>
+        <li><strong>Run tests on every PR</strong> -- Never merge code that breaks tests</li>
+        <li><strong>Keep pipelines fast</strong> -- Under 5 minutes is ideal. Cache dependencies aggressively.</li>
+        <li><strong>Use branch protection</strong> -- Require CI to pass before merging to main</li>
+        <li><strong>Never put secrets in code</strong> -- Use GitHub Secrets, environment variables, or a vault</li>
+        <li><strong>Tag deployments</strong> -- Use git SHA or semver tags so you can roll back to any version</li>
+        <li><strong>Monitor after deploy</strong> -- Set up alerts for error rates, response times, and health checks</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Other CI/CD Tools</div>
+      <p>GitHub Actions is the most popular for open source and startups. But you'll also encounter: <strong>GitLab CI</strong> (built into GitLab), <strong>Jenkins</strong> (self-hosted, oldest, most configurable), <strong>CircleCI</strong>, <strong>Travis CI</strong> (declining), <strong>Buildkite</strong> (hybrid -- you provide the runners), and <strong>Drone CI</strong> (container-native). The concepts are identical across all of them -- only the YAML syntax differs.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: INFRASTRUCTURE AS CODE                           -->
+  <!-- ============================================================ -->
+  <section id="iac">
+    <h2>7. Infrastructure as Code</h2>
+
+    <p>Infrastructure as Code (IaC) means defining your cloud resources in code files instead of clicking through a web console. Your servers, databases, networks, DNS records -- all described in text files that live in Git. This makes infrastructure reproducible, reviewable, and version-controlled.</p>
+
+    <div class="example-box">
+      <div class="label">Why IaC Matters</div>
+      <p>Imagine you set up your production environment by clicking through the AWS console for 3 hours. Everything works. Six months later, you need to create an identical staging environment. Can you remember every click? Every security group rule? Every IAM policy? Of course not.</p>
+      <p>With IaC, you run <code>terraform apply</code> and your entire infrastructure is created from a file. Need a staging copy? Change a variable and apply again. Need to see who changed the database size? Check the git log. Need to roll back a networking change? <code>git revert</code> and re-apply.</p>
+    </div>
+
+    <h3>Declarative vs Imperative</h3>
+    <pre><code># IMPERATIVE (scripts): "Here are the steps to get there"
+# Like giving someone turn-by-turn directions
+aws ec2 create-security-group --group-name web-sg --description "Web SG"
+aws ec2 authorize-security-group-ingress --group-name web-sg --port 80 --cidr 0.0.0.0/0
+aws ec2 run-instances --instance-type t3.micro --security-groups web-sg
+# Problem: run it twice and you get TWO servers. Not idempotent.
+
+# DECLARATIVE (Terraform/CloudFormation): "Here's what I want to exist"
+# Like showing someone a photo of where you want to go
+resource "aws_instance" "web" {
+  instance_type = "t3.micro"
+  ami           = "ami-0c55b159cbfafe1f0"
+}
+# Run it twice and Terraform says "already exists, nothing to do."
+# Change instance_type and Terraform updates only what changed.</code></pre>
+
+    <h3>Terraform -- The Most Popular IaC Tool</h3>
+    <p>Terraform by HashiCorp works with every cloud provider (and many other services like GitHub, Cloudflare, Datadog). You write <code>.tf</code> files using HCL (HashiCorp Configuration Language), then Terraform figures out what needs to be created, updated, or destroyed.</p>
+
+    <pre><code># main.tf -- Define your infrastructure
+
+# Tell Terraform which providers to use
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Create a VPC
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "my-app-vpc"
+  }
+}
+
+# Create a public subnet
+resource "aws_subnet" "public" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
+# Create an EC2 instance
+resource "aws_instance" "web" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = var.instance_type     # Variable -- configurable
+  subnet_id     = aws_subnet.public.id  # Reference another resource
+
+  tags = {
+    Name        = "web-server"
+    Environment = var.environment
+  }
+}
+
+# Create an RDS database
+resource "aws_db_instance" "postgres" {
+  engine            = "postgres"
+  engine_version    = "16"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+  db_name           = "myapp"
+  username          = "appuser"
+  password          = var.db_password  # From variable (never hardcode)
+
+  skip_final_snapshot = true  # For dev environments
+}</code></pre>
+
+    <pre><code># variables.tf -- Define configurable values
+variable "instance_type" {
+  description = "EC2 instance type"
+  default     = "t3.micro"
+}
+
+variable "environment" {
+  description = "Environment name"
+  default     = "development"
+}
+
+variable "db_password" {
+  description = "Database password"
+  sensitive   = true  # Won't show in logs/output
+}</code></pre>
+
+    <h3>Terraform Workflow</h3>
+    <pre><code># 1. Initialize (download provider plugins)
+terraform init
+
+# 2. Plan (preview what will change -- ALWAYS do this)
+terraform plan
+# Output:
+# + aws_instance.web will be created
+# + aws_db_instance.postgres will be created
+# Plan: 2 to add, 0 to change, 0 to destroy.
+
+# 3. Apply (create/update resources)
+terraform apply
+# Type "yes" to confirm (or use -auto-approve in CI)
+
+# 4. Destroy (tear down everything -- careful!)
+terraform destroy</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Terraform State -- The Most Important File</div>
+      <p>Terraform stores the current state of your infrastructure in a <code>terraform.tfstate</code> file. This file maps your <code>.tf</code> definitions to real cloud resources. If you lose this file, Terraform doesn't know what exists and might try to create duplicates. <strong>Never commit this file to git.</strong> Store it in a remote backend (S3 bucket, Terraform Cloud) so your team shares the same state.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">IaC Tools Comparison</div>
+      <ul>
+        <li><strong>Terraform</strong> -- Multi-cloud, most popular, declarative HCL. The default choice.</li>
+        <li><strong>OpenTofu</strong> -- Open-source fork of Terraform (after HashiCorp changed its license). Drop-in replacement.</li>
+        <li><strong>Pulumi</strong> -- Write IaC in real programming languages (TypeScript, Python, Go). Good if you hate learning HCL.</li>
+        <li><strong>AWS CloudFormation</strong> -- AWS-only, YAML/JSON. More verbose than Terraform but deeper AWS integration.</li>
+        <li><strong>AWS CDK</strong> -- Write CloudFormation in TypeScript/Python. Compiles to CloudFormation templates.</li>
+        <li><strong>Ansible</strong> -- Imperative (procedural), good for server configuration, not ideal for cloud resources.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: LOAD BALANCERS                                   -->
+  <!-- ============================================================ -->
+  <section id="load-balancers">
+    <h2>8. Load Balancers</h2>
+
+    <p>A load balancer sits in front of multiple servers and distributes incoming requests across them. Without one, a single server handles all traffic and becomes a bottleneck (and a single point of failure). With one, you can scale to any number of servers and survive individual server failures.</p>
+
+    <pre><code>  Without Load Balancer:                With Load Balancer:
+
+  Users ---> [Server]                   Users ---> [Load Balancer]
+             (single point                         /     |      \
+              of failure)                      [Srv 1] [Srv 2] [Srv 3]
+                                               (any server can die,
+                                                users don't notice)</code></pre>
+
+    <div class="example-box">
+      <div class="label">The Restaurant Host Analogy</div>
+      <p>A load balancer is like the <strong>host at a busy restaurant</strong>. When customers arrive, the host doesn't send everyone to the same table. They look at which servers (waiters) are available and distribute customers evenly. If one waiter calls in sick, the host just routes to the remaining waiters. Customers still get served without knowing anything changed.</p>
+    </div>
+
+    <h3>Layer 4 vs Layer 7 Load Balancers</h3>
+    <p>Load balancers operate at different layers of the networking stack, which determines what information they can see and use for routing decisions.</p>
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Layer 4 (Transport)</th>
+        <th>Layer 7 (Application)</th>
+      </tr>
+      <tr>
+        <td>Sees</td>
+        <td>IP addresses, TCP/UDP ports</td>
+        <td>HTTP headers, URLs, cookies, body</td>
+      </tr>
+      <tr>
+        <td>Routing based on</td>
+        <td>IP + port only</td>
+        <td>URL path, hostname, headers, cookies</td>
+      </tr>
+      <tr>
+        <td>Performance</td>
+        <td>Faster (less processing)</td>
+        <td>Slower (must parse HTTP)</td>
+      </tr>
+      <tr>
+        <td>SSL termination</td>
+        <td>No (passes encrypted traffic through)</td>
+        <td>Yes (decrypts, inspects, re-encrypts)</td>
+      </tr>
+      <tr>
+        <td>Use case</td>
+        <td>TCP/UDP services, databases, gaming</td>
+        <td>HTTP APIs, web apps, microservices</td>
+      </tr>
+      <tr>
+        <td>AWS service</td>
+        <td>NLB (Network Load Balancer)</td>
+        <td>ALB (Application Load Balancer)</td>
+      </tr>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Layer 7 Routing in Practice</div>
+      <pre><code># With a Layer 7 load balancer, you can route based on URL path:
+#
+# /api/*        --> API servers (backend cluster)
+# /images/*     --> Image processing servers
+# /admin/*      --> Admin dashboard servers
+# /*            --> Frontend servers
+#
+# Or route based on hostname:
+#
+# api.example.com    --> API cluster
+# www.example.com    --> Web frontend cluster
+# admin.example.com  --> Admin cluster
+#
+# This is impossible with Layer 4 -- it can't see the URL or hostname.</code></pre>
+    </div>
+
+    <h3>Load Balancing Algorithms</h3>
+    <pre><code># How the load balancer decides which server gets the next request:
+
+# 1. ROUND ROBIN (simplest, most common)
+# Request 1 -> Server A
+# Request 2 -> Server B
+# Request 3 -> Server C
+# Request 4 -> Server A (back to start)
+# Good for: servers with equal capacity
+
+# 2. WEIGHTED ROUND ROBIN
+# Server A (weight 3): gets 3 out of every 6 requests
+# Server B (weight 2): gets 2 out of every 6 requests
+# Server C (weight 1): gets 1 out of every 6 requests
+# Good for: servers with different capacities
+
+# 3. LEAST CONNECTIONS
+# Send to the server with the fewest active connections
+# Good for: requests that take variable time (some fast, some slow)
+
+# 4. IP HASH
+# Hash the client's IP to consistently route to the same server
+# Good for: session stickiness without cookies
+# Problem: if a server dies, all its clients get reassigned
+
+# 5. LEAST RESPONSE TIME
+# Send to the server that's responding fastest right now
+# Good for: maximizing performance when servers have varying load</code></pre>
+
+    <h3>Health Checks</h3>
+    <p>The load balancer regularly pings your servers to check if they're alive. If a server stops responding, the load balancer stops sending traffic to it. When it recovers, traffic resumes.</p>
+
+    <pre><code># Health check configuration (AWS ALB example):
+#
+# Protocol:      HTTP
+# Path:          /health
+# Port:          3000
+# Interval:      30 seconds (check every 30s)
+# Timeout:       5 seconds (wait 5s for response)
+# Healthy:       3 consecutive successes = server is healthy
+# Unhealthy:     2 consecutive failures = server is unhealthy
+
+# Your app needs a health endpoint:
+app.get("/health", (req, res) => {
+  // Check dependencies
+  const dbHealthy = await checkDatabase();
+  const cacheHealthy = await checkRedis();
+
+  if (dbHealthy && cacheHealthy) {
+    res.status(200).json({ status: "ok" });
+  } else {
+    res.status(503).json({ status: "unhealthy", db: dbHealthy, cache: cacheHealthy });
+  }
+});</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Common Load Balancers</div>
+      <ul>
+        <li><strong>Nginx</strong> -- The most popular self-hosted reverse proxy / load balancer. Free, battle-tested, excellent performance.</li>
+        <li><strong>HAProxy</strong> -- Pure load balancer, even faster than Nginx for TCP/HTTP proxying. Used by GitHub, Stack Overflow.</li>
+        <li><strong>AWS ALB/NLB</strong> -- Managed, no servers to maintain, auto-scales. ALB for HTTP, NLB for TCP/UDP.</li>
+        <li><strong>Cloudflare</strong> -- Global load balancing with built-in DDoS protection and CDN.</li>
+        <li><strong>Traefik</strong> -- Popular in Docker/Kubernetes environments. Auto-discovers services.</li>
+        <li><strong>Caddy</strong> -- Simple config, automatic HTTPS, good for smaller deployments.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: CDNs                                             -->
+  <!-- ============================================================ -->
+  <section id="cdns">
+    <h2>9. CDNs (Content Delivery Networks)</h2>
+
+    <p>A CDN caches copies of your content at servers spread across the globe (called <strong>edge nodes</strong> or <strong>PoPs</strong> -- Points of Presence). When a user requests your image, JavaScript file, or API response, they get it from the nearest edge node instead of your origin server thousands of miles away.</p>
+
+    <pre><code>  Without CDN:                          With CDN:
+
+  User in Tokyo                         User in Tokyo
+       |                                     |
+       | 200ms round trip                    | 10ms round trip
+       |                                     |
+       v                                     v
+  Server in Virginia                    Edge node in Tokyo
+                                             |
+                                        (cache miss? fetch from origin)
+                                             |
+                                             v
+                                        Server in Virginia</code></pre>
+
+    <div class="example-box">
+      <div class="label">How CDN Caching Works</div>
+      <p><strong>First request:</strong> User in Tokyo requests <code>/images/logo.png</code>. No edge node in Tokyo has it cached. The CDN fetches it from your origin server in Virginia (slow), serves it to the user, and <strong>caches a copy</strong> at the Tokyo edge node.</p>
+      <p><strong>Second request:</strong> Another user in Tokyo requests the same image. The edge node already has it cached. Served instantly. No round trip to Virginia.</p>
+      <p><strong>Cache expiration:</strong> After the TTL (Time To Live) expires (e.g., 24 hours), the edge node considers the cached copy stale and fetches a fresh copy from origin on the next request.</p>
+    </div>
+
+    <h3>What Should You Put Behind a CDN?</h3>
+    <table>
+      <tr>
+        <th>Content Type</th>
+        <th>CDN Benefit</th>
+        <th>TTL Recommendation</th>
+      </tr>
+      <tr>
+        <td>Static assets (JS, CSS, images)</td>
+        <td>Massive -- rarely changes</td>
+        <td>1 year (use content hash in filename)</td>
+      </tr>
+      <tr>
+        <td>Fonts</td>
+        <td>Massive -- never changes</td>
+        <td>1 year</td>
+      </tr>
+      <tr>
+        <td>Video / large media</td>
+        <td>Huge -- saves bandwidth</td>
+        <td>1 week to 1 year</td>
+      </tr>
+      <tr>
+        <td>HTML pages (static sites)</td>
+        <td>High -- same content for everyone</td>
+        <td>5 min to 1 hour</td>
+      </tr>
+      <tr>
+        <td>API responses (public data)</td>
+        <td>Moderate -- depends on freshness needs</td>
+        <td>30 sec to 5 min</td>
+      </tr>
+      <tr>
+        <td>API responses (user-specific)</td>
+        <td>Low -- different for every user</td>
+        <td>Don't cache (or use Vary header)</td>
+      </tr>
+    </table>
+
+    <h3>Cache-Control Headers</h3>
+    <pre><code># You control CDN caching through HTTP headers:
+
+# Cache for 1 year (static assets with hashed filenames)
+Cache-Control: public, max-age=31536000, immutable
+# "public" = CDN can cache it
+# "immutable" = don't even check for updates (filename changes instead)
+
+# Cache for 5 minutes, revalidate after
+Cache-Control: public, max-age=300, stale-while-revalidate=60
+# Serve cached copy for 300s. After that, serve stale for 60s
+# while fetching fresh copy in background.
+
+# Don't cache (user-specific data)
+Cache-Control: private, no-store
+# "private" = only browser can cache, not CDN
+# "no-store" = don't cache at all
+
+# Cache but always revalidate (HTML pages)
+Cache-Control: public, no-cache
+# "no-cache" doesn't mean "don't cache" -- it means
+# "cache it, but check with origin before using it" (via ETag/If-Modified-Since)</code></pre>
+
+    <div class="warning-box">
+      <div class="label">The Cache Invalidation Problem</div>
+      <p>You deploy a new version of your app. Your CSS is cached at 200+ edge nodes worldwide with a 1-year TTL. Users see the old CSS. What do you do? You can't easily purge every edge node instantly.</p>
+      <p><strong>The solution: content-hashed filenames.</strong> Instead of <code>style.css</code>, your build tool generates <code>style.a3f8b2c1.css</code>. The hash changes when the content changes. New deployment = new filename = CDN fetches the new file. Old cached files naturally expire. This is why every modern build tool (Vite, webpack, Parcel) includes content hashing.</p>
+    </div>
+
+    <h3>Major CDN Providers</h3>
+    <table>
+      <tr>
+        <th>Provider</th>
+        <th>Edge Nodes</th>
+        <th>Notable Features</th>
+        <th>Cost</th>
+      </tr>
+      <tr>
+        <td><strong>Cloudflare</strong></td>
+        <td>300+ cities</td>
+        <td>DDoS protection, WAF, Workers (edge compute), free tier</td>
+        <td>Generous free tier, paid from $20/mo</td>
+      </tr>
+      <tr>
+        <td><strong>AWS CloudFront</strong></td>
+        <td>450+ PoPs</td>
+        <td>Deep AWS integration, Lambda@Edge</td>
+        <td>Pay per GB transferred + requests</td>
+      </tr>
+      <tr>
+        <td><strong>Fastly</strong></td>
+        <td>80+ PoPs</td>
+        <td>Instant purge, VCL configs, Compute@Edge</td>
+        <td>Pay per usage, more expensive</td>
+      </tr>
+      <tr>
+        <td><strong>Bunny CDN</strong></td>
+        <td>120+ PoPs</td>
+        <td>Simple, cheap, good for small projects</td>
+        <td>From $0.01/GB</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">CDN for Beginners</div>
+      <p>Start with <strong>Cloudflare</strong>. Their free tier gives you CDN, DDoS protection, SSL, and DNS -- all for $0. Just point your domain's nameservers to Cloudflare, and they proxy all traffic through their edge network. It's the easiest way to add a CDN to any project.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: OBJECT STORAGE                                  -->
+  <!-- ============================================================ -->
+  <section id="object-storage">
+    <h2>10. Object Storage</h2>
+
+    <p>Object storage is a flat storage system where every item (called an "object") gets a unique key. Unlike a filesystem with directories and nested folders, object storage is a giant key-value store. The key looks like a path (<code>images/avatars/user-123.jpg</code>), but there's no actual directory structure -- it's just a string.</p>
+
+    <div class="example-box">
+      <div class="label">Object Storage vs Filesystem</div>
+      <p><strong>Filesystem (your hard drive):</strong> Hierarchical. Directories contain files. You navigate a tree structure. Great for small, frequently-accessed data. Limited to one machine.</p>
+      <p><strong>Object storage (S3):</strong> Flat. Every object has a key and metadata. Scales to exabytes. Accessible from anywhere via HTTP. Built for durability (data replicated across multiple facilities). No concept of "editing a file" -- you replace the whole object.</p>
+      <p><strong>Rule of thumb:</strong> If your app creates/serves files that users upload (images, videos, PDFs, backups), use object storage. If your app reads/writes local config or temp files, use the filesystem.</p>
+    </div>
+
+    <h3>S3 -- The Standard</h3>
+    <pre><code># AWS S3 CLI basics
+
+# Create a bucket
+aws s3 mb s3://my-app-uploads-prod
+
+# Upload a file
+aws s3 cp ./photo.jpg s3://my-app-uploads-prod/avatars/user-123.jpg
+
+# Download a file
+aws s3 cp s3://my-app-uploads-prod/avatars/user-123.jpg ./downloaded.jpg
+
+# List objects
+aws s3 ls s3://my-app-uploads-prod/avatars/
+
+# Delete an object
+aws s3 rm s3://my-app-uploads-prod/avatars/user-123.jpg
+
+# Sync a directory
+aws s3 sync ./uploads s3://my-app-uploads-prod/ --delete</code></pre>
+
+    <h3>Uploading from Your App</h3>
+    <pre><code>// Node.js: Upload to S3 using AWS SDK v3
+const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const s3 = new S3Client({ region: "us-east-1" });
+
+// Direct upload from your server
+async function uploadFile(buffer, key, contentType) {
+  await s3.send(new PutObjectCommand({
+    Bucket: "my-app-uploads-prod",
+    Key: key,                        // e.g., "avatars/user-123.jpg"
+    Body: buffer,                    // File contents as Buffer
+    ContentType: contentType,        // e.g., "image/jpeg"
+  }));
+
+  return `https://my-app-uploads-prod.s3.amazonaws.com/${key}`;
+}
+
+// Express route: handle file upload
+app.post("/api/upload", upload.single("file"), async (req, res) => {
+  const key = `uploads/${Date.now()}-${req.file.originalname}`;
+  const url = await uploadFile(req.file.buffer, key, req.file.mimetype);
+  res.json({ url });
+});</code></pre>
+
+    <h3>Presigned URLs -- The Production Pattern</h3>
+    <p>Instead of uploading files through your server (which uses your bandwidth and CPU), generate a <strong>presigned URL</strong> that lets the client upload directly to S3. Your server never touches the file.</p>
+
+    <pre><code>// Step 1: Client requests an upload URL from your API
+// Step 2: Your API generates a presigned S3 URL
+// Step 3: Client uploads directly to S3 using that URL
+// Step 4: Client tells your API the upload is done
+
+// Server: generate presigned upload URL
+app.post("/api/upload-url", async (req, res) => {
+  const { filename, contentType } = req.body;
+  const key = `uploads/${req.user.id}/${Date.now()}-${filename}`;
+
+  const command = new PutObjectCommand({
+    Bucket: "my-app-uploads-prod",
+    Key: key,
+    ContentType: contentType,
+  });
+
+  // URL is valid for 15 minutes
+  const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
+
+  res.json({ uploadUrl, key });
+});
+
+// Client: upload directly to S3
+const { uploadUrl } = await fetch("/api/upload-url", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ filename: "photo.jpg", contentType: "image/jpeg" }),
+}).then(r => r.json());
+
+// Upload file directly to S3 (bypasses your server entirely)
+await fetch(uploadUrl, {
+  method: "PUT",
+  headers: { "Content-Type": "image/jpeg" },
+  body: fileBlob,  // The actual file
+});</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Why Presigned URLs Matter</div>
+      <p>Without presigned URLs, a 100MB file upload goes: User -> Your Server -> S3. Your server is a bottleneck, uses bandwidth, and ties up a connection for the entire upload.</p>
+      <p>With presigned URLs, the 100MB file goes: User -> S3 directly. Your server only generates a URL (tiny JSON response). This scales massively better and costs less.</p>
+    </div>
+
+    <h3>S3-Compatible Alternatives</h3>
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>Provider</th>
+        <th>Key Benefit</th>
+        <th>Pricing</th>
+      </tr>
+      <tr>
+        <td><strong>S3</strong></td>
+        <td>AWS</td>
+        <td>The original, most features</td>
+        <td>$0.023/GB/month + egress fees</td>
+      </tr>
+      <tr>
+        <td><strong>R2</strong></td>
+        <td>Cloudflare</td>
+        <td><strong>Zero egress fees</strong></td>
+        <td>$0.015/GB/month, no egress cost</td>
+      </tr>
+      <tr>
+        <td><strong>Backblaze B2</strong></td>
+        <td>Backblaze</td>
+        <td>Cheapest storage</td>
+        <td>$0.006/GB/month</td>
+      </tr>
+      <tr>
+        <td><strong>MinIO</strong></td>
+        <td>Self-hosted</td>
+        <td>S3-compatible, runs on your servers</td>
+        <td>Free (you pay for hardware)</td>
+      </tr>
+      <tr>
+        <td><strong>GCS</strong></td>
+        <td>Google</td>
+        <td>Integrated with GCP ecosystem</td>
+        <td>$0.020/GB/month</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">S3 Egress Costs -- The Hidden Tax</div>
+      <p>Storing data in S3 is cheap ($0.023/GB/month). <strong>Downloading</strong> data from S3 is expensive ($0.09/GB). If you serve 1TB of images directly from S3 per month, that's $92 just in egress fees. This is why you put a CDN in front of S3 -- the CDN caches the files and serves them from edge nodes, dramatically reducing how much data leaves S3. Alternatively, use Cloudflare R2 which has <strong>zero egress fees</strong>.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 11: MANAGED DATABASES                               -->
+  <!-- ============================================================ -->
+  <section id="managed-databases">
+    <h2>11. Managed Databases</h2>
+
+    <p>A managed database is a database where the cloud provider handles all the operational work -- backups, patching, replication, failover, monitoring, scaling. You just connect and run queries. The alternative is running your own database on a VM (or bare metal), which means you're responsible for everything.</p>
+
+    <h3>Managed vs Self-Hosted</h3>
+    <table>
+      <tr>
+        <th>Aspect</th>
+        <th>Managed (RDS, PlanetScale, etc.)</th>
+        <th>Self-Hosted (Postgres on a VM)</th>
+      </tr>
+      <tr>
+        <td>Setup time</td>
+        <td>5 minutes</td>
+        <td>Hours to days (properly hardened)</td>
+      </tr>
+      <tr>
+        <td>Backups</td>
+        <td>Automatic, point-in-time recovery</td>
+        <td>You set up pg_dump / WAL archiving</td>
+      </tr>
+      <tr>
+        <td>Patching</td>
+        <td>Provider handles it (with maintenance window)</td>
+        <td>You track CVEs and apply patches</td>
+      </tr>
+      <tr>
+        <td>Failover</td>
+        <td>Automatic (Multi-AZ)</td>
+        <td>You configure replication + Patroni/pgBouncer</td>
+      </tr>
+      <tr>
+        <td>Scaling</td>
+        <td>Click a button (or API call)</td>
+        <td>Migrate data to bigger machine manually</td>
+      </tr>
+      <tr>
+        <td>Cost</td>
+        <td>2-5x more expensive</td>
+        <td>Cheaper, but your time has value</td>
+      </tr>
+      <tr>
+        <td>Control</td>
+        <td>Limited (can't tune everything)</td>
+        <td>Full control over every setting</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Most teams, production workloads</td>
+        <td>Cost-sensitive, high-volume, specific tuning needs</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">The Rule</div>
+      <p>Use managed databases unless you have a specific reason not to. The cost premium is worth it for most teams because the alternative is waking up at 3 AM to fix a crashed database. Your engineering time is more expensive than the managed DB surcharge.</p>
+    </div>
+
+    <h3>Popular Managed Database Services</h3>
+
+    <h4>Traditional Cloud (AWS, GCP, Azure)</h4>
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>Engine</th>
+        <th>Starting Price</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td><strong>AWS RDS</strong></td>
+        <td>Postgres, MySQL, MariaDB, Oracle, SQL Server</td>
+        <td>~$15/month (db.t3.micro)</td>
+        <td>The standard. Multi-AZ, read replicas, automated backups.</td>
+      </tr>
+      <tr>
+        <td><strong>AWS Aurora</strong></td>
+        <td>MySQL/Postgres compatible</td>
+        <td>~$30/month</td>
+        <td>5x faster than standard MySQL. Storage auto-scales. More expensive but more performant.</td>
+      </tr>
+      <tr>
+        <td><strong>GCP Cloud SQL</strong></td>
+        <td>Postgres, MySQL, SQL Server</td>
+        <td>~$10/month</td>
+        <td>Similar to RDS. Good GCP integration.</td>
+      </tr>
+    </table>
+
+    <h4>Modern Database Platforms</h4>
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>Engine</th>
+        <th>Standout Feature</th>
+        <th>Free Tier</th>
+      </tr>
+      <tr>
+        <td><strong>Neon</strong></td>
+        <td>PostgreSQL</td>
+        <td>Branching (like git branches for your database), scales to zero</td>
+        <td>500MB storage, generous compute</td>
+      </tr>
+      <tr>
+        <td><strong>PlanetScale</strong></td>
+        <td>MySQL (Vitess)</td>
+        <td>Non-blocking schema changes, horizontal scaling</td>
+        <td>5GB storage, 1 billion row reads/month</td>
+      </tr>
+      <tr>
+        <td><strong>Supabase</strong></td>
+        <td>PostgreSQL</td>
+        <td>Built-in auth, real-time subscriptions, REST API auto-generated</td>
+        <td>500MB storage, 50K monthly active users</td>
+      </tr>
+      <tr>
+        <td><strong>Turso</strong></td>
+        <td>SQLite (libSQL)</td>
+        <td>Edge replicas (database at every edge location), embedded SQLite</td>
+        <td>9GB storage, 500 databases</td>
+      </tr>
+      <tr>
+        <td><strong>Upstash</strong></td>
+        <td>Redis, Kafka</td>
+        <td>Serverless Redis with per-request pricing</td>
+        <td>10K commands/day</td>
+      </tr>
+    </table>
+
+    <div class="example-box">
+      <div class="label">When to Use What</div>
+      <p><strong>Side project / MVP:</strong> Supabase or Neon free tier. You get a real PostgreSQL database with modern tooling for $0. Ship fast.</p>
+      <p><strong>Startup (growing):</strong> Neon or PlanetScale paid tier. Database branching for safe migrations (Neon), or horizontal scaling with non-blocking schema changes (PlanetScale).</p>
+      <p><strong>Enterprise / production:</strong> AWS RDS or Aurora. Battle-tested, every compliance certification, multi-AZ failover, and your ops team already knows AWS.</p>
+      <p><strong>Edge-first app:</strong> Turso. Put read replicas at the edge so database reads are &lt;10ms worldwide. Write to a primary that replicates automatically.</p>
+      <p><strong>Caching layer:</strong> Upstash Redis. Serverless pricing means you pay nothing when idle, pennies when active.</p>
+    </div>
+
+    <h3>Connection Strings</h3>
+    <pre><code># Every managed database gives you a connection string. Format:
+# protocol://username:password@host:port/database?options
+
+# PostgreSQL (RDS, Neon, Supabase)
+postgresql://appuser:secret@db.abc123.us-east-1.rds.amazonaws.com:5432/myapp?sslmode=require
+
+# MySQL (PlanetScale)
+mysql://username:password@aws.connect.psdb.cloud/mydb?ssl={"rejectUnauthorized":true}
+
+# Redis (Upstash)
+rediss://default:token@usw1-capable-toucan-12345.upstash.io:6379
+
+# ALWAYS:
+# - Use SSL/TLS (sslmode=require or ?ssl=true)
+# - Store connection strings in environment variables, NEVER in code
+# - Use connection pooling (PgBouncer, Prisma pool, etc.)
+# - Restrict access to your VPC / allowed IP addresses</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Connection Pooling with Serverless</div>
+      <p>Serverless functions (Lambda, Vercel) create a new database connection on every cold start. At scale, this means hundreds of connections opening and closing rapidly, overwhelming your database. The fix: use an external connection pooler. Neon has a built-in pooler. Supabase uses PgBouncer. For RDS, use RDS Proxy. Without pooling, your serverless app will crash your database at moderate traffic.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 12: CLOUD COSTS                                     -->
+  <!-- ============================================================ -->
+  <section id="cloud-costs">
+    <h2>12. Cloud Costs &amp; Avoiding Bill Shock</h2>
+
+    <p>Cloud billing is designed to be complex. Every service has its own pricing model with multiple dimensions (compute, storage, network, requests, data transfer). People routinely wake up to unexpected $500 bills from leaving a test cluster running or misconfiguring auto-scaling. Understanding cloud costs is a survival skill.</p>
+
+    <div class="warning-box">
+      <div class="label">Horror Stories Are Real</div>
+      <p>A developer left 5 GPU instances running overnight: <strong>$2,000 bill</strong>. A startup enabled S3 Transfer Acceleration on a high-traffic bucket: <strong>$8,000 surprise</strong>. A student accidentally created 100 RDS instances in a loop: <strong>$14,000 in 48 hours</strong>. AWS and GCP will charge you, send the bill, and expect payment. Set up billing alerts BEFORE you create any resources.</p>
+    </div>
+
+    <h3>How Cloud Billing Works</h3>
+    <pre><code># Cloud costs have multiple dimensions. Here's a typical web app:
+
+# 1. COMPUTE (EC2 / VMs)
+#    Billed per second (or hour) the instance is running
+#    t3.micro: ~$0.0104/hour = ~$7.50/month (running 24/7)
+#    t3.medium: ~$0.0416/hour = ~$30/month
+#    GOTCHA: Instances bill even when idle. Stop/terminate when not needed.
+
+# 2. STORAGE (EBS / disks attached to VMs)
+#    Billed per GB per month
+#    gp3 (SSD): $0.08/GB/month. 100GB = $8/month
+#    GOTCHA: Volumes persist after instance termination. Delete them manually.
+
+# 3. DATA TRANSFER (bandwidth)
+#    Inbound: FREE (data going INTO AWS)
+#    Outbound: $0.09/GB (data leaving AWS to the internet)
+#    Between AZs: $0.01/GB (data between availability zones)
+#    GOTCHA: This is the hidden killer. Serving 10TB/month = $900.
+
+# 4. OBJECT STORAGE (S3)
+#    Storage: $0.023/GB/month
+#    Requests: $0.0004 per 1,000 GET requests
+#    Egress: $0.09/GB (same as data transfer)
+#    GOTCHA: Millions of tiny objects = expensive from requests, not storage.
+
+# 5. DATABASE (RDS)
+#    Instance: $15-$500+/month depending on size
+#    Storage: $0.115/GB/month (gp3)
+#    Backups: Free up to 100% of DB storage, then $0.095/GB
+#    GOTCHA: Multi-AZ doubles the instance cost.</code></pre>
+
+    <h3>Free Tier Gotchas</h3>
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>Free Tier</th>
+        <th>The Trap</th>
+      </tr>
+      <tr>
+        <td>EC2</td>
+        <td>750 hours/month of t2.micro (12 months)</td>
+        <td>That's ONE instance running 24/7. Two instances = you're billed for the second one. Also, t2.micro not t3.micro -- make sure you select the right one.</td>
+      </tr>
+      <tr>
+        <td>RDS</td>
+        <td>750 hours/month of db.t2.micro (12 months)</td>
+        <td>Multi-AZ is NOT free tier. Enabling it doubles your bill immediately.</td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>5GB storage, 20K GET, 2K PUT (12 months)</td>
+        <td>20K GETs is nothing. A moderately popular image gallery can burn through this in a day.</td>
+      </tr>
+      <tr>
+        <td>Lambda</td>
+        <td>1M requests + 400K GB-seconds/month (always free)</td>
+        <td>This is genuinely generous. Most small apps never exceed it.</td>
+      </tr>
+      <tr>
+        <td>Data Transfer</td>
+        <td>100GB/month outbound (12 months)</td>
+        <td>After free tier expires, 100GB/month = $9. Doesn't sound bad until your traffic grows.</td>
+      </tr>
+      <tr>
+        <td>NAT Gateway</td>
+        <td>NOT included in free tier</td>
+        <td>$32/month minimum just to exist + $0.045/GB. The sneakiest cost in AWS. Needed if private subnets need internet access.</td>
+      </tr>
+    </table>
+
+    <h3>Cost Optimization Tips</h3>
+
+    <div class="tip-box">
+      <div class="label">Immediate Actions (Do These Right Now)</div>
+      <ul>
+        <li><strong>Set billing alerts.</strong> AWS: Billing > Budgets > Create a $10/month alert. GCP: Billing > Budgets & Alerts. Do this BEFORE creating any resources.</li>
+        <li><strong>Stop or terminate unused resources.</strong> Run <code>aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType]'</code> regularly. Kill anything you're not using.</li>
+        <li><strong>Delete unattached EBS volumes.</strong> When you terminate an EC2 instance, attached volumes might persist. They still cost money.</li>
+        <li><strong>Use the cost calculator before launching.</strong> AWS: calculator.aws. GCP: cloud.google.com/products/calculator.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Cost Optimization Strategies</div>
+      <pre><code># 1. RIGHT-SIZE YOUR INSTANCES
+# Most instances are over-provisioned. Monitor CPU/RAM usage.
+# If your t3.medium (4GB RAM) never uses more than 1.5GB,
+# switch to t3.small (2GB RAM) and save 50%.
+
+# 2. USE RESERVED INSTANCES OR SAVINGS PLANS
+# Commit to 1 or 3 years of usage for 30-60% discount.
+# Only for stable, predictable workloads.
+# AWS: Reserved Instances or Savings Plans
+# GCP: Committed Use Discounts
+
+# 3. USE SPOT INSTANCES FOR FAULT-TOLERANT WORK
+# Spot/Preemptible VMs cost 60-90% less than on-demand.
+# AWS can reclaim them with 2 minutes notice.
+# Good for: batch processing, CI/CD runners, data pipelines
+# Bad for: web servers, databases, anything stateful
+
+# 4. PUT A CDN IN FRONT OF EVERYTHING
+# Reduce origin data transfer (the expensive part)
+# Cloudflare free tier = $0 for unlimited bandwidth
+# That $900/month S3 egress bill becomes $50/month with a CDN.
+
+# 5. USE S3 STORAGE CLASSES
+# S3 Standard:              $0.023/GB  (frequently accessed)
+# S3 Infrequent Access:     $0.0125/GB (accessed once a month)
+# S3 Glacier Instant:       $0.004/GB  (archival, rare access)
+# S3 Glacier Deep Archive:  $0.00099/GB (accessed once a year)
+# Set up lifecycle policies to automatically move old data to cheaper tiers.
+
+# 6. USE SERVERLESS FOR VARIABLE WORKLOADS
+# A t3.small running 24/7 costs ~$15/month even when idle.
+# Lambda costs $0 when not running.
+# For APIs with &lt;100K requests/month, serverless is nearly free.
+
+# 7. AVOID NAT GATEWAYS IF POSSIBLE
+# $32/month + data transfer for a NAT Gateway.
+# Alternatives: VPC endpoints for AWS services ($0),
+# or put your resources in public subnets with security groups.
+
+# 8. SCHEDULE NON-PRODUCTION RESOURCES
+# Dev/staging environments don't need to run 24/7.
+# Run them 10 hours/day, 5 days/week = 70% cost reduction.
+# Use AWS Instance Scheduler or a simple cron + Lambda.</code></pre>
+    </div>
+
+    <h3>Monthly Cost Estimates for Common Setups</h3>
+    <table>
+      <tr>
+        <th>Setup</th>
+        <th>Estimated Monthly Cost</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>Static site on Vercel/Netlify/Cloudflare Pages</td>
+        <td><strong>$0</strong></td>
+        <td>Free tier covers most personal sites</td>
+      </tr>
+      <tr>
+        <td>Small API on Lambda + Neon DB</td>
+        <td><strong>$0-5</strong></td>
+        <td>Free tiers cover low traffic</td>
+      </tr>
+      <tr>
+        <td>VPS (Hetzner) + self-hosted Postgres</td>
+        <td><strong>$5-10</strong></td>
+        <td>Best bang for buck, but you're the ops team</td>
+      </tr>
+      <tr>
+        <td>EC2 t3.small + RDS db.t3.micro</td>
+        <td><strong>$30-50</strong></td>
+        <td>Basic AWS setup, watch for data transfer</td>
+      </tr>
+      <tr>
+        <td>ECS/EKS + RDS + ElastiCache + ALB</td>
+        <td><strong>$150-400</strong></td>
+        <td>Production stack, costs add up quick</td>
+      </tr>
+      <tr>
+        <td>Multi-AZ RDS + CloudFront + S3 + Lambda</td>
+        <td><strong>$100-300</strong></td>
+        <td>Serverless production stack</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">The #1 Rule of Cloud Costs</div>
+      <p>Always set a billing alert before you start. AWS will happily charge you $10,000 and send you the bill later. GCP is slightly better (they'll pause projects at budget limits if configured). But never assume you're "on the free tier" -- verify it. Check your billing dashboard weekly when you're learning. It takes 30 seconds and can save you hundreds of dollars.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">The Honest Advice for Learners</div>
+      <ul>
+        <li><strong>Use free tiers aggressively.</strong> AWS free tier (12 months), GCP $300 credit, Azure $200 credit, Oracle Cloud always-free VMs.</li>
+        <li><strong>Use Hetzner/DigitalOcean for personal projects.</strong> A $5/month VPS is more powerful than AWS free tier and has predictable billing.</li>
+        <li><strong>Use Cloudflare for everything you can.</strong> Free CDN, free DNS, free SSL, free DDoS protection. Cloudflare R2 for storage (no egress fees). Cloudflare Workers for serverless (100K requests/day free).</li>
+        <li><strong>Don't use AWS for learning unless you're specifically studying for AWS certifications.</strong> The console is confusing, the billing is opaque, and the free tier has too many traps. Use simpler providers until you need AWS specifically.</li>
+        <li><strong>Destroy resources when you're done experimenting.</strong> Run <code>terraform destroy</code>. Terminate instances. Delete databases. Check your bill.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+</footer>
+
+</body>
+</html>
