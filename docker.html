@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker &amp; Docker Compose -- Containers From Zero - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html" class="active">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Docker &amp; Docker Compose</div>
+    <h1>Docker &amp; Docker Compose</h1>
+    <p>Understand containers from scratch -- what they are, why they exist, how to use them, and how Docker Compose lets you run entire application stacks with a single command. No prior knowledge needed.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#why-docker">1. The Problem Docker Solves</a>
+    <a href="#containers-vs-vms">2. Containers vs Virtual Machines</a>
+    <a href="#core-concepts">3. Core Concepts (Images, Containers, Registries)</a>
+    <a href="#dockerfile">4. Writing a Dockerfile</a>
+    <a href="#docker-commands">5. Essential Docker Commands</a>
+    <a href="#volumes-networking">6. Volumes &amp; Networking</a>
+    <a href="#docker-compose">7. Docker Compose -- Multi-Container Apps</a>
+    <a href="#compose-commands">8. Docker Compose Commands</a>
+    <a href="#real-world">9. Real-World Example: Full Stack App</a>
+    <a href="#best-practices">10. Best Practices &amp; Common Mistakes</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: WHY DOCKER                                       -->
+  <!-- ============================================================ -->
+  <section id="why-docker">
+    <h2>1. The Problem Docker Solves</h2>
+
+    <p>You've definitely heard the phrase <strong>"it works on my machine"</strong>. That's the entire reason Docker exists.</p>
+
+    <p>Here's the scenario: you build a Node.js app on your laptop. It uses Node 20, PostgreSQL 15, Redis, and a specific version of some npm package. Everything works perfectly. Then you send it to your teammate, and it crashes. Why? Because they have Node 18, a different PostgreSQL version, and their Redis isn't even running.</p>
+
+    <div class="example-box">
+      <div class="label">The Real-World Analogy</div>
+      <p>Think of it like cooking. You make an amazing meal in your kitchen. Now imagine you could <strong>shrink your entire kitchen</strong> -- the oven, the ingredients, the utensils, the recipe -- into a box and ship it to someone. When they open the box, they get the exact same kitchen and can make the exact same meal. That's what Docker does for software.</p>
+      <p>Instead of sending just the recipe (your code) and hoping they have the right ingredients (dependencies), you send <strong>everything packaged together</strong>.</p>
+    </div>
+
+    <p>Docker packages your application along with <strong>everything it needs to run</strong> -- the OS libraries, the runtime, the dependencies, the config files -- into a single portable unit called a <strong>container</strong>. This container runs the same way on your laptop, your teammate's laptop, a staging server, or AWS.</p>
+
+    <div class="warning-box">
+      <div class="label">Why This Matters for Your Career</div>
+      <p>Almost every company uses Docker now. If you can't containerize your apps, you'll struggle in DevOps, backend engineering, and even many frontend roles. It's become as fundamental as knowing Git.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: CONTAINERS VS VMS                                -->
+  <!-- ============================================================ -->
+  <section id="containers-vs-vms">
+    <h2>2. Containers vs Virtual Machines</h2>
+
+    <p>Before Docker, we used <strong>Virtual Machines (VMs)</strong> to solve the "it works on my machine" problem. Both solve the same problem but in very different ways.</p>
+
+    <h3>Virtual Machines</h3>
+    <p>A VM is like renting an <strong>entire apartment</strong>. You get your own walls, your own plumbing, your own electricity -- a full copy of an operating system running on top of your host OS. This is heavy. Each VM might use 1-2 GB of RAM just to exist, and it takes minutes to start.</p>
+
+    <h3>Containers</h3>
+    <p>A container is like renting a <strong>room in a shared house</strong>. You have your own private space (your app, your files, your dependencies), but you share the walls, plumbing, and electricity (the host OS kernel) with other rooms. This is lightweight. Containers use megabytes of RAM and start in seconds.</p>
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Virtual Machine</th>
+        <th>Container</th>
+      </tr>
+      <tr>
+        <td>Boot time</td>
+        <td>Minutes</td>
+        <td>Seconds</td>
+      </tr>
+      <tr>
+        <td>Size</td>
+        <td>GBs (full OS)</td>
+        <td>MBs (just app + deps)</td>
+      </tr>
+      <tr>
+        <td>Isolation</td>
+        <td>Full (separate kernel)</td>
+        <td>Process-level (shared kernel)</td>
+      </tr>
+      <tr>
+        <td>Performance</td>
+        <td>Overhead from hypervisor</td>
+        <td>Near-native speed</td>
+      </tr>
+      <tr>
+        <td>Density</td>
+        <td>~10 per host</td>
+        <td>~100+ per host</td>
+      </tr>
+      <tr>
+        <td>Use case</td>
+        <td>Running different OSes</td>
+        <td>Running isolated apps</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      <p>Containers aren't a replacement for VMs -- they solve different problems. VMs are for when you need <strong>full OS isolation</strong> (like running Windows on a Linux host). Containers are for when you need to <strong>package and run applications consistently</strong>.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: CORE CONCEPTS                                    -->
+  <!-- ============================================================ -->
+  <section id="core-concepts">
+    <h2>3. Core Concepts</h2>
+
+    <p>There are three things you need to understand: <strong>images</strong>, <strong>containers</strong>, and <strong>registries</strong>.</p>
+
+    <h3>Images</h3>
+    <p>An image is a <strong>blueprint</strong> -- a read-only template that contains your application code, runtime, libraries, and everything it needs. Think of it like a class in programming: it defines what something looks like, but it's not running yet.</p>
+    <p>Images are built in <strong>layers</strong>. Each instruction in your Dockerfile creates a new layer. Docker caches these layers, so if you change line 8 of your Dockerfile, only layers 8+ get rebuilt -- everything before is cached. This makes builds fast.</p>
+
+    <h3>Containers</h3>
+    <p>A container is a <strong>running instance</strong> of an image. If the image is the class, the container is the object. You can run multiple containers from the same image, just like you can create multiple objects from one class.</p>
+    <p>Each container gets its own isolated filesystem, networking, and process space. It thinks it's the only thing running on the machine.</p>
+
+    <h3>Registries</h3>
+    <p>A registry is like <strong>GitHub but for Docker images</strong>. The biggest public registry is <strong>Docker Hub</strong>. When you type <code>docker pull node:20</code>, Docker downloads the Node.js 20 image from Docker Hub. You can also push your own images there, or use private registries like AWS ECR or GitHub Container Registry.</p>
+
+    <div class="formula-box">
+      <strong>The Relationship:</strong><br>
+      Dockerfile &rarr; (docker build) &rarr; Image &rarr; (docker run) &rarr; Container<br><br>
+      <strong>Or in OOP terms:</strong><br>
+      Dockerfile = Source Code &nbsp;|&nbsp; Image = Class &nbsp;|&nbsp; Container = Object Instance
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: DOCKERFILE                                       -->
+  <!-- ============================================================ -->
+  <section id="dockerfile">
+    <h2>4. Writing a Dockerfile</h2>
+
+    <p>A Dockerfile is a text file with instructions that tell Docker how to build your image. Each line is a command. Let's break down a real one:</p>
+
+    <h3>Basic Node.js Dockerfile</h3>
+    <pre><code># Start from the official Node.js 20 image (based on Debian Linux)
+FROM node:20-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package files first (for better caching)
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of your source code
+COPY . .
+
+# Tell Docker this app listens on port 3000
+EXPOSE 3000
+
+# The command to run when the container starts
+CMD ["node", "server.js"]</code></pre>
+
+    <div class="example-box">
+      <div class="label">Line-by-Line Explanation</div>
+      <p><code>FROM node:20-slim</code> -- Every Dockerfile starts with FROM. This says "start with the Node 20 image". The <code>-slim</code> variant is smaller because it doesn't include unnecessary tools. You're building <strong>on top of</strong> someone else's image.</p>
+      <p><code>WORKDIR /app</code> -- Like doing <code>cd /app</code> inside the container. All subsequent commands run from here. If the directory doesn't exist, Docker creates it.</p>
+      <p><code>COPY package.json package-lock.json ./</code> -- Copy just the package files first. Why? Because Docker caches layers. If your package files haven't changed, Docker skips the npm install step on the next build. This saves minutes.</p>
+      <p><code>RUN npm ci</code> -- Run a command during the build. <code>npm ci</code> is like <code>npm install</code> but stricter -- it uses the exact versions from your lock file. Good for reproducibility.</p>
+      <p><code>COPY . .</code> -- Copy everything else. This is after npm install so changing your source code doesn't invalidate the dependency cache.</p>
+      <p><code>EXPOSE 3000</code> -- Documentation that says "this container uses port 3000". It doesn't actually open the port -- that happens at <code>docker run</code> time.</p>
+      <p><code>CMD ["node", "server.js"]</code> -- The default command that runs when you start the container. There can only be one CMD.</p>
+    </div>
+
+    <h3>Python Dockerfile</h3>
+    <pre><code>FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["python", "app.py"]</code></pre>
+
+    <h3>Common Dockerfile Instructions</h3>
+    <table>
+      <tr>
+        <th>Instruction</th>
+        <th>What It Does</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td><code>FROM</code></td>
+        <td>Base image to build on</td>
+        <td><code>FROM python:3.12</code></td>
+      </tr>
+      <tr>
+        <td><code>WORKDIR</code></td>
+        <td>Set working directory</td>
+        <td><code>WORKDIR /app</code></td>
+      </tr>
+      <tr>
+        <td><code>COPY</code></td>
+        <td>Copy files from host to container</td>
+        <td><code>COPY . .</code></td>
+      </tr>
+      <tr>
+        <td><code>RUN</code></td>
+        <td>Execute command during build</td>
+        <td><code>RUN apt-get update</code></td>
+      </tr>
+      <tr>
+        <td><code>CMD</code></td>
+        <td>Default command at runtime</td>
+        <td><code>CMD ["node", "index.js"]</code></td>
+      </tr>
+      <tr>
+        <td><code>EXPOSE</code></td>
+        <td>Document which port the app uses</td>
+        <td><code>EXPOSE 3000</code></td>
+      </tr>
+      <tr>
+        <td><code>ENV</code></td>
+        <td>Set environment variables</td>
+        <td><code>ENV NODE_ENV=production</code></td>
+      </tr>
+      <tr>
+        <td><code>ARG</code></td>
+        <td>Build-time variables</td>
+        <td><code>ARG VERSION=1.0</code></td>
+      </tr>
+      <tr>
+        <td><code>ENTRYPOINT</code></td>
+        <td>Fixed command (CMD becomes args)</td>
+        <td><code>ENTRYPOINT ["python"]</code></td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">CMD vs ENTRYPOINT</div>
+      <p><code>CMD</code> sets the default command but can be overridden: <code>docker run myapp bash</code> replaces the CMD with <code>bash</code>.</p>
+      <p><code>ENTRYPOINT</code> sets a fixed command. If you use both, CMD becomes the default <em>arguments</em> to ENTRYPOINT. Example: <code>ENTRYPOINT ["python"]</code> + <code>CMD ["app.py"]</code> runs <code>python app.py</code> by default, but <code>docker run myapp test.py</code> runs <code>python test.py</code>.</p>
+    </div>
+
+    <h3>.dockerignore</h3>
+    <p>Just like <code>.gitignore</code>, a <code>.dockerignore</code> file tells Docker what NOT to copy. Always create one:</p>
+    <pre><code>node_modules
+.git
+.env
+*.log
+dist
+.DS_Store</code></pre>
+    <p>Without this, <code>COPY . .</code> would copy your entire <code>node_modules</code> folder into the image (even though you're running <code>npm install</code> inside the container). That wastes time and bloats your image.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: DOCKER COMMANDS                                  -->
+  <!-- ============================================================ -->
+  <section id="docker-commands">
+    <h2>5. Essential Docker Commands</h2>
+
+    <h3>Building and Running</h3>
+    <pre><code># Build an image from a Dockerfile in the current directory
+# -t names/tags the image so you can reference it later
+docker build -t myapp .
+
+# Run a container from the image
+# -p maps host port 3000 to container port 3000
+docker run -p 3000:3000 myapp
+
+# Run in detached mode (background) with a name
+docker run -d --name my-server -p 3000:3000 myapp
+
+# Run with environment variables
+docker run -e DATABASE_URL=postgres://... -p 3000:3000 myapp
+
+# Run interactively (useful for debugging)
+docker run -it myapp bash</code></pre>
+
+    <div class="example-box">
+      <div class="label">Understanding Port Mapping: -p 3000:3000</div>
+      <p>The format is <code>-p HOST_PORT:CONTAINER_PORT</code>. Your container's app listens on port 3000 inside the container. The <code>-p 3000:3000</code> says "when someone hits port 3000 on my machine, forward it to port 3000 inside the container".</p>
+      <p>You can map to different ports: <code>-p 8080:3000</code> means "hit localhost:8080 and it goes to port 3000 in the container". This is useful when running multiple containers that all use port 3000 internally.</p>
+    </div>
+
+    <h3>Managing Containers</h3>
+    <pre><code># List running containers
+docker ps
+
+# List ALL containers (including stopped)
+docker ps -a
+
+# Stop a running container
+docker stop my-server
+
+# Start a stopped container
+docker start my-server
+
+# Remove a stopped container
+docker rm my-server
+
+# Stop and remove in one step
+docker rm -f my-server
+
+# View container logs
+docker logs my-server
+
+# Follow logs in real-time (like tail -f)
+docker logs -f my-server
+
+# Execute a command in a running container
+docker exec -it my-server bash</code></pre>
+
+    <h3>Managing Images</h3>
+    <pre><code># List all images
+docker images
+
+# Pull an image from Docker Hub
+docker pull postgres:16
+
+# Remove an image
+docker rmi myapp
+
+# Remove all unused images, containers, networks
+docker system prune
+
+# See how much disk space Docker is using
+docker system df</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: VOLUMES & NETWORKING                             -->
+  <!-- ============================================================ -->
+  <section id="volumes-networking">
+    <h2>6. Volumes &amp; Networking</h2>
+
+    <h3>The Problem: Containers Are Ephemeral</h3>
+    <p>When a container is deleted, <strong>everything inside it is gone</strong>. If you're running a PostgreSQL container and you <code>docker rm</code> it, all your database data disappears. That's where <strong>volumes</strong> come in.</p>
+
+    <h3>Volumes</h3>
+    <p>A volume is a <strong>folder on your host machine that's mounted into the container</strong>. Data written to the volume persists even after the container is deleted.</p>
+
+    <pre><code># Named volume (Docker manages the location)
+docker run -d --name db \
+  -v pgdata:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  postgres:16
+
+# Bind mount (you choose the location)
+# Maps your local ./src folder to /app/src in the container
+docker run -d --name dev \
+  -v $(pwd)/src:/app/src \
+  -p 3000:3000 \
+  myapp</code></pre>
+
+    <div class="example-box">
+      <div class="label">Named Volumes vs Bind Mounts</div>
+      <p><strong>Named volumes</strong> (<code>-v pgdata:/data</code>): Docker manages where the data lives on your host. Best for databases and persistent data. The name <code>pgdata</code> lets you reference it later.</p>
+      <p><strong>Bind mounts</strong> (<code>-v ./src:/app/src</code>): You specify the exact host path. Best for development -- when you edit <code>./src/index.js</code> on your laptop, the change is instantly reflected inside the container. No rebuild needed.</p>
+    </div>
+
+    <h3>Networking</h3>
+    <p>Containers are isolated by default -- they can't talk to each other or the outside world unless you set up networking.</p>
+
+    <pre><code># Create a network
+docker network create mynet
+
+# Run containers on the same network
+docker run -d --name db --network mynet postgres:16
+docker run -d --name api --network mynet -p 3000:3000 myapp
+
+# Now "api" can connect to "db" using the container name as hostname
+# Connection string: postgres://user:pass@db:5432/mydb</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Container DNS</div>
+      <p>When containers are on the same Docker network, they can reach each other by <strong>container name</strong>. So instead of using an IP address, your Node.js app connects to <code>db:5432</code> where <code>db</code> is the name of the PostgreSQL container. Docker resolves the name to the right IP automatically.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: DOCKER COMPOSE                                   -->
+  <!-- ============================================================ -->
+  <section id="docker-compose">
+    <h2>7. Docker Compose -- Multi-Container Apps</h2>
+
+    <p>Running individual <code>docker run</code> commands with all those flags gets tedious fast, especially when you have multiple containers that need to talk to each other. That's what <strong>Docker Compose</strong> solves.</p>
+
+    <p>Docker Compose lets you define your <strong>entire application stack</strong> in a single YAML file (<code>docker-compose.yml</code>), then start everything with one command.</p>
+
+    <div class="example-box">
+      <div class="label">The Analogy</div>
+      <p>If a Dockerfile is the recipe for one dish, <code>docker-compose.yml</code> is the <strong>menu for the entire restaurant</strong>. It says "I need this web server, this database, this cache, and this queue -- here's how they're connected, here's their config, and here's what ports they use". Then <code>docker compose up</code> opens the restaurant.</p>
+    </div>
+
+    <h3>Basic docker-compose.yml</h3>
+    <pre><code># docker-compose.yml
+services:
+  # Your Node.js API
+  api:
+    build: .                    # Build from Dockerfile in current directory
+    ports:
+      - "3000:3000"             # Map port 3000
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/mydb
+      - REDIS_URL=redis://cache:6379
+    depends_on:
+      - db
+      - cache
+    volumes:
+      - ./src:/app/src          # Bind mount for hot reload in dev
+
+  # PostgreSQL Database
+  db:
+    image: postgres:16          # Use official image from Docker Hub
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # Persist data
+
+  # Redis Cache
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+# Define named volumes
+volumes:
+  pgdata:</code></pre>
+
+    <div class="example-box">
+      <div class="label">Breaking This Down</div>
+      <p><strong><code>services:</code></strong> -- Each service is a container. Here we have three: <code>api</code>, <code>db</code>, and <code>cache</code>.</p>
+      <p><strong><code>build: .</code></strong> -- Build this service from the Dockerfile in the current directory. If you use <code>image: postgres:16</code> instead, Docker pulls a pre-built image.</p>
+      <p><strong><code>depends_on:</code></strong> -- Start <code>db</code> and <code>cache</code> before starting <code>api</code>. Note: this only controls startup <em>order</em>, not whether the database is actually ready to accept connections.</p>
+      <p><strong><code>environment:</code></strong> -- Set environment variables. Notice the database URL uses <code>db</code> as the hostname -- that's the service name. Docker Compose automatically creates a network where services can reach each other by name.</p>
+      <p><strong><code>volumes:</code></strong> -- At the service level, mount volumes. At the top level, declare named volumes that Docker manages.</p>
+    </div>
+
+    <h3>Service Configuration Options</h3>
+    <pre><code>services:
+  myservice:
+    image: node:20              # Use a pre-built image
+    # OR
+    build:                      # Build from Dockerfile
+      context: ./backend        # Directory containing Dockerfile
+      dockerfile: Dockerfile.dev  # Custom Dockerfile name
+
+    ports:
+      - "3000:3000"             # HOST:CONTAINER
+
+    environment:                # Inline env vars
+      - NODE_ENV=development
+    env_file:                   # Or load from file
+      - .env
+
+    volumes:
+      - ./code:/app             # Bind mount
+      - nodemodules:/app/node_modules  # Named volume
+
+    restart: unless-stopped     # Restart policy
+
+    command: npm run dev        # Override the CMD from Dockerfile
+
+    depends_on:
+      db:
+        condition: service_healthy  # Wait for health check
+
+    healthcheck:                # Define health check
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: COMPOSE COMMANDS                                 -->
+  <!-- ============================================================ -->
+  <section id="compose-commands">
+    <h2>8. Docker Compose Commands</h2>
+
+    <pre><code># Start all services (build if needed)
+docker compose up
+
+# Start in detached mode (background)
+docker compose up -d
+
+# Rebuild images before starting
+docker compose up --build
+
+# Stop all services
+docker compose down
+
+# Stop and remove volumes (deletes database data!)
+docker compose down -v
+
+# View logs for all services
+docker compose logs
+
+# Follow logs for a specific service
+docker compose logs -f api
+
+# Run a one-off command in a service
+docker compose exec api bash
+
+# List running services
+docker compose ps
+
+# Restart a specific service
+docker compose restart api
+
+# Scale a service (run multiple instances)
+docker compose up -d --scale api=3</code></pre>
+
+    <div class="warning-box">
+      <div class="label">docker compose vs docker-compose</div>
+      <p>The old command was <code>docker-compose</code> (with a hyphen) -- that's V1 and is deprecated. The new command is <code>docker compose</code> (with a space) -- that's V2 and is built into Docker. Always use <code>docker compose</code> (no hyphen).</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: REAL-WORLD EXAMPLE                               -->
+  <!-- ============================================================ -->
+  <section id="real-world">
+    <h2>9. Real-World Example: Full Stack App</h2>
+
+    <p>Here's a complete setup for a typical full-stack app with a React frontend, Node.js API, PostgreSQL database, and Redis cache.</p>
+
+    <h3>Project Structure</h3>
+    <pre><code>my-app/
+  frontend/
+    Dockerfile
+    package.json
+    src/
+  backend/
+    Dockerfile
+    package.json
+    src/
+  docker-compose.yml
+  .env</code></pre>
+
+    <h3>Backend Dockerfile</h3>
+    <pre><code># backend/Dockerfile
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+
+EXPOSE 4000
+CMD ["node", "src/server.js"]</code></pre>
+
+    <h3>Frontend Dockerfile</h3>
+    <pre><code># frontend/Dockerfile
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host"]</code></pre>
+
+    <h3>docker-compose.yml</h3>
+    <pre><code>services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - api
+
+  api:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgres://dev:devpass@db:5432/myapp
+      - REDIS_URL=redis://cache:6379
+    volumes:
+      - ./backend/src:/app/src
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=devpass
+      - POSTGRES_DB=myapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:</code></pre>
+
+    <div class="tip-box">
+      <div class="label">One Command to Rule Them All</div>
+      <p>Run <code>docker compose up</code> and you've got your entire stack running -- frontend on :5173, API on :4000, PostgreSQL on :5432, Redis on :6379. A new developer on your team clones the repo, runs one command, and has a fully working development environment in seconds.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: BEST PRACTICES                                  -->
+  <!-- ============================================================ -->
+  <section id="best-practices">
+    <h2>10. Best Practices &amp; Common Mistakes</h2>
+
+    <h3>Do This</h3>
+    <ul>
+      <li><strong>Use <code>-slim</code> or <code>-alpine</code> base images</strong> -- <code>node:20-slim</code> is ~200MB vs <code>node:20</code> at ~1GB. Smaller images build faster and have fewer security vulnerabilities.</li>
+      <li><strong>Copy dependency files before source code</strong> -- This lets Docker cache the expensive <code>npm install</code> step. Only re-install when <code>package.json</code> changes.</li>
+      <li><strong>Always create a <code>.dockerignore</code></strong> -- At minimum, exclude <code>node_modules</code>, <code>.git</code>, and <code>.env</code>.</li>
+      <li><strong>Use named volumes for database data</strong> -- Never lose your dev data when you restart containers.</li>
+      <li><strong>Use <code>depends_on</code> with health checks</strong> -- Ensures services actually start in the right order and are ready.</li>
+      <li><strong>Pin image versions</strong> -- Use <code>postgres:16</code>, not <code>postgres:latest</code>. <code>latest</code> changes without warning and can break your setup.</li>
+    </ul>
+
+    <h3>Don't Do This</h3>
+    <ul>
+      <li><strong>Don't run as root</strong> -- Add <code>USER node</code> (or a non-root user) in your Dockerfile for production.</li>
+      <li><strong>Don't store secrets in your Dockerfile or docker-compose.yml</strong> -- Use <code>.env</code> files (and add them to <code>.gitignore</code>) or Docker secrets.</li>
+      <li><strong>Don't use <code>docker compose down -v</code> casually</strong> -- The <code>-v</code> flag deletes your volumes. That means your database data is gone.</li>
+      <li><strong>Don't install dev tools in production images</strong> -- Use multi-stage builds to keep production images lean.</li>
+    </ul>
+
+    <h3>Multi-Stage Build (Production Optimization)</h3>
+    <pre><code># Stage 1: Build
+FROM node:20-slim AS builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Stage 2: Production (only the built output)
+FROM node:20-slim
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+USER node
+EXPOSE 3000
+CMD ["node", "dist/server.js"]</code></pre>
+
+    <div class="example-box">
+      <div class="label">Why Multi-Stage?</div>
+      <p>The first stage installs everything and builds your app. The second stage copies only what's needed to run. Your final image doesn't contain source code, dev dependencies, or build tools -- just the compiled output. This can cut image size by 50-80%.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes -- Container Orchestration From Zero - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html" class="active">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Kubernetes</div>
+    <h1>Kubernetes (K8s)</h1>
+    <p>Docker runs containers. Kubernetes manages thousands of them. Learn how K8s orchestrates your containers across machines -- scaling, healing, and deploying your apps automatically. Read the <a href="docker.html">Docker page</a> first if you haven't.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#why-k8s">1. Why Kubernetes Exists</a>
+    <a href="#architecture">2. K8s Architecture (Control Plane &amp; Nodes)</a>
+    <a href="#core-objects">3. Core Objects: Pods, Deployments, Services</a>
+    <a href="#yaml">4. Writing K8s YAML</a>
+    <a href="#networking">5. Networking &amp; Service Discovery</a>
+    <a href="#storage">6. Storage &amp; ConfigMaps</a>
+    <a href="#scaling">7. Scaling &amp; Self-Healing</a>
+    <a href="#kubectl">8. Essential kubectl Commands</a>
+    <a href="#local-dev">9. Running K8s Locally (Minikube)</a>
+    <a href="#vs-compose">10. Kubernetes vs Docker Compose</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: WHY K8S                                          -->
+  <!-- ============================================================ -->
+  <section id="why-k8s">
+    <h2>1. Why Kubernetes Exists</h2>
+
+    <p>You know Docker. You can run containers. But what happens when your app gets popular?</p>
+
+    <ul>
+      <li>You need to run <strong>50 copies</strong> of your API across 10 servers to handle the traffic</li>
+      <li>If one container crashes, something needs to <strong>automatically restart</strong> it</li>
+      <li>When you deploy a new version, you want <strong>zero downtime</strong> -- no one should notice the update</li>
+      <li>You need to <strong>distribute traffic evenly</strong> across all those containers</li>
+      <li>Some containers need more CPU, others need more memory -- you need smart <strong>scheduling</strong></li>
+    </ul>
+
+    <p>Doing all of this manually with <code>docker run</code> commands would be a nightmare. <strong>Kubernetes automates all of it.</strong></p>
+
+    <div class="example-box">
+      <div class="label">The Analogy</div>
+      <p>Docker is like being able to <strong>cook a dish</strong>. Kubernetes is like being the <strong>manager of a restaurant chain</strong>. You don't cook -- you tell the system "I need 10 chefs making pasta, 5 making pizza, and if anyone calls in sick, hire a replacement immediately". Kubernetes handles the logistics.</p>
+      <p>You declare <em>what you want</em> ("run 3 copies of my API"), and Kubernetes figures out <em>how to make it happen</em> -- which machine to put each container on, how to restart failures, how to route traffic.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Do You Actually Need Kubernetes?</div>
+      <p>Kubernetes is powerful but complex. If you're running a side project or a small app with a few containers, <strong>Docker Compose is probably enough</strong>. K8s shines when you have multiple services, need auto-scaling, or are deploying to production across multiple servers. Learn it because it's everywhere in industry, but don't feel pressured to use it for everything.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: ARCHITECTURE                                     -->
+  <!-- ============================================================ -->
+  <section id="architecture">
+    <h2>2. K8s Architecture</h2>
+
+    <p>A Kubernetes <strong>cluster</strong> is a group of machines (physical or virtual) that run your containers together. There are two types of machines in a cluster:</p>
+
+    <h3>Control Plane (The Brain)</h3>
+    <p>This is the management layer. It makes all the decisions -- where to run containers, when to restart them, how to scale. You never run your app on the control plane. It has these components:</p>
+
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td><strong>API Server</strong></td>
+        <td>The front door. Every command you run (<code>kubectl</code>) goes through here. It validates and processes all requests.</td>
+      </tr>
+      <tr>
+        <td><strong>etcd</strong></td>
+        <td>The database. Stores the entire state of the cluster -- what's running, what's desired, configurations. It's a key-value store.</td>
+      </tr>
+      <tr>
+        <td><strong>Scheduler</strong></td>
+        <td>Decides <em>which node</em> to place a new container on, based on available resources, constraints, and affinity rules.</td>
+      </tr>
+      <tr>
+        <td><strong>Controller Manager</strong></td>
+        <td>Watches the current state and makes it match the <em>desired</em> state. If you want 3 replicas and only 2 are running, it starts a third.</td>
+      </tr>
+    </table>
+
+    <h3>Worker Nodes (The Muscle)</h3>
+    <p>These are the machines that actually <strong>run your containers</strong>. Each node has:</p>
+
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td><strong>kubelet</strong></td>
+        <td>Agent on each node. Talks to the control plane, ensures containers are running as expected.</td>
+      </tr>
+      <tr>
+        <td><strong>Container Runtime</strong></td>
+        <td>Actually runs containers (usually containerd, which is what Docker uses under the hood).</td>
+      </tr>
+      <tr>
+        <td><strong>kube-proxy</strong></td>
+        <td>Handles networking -- routes traffic to the right containers.</td>
+      </tr>
+    </table>
+
+    <div class="formula-box">
+      <strong>How It All Flows:</strong><br><br>
+      You (kubectl) &rarr; API Server &rarr; Scheduler picks a node &rarr; kubelet on that node &rarr; Container Runtime starts container<br><br>
+      Controller Manager constantly watches: "Are things running as declared?" &rarr; If not, fix it.
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: CORE OBJECTS                                     -->
+  <!-- ============================================================ -->
+  <section id="core-objects">
+    <h2>3. Core Objects: Pods, Deployments, Services</h2>
+
+    <p>Everything in Kubernetes is an <strong>object</strong> defined in YAML. There are three you absolutely need to understand:</p>
+
+    <h3>Pod -- The Smallest Unit</h3>
+    <p>A Pod is the smallest thing you can deploy in Kubernetes. It's a wrapper around one or more containers that share the same network and storage.</p>
+
+    <div class="example-box">
+      <div class="label">Think of It This Way</div>
+      <p>A Pod is like a <strong>tiny server</strong> that runs your container. Usually it's one container per Pod. Sometimes you put two containers in the same Pod if they're tightly coupled (like your app + a logging sidecar), but that's less common.</p>
+      <p>You almost never create Pods directly. Instead, you create a <strong>Deployment</strong> that creates Pods for you.</p>
+    </div>
+
+    <h3>Deployment -- Managing Pods</h3>
+    <p>A Deployment tells Kubernetes: "I want N copies of this Pod running at all times." It handles:</p>
+    <ul>
+      <li><strong>Replication</strong> -- Run 3 copies of my API</li>
+      <li><strong>Rolling updates</strong> -- Deploy a new version without downtime</li>
+      <li><strong>Rollback</strong> -- If the new version is broken, go back to the old one</li>
+      <li><strong>Self-healing</strong> -- If a Pod crashes, start a new one</li>
+    </ul>
+
+    <h3>Service -- Exposing Pods to Traffic</h3>
+    <p>Pods get random IP addresses that change every time they restart. You can't hard-code those IPs. A <strong>Service</strong> gives your Pods a <strong>stable address</strong> and load-balances traffic across them.</p>
+
+    <div class="example-box">
+      <div class="label">Service Types</div>
+      <p><strong>ClusterIP</strong> (default) -- Only accessible inside the cluster. Other services can reach it, but the outside world can't. Use this for internal communication (e.g., API talking to database).</p>
+      <p><strong>NodePort</strong> -- Exposes the service on a port on every node. Useful for development. Traffic to <code>NodeIP:30000</code> gets routed to your Pods.</p>
+      <p><strong>LoadBalancer</strong> -- Creates a cloud load balancer (on AWS, GCP, etc.) that routes external traffic to your Pods. This is how you expose apps to the internet in production.</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>The Relationship:</strong><br><br>
+      Deployment manages &rarr; ReplicaSet manages &rarr; Pods (your containers)<br>
+      Service &rarr; routes traffic to &rarr; Pods (by label selector)
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: YAML                                             -->
+  <!-- ============================================================ -->
+  <section id="yaml">
+    <h2>4. Writing K8s YAML</h2>
+
+    <p>Everything in K8s is declared in YAML files. You tell Kubernetes what you want, and it makes it happen. Here are the essential configs:</p>
+
+    <h3>Deployment YAML</h3>
+    <pre><code># deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-api               # Name of this deployment
+spec:
+  replicas: 3                # Run 3 copies of this Pod
+  selector:
+    matchLabels:
+      app: my-api             # Find Pods with this label
+  template:                   # Pod template
+    metadata:
+      labels:
+        app: my-api           # Label for this Pod
+    spec:
+      containers:
+        - name: api
+          image: myapp:1.0    # Docker image to run
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: "postgres://user:pass@db-service:5432/mydb"
+          resources:
+            requests:           # Minimum resources needed
+              memory: "128Mi"
+              cpu: "100m"       # 100 millicores = 0.1 CPU
+            limits:             # Maximum resources allowed
+              memory: "256Mi"
+              cpu: "500m"</code></pre>
+
+    <div class="example-box">
+      <div class="label">Breaking This Down</div>
+      <p><strong><code>apiVersion</code> + <code>kind</code></strong> -- What type of object this is. Deployments use <code>apps/v1</code>.</p>
+      <p><strong><code>metadata.name</code></strong> -- The name you give this deployment. Used to reference it in commands.</p>
+      <p><strong><code>spec.replicas: 3</code></strong> -- "I want 3 Pods running at all times." If one dies, K8s starts a replacement.</p>
+      <p><strong><code>selector.matchLabels</code></strong> -- How the Deployment finds its Pods. It looks for Pods with <code>app: my-api</code> label.</p>
+      <p><strong><code>template</code></strong> -- The Pod blueprint. Every Pod created by this Deployment will look like this.</p>
+      <p><strong><code>resources.requests</code></strong> -- The minimum resources this Pod needs. The scheduler uses this to decide which node has enough room.</p>
+      <p><strong><code>resources.limits</code></strong> -- The maximum. If the Pod tries to use more, K8s throttles or kills it.</p>
+    </div>
+
+    <h3>Service YAML</h3>
+    <pre><code># service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-api-service
+spec:
+  type: ClusterIP             # Internal only (default)
+  selector:
+    app: my-api               # Route to Pods with this label
+  ports:
+    - port: 80                # Port other services use
+      targetPort: 3000        # Port on the container</code></pre>
+
+    <p>Now other services in the cluster can reach your API at <code>http://my-api-service:80</code>. K8s handles load balancing across all 3 Pods.</p>
+
+    <h3>Applying YAML</h3>
+    <pre><code># Create or update resources from a file
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+# Apply all YAML files in a directory
+kubectl apply -f ./k8s/
+
+# Delete resources
+kubectl delete -f deployment.yaml</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: NETWORKING                                       -->
+  <!-- ============================================================ -->
+  <section id="networking">
+    <h2>5. Networking &amp; Service Discovery</h2>
+
+    <p>K8s networking follows simple rules:</p>
+    <ul>
+      <li>Every Pod gets its own IP address</li>
+      <li>Pods can communicate with any other Pod without NAT</li>
+      <li>Services provide stable DNS names</li>
+    </ul>
+
+    <h3>How Services Find Pods</h3>
+    <p>Services use <strong>label selectors</strong>. When you create a Service with <code>selector: { app: my-api }</code>, it automatically finds all Pods with that label and routes traffic to them. If a Pod dies and a new one starts with the same label, the Service picks it up automatically.</p>
+
+    <h3>DNS Inside the Cluster</h3>
+    <pre><code># Service "my-api-service" in namespace "default" is accessible at:
+my-api-service                          # Short name (same namespace)
+my-api-service.default                  # With namespace
+my-api-service.default.svc.cluster.local  # Fully qualified</code></pre>
+
+    <h3>Ingress -- Exposing to the Internet</h3>
+    <p>An <strong>Ingress</strong> is a set of rules for routing external HTTP traffic to your Services. Think of it as a <strong>reverse proxy</strong> (like Nginx) that K8s manages for you.</p>
+
+    <pre><code># ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+    - host: api.myapp.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-api-service
+                port:
+                  number: 80</code></pre>
+
+    <div class="tip-box">
+      <div class="label">The Traffic Flow</div>
+      <p>Internet &rarr; Ingress Controller (Nginx/Traefik) &rarr; Service &rarr; Pods</p>
+      <p>The Ingress Controller is the actual reverse proxy. The Ingress YAML just configures its rules.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: STORAGE                                          -->
+  <!-- ============================================================ -->
+  <section id="storage">
+    <h2>6. Storage &amp; ConfigMaps</h2>
+
+    <h3>ConfigMaps -- Non-Secret Configuration</h3>
+    <p>Store configuration data separately from your container image. This lets you change config without rebuilding.</p>
+
+    <pre><code># configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+  MAX_CONNECTIONS: "100"</code></pre>
+
+    <h3>Secrets -- Sensitive Data</h3>
+    <pre><code># secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+stringData:
+  DB_PASSWORD: "supersecret123"
+  API_KEY: "sk-abc123"</code></pre>
+
+    <h3>Using ConfigMaps and Secrets in Pods</h3>
+    <pre><code>spec:
+  containers:
+    - name: api
+      image: myapp:1.0
+      envFrom:                    # Load all keys as env vars
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: db-credentials
+      # OR load individual keys:
+      env:
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD</code></pre>
+
+    <h3>Persistent Volumes -- Durable Storage</h3>
+    <p>Just like Docker volumes, Pods need persistent storage for databases. K8s uses <strong>PersistentVolumeClaims (PVC)</strong> to request storage:</p>
+
+    <pre><code># pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-storage
+spec:
+  accessModes:
+    - ReadWriteOnce           # One node can write at a time
+  resources:
+    requests:
+      storage: 10Gi           # 10 GB of storage</code></pre>
+
+    <pre><code># Use it in a Pod
+spec:
+  containers:
+    - name: postgres
+      image: postgres:16
+      volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/postgresql/data
+  volumes:
+    - name: db-data
+      persistentVolumeClaim:
+        claimName: db-storage</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: SCALING                                          -->
+  <!-- ============================================================ -->
+  <section id="scaling">
+    <h2>7. Scaling &amp; Self-Healing</h2>
+
+    <h3>Manual Scaling</h3>
+    <pre><code># Scale to 5 replicas
+kubectl scale deployment my-api --replicas=5
+
+# Scale to 0 (stops all pods, saves resources)
+kubectl scale deployment my-api --replicas=0</code></pre>
+
+    <h3>Horizontal Pod Autoscaler (HPA)</h3>
+    <p>Automatically scale based on CPU or memory usage:</p>
+
+    <pre><code># hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-api
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70   # Scale up when CPU > 70%</code></pre>
+
+    <div class="example-box">
+      <div class="label">How Auto-Scaling Works</div>
+      <p>K8s constantly monitors your Pods' CPU usage. If the average goes above 70%, it adds more Pods (up to 10). If usage drops, it removes Pods (down to 2). This means you handle traffic spikes automatically without manual intervention or paying for servers you don't need during quiet hours.</p>
+    </div>
+
+    <h3>Self-Healing</h3>
+    <p>Kubernetes constantly watches your Pods. If one crashes, it immediately starts a replacement. This happens because the <strong>Controller Manager</strong> compares the <em>desired state</em> (3 replicas) with the <em>actual state</em> (2 running) and reconciles the difference.</p>
+
+    <p>You can also define <strong>health checks</strong> so K8s restarts unhealthy containers:</p>
+
+    <pre><code>spec:
+  containers:
+    - name: api
+      image: myapp:1.0
+      livenessProbe:            # Is the container alive?
+        httpGet:
+          path: /health
+          port: 3000
+        initialDelaySeconds: 10
+        periodSeconds: 15
+      readinessProbe:           # Is it ready to receive traffic?
+        httpGet:
+          path: /ready
+          port: 3000
+        initialDelaySeconds: 5
+        periodSeconds: 5</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Liveness vs Readiness</div>
+      <p><strong>Liveness</strong> -- "Is this container still working?" If it fails, K8s kills and restarts the container. Use this to detect deadlocks or stuck processes.</p>
+      <p><strong>Readiness</strong> -- "Can this container handle traffic right now?" If it fails, K8s stops sending traffic to it but doesn't restart it. Use this for startup time (e.g., waiting for a database connection).</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: KUBECTL                                          -->
+  <!-- ============================================================ -->
+  <section id="kubectl">
+    <h2>8. Essential kubectl Commands</h2>
+
+    <pre><code># ===== VIEWING RESOURCES =====
+kubectl get pods                    # List all pods
+kubectl get pods -o wide            # With more detail (node, IP)
+kubectl get deployments             # List deployments
+kubectl get services                # List services
+kubectl get all                     # List everything
+
+# ===== DETAILED INFO =====
+kubectl describe pod my-pod         # Detailed pod info + events
+kubectl describe deployment my-api  # Deployment details
+
+# ===== LOGS =====
+kubectl logs my-pod                 # View pod logs
+kubectl logs -f my-pod              # Follow logs (real-time)
+kubectl logs my-pod -c my-container # Specific container in pod
+
+# ===== DEBUGGING =====
+kubectl exec -it my-pod -- bash     # Shell into a pod
+kubectl port-forward my-pod 3000:3000  # Forward local port to pod
+
+# ===== APPLYING & DELETING =====
+kubectl apply -f deployment.yaml    # Create/update from file
+kubectl delete -f deployment.yaml   # Delete from file
+kubectl delete pod my-pod           # Delete a specific pod
+
+# ===== SCALING =====
+kubectl scale deployment my-api --replicas=5
+
+# ===== ROLLOUTS =====
+kubectl rollout status deployment my-api   # Watch deployment progress
+kubectl rollout history deployment my-api  # See revision history
+kubectl rollout undo deployment my-api     # Rollback to previous version
+
+# ===== CONTEXT =====
+kubectl config get-contexts         # See available clusters
+kubectl config use-context my-cluster  # Switch clusters
+kubectl get namespaces              # List namespaces
+kubectl -n production get pods      # Pods in a specific namespace</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: LOCAL DEV                                        -->
+  <!-- ============================================================ -->
+  <section id="local-dev">
+    <h2>9. Running K8s Locally (Minikube)</h2>
+
+    <p>You don't need a cloud account to learn K8s. <strong>Minikube</strong> runs a single-node K8s cluster on your laptop.</p>
+
+    <pre><code># Install Minikube (on Linux with curl)
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# Start a cluster
+minikube start
+
+# Check it's running
+kubectl get nodes
+
+# Build images inside Minikube (so it can find them)
+eval $(minikube docker-env)
+docker build -t myapp:1.0 .
+
+# Access a service
+minikube service my-api-service
+
+# Dashboard (web UI)
+minikube dashboard
+
+# Stop the cluster
+minikube stop
+
+# Delete the cluster
+minikube delete</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Other Local Options</div>
+      <p><strong>kind</strong> (Kubernetes IN Docker) -- Runs K8s nodes as Docker containers. Lighter than Minikube.</p>
+      <p><strong>k3s</strong> -- Lightweight K8s distribution. Great for Raspberry Pi or resource-constrained environments.</p>
+      <p><strong>Docker Desktop</strong> -- Has a built-in K8s cluster you can enable in settings.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: VS COMPOSE                                      -->
+  <!-- ============================================================ -->
+  <section id="vs-compose">
+    <h2>10. Kubernetes vs Docker Compose</h2>
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Docker Compose</th>
+        <th>Kubernetes</th>
+      </tr>
+      <tr>
+        <td>Purpose</td>
+        <td>Local development, simple deployments</td>
+        <td>Production orchestration at scale</td>
+      </tr>
+      <tr>
+        <td>Complexity</td>
+        <td>Simple -- one YAML file</td>
+        <td>Complex -- multiple YAML files, many concepts</td>
+      </tr>
+      <tr>
+        <td>Scaling</td>
+        <td>Manual (<code>--scale</code>)</td>
+        <td>Automatic (HPA)</td>
+      </tr>
+      <tr>
+        <td>Self-healing</td>
+        <td>Basic (<code>restart: always</code>)</td>
+        <td>Advanced (health checks, auto-replacement)</td>
+      </tr>
+      <tr>
+        <td>Multi-machine</td>
+        <td>Single machine only</td>
+        <td>Distributed across many machines</td>
+      </tr>
+      <tr>
+        <td>Rolling updates</td>
+        <td>Recreate only</td>
+        <td>Zero-downtime rolling updates</td>
+      </tr>
+      <tr>
+        <td>Load balancing</td>
+        <td>None built-in</td>
+        <td>Built-in across Pods</td>
+      </tr>
+      <tr>
+        <td>When to use</td>
+        <td>Dev environments, small apps</td>
+        <td>Production, microservices, scale</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">The Practical Advice</div>
+      <p>Use <strong>Docker Compose for development</strong> -- it's simpler and faster to iterate. Use <strong>Kubernetes for production</strong> when you need scaling, reliability, and zero-downtime deployments. Many teams use both: Compose locally, K8s in the cloud.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+</footer>
+
+</body>
+</html>

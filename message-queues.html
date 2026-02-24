@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Queues &amp; Pub/Sub -- RabbitMQ, Kafka &amp; Event-Driven Architecture - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html" class="active">Queues &amp; Pub/Sub</a>
+  </nav>
+
+<div class="container">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Message Queues &amp; Pub/Sub</div>
+    <h1>Message Queues &amp; Pub/Sub</h1>
+    <p>Understand how services talk to each other without waiting -- message queues, publish/subscribe patterns, RabbitMQ, Kafka, and when to use each. This is how real-world backends handle scale, reliability, and async processing.</p>
+  </div>
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#the-problem">1. The Problem: Why Not Just Call the API?</a>
+    <a href="#what-is-a-queue">2. What Is a Message Queue?</a>
+    <a href="#patterns">3. The Two Big Patterns: Point-to-Point vs Pub/Sub</a>
+    <a href="#pubsub-deep">4. Pub/Sub Deep Dive -- Topics, Subscribers &amp; Fan-Out</a>
+    <a href="#rabbitmq">5. RabbitMQ -- The Traditional Message Broker</a>
+    <a href="#kafka">6. Apache Kafka -- The Event Streaming Platform</a>
+    <a href="#rabbit-vs-kafka">7. RabbitMQ vs Kafka -- When to Use Which</a>
+    <a href="#aws-sqs">8. AWS SQS &amp; SNS -- The Cloud-Native Options</a>
+    <a href="#real-world">9. Real-World Use Cases</a>
+    <a href="#key-concepts">10. Key Concepts You Need to Know</a>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: THE PROBLEM                                      -->
+  <!-- ============================================================ -->
+  <section id="the-problem">
+    <h2>1. The Problem: Why Not Just Call the API?</h2>
+
+    <p>Say you're building an e-commerce app. A user places an order. Your Order Service needs to:</p>
+    <ol>
+      <li>Save the order to the database</li>
+      <li>Charge their credit card (Payment Service)</li>
+      <li>Send a confirmation email (Email Service)</li>
+      <li>Update the inventory (Inventory Service)</li>
+      <li>Notify the warehouse to ship it (Shipping Service)</li>
+    </ol>
+
+    <p>The naive approach: the Order Service makes HTTP calls to each service, one after another, and waits for each to respond.</p>
+
+    <div class="warning-box">
+      <div class="label">Why This Breaks</div>
+      <p><strong>It's slow.</strong> The user waits while 5 different services respond. If each takes 200ms, that's a full second of waiting.</p>
+      <p><strong>It's fragile.</strong> If the Email Service is down, the entire order fails -- even though the email isn't critical for order processing.</p>
+      <p><strong>It's tightly coupled.</strong> The Order Service needs to know about every downstream service, their URLs, their APIs, and their availability. Adding a new service (like analytics) means changing the Order Service code.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">The Real-World Analogy</div>
+      <p>Imagine a restaurant where the waiter takes your order and then <strong>personally walks to the kitchen, waits for the chef to cook it, walks to the bar, waits for the drink, then comes back</strong>. That's synchronous. The waiter is blocked the entire time.</p>
+      <p>Now imagine the waiter <strong>puts your order on a ticket and clips it to a rail</strong>. The kitchen grabs it when ready, the bar grabs the drink order when ready. The waiter is immediately free to take the next table's order. That ticket rail is a <strong>message queue</strong>.</p>
+    </div>
+
+    <p>The solution: instead of directly calling each service, the Order Service <strong>publishes a message</strong> (like "Order #1234 was placed") to a message queue or topic. The other services pick up the message and process it on their own time. The Order Service doesn't wait, doesn't care who's listening, and doesn't break if one service is temporarily down.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: WHAT IS A QUEUE                                  -->
+  <!-- ============================================================ -->
+  <section id="what-is-a-queue">
+    <h2>2. What Is a Message Queue?</h2>
+
+    <p>A message queue is a <strong>middleman</strong> that sits between services. One service puts a message in, another service takes it out. The queue holds messages until they're processed.</p>
+
+    <div class="formula-box">
+      <strong>The Flow:</strong><br><br>
+      Producer &rarr; Message Queue &rarr; Consumer<br><br>
+      <strong>Producer</strong> = the service that sends the message<br>
+      <strong>Consumer</strong> = the service that receives and processes the message<br>
+      <strong>Queue</strong> = the buffer in between
+    </div>
+
+    <h3>Key Properties</h3>
+    <ul>
+      <li><strong>Asynchronous</strong> -- The producer doesn't wait for the consumer. It sends the message and moves on.</li>
+      <li><strong>Decoupled</strong> -- The producer doesn't know (or care) who consumes the message. You can add/remove consumers without touching the producer.</li>
+      <li><strong>Reliable</strong> -- Messages are stored until they're processed. If a consumer crashes, the message stays in the queue and gets delivered to another consumer (or the same one when it restarts).</li>
+      <li><strong>Buffering</strong> -- If producers send messages faster than consumers can process them, the queue absorbs the burst. Consumers process at their own pace.</li>
+    </ul>
+
+    <div class="example-box">
+      <div class="label">Think of It Like a To-Do List</div>
+      <p>Your boss (producer) writes tasks on sticky notes and puts them on a board (queue). You (consumer) take a sticky note, do the task, and throw it away. Your boss doesn't stand over your shoulder waiting -- they just keep adding notes. If you go on lunch, the notes pile up but nothing is lost. When you come back, you process them.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: PATTERNS                                         -->
+  <!-- ============================================================ -->
+  <section id="patterns">
+    <h2>3. The Two Big Patterns: Point-to-Point vs Pub/Sub</h2>
+
+    <p>There are two fundamental ways messages can flow. Understanding the difference is critical.</p>
+
+    <h3>Pattern 1: Point-to-Point (Work Queue)</h3>
+
+    <p>One message goes to <strong>exactly one consumer</strong>. If there are multiple consumers, they compete -- each message is delivered to only one of them.</p>
+
+    <pre><code>Producer --&gt; [Queue] --&gt; Consumer A  (gets message 1)
+                    --&gt; Consumer B  (gets message 2)
+                    --&gt; Consumer A  (gets message 3)
+
+Each message is processed by exactly ONE consumer.</code></pre>
+
+    <div class="example-box">
+      <div class="label">When to Use Point-to-Point</div>
+      <p><strong>Task processing</strong> -- You have 1000 images to resize. Put them all in a queue. 10 worker consumers each grab one image at a time and process it. No image gets processed twice, and you can scale up by adding more workers.</p>
+      <p><strong>Job queues</strong> -- Send emails, generate reports, process payments. Each job should happen exactly once.</p>
+      <p>Think of it like a <strong>bakery counter</strong> with a ticket system. You pull a number, and ONE employee serves you. Even if there are 5 employees, your order goes to just one.</p>
+    </div>
+
+    <h3>Pattern 2: Publish/Subscribe (Pub/Sub)</h3>
+
+    <p>One message goes to <strong>all subscribers</strong>. Every subscriber gets a copy.</p>
+
+    <pre><code>Publisher --&gt; [Topic: "order-placed"]
+                    --&gt; Subscriber: Email Service    (gets it)
+                    --&gt; Subscriber: Inventory Service (gets it)
+                    --&gt; Subscriber: Analytics Service (gets it)
+
+Every subscriber gets every message.</code></pre>
+
+    <div class="example-box">
+      <div class="label">When to Use Pub/Sub</div>
+      <p><strong>Event broadcasting</strong> -- "An order was placed" is interesting to many services. Each service needs to know about it, but they each do something different with the information.</p>
+      <p><strong>Notifications</strong> -- A user signs up, and you want to send a welcome email AND track it in analytics AND create a CRM entry.</p>
+      <p>Think of it like a <strong>radio broadcast</strong>. The radio station transmits once, and everyone tuned in hears it. Adding a new listener doesn't affect the broadcaster.</p>
+    </div>
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Point-to-Point</th>
+        <th>Pub/Sub</th>
+      </tr>
+      <tr>
+        <td>Message delivery</td>
+        <td>One consumer only</td>
+        <td>All subscribers</td>
+      </tr>
+      <tr>
+        <td>Use case</td>
+        <td>Task distribution</td>
+        <td>Event broadcasting</td>
+      </tr>
+      <tr>
+        <td>Scaling</td>
+        <td>Add more consumers to process faster</td>
+        <td>Each subscriber processes independently</td>
+      </tr>
+      <tr>
+        <td>Example</td>
+        <td>Process payment, resize image</td>
+        <td>Order placed, user signed up</td>
+      </tr>
+      <tr>
+        <td>Analogy</td>
+        <td>Bakery ticket system</td>
+        <td>Radio broadcast</td>
+      </tr>
+    </table>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 4: PUB/SUB DEEP DIVE                                -->
+  <!-- ============================================================ -->
+  <section id="pubsub-deep">
+    <h2>4. Pub/Sub Deep Dive -- Topics, Subscribers &amp; Fan-Out</h2>
+
+    <p>Pub/Sub is the more interesting pattern, and the one you'll see most in real-world architectures. Let's break it down properly.</p>
+
+    <h3>Topics</h3>
+    <p>A <strong>topic</strong> is a named channel for a specific type of event. Think of it as a <strong>TV channel</strong>. Channel 5 is always sports, Channel 7 is always news. Services publish to a topic based on what happened, and subscribers choose which topics they care about.</p>
+
+    <pre><code>Topics in an e-commerce app:
+  "order.placed"      -- when a new order comes in
+  "order.shipped"     -- when an order ships
+  "order.cancelled"   -- when an order is cancelled
+  "user.registered"   -- when a new user signs up
+  "payment.completed" -- when a payment goes through
+  "inventory.low"     -- when stock is running low</code></pre>
+
+    <div class="example-box">
+      <div class="label">How Topics Work</div>
+      <p>The Order Service publishes to <code>order.placed</code>. It doesn't know or care who's listening. Three services subscribe to that topic:</p>
+      <ul>
+        <li><strong>Email Service</strong> subscribes to <code>order.placed</code> &rarr; sends confirmation email</li>
+        <li><strong>Inventory Service</strong> subscribes to <code>order.placed</code> &rarr; decrements stock</li>
+        <li><strong>Analytics Service</strong> subscribes to <code>order.placed</code> &rarr; logs for reporting</li>
+      </ul>
+      <p>Next week, you add a Shipping Service. You just subscribe it to <code>order.placed</code>. <strong>The Order Service code doesn't change at all.</strong> That's the power of Pub/Sub.</p>
+    </div>
+
+    <h3>Fan-Out</h3>
+    <p><strong>Fan-out</strong> is when one message goes to multiple consumers. In Pub/Sub, this is the default behavior -- every subscriber gets every message. The "fan" metaphor comes from the shape: one input fans out to many outputs.</p>
+
+    <pre><code>                         +--&gt; Email Service
+                         |
+order.placed message ---&gt;+--&gt; Inventory Service     (fan-out)
+                         |
+                         +--&gt; Analytics Service</code></pre>
+
+    <h3>Fan-In</h3>
+    <p><strong>Fan-in</strong> is the opposite: multiple sources feed into one consumer. Example: an Analytics Service that subscribes to <code>order.placed</code>, <code>user.registered</code>, and <code>payment.completed</code> -- it collects events from everywhere into one place.</p>
+
+    <pre><code>order.placed    ---+
+                   |
+user.registered ---+--&gt; Analytics Service     (fan-in)
+                   |
+payment.completed -+</code></pre>
+
+    <h3>Consumer Groups</h3>
+    <p>Here's where it gets interesting. What if your Email Service is slow and you want to run <strong>3 instances</strong> of it? You don't want each instance to send the same email 3 times. You want the 3 instances to <strong>split the work</strong>.</p>
+
+    <p>This is what <strong>consumer groups</strong> solve. Instances in the same consumer group act as competing consumers -- each message goes to <strong>one instance in the group</strong>. But different groups each get their own copy.</p>
+
+    <pre><code>Topic: "order.placed"
+
+Consumer Group: "email-service"
+  Instance 1 --&gt; processes message 1, 3, 5
+  Instance 2 --&gt; processes message 2, 4, 6
+  Instance 3 --&gt; processes message 7, 8, 9
+  (Each message handled by ONE instance. No duplicates.)
+
+Consumer Group: "inventory-service"
+  Instance 1 --&gt; processes ALL messages (only 1 instance)
+
+Consumer Group: "analytics-service"
+  Instance 1 --&gt; processes message 1, 2
+  Instance 2 --&gt; processes message 3, 4
+  (Split the load within the group.)</code></pre>
+
+    <div class="tip-box">
+      <div class="label">The Key Insight</div>
+      <p>Consumer groups give you <strong>both patterns at once</strong>. Between groups: Pub/Sub (every group gets every message). Within a group: Point-to-Point (each message goes to one instance). This is how you scale Pub/Sub in production.</p>
+    </div>
+
+    <h3>Message Format</h3>
+    <p>Messages are usually JSON objects with enough context for the consumer to act:</p>
+
+    <pre><code>// Published to "order.placed" topic
+{
+  "eventType": "order.placed",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "orderId": "ORD-1234",
+    "userId": "USR-5678",
+    "items": [
+      { "productId": "PROD-001", "quantity": 2, "price": 29.99 },
+      { "productId": "PROD-042", "quantity": 1, "price": 49.99 }
+    ],
+    "total": 109.97,
+    "shippingAddress": {
+      "street": "123 Main St",
+      "city": "London",
+      "postcode": "EC1A 1BB"
+    }
+  }
+}</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Include Enough Data</div>
+      <p>A common mistake is publishing a message like <code>{ "orderId": "1234" }</code> and making every consumer call the Order Service API to get the details. This defeats the purpose of decoupling! Include all the data the consumers need in the message itself, so they don't need to call back.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 5: RABBITMQ                                         -->
+  <!-- ============================================================ -->
+  <section id="rabbitmq">
+    <h2>5. RabbitMQ -- The Traditional Message Broker</h2>
+
+    <p>RabbitMQ is a <strong>message broker</strong> -- it accepts, stores, and delivers messages. It's like a post office: you drop off a letter, and it makes sure it gets to the right mailbox.</p>
+
+    <h3>Core Concepts</h3>
+
+    <table>
+      <tr>
+        <th>Concept</th>
+        <th>What It Is</th>
+        <th>Analogy</th>
+      </tr>
+      <tr>
+        <td><strong>Producer</strong></td>
+        <td>Sends messages</td>
+        <td>Person mailing a letter</td>
+      </tr>
+      <tr>
+        <td><strong>Exchange</strong></td>
+        <td>Receives messages and routes them to queues</td>
+        <td>Post office sorting room</td>
+      </tr>
+      <tr>
+        <td><strong>Queue</strong></td>
+        <td>Buffer that stores messages</td>
+        <td>Mailbox</td>
+      </tr>
+      <tr>
+        <td><strong>Consumer</strong></td>
+        <td>Reads messages from a queue</td>
+        <td>Person checking their mailbox</td>
+      </tr>
+      <tr>
+        <td><strong>Binding</strong></td>
+        <td>Rule connecting exchange to queue</td>
+        <td>Mail forwarding rule</td>
+      </tr>
+    </table>
+
+    <h3>Exchange Types</h3>
+    <p>The <strong>exchange</strong> is what makes RabbitMQ flexible. It decides which queue(s) get each message:</p>
+
+    <ul>
+      <li><strong>Direct</strong> -- Routes by exact match on a routing key. "Send messages with key <code>payment</code> to the payment queue."</li>
+      <li><strong>Fanout</strong> -- Sends to ALL bound queues. Classic Pub/Sub. "Everyone gets everything."</li>
+      <li><strong>Topic</strong> -- Routes by pattern matching. <code>order.*</code> matches <code>order.placed</code> and <code>order.shipped</code>. Most flexible.</li>
+      <li><strong>Headers</strong> -- Routes based on message headers instead of routing key. Less common.</li>
+    </ul>
+
+    <pre><code>// Node.js example with amqplib
+const amqp = require('amqplib');
+
+async function main() {
+  // Connect to RabbitMQ
+  const connection = await amqp.connect('amqp://localhost');
+  const channel = await connection.createChannel();
+
+  // Create a queue (idempotent -- safe to call multiple times)
+  await channel.assertQueue('tasks', { durable: true });
+
+  // ===== PRODUCER: Send a message =====
+  const message = JSON.stringify({ orderId: 'ORD-1234', action: 'process' });
+  channel.sendToQueue('tasks', Buffer.from(message), { persistent: true });
+  console.log('Sent:', message);
+
+  // ===== CONSUMER: Receive messages =====
+  channel.consume('tasks', (msg) => {
+    const data = JSON.parse(msg.content.toString());
+    console.log('Received:', data);
+
+    // Process the message...
+
+    // Acknowledge -- tells RabbitMQ we're done, safe to delete
+    channel.ack(msg);
+  });
+}</code></pre>
+
+    <div class="example-box">
+      <div class="label">Acknowledgments (ACKs)</div>
+      <p>When a consumer gets a message, RabbitMQ doesn't delete it immediately. The consumer must <strong>acknowledge</strong> (ACK) the message after processing. If the consumer crashes before ACKing, RabbitMQ re-delivers the message to another consumer. This prevents message loss.</p>
+      <p>This is like signing for a package -- the delivery isn't complete until you confirm you received it.</p>
+    </div>
+
+    <h3>RabbitMQ Pub/Sub Example</h3>
+    <pre><code>// Publisher -- uses a fanout exchange
+const exchange = 'order-events';
+await channel.assertExchange(exchange, 'fanout', { durable: true });
+
+const event = JSON.stringify({
+  type: 'order.placed',
+  orderId: 'ORD-1234',
+  total: 109.97
+});
+channel.publish(exchange, '', Buffer.from(event));
+
+// ===== Subscriber 1: Email Service =====
+const q1 = await channel.assertQueue('email-queue', { durable: true });
+await channel.bindQueue(q1.queue, exchange, '');
+channel.consume(q1.queue, (msg) => {
+  const event = JSON.parse(msg.content.toString());
+  console.log('Sending email for order:', event.orderId);
+  channel.ack(msg);
+});
+
+// ===== Subscriber 2: Inventory Service =====
+const q2 = await channel.assertQueue('inventory-queue', { durable: true });
+await channel.bindQueue(q2.queue, exchange, '');
+channel.consume(q2.queue, (msg) => {
+  const event = JSON.parse(msg.content.toString());
+  console.log('Updating inventory for order:', event.orderId);
+  channel.ack(msg);
+});</code></pre>
+
+    <h3>Running RabbitMQ with Docker</h3>
+    <pre><code># Run RabbitMQ with management UI
+docker run -d --name rabbitmq \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  rabbitmq:3-management
+
+# Management UI at http://localhost:15672
+# Default login: guest / guest</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: KAFKA                                            -->
+  <!-- ============================================================ -->
+  <section id="kafka">
+    <h2>6. Apache Kafka -- The Event Streaming Platform</h2>
+
+    <p>Kafka is fundamentally different from RabbitMQ. RabbitMQ is a <strong>message broker</strong> (delivers and deletes messages). Kafka is an <strong>event streaming platform</strong> (stores events permanently as a log).</p>
+
+    <div class="example-box">
+      <div class="label">The Key Difference</div>
+      <p><strong>RabbitMQ</strong> is like a <strong>post office</strong>. You send a letter, it's delivered, and it's gone from the system. The post office doesn't keep a copy.</p>
+      <p><strong>Kafka</strong> is like a <strong>newspaper</strong>. Events are published to the paper, and the paper keeps every issue forever (or for a configured retention period). Anyone can read any issue at any time. New subscribers can read from the beginning. The paper doesn't care when you read it.</p>
+    </div>
+
+    <h3>Core Concepts</h3>
+
+    <table>
+      <tr>
+        <th>Concept</th>
+        <th>What It Is</th>
+        <th>Analogy</th>
+      </tr>
+      <tr>
+        <td><strong>Topic</strong></td>
+        <td>A category/feed of events</td>
+        <td>A newspaper section (Sports, Business)</td>
+      </tr>
+      <tr>
+        <td><strong>Partition</strong></td>
+        <td>A topic split into ordered segments for parallelism</td>
+        <td>Multiple printing presses for one section</td>
+      </tr>
+      <tr>
+        <td><strong>Producer</strong></td>
+        <td>Writes events to a topic</td>
+        <td>Journalist writing articles</td>
+      </tr>
+      <tr>
+        <td><strong>Consumer</strong></td>
+        <td>Reads events from a topic</td>
+        <td>Person reading the paper</td>
+      </tr>
+      <tr>
+        <td><strong>Consumer Group</strong></td>
+        <td>Group of consumers that split partitions</td>
+        <td>A team reading different sections</td>
+      </tr>
+      <tr>
+        <td><strong>Offset</strong></td>
+        <td>Position of a consumer in the log</td>
+        <td>Bookmark in the newspaper</td>
+      </tr>
+      <tr>
+        <td><strong>Broker</strong></td>
+        <td>A Kafka server</td>
+        <td>A printing press</td>
+      </tr>
+    </table>
+
+    <h3>How Kafka Works</h3>
+
+    <pre><code>Topic: "orders" (3 partitions)
+
+Partition 0: [msg0] [msg3] [msg6] [msg9]  ...
+Partition 1: [msg1] [msg4] [msg7] [msg10] ...
+Partition 2: [msg2] [msg5] [msg8] [msg11] ...
+
+Each partition is an ordered, append-only log.
+Messages are NOT deleted after reading -- they're kept for a retention period.
+Each message has an offset (position number) in its partition.</code></pre>
+
+    <div class="example-box">
+      <div class="label">Why Partitions?</div>
+      <p>Partitions are how Kafka achieves <strong>parallelism</strong>. If you have 3 partitions, you can have 3 consumers reading simultaneously (one per partition). More partitions = more throughput.</p>
+      <p>Kafka guarantees ordering <strong>within a partition</strong>, not across partitions. If message order matters for a specific entity (like all events for order #1234), use the entity ID as the partition key -- Kafka will always put the same key in the same partition.</p>
+    </div>
+
+    <h3>Kafka Producer/Consumer in Node.js</h3>
+    <pre><code>// Using kafkajs
+const { Kafka } = require('kafkajs');
+
+const kafka = new Kafka({
+  clientId: 'my-app',
+  brokers: ['localhost:9092']
+});
+
+// ===== PRODUCER =====
+const producer = kafka.producer();
+await producer.connect();
+
+await producer.send({
+  topic: 'order-events',
+  messages: [
+    {
+      key: 'ORD-1234',                    // Partition key (same order always same partition)
+      value: JSON.stringify({
+        type: 'order.placed',
+        orderId: 'ORD-1234',
+        total: 109.97,
+        timestamp: new Date().toISOString()
+      })
+    }
+  ]
+});
+
+// ===== CONSUMER =====
+const consumer = kafka.consumer({ groupId: 'email-service' });
+await consumer.connect();
+await consumer.subscribe({ topic: 'order-events', fromBeginning: false });
+
+await consumer.run({
+  eachMessage: async ({ topic, partition, message }) => {
+    const event = JSON.parse(message.value.toString());
+    console.log(`Partition ${partition} | Offset ${message.offset}`);
+    console.log('Event:', event);
+
+    // Process the event...
+    // Offset is auto-committed (Kafka tracks where each consumer group is)
+  }
+});</code></pre>
+
+    <h3>What Makes Kafka Special</h3>
+    <ul>
+      <li><strong>Messages are NOT deleted after reading.</strong> They're kept for a configurable retention period (default 7 days, can be forever). This means a new consumer can start from the beginning and replay all events.</li>
+      <li><strong>Consumer groups track their own position (offset).</strong> If a consumer crashes and restarts, it picks up where it left off -- no messages lost, no duplicates (mostly).</li>
+      <li><strong>Insane throughput.</strong> Kafka can handle millions of events per second. LinkedIn (which created Kafka) processes over 7 trillion messages per day.</li>
+      <li><strong>Ordering guarantees within a partition.</strong> Use partition keys to ensure related events stay in order.</li>
+    </ul>
+
+    <h3>Running Kafka with Docker Compose</h3>
+    <pre><code># docker-compose.yml
+services:
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: RABBIT VS KAFKA                                  -->
+  <!-- ============================================================ -->
+  <section id="rabbit-vs-kafka">
+    <h2>7. RabbitMQ vs Kafka -- When to Use Which</h2>
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>RabbitMQ</th>
+        <th>Kafka</th>
+      </tr>
+      <tr>
+        <td>Model</td>
+        <td>Message broker (deliver &amp; delete)</td>
+        <td>Event log (append &amp; retain)</td>
+      </tr>
+      <tr>
+        <td>After reading</td>
+        <td>Message is deleted from queue</td>
+        <td>Message stays (retention period)</td>
+      </tr>
+      <tr>
+        <td>Throughput</td>
+        <td>Thousands/sec</td>
+        <td>Millions/sec</td>
+      </tr>
+      <tr>
+        <td>Ordering</td>
+        <td>Per queue (FIFO)</td>
+        <td>Per partition</td>
+      </tr>
+      <tr>
+        <td>Replay</td>
+        <td>Not possible (messages gone)</td>
+        <td>Can replay from any offset</td>
+      </tr>
+      <tr>
+        <td>Routing</td>
+        <td>Flexible (exchanges, bindings, patterns)</td>
+        <td>Simple (topics + partitions)</td>
+      </tr>
+      <tr>
+        <td>Complexity</td>
+        <td>Easier to set up and operate</td>
+        <td>More complex, more infrastructure</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Task queues, RPC, simple Pub/Sub</td>
+        <td>Event sourcing, streaming, analytics, high throughput</td>
+      </tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">The Simple Decision Framework</div>
+      <p><strong>Use RabbitMQ when:</strong> You need a traditional job/task queue. You want messages to be delivered and then gone. You need flexible routing. Your throughput is moderate (thousands/sec). You want something simpler to operate.</p>
+      <p><strong>Use Kafka when:</strong> You need to store events long-term. You need to replay events. You need extremely high throughput. Multiple consumers need the same data. You're doing event sourcing or stream processing. You need strong ordering guarantees.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: AWS SQS                                          -->
+  <!-- ============================================================ -->
+  <section id="aws-sqs">
+    <h2>8. AWS SQS &amp; SNS -- The Cloud-Native Options</h2>
+
+    <p>If you're on AWS, you don't have to run RabbitMQ or Kafka yourself. AWS provides managed services:</p>
+
+    <h3>SQS (Simple Queue Service)</h3>
+    <p>SQS is a <strong>fully managed message queue</strong>. It's conceptually similar to a RabbitMQ queue but you don't manage any servers. AWS handles scaling, durability, and availability.</p>
+
+    <ul>
+      <li><strong>Standard Queue</strong> -- Nearly unlimited throughput, at-least-once delivery, best-effort ordering</li>
+      <li><strong>FIFO Queue</strong> -- Exactly-once delivery, strict ordering, but limited to ~3000 messages/sec</li>
+    </ul>
+
+    <pre><code>// AWS SDK v3 (Node.js)
+const { SQSClient, SendMessageCommand, ReceiveMessageCommand } = require('@aws-sdk/client-sqs');
+
+const sqs = new SQSClient({ region: 'us-east-1' });
+const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789/my-queue';
+
+// Send a message
+await sqs.send(new SendMessageCommand({
+  QueueUrl: queueUrl,
+  MessageBody: JSON.stringify({ orderId: 'ORD-1234', action: 'process' })
+}));
+
+// Receive messages (long polling)
+const response = await sqs.send(new ReceiveMessageCommand({
+  QueueUrl: queueUrl,
+  MaxNumberOfMessages: 10,
+  WaitTimeSeconds: 20    // Long polling -- waits up to 20s for messages
+}));</code></pre>
+
+    <h3>SNS (Simple Notification Service)</h3>
+    <p>SNS is AWS's <strong>Pub/Sub service</strong>. You publish to a topic, and all subscribers get the message. Subscribers can be SQS queues, Lambda functions, HTTP endpoints, or email addresses.</p>
+
+    <h3>SNS + SQS = Fan-Out Pattern</h3>
+    <p>The most common AWS pattern: use SNS for fan-out, SQS for each consumer:</p>
+
+    <pre><code>                              +--&gt; SQS Queue --&gt; Email Service
+                              |
+SNS Topic "order-placed" ----&gt;+--&gt; SQS Queue --&gt; Inventory Service
+                              |
+                              +--&gt; SQS Queue --&gt; Analytics Service
+
+Each service has its own SQS queue. SNS delivers to all queues.
+Each service processes at its own pace.</code></pre>
+
+    <div class="example-box">
+      <div class="label">Why Not Just Use SNS Alone?</div>
+      <p>SNS pushes messages immediately. If your service is down when SNS pushes, the message is lost. By putting an SQS queue in front of each service, messages are <strong>buffered</strong> -- if the service is down, messages queue up and wait. When the service comes back, it processes the backlog. This is why SNS + SQS is the standard pattern on AWS.</p>
+    </div>
+
+    <h3>Managed Kafka: Amazon MSK</h3>
+    <p>If you want Kafka without managing Kafka infrastructure, AWS offers <strong>Amazon MSK (Managed Streaming for Apache Kafka)</strong>. Same Kafka APIs, but AWS handles the servers, patching, and scaling. It's more expensive than running your own but saves operational burden.</p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 9: REAL-WORLD USE CASES                             -->
+  <!-- ============================================================ -->
+  <section id="real-world">
+    <h2>9. Real-World Use Cases</h2>
+
+    <h3>1. Background Job Processing</h3>
+    <p><strong>Pattern:</strong> Point-to-Point queue<br>
+    <strong>Tool:</strong> RabbitMQ or SQS</p>
+    <pre><code>User uploads profile photo
+  --&gt; API puts "resize-image" job in queue
+  --&gt; API responds to user immediately: "Processing..."
+  --&gt; Worker picks up job, resizes image, saves to S3
+  --&gt; Updates database with new image URL</code></pre>
+
+    <h3>2. Order Processing Pipeline</h3>
+    <p><strong>Pattern:</strong> Pub/Sub with consumer groups<br>
+    <strong>Tool:</strong> Kafka or SNS+SQS</p>
+    <pre><code>Order Service publishes "order.placed"
+  --&gt; Payment Service charges card
+  --&gt; Email Service sends confirmation
+  --&gt; Inventory Service decrements stock
+  --&gt; Analytics Service logs event</code></pre>
+
+    <h3>3. Real-Time Activity Feeds</h3>
+    <p><strong>Pattern:</strong> Kafka event streaming<br>
+    <strong>Tool:</strong> Kafka</p>
+    <pre><code>User likes a post
+  --&gt; Event published to "user-activity" topic
+  --&gt; Feed Service updates followers' feeds
+  --&gt; Notification Service pushes alerts
+  --&gt; ML Service updates recommendation model</code></pre>
+
+    <h3>4. Log Aggregation</h3>
+    <p><strong>Pattern:</strong> Kafka fan-in<br>
+    <strong>Tool:</strong> Kafka</p>
+    <pre><code>Service A logs --&gt;
+Service B logs --&gt; Kafka "logs" topic --&gt; Elasticsearch --&gt; Kibana dashboard
+Service C logs --&gt;</code></pre>
+
+    <h3>5. Rate Limiting / Traffic Smoothing</h3>
+    <p><strong>Pattern:</strong> Queue as buffer<br>
+    <strong>Tool:</strong> RabbitMQ or SQS</p>
+    <pre><code>Flash sale: 10,000 orders/sec hit your API
+  --&gt; API puts each order in queue instantly (fast)
+  --&gt; Backend processes orders at 500/sec (sustainable rate)
+  --&gt; Queue absorbs the burst, nothing crashes</code></pre>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 10: KEY CONCEPTS                                    -->
+  <!-- ============================================================ -->
+  <section id="key-concepts">
+    <h2>10. Key Concepts You Need to Know</h2>
+
+    <h3>At-Least-Once vs At-Most-Once vs Exactly-Once Delivery</h3>
+    <table>
+      <tr>
+        <th>Guarantee</th>
+        <th>What It Means</th>
+        <th>Risk</th>
+      </tr>
+      <tr>
+        <td><strong>At-most-once</strong></td>
+        <td>Message delivered 0 or 1 times. Fire and forget.</td>
+        <td>Messages can be lost</td>
+      </tr>
+      <tr>
+        <td><strong>At-least-once</strong></td>
+        <td>Message delivered 1 or more times. Retries on failure.</td>
+        <td>Messages can be duplicated</td>
+      </tr>
+      <tr>
+        <td><strong>Exactly-once</strong></td>
+        <td>Message delivered exactly 1 time. The holy grail.</td>
+        <td>Very hard/expensive to implement</td>
+      </tr>
+    </table>
+
+    <div class="warning-box">
+      <div class="label">Exactly-Once Is (Almost) a Myth</div>
+      <p>In distributed systems, truly exactly-once delivery is extremely difficult. Most systems achieve <strong>at-least-once delivery</strong> and make their consumers <strong>idempotent</strong> -- meaning processing the same message twice has no extra effect. For example, if you get two "charge customer $50" messages with the same order ID, check if you already charged for that order before charging again.</p>
+    </div>
+
+    <h3>Idempotency</h3>
+    <p>An operation is <strong>idempotent</strong> if doing it twice produces the same result as doing it once. This is critical when using message queues because duplicates are always possible.</p>
+
+    <pre><code>// NOT idempotent -- running twice adds $50 twice
+balance += 50;
+
+// Idempotent -- running twice has same effect as once
+if (!processedOrders.has(orderId)) {
+  balance += 50;
+  processedOrders.add(orderId);
+}</code></pre>
+
+    <h3>Dead Letter Queue (DLQ)</h3>
+    <p>A DLQ is where messages go when they <strong>can't be processed</strong> after multiple retries. Instead of retrying forever or losing the message, it gets moved to a special queue where you can inspect it, fix the issue, and reprocess it.</p>
+
+    <pre><code>Main Queue --&gt; Consumer tries processing
+  |                 |
+  |           Fails 3 times
+  |                 |
+  v                 v
+             Dead Letter Queue (DLQ)
+             (inspect, fix, reprocess)</code></pre>
+
+    <h3>Backpressure</h3>
+    <p>When consumers can't keep up with producers, the queue fills up. <strong>Backpressure</strong> is the mechanism for handling this -- either slow down producers, scale up consumers, or shed load.</p>
+
+    <h3>Message Ordering</h3>
+    <p>Most queues guarantee <strong>FIFO within a partition/queue</strong> but NOT globally. If strict ordering matters (e.g., bank transactions for one account), make sure related messages go to the same partition using a partition key.</p>
+
+    <div class="formula-box">
+      <strong>Quick Decision Guide:</strong><br><br>
+      Need a simple task queue? &rarr; <strong>RabbitMQ</strong> or <strong>SQS</strong><br>
+      Need Pub/Sub on AWS? &rarr; <strong>SNS + SQS</strong><br>
+      Need event replay / high throughput / streaming? &rarr; <strong>Kafka</strong><br>
+      Don't want to manage infrastructure? &rarr; <strong>SQS/SNS</strong> (AWS) or <strong>Cloud Pub/Sub</strong> (GCP)<br>
+      Just learning? &rarr; Start with <strong>RabbitMQ</strong> (simplest to understand)
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Better Dev -- built for self-learners. Keep going, you've got this.</p>
+</footer>
+
+</body>
+</html>
