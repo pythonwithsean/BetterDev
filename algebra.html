@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html" class="active">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <!-- Page Header -->
@@ -214,6 +217,87 @@
           <div class="warning-box">
             <div class="label">Common Mistake</div>
             <p>Don't forget to distribute to <em>every</em> term inside the parentheses. A common error: writing <code>3(2x + 4) = 6x + 4</code> instead of the correct <code>6x + 12</code>. The 3 must multiply both the 2x AND the 4.</p>
+          </div>
+
+          <h3>Distributing with Fractions</h3>
+          <p>Distribution works the exact same way when fractions are involved. Your brain might panic, but the rule hasn't changed: <strong>multiply by each term inside the parentheses</strong>.</p>
+
+          <div class="formula-box">
+            <strong>The rule is always:</strong> a &times; (b + c) = a&times;b + a&times;c<br><br>
+            <span style="color:#555555;">It doesn't matter if a, b, or c are fractions, negatives, or have exponents. Same rule.</span>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- 3n &times; (40 + n&sup3;/2)</div>
+            <p>This is the kind of expression that shows up in Big-O analysis. Let's go step by step.</p>
+            <p style="margin-top:0.5rem;"><strong>Step 1: Identify what you're distributing</strong></p>
+            <p>a = 3n, &nbsp; b = 40, &nbsp; c = n&sup3;/2</p>
+            <p style="margin-top:0.5rem;"><strong>Step 2: Distribute -- multiply 3n by each term</strong></p>
+            <p>= 3n &times; 40 &nbsp;+&nbsp; 3n &times; (n&sup3;/2)</p>
+            <p style="margin-top:0.5rem;"><strong>Step 3: Simplify each part</strong></p>
+            <p>First part: 3n &times; 40 = <strong>120n</strong></p>
+            <p>Second part: 3n &times; n&sup3; = 3n<sup>4</sup>, then &divide; 2 = <strong>3n<sup>4</sup>/2</strong></p>
+            <p style="margin-top:0.5rem;"><strong>Result:</strong> 120n + 3n<sup>4</sup>/2</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- n/2 &times; (n + 1)</div>
+            <p>This is n(n+1)/2 written differently. Let's distribute:</p>
+            <p>= (n/2) &times; n &nbsp;+&nbsp; (n/2) &times; 1</p>
+            <p>= n&sup2;/2 + n/2</p>
+            <p>= <strong>(n&sup2; + n) / 2</strong></p>
+            <p style="margin-top:0.5rem;"><em>This is the expanded form of n(n+1)/2 -- the sum of 1 to n.</em></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Distributing a Negative with Fractions</div>
+            <p><strong>-(x/3 + 2/5)</strong></p>
+            <p>Distribute the -1:</p>
+            <p>= (-1) &times; x/3 + (-1) &times; 2/5</p>
+            <p>= <strong>-x/3 - 2/5</strong></p>
+          </div>
+
+          <h3>Splitting Fractions (When You Can and Can't)</h3>
+          <p>This is the source of so much confusion. Here's the <strong>exact rule</strong>:</p>
+
+          <div class="formula-box">
+            <strong>Splitting the NUMERATOR -- ALWAYS valid:</strong><br>
+            (a + b) / c = a/c + b/c &nbsp;&nbsp; &#10003;<br><br>
+            <strong>Splitting the DENOMINATOR -- NEVER valid:</strong><br>
+            c / (a + b) &ne; c/a + c/b &nbsp;&nbsp; &#10007;
+          </div>
+
+          <div class="example-box">
+            <div class="label">Valid Split: (40 + n&sup3;) / 2</div>
+            <p>The denominator is a single term (just 2), so we can split the numerator:</p>
+            <p>(40 + n&sup3;) / 2 = 40/2 + n&sup3;/2 = <strong>20 + n&sup3;/2</strong></p>
+            <p style="margin-top:0.5rem;">Why does this work? Division distributes over addition in the numerator. Think of dividing a pizza: if you split 8 slices among 2 people, each person gets 4. If you split (5 + 3) slices among 2 people, each gets 5/2 + 3/2 = 2.5 + 1.5 = 4. Same result.</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Invalid Split: DON'T Do This</div>
+            <p><code>12 / (x + 4) &ne; 12/x + 12/4</code></p>
+            <p>If x = 2: Left side = 12/6 = 2. Right side = 6 + 3 = 9. Not even close!</p>
+            <p style="margin-top:0.5rem;">When the <strong>denominator</strong> has addition/subtraction, you <strong>cannot</strong> split. The fraction must stay as one piece, or you need to find another approach.</p>
+          </div>
+
+          <h3>Common Denominator: Making Fractions Combine</h3>
+          <p>When you need to add a whole number to a fraction, convert the whole number to a fraction first:</p>
+
+          <div class="example-box">
+            <div class="label">Example -- Combining 40 + n&sup3;/2 Into One Fraction</div>
+            <p>Step 1: Write 40 as 40/1</p>
+            <p>Step 2: Common denominator is 2, so: 40/1 = 80/2</p>
+            <p>Step 3: Add: 80/2 + n&sup3;/2 = <strong>(80 + n&sup3;) / 2</strong></p>
+            <p style="margin-top:0.5rem;"><em>This is useful when you want to simplify an expression into a single fraction.</em></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Combining 3n with a Fraction</div>
+            <p>You have 3n &times; 40/2. How to compute this?</p>
+            <p><strong>Method 1 (just multiply):</strong> 3n &times; 40/2 = (3n &times; 40) / 2 = 120n/2 = <strong>60n</strong></p>
+            <p><strong>Method 2 (simplify first):</strong> 40/2 = 20, so 3n &times; 20 = <strong>60n</strong></p>
+            <p>Both methods give the same answer. Use whichever feels simpler.</p>
           </div>
         </section>
 
@@ -1609,6 +1693,88 @@
           <div class="tip-box">
             <div class="label">Why This Matters for CS</div>
             <p>Exponents are fundamental to understanding big O notation. When we say an algorithm is O(n&sup2;) or O(2<sup>n</sup>), we're using exponents to describe how fast the runtime grows. Scientific notation is essentially how floating-point numbers are stored in computer memory -- as a mantissa times a power of 2. Understanding exponent rules helps you simplify algorithm complexity expressions like O(n&sup2; * n&sup3;) = O(n<sup>5</sup>).</p>
+          </div>
+
+          <h3>Big-O Simplification Mindset</h3>
+          <p>When you see a complex expression and need to find the Big-O, your brain might want to simplify it perfectly. <strong>Stop.</strong> Big-O is approximation math, not exact math. You only need to find the biggest term.</p>
+
+          <div class="formula-box">
+            <strong>The Big-O Rules (memorize these three):</strong><br><br>
+            1. <strong>Drop constants:</strong> O(5n&sup2;) = O(n&sup2;). Constants don't affect growth rate.<br><br>
+            2. <strong>Drop lower-order terms:</strong> O(n&sup2; + n) = O(n&sup2;). Smaller terms become irrelevant as n grows.<br><br>
+            3. <strong>The highest exponent wins:</strong> In n<sup>4</sup> + n&sup2; + n, the n<sup>4</sup> dominates. O(n<sup>4</sup>).
+          </div>
+
+          <div class="example-box">
+            <div class="label">Full Walkthrough: f(n) = 3n &times; (40 + n&sup3;/2)</div>
+            <p><strong>Step 1: Expand using distribution</strong></p>
+            <p>= 3n &times; 40 + 3n &times; n&sup3;/2</p>
+            <p>= 120n + 3n<sup>4</sup>/2</p>
+            <p style="margin-top:0.5rem;"><strong>Step 2: Find the Big-O</strong></p>
+            <p>We have two terms: 120n and 3n<sup>4</sup>/2</p>
+            <p>Which has the higher exponent?</p>
+            <ul>
+              <li>120n = 120n<sup>1</sup> &rarr; exponent is 1</li>
+              <li>3n<sup>4</sup>/2 = (3/2)n<sup>4</sup> &rarr; exponent is 4</li>
+            </ul>
+            <p><strong>Step 3: Apply the rules</strong></p>
+            <p>Drop the lower term (120n): gone.</p>
+            <p>Drop the constant (3/2): gone.</p>
+            <p>What remains: <strong>O(n<sup>4</sup>)</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">More Big-O Simplification Practice</div>
+            <table>
+              <tr><th>Expression</th><th>Expand</th><th>Dominant Term</th><th>Big-O</th></tr>
+              <tr>
+                <td>5n + 2</td>
+                <td>(already expanded)</td>
+                <td>5n</td>
+                <td><strong>O(n)</strong></td>
+              </tr>
+              <tr>
+                <td>n&sup2; + 100n + 500</td>
+                <td>(already expanded)</td>
+                <td>n&sup2;</td>
+                <td><strong>O(n&sup2;)</strong></td>
+              </tr>
+              <tr>
+                <td>n(n+1)/2</td>
+                <td>n&sup2;/2 + n/2</td>
+                <td>n&sup2;/2</td>
+                <td><strong>O(n&sup2;)</strong></td>
+              </tr>
+              <tr>
+                <td>3n<sup>4</sup> + n&sup2; + 7</td>
+                <td>(already expanded)</td>
+                <td>3n<sup>4</sup></td>
+                <td><strong>O(n<sup>4</sup>)</strong></td>
+              </tr>
+              <tr>
+                <td>2<sup>n</sup> + n<sup>100</sup></td>
+                <td>(already expanded)</td>
+                <td>2<sup>n</sup></td>
+                <td><strong>O(2<sup>n</sup>)</strong></td>
+              </tr>
+            </table>
+            <p style="margin-top:1rem;"><em>Note: Exponentials (2<sup>n</sup>) always beat polynomials (n<sup>100</sup>), no matter how big the exponent. 2<sup>n</sup> grows faster than n<sup>1000000</sup> for large enough n.</em></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Mental Shift</div>
+            <p>Your brain wants to simplify 3n<sup>4</sup>/2 into a clean number. For Big-O, you don't need to. The moment you see n<sup>4</sup>, you're done. You don't care about the 3 or the /2. Engineers ask <strong>"what dominates when n is huge?"</strong> not "is this algebraically pristine?"</p>
+            <p style="margin-top:0.5rem;">Think of it like this: if n = 1,000,000 then n<sup>4</sup> = 1,000,000,000,000,000,000,000,000. The 120n term adds 120,000,000 to that. That's 0.000000000000012% of the total. It literally doesn't matter.</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">When You DO Need Exact Algebra</div>
+            <p>Big-O lets you skip simplification. But when <strong>solving equations</strong>, <strong>computing actual values</strong>, or <strong>proving formulas</strong>, you need exact algebra. The skill is knowing which mode you're in:</p>
+            <ul>
+              <li><strong>Big-O mode:</strong> Find the dominant term, drop everything else. Approximation is the goal.</li>
+              <li><strong>Exact mode:</strong> Every step must be precise. Fractions, signs, and constants all matter.</li>
+            </ul>
+            <p>Most algorithm analysis lives in Big-O mode. Most debugging and implementation lives in exact mode.</p>
           </div>
         </section>
 

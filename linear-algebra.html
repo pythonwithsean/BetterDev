@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -903,6 +906,14 @@
       <p>
         Every matrix represents a <strong>linear transformation</strong> -- a function that takes vectors in, moves/stretches/rotates them, and outputs new vectors. When you multiply a vector by a matrix, you're applying that transformation. This is the connection between abstract matrix math and real visual/spatial effects.
       </p>
+
+      <div class="formula-box">
+        <strong>Linear Transformation — Formal Definition (The Two Axioms):</strong><br><br>
+        A function T is a linear transformation if and only if:<br><br>
+        1. <strong>Additivity:</strong> T(u + v) = T(u) + T(v) for all vectors u, v<br>
+        2. <strong>Homogeneity:</strong> T(cu) = c&middot;T(u) for all vectors u and scalars c<br><br>
+        <span style="color:#555555;">If a transformation satisfies these two rules, it can always be represented as a matrix multiplication T(x) = Ax.</span>
+      </div>
 
       <h3>Common 2D Transformation Matrices</h3>
 

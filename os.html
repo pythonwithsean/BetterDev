@@ -17,6 +17,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -49,6 +50,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -503,6 +506,14 @@ Shell (PID 100)
     <li><strong>Fairness</strong> -- every process gets a reasonable share of CPU</li>
   </ul>
 
+  <div class="formula-box">
+    <strong>Scheduling Metrics (Precise Definitions):</strong><br><br>
+    • <strong>Turnaround time</strong> = completion_time - arrival_time<br>
+    • <strong>Response time</strong> = first_run_time - arrival_time<br>
+    • <strong>Waiting time</strong> = turnaround_time - burst_time<br>
+    • <strong>Throughput</strong> = number_of_processes / total_time
+  </div>
+
   <h3>Scheduling Algorithms</h3>
 
   <table>
@@ -776,6 +787,15 @@ lock(mutex2)    BLOCKED!
   </ol>
 
   <p>Break any one condition and deadlock becomes impossible.</p>
+
+  <div class="formula-box">
+    <strong>Coffman Conditions for Deadlock (All Four Must Hold):</strong><br><br>
+    1. <strong>Mutual Exclusion:</strong> At least one resource is non-sharable<br>
+    2. <strong>Hold and Wait:</strong> A process holds resources while waiting for others<br>
+    3. <strong>No Preemption:</strong> Resources cannot be forcibly taken from a process<br>
+    4. <strong>Circular Wait:</strong> A cycle exists in the resource-allocation graph<br><br>
+    <strong>Break any one condition → no deadlock possible.</strong>
+  </div>
 
   <h3>Prevention Strategies</h3>
 

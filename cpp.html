@@ -14,6 +14,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -46,6 +47,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -1185,6 +1188,18 @@ std::vector&lt;<span class="keyword">int</span>&gt; v2 = std::move(v1);
             <tr><td><code>queue</code></td><td>FIFO adapter</td><td>O(1) front</td><td>O(1) push/pop</td><td>BFS</td></tr>
             <tr><td><code>priority_queue</code></td><td>Max-heap</td><td>O(1) top</td><td>O(log n)</td><td>Always want max/min</td></tr>
           </table>
+
+          <div class="formula-box">
+            <strong>STL Container Complexity Guarantees:</strong><br><br>
+            <table>
+              <tr><th>Container</th><th>Access</th><th>Insert</th><th>Delete</th><th>Search</th><th>Ordered?</th></tr>
+              <tr><td>vector</td><td>O(1)</td><td>O(1) amortized (end)</td><td>O(n)</td><td>O(n)</td><td>No</td></tr>
+              <tr><td>deque</td><td>O(1)</td><td>O(1) (both ends)</td><td>O(n)</td><td>O(n)</td><td>No</td></tr>
+              <tr><td>list</td><td>O(n)</td><td>O(1) (with iterator)</td><td>O(1) (with iterator)</td><td>O(n)</td><td>No</td></tr>
+              <tr><td>set/map</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>Yes</td></tr>
+              <tr><td>unordered_set/map</td><td>O(1) avg</td><td>O(1) avg</td><td>O(1) avg</td><td>O(1) avg</td><td>No</td></tr>
+            </table>
+          </div>
 
           <div class="tip-box">
             <div class="label">Quick Decision Guide</div>

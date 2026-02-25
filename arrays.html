@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -690,6 +693,14 @@ console.<span class="function">log</span>(<span class="function">twoSumSorted</s
 
       <div class="formula-box">
         Two Pointers Complexity:  Time O(n)  |  Space O(1)
+      </div>
+
+      <div class="formula-box">
+        <strong>Two Pointers -- Variant Decision Rule:</strong><br><br>
+        &bull; <strong>Converging (left/right):</strong> Array is sorted AND you need pairs that satisfy a condition &rarr; O(n)<br>
+        &bull; <strong>Same direction (fast/slow):</strong> Partition, filter, or remove in-place &rarr; O(n)<br>
+        &bull; <strong>Sliding Window (special case):</strong> Contiguous subarray/substring with constraint &rarr; O(n)<br><br>
+        <strong>Key rule:</strong> arr[i:j] slicing in Python creates a new array and is O(j-i), not O(1).
       </div>
 
       <!-- Sliding Window -->

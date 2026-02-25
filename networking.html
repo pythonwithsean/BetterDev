@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -423,6 +426,15 @@ Why subnetting matters for developers:
   - Kubernetes: pods get IPs from a cluster CIDR range</code></pre>
     </div>
 
+    <div class="formula-box">
+      <strong>CIDR Subnet Formula:</strong><br><br>
+      For a /<em>prefix</em> network:<br>
+      • Number of addresses = 2^(32 - prefix)<br>
+      • Usable hosts = 2^(32 - prefix) - 2 (subtract network and broadcast addresses)<br><br>
+      Example: /24 → 2^8 = 256 addresses, 254 usable hosts<br>
+      Example: /16 → 2^16 = 65,536 addresses, 65,534 usable hosts
+    </div>
+
     <h3>IPv6</h3>
     <div class="example-box">
       <div class="label">The Future (and Present) of IP Addressing</div>
@@ -659,6 +671,14 @@ After data transfer, connection is closed with a four-way FIN handshake:
    the receiver detects it and drops the segment (sender retransmits).</code></pre>
     </div>
 
+    <div class="formula-box">
+      <strong>TCP 3-Way Handshake (Exact Sequence):</strong><br><br>
+      1. Client → Server: SYN (seq=x)<br>
+      2. Server → Client: SYN-ACK (seq=y, ack=x+1)<br>
+      3. Client → Server: ACK (seq=x+1, ack=y+1)<br><br>
+      Connection established. Both sides know the other's initial sequence number.
+    </div>
+
     <h3>UDP -- User Datagram Protocol</h3>
     <div class="example-box">
       <div class="label">UDP: Fire and Forget</div>
@@ -872,6 +892,19 @@ Why this matters:
     POST /payments {amount: 50, idempotency_key: "abc123"}
     If you retry with the same key, the server returns the existing payment
     instead of charging twice.</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>HTTP Method Properties (Precise Rules):</strong><br><br>
+      <table>
+        <tr><th>Method</th><th>Safe?</th><th>Idempotent?</th><th>Body?</th></tr>
+        <tr><td>GET</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+        <tr><td>POST</td><td>No</td><td>No</td><td>Yes</td></tr>
+        <tr><td>PUT</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>PATCH</td><td>No</td><td>No</td><td>Yes</td></tr>
+        <tr><td>DELETE</td><td>No</td><td>Yes</td><td>Optional</td></tr>
+      </table><br>
+      <strong>Safe:</strong> Does not modify server state. <strong>Idempotent:</strong> Multiple identical requests have same effect as one.
     </div>
 
     <h3>HTTP Status Codes</h3>

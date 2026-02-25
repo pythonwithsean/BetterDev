@@ -16,6 +16,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -48,6 +49,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -180,6 +183,14 @@ Over 5 years: ~1.9 TB
 // SSD sequential 1MB:    ~1 millisecond
 // HDD sequential 1MB:    ~20 milliseconds
 // Cross-continent RTT:   ~150 milliseconds</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>System Design Estimation Constants:</strong><br><br>
+      <strong>Storage:</strong> 1 KB = 10³ bytes, 1 MB = 10⁶, 1 GB = 10⁹, 1 TB = 10¹²<br>
+      <strong>Latency:</strong> L1 cache ~1ns, RAM ~100ns, SSD read ~100μs, HDD read ~10ms, network round-trip ~150ms cross-continent<br>
+      <strong>Throughput:</strong> 1 server handles ~10K concurrent connections, SSD ~500MB/s, HDD ~100MB/s, 1 Gbps network ~125 MB/s<br>
+      <strong>Time:</strong> 1 day ≈ 10⁵ seconds, 1 year ≈ 3 × 10⁷ seconds
     </div>
 
     <h3 id="high-level">Step 3: High-Level Design</h3>
@@ -549,6 +560,15 @@ app.use(async (req, res, next) => {
 // - News feed: AP (stale by a few seconds is fine)
 // - Shopping cart: AP (don't lose the cart even if stale)
 // - Payment processing: CP (never process a payment twice)</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>CAP Theorem (Precise Statement):</strong><br><br>
+      In the presence of a network partition (P), a distributed system must choose between:<br>
+      • <strong>Consistency (C):</strong> Every read returns the most recent write<br>
+      • <strong>Availability (A):</strong> Every request receives a response (even if stale)<br><br>
+      You cannot have both C and A during a partition. When there is no partition, you can have both.<br>
+      <strong>CP systems:</strong> HBase, MongoDB (default). <strong>AP systems:</strong> Cassandra, DynamoDB.
     </div>
 
     <div class="example-box">

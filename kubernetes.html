@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html" class="active">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -317,6 +320,14 @@ kubectl delete -f deployment.yaml</code></pre>
 my-api-service                          # Short name (same namespace)
 my-api-service.default                  # With namespace
 my-api-service.default.svc.cluster.local  # Fully qualified</code></pre>
+
+    <div class="formula-box">
+      <strong>Kubernetes DNS Naming Rule:</strong><br><br>
+      <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code><br><br>
+      • Within same namespace: just use <code>&lt;service-name&gt;</code><br>
+      • Cross-namespace: use <code>&lt;service-name&gt;.&lt;namespace&gt;</code><br>
+      • Full FQDN: <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code>
+    </div>
 
     <h3>Ingress -- Exposing to the Internet</h3>
     <p>An <strong>Ingress</strong> is a set of rules for routing external HTTP traffic to your Services. Think of it as a <strong>reverse proxy</strong> (like Nginx) that K8s manages for you.</p>

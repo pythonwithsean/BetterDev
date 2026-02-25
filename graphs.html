@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <!-- ========== PAGE HEADER ========== -->
@@ -488,6 +491,22 @@ console.log(bfs(graph, <span class="number">0</span>));  <span class="comment">/
         <li>Finding all nodes within k distance</li>
         <li>Multi-source shortest path (start BFS from multiple sources simultaneously)</li>
       </ul>
+    </div>
+
+    <div class="formula-box">
+      <strong>BFS vs DFS -- Decision Axioms:</strong><br><br>
+      <strong>Use BFS when:</strong><br>
+      &bull; Shortest path in unweighted graph<br>
+      &bull; Level-by-level processing needed<br>
+      &bull; Closest node that satisfies a condition<br><br>
+      <strong>Use DFS when:</strong><br>
+      &bull; Cycle detection<br>
+      &bull; Topological sort (DAG)<br>
+      &bull; Connected components<br>
+      &bull; Path existence (any path, not shortest)<br>
+      &bull; Backtracking / exhaustive search<br><br>
+      <strong>NEVER use BFS for weighted shortest paths</strong> -- use Dijkstra's (O((V+E) log V) with min-heap).<br>
+      <strong>Dense vs Sparse:</strong> E = O(V&sup2;) &rarr; dense (use adjacency matrix). E = O(V) &rarr; sparse (use adjacency list).
     </div>
 
     <!-- DFS -->

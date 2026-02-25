@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html" class="active">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -245,6 +248,19 @@
         <div class="label">Why CS Cares -- Logic</div>
         <p>Every <code>if</code> statement, every <code>while</code> loop condition, and every boolean expression in your code is propositional logic. De Morgan's Laws help you simplify complex conditions. Understanding implication helps you write correct assertions and contracts. Logic gates (AND, OR, NOT) are the physical building blocks of every CPU. Formal logic is also the foundation of SQL's <code>WHERE</code> clauses, type systems, and automated theorem proving.</p>
       </div>
+
+      <div class="formula-box">
+        <strong>Propositional Logic Laws (Axioms):</strong><br><br>
+        <strong>Identity:</strong> A &and; T = A, &nbsp; A &or; F = A<br>
+        <strong>Domination:</strong> A &and; F = F, &nbsp; A &or; T = T<br>
+        <strong>Idempotent:</strong> A &and; A = A, &nbsp; A &or; A = A<br>
+        <strong>Double Negation:</strong> &not;(&not;A) = A<br>
+        <strong>Complement:</strong> A &and; &not;A = F, &nbsp; A &or; &not;A = T<br>
+        <strong>Commutative:</strong> A &and; B = B &and; A, &nbsp; A &or; B = B &or; A<br>
+        <strong>Associative:</strong> (A &and; B) &and; C = A &and; (B &and; C)<br>
+        <strong>Distributive:</strong> A &and; (B &or; C) = (A &and; B) &or; (A &and; C)<br>
+        <strong>De Morgan's:</strong> &not;(A &and; B) = &not;A &or; &not;B, &nbsp; &not;(A &or; B) = &not;A &and; &not;B
+      </div>
     </section>
 
     <!-- ===================== SECTION 2: SETS ===================== -->
@@ -349,6 +365,15 @@ B = {<span class="number">3</span>, <span class="number">4</span>, <span class="
       <div class="tip-box">
         <div class="label">Why CS Cares -- Sets</div>
         <p>Sets are everywhere in computing. <strong>Database queries</strong> are set operations (SQL's UNION, INTERSECT, EXCEPT map directly to &cup;, &cap;, \). <strong>Type systems</strong> model types as sets of values. Python has a built-in <code>set</code> type with O(1) membership testing. <strong>Hash sets</strong> and <strong>hash maps</strong> are the most-used data structures in real-world code. Even IP address ranges and permission systems are modeled as sets.</p>
+      </div>
+
+      <div class="formula-box">
+        <strong>Set Identity Laws:</strong><br><br>
+        <strong>Identity:</strong> A &cup; &empty; = A, &nbsp; A &cap; U = A<br>
+        <strong>Domination:</strong> A &cup; U = U, &nbsp; A &cap; &empty; = &empty;<br>
+        <strong>Complement:</strong> A &cup; A' = U, &nbsp; A &cap; A' = &empty;<br>
+        <strong>De Morgan's:</strong> (A &cup; B)' = A' &cap; B', &nbsp; (A &cap; B)' = A' &cup; B'<br>
+        <strong>Distributive:</strong> A &cap; (B &cup; C) = (A &cap; B) &cup; (A &cap; C)
       </div>
     </section>
 
@@ -857,6 +882,12 @@ graph = {
       <div class="tip-box">
         <div class="label">Why CS Cares -- Graphs</div>
         <p>Graphs are arguably the most important data structure in CS. <strong>The internet</strong> is a graph (pages are vertices, links are edges). <strong>Social networks</strong> are graphs. <strong>GPS navigation</strong> uses weighted graphs with shortest-path algorithms (Dijkstra's). <strong>Package managers</strong> (npm, pip) use directed acyclic graphs for dependency resolution. <strong>Compilers</strong> build abstract syntax trees and control flow graphs. <strong>Databases</strong> use B-trees (tree-structured graphs) for indexing. If you learn one data structure deeply, make it graphs.</p>
+      </div>
+
+      <div class="formula-box">
+        <strong>Handshaking Lemma:</strong><br><br>
+        In any undirected graph: &Sigma; deg(v) = 2|E|<br><br>
+        <span style="color:#555555;">The sum of all vertex degrees equals twice the number of edges. Every edge contributes 1 to each of its endpoints. Consequence: the number of vertices with odd degree is always even.</span>
       </div>
     </section>
 

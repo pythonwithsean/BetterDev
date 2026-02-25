@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -255,6 +258,12 @@
     <div class="warning-box">
       <div class="label">Cache Performance</div>
       <p>Even though linked lists have great theoretical complexity for insertions/deletions, arrays often win in practice because of <strong>CPU cache locality</strong>. Array elements sit next to each other in memory, so the CPU can prefetch them efficiently. Linked list nodes are scattered in memory, causing frequent cache misses.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Critical O(1) Qualifier</div>
+      <p>All linked list "O(1) insertion/deletion" claims assume <strong>you already hold a pointer to the node</strong>. Finding the node first is O(n). Without a pre-held pointer, insertion at position i is O(i), not O(1).</p>
+      <p><strong>Rule:</strong> If you need O(1) append, you MUST maintain a tail pointer. Without it, append is O(n).</p>
     </div>
   </section>
 

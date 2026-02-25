@@ -14,6 +14,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
     <span class="divider"></span>
@@ -40,6 +41,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -364,6 +367,14 @@ Then loop through array B (size b): O(b)
 Total: O(a + b)   -- NOT O(n²)
 
 Only if you nest them: O(a × b)
+      </div>
+
+      <div class="formula-box">
+        <strong>Nested Loop Rule (Multiplication):</strong><br><br>
+        If loop A runs O(f(n)) times and loop B runs O(g(n)) times <strong>inside</strong> loop A:<br>
+        Total = O(f(n) &times; g(n))<br><br>
+        If loop A runs O(f(n)) and loop B runs O(g(n)) <strong>after</strong> loop A (not nested):<br>
+        Total = O(f(n) + g(n)) = O(max(f(n), g(n)))
       </div>
 
       <h3>The Math Behind log₂(n)</h3>
@@ -723,6 +734,18 @@ Remove from here              Add here
         <li><strong>Code it up.</strong> Write clean code. Use meaningful variable names.</li>
         <li><strong>Test with examples.</strong> Walk through your code with the given examples. Try edge cases.</li>
       </ol>
+
+      <div class="formula-box">
+        <strong>Problem-Solving Decision Rules:</strong><br><br>
+        <strong>By input size n:</strong><br>
+        &bull; n &le; 10: O(n!) or O(2&#x207F;) is fine -- brute force / backtracking<br>
+        &bull; n &le; 100: O(n&sup3;) is fine<br>
+        &bull; n &le; 1,000: O(n&sup2;) is fine<br>
+        &bull; n &le; 100,000: O(n log n) required<br>
+        &bull; n &le; 10,000,000: O(n) required<br>
+        &bull; n &gt; 10,000,000: O(log n) or O(1) required<br><br>
+        <strong>Rule of thumb:</strong> ~10&#x2078; simple operations per second in competitive programming.
+      </div>
 
       <div class="tip-box">
         <div class="label">The Pattern Recognition Shortcut</div>

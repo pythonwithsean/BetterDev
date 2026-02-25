@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html" class="active">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <!-- Page Header -->
@@ -1153,6 +1156,22 @@
           <li><strong>Wave animations:</strong> y = amplitude × sin(frequency × time + phase)</li>
           <li><strong>3D graphics:</strong> All 3D rotations use trig extensively</li>
         </ul>
+      </div>
+
+      <div class="formula-box">
+        <strong>Trig Quadrant Sign Rules (ASTC):</strong><br><br>
+        &bull; Quadrant I (0&deg; to 90&deg;): ALL positive (sin+, cos+, tan+)<br>
+        &bull; Quadrant II (90&deg; to 180&deg;): Only SIN positive<br>
+        &bull; Quadrant III (180&deg; to 270&deg;): Only TAN positive<br>
+        &bull; Quadrant IV (270&deg; to 360&deg;): Only COS positive<br><br>
+        <strong>Mnemonic:</strong> All Students Take Calculus (ASTC)
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Domain Restriction: tan(&theta;)</div>
+        <p><strong>tan(&theta;) = sin(&theta;)/cos(&theta;)</strong> is undefined when cos(&theta;) = 0.</p>
+        <p>This happens at &theta; = 90&deg;, 270&deg; (or &pi;/2, 3&pi;/2 in radians).</p>
+        <p>At these angles, the tangent function has vertical asymptotes. This is why <code>Math.tan(Math.PI/2)</code> in JavaScript gives a very large number instead of infinity -- floating-point can't represent &pi;/2 exactly.</p>
       </div>
     </section>
 

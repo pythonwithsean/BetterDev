@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -117,6 +120,16 @@
         <p>
           Imagine a stack of plates in a cafeteria. You always grab the plate on top (pop), and new clean plates go on top (push). You never pull from the middle or bottom -- that would collapse the stack. This restricted access is what makes stacks powerful for tracking "most recent" state.
         </p>
+      </div>
+
+      <div class="formula-box">
+        <strong>When to Use a Stack -- Precise Trigger Conditions:</strong><br><br>
+        1. <strong>Matching/nesting:</strong> Valid parentheses, HTML tags, nested structures<br>
+        2. <strong>Nearest greater/smaller element:</strong> Monotonic stack pattern<br>
+        3. <strong>Undo/redo state:</strong> Most recent action needs to be reversed first<br>
+        4. <strong>DFS iteratively:</strong> Replace recursion stack with explicit stack<br>
+        5. <strong>Expression evaluation:</strong> Reverse Polish Notation, infix to postfix<br><br>
+        <strong>Invariant:</strong> The answer at position i depends on the most recently seen unmatched element.
       </div>
     </section>
 

@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html" class="active">Calculus</a> <a href="discrete-math.html">Discrete Math</a>
     <a href="linear-algebra.html">Linear Algebra</a>
@@ -49,6 +50,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -257,6 +260,17 @@
       <div class="warning-box">
         <div class="label">Warning</div>
         <p>0/0 is NOT the answer -- it means the limit is "indeterminate" and you need to do more work (factor, rationalize, or use L'Hopital's rule). Do not confuse 0/0 with "the limit is 0" or "the limit does not exist."</p>
+      </div>
+
+      <div class="formula-box">
+        <strong>Limit Laws (Precise Rules):</strong><br><br>
+        If lim(x&rarr;a) f(x) = L and lim(x&rarr;a) g(x) = M, then:<br><br>
+        &bull; Sum: lim(x&rarr;a) [f(x) + g(x)] = L + M<br>
+        &bull; Difference: lim(x&rarr;a) [f(x) - g(x)] = L - M<br>
+        &bull; Product: lim(x&rarr;a) [f(x) &middot; g(x)] = L &middot; M<br>
+        &bull; Quotient: lim(x&rarr;a) [f(x)/g(x)] = L/M (provided M &ne; 0)<br>
+        &bull; Constant: lim(x&rarr;a) [c &middot; f(x)] = c &middot; L<br>
+        &bull; Power: lim(x&rarr;a) [f(x)]&#x207F; = L&#x207F;
       </div>
     </section>
 
@@ -719,6 +733,12 @@
         <p>Rewrite: &radic;x = x<sup>1/2</sup></p>
         <p>Apply power rule: x<sup>1/2 + 1</sup> / (1/2 + 1) = x<sup>3/2</sup> / (3/2) = (2/3)x<sup>3/2</sup></p>
         <p><strong>&int; &radic;x dx = (2/3)x<sup>3/2</sup> + C</strong></p>
+      </div>
+
+      <div class="formula-box">
+        <strong>Integration Linearity (The One Rule That Governs All Integration):</strong><br><br>
+        &int;[a&middot;f(x) + b&middot;g(x)]dx = a&middot;&int;f(x)dx + b&middot;&int;g(x)dx<br><br>
+        <span style="color:#555555;">Constants pull out. Sums split. This single rule, combined with the table of basic antiderivatives, lets you integrate any polynomial.</span>
       </div>
     </section>
 

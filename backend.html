@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -1014,6 +1017,14 @@ COMMIT;
 // Even if the server loses power 1ms later, the data is safe.</code></pre>
     </div>
 
+    <div class="formula-box">
+      <strong>ACID Properties (Formal Definitions):</strong><br><br>
+      • <strong>Atomicity:</strong> All operations in a transaction succeed, or none do. No partial commits.<br>
+      • <strong>Consistency:</strong> A transaction brings the database from one valid state to another. All constraints are satisfied.<br>
+      • <strong>Isolation:</strong> Concurrent transactions appear as if they ran sequentially. One transaction cannot see another's uncommitted changes.<br>
+      • <strong>Durability:</strong> Once committed, the data survives crashes, power loss, and restarts (written to disk/WAL).
+    </div>
+
     <h3>Transactions in Practice</h3>
     <div class="example-box">
       <div class="label">Node.js Transaction Patterns</div>
@@ -1267,6 +1278,12 @@ const users = await prisma.user.findMany({
   take: 100,
   include: { orders: true },  // Automatic JOIN or batch query
 });</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>N+1 Query Problem (Precise Definition):</strong><br><br>
+      1 query to fetch N records + N queries to fetch related data for each = N+1 total queries.<br><br>
+      <strong>Fix:</strong> Use a JOIN (1 query) or eager loading (2 queries: one for parents, one for all children with WHERE parent_id IN (...)).
     </div>
 
     <h3>Database Scaling Patterns</h3>

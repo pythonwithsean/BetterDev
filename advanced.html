@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -124,6 +127,14 @@
           <tr><td>Search</td><td><code>O(n)</code></td><td>No ordering guarantee beyond parent-child</td></tr>
         </tbody>
       </table>
+
+      <div class="formula-box">
+        <strong>Heap Array Index Formulas (0-indexed):</strong><br><br>
+        &bull; Parent of node i: floor((i - 1) / 2)<br>
+        &bull; Left child of node i: 2i + 1<br>
+        &bull; Right child of node i: 2i + 2<br><br>
+        <strong>Heap invariant:</strong> arr[parent(i)] &le; arr[i] for min-heap (&ge; for max-heap), for all i.
+      </div>
 
       <h3>Using Heaps in Python</h3>
       <p>
@@ -666,6 +677,11 @@ console.log(<span class="function">findCircleNum</span>([[<span class="number">1
       <p>
         Given a graph that was a tree plus one extra edge, find that extra edge. Process edges in order; the first edge where <code>union(u, v)</code> returns false (both already connected) is the answer. This is a direct application of cycle detection with Union-Find.
       </p>
+
+      <div class="formula-box">
+        <strong>Union-Find Complexity:</strong><br><br>
+        With path compression + union by rank: O(&alpha;(n)) per operation (amortized), where &alpha; is the inverse Ackermann function. For all practical purposes, &alpha;(n) &le; 4, so this is effectively O(1).
+      </div>
     </section>
 
     <!-- ============================================================ -->
@@ -683,6 +699,14 @@ console.log(<span class="function">findCircleNum</span>([[<span class="number">1
       </p>
 
       <div class="formula-box">Time: O(n) -- each element is pushed and popped at most once</div>
+
+      <div class="formula-box">
+        <strong>Monotonic Stack -- Invariant:</strong><br><br>
+        &bull; <strong>Monotonic increasing stack:</strong> stack[i] &lt; stack[i+1] at all times. Pop when arr[j] &lt; stack.top().<br>
+        &bull; <strong>Monotonic decreasing stack:</strong> stack[i] &gt; stack[i+1] at all times. Pop when arr[j] &gt; stack.top().<br><br>
+        <strong>Key insight:</strong> The pop event means "found the next smaller/greater element for all popped items."<br>
+        <strong>Time:</strong> O(n) -- each element enters and leaves the stack at most once.
+      </div>
 
       <h3>Template: Next Greater Element</h3>
 

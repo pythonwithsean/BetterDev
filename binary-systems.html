@@ -17,6 +17,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -49,6 +50,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -411,6 +414,13 @@
    1 in binary:  0 0 0 0 0 0 0 1
                  ─────────────────
   43 & 1:        0 0 0 0 0 0 0 1  = 1  -->  43 is ODD</div>
+
+    <div class="formula-box">
+      <strong>AND — Precise Rule:</strong><br><br>
+      A &amp; B = 1 if and only if A = 1 AND B = 1<br>
+      Otherwise A &amp; B = 0<br><br>
+      <strong>Algebraic:</strong> A &amp; B = A &times; B (treating bits as 0/1 integers)
+    </div>
   </section>
 
 
@@ -442,6 +452,13 @@
         <li><strong>Setting bits:</strong> Use OR to force specific bits to 1. <code>n | 0x01</code> forces the last bit on (makes any number odd).</li>
         <li><strong>Combining flags:</strong> <code>READ | WRITE | EXECUTE</code> combines permission flags. Each flag is a single bit, OR combines them into one value.</li>
       </ul>
+    </div>
+
+    <div class="formula-box">
+      <strong>OR — Precise Rule:</strong><br><br>
+      A | B = 0 if and only if A = 0 AND B = 0<br>
+      Otherwise A | B = 1<br><br>
+      <strong>Algebraic:</strong> A | B = A + B - A&times;B
     </div>
   </section>
 
@@ -493,6 +510,17 @@
       <code>1 ^ 2 ^ 4 ^ 5 = different value</code> (3 is missing)<br>
       XOR the two results and you get the missing number! Because every number that appears in both will cancel out (a ^ a = 0), leaving only the missing one.</p>
     </div>
+
+    <div class="formula-box">
+      <strong>XOR — Precise Rule:</strong><br><br>
+      A ^ B = 1 if and only if A &ne; B<br>
+      Otherwise A ^ B = 0<br><br>
+      <strong>Key Properties (Axioms):</strong><br>
+      &bull; a ^ a = 0 (self-cancel)<br>
+      &bull; a ^ 0 = a (identity)<br>
+      &bull; a ^ b = b ^ a (commutative)<br>
+      &bull; (a ^ b) ^ c = a ^ (b ^ c) (associative)
+    </div>
   </section>
 
 
@@ -514,6 +542,13 @@
     <div class="warning-box">
       <div class="label">Watch Out -- Signed Numbers</div>
       <p>In C++ with a 32-bit int, <code>~0</code> does not give you a giant positive number. Because of two's complement (explained later), <code>~0</code> = -1. And <code>~5</code> = -6. The formula is: <strong>~n = -(n + 1)</strong>.</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>NOT — Precise Rule:</strong><br><br>
+      ~A flips every bit: 0 &rarr; 1, 1 &rarr; 0<br><br>
+      <strong>For a single bit:</strong> ~A = 1 - A<br>
+      <strong>For n-bit unsigned:</strong> ~x = (2&#x207F; - 1) - x
     </div>
   </section>
 
@@ -566,6 +601,20 @@
       <div class="label">Why Shifts Are Useful</div>
       <p><strong>Shifts are extremely fast</strong> -- much faster than multiplication or division. The CPU can shift bits in a single clock cycle. This is why you see them in performance-critical code, game engines, and embedded systems. <code>n &lt;&lt; 1</code> is the same as <code>n * 2</code> but faster.</p>
     </div>
+
+    <div class="formula-box">
+      <strong>Shift — Precise Rules:</strong><br><br>
+      &bull; Left shift: x &lt;&lt; n = x &times; 2&#x207F; (when no overflow)<br>
+      &bull; Unsigned right shift: x &gt;&gt; n = floor(x / 2&#x207F;)<br>
+      &bull; Arithmetic right shift (signed): preserves sign bit (fills with 1s for negative numbers)
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Arithmetic vs Logical Right Shift</div>
+      <p><strong>Unsigned right shift (logical):</strong> fills vacant bits with 0. Always divides by 2&#x207F;.</p>
+      <p><strong>Signed right shift (arithmetic):</strong> fills vacant bits with the sign bit. For negative numbers, this rounds toward negative infinity, not toward zero.</p>
+      <p>In C/C++, right-shifting a negative number is implementation-defined. In Java, <code>&gt;&gt;</code> is arithmetic and <code>&gt;&gt;&gt;</code> is logical. In Python, <code>&gt;&gt;</code> is always arithmetic (sign-preserving).</p>
+    </div>
   </section>
 
 
@@ -609,6 +658,13 @@
    ...
    1000 0001 = -127
    1000 0000 = -128 (largest negative)</div>
+
+    <div class="formula-box">
+      <strong>Two's Complement — Formal Definition:</strong><br><br>
+      The two's complement of an n-bit number x is: 2&#x207F; - x<br><br>
+      <strong>Algorithm (equivalent):</strong> Flip all bits, add 1<br>
+      <strong>Why they're the same:</strong> Flipping bits gives (2&#x207F; - 1 - x). Adding 1 gives 2&#x207F; - x.
+    </div>
   </section>
 
 

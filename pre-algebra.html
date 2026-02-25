@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html" class="active">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -1363,6 +1366,166 @@
     <div class="warning-box">
       <div class="label">Classic Mistake</div>
       <p>Do NOT add before multiplying! In <code>1/2 + 1/3 × 3/4</code>, many people add 1/2 + 1/3 first and get 5/6, then multiply by 3/4 to get 15/24 = 5/8. <strong>Wrong!</strong> Multiplication comes before addition. The correct answer is 3/4. Order of operations never takes a holiday.</p>
+    </div>
+
+    <!-- READING NOTATION PRECISELY -->
+    <h3>Reading Notation Precisely (Axioms, Not Vibes)</h3>
+    <p>Math notation can look ambiguous. It's not -- there are <strong>exact rules</strong> for how to read every expression. If your brain freezes when you see something like <code>-4/2</code> or <code>40 + n&sup3;/2</code>, this section gives you the precise rules so you never have to guess.</p>
+
+    <div class="tip-box">
+      <div class="label">Why This Matters</div>
+      <p>In programming, <code>x = 5 + 3 * 2</code> evaluates to 11, not 16, because of operator precedence. Math notation works the same way -- there are parsing rules. Learn them once, and ambiguity disappears forever.</p>
+    </div>
+
+    <h4>Rule 1: Where Does the Negative Sign Live?</h4>
+    <p>When you see a negative sign with a fraction, here's the <strong>exact rule</strong>:</p>
+
+    <div class="formula-box">
+      <strong>A negative sign can go in three places -- all are equal:</strong><br><br>
+      -a/b &nbsp;=&nbsp; (-a)/b &nbsp;=&nbsp; a/(-b)<br><br>
+      <strong>All three mean the same thing: the result is negative.</strong>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Examples -- Drill These Until They're Automatic</div>
+      <table>
+        <tr><th>Expression</th><th>Meaning</th><th>Result</th><th>Why</th></tr>
+        <tr><td><strong>-4/2</strong></td><td>(-4) &divide; 2</td><td><strong>-2</strong></td><td>Negative &divide; positive = negative</td></tr>
+        <tr><td><strong>4/(-2)</strong></td><td>4 &divide; (-2)</td><td><strong>-2</strong></td><td>Positive &divide; negative = negative</td></tr>
+        <tr><td><strong>-4/(-2)</strong></td><td>(-4) &divide; (-2)</td><td><strong>+2</strong></td><td>Negative &divide; negative = positive</td></tr>
+        <tr><td><strong>-6/3</strong></td><td>(-6) &divide; 3</td><td><strong>-2</strong></td><td>Negative &divide; positive = negative</td></tr>
+        <tr><td><strong>6/(-3)</strong></td><td>6 &divide; (-3)</td><td><strong>-2</strong></td><td>Positive &divide; negative = negative</td></tr>
+        <tr><td><strong>-6/(-3)</strong></td><td>(-6) &divide; (-3)</td><td><strong>+2</strong></td><td>Negative &divide; negative = positive</td></tr>
+      </table>
+    </div>
+
+    <div class="formula-box">
+      <strong>The Sign Rule (memorize this):</strong><br><br>
+      &bull; Same signs &rarr; positive result (+ &divide; + or - &divide; -)<br>
+      &bull; Different signs &rarr; negative result (+ &divide; - or - &divide; +)<br><br>
+      <span style="color:#555555;">This works for both multiplication and division.</span>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Don't Confuse These Two</div>
+      <p><strong>-3&sup2; = -(3&sup2;) = -9</strong> &nbsp;&nbsp; (the negative is NOT inside the exponent)</p>
+      <p><strong>(-3)&sup2; = (-3) &times; (-3) = +9</strong> &nbsp;&nbsp; (the negative IS part of the base)</p>
+      <p style="margin-top:0.5rem;">Without parentheses, the exponent binds tighter than the negative sign. This is just like how in code <code>-3**2</code> gives <code>-9</code> in Python.</p>
+    </div>
+
+    <h4>Rule 2: The Fraction Bar is Invisible Parentheses</h4>
+    <p>A fraction bar acts as a <strong>grouping symbol</strong>. Everything above the bar is one group. Everything below is another group. This is like having parentheses around both the numerator and denominator.</p>
+
+    <div class="formula-box">
+      <strong>The fraction bar rule:</strong><br><br>
+      &nbsp;&nbsp;&nbsp;a + b<br>
+      &nbsp;&nbsp;&nbsp;─────&nbsp; means (a + b) &divide; (c + d)<br>
+      &nbsp;&nbsp;&nbsp;c + d<br><br>
+      <strong>But writing it inline changes things:</strong><br>
+      a + b / c + d &nbsp; means &nbsp; a + (b &divide; c) + d &nbsp;&nbsp; <span style="color:#555555;">(BODMAS: division before addition!)</span>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example -- Why This Matters</div>
+      <p>These look similar but are completely different:</p>
+      <table>
+        <tr><th>Written as</th><th>Means</th><th>Result (with a=10, b=6, c=2)</th></tr>
+        <tr>
+          <td><strong>(a + b) / c</strong></td>
+          <td>(10 + 6) &divide; 2</td>
+          <td><strong>8</strong></td>
+        </tr>
+        <tr>
+          <td><strong>a + b / c</strong></td>
+          <td>10 + (6 &divide; 2)</td>
+          <td><strong>13</strong></td>
+        </tr>
+      </table>
+      <p style="margin-top:1rem;">When you see <code>40 + n&sup3;/2</code> written inline, it means <code>40 + (n&sup3; &divide; 2)</code>, not <code>(40 + n&sup3;) &divide; 2</code>.</p>
+      <p>If the author means the whole thing divided by 2, they must write <code>(40 + n&sup3;) / 2</code> with parentheses.</p>
+    </div>
+
+    <h4>Rule 3: When Can You Split a Fraction?</h4>
+    <p>This is where most people get confused. There's one rule:</p>
+
+    <div class="formula-box">
+      <strong>You CAN split addition/subtraction in the NUMERATOR:</strong><br><br>
+      (a + b) / c = a/c + b/c &nbsp;&nbsp; &#10003;<br><br>
+      <strong>You CANNOT split addition/subtraction in the DENOMINATOR:</strong><br><br>
+      c / (a + b) &ne; c/a + c/b &nbsp;&nbsp; &#10007;
+    </div>
+
+    <div class="example-box">
+      <div class="label">Why Splitting Works for Numerators</div>
+      <p><strong>(40 + n&sup3;) / 2 = 40/2 + n&sup3;/2 = 20 + n&sup3;/2</strong> &nbsp;&nbsp; &#10003;</p>
+      <p>Think of it like distributing division: you're dividing each piece by 2.</p>
+      <p>Verify: (40 + 8)/2 = 48/2 = 24. And 40/2 + 8/2 = 20 + 4 = 24. Same! &#10003;</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Why Splitting FAILS for Denominators</div>
+      <p><strong>12 / (3 + 1) &ne; 12/3 + 12/1</strong></p>
+      <p>Left side: 12/4 = 3</p>
+      <p>Right side: 4 + 12 = 16</p>
+      <p>3 &ne; 16. Completely wrong! <strong>You cannot split the denominator.</strong></p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">The #1 Fraction Mistake in Algebra</div>
+      <p>Students constantly do this: <code>1/(a + b) = 1/a + 1/b</code>. <strong>This is WRONG.</strong></p>
+      <p>Quick proof: 1/(2 + 3) = 1/5 = 0.2. But 1/2 + 1/3 = 5/6 &asymp; 0.833. Not even close.</p>
+      <p>Remember: split numerators, NEVER split denominators.</p>
+    </div>
+
+    <h4>Rule 4: Multiplying Fractions by Whole Numbers</h4>
+    <p>Any whole number can be written as a fraction with denominator 1:</p>
+
+    <div class="formula-box">
+      <strong>Whole number as fraction:</strong> &nbsp; a = a/1<br><br>
+      <strong>Multiplying:</strong> &nbsp; a &times; (b/c) = (a &times; b) / c = ab/c<br><br>
+      <strong>To get a common denominator with a fraction:</strong><br>
+      a + b/c = a/1 + b/c = ac/c + b/c = (ac + b)/c
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step-by-Step: 20 + x/2</div>
+      <p><strong>20 + x/2 = ?</strong> (make a single fraction)</p>
+      <p>Step 1: Write 20 as a fraction: 20/1</p>
+      <p>Step 2: Common denominator is 2: 20/1 = 40/2</p>
+      <p>Step 3: Now add: 40/2 + x/2 = <strong>(40 + x)/2</strong></p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step-by-Step: 3n &times; (n&sup3;/2)</div>
+      <p><strong>3n &times; n&sup3;/2 = ?</strong></p>
+      <p>Step 1: 3n = 3n/1 (write as fraction)</p>
+      <p>Step 2: Multiply fractions: (3n/1) &times; (n&sup3;/2) = 3n &times; n&sup3; / (1 &times; 2) = 3n<sup>4</sup>/2</p>
+      <p>Or just think: 3n &times; n&sup3; = 3n<sup>4</sup>, then divide by 2 = <strong>3n<sup>4</sup>/2</strong></p>
+    </div>
+
+    <h4>Quick Reference: Notation Parsing Rules</h4>
+    <table>
+      <tr><th>You See</th><th>It Means</th><th>Rule</th></tr>
+      <tr><td>-a/b</td><td>(-a) &divide; b = negative</td><td>Negative sticks to what's next to it</td></tr>
+      <tr><td>a + b/c</td><td>a + (b &divide; c)</td><td>Division before addition (BODMAS)</td></tr>
+      <tr><td>(a + b)/c</td><td>(a + b) &divide; c</td><td>Parentheses override everything</td></tr>
+      <tr><td>-x&sup2;</td><td>-(x&sup2;)</td><td>Exponent binds tighter than negative</td></tr>
+      <tr><td>(-x)&sup2;</td><td>(-x) &times; (-x) = x&sup2;</td><td>Parentheses make negative part of base</td></tr>
+      <tr><td>a &times; b/c</td><td>(a &times; b) &divide; c</td><td>Left to right for same-precedence ops</td></tr>
+      <tr><td>(a + b)/c</td><td>a/c + b/c</td><td>Can split numerator</td></tr>
+      <tr><td>c/(a + b)</td><td>Cannot split!</td><td>Cannot split denominator</td></tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="label">The Axiom Your Brain Wants</div>
+      <p>Math notation follows the <strong>exact same precedence rules</strong> as programming languages:</p>
+      <ol>
+        <li><strong>Parentheses</strong> -- always first, innermost outward</li>
+        <li><strong>Exponents</strong> -- then powers (right to left)</li>
+        <li><strong>Multiplication &amp; Division</strong> -- left to right, equal priority</li>
+        <li><strong>Addition &amp; Subtraction</strong> -- left to right, equal priority</li>
+      </ol>
+      <p>If you can read <code>-3**2 + 4*5/2</code> in Python (answer: -9 + 10 = 1), you can read any math expression. The rules are identical.</p>
     </div>
 
     <!-- FRACTION WORD PROBLEMS -->
@@ -3640,6 +3803,19 @@
       <p><strong>Addition &amp; Subtraction:</strong> Convert everything to addition (flip sign if subtracting). Then: same signs = add and keep sign. Different signs = subtract and keep sign of the bigger.</p>
       <p><strong>Multiplication &amp; Division:</strong> Same signs = positive. Different signs = negative. Count negatives if chaining: even = positive, odd = negative.</p>
       <p>That is genuinely all you need. Every problem with signs uses one of these rules.</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>Signed Arithmetic — Complete Rules:</strong><br><br>
+      <strong>Addition:</strong><br>
+      &bull; (+a) + (+b) = +(a + b)<br>
+      &bull; (-a) + (-b) = -(a + b)<br>
+      &bull; (+a) + (-b) = sign of larger absolute value, subtract smaller from larger<br><br>
+      <strong>Subtraction:</strong><br>
+      &bull; a - b = a + (-b) — subtraction is just adding the negative<br><br>
+      <strong>Multiplication &amp; Division:</strong><br>
+      &bull; Same signs &rarr; positive: (+)(+) = + and (-)(-) = +<br>
+      &bull; Different signs &rarr; negative: (+)(-) = - and (-)(+) = -
     </div>
 
     <div class="tip-box">

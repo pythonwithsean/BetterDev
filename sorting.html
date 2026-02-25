@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -198,6 +201,16 @@
       <div class="tip-box">
         <div class="label">Tip</div>
         <p>Stability matters when you sort by multiple keys. Sort by secondary key first, then by primary key with a stable sort, and the secondary ordering is preserved within groups.</p>
+      </div>
+
+      <div class="formula-box">
+        <strong>Which Sort to Use -- Decision Rules:</strong><br><br>
+        &bull; n &lt; 50: Insertion sort (low overhead, cache-friendly)<br>
+        &bull; n &ge; 50, need stability: Merge sort -- O(n log n) guaranteed, stable, O(n) space<br>
+        &bull; n &ge; 50, don't need stability: QuickSort -- O(n log n) average, O(n&sup2;) worst<br>
+        &bull; Need guaranteed O(n log n) worst-case: Heap sort -- but not stable<br>
+        &bull; Integer keys in range [0, k]: Counting sort -- O(n + k), not comparison-based<br><br>
+        <strong>Lower bound axiom:</strong> No comparison-based sort can do better than &Omega;(n log n) in the worst case. Proof: there are n! possible orderings; a binary decision tree needs at least log&#x2082;(n!) &asymp; n log n comparisons to distinguish them all.
       </div>
     </section>
 
@@ -700,6 +713,12 @@ console.<span class="function">log</span>(<span class="function">quickSort</span
       <div class="tip-box">
         <div class="label">In Practice</div>
         <p>Quick sort is generally the fastest comparison-based sorting algorithm in practice due to excellent cache locality and low constant factors. Most standard library sorts (C's <code>qsort</code>, C++'s <code>std::sort</code>) use some variant of quick sort (often introsort, which falls back to heap sort if recursion gets too deep).</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">QuickSort Worst Case Trigger</div>
+        <p><strong>O(n&sup2;) occurs when:</strong> The pivot is always the min or max element (e.g., already-sorted input with first-element pivot).</p>
+        <p><strong>Fix:</strong> Use random pivot selection or median-of-three. This makes worst case astronomically unlikely -- O(n log n) expected.</p>
       </div>
     </section>
 

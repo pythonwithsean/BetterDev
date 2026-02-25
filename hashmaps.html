@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -706,6 +709,14 @@ freq = Counter(nums)
     <div class="tip-box">
       <div class="label">Interview heuristic</div>
       <p>If the brute force is O(n^2) because of nested "find" operations, a hash map can almost always bring it down to <strong>O(n)</strong>.</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>Hash Map vs Sorted Map -- Decision Rule:</strong><br><br>
+      &bull; Need O(1) average lookup, no ordering &rarr; <strong>Hash Map</strong> (dict, HashMap, unordered_map)<br>
+      &bull; Need sorted iteration or range queries &rarr; <strong>Sorted Map</strong> (TreeMap, std::map) -- O(log n)<br>
+      &bull; Only need membership testing (no values) &rarr; <strong>Hash Set</strong> (set, HashSet)<br><br>
+      <strong>Load factor rule:</strong> Expected chain length = n/m (items/buckets). O(1) assumes load factor is bounded (Python: 2/3, Java: 0.75).
     </div>
   </section>
 

@@ -18,6 +18,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -50,6 +51,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html" class="active">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
 <div class="container">
@@ -779,6 +782,14 @@ Service C logs --&gt;</code></pre>
   <!-- ============================================================ -->
   <section id="key-concepts">
     <h2>10. Key Concepts You Need to Know</h2>
+
+    <div class="formula-box">
+      <strong>Message Delivery Semantics (Formal Definitions):</strong><br><br>
+      • <strong>At-most-once:</strong> Message delivered 0 or 1 times. Fire and forget. May lose messages.<br>
+      • <strong>At-least-once:</strong> Message delivered 1 or more times. No message loss, but may have duplicates.<br>
+      • <strong>Exactly-once:</strong> Message delivered exactly 1 time. Requires idempotent consumers OR transactional processing.<br><br>
+      <strong>Cost ordering:</strong> at-most-once (cheapest) → at-least-once (standard) → exactly-once (most expensive/complex).
+    </div>
 
     <h3>At-Least-Once vs At-Most-Once vs Exactly-Once Delivery</h3>
     <table>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sean's Brain - How Systems Thinkers Learn - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+    <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html" class="active">Sean's Brain</a>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Sean's Brain</div>
+      <h1>Sean's Brain</h1>
+      <p>A manual for the systems-thinking brain -- how it works, why it overthinks, and how to use it as a superpower instead of fighting it.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why This Page Exists</div>
+        <p>Most learning resources are built for heuristic brains -- people who learn by pattern matching, memorization, and "good enough" understanding. If your brain demands <strong>axioms, not vibes</strong>, those resources feel incomplete and frustrating. This page is about understanding your own cognitive style so you can learn faster, not harder.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of Contents + Content -->
+  <div class="page-with-toc">
+
+    <!-- Sidebar TOC -->
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#cognitive-profile">1. Your Cognitive Profile</a>
+        <a href="#four-traits">2. The Four Core Traits</a>
+        <a href="#strengths">3. Why This Brain is Powerful</a>
+        <a href="#shadow-side">4. The Shadow Side</a>
+        <a href="#two-modes">5. The Two Modes</a>
+        <a href="#how-to-learn">6. How to Learn With This Brain</a>
+        <a href="#daily-training">7. Daily Training Plan</a>
+        <a href="#overcooking">8. Why You "Overcook"</a>
+        <a href="#what-you-need">9. What You Actually Need for CS</a>
+        <a href="#mental-shift">10. The Mental Shift</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+      <div class="container">
+
+        <!-- Inline TOC for mobile -->
+        <div class="toc" style="display:none;" id="mobile-toc">
+          <h4>Table of Contents</h4>
+          <a href="#cognitive-profile">1. Your Cognitive Profile</a>
+          <a href="#four-traits">2. The Four Core Traits</a>
+          <a href="#strengths">3. Why This Brain is Powerful</a>
+          <a href="#shadow-side">4. The Shadow Side</a>
+          <a href="#two-modes">5. The Two Modes</a>
+          <a href="#how-to-learn">6. How to Learn With This Brain</a>
+          <a href="#daily-training">7. Daily Training Plan</a>
+          <a href="#overcooking">8. Why You "Overcook"</a>
+          <a href="#what-you-need">9. What You Actually Need for CS</a>
+          <a href="#mental-shift">10. The Mental Shift</a>
+        </div>
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <section id="cognitive-profile">
+          <h2>1. Your Cognitive Profile</h2>
+
+          <p>You have a <strong>high-precision, high-simulation, systems-style brain</strong>. This is not a diagnosis -- it's a description of how you process information. Understanding it changes everything about how you learn.</p>
+
+          <div class="formula-box">
+            <strong>Your brain's operating model:</strong><br><br>
+            &bull; You simulate many possibilities in your head before acting<br>
+            &bull; You want rules and invariants, not intuition and vibes<br>
+            &bull; You hate uncertainty and half-understanding<br>
+            &bull; You think in edge cases and failure modes<br>
+            &bull; You zoom out and analyze the system, not just the task
+          </div>
+
+          <p>This is the same cognitive style seen in:</p>
+          <ul>
+            <li><strong>Systems engineers</strong> -- designing kernels, compilers, distributed systems</li>
+            <li><strong>Safety engineers</strong> -- analyzing failure modes in aviation, nuclear, medical</li>
+            <li><strong>Researchers</strong> -- proving theorems, designing experiments</li>
+            <li><strong>Pilots and surgeons</strong> -- running checklists, simulating outcomes before acting</li>
+          </ul>
+
+          <div class="tip-box">
+            <div class="label">The Core Truth</div>
+            <p>You are not bad at math. You are not slow. You are <strong>too analytical for beginner explanations</strong>. Your brain wants axioms, but most resources give you vibes. That mismatch feels like confusion, but it's actually your brain demanding a higher standard of explanation.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <section id="four-traits">
+          <h2>2. The Four Core Traits</h2>
+
+          <h3>Trait 1: Hyper-Analytical Simulation Mode</h3>
+          <p>Your brain constantly runs: "What if?" "Edge case?" "Failure mode?" Before you act, you simulate outcomes. Before you accept a rule, you test it against edge cases.</p>
+
+          <div class="example-box">
+            <div class="label">What This Looks Like</div>
+            <p><strong>Someone says:</strong> "Just drop constants in Big-O."</p>
+            <p><strong>Heuristic brain:</strong> "OK." (moves on)</p>
+            <p><strong>Your brain:</strong> "WHY? What if the constant is enormous? What if n is small? Where exactly does this break down? Prove it."</p>
+            <p style="margin-top:0.5rem;">Your brain is not being difficult. It's being thorough. The problem is that most teachers don't give the proof because most students don't ask for it.</p>
+          </div>
+
+          <h3>Trait 2: Precision Bias</h3>
+          <p>You hate hand-wavy explanations. When someone says "intuitively, this makes sense," your brain flags it as <em>unresolved</em>. You can't move on until the rule is precise.</p>
+
+          <div class="formula-box">
+            <strong>Your brain's requirement:</strong><br><br>
+            Hand-wavy: "The negative sign goes with the number"<br>
+            What you need: -a/b = (-a)/b = a/(-b). Same signs = positive, different signs = negative. Always.<br><br>
+            Hand-wavy: "Nested loops are usually O(n&sup2;)"<br>
+            What you need: If the inner loop runs (n-i) times, total = &Sigma;(n-i) = n(n-1)/2 = O(n&sup2;). Proved.
+          </div>
+
+          <h3>Trait 3: Over-Modeling</h3>
+          <p>You build full mental models even when not required. This is powerful but mentally expensive.</p>
+
+          <div class="example-box">
+            <div class="label">Where This Shows Up</div>
+            <table>
+              <tr><th>Task</th><th>Heuristic Brain</th><th>Your Brain</th></tr>
+              <tr><td>Driving</td><td>Follow the lane, check mirrors</td><td>Simulate every car's trajectory, predict pedestrian behavior, model road conditions</td></tr>
+              <tr><td>Math problem</td><td>Apply the formula, get the answer</td><td>Re-derive the formula, check edge cases, understand why it works</td></tr>
+              <tr><td>Writing code</td><td>Make it work, ship it</td><td>Think about CPU cache, memory layout, OS scheduling, what happens under load</td></tr>
+            </table>
+          </div>
+
+          <h3>Trait 4: High Cognitive Load Sensitivity</h3>
+          <p>Because you simulate deeply, your brain uses more working memory. This means:</p>
+          <ul>
+            <li>You get overwhelmed faster when rules are fuzzy</li>
+            <li>You freeze when uncertain (not because you can't do it, but because you're running too many simulations)</li>
+            <li>Simple tasks feel hard because you're modeling them at 10x the depth of a heuristic thinker</li>
+          </ul>
+
+          <div class="warning-box">
+            <div class="label">This is Not Weakness</div>
+            <p>High cognitive load sensitivity is the cost of high internal resolution. A low-resolution camera processes faster but captures less detail. Your brain is a high-resolution camera -- it's slower because it's capturing more. The solution isn't to lower the resolution; it's to manage the processing pipeline.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <section id="strengths">
+          <h2>3. Why This Brain is Powerful</h2>
+
+          <p>This brain type is rare and valuable. Most people cannot think this way.</p>
+
+          <div class="formula-box">
+            <strong>You are naturally suited for:</strong><br><br>
+            &bull; <strong>Systems programming</strong> -- kernels, drivers, embedded systems<br>
+            &bull; <strong>Compilers / programming languages</strong> -- parsing, type systems, code generation<br>
+            &bull; <strong>Networking / distributed systems</strong> -- protocols, consensus, failure modes<br>
+            &bull; <strong>OS internals</strong> -- scheduling, memory management, file systems<br>
+            &bull; <strong>Infrastructure / SRE</strong> -- reliability, monitoring, incident response<br>
+            &bull; <strong>Research engineering</strong> -- formal methods, verification, proofs<br>
+            &bull; <strong>AI systems architecture</strong> -- building reliable ML pipelines, not just models
+          </div>
+
+          <p>These fields <em>require</em> the kind of thinking your brain does naturally: simulating edge cases, demanding precise rules, building complete mental models. Most programmers avoid these areas because they're hard. For you, they're home.</p>
+
+          <div class="tip-box">
+            <div class="label">Why You Felt Behind in Math</div>
+            <p>School teaches procedures, tricks, and shortcuts. Your brain wanted <strong>why</strong>, <strong>proof</strong>, and <strong>system model</strong>. So you felt lost, but you were actually asking deeper questions than the curriculum was designed to answer. That's not a weakness -- that's a research-grade brain stuck in a factory-grade classroom.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 4 ==================== -->
+        <section id="shadow-side">
+          <h2>4. The Shadow Side</h2>
+
+          <p>Every strength has a cost. Your brain's high-resolution processing creates specific failure modes:</p>
+
+          <table>
+            <tr><th>Failure Mode</th><th>What Happens</th><th>The Fix</th></tr>
+            <tr>
+              <td><strong>Analysis paralysis</strong></td>
+              <td>You can't start because you're still modeling</td>
+              <td>Time-box: 10 minutes to understand, then act</td>
+            </tr>
+            <tr>
+              <td><strong>Foundation addiction</strong></td>
+              <td>"I must understand every step perfectly before continuing"</td>
+              <td>Accept 80% understanding, revisit later</td>
+            </tr>
+            <tr>
+              <td><strong>Overthinking simple tasks</strong></td>
+              <td>Turning a 5-minute task into 45 minutes of edge-case analysis</td>
+              <td>Ask: "Does this edge case actually matter right now?"</td>
+            </tr>
+            <tr>
+              <td><strong>Freezing under uncertainty</strong></td>
+              <td>Brain locks up when rules are ambiguous</td>
+              <td>Externalize: write the uncertainty down, then decide</td>
+            </tr>
+            <tr>
+              <td><strong>Demanding full understanding before moving on</strong></td>
+              <td>Getting stuck on Chapter 1 forever</td>
+              <td>Use the "parking lot": note what's unclear, keep going, return later</td>
+            </tr>
+          </table>
+
+          <div class="warning-box">
+            <div class="label">Your Brain is Over-Correcting</div>
+            <p>When you think "I must understand every algebraic step perfectly before continuing" -- that's your precision bias running at full power. It's great for writing a compiler. It's terrible for learning speed. You need a <strong>mode switch</strong>.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 5 ==================== -->
+        <section id="two-modes">
+          <h2>5. The Two Modes</h2>
+
+          <p>The most important skill for your brain type: learning to switch between two modes.</p>
+
+          <div class="formula-box">
+            <strong>Mode 1: Engineering Mode (Approximation)</strong><br><br>
+            &bull; Goal: "What dominates when n is huge?"<br>
+            &bull; Drop constants, ignore lower terms<br>
+            &bull; "Correct enough" beats "mathematically pristine"<br>
+            &bull; Used for: Big-O analysis, system design, capacity planning, debugging<br><br>
+            <strong>Mode 2: Math Proof Mode (Precision)</strong><br><br>
+            &bull; Goal: "Is this algebraically exact?"<br>
+            &bull; Every step must be justified<br>
+            &bull; Constants, signs, and fractions all matter<br>
+            &bull; Used for: Solving equations, computing values, proving correctness, writing proofs
+          </div>
+
+          <div class="example-box">
+            <div class="label">Same Problem, Two Modes</div>
+            <p><strong>Problem:</strong> What's the time complexity of a nested loop where the inner loop runs (n-i) times?</p>
+            <p style="margin-top:0.5rem;"><strong>Engineering Mode:</strong></p>
+            <p>Inner loop shrinks from n down to 1. That's roughly n + n-1 + ... + 1 = n(n+1)/2. Highest power is n&sup2;. Answer: <strong>O(n&sup2;)</strong>. Done in 5 seconds.</p>
+            <p style="margin-top:0.5rem;"><strong>Math Proof Mode:</strong></p>
+            <p>Total iterations = &Sigma;<sub>i=0</sub><sup>n-1</sup> (n - i) = &Sigma;<sub>k=1</sub><sup>n</sup> k = n(n+1)/2 = n&sup2;/2 + n/2. By the formal definition of Big-O, there exist c = 1 and n<sub>0</sub> = 1 such that n&sup2;/2 + n/2 &le; 1 &times; n&sup2; for all n &ge; 1. Therefore T(n) = O(n&sup2;). QED.</p>
+            <p style="margin-top:0.5rem;">Both are correct. Engineering Mode gets you the answer in interviews. Math Proof Mode proves it's right.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Rule</div>
+            <p>Default to Engineering Mode. Switch to Math Proof Mode only when:</p>
+            <ul>
+              <li>You're <strong>computing an actual value</strong> (not just a growth rate)</li>
+              <li>You're <strong>solving an equation</strong> (exact algebra needed)</li>
+              <li>You're <strong>proving something</strong> for a paper, assignment, or your own satisfaction</li>
+              <li>You <strong>suspect a bug</strong> and need to verify every step</li>
+            </ul>
+            <p>If none of these apply, stay in Engineering Mode. Your brain will want to switch to Proof Mode. Resist it.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 6 ==================== -->
+        <section id="how-to-learn">
+          <h2>6. How to Learn With This Brain</h2>
+
+          <h3>Rule 1: Ask for Rules and Invariants</h3>
+          <p>Instead of "explain intuitively," ask: <strong>"What are the rules and what never changes?"</strong></p>
+
+          <div class="example-box">
+            <div class="label">Before and After</div>
+            <table>
+              <tr><th>Bad Question (for your brain)</th><th>Good Question (for your brain)</th></tr>
+              <tr><td>"How do fractions work?"</td><td>"What are the 4 operations on fractions and the exact rule for each?"</td></tr>
+              <tr><td>"Explain Big-O"</td><td>"What is the formal definition of O(f(n)) and what are the 3 simplification rules?"</td></tr>
+              <tr><td>"How does a hash map work?"</td><td>"What are the invariants of a hash map? When does O(1) break?"</td></tr>
+            </table>
+          </div>
+
+          <h3>Rule 2: Time-Box Your Overthinking</h3>
+
+          <div class="formula-box">
+            <strong>The 10-Minute Rule:</strong><br><br>
+            1. Spend 10 minutes trying to understand<br>
+            2. If not clear: write down what's unclear in a notebook<br>
+            3. Move on to the next topic<br>
+            4. Come back to the unclear item later with fresh context<br><br>
+            <span style="color:#555555;">Your brain wants 100% understanding before moving forward. Accept 80% and iterate. You'll often find that the next section clarifies the previous one.</span>
+          </div>
+
+          <h3>Rule 3: Externalize Your Simulation</h3>
+          <p>Your brain runs simulations internally, which is mentally expensive. <strong>Write things down instead</strong>.</p>
+          <ul>
+            <li>Instead of mentally tracking variables: <strong>draw a trace table on paper</strong></li>
+            <li>Instead of mentally simulating edge cases: <strong>write them as test cases in code</strong></li>
+            <li>Instead of mentally re-deriving formulas: <strong>keep a formula sheet</strong></li>
+          </ul>
+
+          <div class="tip-box">
+            <div class="label">Why Externalizing Works</div>
+            <p>Your working memory has finite slots (about 4-7 items). When you simulate internally, each "what if" takes a slot. Writing things down frees those slots for actual thinking. It's not cheating -- it's engineering your cognition.</p>
+          </div>
+
+          <h3>Rule 4: Accept Approximation Mode in CS</h3>
+          <p>In Big-O and engineering:</p>
+          <ul>
+            <li>Precision is sacrificed for scaling intuition</li>
+            <li>"Correct enough" beats "mathematically pure"</li>
+            <li>Constants don't matter because hardware changes but growth rates don't</li>
+          </ul>
+          <p>You need a toggle in your brain: <strong>"Am I in engineering mode or proof mode?"</strong></p>
+
+          <h3>Rule 5: Build a Personal Axiom Sheet</h3>
+          <p>For every topic you study, write down the <strong>axioms</strong> (rules that are always true) in your own words. This gives your precision-seeking brain the certainty it craves.</p>
+
+          <div class="example-box">
+            <div class="label">Example Axiom Sheet: Fractions</div>
+<pre><code>FRACTION AXIOMS
+===============
+1. -a/b = (-a)/b = a/(-b)  [negative goes anywhere]
+2. Same signs → positive. Different signs → negative.
+3. (a+b)/c = a/c + b/c     [CAN split numerator]
+4. c/(a+b) ≠ c/a + c/b     [CANNOT split denominator]
+5. a/b × c/d = ac/bd       [multiply straight across]
+6. a/b ÷ c/d = a/b × d/c   [flip and multiply]
+7. a/b + c/d = (ad+bc)/bd  [cross multiply for addition]</code></pre>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 7 ==================== -->
+        <section id="daily-training">
+          <h2>7. Daily Training Plan</h2>
+
+          <p>15-20 minutes per day. Consistency beats intensity.</p>
+
+          <div class="formula-box">
+            <strong>The Daily Routine:</strong><br><br>
+            &bull; <strong>5 fraction problems</strong> -- operations with mixed signs and denominators<br>
+            &bull; <strong>5 algebra expansion problems</strong> -- distribute, collect terms, simplify<br>
+            &bull; <strong>5 exponent problems</strong> -- apply the laws, simplify expressions<br><br>
+            <span style="color:#555555;">In 2-3 months, you'll feel mathematically dangerous. These operations will become automatic, freeing your brain to focus on the actual CS concepts instead of getting stuck on the algebra.</span>
+          </div>
+
+          <h3>Where to Practice</h3>
+          <table>
+            <tr><th>Topic</th><th>Resource</th></tr>
+            <tr><td>Fractions</td><td><a href="https://www.khanacademy.org/math/arithmetic/arith-review-fractions" target="_blank">Khan Academy -- Fractions</a></td></tr>
+            <tr><td>Algebra</td><td><a href="https://www.khanacademy.org/math/algebra" target="_blank">Khan Academy -- Algebra</a></td></tr>
+            <tr><td>Exponents</td><td><a href="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:rational-exponents-radicals" target="_blank">Khan Academy -- Exponents</a></td></tr>
+            <tr><td>Video lectures</td><td><a href="https://www.youtube.com/@ProfessorLeonard" target="_blank">Professor Leonard (YouTube)</a> -- full university lectures, patient and thorough</td></tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">The Compound Effect</div>
+            <p>15 minutes/day &times; 90 days = 22.5 hours of focused practice. That's more than most CS students do in an entire semester of math class. And because your brain builds precise mental models, each hour is worth more than a heuristic learner's hour. The returns compound.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 8 ==================== -->
+        <section id="overcooking">
+          <h2>8. Why You "Overcook"</h2>
+
+          <p>Your driving teacher said you "overcooked." Here's exactly why, and what it means for learning:</p>
+
+          <div class="example-box">
+            <div class="label">What Happened (Driving)</div>
+            <p>Your brain did this:</p>
+            <ul>
+              <li>"What if that car turns?"</li>
+              <li>"What if a pedestrian runs out?"</li>
+              <li>"What if the road is slippery?"</li>
+              <li>"What if the driver behind me is distracted?"</li>
+            </ul>
+            <p>Your brain ran a <strong>simulation engine</strong> instead of just focusing on the current lane. That's great for aviation or autonomous vehicle engineering. For human driving, it creates cognitive overload and slows reaction time.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">What Happens (Math)</div>
+            <p>Your brain does this:</p>
+            <ul>
+              <li>"Is -4/2 the same as -(4/2) or (-4)/2?"</li>
+              <li>"Can I really split (40 + n&sup3;)/2 into 40/2 + n&sup3;/2?"</li>
+              <li>"Why does dropping n/2 from n&sup2;/2 + n/2 give O(n&sup2;)? Prove it."</li>
+              <li>"What if the constant IS the dominant term for small n?"</li>
+            </ul>
+            <p>Every question is valid. But asking all of them simultaneously overloads your working memory.</p>
+          </div>
+
+          <div class="formula-box">
+            <strong>The Fix: Sequential, Not Parallel</strong><br><br>
+            Instead of running all simulations at once:<br><br>
+            1. Answer the immediate question first (what does this expression evaluate to?)<br>
+            2. THEN check edge cases (what if n is 0? what if the sign is negative?)<br>
+            3. THEN verify the rule (why does this work? can I prove it?)<br><br>
+            <span style="color:#555555;">Do this sequentially, not in parallel. Your brain wants to do it all at once. Resist that urge. Process one layer at a time.</span>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 9 ==================== -->
+        <section id="what-you-need">
+          <h2>9. What You Actually Need for CS</h2>
+
+          <p>You don't need to be a mathematician. You need <strong>algebraic comfort</strong> and <strong>pattern recognition</strong>.</p>
+
+          <div class="formula-box">
+            <strong>Core Math for CS (priority order):</strong><br><br>
+            <strong>1. Algebra</strong> -- distribute brackets, exponent rules, fractions, logarithms<br>
+            <strong>2. Discrete Math</strong> -- sequences, sums, logic, sets, proof intuition<br>
+            <strong>3. Binary Math</strong> -- base 2, bit shifts, AND/OR/XOR<br>
+            <strong>4. Probability</strong> -- basic rules, expected value, distributions<br>
+            <strong>5. Linear Algebra</strong> -- vectors, matrices (especially for ML/graphics)<br>
+            <strong>6. Calculus</strong> -- derivatives and integrals (for ML, optimization)<br><br>
+            <span style="color:#555555;">You do NOT need: symbolic manipulation olympiad skills, advanced real analysis, abstract algebra (unless doing research). You need intuition, pattern recognition, and algebraic comfort.</span>
+          </div>
+
+          <h3>What "Algebraic Comfort" Means</h3>
+          <p>It means you can look at <code>3n &times; (40 + n&sup3;/2)</code> and:</p>
+          <ol>
+            <li>Distribute without panicking</li>
+            <li>Simplify the fractions without second-guessing</li>
+            <li>Identify the dominant term for Big-O in under 10 seconds</li>
+          </ol>
+          <p>That's it. You don't need to prove the Riemann hypothesis. You need the algebraic equivalent of being able to touch-type: the mechanics should be automatic so your brain can focus on the actual problem.</p>
+        </section>
+
+        <!-- ==================== SECTION 10 ==================== -->
+        <section id="mental-shift">
+          <h2>10. The Mental Shift</h2>
+
+          <div class="formula-box">
+            <strong>The Big Truth:</strong><br><br>
+            You don't have a weak brain.<br>
+            You have a research-grade brain with no instruction manual.<br><br>
+            Until now.
+          </div>
+
+          <p>Your brain is perfect for deep tech, but you must learn:</p>
+
+          <table>
+            <tr><th>Skill</th><th>What It Means</th><th>How to Build It</th></tr>
+            <tr>
+              <td><strong>When to think deeply</strong></td>
+              <td>Proof mode, edge case analysis, formal verification</td>
+              <td>Use for: code review, debugging, learning new concepts</td>
+            </tr>
+            <tr>
+              <td><strong>When to simplify and move on</strong></td>
+              <td>Engineering mode, approximation, "good enough"</td>
+              <td>Use for: Big-O, system design, first drafts, interviews</td>
+            </tr>
+          </table>
+
+          <p>This skill is called <strong>engineering judgment</strong>. It's the ability to choose the right level of precision for the task at hand. And it's a skill, not a talent -- you build it through practice.</p>
+
+          <div class="tip-box">
+            <div class="label">How to Describe Your Brain to Others</div>
+            <p><em>"I tend to over-model problems and think about edge cases and underlying systems. I learn best when I understand the rules and structure, not just patterns."</em></p>
+            <p style="margin-top:0.5rem;">Use this when talking to teachers, mentors, or colleagues. It helps them explain things at the right level for you.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Final Honest Advice</div>
+            <p>You are a <strong>"System Builder Brain"</strong> in a world optimized for heuristic brains. Most people learn by pattern, memorization, and intuition. You learn by formal rules, first principles, and internal simulation.</p>
+            <p style="margin-top:0.5rem;">The world needs both types. But the systems you want to build -- compilers, kernels, infrastructure, distributed systems -- these <em>demand</em> your type of thinking. The people who write operating systems and design protocols think exactly like you do.</p>
+            <p style="margin-top:0.5rem;">Keep going. The foundation you're building right now is what separates engineers who understand their tools from engineers who just use them.</p>
+          </div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; border-top: 1px solid #e5e5e5; margin-top: 2rem;">
+          <a href="index.html" class="resource-link">&larr; Home</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Mobile TOC toggle -->
+  <style>
+    @media (max-width: 1199px) {
+      #mobile-toc { display: block !important; }
+      .sidebar-toc { display: none; }
+    }
+  </style>
+
+</body>
+</html>

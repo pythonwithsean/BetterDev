@@ -17,6 +17,7 @@
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
     <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html">Sequences</a>
     <a href="geometry.html">Geometry</a>
     <a href="calculus.html">Calculus</a>
     <a href="discrete-math.html">Discrete Math</a>
@@ -49,6 +50,8 @@
     <a href="kubernetes.html">Kubernetes</a>
     <a href="message-queues.html">Queues &amp; Pub/Sub</a>
     <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
   </nav>
 
   <div class="container">
@@ -516,6 +519,15 @@ $ sort < unsorted.txt</code></pre>
     <tr><td><code>Alt+.</code></td><td>Insert the last argument of the previous command</td></tr>
   </table>
 
+  <div class="formula-box">
+    <strong>Shell Command Lookup Order (Exact):</strong><br><br>
+    1. Aliases (defined with <code>alias</code>)<br>
+    2. Functions (defined with <code>function name() {}</code>)<br>
+    3. Built-in commands (<code>cd</code>, <code>echo</code>, <code>export</code>)<br>
+    4. External programs (searched in PATH, left to right)<br><br>
+    <strong>Check which is used:</strong> <code>type commandname</code>
+  </div>
+
   <div class="tip-box">
     <div class="label">Start With Bash</div>
     <p>Learn bash first. It's the default everywhere, all tutorials assume it, and scripts are written in it. Once you're comfortable, try zsh or fish for your interactive shell -- but always know bash because that's what servers run.</p>
@@ -962,6 +974,14 @@ $ sudo add-apt-repository --remove ppa:some-ppa/name</code></pre>
   <h2>10. Bash Scripting Basics</h2>
 
   <p>A <strong>Bash script</strong> is a text file containing a series of commands that bash executes one by one. Instead of typing commands manually, you write them in a file and run the file. This lets you automate repetitive tasks.</p>
+
+  <div class="formula-box">
+    <strong>Bash Safety Header (Mandatory for Scripts):</strong><br><br>
+    <code>set -euo pipefail</code><br><br>
+    • <code>-e</code>: Exit immediately if any command fails<br>
+    • <code>-u</code>: Treat unset variables as errors<br>
+    • <code>-o pipefail</code>: Pipe fails if ANY command in the pipe fails (not just the last)
+  </div>
 
   <h3>Your First Script</h3>
 

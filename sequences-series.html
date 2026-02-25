@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sequences &amp; Series - Math from Zero to CS - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav>
+    <a href="index.html" class="logo">Better Dev</a>
+    <span class="divider"></span>
+    <a href="index.html">Home</a>
+    <a href="pre-algebra.html">Pre-Algebra</a>
+    <a href="algebra.html">Algebra</a>
+    <a href="sequences-series.html" class="active">Sequences</a>
+    <a href="geometry.html">Geometry</a>
+    <a href="calculus.html">Calculus</a>
+    <a href="discrete-math.html">Discrete Math</a>
+    <a href="linear-algebra.html">Linear Algebra</a>
+    <a href="probability.html">Probability</a>
+    <a href="binary-systems.html">Binary</a>
+    <span class="divider"></span>
+    <a href="arrays.html">Arrays</a>
+    <a href="stacks-queues.html">Stacks &amp; Queues</a>
+    <a href="hashmaps.html">Hash Maps</a>
+    <a href="linked-lists.html">Linked Lists</a>
+    <a href="trees.html">Trees</a>
+    <a href="graphs.html">Graphs</a>
+    <a href="sorting.html">Sorting</a>
+    <a href="patterns.html">Patterns</a>
+    <a href="dp.html">DP</a>
+    <a href="advanced.html">Advanced</a>
+    <span class="divider"></span>
+    <a href="dsa-foundations.html">DSA Foundations</a>
+    <a href="leetcode-650.html">650 Problems</a>
+    <span class="divider"></span>
+    <a href="cpp.html">C++</a>
+    <a href="os.html">OS</a>
+    <a href="linux.html">Linux</a>
+    <a href="backend.html">Backend</a>
+    <a href="system-design.html">System Design</a>
+    <a href="networking.html">Networking</a>
+    <a href="cloud.html">Cloud &amp; Infra</a>
+    <a href="docker.html">Docker</a>
+    <a href="kubernetes.html">Kubernetes</a>
+    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+    <a href="selfhosting.html">Self-Hosting</a>
+    <span class="divider"></span>
+    <a href="seans-brain.html">Sean's Brain</a>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Sequences &amp; Series</div>
+      <h1>Sequences &amp; Series</h1>
+      <p>Arithmetic and geometric progressions from the ground up -- the math behind loop analysis, Big-O notation, and growth rates.</p>
+      <div class="tip-box" style="margin-top: 1rem;">
+        <div class="label">Why This Matters for CS</div>
+        <p>Ever seen this and felt lost?</p>
+<pre><code>(n) + (n-1) + (n-2) + (n-3) + ... + 3 + 2 + 1 = n(n+1)/2
+So O(n(n+1)/2) = O(n&sup2;/2 + n/2) = <strong>O(n&sup2;)</strong></code></pre>
+        <p>This is the sum of an <strong>arithmetic series</strong>. It shows up every time you analyze nested loops, selection sort, bubble sort, or any algorithm where the inner work shrinks by 1 each iteration. By the end of this page, you'll understand exactly where this formula comes from and why it simplifies to O(n&sup2;).</p>
+        <p style="margin-top:0.5rem;">Sequences and series are the mathematical language of algorithm analysis. <strong>Every</strong> time you count iterations, analyze recursion, or prove time complexity, you're using the formulas on this page.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of Contents + Content -->
+  <div class="page-with-toc">
+
+    <!-- Sidebar TOC -->
+    <aside class="sidebar-toc">
+      <div class="toc">
+        <h4>Table of Contents</h4>
+        <a href="#what-is-sequence">1. What is a Sequence?</a>
+        <a href="#what-is-series">2. What is a Series?</a>
+        <a href="#arithmetic-sequences">3. Arithmetic Sequences</a>
+        <a href="#arithmetic-series">4. Arithmetic Series (Sums)</a>
+        <a href="#gauss-trick">5. The Gauss Trick &amp; n(n+1)/2</a>
+        <a href="#big-o-connection">6. Why n(n+1)/2 = O(n&sup2;)</a>
+        <a href="#geometric-sequences">7. Geometric Sequences</a>
+        <a href="#geometric-series">8. Geometric Series (Sums)</a>
+        <a href="#infinite-series">9. Infinite Series &amp; Convergence</a>
+        <a href="#sigma-notation">10. Sigma Notation</a>
+        <a href="#key-formulas">11. Key Sum Formulas for CS</a>
+        <a href="#harmonic-series">12. Harmonic Series</a>
+        <a href="#recursive-sequences">13. Recursive Sequences</a>
+        <a href="#real-world">14. Real-World Applications</a>
+        <a href="#quiz">15. Practice Quiz</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+      <div class="container">
+
+        <!-- Inline TOC for mobile -->
+        <div class="toc" style="display:none;" id="mobile-toc">
+          <h4>Table of Contents</h4>
+          <a href="#what-is-sequence">1. What is a Sequence?</a>
+          <a href="#what-is-series">2. What is a Series?</a>
+          <a href="#arithmetic-sequences">3. Arithmetic Sequences</a>
+          <a href="#arithmetic-series">4. Arithmetic Series (Sums)</a>
+          <a href="#gauss-trick">5. The Gauss Trick &amp; n(n+1)/2</a>
+          <a href="#big-o-connection">6. Why n(n+1)/2 = O(n&sup2;)</a>
+          <a href="#geometric-sequences">7. Geometric Sequences</a>
+          <a href="#geometric-series">8. Geometric Series (Sums)</a>
+          <a href="#infinite-series">9. Infinite Series &amp; Convergence</a>
+          <a href="#sigma-notation">10. Sigma Notation</a>
+          <a href="#key-formulas">11. Key Sum Formulas for CS</a>
+          <a href="#harmonic-series">12. Harmonic Series</a>
+          <a href="#recursive-sequences">13. Recursive Sequences</a>
+          <a href="#real-world">14. Real-World Applications</a>
+          <a href="#quiz">15. Practice Quiz</a>
+        </div>
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <section id="what-is-sequence">
+          <h2>1. What is a Sequence?</h2>
+
+          <p>A <strong>sequence</strong> is just an ordered list of numbers that follows a pattern. That's it. Nothing fancy -- it's a list where each number has a position.</p>
+
+          <div class="example-box">
+            <div class="label">Sequences You Already Know</div>
+            <p><strong>Counting numbers:</strong> 1, 2, 3, 4, 5, 6, 7, ...</p>
+            <p><strong>Even numbers:</strong> 2, 4, 6, 8, 10, 12, ...</p>
+            <p><strong>Odd numbers:</strong> 1, 3, 5, 7, 9, 11, ...</p>
+            <p><strong>Powers of 2:</strong> 1, 2, 4, 8, 16, 32, 64, ...</p>
+            <p><strong>Squares:</strong> 1, 4, 9, 16, 25, 36, ...</p>
+            <p><strong>Multiples of 5:</strong> 5, 10, 15, 20, 25, ...</p>
+          </div>
+
+          <h3>Naming the Terms</h3>
+          <p>We use <strong>a<sub>n</sub></strong> to mean "the nth term." The subscript tells you the position:</p>
+
+          <div class="formula-box">
+            a<sub>1</sub> = first term<br>
+            a<sub>2</sub> = second term<br>
+            a<sub>3</sub> = third term<br>
+            ...<br>
+            a<sub>n</sub> = the nth term (the general term)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example</div>
+            <p>For the sequence <strong>2, 4, 6, 8, 10, ...</strong></p>
+            <ul>
+              <li>a<sub>1</sub> = 2 (first term)</li>
+              <li>a<sub>2</sub> = 4 (second term)</li>
+              <li>a<sub>3</sub> = 6 (third term)</li>
+              <li>a<sub>n</sub> = 2n (formula: to get the nth term, multiply n by 2)</li>
+            </ul>
+            <p style="margin-top:0.5rem;">Let's verify: a<sub>5</sub> = 2(5) = 10. Looking at the sequence: 2, 4, 6, 8, <strong>10</strong>. Correct!</p>
+          </div>
+
+          <h3>Two Types of Formulas</h3>
+          <p>There are two ways to describe a sequence:</p>
+
+          <table>
+            <tr>
+              <th>Type</th>
+              <th>How it Works</th>
+              <th>Example (for 2, 4, 6, 8, ...)</th>
+            </tr>
+            <tr>
+              <td><strong>Explicit formula</strong></td>
+              <td>Gives you any term directly from its position</td>
+              <td>a<sub>n</sub> = 2n (plug in n, get the answer)</td>
+            </tr>
+            <tr>
+              <td><strong>Recursive formula</strong></td>
+              <td>Gives you the next term from the previous one</td>
+              <td>a<sub>n</sub> = a<sub>n-1</sub> + 2, where a<sub>1</sub> = 2</td>
+            </tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">Think of It Like Code</div>
+            <p><strong>Explicit formula</strong> is like array access -- O(1), instant lookup:</p>
+<pre><code><span class="keyword">def</span> <span class="function">get_term</span>(n):
+    <span class="keyword">return</span> <span class="number">2</span> * n  <span class="comment"># Instant! Just plug in n</span></code></pre>
+            <p><strong>Recursive formula</strong> is like a linked list -- you have to walk through from the start:</p>
+<pre><code><span class="keyword">def</span> <span class="function">get_term</span>(n):
+    <span class="keyword">if</span> n == <span class="number">1</span>: <span class="keyword">return</span> <span class="number">2</span>
+    <span class="keyword">return</span> get_term(n - <span class="number">1</span>) + <span class="number">2</span>  <span class="comment"># Need all previous terms!</span></code></pre>
+          </div>
+
+          <h3>Finite vs Infinite Sequences</h3>
+          <ul>
+            <li><strong>Finite sequence:</strong> Has a definite end. Example: 1, 2, 3, 4, 5 (5 terms)</li>
+            <li><strong>Infinite sequence:</strong> Goes on forever. Example: 1, 2, 3, 4, 5, ... (the "..." means it continues)</li>
+          </ul>
+        </section>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <section id="what-is-series">
+          <h2>2. What is a Series?</h2>
+
+          <p>A <strong>series</strong> is what you get when you <em>add up</em> the terms of a sequence. A sequence is a list; a series is a sum.</p>
+
+          <div class="example-box">
+            <div class="label">Sequence vs Series -- Side by Side</div>
+            <table>
+              <tr>
+                <th>Sequence (a list)</th>
+                <th>Series (a sum)</th>
+              </tr>
+              <tr>
+                <td>1, 2, 3, 4, 5</td>
+                <td>1 + 2 + 3 + 4 + 5 = <strong>15</strong></td>
+              </tr>
+              <tr>
+                <td>2, 4, 6, 8</td>
+                <td>2 + 4 + 6 + 8 = <strong>20</strong></td>
+              </tr>
+              <tr>
+                <td>1, 2, 4, 8</td>
+                <td>1 + 2 + 4 + 8 = <strong>15</strong></td>
+              </tr>
+              <tr>
+                <td>3, 3, 3, 3, 3</td>
+                <td>3 + 3 + 3 + 3 + 3 = <strong>15</strong></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Why Series Matter for Programming</div>
+            <p>When you write a loop, you create a sequence. When you count the <strong>total work</strong> that loop does, you compute a series.</p>
+<pre><code><span class="comment"># The loop variable i creates the sequence: 0, 1, 2, 3, 4</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>):
+    <span class="comment"># If we do 'i' units of work each iteration,</span>
+    <span class="comment"># the TOTAL work is the SERIES: 0 + 1 + 2 + 3 + 4 = 10</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):
+        do_something()  <span class="comment"># This runs 10 times total, not 5!</span></code></pre>
+            <p>Understanding series = understanding how to count total iterations of nested loops.</p>
+          </div>
+
+          <h3>Partial Sums</h3>
+          <p>A <strong>partial sum</strong> S<sub>n</sub> is the sum of the first n terms:</p>
+          <ul>
+            <li>S<sub>1</sub> = a<sub>1</sub> (just the first term)</li>
+            <li>S<sub>2</sub> = a<sub>1</sub> + a<sub>2</sub> (first two terms)</li>
+            <li>S<sub>3</sub> = a<sub>1</sub> + a<sub>2</sub> + a<sub>3</sub> (first three terms)</li>
+            <li>S<sub>n</sub> = a<sub>1</sub> + a<sub>2</sub> + ... + a<sub>n</sub> (first n terms)</li>
+          </ul>
+
+          <div class="example-box">
+            <div class="label">Example -- Partial Sums of 1, 2, 3, 4, 5, ...</div>
+            <p>S<sub>1</sub> = 1</p>
+            <p>S<sub>2</sub> = 1 + 2 = 3</p>
+            <p>S<sub>3</sub> = 1 + 2 + 3 = 6</p>
+            <p>S<sub>4</sub> = 1 + 2 + 3 + 4 = 10</p>
+            <p>S<sub>5</sub> = 1 + 2 + 3 + 4 + 5 = 15</p>
+            <p style="margin-top:0.5rem;">These numbers (1, 3, 6, 10, 15) are called <strong>triangular numbers</strong>. They form the shape of a triangle when you stack dots. We'll see a formula for these soon.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <section id="arithmetic-sequences">
+          <h2>3. Arithmetic Sequences</h2>
+
+          <p>An <strong>arithmetic sequence</strong> (also called an <strong>arithmetic progression</strong> or <strong>AP</strong>) is a sequence where you get each new term by <strong>adding the same number</strong> every time. That number is called the <strong>common difference (d)</strong>.</p>
+
+          <div class="formula-box">
+            <strong>Rule:</strong> Each term = previous term + d<br><br>
+            a<sub>1</sub>, &nbsp; a<sub>1</sub> + d, &nbsp; a<sub>1</sub> + 2d, &nbsp; a<sub>1</sub> + 3d, &nbsp; ...
+          </div>
+
+          <div class="example-box">
+            <div class="label">Spotting Arithmetic Sequences</div>
+            <p>Subtract consecutive terms. If the difference is always the same, it's arithmetic.</p>
+            <p style="margin-top:0.5rem;"><strong>3, 7, 11, 15, 19, ...</strong></p>
+            <p>7 - 3 = <strong>4</strong>, &nbsp; 11 - 7 = <strong>4</strong>, &nbsp; 15 - 11 = <strong>4</strong>, &nbsp; 19 - 15 = <strong>4</strong></p>
+            <p>Common difference d = 4. Arithmetic!</p>
+            <p style="margin-top:1rem;"><strong>10, 7, 4, 1, -2, -5, ...</strong></p>
+            <p>7 - 10 = <strong>-3</strong>, &nbsp; 4 - 7 = <strong>-3</strong>, &nbsp; 1 - 4 = <strong>-3</strong></p>
+            <p>Common difference d = -3. Still arithmetic! (d can be negative)</p>
+            <p style="margin-top:1rem;"><strong>1, 2, 4, 8, 16, ...</strong></p>
+            <p>2 - 1 = 1, &nbsp; 4 - 2 = 2, &nbsp; 8 - 4 = 4 -- differences are NOT the same.</p>
+            <p>Not arithmetic! (This is geometric -- we'll cover that in section 7)</p>
+          </div>
+
+          <h3>The nth Term Formula</h3>
+          <p>To find any term without listing them all, use this formula:</p>
+
+          <div class="formula-box">
+            <strong>General term:</strong> a<sub>n</sub> = a<sub>1</sub> + (n - 1) &times; d<br><br>
+            <strong>Where:</strong><br>
+            &bull; a<sub>1</sub> = first term<br>
+            &bull; d = common difference (subtract any term from the next)<br>
+            &bull; n = which term you want<br>
+            &bull; a<sub>n</sub> = the value of that term
+          </div>
+
+          <h3>Why (n - 1) and Not Just n?</h3>
+          <p>This is the most common mistake, so let's build the formula from scratch to see why:</p>
+
+          <div class="example-box">
+            <div class="label">Building the Formula Step by Step</div>
+            <p>Start with a<sub>1</sub> = 3, d = 4. Let's write out each term:</p>
+            <table>
+              <tr>
+                <th>Term</th>
+                <th>Value</th>
+                <th>How We Got It</th>
+                <th>How Many Times We Added d</th>
+              </tr>
+              <tr>
+                <td>a<sub>1</sub></td>
+                <td>3</td>
+                <td>3 (just the start)</td>
+                <td>0 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>2</sub></td>
+                <td>7</td>
+                <td>3 + 4</td>
+                <td>1 time</td>
+              </tr>
+              <tr>
+                <td>a<sub>3</sub></td>
+                <td>11</td>
+                <td>3 + 4 + 4</td>
+                <td>2 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>4</sub></td>
+                <td>15</td>
+                <td>3 + 4 + 4 + 4</td>
+                <td>3 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>5</sub></td>
+                <td>19</td>
+                <td>3 + 4 + 4 + 4 + 4</td>
+                <td>4 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>n</sub></td>
+                <td>?</td>
+                <td>3 + 4 &times; (n - 1)</td>
+                <td>(n - 1) times</td>
+              </tr>
+            </table>
+            <p style="margin-top:1rem;"><strong>Pattern:</strong> To reach term n, you add d exactly <strong>(n - 1)</strong> times because the first term doesn't require any addition.</p>
+            <p>So: a<sub>n</sub> = 3 + 4(n - 1) = 3 + 4n - 4 = <strong>4n - 1</strong></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Common Off-By-One Error</div>
+            <p>The formula is a<sub>n</sub> = a<sub>1</sub> + <strong>(n - 1)</strong>d, NOT a<sub>1</sub> + nd.</p>
+            <p>Think of it like a fence: to make a fence with 5 posts, you need 4 gaps between them. To get to the 5th term, you make 4 jumps of d.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Find the 50th Term</div>
+            <p>Sequence: 5, 8, 11, 14, 17, ...</p>
+            <p><strong>Step 1:</strong> Find a<sub>1</sub> = 5</p>
+            <p><strong>Step 2:</strong> Find d = 8 - 5 = 3</p>
+            <p><strong>Step 3:</strong> Apply formula: a<sub>50</sub> = 5 + (50 - 1)(3) = 5 + 49(3) = 5 + 147 = <strong>152</strong></p>
+            <p style="margin-top:0.5rem;"><em>Without the formula, you'd have to list all 50 numbers. With it, instant!</em></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Find Which Term Equals 100</div>
+            <p>Sequence: 3, 7, 11, 15, ... Which term is 100? (or: does 100 even appear?)</p>
+            <p>a<sub>1</sub> = 3, d = 4. Set a<sub>n</sub> = 100:</p>
+            <p>100 = 3 + (n - 1)(4)</p>
+            <p>100 = 3 + 4n - 4</p>
+            <p>100 = 4n - 1</p>
+            <p>101 = 4n</p>
+            <p>n = 101/4 = 25.25</p>
+            <p>Since n must be a whole number, <strong>100 is NOT in this sequence</strong>. The 25th term is 99 and the 26th is 103.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Connection: Array Indexing &amp; Memory</div>
+            <p>Array memory addresses form an arithmetic sequence! If an array starts at memory address 1000 and each element takes 4 bytes:</p>
+<pre><code><span class="comment"># Element addresses: 1000, 1004, 1008, 1012, ...</span>
+<span class="comment"># a₁ = 1000, d = 4</span>
+<span class="comment"># Address of element n: 1000 + (n-1) × 4</span>
+<span class="comment"># THIS is why array access is O(1) -- it's just plugging into a formula!</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 4 ==================== -->
+        <section id="arithmetic-series">
+          <h2>4. Arithmetic Series (Sums)</h2>
+
+          <p>An <strong>arithmetic series</strong> is the sum of an arithmetic sequence. Instead of listing the terms, we add them all up.</p>
+
+          <div class="formula-box">
+            <strong>Sum of first n terms:</strong><br><br>
+            S<sub>n</sub> = n/2 &times; (a<sub>1</sub> + a<sub>n</sub>) = n/2 &times; (first term + last term)<br><br>
+            <strong>Or equivalently:</strong><br>
+            S<sub>n</sub> = n/2 &times; (2a<sub>1</sub> + (n - 1)d)<br><br>
+            <span style="color:#555555;">Use the first form when you know the last term. Use the second when you don't.</span>
+          </div>
+
+          <p>But where does this formula come from? Let's build it up intuitively in the next section.</p>
+
+          <div class="example-box">
+            <div class="label">Quick Example First</div>
+            <p>Find the sum: 2 + 4 + 6 + 8 + 10</p>
+            <p>a<sub>1</sub> = 2, a<sub>n</sub> = 10, n = 5 terms</p>
+            <p>S<sub>5</sub> = 5/2 &times; (2 + 10) = 2.5 &times; 12 = <strong>30</strong></p>
+            <p>Verify: 2 + 4 + 6 + 8 + 10 = 30. Correct!</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 5 ==================== -->
+        <section id="gauss-trick">
+          <h2>5. The Gauss Trick &amp; n(n+1)/2</h2>
+
+          <p>This is the most important formula in algorithm analysis. Let's understand it deeply.</p>
+
+          <h3>The Story</h3>
+          <p>Legend says that when the mathematician Carl Friedrich Gauss was a schoolchild, his teacher told the class to add up all numbers from 1 to 100, expecting it to keep them busy. Young Gauss answered almost immediately: <strong>5,050</strong>.</p>
+
+          <p>Here's how he did it:</p>
+
+          <div class="example-box">
+            <div class="label">The Pairing Trick -- Step by Step</div>
+            <p>We want: S = 1 + 2 + 3 + ... + 98 + 99 + 100</p>
+            <p style="margin-top:1rem;"><strong>Step 1: Write the sum forwards and backwards</strong></p>
+<pre><code>S = 1   +  2   +  3   + ... +  98  +  99  + 100
+S = 100 +  99  +  98  + ... +   3  +   2  +   1</code></pre>
+            <p style="margin-top:1rem;"><strong>Step 2: Add the two rows column by column</strong></p>
+<pre><code>2S = 101 + 101 + 101 + ... + 101 + 101 + 101</code></pre>
+            <p>Every pair sums to 101! And there are 100 pairs.</p>
+            <p style="margin-top:1rem;"><strong>Step 3: Solve</strong></p>
+            <p>2S = 100 &times; 101 = 10,100</p>
+            <p>S = 10,100 / 2 = <strong>5,050</strong></p>
+          </div>
+
+          <h3>The General Formula</h3>
+          <p>The same trick works for 1 + 2 + 3 + ... + n:</p>
+
+          <div class="formula-box">
+            <strong>Sum of 1 to n:</strong><br><br>
+            1 + 2 + 3 + ... + n = <strong>n(n + 1) / 2</strong><br><br>
+            <span style="color:#555555;">First term + last term = (1 + n) = (n + 1). Number of pairs = n/2. Product = n(n+1)/2.</span>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Why This Works -- Another Way to See It</div>
+            <p>Pair the terms from outside in:</p>
+<pre><code>1  +  2  +  3  +  4  +  5  +  6  +  7  +  8  +  9  +  10
+|                                                       |
+└──────────────── 1 + 10 = 11 ──────────────────────────┘
+      |                                           |
+      └──────────── 2 + 9 = 11 ──────────────────┘
+            |                               |
+            └──────── 3 + 8 = 11 ──────────┘
+                  |                   |
+                  └──── 4 + 7 = 11 ──┘
+                        |       |
+                        5 + 6 = 11</code></pre>
+            <p><strong>5 pairs, each summing to 11</strong> = 5 &times; 11 = 55</p>
+            <p>In general: <strong>n/2 pairs</strong>, each summing to <strong>(n + 1)</strong> = n(n+1)/2</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Worked Examples</div>
+            <p><strong>1 + 2 + 3 + ... + 10:</strong></p>
+            <p>n = 10 &rarr; 10(11)/2 = 110/2 = <strong>55</strong></p>
+
+            <p style="margin-top:1rem;"><strong>1 + 2 + 3 + ... + 100:</strong></p>
+            <p>n = 100 &rarr; 100(101)/2 = 10,100/2 = <strong>5,050</strong></p>
+
+            <p style="margin-top:1rem;"><strong>1 + 2 + 3 + ... + 1000:</strong></p>
+            <p>n = 1000 &rarr; 1000(1001)/2 = 1,001,000/2 = <strong>500,500</strong></p>
+
+            <p style="margin-top:1rem;"><strong>0 + 1 + 2 + ... + (n-1):</strong></p>
+            <p>This is the same as 1 + 2 + ... + (n-1) = (n-1)(n)/2 = <strong>n(n-1)/2</strong></p>
+            <p><em>This version appears more often in code (0-indexed loops)!</em></p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">0-indexed vs 1-indexed</div>
+            <p>In math, we usually sum from 1 to n: <strong>n(n+1)/2</strong></p>
+            <p>In code, loops usually go from 0 to n-1: <strong>n(n-1)/2</strong></p>
+            <p>Both are O(n&sup2;) -- the constant doesn't matter for Big-O.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 6 ==================== -->
+        <section id="big-o-connection">
+          <h2>6. Why n(n+1)/2 = O(n&sup2;)</h2>
+
+          <p>This is <strong>exactly</strong> what the image you saw is about. Let's break it down completely.</p>
+
+          <h3>The Setup: A Shrinking Inner Loop</h3>
+          <p>Consider selection sort, or any algorithm where the inner loop does less work each iteration:</p>
+
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):           <span class="comment"># Outer: runs n times</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i, n):     <span class="comment"># Inner: runs (n-i) times each iteration</span>
+        compare(arr[j])        <span class="comment"># Some O(1) work</span></code></pre>
+
+          <p>How many times does <code>compare()</code> run in total?</p>
+
+          <div class="example-box">
+            <div class="label">Counting Iterations</div>
+            <table>
+              <tr>
+                <th>i =</th>
+                <th>Inner loop runs</th>
+                <th>Times</th>
+              </tr>
+              <tr><td>0</td><td>j goes from 0 to n-1</td><td>n</td></tr>
+              <tr><td>1</td><td>j goes from 1 to n-1</td><td>n - 1</td></tr>
+              <tr><td>2</td><td>j goes from 2 to n-1</td><td>n - 2</td></tr>
+              <tr><td>3</td><td>j goes from 3 to n-1</td><td>n - 3</td></tr>
+              <tr><td>...</td><td>...</td><td>...</td></tr>
+              <tr><td>n-2</td><td>j goes from n-2 to n-1</td><td>2</td></tr>
+              <tr><td>n-1</td><td>j goes from n-1 to n-1</td><td>1</td></tr>
+            </table>
+          </div>
+
+          <p>So the total is:</p>
+
+          <div class="formula-box">
+            <strong>Total = n + (n-1) + (n-2) + (n-3) + ... + 3 + 2 + 1</strong><br><br>
+            This is just 1 + 2 + 3 + ... + n written backwards!<br><br>
+            = <strong>n(n+1)/2</strong>
+          </div>
+
+          <h3>From Exact Count to Big-O</h3>
+          <p>Now, n(n+1)/2 is an exact count. Let's expand it to see why it's O(n&sup2;):</p>
+
+          <div class="formula-box">
+            n(n+1)/2<br>
+            = (n&sup2; + n) / 2<br>
+            = n&sup2;/2 + n/2<br><br>
+            In Big-O, we drop constants and lower-order terms:<br>
+            &bull; Drop the /2: it's a constant multiplier<br>
+            &bull; Drop the + n/2: it grows slower than n&sup2;<br><br>
+            = <strong>O(n&sup2;)</strong>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Why We Can Drop Constants and Lower Terms</div>
+            <p>Big-O cares about <strong>growth rate</strong>, not exact count. Let's see why the n/2 term doesn't matter as n gets large:</p>
+            <table>
+              <tr>
+                <th>n</th>
+                <th>n&sup2;/2</th>
+                <th>n/2</th>
+                <th>Total (n&sup2;/2 + n/2)</th>
+                <th>n/2 as % of total</th>
+              </tr>
+              <tr><td>10</td><td>50</td><td>5</td><td>55</td><td>9.1%</td></tr>
+              <tr><td>100</td><td>5,000</td><td>50</td><td>5,050</td><td>1.0%</td></tr>
+              <tr><td>1,000</td><td>500,000</td><td>500</td><td>500,500</td><td>0.1%</td></tr>
+              <tr><td>1,000,000</td><td>500,000,000,000</td><td>500,000</td><td>500,000,500,000</td><td>0.0001%</td></tr>
+            </table>
+            <p style="margin-top:1rem;">As n grows, the n&sup2; term <strong>completely dominates</strong>. The n term becomes negligible. That's why O(n&sup2;/2 + n/2) = O(n&sup2;).</p>
+          </div>
+
+          <h3>Algorithms That Use This Pattern</h3>
+
+          <div class="example-box">
+            <div class="label">Selection Sort</div>
+<pre><code><span class="keyword">def</span> <span class="function">selection_sort</span>(arr):
+    n = <span class="builtin">len</span>(arr)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):              <span class="comment"># n iterations</span>
+        min_idx = i
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i+<span class="number">1</span>, n):    <span class="comment"># (n-1) + (n-2) + ... + 1 = n(n-1)/2</span>
+            <span class="keyword">if</span> arr[j] &lt; arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    <span class="comment"># Total comparisons: n(n-1)/2 = O(n&sup2;)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Bubble Sort</div>
+<pre><code><span class="keyword">def</span> <span class="function">bubble_sort</span>(arr):
+    n = <span class="builtin">len</span>(arr)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):              <span class="comment"># n passes</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n-<span class="number">1</span>-i):      <span class="comment"># (n-1) + (n-2) + ... + 1</span>
+            <span class="keyword">if</span> arr[j] &gt; arr[j+<span class="number">1</span>]:
+                arr[j], arr[j+<span class="number">1</span>] = arr[j+<span class="number">1</span>], arr[j]
+    <span class="comment"># Total comparisons: n(n-1)/2 = O(n&sup2;)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Insertion Sort</div>
+<pre><code><span class="keyword">def</span> <span class="function">insertion_sort</span>(arr):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(arr)):    <span class="comment"># n-1 iterations</span>
+        key = arr[i]
+        j = i - <span class="number">1</span>
+        <span class="keyword">while</span> j >= <span class="number">0</span> <span class="keyword">and</span> arr[j] > key:   <span class="comment"># Worst case: i comparisons</span>
+            arr[j+<span class="number">1</span>] = arr[j]
+            j -= <span class="number">1</span>
+        arr[j+<span class="number">1</span>] = key
+    <span class="comment"># Worst case: 1 + 2 + ... + (n-1) = n(n-1)/2 = O(n&sup2;)</span></code></pre>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Key Insight</div>
+            <p>Whenever you see a loop pattern where the inner work counts down (or up) like n, n-1, n-2, ..., 1 -- you know instantly it's <strong>O(n&sup2;)</strong> because you're summing an arithmetic series, and the sum is n(n+1)/2.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 7 ==================== -->
+        <section id="geometric-sequences">
+          <h2>7. Geometric Sequences</h2>
+
+          <p>A <strong>geometric sequence</strong> (also called a <strong>geometric progression</strong> or <strong>GP</strong>) is a sequence where you get each new term by <strong>multiplying by the same number</strong> every time. That number is called the <strong>common ratio (r)</strong>.</p>
+
+          <div class="formula-box">
+            <strong>Rule:</strong> Each term = previous term &times; r<br><br>
+            a<sub>1</sub>, &nbsp; a<sub>1</sub>&times;r, &nbsp; a<sub>1</sub>&times;r&sup2;, &nbsp; a<sub>1</sub>&times;r&sup3;, &nbsp; ...
+          </div>
+
+          <div class="example-box">
+            <div class="label">Spotting Geometric Sequences</div>
+            <p>Divide consecutive terms. If the ratio is always the same, it's geometric.</p>
+            <p style="margin-top:0.5rem;"><strong>2, 6, 18, 54, 162, ...</strong></p>
+            <p>6/2 = <strong>3</strong>, &nbsp; 18/6 = <strong>3</strong>, &nbsp; 54/18 = <strong>3</strong>, &nbsp; 162/54 = <strong>3</strong></p>
+            <p>Common ratio r = 3. Geometric!</p>
+            <p style="margin-top:1rem;"><strong>100, 50, 25, 12.5, 6.25, ...</strong></p>
+            <p>50/100 = <strong>0.5</strong>, &nbsp; 25/50 = <strong>0.5</strong>, &nbsp; 12.5/25 = <strong>0.5</strong></p>
+            <p>Common ratio r = 0.5. Geometric! (r can be a fraction)</p>
+            <p style="margin-top:1rem;"><strong>1, -2, 4, -8, 16, ...</strong></p>
+            <p>-2/1 = <strong>-2</strong>, &nbsp; 4/(-2) = <strong>-2</strong>, &nbsp; -8/4 = <strong>-2</strong></p>
+            <p>Common ratio r = -2. Geometric! (r can be negative -- terms alternate sign)</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Arithmetic vs Geometric -- The Core Difference</div>
+            <table>
+              <tr>
+                <th></th>
+                <th>Arithmetic (AP)</th>
+                <th>Geometric (GP)</th>
+              </tr>
+              <tr>
+                <td><strong>Operation</strong></td>
+                <td>Add the same number</td>
+                <td>Multiply by the same number</td>
+              </tr>
+              <tr>
+                <td><strong>Growth</strong></td>
+                <td>Linear (steady)</td>
+                <td>Exponential (explosive or decaying)</td>
+              </tr>
+              <tr>
+                <td><strong>Example</strong></td>
+                <td>2, 5, 8, 11, 14 (d = 3)</td>
+                <td>2, 6, 18, 54, 162 (r = 3)</td>
+              </tr>
+              <tr>
+                <td><strong>10th term</strong></td>
+                <td>2 + 9(3) = 29</td>
+                <td>2 &times; 3&sup9; = 39,366</td>
+              </tr>
+              <tr>
+                <td><strong>CS analogy</strong></td>
+                <td>Linear search O(n)</td>
+                <td>Exponential blowup O(2<sup>n</sup>)</td>
+              </tr>
+            </table>
+          </div>
+
+          <h3>The nth Term Formula</h3>
+
+          <div class="formula-box">
+            <strong>General term:</strong> a<sub>n</sub> = a<sub>1</sub> &times; r<sup>(n-1)</sup><br><br>
+            <strong>Where:</strong><br>
+            &bull; a<sub>1</sub> = first term<br>
+            &bull; r = common ratio (divide any term by the previous one)<br>
+            &bull; n = which term you want
+          </div>
+
+          <div class="example-box">
+            <div class="label">Building the Formula (Same Logic as Arithmetic)</div>
+            <p>Start with a<sub>1</sub> = 2, r = 3:</p>
+            <table>
+              <tr>
+                <th>Term</th>
+                <th>Value</th>
+                <th>How We Got It</th>
+                <th>Times Multiplied by r</th>
+              </tr>
+              <tr>
+                <td>a<sub>1</sub></td>
+                <td>2</td>
+                <td>2 (just the start)</td>
+                <td>0 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>2</sub></td>
+                <td>6</td>
+                <td>2 &times; 3</td>
+                <td>1 time</td>
+              </tr>
+              <tr>
+                <td>a<sub>3</sub></td>
+                <td>18</td>
+                <td>2 &times; 3 &times; 3</td>
+                <td>2 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>4</sub></td>
+                <td>54</td>
+                <td>2 &times; 3 &times; 3 &times; 3</td>
+                <td>3 times</td>
+              </tr>
+              <tr>
+                <td>a<sub>n</sub></td>
+                <td>?</td>
+                <td>2 &times; 3<sup>(n-1)</sup></td>
+                <td>(n-1) times</td>
+              </tr>
+            </table>
+            <p style="margin-top:1rem;">Same pattern as arithmetic: the (n - 1) is because the first term doesn't need any multiplication.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Powers of 2</div>
+            <p>Sequence: 1, 2, 4, 8, 16, 32, ...</p>
+            <p>a<sub>1</sub> = 1, r = 2</p>
+            <p>a<sub>n</sub> = 1 &times; 2<sup>(n-1)</sup> = 2<sup>(n-1)</sup></p>
+            <p style="margin-top:0.5rem;">The 10th term: a<sub>10</sub> = 2<sup>9</sup> = <strong>512</strong></p>
+            <p>The 20th term: a<sub>20</sub> = 2<sup>19</sup> = <strong>524,288</strong></p>
+            <p style="margin-top:0.5rem;"><em>This is exponential growth -- it gets enormous fast!</em></p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Connection: Exponential Growth</div>
+            <p>Geometric sequences with r = 2 appear everywhere in CS:</p>
+            <ul>
+              <li><strong>Binary tree levels:</strong> 1, 2, 4, 8, 16, ... nodes per level</li>
+              <li><strong>Recursive branching:</strong> Each call spawns 2 more &rarr; 2<sup>n</sup> total calls</li>
+              <li><strong>Dynamic array resizing:</strong> Capacity doubles: 1, 2, 4, 8, 16, ...</li>
+              <li><strong>Bit lengths:</strong> n bits can represent 2<sup>n</sup> values</li>
+            </ul>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Compound Interest</div>
+            <p>You invest $1,000 at 8% annual interest. How much after 10 years?</p>
+            <p>Each year, your money is multiplied by 1.08 (original + 8%).</p>
+            <p>a<sub>1</sub> = 1000, r = 1.08</p>
+            <p>After 10 years (11th term): a<sub>11</sub> = 1000 &times; 1.08<sup>10</sup> = 1000 &times; 2.159 = <strong>$2,158.92</strong></p>
+            <p style="margin-top:0.5rem;">Your money more than doubled! That's the power of geometric growth.</p>
+          </div>
+
+          <h3>Geometric Decay (When |r| &lt; 1)</h3>
+          <p>When the common ratio is between -1 and 1 (exclusive), terms get smaller and smaller:</p>
+
+          <div class="example-box">
+            <div class="label">Exponential Decay</div>
+            <p><strong>Half-life:</strong> 1000, 500, 250, 125, 62.5, ... (r = 0.5)</p>
+            <p>Each term is half the previous. Terms approach zero but never reach it.</p>
+            <p style="margin-top:0.5rem;"><strong>In CS:</strong> Binary search cuts the problem in half each step. Starting with n elements, the remaining work is: n, n/2, n/4, n/8, ... This geometric decay is why binary search is O(log n)!</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 8 ==================== -->
+        <section id="geometric-series">
+          <h2>8. Geometric Series (Sums)</h2>
+
+          <p>A <strong>geometric series</strong> is the sum of a geometric sequence.</p>
+
+          <div class="formula-box">
+            <strong>Finite sum (when r &ne; 1):</strong><br><br>
+            S<sub>n</sub> = a<sub>1</sub> &times; (r<sup>n</sup> - 1) / (r - 1) &nbsp;&nbsp;&nbsp;<span style="color:#555555;">(use when r &gt; 1)</span><br><br>
+            S<sub>n</sub> = a<sub>1</sub> &times; (1 - r<sup>n</sup>) / (1 - r) &nbsp;&nbsp;&nbsp;<span style="color:#555555;">(use when |r| &lt; 1 -- avoids negatives)</span><br><br>
+            <span style="color:#555555;">These are the same formula rearranged. Use whichever avoids negative numbers.</span>
+          </div>
+
+          <h3>Where Does the Formula Come From?</h3>
+
+          <div class="example-box">
+            <div class="label">Deriving It -- The Subtraction Trick</div>
+            <p>Let's find S = 1 + 2 + 4 + 8 + 16 (geometric with a<sub>1</sub> = 1, r = 2, n = 5)</p>
+            <p style="margin-top:1rem;"><strong>Step 1: Write S</strong></p>
+            <p>S = 1 + 2 + 4 + 8 + 16</p>
+            <p style="margin-top:0.5rem;"><strong>Step 2: Multiply both sides by r (= 2)</strong></p>
+            <p>2S = 2 + 4 + 8 + 16 + 32</p>
+            <p style="margin-top:0.5rem;"><strong>Step 3: Subtract S from 2S</strong></p>
+<pre><code>2S = 2 + 4 + 8 + 16 + 32
+ S = 1 + 2 + 4 + 8 + 16
+─────────────────────────
+ S = 32 - 1 = 31</code></pre>
+            <p>Almost everything cancels! We're left with: 2S - S = 32 - 1</p>
+            <p>S = 2<sup>5</sup> - 1 = 32 - 1 = <strong>31</strong></p>
+            <p>Verify: 1 + 2 + 4 + 8 + 16 = 31. Correct!</p>
+            <p style="margin-top:1rem;">In general: rS - S = a<sub>1</sub>(r<sup>n</sup> - 1), so S = a<sub>1</sub>(r<sup>n</sup> - 1)/(r - 1)</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">The Powers of 2 Shortcut</div>
+            <p>For the sum 1 + 2 + 4 + 8 + ... + 2<sup>(n-1)</sup>:</p>
+            <p>S = (2<sup>n</sup> - 1) / (2 - 1) = <strong>2<sup>n</sup> - 1</strong></p>
+            <p style="margin-top:0.5rem;">Examples:</p>
+            <ul>
+              <li>1 + 2 + 4 = 2&sup3; - 1 = <strong>7</strong></li>
+              <li>1 + 2 + 4 + 8 = 2<sup>4</sup> - 1 = <strong>15</strong></li>
+              <li>1 + 2 + 4 + 8 + 16 = 2<sup>5</sup> - 1 = <strong>31</strong></li>
+              <li>1 + 2 + 4 + ... + 128 = 2<sup>8</sup> - 1 = <strong>255</strong></li>
+            </ul>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Connection: Why 2<sup>n</sup> - 1 is Everywhere</div>
+            <ul>
+              <li><strong>8-bit max value:</strong> 1 + 2 + 4 + ... + 128 = 2<sup>8</sup> - 1 = 255</li>
+              <li><strong>32-bit max unsigned:</strong> 2<sup>32</sup> - 1 = 4,294,967,295</li>
+              <li><strong>Binary tree nodes:</strong> A complete tree of height h has 1 + 2 + 4 + ... + 2<sup>h</sup> = 2<sup>(h+1)</sup> - 1 total nodes</li>
+              <li><strong>Merge sort calls:</strong> Total recursive calls in merge sort: 2<sup>k</sup> - 1 where k = log<sub>2</sub>(n)</li>
+            </ul>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Total Nodes in a Binary Tree</div>
+            <p>A complete binary tree of height 4:</p>
+<pre><code>Level 0:  1 node          (2&sup0;)
+Level 1:  2 nodes         (2&sup1;)
+Level 2:  4 nodes         (2&sup2;)
+Level 3:  8 nodes         (2&sup3;)
+Level 4:  16 nodes        (2<sup>4</sup>)
+──────────────────────────
+Total:    31 nodes = 2<sup>5</sup> - 1</code></pre>
+            <p>This is a geometric series: 1 + 2 + 4 + 8 + 16 = 2<sup>5</sup> - 1 = 31</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- Work Done in Merge Sort</div>
+            <p>Merge sort splits n elements in half each level. At each level, the total work is O(n):</p>
+<pre><code>Level 0:  1 chunk of size n       → n work
+Level 1:  2 chunks of size n/2    → n work
+Level 2:  4 chunks of size n/4    → n work
+...
+Level k:  n chunks of size 1      → n work</code></pre>
+            <p>There are log<sub>2</sub>(n) levels, each doing n work:</p>
+            <p>Total = n &times; log<sub>2</sub>(n) = <strong>O(n log n)</strong></p>
+            <p style="margin-top:0.5rem;">The geometric sequence (1, 2, 4, 8, ...) describes how the number of chunks doubles at each level, while the size of each chunk halves.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 9 ==================== -->
+        <section id="infinite-series">
+          <h2>9. Infinite Series &amp; Convergence</h2>
+
+          <p>What happens when you add up <em>infinitely many</em> terms? Sometimes the sum is finite (it <strong>converges</strong>), sometimes it blows up to infinity (it <strong>diverges</strong>).</p>
+
+          <h3>Convergent Geometric Series</h3>
+          <p>When |r| &lt; 1, the terms get smaller and smaller, and the sum approaches a fixed value:</p>
+
+          <div class="formula-box">
+            <strong>Infinite geometric sum (|r| &lt; 1):</strong><br><br>
+            S<sub>&infin;</sub> = a<sub>1</sub> / (1 - r)
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- 1/2 + 1/4 + 1/8 + ...</div>
+            <p>a<sub>1</sub> = 1/2, r = 1/2</p>
+            <p>S<sub>&infin;</sub> = (1/2) / (1 - 1/2) = (1/2) / (1/2) = <strong>1</strong></p>
+            <p style="margin-top:0.5rem;">Let's see it converge:</p>
+            <table>
+              <tr>
+                <th>Terms Added</th>
+                <th>Sum</th>
+                <th>Distance from 1</th>
+              </tr>
+              <tr><td>1/2</td><td>0.5</td><td>0.5</td></tr>
+              <tr><td>+ 1/4</td><td>0.75</td><td>0.25</td></tr>
+              <tr><td>+ 1/8</td><td>0.875</td><td>0.125</td></tr>
+              <tr><td>+ 1/16</td><td>0.9375</td><td>0.0625</td></tr>
+              <tr><td>+ 1/32</td><td>0.96875</td><td>0.03125</td></tr>
+              <tr><td>+ 1/64</td><td>0.984375</td><td>0.015625</td></tr>
+            </table>
+            <p style="margin-top:0.5rem;">Each step gets closer to 1, but never exceeds it. With infinitely many terms, the sum equals exactly 1.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Example -- 1 + 1/2 + 1/4 + 1/8 + ...</div>
+            <p>a<sub>1</sub> = 1, r = 1/2</p>
+            <p>S<sub>&infin;</sub> = 1 / (1 - 1/2) = 1 / (1/2) = <strong>2</strong></p>
+            <p><em>Imagine walking to a wall. First you cover half the distance, then half of what's left, then half again... You'll get arbitrarily close to the wall (sum = 2) but each step is half the previous.</em></p>
+          </div>
+
+          <h3>Divergent Series</h3>
+          <p>When |r| &ge; 1, the terms don't shrink, so the sum grows without bound:</p>
+
+          <div class="example-box">
+            <div class="label">Divergent Examples</div>
+            <p><strong>1 + 2 + 4 + 8 + 16 + ...</strong> (r = 2) &rarr; Diverges! Each term is bigger than the last.</p>
+            <p><strong>1 + 1 + 1 + 1 + ...</strong> (r = 1) &rarr; Diverges! Adding 1 forever gives infinity.</p>
+            <p><strong>1 + 2 + 3 + 4 + ...</strong> (arithmetic, d = 1) &rarr; Diverges! Arithmetic series always diverge (unless d = 0).</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Connection: Amortized Analysis</div>
+            <p>Dynamic arrays (like Python lists or Java ArrayLists) use convergent geometric series for resizing:</p>
+<pre><code><span class="comment"># ArrayList doubles when full. Copy costs over n insertions:</span>
+<span class="comment"># 1 + 2 + 4 + 8 + ... + n = 2n - 1 ≈ 2n</span>
+<span class="comment"># Amortized cost per insertion: 2n / n = O(1)</span>
+<span class="comment">#</span>
+<span class="comment"># The key insight: the geometric sum 1 + 2 + 4 + ... + n</span>
+<span class="comment"># is dominated by the LAST term (n), not the sum of all others.</span>
+<span class="comment"># So the total copy work is only about 2n, giving O(1) amortized!</span></code></pre>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 10 ==================== -->
+        <section id="sigma-notation">
+          <h2>10. Sigma Notation</h2>
+
+          <p><strong>Sigma notation</strong> (&Sigma;) is shorthand for "add up a bunch of terms." The Greek letter &Sigma; (sigma) means "sum."</p>
+
+          <div class="formula-box">
+            <strong>Sigma notation:</strong><br><br>
+            &Sigma;<sub>i=start</sub><sup>end</sup> f(i) = f(start) + f(start+1) + ... + f(end)<br><br>
+            <strong>Read it as:</strong> "Sum of f(i), for i going from start to end"
+          </div>
+
+          <div class="example-box">
+            <div class="label">Examples -- Reading Sigma Notation</div>
+            <p><strong>&Sigma;<sub>i=1</sub><sup>5</sup> i</strong> = 1 + 2 + 3 + 4 + 5 = <strong>15</strong></p>
+            <p style="margin-top:0.5rem;"><strong>&Sigma;<sub>i=1</sub><sup>4</sup> i&sup2;</strong> = 1&sup2; + 2&sup2; + 3&sup2; + 4&sup2; = 1 + 4 + 9 + 16 = <strong>30</strong></p>
+            <p style="margin-top:0.5rem;"><strong>&Sigma;<sub>i=0</sub><sup>3</sup> 2<sup>i</sup></strong> = 2<sup>0</sup> + 2<sup>1</sup> + 2&sup2; + 2&sup3; = 1 + 2 + 4 + 8 = <strong>15</strong></p>
+            <p style="margin-top:0.5rem;"><strong>&Sigma;<sub>i=1</sub><sup>n</sup> i</strong> = 1 + 2 + 3 + ... + n = <strong>n(n+1)/2</strong></p>
+            <p style="margin-top:0.5rem;"><strong>&Sigma;<sub>i=0</sub><sup>n-1</sup> 2<sup>i</sup></strong> = 1 + 2 + 4 + ... + 2<sup>(n-1)</sup> = <strong>2<sup>n</sup> - 1</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Translating Code to Sigma Notation</div>
+<pre><code><span class="comment"># This Python loop:</span>
+total = <span class="number">0</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):
+    total += i * i
+
+<span class="comment"># Is equivalent to: Σᵢ₌₁ⁿ i² = n(n+1)(2n+1)/6</span></code></pre>
+<pre><code><span class="comment"># This loop:</span>
+total = <span class="number">0</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):
+        total += <span class="number">1</span>
+
+<span class="comment"># Total iterations: Σᵢ₌₀ⁿ⁻¹ i = 0 + 1 + 2 + ... + (n-1) = n(n-1)/2</span></code></pre>
+          </div>
+
+          <h3>Useful Sigma Properties</h3>
+          <table>
+            <tr>
+              <th>Property</th>
+              <th>Meaning</th>
+            </tr>
+            <tr>
+              <td>&Sigma; (f + g) = &Sigma; f + &Sigma; g</td>
+              <td>Sum of sums = sum each separately</td>
+            </tr>
+            <tr>
+              <td>&Sigma; c&times;f = c &times; &Sigma; f</td>
+              <td>Constants can be pulled out</td>
+            </tr>
+            <tr>
+              <td>&Sigma;<sub>i=1</sub><sup>n</sup> c = c&times;n</td>
+              <td>Sum of a constant n times = c&times;n</td>
+            </tr>
+          </table>
+        </section>
+
+        <!-- ==================== SECTION 11 ==================== -->
+        <section id="key-formulas">
+          <h2>11. Key Sum Formulas for CS</h2>
+
+          <p>These formulas appear constantly in algorithm analysis. Understand them, and Big-O proofs become easy.</p>
+
+          <table>
+            <tr>
+              <th>Sum</th>
+              <th>Formula</th>
+              <th>Big-O</th>
+              <th>Where It Appears</th>
+            </tr>
+            <tr>
+              <td>1 + 2 + 3 + ... + n</td>
+              <td>n(n+1)/2</td>
+              <td>O(n&sup2;)</td>
+              <td>Selection sort, bubble sort, triangular nested loops</td>
+            </tr>
+            <tr>
+              <td>1&sup2; + 2&sup2; + 3&sup2; + ... + n&sup2;</td>
+              <td>n(n+1)(2n+1)/6</td>
+              <td>O(n&sup3;)</td>
+              <td>Some triple-nested patterns, matrix operations</td>
+            </tr>
+            <tr>
+              <td>1&sup3; + 2&sup3; + 3&sup3; + ... + n&sup3;</td>
+              <td>[n(n+1)/2]&sup2;</td>
+              <td>O(n<sup>4</sup>)</td>
+              <td>Rare, but good to know</td>
+            </tr>
+            <tr>
+              <td>1 + 2 + 4 + ... + 2<sup>(n-1)</sup></td>
+              <td>2<sup>n</sup> - 1</td>
+              <td>O(2<sup>n</sup>)</td>
+              <td>Binary trees, recursive branching, naive Fibonacci</td>
+            </tr>
+            <tr>
+              <td>1 + r + r&sup2; + ... + r<sup>n</sup></td>
+              <td>(r<sup>(n+1)</sup> - 1)/(r - 1)</td>
+              <td>O(r<sup>n</sup>)</td>
+              <td>General geometric growth</td>
+            </tr>
+            <tr>
+              <td>n + n/2 + n/4 + ... + 1</td>
+              <td>&asymp; 2n</td>
+              <td>O(n)</td>
+              <td>Merge sort total work, build-heap</td>
+            </tr>
+            <tr>
+              <td>1 + 1/2 + 1/3 + ... + 1/n</td>
+              <td>&asymp; ln(n) + 0.577</td>
+              <td>O(log n)</td>
+              <td>QuickSort average, coupon collector</td>
+            </tr>
+          </table>
+
+          <div class="tip-box">
+            <div class="label">How to Use This Table</div>
+            <p>When analyzing an algorithm:</p>
+            <ol>
+              <li>Count what the loop does at each iteration</li>
+              <li>Write the total as a sum</li>
+              <li>Match it to one of these formulas</li>
+              <li>Read off the Big-O</li>
+            </ol>
+            <p>Example: Inner loop does n, n-1, n-2, ..., 1 work &rarr; that's row 1 &rarr; n(n+1)/2 &rarr; <strong>O(n&sup2;)</strong></p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">The Surprising One: n + n/2 + n/4 + ... + 1 = O(n)</div>
+            <p>This seems like it should be large because there are log(n) terms. But the sum is only about 2n!</p>
+            <p>n + n/2 + n/4 + n/8 + ... = n(1 + 1/2 + 1/4 + 1/8 + ...) = n &times; 2 = 2n</p>
+            <p>The key: each term is HALF the previous, so later terms contribute almost nothing.</p>
+            <p style="margin-top:0.5rem;">This is why <strong>building a heap</strong> is O(n), not O(n log n)! The work at each level halves as you go up.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 12 ==================== -->
+        <section id="harmonic-series">
+          <h2>12. Harmonic Series</h2>
+
+          <p>The <strong>harmonic series</strong> is special -- it grows, but <em>very slowly</em>:</p>
+
+          <div class="formula-box">
+            H<sub>n</sub> = 1 + 1/2 + 1/3 + 1/4 + ... + 1/n &asymp; ln(n) + 0.5772...<br><br>
+            <span style="color:#555555;">The 0.5772... is the Euler-Mascheroni constant (&gamma;). For Big-O, we just say H<sub>n</sub> = O(log n).</span>
+          </div>
+
+          <div class="example-box">
+            <div class="label">How Slowly It Grows</div>
+            <table>
+              <tr>
+                <th>n</th>
+                <th>H<sub>n</sub> (approx)</th>
+              </tr>
+              <tr><td>1</td><td>1.000</td></tr>
+              <tr><td>10</td><td>2.929</td></tr>
+              <tr><td>100</td><td>5.187</td></tr>
+              <tr><td>1,000</td><td>7.485</td></tr>
+              <tr><td>1,000,000</td><td>14.357</td></tr>
+              <tr><td>1,000,000,000</td><td>21.300</td></tr>
+            </table>
+            <p style="margin-top:0.5rem;">After a <em>billion</em> terms, the sum is only about 21. That's incredibly slow growth!</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">CS Connection: The Coupon Collector Problem</div>
+            <p>"How many random draws do you need to collect all n distinct items?"</p>
+            <p>Expected draws = n &times; H<sub>n</sub> &asymp; n &times; ln(n)</p>
+            <p style="margin-top:0.5rem;">With 100 possible items, you'll need about 100 &times; ln(100) &asymp; 100 &times; 4.6 &asymp; <strong>460</strong> draws on average to see them all. The harmonic series tells you why: after getting 50/100 items, half your draws are "wasted" on duplicates, and it gets worse as you approach completion.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 13 ==================== -->
+        <section id="recursive-sequences">
+          <h2>13. Recursive Sequences</h2>
+
+          <p>Some sequences define each term using <strong>previous terms</strong> instead of a direct formula. These are <strong>recurrence relations</strong> -- and they're central to algorithm analysis.</p>
+
+          <h3>The Fibonacci Sequence</h3>
+
+          <div class="formula-box">
+            F(0) = 0, &nbsp; F(1) = 1<br>
+            F(n) = F(n-1) + F(n-2) &nbsp;&nbsp; for n &ge; 2<br><br>
+            <strong>Sequence:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
+          </div>
+
+          <div class="example-box">
+            <div class="label">Building Fibonacci Step by Step</div>
+            <table>
+              <tr>
+                <th>n</th>
+                <th>F(n)</th>
+                <th>How</th>
+              </tr>
+              <tr><td>0</td><td>0</td><td>Base case</td></tr>
+              <tr><td>1</td><td>1</td><td>Base case</td></tr>
+              <tr><td>2</td><td>1</td><td>F(1) + F(0) = 1 + 0</td></tr>
+              <tr><td>3</td><td>2</td><td>F(2) + F(1) = 1 + 1</td></tr>
+              <tr><td>4</td><td>3</td><td>F(3) + F(2) = 2 + 1</td></tr>
+              <tr><td>5</td><td>5</td><td>F(4) + F(3) = 3 + 2</td></tr>
+              <tr><td>6</td><td>8</td><td>F(5) + F(4) = 5 + 3</td></tr>
+              <tr><td>7</td><td>13</td><td>F(6) + F(5) = 8 + 5</td></tr>
+            </table>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">Why Naive Recursive Fibonacci is O(2<sup>n</sup>)</div>
+            <p>Each call branches into two more calls:</p>
+<pre><code><span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n &lt;= <span class="number">1</span>: <span class="keyword">return</span> n
+    <span class="keyword">return</span> fib(n-<span class="number">1</span>) + fib(n-<span class="number">2</span>)  <span class="comment"># Two recursive calls!</span></code></pre>
+            <p>The number of calls forms a geometric-like growth: roughly 2<sup>n</sup>. This is because each level of the recursion tree has (up to) twice as many calls as the level above -- a geometric sequence!</p>
+            <p style="margin-top:0.5rem;"><strong>Fix:</strong> Use DP (memoization) to avoid recomputation &rarr; O(n).</p>
+          </div>
+
+          <h3>Recurrence Relations in Algorithms</h3>
+
+          <div class="example-box">
+            <div class="label">Common Algorithm Recurrences</div>
+            <table>
+              <tr>
+                <th>Algorithm</th>
+                <th>Recurrence</th>
+                <th>Solution</th>
+              </tr>
+              <tr>
+                <td>Binary Search</td>
+                <td>T(n) = T(n/2) + O(1)</td>
+                <td>O(log n)</td>
+              </tr>
+              <tr>
+                <td>Merge Sort</td>
+                <td>T(n) = 2T(n/2) + O(n)</td>
+                <td>O(n log n)</td>
+              </tr>
+              <tr>
+                <td>Naive Fibonacci</td>
+                <td>T(n) = T(n-1) + T(n-2) + O(1)</td>
+                <td>O(2<sup>n</sup>)</td>
+              </tr>
+              <tr>
+                <td>Linear scan</td>
+                <td>T(n) = T(n-1) + O(1)</td>
+                <td>O(n)</td>
+              </tr>
+            </table>
+            <p style="margin-top:1rem;">Each recurrence defines a <strong>recursive sequence</strong> where T(n) is the time complexity for input size n.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Master Theorem (Preview)</div>
+            <p>The Master Theorem provides formulas to solve recurrences of the form T(n) = aT(n/b) + O(n<sup>d</sup>). It's covered in depth on the <a href="discrete-math.html">Discrete Math</a> page, but the key idea is: it tells you which term "wins" -- the recursive splitting or the work at each level. This is all based on comparing geometric series!</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 14 ==================== -->
+        <section id="real-world">
+          <h2>14. Real-World Applications</h2>
+
+          <div class="example-box">
+            <div class="label">Summary: Where Sequences &amp; Series Appear</div>
+            <table>
+              <tr>
+                <th>Concept</th>
+                <th>Type</th>
+                <th>Application</th>
+              </tr>
+              <tr>
+                <td>Loop iteration counting</td>
+                <td>Arithmetic series</td>
+                <td>n(n+1)/2 &rarr; O(n&sup2;) for nested loops</td>
+              </tr>
+              <tr>
+                <td>Binary tree structure</td>
+                <td>Geometric series</td>
+                <td>2<sup>n</sup> - 1 total nodes</td>
+              </tr>
+              <tr>
+                <td>Recursive branching</td>
+                <td>Geometric sequence</td>
+                <td>2<sup>n</sup> calls &rarr; O(2<sup>n</sup>)</td>
+              </tr>
+              <tr>
+                <td>Binary search halving</td>
+                <td>Geometric decay</td>
+                <td>n, n/2, n/4, ... &rarr; O(log n) steps</td>
+              </tr>
+              <tr>
+                <td>Dynamic array resizing</td>
+                <td>Geometric series</td>
+                <td>1 + 2 + 4 + ... + n &asymp; 2n &rarr; O(1) amortized</td>
+              </tr>
+              <tr>
+                <td>Memory addressing</td>
+                <td>Arithmetic sequence</td>
+                <td>Base + index &times; size &rarr; O(1) array access</td>
+              </tr>
+              <tr>
+                <td>Merge sort work</td>
+                <td>Geometric series</td>
+                <td>n work per level &times; log n levels &rarr; O(n log n)</td>
+              </tr>
+              <tr>
+                <td>Bit representations</td>
+                <td>Geometric series</td>
+                <td>n bits represent 2<sup>n</sup> values (0 to 2<sup>n</sup> - 1)</td>
+              </tr>
+              <tr>
+                <td>Compound interest</td>
+                <td>Geometric sequence</td>
+                <td>Principal &times; (1 + rate)<sup>n</sup></td>
+              </tr>
+              <tr>
+                <td>Build-heap operation</td>
+                <td>Geometric series</td>
+                <td>n + n/2 + n/4 + ... = O(n), not O(n log n)</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The Takeaway</div>
+            <p><strong>Arithmetic series</strong> (adding same amount) = polynomial growth = usually O(n&sup2;)</p>
+            <p><strong>Geometric series with r &gt; 1</strong> (multiplying) = exponential growth = usually O(2<sup>n</sup>) or O(r<sup>n</sup>)</p>
+            <p><strong>Geometric series with r &lt; 1</strong> (dividing) = converges = often O(n) amortized</p>
+            <p><strong>Harmonic series</strong> (1/i terms) = logarithmic growth = O(log n)</p>
+            <p style="margin-top:0.5rem;">Recognizing which type of series you're dealing with instantly tells you the Big-O class.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION 15 ==================== -->
+        <section id="quiz">
+          <h2>15. Practice Quiz</h2>
+          <p>Test your understanding of sequences and series. Click an answer to check it.</p>
+
+          <div class="quiz">
+
+            <!-- Question 1 -->
+            <div class="quiz-q" id="q1">
+              <h4>1. What is the 20th term of the arithmetic sequence 5, 9, 13, 17, ...?</h4>
+              <button onclick="checkAnswer(this, false)">A) 77</button>
+              <button onclick="checkAnswer(this, true)">B) 81</button>
+              <button onclick="checkAnswer(this, false)">C) 85</button>
+              <button onclick="checkAnswer(this, false)">D) 80</button>
+              <div class="explanation">
+                <strong>Answer: B) 81</strong><br>
+                a<sub>1</sub> = 5, d = 4. Using a<sub>n</sub> = a<sub>1</sub> + (n-1)d: a<sub>20</sub> = 5 + (20-1)(4) = 5 + 76 = 81.
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-q" id="q2">
+              <h4>2. What is 1 + 2 + 3 + ... + 50?</h4>
+              <button onclick="checkAnswer(this, false)">A) 1,250</button>
+              <button onclick="checkAnswer(this, true)">B) 1,275</button>
+              <button onclick="checkAnswer(this, false)">C) 1,300</button>
+              <button onclick="checkAnswer(this, false)">D) 2,550</button>
+              <div class="explanation">
+                <strong>Answer: B) 1,275</strong><br>
+                Using n(n+1)/2: 50(51)/2 = 2,550/2 = 1,275.
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-q" id="q3">
+              <h4>3. A loop runs n + (n-1) + (n-2) + ... + 1 iterations total. What is its time complexity?</h4>
+              <button onclick="checkAnswer(this, false)">A) O(n)</button>
+              <button onclick="checkAnswer(this, true)">B) O(n&sup2;)</button>
+              <button onclick="checkAnswer(this, false)">C) O(n log n)</button>
+              <button onclick="checkAnswer(this, false)">D) O(2<sup>n</sup>)</button>
+              <div class="explanation">
+                <strong>Answer: B) O(n&sup2;)</strong><br>
+                This is an arithmetic series: n + (n-1) + ... + 1 = n(n+1)/2. Expanding: n&sup2;/2 + n/2. Dropping constants and lower terms: O(n&sup2;).
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-q" id="q4">
+              <h4>4. What is the 6th term of the geometric sequence 3, 6, 12, 24, ...?</h4>
+              <button onclick="checkAnswer(this, false)">A) 48</button>
+              <button onclick="checkAnswer(this, false)">B) 64</button>
+              <button onclick="checkAnswer(this, true)">C) 96</button>
+              <button onclick="checkAnswer(this, false)">D) 192</button>
+              <div class="explanation">
+                <strong>Answer: C) 96</strong><br>
+                a<sub>1</sub> = 3, r = 2. Using a<sub>n</sub> = a<sub>1</sub> &times; r<sup>(n-1)</sup>: a<sub>6</sub> = 3 &times; 2<sup>5</sup> = 3 &times; 32 = 96.
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-q" id="q5">
+              <h4>5. What is 1 + 2 + 4 + 8 + 16 + 32 + 64?</h4>
+              <button onclick="checkAnswer(this, false)">A) 126</button>
+              <button onclick="checkAnswer(this, true)">B) 127</button>
+              <button onclick="checkAnswer(this, false)">C) 128</button>
+              <button onclick="checkAnswer(this, false)">D) 255</button>
+              <div class="explanation">
+                <strong>Answer: B) 127</strong><br>
+                This is a geometric series with a<sub>1</sub> = 1, r = 2, n = 7 terms. Sum = 2<sup>7</sup> - 1 = 128 - 1 = 127.
+              </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-q" id="q6">
+              <h4>6. What does the infinite sum 1 + 1/3 + 1/9 + 1/27 + ... converge to?</h4>
+              <button onclick="checkAnswer(this, false)">A) 1</button>
+              <button onclick="checkAnswer(this, true)">B) 3/2</button>
+              <button onclick="checkAnswer(this, false)">C) 2</button>
+              <button onclick="checkAnswer(this, false)">D) It diverges</button>
+              <div class="explanation">
+                <strong>Answer: B) 3/2</strong><br>
+                a<sub>1</sub> = 1, r = 1/3. Since |r| &lt; 1, S<sub>&infin;</sub> = a<sub>1</sub>/(1-r) = 1/(1 - 1/3) = 1/(2/3) = 3/2.
+              </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="quiz-q" id="q7">
+              <h4>7. A complete binary tree of height 5 has how many total nodes?</h4>
+              <button onclick="checkAnswer(this, false)">A) 32</button>
+              <button onclick="checkAnswer(this, false)">B) 62</button>
+              <button onclick="checkAnswer(this, true)">C) 63</button>
+              <button onclick="checkAnswer(this, false)">D) 64</button>
+              <div class="explanation">
+                <strong>Answer: C) 63</strong><br>
+                Total nodes = 1 + 2 + 4 + 8 + 16 + 32 = 2<sup>6</sup> - 1 = 63. This is the geometric series sum with 6 levels (height 5 means levels 0 through 5).
+              </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="quiz-q" id="q8">
+              <h4>8. The sum n + n/2 + n/4 + n/8 + ... + 1 is approximately:</h4>
+              <button onclick="checkAnswer(this, true)">A) 2n</button>
+              <button onclick="checkAnswer(this, false)">B) n log n</button>
+              <button onclick="checkAnswer(this, false)">C) n&sup2;</button>
+              <button onclick="checkAnswer(this, false)">D) n/2</button>
+              <div class="explanation">
+                <strong>Answer: A) 2n</strong><br>
+                Factor out n: n(1 + 1/2 + 1/4 + 1/8 + ...). The part in parentheses is a convergent geometric series with r = 1/2, summing to 1/(1 - 1/2) = 2. So the total is n &times; 2 = 2n. This is why build-heap is O(n)!
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; border-top: 1px solid #e5e5e5; margin-top: 2rem;">
+          <a href="algebra.html" class="resource-link">&larr; Algebra</a>
+          <a href="geometry.html" class="resource-link">Geometry &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for self-taught programmers who want to learn the math behind CS.</p>
+    <p>No ads, no tracking, no paywalls -- just math.</p>
+  </footer>
+
+  <!-- Quiz Script -->
+  <script>
+    function checkAnswer(btn, correct) {
+      const q = btn.parentElement;
+      if (q.dataset.answered) return;
+      q.dataset.answered = 'true';
+      if (correct) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        q.querySelectorAll('button').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+      q.querySelector('.explanation').style.display = 'block';
+    }
+  </script>
+
+  <!-- Mobile TOC toggle -->
+  <style>
+    @media (max-width: 1199px) {
+      #mobile-toc { display: block !important; }
+      .sidebar-toc { display: none; }
+    }
+  </style>
+
+</body>
+</html>
