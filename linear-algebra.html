@@ -14,6 +14,12 @@
   <!-- Navbar -->
     <nav>
     <a href="index.html" class="logo">Better Dev</a>
+    <button class="nav-toggle" onclick="this.parentElement.classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <div class="nav-links">
+    <div class="nav-search">
+      <input type="text" class="nav-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="nav-search-results"></div>
+    </div>
     <span class="divider"></span>
     <a href="index.html">Home</a>
     <a href="pre-algebra.html">Pre-Algebra</a>
@@ -53,6 +59,7 @@
     <a href="selfhosting.html">Self-Hosting</a>
     <span class="divider"></span>
     <a href="seans-brain.html">Sean's Brain</a>
+    </div>
   </nav>
 
   <div class="container">
@@ -1231,5 +1238,37 @@ point = np.array([<span class="number">3</span>, <span class="number">1</span>])
     }
   </script>
 
+<script>
+(function(){
+  var input=document.querySelector(".nav-search-input");
+  var box=document.querySelector(".nav-search-results");
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll(".nav-links > a"));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute("href")};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove("visible");box.innerHTML="";idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add("visible");idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join("");
+    box.classList.add("visible");
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle("highlighted",i===idx);}
+  }
+  input.addEventListener("input",function(){render(this.value);});
+  input.addEventListener("keydown",function(e){
+    var items=box.querySelectorAll("a");
+    if(!items.length)return;
+    if(e.key==="ArrowDown"){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:"nearest"});}
+    else if(e.key==="ArrowUp"){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:"nearest"});}
+    else if(e.key==="Enter"&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener("blur",function(){setTimeout(function(){box.classList.remove("visible");idx=-1;},200);});
+  input.addEventListener("focus",function(){if(this.value)render(this.value);});
+})();
+</script>
 </body>
 </html>
