@@ -1782,36 +1782,140 @@
         <section id="logarithms">
           <h2>10. Logarithms</h2>
 
-          <h3>What Are Logarithms?</h3>
+          <h3>The One Sentence You Need</h3>
           <p>
-            A <strong>logarithm</strong> answers the question: "What power do I raise this base to in order to get this number?" It is the <strong>inverse of exponentiation</strong>.
+            Forget the formal definition for a second. Here's the intuition that matters:
+          </p>
+
+          <div class="formula-box">
+            <strong>log<sub>2</sub>(n) = "How many times do I halve n to reach 1?"</strong><br><br>
+            That's it. That's the whole idea. Everything else follows from this.
+          </div>
+
+          <div class="example-box">
+            <div class="label">The Halving Game -- Play It Right Now</div>
+            <p>Start with <strong>32</strong>. Keep halving until you hit 1. Count the steps:</p>
+            <p>32 &rarr; 16 &rarr; 8 &rarr; 4 &rarr; 2 &rarr; 1 &nbsp;&nbsp;&nbsp; <strong>5 steps</strong></p>
+            <p>So log<sub>2</sub>(32) = <strong>5</strong>. Done.</p>
+            <p style="margin-top:0.7rem;">Try <strong>1,000,000</strong>:</p>
+            <p>1,000,000 &rarr; 500,000 &rarr; 250,000 &rarr; 125,000 &rarr; 62,500 &rarr; 31,250 &rarr; 15,625 &rarr; ~7,813 &rarr; ~3,906 &rarr; ~1,953 &rarr; ~977 &rarr; ~488 &rarr; ~244 &rarr; ~122 &rarr; ~61 &rarr; ~31 &rarr; ~15 &rarr; ~8 &rarr; ~4 &rarr; ~2 &rarr; 1</p>
+            <p><strong>About 20 steps.</strong> log<sub>2</sub>(1,000,000) &approx; 20. A million items reduced to 20 steps by halving!</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">The 20 Questions Analogy</div>
+            <p>The game "20 Questions" is literally binary search. With each yes/no question, you eliminate <strong>half</strong> the possibilities.</p>
+            <ul>
+              <li>After 1 question: 500,000 possibilities remain</li>
+              <li>After 2 questions: 250,000</li>
+              <li>After 10 questions: ~1,000</li>
+              <li>After 20 questions: ~1</li>
+            </ul>
+            <p style="margin-top:0.5rem;">With 20 yes/no questions, you can find <strong>any item among a million</strong>. That's the power of log<sub>2</sub>(n). It measures how many times you split the problem in half.</p>
+          </div>
+
+          <h3>The Formal Definition</h3>
+          <p>
+            Now that you have the intuition, here's the math: a <strong>logarithm</strong> answers "What power do I raise this base to in order to get this number?" It is the <strong>inverse of exponentiation</strong>.
           </p>
 
           <div class="formula-box">
             log<sub>b</sub>(x) = y &nbsp;&nbsp;means&nbsp;&nbsp; b<sup>y</sup> = x<br><br>
-            "log base b of x equals y" means "b raised to the y equals x"
+            "log base b of x equals y" means "b raised to the y equals x"<br><br>
+            <strong>Exponentiation:</strong> 2<sup>5</sup> = 32 &nbsp;&nbsp;(I know the power, what's the result?)<br>
+            <strong>Logarithm:</strong> log<sub>2</sub>(32) = 5 &nbsp;&nbsp;(I know the result, what's the power?)
           </div>
 
           <div class="example-box">
             <div class="label">Example -- Reading Logarithms</div>
             <p><strong>log<sub>2</sub>(8) = ?</strong></p>
-            <p>Ask: "2 to what power gives 8?"</p>
-            <p>2&sup3; = 8, so <strong>log<sub>2</sub>(8) = 3</strong></p>
+            <p>Ask: "2 to what power gives 8?" &nbsp; 2&sup3; = 8, so <strong>log<sub>2</sub>(8) = 3</strong></p>
+            <p>Or think: "How many halvings? 8 &rarr; 4 &rarr; 2 &rarr; 1 = <strong>3</strong> halvings"</p>
             <p>&nbsp;</p>
             <p><strong>log<sub>10</sub>(1000) = ?</strong></p>
-            <p>Ask: "10 to what power gives 1000?"</p>
-            <p>10&sup3; = 1000, so <strong>log<sub>10</sub>(1000) = 3</strong></p>
+            <p>Ask: "10 to what power gives 1000?" &nbsp; 10&sup3; = 1000, so <strong>log<sub>10</sub>(1000) = 3</strong></p>
+            <p>Or think: "How many digits minus 1?" &nbsp; 1000 has 4 digits, so log<sub>10</sub>(1000) = <strong>3</strong></p>
             <p>&nbsp;</p>
             <p><strong>log<sub>5</sub>(25) = ?</strong></p>
-            <p>Ask: "5 to what power gives 25?"</p>
-            <p>5&sup2; = 25, so <strong>log<sub>5</sub>(25) = 2</strong></p>
+            <p>Ask: "5 to what power gives 25?" &nbsp; 5&sup2; = 25, so <strong>log<sub>5</sub>(25) = 2</strong></p>
+          </div>
+
+          <h3>The log<sub>2</sub> Table You Must Memorize</h3>
+          <p>These values come up <em>constantly</em> in CS. Don't memorize them by rote -- <strong>see the pattern</strong>:</p>
+
+          <table>
+            <thead>
+              <tr><th>n</th><th>log<sub>2</sub>(n)</th><th>Why (halving)</th><th>Where You See This</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>0</td><td>Already at 1, zero halvings</td><td>Base case</td></tr>
+              <tr><td>2</td><td>1</td><td>2 &rarr; 1 (1 halving)</td><td>One comparison</td></tr>
+              <tr><td>4</td><td>2</td><td>4 &rarr; 2 &rarr; 1</td><td>2-bit number</td></tr>
+              <tr><td>8</td><td>3</td><td>8 &rarr; 4 &rarr; 2 &rarr; 1</td><td>3-bit number, byte = 2&sup3;</td></tr>
+              <tr><td>16</td><td>4</td><td>4 halvings</td><td>Hex digit (0-F)</td></tr>
+              <tr><td>32</td><td>5</td><td>5 halvings</td><td>32-bit int</td></tr>
+              <tr><td>64</td><td>6</td><td>6 halvings</td><td>64-bit systems</td></tr>
+              <tr><td>128</td><td>7</td><td>7 halvings</td><td>ASCII character set</td></tr>
+              <tr><td>256</td><td>8</td><td>8 halvings</td><td>1 byte = 2&sup8; = 256 values</td></tr>
+              <tr><td>1,024</td><td>10</td><td>10 halvings</td><td>1 KB (kibibyte)</td></tr>
+              <tr><td>1,048,576</td><td>20</td><td>20 halvings</td><td>1 MB</td></tr>
+              <tr><td>~1 billion</td><td>30</td><td>30 halvings</td><td>1 GB</td></tr>
+              <tr><td>~4.3 billion</td><td>32</td><td>32 halvings</td><td>IPv4 addresses, 32-bit max</td></tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <div class="label">The Mind-Blowing Takeaway</div>
+            <p>
+              <strong>log<sub>2</sub> grows absurdly slowly.</strong> You need to DOUBLE n just to add 1 to log<sub>2</sub>(n). Going from 1 million to 1 billion (1000x more data) only adds 10 more steps. This is why O(log n) algorithms are so fast -- they barely notice when you throw more data at them.
+            </p>
+          </div>
+
+          <h3>log<sub>2</sub> in Actual Algorithms</h3>
+
+          <div class="example-box">
+            <div class="label">Binary Search -- The Classic O(log n)</div>
+            <p>You have a sorted array of <strong>1,000</strong> elements. How many comparisons does binary search need?</p>
+<pre><code><span class="comment"># Array of 1000 sorted elements</span>
+<span class="comment"># Step 1: Check middle (index 500). Too high? Search left half (0-499).</span>
+<span class="comment"># Step 2: Check middle of left half (index 250). Too low? Search right (251-499).</span>
+<span class="comment"># Step 3: Check middle (index 375). Keep halving...</span>
+<span class="comment"># ...</span>
+<span class="comment"># After ~10 steps: found it!</span>
+<span class="comment"># </span>
+<span class="comment"># Why 10? Because log₂(1000) ≈ 10.</span>
+<span class="comment"># Each step halves the search space: 1000 → 500 → 250 → 125 → 63 → 32 → 16 → 8 → 4 → 2 → 1</span></code></pre>
+            <p style="margin-top:0.5rem;">Linear search would check up to 1,000 elements. Binary search: <strong>10</strong>. That's the power of log n.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Height of a Balanced Binary Tree</div>
+            <p>A balanced binary tree with <strong>n</strong> nodes has height <strong>log<sub>2</sub>(n)</strong>.</p>
+            <p>Why? Each level doubles the number of nodes: 1, 2, 4, 8, 16, ...</p>
+            <p>So a tree with 1 million nodes is only about <strong>20 levels deep</strong>.</p>
+            <p>That's why tree lookups (BST, AVL, Red-Black) are O(log n) -- you descend at most log<sub>2</sub>(n) levels.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="label">How Many Bits to Represent n?</div>
+            <p>The number of bits needed to represent n in binary is <strong>&lfloor;log<sub>2</sub>(n)&rfloor; + 1</strong>.</p>
+            <p>Why? Each bit doubles the range: 1 bit &rarr; 2 values, 2 bits &rarr; 4 values, k bits &rarr; 2<sup>k</sup> values.</p>
+            <p>To represent 1000: log<sub>2</sub>(1000) &approx; 9.97, so you need <strong>10 bits</strong>. Check: 2<sup>10</sup> = 1024 &ge; 1000.</p>
           </div>
 
           <h3>Common and Natural Logs</h3>
           <ul>
-            <li><strong>Common log:</strong> log(x) means log<sub>10</sub>(x). Base 10 is the default when no base is written.</li>
-            <li><strong>Natural log:</strong> ln(x) means log<sub>e</sub>(x), where e &approx; 2.71828. The number e is a special mathematical constant that shows up naturally in growth and decay problems.</li>
+            <li><strong>log<sub>2</sub>(x)</strong> = "CS log" -- the one you'll use 90% of the time. How many halvings / doublings.</li>
+            <li><strong>log<sub>10</sub>(x)</strong> = "common log" -- roughly counts the number of digits. log<sub>10</sub>(1000) = 3 and 1000 has 4 digits.</li>
+            <li><strong>ln(x)</strong> = log<sub>e</sub>(x) = "natural log" -- where e &approx; 2.71828. Shows up in calculus, probability, and continuous growth/decay.</li>
           </ul>
+
+          <div class="tip-box">
+            <div class="label">Why Base Doesn't Matter in Big-O</div>
+            <p>In Big-O notation, we just write O(log n) without specifying the base. Why?</p>
+            <p>The change of base formula: log<sub>2</sub>(n) = log<sub>10</sub>(n) / log<sub>10</sub>(2) &approx; 3.32 &times; log<sub>10</sub>(n)</p>
+            <p>So log<sub>2</sub>(n) and log<sub>10</sub>(n) differ only by a constant factor (3.32), and Big-O ignores constants. All log bases are equivalent up to a constant, so <strong>O(log<sub>2</sub> n) = O(log<sub>10</sub> n) = O(ln n) = O(log n)</strong>.</p>
+          </div>
 
           <h3>Logarithm Rules</h3>
           <table>
@@ -1821,10 +1925,11 @@
             <tbody>
               <tr><td>Product Rule</td><td>log(ab) = log(a) + log(b)</td><td>Log of a product = sum of logs</td></tr>
               <tr><td>Quotient Rule</td><td>log(a/b) = log(a) - log(b)</td><td>Log of a quotient = difference of logs</td></tr>
-              <tr><td>Power Rule</td><td>log(a<sup>n</sup>) = n * log(a)</td><td>Exponent comes down as multiplier</td></tr>
+              <tr><td>Power Rule</td><td>log(a<sup>n</sup>) = n &times; log(a)</td><td>Exponent comes down as multiplier</td></tr>
               <tr><td>Change of Base</td><td>log<sub>b</sub>(x) = log(x) / log(b)</td><td>Convert between bases</td></tr>
               <tr><td>Identity</td><td>log<sub>b</sub>(b) = 1</td><td>Any base logged to itself is 1</td></tr>
               <tr><td>Identity</td><td>log<sub>b</sub>(1) = 0</td><td>Log of 1 is always 0</td></tr>
+              <tr><td>Inverse</td><td>b<sup>log<sub>b</sub>(x)</sup> = x</td><td>Exponent and log cancel out</td></tr>
             </tbody>
           </table>
 
@@ -1837,6 +1942,14 @@
             <p>Answer: <strong>2log(x) + log(y) - log(z)</strong></p>
           </div>
 
+          <div class="example-box">
+            <div class="label">Example -- Why the Product Rule Makes Sense</div>
+            <p>Think about it in binary (base 2):</p>
+            <p>log<sub>2</sub>(8 &times; 4) = log<sub>2</sub>(32) = 5</p>
+            <p>log<sub>2</sub>(8) + log<sub>2</sub>(4) = 3 + 2 = 5 &check;</p>
+            <p style="margin-top:0.5rem">Why does this work? Multiplying by 8 means "shift left 3 bits" and multiplying by 4 means "shift left 2 bits." Total shift: 3 + 2 = 5. Logs count the shifts!</p>
+          </div>
+
           <h3>Solving Exponential Equations with Logs</h3>
           <p>When the variable is in the exponent, use logarithms to bring it down.</p>
 
@@ -1844,37 +1957,66 @@
             <div class="label">Example -- Solving an Exponential Equation</div>
             <p>Solve: <strong>2<sup>x</sup> = 32</strong></p>
             <p>Method 1 (recognition): 2<sup>5</sup> = 32, so x = 5.</p>
-            <p>Method 2 (logs): Take log of both sides:</p>
+            <p>Method 2 (halving intuition): 32 &rarr; 16 &rarr; 8 &rarr; 4 &rarr; 2 &rarr; 1. That's 5 halvings, so x = 5.</p>
+            <p>Method 3 (logs): Take log of both sides:</p>
             <p><code>log(2<sup>x</sup>) = log(32)</code></p>
-            <p><code>x * log(2) = log(32)</code></p>
+            <p><code>x &times; log(2) = log(32)</code></p>
             <p><code>x = log(32) / log(2) = 5</code></p>
           </div>
 
           <div class="example-box">
             <div class="label">Example -- When You Can't Guess</div>
             <p>Solve: <strong>3<sup>x</sup> = 20</strong></p>
-            <p>Take log of both sides: <code>x * log(3) = log(20)</code></p>
+            <p>Take log of both sides: <code>x &times; log(3) = log(20)</code></p>
             <p><code>x = log(20) / log(3) = 1.3010 / 0.4771 &approx; 2.727</code></p>
           </div>
 
-          <div class="tip-box">
-            <div class="label">Why CS People Care: Log Base 2</div>
+          <div class="example-box">
+            <div class="label">CS Example -- How Long Until My Data Doubles?</div>
+            <p>Your database grows 5% per month. When will it double?</p>
+            <p>You need: 1.05<sup>x</sup> = 2</p>
+            <p>x = log(2) / log(1.05) = 0.3010 / 0.02119 &approx; <strong>14.2 months</strong></p>
+            <p style="margin-top:0.5rem;"><strong>Rule of 72 shortcut:</strong> 72 / growth rate &approx; doubling time. So 72 / 5 &approx; 14.4 months. Close enough!</p>
+          </div>
+
+          <h3>Thinking in Logs: The Cheat Sheet</h3>
+          <p>When you see these patterns, think "logarithm":</p>
+
+          <table>
+            <thead>
+              <tr><th>You See...</th><th>Think...</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>"Halving repeatedly"</td><td>log<sub>2</sub>(n) steps</td><td>Binary search, divide &amp; conquer</td></tr>
+              <tr><td>"How many digits?"</td><td>log<sub>10</sub>(n) + 1 digits</td><td>Number of digits in n</td></tr>
+              <tr><td>"How many bits?"</td><td>log<sub>2</sub>(n) + 1 bits</td><td>Binary representation</td></tr>
+              <tr><td>"Tree height"</td><td>log<sub>2</sub>(n) levels</td><td>Balanced BST, heap</td></tr>
+              <tr><td>"Splitting into k parts"</td><td>log<sub>k</sub>(n) levels</td><td>B-tree (k-way split)</td></tr>
+              <tr><td>"When does it double?"</td><td>Solve with logs</td><td>Growth rate analysis</td></tr>
+              <tr><td>"Undoing an exponent"</td><td>Apply log to both sides</td><td>Solving 2<sup>x</sup> = 1024</td></tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <div class="label">Common Mistakes</div>
             <p>
-              In computer science, <strong>log base 2</strong> (written log<sub>2</sub> or sometimes lg) is the most important logarithm. It answers: "How many times can I divide this number by 2 before reaching 1?"
+              <strong>log(a + b) is NOT log(a) + log(b).</strong> There is no log rule for sums. The product rule says log(a &times; b) = log(a) + log(b), but this only works for multiplication, not addition. This is the #1 algebra error students make with logs.
             </p>
-            <p>
-              This directly maps to the efficiency of divide-and-conquer algorithms. Binary search cuts the search space in half each step, so it takes log<sub>2</sub>(n) steps to search n items. Merge sort divides the array in half each level, giving O(n log n) complexity. When someone says "this runs in log n time," they almost always mean log<sub>2</sub>(n).
-            </p>
-            <p>
-              Key values every programmer should know: log<sub>2</sub>(1) = 0, log<sub>2</sub>(2) = 1, log<sub>2</sub>(4) = 2, log<sub>2</sub>(8) = 3, log<sub>2</sub>(16) = 4, log<sub>2</sub>(1024) &approx; 10, log<sub>2</sub>(1,000,000) &approx; 20. That last one is remarkable -- you can binary search through a million items in about 20 steps!
+            <p style="margin-top:0.5rem;">
+              <strong>log(0) is undefined.</strong> You can't raise any positive number to a power and get 0. And log of negatives doesn't exist in real numbers either.
             </p>
           </div>
 
-          <div class="warning-box">
-            <div class="label">Common Mistake</div>
-            <p>
-              <strong>log(a + b) is NOT log(a) + log(b).</strong> There is no log rule for sums. The product rule says log(a * b) = log(a) + log(b), but this only works for multiplication, not addition. This is one of the most common algebra errors students make with logs.
-            </p>
+          <div class="tip-box">
+            <div class="label">Quick Self-Test: Can You Answer These Instantly?</div>
+            <p>If you can answer these without a calculator, you understand log<sub>2</sub>:</p>
+            <ul>
+              <li>log<sub>2</sub>(64) = ? &nbsp;&nbsp;&nbsp; <em>(6 -- because 2&sup6; = 64)</em></li>
+              <li>log<sub>2</sub>(1) = ? &nbsp;&nbsp;&nbsp; <em>(0 -- because 2&sup0; = 1)</em></li>
+              <li>log<sub>2</sub>(1024) = ? &nbsp;&nbsp;&nbsp; <em>(10 -- because 2<sup>10</sup> = 1024)</em></li>
+              <li>How many binary search steps for 1 billion items? &nbsp;&nbsp;&nbsp; <em>(~30)</em></li>
+              <li>Height of a balanced BST with 1 million nodes? &nbsp;&nbsp;&nbsp; <em>(~20)</em></li>
+            </ul>
           </div>
         </section>
 
@@ -2055,7 +2197,7 @@
             <p>You invest $1,000 at 10% annual interest. How much after 5 years?</p>
             <p>Each year, you multiply by 1.10 (100% + 10% = 110% = 1.10)</p>
             <p>a₁ = 1000, r = 1.10, n = 6 (year 0 through year 5)</p>
-            <p>a₆ = 1000 × 1.10⁵ = 1000 × 1.61051 = <strong>$1,610.51</strong></p>
+            <p>a₆ = 1000 &times; 1.10⁵ = 1000 &times; 1.61051 = <strong>$1,610.51</strong></p>
           </div>
 
           <div class="example-box">
@@ -2063,7 +2205,70 @@
             <p>A radioactive substance has a half-life of 1 hour. Starting with 800g, how much after 4 hours?</p>
             <p>Each hour, you multiply by 0.5 (half remains)</p>
             <p>a₁ = 800, r = 0.5, n = 5 (hour 0 through hour 4)</p>
-            <p>a₅ = 800 × 0.5⁴ = 800 × 0.0625 = <strong>50g</strong></p>
+            <p>a₅ = 800 &times; 0.5⁴ = 800 &times; 0.0625 = <strong>50g</strong></p>
+          </div>
+
+          <h3>Exponential Growth: Why It Destroys Everything</h3>
+          <p>Humans are terrible at intuiting exponential growth. Our brains think linearly, so exponentials always surprise us. Let's fix that.</p>
+
+          <div class="example-box">
+            <div class="label">The Rice and Chessboard Problem</div>
+            <p>A king agrees to pay 1 grain of rice on square 1, 2 grains on square 2, 4 on square 3, doubling each square on a 64-square chessboard.</p>
+            <p><strong>Square 1:</strong> 1 grain</p>
+            <p><strong>Square 10:</strong> 512 grains (barely a pinch)</p>
+            <p><strong>Square 20:</strong> 524,288 grains (a small bag)</p>
+            <p><strong>Square 30:</strong> ~537 million grains (~13 tons of rice)</p>
+            <p><strong>Square 40:</strong> ~550 billion grains (~13,000 tons)</p>
+            <p><strong>Square 64:</strong> 2<sup>63</sup> = 9,223,372,036,854,775,808 grains</p>
+            <p style="margin-top:0.5rem;"><strong>That's ~230 billion tons of rice -- more than all rice ever produced in human history.</strong></p>
+            <p>This is why 2<sup>n</sup> algorithms are death sentences. The numbers look fine until they suddenly don't.</p>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">The Growth Rate Comparison Table (Burn This Into Your Brain)</div>
+            <table>
+              <thead>
+                <tr><th>n</th><th>log<sub>2</sub>(n)</th><th>n</th><th>n log n</th><th>n&sup2;</th><th>2<sup>n</sup></th><th>n!</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>2</td><td>1</td></tr>
+                <tr><td>5</td><td>2.3</td><td>5</td><td>12</td><td>25</td><td>32</td><td>120</td></tr>
+                <tr><td>10</td><td>3.3</td><td>10</td><td>33</td><td>100</td><td>1,024</td><td>3,628,800</td></tr>
+                <tr><td>20</td><td>4.3</td><td>20</td><td>86</td><td>400</td><td>1,048,576</td><td>~2.4 &times; 10<sup>18</sup></td></tr>
+                <tr><td>30</td><td>4.9</td><td>30</td><td>147</td><td>900</td><td>~1 billion</td><td>~2.7 &times; 10<sup>32</sup></td></tr>
+                <tr><td>50</td><td>5.6</td><td>50</td><td>282</td><td>2,500</td><td>~10<sup>15</sup></td><td>~3 &times; 10<sup>64</sup></td></tr>
+                <tr><td>100</td><td>6.6</td><td>100</td><td>664</td><td>10,000</td><td>~10<sup>30</sup></td><td>~9 &times; 10<sup>157</sup></td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:0.5rem;">At n=100: log n is <strong>7</strong>, n&sup2; is <strong>10,000</strong>, but 2<sup>n</sup> has <strong>30 digits</strong>. Your computer running 10 billion operations/second would need 10<sup>20</sup> seconds for 2<sup>100</sup> operations. The universe is only 4 &times; 10<sup>17</sup> seconds old.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Exponential Growth in CS: Recognizing the Pattern</div>
+            <p>You're dealing with exponential growth when:</p>
+            <ul>
+              <li><strong>Each step doubles the work:</strong> Recursive Fibonacci, brute-force subset enumeration</li>
+              <li><strong>You're trying "all combinations":</strong> Password cracking, the traveling salesman problem</li>
+              <li><strong>A function calls itself multiple times:</strong> <code>f(n) = f(n-1) + f(n-2)</code> -- each call spawns two more</li>
+            </ul>
+            <p style="margin-top:0.5rem;">And exponential decay (good!) when:</p>
+            <ul>
+              <li><strong>Each step halves the problem:</strong> Binary search, balanced tree operations</li>
+              <li><strong>Probability drops exponentially:</strong> Hash collision chains, retry backoff</li>
+              <li><strong>Cache hit rates:</strong> Working set usually follows an exponentially decaying access pattern</li>
+            </ul>
+          </div>
+
+          <div class="example-box">
+            <div class="label">The Doubling Time Rule</div>
+            <p><strong>If something grows by x% each period, it doubles in roughly 72/x periods.</strong></p>
+            <p style="margin-top:0.5rem;">Examples:</p>
+            <ul>
+              <li>Data growing at <strong>10% per month</strong> &rarr; doubles in ~7.2 months</li>
+              <li>Users growing at <strong>5% per week</strong> &rarr; doubles in ~14.4 weeks</li>
+              <li>CPU speed doubling every <strong>18 months</strong> (Moore's Law) &rarr; ~100% growth every 18 months</li>
+            </ul>
+            <p style="margin-top:0.5rem;">This is critical for capacity planning. If your server handles today's load fine but traffic doubles every 3 months, you have a <strong>3-month</strong> runway, not years.</p>
           </div>
 
           <h3>Geometric Series (Sum of Geometric Sequence)</h3>
@@ -2120,17 +2325,107 @@
           </div>
 
           <h3>Summation Notation (Sigma Notation)</h3>
-          <p>Sigma notation (Σ) is a compact way to write sums:</p>
+          <p>Sigma notation (&Sigma;) is a compact way to write sums. Think of it as a <strong>for loop in math form</strong>:</p>
 
           <div class="formula-box">
-            <strong>Σ notation:</strong> Σᵢ₌₁ⁿ f(i) = f(1) + f(2) + f(3) + ... + f(n)
+            <strong>&Sigma; notation:</strong> &Sigma;ᵢ₌₁ⁿ f(i) = f(1) + f(2) + f(3) + ... + f(n)<br><br>
+            <strong>Read it as:</strong> "Sum of f(i) as i goes from 1 to n"<br><br>
+            <strong>The parts:</strong><br>
+            &bull; <strong>i</strong> = the loop variable (called the "index")<br>
+            &bull; <strong>1</strong> = starting value (bottom of &Sigma;)<br>
+            &bull; <strong>n</strong> = ending value (top of &Sigma;)<br>
+            &bull; <strong>f(i)</strong> = what you're adding each iteration (the body)
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Summations ARE For Loops</div>
+            <p>Every summation is literally a for loop. Every for loop that accumulates a total is a summation.</p>
+<pre><code><span class="comment"># This Python code...</span>
+total = <span class="number">0</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):
+    total += f(i)
+
+<span class="comment"># ...is EXACTLY this math:</span>
+<span class="comment"># Σᵢ₌₁ⁿ f(i)</span></code></pre>
+            <p style="margin-top:0.5rem;">Once you see this connection, summations stop being scary and start being familiar.</p>
           </div>
 
           <div class="example-box">
-            <div class="label">Examples</div>
-            <p><strong>Σᵢ₌₁⁵ i</strong> = 1 + 2 + 3 + 4 + 5 = 15</p>
-            <p><strong>Σᵢ₌₁⁴ i²</strong> = 1² + 2² + 3² + 4² = 1 + 4 + 9 + 16 = 30</p>
-            <p><strong>Σᵢ₌₀³ 2ⁱ</strong> = 2⁰ + 2¹ + 2² + 2³ = 1 + 2 + 4 + 8 = 15</p>
+            <div class="label">Examples -- Expanding Summations</div>
+            <p><strong>&Sigma;ᵢ₌₁⁵ i</strong> = 1 + 2 + 3 + 4 + 5 = 15</p>
+            <p><strong>&Sigma;ᵢ₌₁⁴ i&sup2;</strong> = 1&sup2; + 2&sup2; + 3&sup2; + 4&sup2; = 1 + 4 + 9 + 16 = 30</p>
+            <p><strong>&Sigma;ᵢ₌₀³ 2ⁱ</strong> = 2⁰ + 2¹ + 2&sup2; + 2&sup3; = 1 + 2 + 4 + 8 = 15</p>
+            <p><strong>&Sigma;ᵢ₌₁³ (2i + 1)</strong> = 3 + 5 + 7 = 15</p>
+          </div>
+
+          <h3>Translating Loops to Summations (The Skill That Matters)</h3>
+          <p>This is the real reason you learn summations: to <strong>analyze code complexity</strong>. Here's the systematic method:</p>
+
+          <div class="example-box">
+            <div class="label">Pattern 1: Simple Loop &rarr; Simple Sum</div>
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):       <span class="comment"># i goes from 0 to n-1</span>
+    do_something()         <span class="comment"># O(1) work each time</span>
+
+<span class="comment"># Total work: Σᵢ₌₀ⁿ⁻¹ 1 = n</span>
+<span class="comment"># Big-O: O(n)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Pattern 2: Triangular Nested Loop &rarr; Arithmetic Sum</div>
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):            <span class="comment"># i = 0, 1, 2, ..., n-1</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i):         <span class="comment"># inner runs 0, 1, 2, ..., n-1 times</span>
+        do_something()
+
+<span class="comment"># Inner loop runs: 0 + 1 + 2 + 3 + ... + (n-1)</span>
+<span class="comment"># As a summation: Σᵢ₌₀ⁿ⁻¹ i = n(n-1)/2</span>
+<span class="comment"># Big-O: O(n²)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Pattern 3: Halving Loop &rarr; Geometric/Log</div>
+<pre><code>i = n
+<span class="keyword">while</span> i >= <span class="number">1</span>:
+    do_something()             <span class="comment"># O(1) work</span>
+    i = i // <span class="number">2</span>                 <span class="comment"># halve each iteration</span>
+
+<span class="comment"># Iterations: n, n/2, n/4, ..., 2, 1</span>
+<span class="comment"># Number of iterations: log₂(n)</span>
+<span class="comment"># Big-O: O(log n)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Pattern 4: Nested with Halving &rarr; n log n</div>
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):            <span class="comment"># O(n) outer iterations</span>
+    j = n
+    <span class="keyword">while</span> j >= <span class="number">1</span>:              <span class="comment"># O(log n) inner iterations</span>
+        do_something()
+        j = j // <span class="number">2</span>
+
+<span class="comment"># Total: Σᵢ₌₀ⁿ⁻¹ log(n) = n × log(n)</span>
+<span class="comment"># Big-O: O(n log n)</span></code></pre>
+          </div>
+
+          <div class="example-box">
+            <div class="label">Pattern 5: Doubling Inner Loop &rarr; Geometric Sum</div>
+<pre><code><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):            <span class="comment"># outer: n iterations</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>**i):      <span class="comment"># inner: 1, 2, 4, 8, ... 2^(n-1) iterations</span>
+        do_something()
+
+<span class="comment"># Total: Σᵢ₌₀ⁿ⁻¹ 2ⁱ = 2ⁿ - 1</span>
+<span class="comment"># Big-O: O(2ⁿ)</span></code></pre>
+          </div>
+
+          <div class="warning-box">
+            <div class="label">The Cheat Sheet: Loop Pattern &rarr; Summation &rarr; Big-O</div>
+            <table>
+              <tr><th>Loop Pattern</th><th>Summation</th><th>Result</th><th>Big-O</th></tr>
+              <tr><td>Simple loop (0 to n)</td><td>&Sigma; 1</td><td>n</td><td>O(n)</td></tr>
+              <tr><td>Nested, both 0 to n</td><td>&Sigma;&Sigma; 1</td><td>n&sup2;</td><td>O(n&sup2;)</td></tr>
+              <tr><td>Triangular (j &lt; i)</td><td>&Sigma;ᵢ₌₀ⁿ i</td><td>n(n-1)/2</td><td>O(n&sup2;)</td></tr>
+              <tr><td>Halving (i = i/2)</td><td>&Sigma; 1 (log n times)</td><td>log n</td><td>O(log n)</td></tr>
+              <tr><td>Outer n &times; inner log n</td><td>&Sigma; log n</td><td>n log n</td><td>O(n log n)</td></tr>
+              <tr><td>Doubling inner (2<sup>i</sup>)</td><td>&Sigma; 2ⁱ</td><td>2ⁿ - 1</td><td>O(2ⁿ)</td></tr>
+            </table>
           </div>
 
           <h3>Important Sum Formulas</h3>
@@ -2145,27 +2440,32 @@
             <tr>
               <td>1 + 2 + 3 + ... + n</td>
               <td>n(n+1)/2</td>
-              <td>Triangular nested loops → O(n²)</td>
+              <td>Triangular nested loops &rarr; O(n&sup2;)</td>
             </tr>
             <tr>
-              <td>1² + 2² + 3² + ... + n²</td>
+              <td>1&sup2; + 2&sup2; + 3&sup2; + ... + n&sup2;</td>
               <td>n(n+1)(2n+1)/6</td>
               <td>Some triple nested patterns</td>
             </tr>
             <tr>
               <td>1 + 2 + 4 + ... + 2^(n-1)</td>
               <td>2ⁿ - 1</td>
-              <td>Binary trees, recursive branching → O(2ⁿ)</td>
+              <td>Binary trees, recursive branching &rarr; O(2ⁿ)</td>
             </tr>
             <tr>
-              <td>1 + r + r² + ... + rⁿ</td>
+              <td>1 + r + r&sup2; + ... + rⁿ</td>
               <td>(rⁿ⁺¹ - 1)/(r - 1)</td>
               <td>Geometric growth patterns</td>
             </tr>
             <tr>
               <td>n + n/2 + n/4 + ... + 1</td>
-              <td>≈ 2n</td>
-              <td>Work in merge sort levels → O(n)</td>
+              <td>&approx; 2n</td>
+              <td>Work in merge sort levels &rarr; O(n)</td>
+            </tr>
+            <tr>
+              <td>1 + 1/2 + 1/3 + ... + 1/n</td>
+              <td>&approx; ln(n)</td>
+              <td>Harmonic series (QuickSort avg case)</td>
             </tr>
           </table>
 

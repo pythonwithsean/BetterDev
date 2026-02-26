@@ -91,6 +91,18 @@
 
       <p>Logic is the foundation of all mathematical reasoning -- and all programming. A <strong>proposition</strong> is a declarative statement that is either <strong>true</strong> or <strong>false</strong>, never both, never neither.</p>
 
+      <div class="tip-box">
+        <div class="label">You Already Know This</div>
+        <p>If you've written an <code>if</code> statement, you already do logic. Discrete math just gives you the <em>formal vocabulary</em> for what you're already doing:</p>
+<pre><code><span class="comment"># This code IS logic:</span>
+<span class="keyword">if</span> user.is_admin <span class="keyword">and</span> (<span class="keyword">not</span> user.is_banned <span class="keyword">or</span> user.has_override):
+    grant_access()
+
+<span class="comment"># In math notation: A ∧ (¬B ∨ C)</span>
+<span class="comment"># Same thing, just different symbols</span></code></pre>
+        <p>Every <code>if/elif/else</code> chain is an implication. Every <code>while</code> condition is a proposition evaluated each iteration. Boolean algebra IS programming logic -- the math just lets you prove things about it.</p>
+      </div>
+
       <div class="example-box">
         <div class="label">Examples of Propositions</div>
         <ul>
@@ -1478,7 +1490,13 @@ result = (a * b) % <span class="number">1000000007</span>
 
       <p>A <strong>recurrence relation</strong> defines a sequence where each term depends on previous terms. In CS, recurrences describe the running time of <strong>recursive algorithms</strong>.</p>
 
-      <h3>What They Look Like</h3>
+      <div class="tip-box">
+        <div class="label">The Core Idea</div>
+        <p>Every recursive function has a recurrence relation hiding inside it. The recurrence literally says: "The time to solve a problem of size n equals the time to solve smaller pieces, plus the work to combine them."</p>
+        <p style="margin-top:0.5rem;">If you can write a recursive function, you can write its recurrence. If you can solve the recurrence, you know the function's Big-O.</p>
+      </div>
+
+      <h3>Reading Recurrences Like Code</h3>
 
       <div class="formula-box">
         T(n) = 2T(n/2) + n &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Merge sort</span><br>
@@ -1487,39 +1505,138 @@ result = (a * b) % <span class="number">1000000007</span>
         T(n) = T(n-1) + T(n-2) &nbsp;&nbsp;&nbsp;<span style="color:#888888;">// Fibonacci</span>
       </div>
 
-      <p>Reading T(n) = 2T(n/2) + n: "The algorithm splits the problem into <strong>2 subproblems</strong> of size <strong>n/2</strong>, then does <strong>n</strong> work to combine the results."</p>
-
-      <h3>Solving Simple Recurrences</h3>
-      <p>The simplest method is <strong>expansion</strong> (also called "unrolling" or "substitution").</p>
-
       <div class="example-box">
-        <div class="label">Example -- Solve T(n) = T(n-1) + 1, T(1) = 1</div>
-        <ul>
-          <li>T(n) = T(n-1) + 1</li>
-          <li>= T(n-2) + 1 + 1 = T(n-2) + 2</li>
-          <li>= T(n-3) + 3</li>
-          <li>...</li>
-          <li>= T(1) + (n-1) = 1 + (n-1) = <strong>n</strong></li>
-        </ul>
-        <p>So T(n) = O(n). This makes sense: a function that calls itself n times with O(1) work each time is linear.</p>
+        <div class="label">How to Read T(n) = 2T(n/2) + n</div>
+        <table>
+          <tr><th>Part</th><th>Meaning</th><th>In the Code</th></tr>
+          <tr><td><strong>2</strong>T(...)</td><td>Make <strong>2</strong> recursive calls</td><td><code>merge_sort(left); merge_sort(right);</code></td></tr>
+          <tr><td>T(<strong>n/2</strong>)</td><td>Each call gets <strong>half</strong> the input</td><td>Splitting array into two halves</td></tr>
+          <tr><td><strong>+ n</strong></td><td>Do <strong>n</strong> work outside the recursion</td><td>Merging two sorted halves takes O(n)</td></tr>
+        </table>
+<pre><code><span class="keyword">def</span> <span class="function">merge_sort</span>(arr):
+    <span class="keyword">if</span> <span class="builtin">len</span>(arr) &lt;= <span class="number">1</span>:                  <span class="comment"># T(1) = 1  (base case)</span>
+        <span class="keyword">return</span> arr
+    mid = <span class="builtin">len</span>(arr) // <span class="number">2</span>
+    left = merge_sort(arr[:mid])        <span class="comment"># T(n/2)    (first recursive call)</span>
+    right = merge_sort(arr[mid:])       <span class="comment"># T(n/2)    (second recursive call)</span>
+    <span class="keyword">return</span> merge(left, right)            <span class="comment"># + O(n)    (combining step)</span>
+    <span class="comment"># Total: T(n) = 2T(n/2) + n</span></code></pre>
       </div>
 
       <div class="example-box">
-        <div class="label">Example -- Solve T(n) = 2T(n/2) + n, T(1) = 1</div>
+        <div class="label">More Code &rarr; Recurrence Translations</div>
+        <table>
+          <tr><th>Code Pattern</th><th>Recurrence</th><th>Solution</th></tr>
+          <tr>
+            <td><code>f(n-1)</code> + O(1) work</td>
+            <td>T(n) = T(n-1) + 1</td>
+            <td>O(n)</td>
+          </tr>
+          <tr>
+            <td><code>f(n-1)</code> + O(n) work</td>
+            <td>T(n) = T(n-1) + n</td>
+            <td>O(n&sup2;)</td>
+          </tr>
+          <tr>
+            <td><code>f(n/2)</code> + O(1) work</td>
+            <td>T(n) = T(n/2) + 1</td>
+            <td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>2 &times; <code>f(n/2)</code> + O(n) work</td>
+            <td>T(n) = 2T(n/2) + n</td>
+            <td>O(n log n)</td>
+          </tr>
+          <tr>
+            <td><code>f(n-1)</code> + <code>f(n-2)</code></td>
+            <td>T(n) = T(n-1) + T(n-2)</td>
+            <td>O(2<sup>n</sup>)</td>
+          </tr>
+          <tr>
+            <td>2 &times; <code>f(n-1)</code></td>
+            <td>T(n) = 2T(n-1)</td>
+            <td>O(2<sup>n</sup>)</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3>Solving Recurrences by Expansion (Unrolling)</h3>
+      <p>The simplest method: keep substituting until you see a pattern, then find the closed form.</p>
+
+      <div class="example-box">
+        <div class="label">Example 1 -- T(n) = T(n-1) + 1, T(1) = 1</div>
+        <p>This is like factorial's call structure: one recursive call, O(1) work each time.</p>
+        <ul>
+          <li>T(n) = T(n-1) + 1</li>
+          <li>= [T(n-2) + 1] + 1 = T(n-2) + 2</li>
+          <li>= [T(n-3) + 1] + 2 = T(n-3) + 3</li>
+          <li><strong>Pattern spotted:</strong> T(n) = T(n-k) + k</li>
+          <li>Base case when n-k = 1, so k = n-1:</li>
+          <li>T(n) = T(1) + (n-1) = 1 + (n-1) = <strong>n = O(n)</strong></li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example 2 -- T(n) = T(n-1) + n, T(1) = 1</div>
+        <p>This is like selection sort: one recursive call, but O(n) work each time (shrinking).</p>
+        <ul>
+          <li>T(n) = T(n-1) + n</li>
+          <li>= [T(n-2) + (n-1)] + n = T(n-2) + (n-1) + n</li>
+          <li>= T(n-3) + (n-2) + (n-1) + n</li>
+          <li><strong>Pattern:</strong> T(n) = T(1) + 2 + 3 + ... + n</li>
+          <li>= 1 + (2 + 3 + ... + n) = <strong>n(n+1)/2 = O(n&sup2;)</strong></li>
+        </ul>
+        <p>See how the recurrence naturally produced an arithmetic series? That's the summation 1+2+...+n from the sequences page!</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example 3 -- T(n) = 2T(n/2) + n, T(1) = 1 (Merge Sort)</div>
+        <p>This is the most important one. Let's unroll it carefully:</p>
         <ul>
           <li>T(n) = 2T(n/2) + n</li>
-          <li>= 2[2T(n/4) + n/2] + n = 4T(n/4) + 2n</li>
-          <li>= 4[2T(n/8) + n/4] + 2n = 8T(n/8) + 3n</li>
-          <li>...</li>
-          <li>= 2<sup>k</sup>T(n/2<sup>k</sup>) + kn</li>
-          <li>When n/2<sup>k</sup> = 1, so k = log<sub>2</sub>(n):</li>
-          <li>= nT(1) + n log n = n + n log n = <strong>O(n log n)</strong></li>
+          <li>= 2[2T(n/4) + n/2] + n = 4T(n/4) + n + n = 4T(n/4) + 2n</li>
+          <li>= 4[2T(n/8) + n/4] + 2n = 8T(n/8) + n + 2n = 8T(n/8) + 3n</li>
+          <li><strong>Pattern:</strong> After k expansions: T(n) = 2<sup>k</sup> &times; T(n/2<sup>k</sup>) + kn</li>
+          <li>Base case when n/2<sup>k</sup> = 1, so k = log<sub>2</sub>(n):</li>
+          <li>T(n) = n &times; T(1) + n &times; log<sub>2</sub>(n) = n + n log n = <strong>O(n log n)</strong></li>
         </ul>
-        <p>This is the running time of merge sort.</p>
+        <p style="margin-top:0.5rem;"><strong>Intuition:</strong> There are log<sub>2</sub>(n) levels of recursion. At each level, the total work across all calls is n. So total work = n &times; log n.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Example 4 -- T(n) = T(n/2) + 1, T(1) = 1 (Binary Search)</div>
+        <ul>
+          <li>T(n) = T(n/2) + 1</li>
+          <li>= T(n/4) + 1 + 1 = T(n/4) + 2</li>
+          <li>= T(n/8) + 3</li>
+          <li><strong>Pattern:</strong> T(n) = T(n/2<sup>k</sup>) + k</li>
+          <li>Base case when n/2<sup>k</sup> = 1, so k = log<sub>2</sub>(n):</li>
+          <li>T(n) = T(1) + log<sub>2</sub>(n) = 1 + log n = <strong>O(log n)</strong></li>
+        </ul>
+        <p><strong>Intuition:</strong> Each call halves the problem and does O(1) work. How many halvings until size 1? log<sub>2</sub>(n).</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">The Expansion Method -- Step by Step</div>
+        <ol>
+          <li><strong>Write out</strong> T(n) in terms of T(smaller)</li>
+          <li><strong>Expand</strong> T(smaller) using the same rule -- do this 2-3 times</li>
+          <li><strong>Spot the pattern</strong> -- how does the expression look after k expansions?</li>
+          <li><strong>Find k</strong> -- what value of k hits the base case?</li>
+          <li><strong>Substitute</strong> k and simplify to get the closed form</li>
+        </ol>
       </div>
 
       <h3>The Master Theorem (Simplified)</h3>
-      <p>For recurrences of the form <strong>T(n) = aT(n/b) + O(n<sup>d</sup>)</strong>, the Master Theorem gives the answer directly:</p>
+      <p>For recurrences of the form <strong>T(n) = aT(n/b) + O(n<sup>d</sup>)</strong>, the Master Theorem gives the answer directly. No expansion needed -- just identify a, b, d and compare:</p>
+
+      <div class="formula-box">
+        <strong>T(n) = a &times; T(n/b) + O(n<sup>d</sup>)</strong><br><br>
+        &bull; <strong>a</strong> = number of recursive calls<br>
+        &bull; <strong>b</strong> = factor by which input shrinks<br>
+        &bull; <strong>d</strong> = exponent of work done outside recursion<br><br>
+        Compare log<sub>b</sub>(a) to d:
+      </div>
 
       <table>
         <tr>
@@ -1530,28 +1647,56 @@ result = (a * b) % <span class="number">1000000007</span>
         <tr>
           <td>log<sub>b</sub>(a) &lt; d</td>
           <td>T(n) = O(n<sup>d</sup>)</td>
-          <td>Work at each level dominates. The "combine" step is the bottleneck.</td>
+          <td>Combine work dominates. Recursion is "cheap" relative to the merge step.</td>
         </tr>
         <tr>
           <td>log<sub>b</sub>(a) = d</td>
           <td>T(n) = O(n<sup>d</sup> log n)</td>
-          <td>Work is evenly distributed across levels.</td>
+          <td>Work is evenly spread. Every level contributes equally.</td>
         </tr>
         <tr>
           <td>log<sub>b</sub>(a) &gt; d</td>
           <td>T(n) = O(n<sup>log<sub>b</sub>(a)</sup>)</td>
-          <td>Number of subproblems dominates. The "split" step is the bottleneck.</td>
+          <td>Splitting dominates. The sheer number of subproblems is the bottleneck.</td>
         </tr>
       </table>
 
       <div class="example-box">
         <div class="label">Applying the Master Theorem</div>
-        <p><strong>Merge sort:</strong> T(n) = 2T(n/2) + O(n). Here a=2, b=2, d=1.</p>
-        <p>log<sub>2</sub>(2) = 1 = d, so T(n) = O(n<sup>1</sup> log n) = <strong>O(n log n)</strong>.</p>
-        <p style="margin-top:0.8rem"><strong>Binary search:</strong> T(n) = T(n/2) + O(1). Here a=1, b=2, d=0.</p>
-        <p>log<sub>2</sub>(1) = 0 = d, so T(n) = O(n<sup>0</sup> log n) = <strong>O(log n)</strong>.</p>
-        <p style="margin-top:0.8rem"><strong>Strassen's matrix multiply:</strong> T(n) = 7T(n/2) + O(n&sup2;). Here a=7, b=2, d=2.</p>
-        <p>log<sub>2</sub>(7) &approx; 2.81 &gt; 2 = d, so T(n) = <strong>O(n<sup>2.81</sup>)</strong>.</p>
+        <p><strong>Merge sort:</strong> T(n) = 2T(n/2) + O(n). a=2, b=2, d=1.</p>
+        <p>log<sub>2</sub>(2) = 1 = d &rarr; Case 2 &rarr; T(n) = O(n<sup>1</sup> log n) = <strong>O(n log n)</strong></p>
+
+        <p style="margin-top:0.8rem"><strong>Binary search:</strong> T(n) = T(n/2) + O(1). a=1, b=2, d=0.</p>
+        <p>log<sub>2</sub>(1) = 0 = d &rarr; Case 2 &rarr; T(n) = O(n<sup>0</sup> log n) = <strong>O(log n)</strong></p>
+
+        <p style="margin-top:0.8rem"><strong>Karatsuba multiplication:</strong> T(n) = 3T(n/2) + O(n). a=3, b=2, d=1.</p>
+        <p>log<sub>2</sub>(3) &approx; 1.58 &gt; 1 = d &rarr; Case 3 &rarr; T(n) = <strong>O(n<sup>1.58</sup>)</strong></p>
+
+        <p style="margin-top:0.8rem"><strong>Strassen's matrix multiply:</strong> T(n) = 7T(n/2) + O(n&sup2;). a=7, b=2, d=2.</p>
+        <p>log<sub>2</sub>(7) &approx; 2.81 &gt; 2 = d &rarr; Case 3 &rarr; T(n) = <strong>O(n<sup>2.81</sup>)</strong></p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Master Theorem Cheat: Common Algorithms</div>
+        <table>
+          <tr><th>Algorithm</th><th>Recurrence</th><th>a, b, d</th><th>Case</th><th>Result</th></tr>
+          <tr><td>Binary Search</td><td>T(n/2) + 1</td><td>1, 2, 0</td><td>log=d</td><td><strong>O(log n)</strong></td></tr>
+          <tr><td>Merge Sort</td><td>2T(n/2) + n</td><td>2, 2, 1</td><td>log=d</td><td><strong>O(n log n)</strong></td></tr>
+          <tr><td>QuickSelect avg</td><td>T(n/2) + n</td><td>1, 2, 1</td><td>log&lt;d</td><td><strong>O(n)</strong></td></tr>
+          <tr><td>Balanced BST search</td><td>T(n/2) + 1</td><td>1, 2, 0</td><td>log=d</td><td><strong>O(log n)</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">When the Master Theorem Does NOT Apply</div>
+        <p>The Master Theorem only works for <strong>T(n) = aT(n/b) + O(n<sup>d</sup>)</strong> -- divide-and-conquer recurrences where the problem size is <em>divided</em> by b.</p>
+        <p>It does <strong>NOT</strong> work for:</p>
+        <ul>
+          <li><strong>T(n) = T(n-1) + T(n-2)</strong> -- subtracting, not dividing (Fibonacci)</li>
+          <li><strong>T(n) = T(n-1) + n</strong> -- subtracting, not dividing (selection sort)</li>
+          <li><strong>T(n) = T(n/3) + T(2n/3) + n</strong> -- unequal splits</li>
+        </ul>
+        <p>For these, use the expansion method or the recursion tree method.</p>
       </div>
 
       <div class="tip-box">

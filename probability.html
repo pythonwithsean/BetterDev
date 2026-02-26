@@ -108,6 +108,17 @@
         but this idea powers everything from spam filters to self-driving cars.
       </p>
 
+      <div class="tip-box">
+        <div class="label">The Mental Model: Probability = Fraction of Worlds</div>
+        <p>Here's the easiest way to think about probability: <strong>imagine running the experiment a million times.</strong> The probability is just the fraction of those runs where your event happens.</p>
+        <ul>
+          <li>P(heads) = 0.5 means: flip a coin 1,000,000 times &rarr; ~500,000 heads</li>
+          <li>P(rolling a 6) = 1/6 means: roll a die 1,000,000 times &rarr; ~166,667 sixes</li>
+          <li>P(server crash) = 0.001 means: out of 1,000,000 requests &rarr; ~1,000 crashes</li>
+        </ul>
+        <p>When probability feels abstract, use this trick. "If I ran this a million times, what fraction would satisfy my condition?" That fraction IS the probability.</p>
+      </div>
+
       <h3>Sample Space and Events</h3>
       <p>
         The <strong>sample space</strong> (often written <strong>S</strong> or <strong>&Omega;</strong>) is the set of
@@ -293,6 +304,16 @@
         The notation P(A | B) reads as "the probability of A given B."
       </p>
 
+      <div class="tip-box">
+        <div class="label">The Key Intuition: "Given" = Filter First, Then Count</div>
+        <p>P(A | B) means: <strong>filter your universe to only the cases where B happened, then check how often A occurs in that filtered set.</strong></p>
+        <p style="margin-top:0.5rem;">Think of it like a database query:</p>
+<pre><code><span class="comment">-- P(A | B) in SQL:</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(*) <span class="keyword">WHERE</span> A <span class="keyword">AND</span> B   <span class="comment">-- outcomes where both happen</span>
+     / <span class="function">COUNT</span>(*) <span class="keyword">WHERE</span> B            <span class="comment">-- total outcomes where B happens</span></code></pre>
+        <p>The "|" in P(A | B) is like a WHERE clause -- it filters your world before you start counting.</p>
+      </div>
+
       <div class="formula-box">
         P(A | B) = P(A and B) / P(B) &nbsp;&nbsp;&nbsp; (where P(B) &gt; 0)
       </div>
@@ -362,6 +383,20 @@
 
       <div class="formula-box">
         P(A | B) = [ P(B | A) &times; P(A) ] / P(B)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Bayes' in Plain English</div>
+        <p><strong>You start with a belief (prior). You see evidence. You update your belief (posterior).</strong></p>
+        <p style="margin-top:0.5rem;">Example thought process:</p>
+        <ol>
+          <li><strong>Prior:</strong> "1% of emails are spam" &rarr; P(spam) = 0.01</li>
+          <li><strong>Evidence:</strong> This email contains the word "FREE"</li>
+          <li><strong>Likelihood:</strong> "80% of spam emails say FREE" &rarr; P(FREE | spam) = 0.80</li>
+          <li><strong>Baseline:</strong> "10% of all emails say FREE" &rarr; P(FREE) = 0.10</li>
+          <li><strong>Posterior:</strong> P(spam | FREE) = (0.80 &times; 0.01) / 0.10 = <strong>0.08 = 8%</strong></li>
+        </ol>
+        <p style="margin-top:0.5rem;">Seeing "FREE" updated our belief from 1% to 8%. That's Bayes -- <strong>evidence changes belief proportionally to how surprising the evidence is.</strong></p>
       </div>
 
       <h3>Deriving Bayes' Theorem</h3>
@@ -769,9 +804,18 @@
         get on average if you repeated the experiment infinitely many times. It is a <strong>weighted average</strong>
         of all possible values, where each value is weighted by its probability.
       </p>
+
+      <div class="tip-box">
+        <div class="label">Think of Expected Value as a Weighted Average</div>
+        <p>Imagine you run an experiment 1,000,000 times. The expected value is the average of all those results.</p>
+        <p style="margin-top:0.5rem;"><strong>Why "weighted"?</strong> Because more likely outcomes contribute more to the average. If you roll a loaded die that shows 6 half the time, the expected value is pulled toward 6 -- not the middle.</p>
+        <p style="margin-top:0.5rem;"><strong>Key insight:</strong> Expected value does NOT have to be a value you can actually get. The expected value of a die roll is 3.5 -- you can never roll 3.5, but it's the "center of gravity" of all possible outcomes.</p>
+      </div>
+
       <div class="formula-box">
         For discrete random variables:<br><br>
-        E[X] = &Sigma; x &times; P(X = x) &nbsp; (sum over all possible values of x)
+        E[X] = &Sigma; x &times; P(X = x) &nbsp; (sum over all possible values of x)<br><br>
+        <strong>Translation:</strong> For each possible value, multiply it by how likely it is. Add them all up.
       </div>
 
       <div class="example-box">

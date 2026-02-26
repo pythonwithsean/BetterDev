@@ -855,6 +855,16 @@ Level k:  n chunks of size 1      → n work</code></pre>
 
           <p>What happens when you add up <em>infinitely many</em> terms? Sometimes the sum is finite (it <strong>converges</strong>), sometimes it blows up to infinity (it <strong>diverges</strong>).</p>
 
+          <div class="tip-box">
+            <div class="label">The Core Intuition</div>
+            <p>Can infinitely many things add up to a finite number? <strong>Yes</strong> -- if each new thing is small enough. Think of it physically:</p>
+            <ul>
+              <li><strong>Converges:</strong> Walk halfway to a wall, then half of what's left, then half again. Infinitely many steps, but you never pass the wall.</li>
+              <li><strong>Diverges:</strong> Stack bricks on top of each other, each the same size. Infinitely many bricks = infinite height.</li>
+            </ul>
+            <p style="margin-top:0.5rem;">The key question is: <strong>do the terms shrink fast enough?</strong> If each term is a fraction of the previous one (geometric with |r| &lt; 1), they shrink fast enough. If the terms don't shrink, or shrink too slowly, the sum diverges.</p>
+          </div>
+
           <h3>Convergent Geometric Series</h3>
           <p>When |r| &lt; 1, the terms get smaller and smaller, and the sum approaches a fixed value:</p>
 
@@ -918,12 +928,27 @@ Level k:  n chunks of size 1      → n work</code></pre>
         <section id="sigma-notation">
           <h2>10. Sigma Notation</h2>
 
-          <p><strong>Sigma notation</strong> (&Sigma;) is shorthand for "add up a bunch of terms." The Greek letter &Sigma; (sigma) means "sum."</p>
+          <p><strong>Sigma notation</strong> (&Sigma;) is shorthand for "add up a bunch of terms." If you can read a for loop, you can read sigma notation -- they're the same thing.</p>
 
           <div class="formula-box">
             <strong>Sigma notation:</strong><br><br>
             &Sigma;<sub>i=start</sub><sup>end</sup> f(i) = f(start) + f(start+1) + ... + f(end)<br><br>
             <strong>Read it as:</strong> "Sum of f(i), for i going from start to end"
+          </div>
+
+          <div class="tip-box">
+            <div class="label">Read Sigma Like a For Loop</div>
+<pre><code><span class="comment"># MATH:   Σᵢ₌₁ⁿ f(i)</span>
+<span class="comment"># CODE:</span>
+total = <span class="number">0</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):   <span class="comment"># i = start to end</span>
+    total += f(i)            <span class="comment"># body = the expression after Σ</span>
+<span class="comment">#</span>
+<span class="comment"># Bottom of Σ → loop start     (i=1)</span>
+<span class="comment"># Top of Σ → loop end           (n)</span>
+<span class="comment"># Expression after Σ → loop body (f(i))</span>
+<span class="comment"># Σ itself → the += accumulator</span></code></pre>
+            <p>Every time you see &Sigma;, mentally translate it to a for loop. Every time you see a for loop accumulating a total, mentally translate it to &Sigma;.</p>
           </div>
 
           <div class="example-box">
