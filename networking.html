@@ -87,6 +87,7 @@
     <a href="#api-protocols">10. REST vs GraphQL vs gRPC</a>
     <a href="#common-ports">11. Common Ports</a>
     <a href="#debugging-tools">12. Network Debugging Tools</a>
+    <a href="#ssh-scp">13. SSH, SCP &amp; Secure File Transfer</a>
   </div>
 
 
@@ -1661,6 +1662,434 @@ $ sudo tcpdump -i any 'tcp[tcpflags] & tcp-syn != 0'
         <li><strong>Layer 7: Is the application responding correctly?</strong> <code>curl -v</code> to see the full HTTP exchange. Check status codes, headers, and response body.</li>
       </ol>
       <p>This bottom-up approach prevents you from spending an hour debugging your application code when the real problem is a misconfigured firewall.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 13: SSH, SCP & SECURE FILE TRANSFER                 -->
+  <!-- ============================================================ -->
+  <section id="ssh-scp">
+    <h2>13. SSH, SCP &amp; Secure File Transfer</h2>
+    <p>SSH (Secure Shell) is how you securely connect to remote machines and transfer files. If you deploy code to a server, manage a VPS, or push to GitHub over SSH -- you are using this protocol. It replaced Telnet (unencrypted, port 23) and FTP (passwords sent in plain text) by encrypting everything: your commands, your passwords, and your files.</p>
+
+    <h3>What SSH Actually Is</h3>
+    <div class="example-box">
+      <div class="label">SSH Protocol Architecture</div>
+<pre><code>SSH (Secure Shell) is an APPLICATION LAYER protocol that runs over TCP on port 22.
+
+Protocol stack when you run "ssh user@server":
+
+  ┌─────────────────────────────┐
+  │  Your terminal / commands   │  ← What you interact with
+  ├─────────────────────────────┤
+  │  SSH (Application Layer)    │  ← Encrypts everything, authenticates
+  ├─────────────────────────────┤
+  │  TCP (Transport Layer)      │  ← Reliable delivery, port 22
+  ├─────────────────────────────┤
+  │  IP (Network Layer)         │  ← Routes packets to the server
+  ├─────────────────────────────┤
+  │  Ethernet/WiFi (Link Layer) │  ← Physical transmission
+  └─────────────────────────────┘
+
+SSH is NOT just "remote terminal." It is actually three protocols in one:
+
+  1. SSH Transport Layer Protocol (RFC 4253)
+     - Server authentication (is this really my server?)
+     - Key exchange (Diffie-Hellman)
+     - Encryption setup (AES-256, ChaCha20)
+     - Integrity checking (HMAC)
+
+  2. SSH User Authentication Protocol (RFC 4252)
+     - Password authentication
+     - Public key authentication (the preferred method)
+     - Keyboard-interactive (for 2FA)
+
+  3. SSH Connection Protocol (RFC 4254)
+     - Interactive shell sessions
+     - Command execution
+     - Port forwarding / tunneling
+     - File transfer (SCP, SFTP)</code></pre>
+    </div>
+
+    <h3>How SSH Establishes a Connection</h3>
+    <div class="example-box">
+      <div class="label">The SSH Handshake -- Step by Step</div>
+<pre><code>When you type: ssh sean@192.168.1.50
+
+1. TCP CONNECTION
+   Your machine opens a TCP connection to 192.168.1.50:22.
+   Standard TCP three-way handshake: SYN → SYN-ACK → ACK.
+
+2. PROTOCOL VERSION EXCHANGE
+   Client: "SSH-2.0-OpenSSH_9.6"
+   Server: "SSH-2.0-OpenSSH_9.3"
+   Both agree on SSH version 2.0 (SSH-1 is deprecated and insecure).
+
+3. KEY EXCHANGE (Diffie-Hellman)
+   This is the critical step. Both sides generate a shared secret
+   WITHOUT ever sending the secret over the wire.
+
+   Client picks random a, computes A = g^a mod p, sends A to server
+   Server picks random b, computes B = g^b mod p, sends B to client
+   Both compute: shared_secret = (other's value)^(my random) mod p
+     Client: K = B^a mod p
+     Server: K = A^b mod p
+   Both get the SAME value K, but an eavesdropper who saw A and B
+   cannot compute K (this is the Discrete Logarithm Problem).
+
+   Modern SSH uses Curve25519 (elliptic curve Diffie-Hellman)
+   instead of classic DH -- same idea, much faster, shorter keys.
+
+4. SERVER AUTHENTICATION
+   Server proves its identity by signing data with its HOST KEY.
+   First time you connect, you see:
+     "The authenticity of host '192.168.1.50' can't be established.
+      ED25519 key fingerprint is SHA256:abc123...
+      Are you sure you want to continue connecting?"
+
+   You accept → fingerprint is saved to ~/.ssh/known_hosts.
+   Next time, SSH checks the fingerprint automatically.
+   If it CHANGES, SSH refuses to connect (possible MITM attack).
+
+5. ENCRYPTION ACTIVATED
+   Both sides derive session keys from the shared secret K.
+   All traffic from here on is encrypted with AES-256-GCM
+   or ChaCha20-Poly1305 (symmetric encryption -- fast).
+
+6. USER AUTHENTICATION
+   Now the encrypted channel is up. Client proves WHO it is:
+     Option A: Password (sent encrypted through the SSH tunnel)
+     Option B: Public key (client proves it has the private key)
+   Public key auth is strongly preferred (see below).
+
+7. SESSION ESTABLISHED
+   You get a shell. Every keystroke you type and every byte of
+   output is encrypted end-to-end.</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>SSH Connection Summary:</strong><br><br>
+      TCP port: <strong>22</strong> (default)<br>
+      Transport: <strong>TCP</strong> (reliable, ordered delivery required)<br>
+      Key exchange: <strong>Curve25519</strong> or Diffie-Hellman (asymmetric)<br>
+      Session encryption: <strong>AES-256-GCM</strong> or <strong>ChaCha20-Poly1305</strong> (symmetric)<br>
+      Integrity: <strong>HMAC-SHA2</strong> or AEAD built into cipher<br>
+      Authentication: Public key (preferred) or password<br><br>
+      SSH uses <strong>asymmetric cryptography</strong> for key exchange and authentication,<br>
+      then <strong>symmetric cryptography</strong> for the actual data transfer (because it is much faster).
+    </div>
+
+    <h3>SSH Key Authentication</h3>
+    <div class="example-box">
+      <div class="label">Why Public Key Auth is Better Than Passwords</div>
+<pre><code>Password authentication:
+  - Password travels over the network (encrypted, but still)
+  - Vulnerable to brute-force attacks
+  - You have to type it every time
+  - If the server is compromised, attacker gets your password
+
+Public key authentication:
+  - Private key NEVER leaves your machine
+  - Server only has the public key (useless without the private key)
+  - Cannot be brute-forced (4096-bit RSA or Ed25519)
+  - No password to type (optional passphrase on the key itself)
+
+How it works:
+
+  1. You generate a key pair:
+     $ ssh-keygen -t ed25519 -C "sean@laptop"
+
+     This creates:
+       ~/.ssh/id_ed25519       ← PRIVATE key (guard this with your life)
+       ~/.ssh/id_ed25519.pub   ← PUBLIC key (safe to share with anyone)
+
+  2. You put the public key on the server:
+     $ ssh-copy-id sean@192.168.1.50
+
+     This appends your public key to the server's
+     ~/.ssh/authorized_keys file.
+
+  3. Authentication (what happens behind the scenes):
+     Server: sends a random challenge
+     Client: signs the challenge with the PRIVATE key
+     Server: verifies the signature using the PUBLIC key
+     If it matches → you're in. Private key never transmitted.
+
+  4. Now you connect without a password:
+     $ ssh sean@192.168.1.50
+     Welcome to Ubuntu 22.04!  ← straight in</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">SSH Key Security Best Practices</div>
+      <ul>
+        <li><strong>Use Ed25519 keys</strong>, not RSA. Ed25519 is faster, shorter, and more secure: <code>ssh-keygen -t ed25519</code></li>
+        <li><strong>Add a passphrase</strong> to your private key. If someone steals the file, they still need the passphrase. Use <code>ssh-agent</code> so you only type it once per session.</li>
+        <li><strong>Never share your private key.</strong> The public key is the one you put on servers, GitHub, etc. The private key stays on your machine.</li>
+        <li><strong>Set correct file permissions:</strong> <code>chmod 700 ~/.ssh</code> and <code>chmod 600 ~/.ssh/id_ed25519</code>. SSH refuses to use keys with loose permissions.</li>
+        <li><strong>Disable password auth on servers</strong> once key auth works: set <code>PasswordAuthentication no</code> in <code>/etc/ssh/sshd_config</code>. This stops brute-force attacks entirely.</li>
+      </ul>
+    </div>
+
+    <h3>SCP -- Secure Copy Protocol</h3>
+    <div class="example-box">
+      <div class="label">Transferring Files Over SSH</div>
+<pre><code>SCP (Secure Copy) uses the SSH protocol to transfer files.
+It establishes an SSH connection, then streams file data
+through the encrypted tunnel. Same port, same encryption,
+same authentication -- it is just SSH with file transfer.
+
+Protocol stack for SCP:
+
+  ┌──────────────────────────────┐
+  │  SCP (file copy commands)    │  ← Tells the remote side what to read/write
+  ├──────────────────────────────┤
+  │  SSH (encrypted channel)     │  ← All data encrypted (AES-256 / ChaCha20)
+  ├──────────────────────────────┤
+  │  TCP port 22                 │  ← Reliable delivery
+  ├──────────────────────────────┤
+  │  IP → routing → destination  │
+  └──────────────────────────────┘
+
+# Copy a file FROM your machine TO a remote server
+$ scp report.pdf sean@192.168.1.50:/home/sean/documents/
+  ─── local file ── user@host:remote-path ───────────────
+
+# Copy a file FROM a remote server TO your machine
+$ scp sean@192.168.1.50:/var/log/app.log ./local-copy.log
+  ─── user@host:remote-path ──────────── local-path ─────
+
+# Copy an entire directory (recursive)
+$ scp -r ./my-project sean@192.168.1.50:/home/sean/projects/
+
+# Copy between two remote servers (through your machine)
+$ scp sean@server1:/data/backup.sql sean@server2:/data/backup.sql
+
+# Use a specific SSH key
+$ scp -i ~/.ssh/deploy_key build.zip deploy@prod:/var/www/
+
+# Use a non-standard SSH port
+$ scp -P 2222 file.txt sean@server:/home/sean/
+
+# Show progress for large files
+$ scp -v large-file.tar.gz sean@server:/backups/</code></pre>
+    </div>
+
+    <h3>SFTP -- A Better Alternative to SCP</h3>
+    <div class="example-box">
+      <div class="label">SFTP vs SCP -- What to Use in 2024+</div>
+<pre><code>SFTP (SSH File Transfer Protocol) is the modern replacement for SCP.
+Both use SSH for encryption, but SFTP is more capable:
+
+SCP:
+  - Simple copy (one direction, one operation)
+  - Cannot resume interrupted transfers
+  - Cannot list directories or delete remote files
+  - OpenSSH has deprecated SCP's protocol internals
+    (it now uses SFTP under the hood by default)
+
+SFTP:
+  - Full file system operations (ls, cd, mkdir, rm, rename)
+  - Can resume interrupted transfers
+  - Interactive mode (browse the remote filesystem)
+  - Supported by GUI tools (FileZilla, WinSCP, Cyberduck)
+  - The standard going forward
+
+# Interactive SFTP session
+$ sftp sean@192.168.1.50
+Connected to 192.168.1.50.
+sftp> ls
+documents/  projects/  backups/
+sftp> cd documents
+sftp> put report.pdf              # Upload file
+sftp> get presentation.pptx       # Download file
+sftp> mkdir new-folder
+sftp> exit
+
+# One-liner (non-interactive)
+$ sftp sean@server:/path/to/file.pdf ./local/
+
+# Both SCP and SFTP use the SAME:
+#   - Port: TCP 22
+#   - Encryption: AES-256 / ChaCha20 (via SSH)
+#   - Authentication: SSH keys or password
+#   - Protocol: SSH (they're subsystems of SSH)
+
+The key point: SFTP is NOT FTP over SSL.
+  - FTP (port 21) + TLS = FTPS  ← old, complex, separate protocol
+  - SSH (port 22) + file ops = SFTP  ← what you should use</code></pre>
+    </div>
+
+    <h3>How PDFs and Binary Files Travel Over SSH</h3>
+    <div class="example-box">
+      <div class="label">Sending a PDF Over SCP -- What Actually Happens</div>
+<pre><code>You run: scp thesis.pdf sean@server:/home/sean/
+
+Here is EXACTLY what happens at every layer:
+
+1. FILE READING (your machine)
+   Your OS reads thesis.pdf from disk as RAW BYTES.
+   A PDF is binary data -- headers, fonts, images, text streams,
+   all encoded as bytes. SCP does not care about the file format.
+   It is just bytes: 25 50 44 46 2D 31 2E 34 0A ... (%PDF-1.4...)
+
+2. SSH CONNECTION (already established or created now)
+   SCP opens an SSH channel to the server on TCP port 22.
+   Key exchange, authentication -- same as any SSH connection.
+
+3. SCP PROTOCOL EXCHANGE
+   Client tells server: "I'm sending a file called thesis.pdf,
+   size 2,457,600 bytes, permissions 0644."
+   Server responds: "Ready to receive."
+
+4. CHUNKING AND ENCRYPTION
+   The file bytes are split into chunks (typically 32-64 KB).
+   Each chunk is:
+     a) Encrypted with AES-256-GCM (or ChaCha20-Poly1305)
+     b) Given an HMAC for integrity verification
+     c) Wrapped in an SSH packet with sequence number
+
+   Raw PDF bytes:     [25 50 44 46 2D 31 2E 34 ...]
+   After encryption:  [A7 3F 8B 2C 91 D4 E8 0F ...]  (unreadable)
+   + HMAC tag:        [integrity check appended]
+
+5. TCP SEGMENTATION
+   Encrypted SSH packets are handed to TCP.
+   TCP splits them into segments (~1460 bytes each for Ethernet).
+   Each segment gets a sequence number for ordered delivery.
+   TCP ensures every segment arrives and none are lost.
+
+6. IP ROUTING
+   TCP segments are wrapped in IP packets.
+   Routed across the internet: your router → ISP → backbone →
+   destination ISP → server's network → server.
+
+7. REASSEMBLY ON THE SERVER
+   TCP reassembles segments in order.
+   SSH decrypts each chunk and verifies the HMAC.
+   SCP writes the decrypted bytes to /home/sean/thesis.pdf.
+   The file on the server is byte-for-byte identical to the original.
+
+KEY INSIGHT: SSH does not care what the file contains.
+  PDF, JPEG, MP4, .zip, binary executable -- it is all just bytes.
+  SSH encrypts the byte stream. The receiving end gets back the
+  exact same bytes. File format is irrelevant to the transport.
+
+  Text file?   → bytes → encrypted → TCP → decrypted → bytes → text file
+  PDF?         → bytes → encrypted → TCP → decrypted → bytes → PDF
+  Docker image? → bytes → encrypted → TCP → decrypted → bytes → Docker image
+  It is all the same process.</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>File Transfer Protocol Comparison:</strong><br><br>
+      <table>
+        <tr><th>Protocol</th><th>Port</th><th>Transport</th><th>Encrypted?</th><th>Status</th></tr>
+        <tr><td>FTP</td><td>20/21</td><td>TCP</td><td>No (plaintext passwords!)</td><td>Avoid</td></tr>
+        <tr><td>FTPS</td><td>990</td><td>TCP + TLS</td><td>Yes (TLS layer)</td><td>Legacy</td></tr>
+        <tr><td>SCP</td><td>22</td><td>TCP + SSH</td><td>Yes (SSH encryption)</td><td>Deprecated</td></tr>
+        <tr><td>SFTP</td><td>22</td><td>TCP + SSH</td><td>Yes (SSH encryption)</td><td>Recommended</td></tr>
+        <tr><td>rsync+SSH</td><td>22</td><td>TCP + SSH</td><td>Yes (SSH encryption)</td><td>Best for sync</td></tr>
+      </table>
+    </div>
+
+    <h3>SSH Tunneling and Port Forwarding</h3>
+    <div class="example-box">
+      <div class="label">Using SSH as an Encrypted Tunnel</div>
+<pre><code>SSH can do more than remote shells and file copies.
+It can tunnel ANY TCP traffic through the encrypted connection.
+
+LOCAL PORT FORWARDING (-L)
+  "Make a remote service available on my local machine"
+
+  # Access a database on a remote server that only listens on localhost
+  $ ssh -L 5432:localhost:5432 sean@production-server
+
+  Now connect to localhost:5432 on your machine →
+  traffic is tunneled through SSH →
+  arrives at production-server:5432 (the database)
+
+  Your app:   localhost:5432
+       ↓ (encrypted SSH tunnel)
+  Server:     localhost:5432 (PostgreSQL)
+
+  Use case: Access a remote database without exposing it to the internet.
+
+REMOTE PORT FORWARDING (-R)
+  "Make my local service available on the remote machine"
+
+  # Expose your local dev server through a remote server
+  $ ssh -R 8080:localhost:3000 sean@public-server
+
+  Now anyone can hit public-server:8080 →
+  traffic tunnels back to your laptop:3000
+
+  Use case: Demo a local app without deploying it.
+
+DYNAMIC PORT FORWARDING (-D) -- SOCKS Proxy
+  "Route ALL my traffic through the SSH server"
+
+  $ ssh -D 1080 sean@trusted-server
+
+  Configure your browser to use SOCKS5 proxy at localhost:1080.
+  All web traffic goes through the SSH tunnel to trusted-server,
+  then out to the internet. Like a simple VPN.
+
+  Use case: Secure browsing on untrusted WiFi.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">SSH Quick Reference</div>
+      <ul>
+        <li><strong>Connect:</strong> <code>ssh user@host</code> (port 22) or <code>ssh -p 2222 user@host</code> (custom port)</li>
+        <li><strong>Copy file to server:</strong> <code>scp file.pdf user@host:/path/</code> or <code>sftp user@host</code></li>
+        <li><strong>Copy directory:</strong> <code>scp -r folder/ user@host:/path/</code></li>
+        <li><strong>Generate key:</strong> <code>ssh-keygen -t ed25519</code></li>
+        <li><strong>Copy key to server:</strong> <code>ssh-copy-id user@host</code></li>
+        <li><strong>Run a single command:</strong> <code>ssh user@host "ls -la /var/log"</code></li>
+        <li><strong>SSH config file:</strong> Put frequent connections in <code>~/.ssh/config</code> for shorthand aliases</li>
+        <li><strong>Sync files efficiently:</strong> <code>rsync -avz -e ssh ./local/ user@host:/remote/</code> (only transfers changes)</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">~/.ssh/config -- Stop Typing Long Commands</div>
+<pre><code># Instead of: ssh -i ~/.ssh/deploy_key -p 2222 sean@192.168.1.50
+# Just type:  ssh myserver
+
+# ~/.ssh/config
+Host myserver
+    HostName 192.168.1.50
+    User sean
+    Port 2222
+    IdentityFile ~/.ssh/deploy_key
+
+Host github
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_ed25519
+
+Host prod
+    HostName prod.example.com
+    User deploy
+    IdentityFile ~/.ssh/deploy_key
+    ForwardAgent yes
+
+# Now you can:
+$ ssh myserver              # connects with all the right settings
+$ scp file.txt myserver:~/  # scp uses the config too
+$ sftp myserver             # sftp uses the config too</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Common SSH Mistakes</div>
+      <ul>
+        <li><strong>"Permission denied (publickey)":</strong> Your key is not in the server's <code>~/.ssh/authorized_keys</code>, or file permissions are wrong. Run <code>ssh-copy-id</code> or check <code>chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys</code> on the server.</li>
+        <li><strong>"WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED":</strong> The server's host key is different from what is in your <code>~/.ssh/known_hosts</code>. This could be a MITM attack, or the server was reinstalled. Verify with the server admin before accepting.</li>
+        <li><strong>Using FTP instead of SFTP:</strong> FTP sends passwords in plain text. Always use SFTP (port 22, SSH-based) instead of FTP (port 21). They are completely different protocols despite the similar names.</li>
+        <li><strong>Leaving password auth enabled:</strong> Once SSH keys work, disable password authentication in <code>/etc/ssh/sshd_config</code>. Bots constantly try to brute-force SSH passwords on every public server.</li>
+      </ul>
     </div>
   </section>
 

@@ -227,6 +227,7 @@ section h3 {
 }
 p { margin-bottom: 1rem; }
 strong { color: #000000; font-weight: 650; }
+img { max-width: 100%; height: auto; }
 
 /* === CONTENT BOXES -- all white/black/gray === */
 .formula-box {
@@ -623,13 +624,20 @@ a.resource-link:hover { text-decoration-color: #000000; }
   .page-header h1 { font-size: 1.75rem; }
   .page-header { padding: 2rem 0 1.5rem; margin-bottom: 2rem; }
 
-  /* Tables */
-  section { overflow-x: auto; }
+  /* Tables: scrollable wrapper */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+  thead, tbody, tr { display: table; width: 100%; table-layout: auto; }
   th, td { padding: 0.6rem 0.75rem; font-size: 0.88rem; }
 
   /* Code blocks */
   pre { padding: 1rem; }
   code { font-size: 0.8rem; }
+
+  /* Content boxes */
+  .example-box, .warning-box, .tip-box, .formula-box { overflow-x: auto; }
+
+  /* Images */
+  img { max-width: 100%; height: auto; }
 
   /* Mobile TOC override */
   #mobile-toc { display: block !important; }
@@ -638,6 +646,9 @@ a.resource-link:hover { text-decoration-color: #000000; }
   .quiz-q button { min-height: 44px; padding: 0.75rem 1rem; }
   .practice-quiz button { min-height: 44px; }
   .practice-quiz input[type="number"] { min-height: 44px; }
+
+  /* Strategy list mobile */
+  .strategy-list li { font-size: 0.88rem; padding: 0.85rem 1rem; }
 }
 
 /* === RESPONSIVE: PHONE (≤600px) === */
@@ -645,9 +656,10 @@ a.resource-link:hover { text-decoration-color: #000000; }
   html { font-size: 15px; }
   .hero h1 { font-size: 2rem; }
   .hero { padding: 2.5rem 0.75rem 1.75rem; }
+  .hero p { font-size: 1rem; }
   .container { padding: 1.25rem 1rem; }
   .roadmap-step .step-desc { display: none; }
-  .cards { gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .cards { gap: 0.75rem; grid-template-columns: 1fr; }
   .card { padding: 1.25rem 1.3rem; }
   .formula-box { padding: 1rem 1.1rem; font-size: 0.85rem; }
   .example-box, .warning-box, .tip-box { padding: 1rem 1.1rem; }
@@ -656,8 +668,27 @@ a.resource-link:hover { text-decoration-color: #000000; }
   th, td { padding: 0.5rem 0.6rem; font-size: 0.82rem; }
   .practice-quiz input[type="number"] { width: auto; max-width: 140px; }
   section h2 { font-size: 1.3rem; }
+  section h3 { font-size: 1.05rem; }
   .toc { padding: 1.1rem 1.2rem; }
+  .toc a { font-size: 0.85rem; }
   .page-header h1 { font-size: 1.5rem; }
+  .page-header p { font-size: 0.95rem; }
+  .section-title { font-size: 1.2rem; }
+  .roadmap-step { padding: 0.7rem 1rem; font-size: 0.88rem; }
+  .memory-diagram { font-size: 0.75rem; }
+}
+
+/* === RESPONSIVE: VERY SMALL (≤400px) === */
+@media (max-width: 400px) {
+  html { font-size: 14px; }
+  .container { padding: 1rem 0.75rem; }
+  nav { padding: 0.6rem 0.75rem; }
+  .hero h1 { font-size: 1.75rem; }
+  .page-header h1 { font-size: 1.35rem; }
+  pre { padding: 0.75rem 0.8rem; }
+  code { font-size: 0.72rem; }
+  .formula-box { font-size: 0.8rem; padding: 0.85rem 0.9rem; }
+  .example-box, .warning-box, .tip-box { padding: 0.85rem 0.9rem; }
 }
 
 /* === FOOTER === */
