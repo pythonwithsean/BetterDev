@@ -11,56 +11,76 @@
 </head>
 <body>
 
-  <!-- Navbar -->
-    <nav>
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
     <a href="index.html" class="logo">Better Dev</a>
-    <button class="nav-toggle" onclick="this.parentElement.classList.toggle('open')" aria-label="Menu">&#9776;</button>
-    <div class="nav-links">
-    <div class="nav-search">
-      <input type="text" class="nav-search-input" placeholder="Search topics..." aria-label="Search topics">
-      <div class="nav-search-results"></div>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
     </div>
-    <span class="divider"></span>
-    <a href="index.html">Home</a>
-    <a href="pre-algebra.html">Pre-Algebra</a>
-    <a href="algebra.html">Algebra</a>
-    <a href="sequences-series.html">Sequences</a>
-    <a href="geometry.html">Geometry</a>
-    <a href="calculus.html">Calculus</a>
-    <a href="discrete-math.html">Discrete Math</a>
-    <a href="linear-algebra.html" class="active">Linear Algebra</a>
-    <a href="probability.html">Probability</a>
-    <a href="binary-systems.html">Binary</a>
-    <span class="divider"></span>
-    <a href="arrays.html">Arrays</a>
-    <a href="stacks-queues.html">Stacks &amp; Queues</a>
-    <a href="hashmaps.html">Hash Maps</a>
-    <a href="linked-lists.html">Linked Lists</a>
-    <a href="trees.html">Trees</a>
-    <a href="graphs.html">Graphs</a>
-    <a href="sorting.html">Sorting</a>
-    <a href="patterns.html">Patterns</a>
-    <a href="dp.html">DP</a>
-    <a href="advanced.html">Advanced</a>
-    <span class="divider"></span>
-    <a href="dsa-foundations.html">DSA Foundations</a>
-    <a href="leetcode-650.html">650 Problems</a>
-    <span class="divider"></span>
-    <a href="cpp.html">C++</a>
-    <a href="os.html">OS</a>
-    <a href="linux.html">Linux</a>
-    <a href="backend.html">Backend</a>
-    <a href="system-design.html">System Design</a>
-    <a href="networking.html">Networking</a>
-    <a href="cloud.html">Cloud &amp; Infra</a>
-    <a href="docker.html">Docker</a>
-    <a href="kubernetes.html">Kubernetes</a>
-    <a href="message-queues.html">Queues &amp; Pub/Sub</a>
-    <a href="selfhosting.html">Self-Hosting</a>
-    <span class="divider"></span>
-    <a href="seans-brain.html">Sean's Brain</a>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
     </div>
-  </nav>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
 
   <div class="container">
 
@@ -1240,34 +1260,70 @@ point = np.array([<span class="number">3</span>, <span class="number">1</span>])
 
 <script>
 (function(){
-  var input=document.querySelector(".nav-search-input");
-  var box=document.querySelector(".nav-search-results");
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    var si=sidebar.querySelector('.sidebar-search-input');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  // Active page detection
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  // Search
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
   if(!input||!box)return;
-  var links=[].slice.call(document.querySelectorAll(".nav-links > a"));
-  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute("href")};});
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
   var idx=-1;
   function render(q){
-    if(!q){box.classList.remove("visible");box.innerHTML="";idx=-1;return;}
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
     var lc=q.toLowerCase();
     var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
-    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add("visible");idx=-1;return;}
-    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join("");
-    box.classList.add("visible");
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
     idx=-1;
   }
   function highlight(items){
-    for(var i=0;i<items.length;i++){items[i].classList.toggle("highlighted",i===idx);}
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
   }
-  input.addEventListener("input",function(){render(this.value);});
-  input.addEventListener("keydown",function(e){
-    var items=box.querySelectorAll("a");
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
     if(!items.length)return;
-    if(e.key==="ArrowDown"){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:"nearest"});}
-    else if(e.key==="ArrowUp"){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:"nearest"});}
-    else if(e.key==="Enter"&&idx>=0){e.preventDefault();items[idx].click();}
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
   });
-  input.addEventListener("blur",function(){setTimeout(function(){box.classList.remove("visible");idx=-1;},200);});
-  input.addEventListener("focus",function(){if(this.value)render(this.value);});
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
 })();
 </script>
 </body>
