@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript Mastery - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / TypeScript</div>
+    <h1>TypeScript -- Become a Type Beast</h1>
+    <p>Go beyond <code>string</code> and <code>number</code>. This page covers everything from generics and conditional types to the compiler internals and tsconfig options that actually matter. After this, you'll never be confused by a TypeScript error again.</p>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#type-system">1. The Type System -- How TS Thinks</a>
+    <a href="#generics">2. Generics</a>
+    <a href="#conditional-types">3. Conditional Types</a>
+    <a href="#mapped-types">4. Mapped Types</a>
+    <a href="#utility-types">5. Utility Types</a>
+    <a href="#keyof-typeof">6. keyof, typeof &amp; Index Access</a>
+    <a href="#infer">7. The <code>infer</code> Keyword</a>
+    <a href="#decorators">8. Decorators</a>
+    <a href="#modules-namespaces">9. Modules, Namespaces &amp; Declaration Files</a>
+    <a href="#tsconfig">10. tsconfig.json Deep Dive</a>
+    <a href="#compiler">11. The TypeScript Compiler</a>
+    <a href="#real-patterns">12. Real-World Patterns &amp; Gotchas</a>
+  </div>
+
+  <!-- ───────────── SECTION 1 ───────────── -->
+  <section id="type-system">
+    <h2>1. The Type System -- How TS Thinks</h2>
+
+    <p>TypeScript uses a <strong>structural type system</strong> (duck typing), not a nominal one. Two types are compatible if their shapes match, regardless of what they're named.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">Dog</span> { name: <span class="keyword">string</span>; bark(): <span class="keyword">void</span> }
+<span class="keyword">interface</span> <span class="function">Pet</span> { name: <span class="keyword">string</span> }
+
+<span class="keyword">const</span> d: <span class="function">Dog</span> = { name: <span class="string">"Rex"</span>, bark() { console.log(<span class="string">"woof"</span>) } };
+<span class="keyword">const</span> p: <span class="function">Pet</span> = d; <span class="comment">// ✅ OK -- Dog has everything Pet needs</span>
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Structural vs Nominal:</strong> In C++ or Java, <code>Dog</code> and <code>Pet</code> would need an explicit <code>extends</code>/<code>implements</code> relationship. In TS, shape is all that matters.
+    </div>
+
+    <h3>Type Narrowing</h3>
+    <p>TS narrows types through control flow analysis. After a check, the compiler <em>knows</em> the type is more specific.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">function</span> <span class="function">process</span>(val: <span class="keyword">string</span> | <span class="keyword">number</span>) {
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> val === <span class="string">"string"</span>) {
+    <span class="comment">// TS knows val is string here</span>
+    console.log(val.toUpperCase());
+  } <span class="keyword">else</span> {
+    <span class="comment">// TS knows val is number here</span>
+    console.log(val.toFixed(<span class="number">2</span>));
+  }
+}
+</code></pre>
+
+    <h3>Discriminated Unions</h3>
+    <p>The most powerful pattern for modeling domain types. Add a literal "tag" field that TS uses to narrow.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">Shape</span> =
+  | { kind: <span class="string">"circle"</span>; radius: <span class="keyword">number</span> }
+  | { kind: <span class="string">"rect"</span>; w: <span class="keyword">number</span>; h: <span class="keyword">number</span> };
+
+<span class="keyword">function</span> <span class="function">area</span>(s: <span class="function">Shape</span>): <span class="keyword">number</span> {
+  <span class="keyword">switch</span> (s.kind) {
+    <span class="keyword">case</span> <span class="string">"circle"</span>: <span class="keyword">return</span> Math.PI * s.radius ** <span class="number">2</span>;
+    <span class="keyword">case</span> <span class="string">"rect"</span>:   <span class="keyword">return</span> s.w * s.h;
+  }
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 2 ───────────── -->
+  <section id="generics">
+    <h2>2. Generics</h2>
+
+    <p>Generics let you write code that works with <em>any</em> type while keeping type safety. Think of <code>&lt;T&gt;</code> as a <strong>type parameter</strong> -- a variable, but for types.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Without generics -- loses type info</span>
+<span class="keyword">function</span> <span class="function">identity</span>(val: <span class="keyword">any</span>): <span class="keyword">any</span> { <span class="keyword">return</span> val; }
+
+<span class="comment">// With generics -- T flows through</span>
+<span class="keyword">function</span> <span class="function">identity</span>&lt;T&gt;(val: T): T { <span class="keyword">return</span> val; }
+
+<span class="keyword">const</span> num = <span class="function">identity</span>(<span class="number">42</span>);      <span class="comment">// type: number (inferred)</span>
+<span class="keyword">const</span> str = <span class="function">identity</span>(<span class="string">"hi"</span>);    <span class="comment">// type: string (inferred)</span>
+</code></pre>
+
+    <h3>Generic Constraints</h3>
+    <p>Use <code>extends</code> to constrain what <code>T</code> can be.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">function</span> <span class="function">getLength</span>&lt;T <span class="keyword">extends</span> { length: <span class="keyword">number</span> }&gt;(item: T): <span class="keyword">number</span> {
+  <span class="keyword">return</span> item.length;
+}
+
+<span class="function">getLength</span>(<span class="string">"hello"</span>);   <span class="comment">// ✅ string has .length</span>
+<span class="function">getLength</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);  <span class="comment">// ✅ array has .length</span>
+<span class="function">getLength</span>(<span class="number">42</span>);        <span class="comment">// ❌ number has no .length</span>
+</code></pre>
+
+    <h3>Multiple Type Parameters</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">function</span> <span class="function">merge</span>&lt;A, B&gt;(a: A, b: B): A &amp; B {
+  <span class="keyword">return</span> { ...a, ...b };
+}
+
+<span class="keyword">const</span> result = <span class="function">merge</span>({ name: <span class="string">"Sean"</span> }, { age: <span class="number">25</span> });
+<span class="comment">// type: { name: string } & { age: number }</span>
+</code></pre>
+
+    <h3>Generic Interfaces &amp; Classes</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">Repository</span>&lt;T&gt; {
+  getById(id: <span class="keyword">string</span>): Promise&lt;T | <span class="keyword">null</span>&gt;;
+  save(entity: T): Promise&lt;<span class="keyword">void</span>&gt;;
+}
+
+<span class="keyword">class</span> <span class="function">UserRepo</span> <span class="keyword">implements</span> <span class="function">Repository</span>&lt;User&gt; {
+  <span class="keyword">async</span> <span class="function">getById</span>(id: <span class="keyword">string</span>) { <span class="comment">/* ... */</span> }
+  <span class="keyword">async</span> <span class="function">save</span>(user: User) { <span class="comment">/* ... */</span> }
+}
+</code></pre>
+
+    <h3>Default Type Parameters</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">ApiResponse</span>&lt;T = <span class="keyword">unknown</span>&gt; {
+  data: T;
+  status: <span class="keyword">number</span>;
+}
+
+<span class="keyword">const</span> res: <span class="function">ApiResponse</span> = { data: <span class="string">"anything"</span>, status: <span class="number">200</span> };
+<span class="keyword">const</span> typed: <span class="function">ApiResponse</span>&lt;User&gt; = { data: user, status: <span class="number">200</span> };
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 3 ───────────── -->
+  <section id="conditional-types">
+    <h2>3. Conditional Types</h2>
+
+    <p>Conditional types are <strong>if/else for types</strong>. The syntax mirrors the ternary operator.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Syntax: T extends U ? TrueType : FalseType</span>
+
+<span class="keyword">type</span> <span class="function">IsString</span>&lt;T&gt; = T <span class="keyword">extends</span> <span class="keyword">string</span> ? <span class="string">"yes"</span> : <span class="string">"no"</span>;
+
+<span class="keyword">type</span> A = <span class="function">IsString</span>&lt;<span class="string">"hello"</span>&gt;;  <span class="comment">// "yes"</span>
+<span class="keyword">type</span> B = <span class="function">IsString</span>&lt;<span class="number">42</span>&gt;;       <span class="comment">// "no"</span>
+</code></pre>
+
+    <h3>Distributive Conditional Types</h3>
+    <p>When <code>T</code> is a <strong>union</strong>, the conditional distributes over each member individually.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">ToArray</span>&lt;T&gt; = T <span class="keyword">extends</span> <span class="keyword">any</span> ? T[] : <span class="keyword">never</span>;
+
+<span class="keyword">type</span> R = <span class="function">ToArray</span>&lt;<span class="keyword">string</span> | <span class="keyword">number</span>&gt;;
+<span class="comment">// = string[] | number[]  (NOT (string | number)[])</span>
+
+<span class="comment">// To prevent distribution, wrap in tuple:</span>
+<span class="keyword">type</span> <span class="function">ToArrayND</span>&lt;T&gt; = [T] <span class="keyword">extends</span> [<span class="keyword">any</span>] ? T[] : <span class="keyword">never</span>;
+<span class="keyword">type</span> R2 = <span class="function">ToArrayND</span>&lt;<span class="keyword">string</span> | <span class="keyword">number</span>&gt;;
+<span class="comment">// = (string | number)[]</span>
+</code></pre>
+
+    <h3>Nested Conditional Types</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">TypeName</span>&lt;T&gt; =
+  T <span class="keyword">extends</span> <span class="keyword">string</span>  ? <span class="string">"string"</span> :
+  T <span class="keyword">extends</span> <span class="keyword">number</span>  ? <span class="string">"number"</span> :
+  T <span class="keyword">extends</span> <span class="keyword">boolean</span> ? <span class="string">"boolean"</span> :
+  T <span class="keyword">extends</span> Function ? <span class="string">"function"</span> :
+  <span class="string">"object"</span>;
+
+<span class="keyword">type</span> T1 = <span class="function">TypeName</span>&lt;<span class="keyword">string</span>&gt;;   <span class="comment">// "string"</span>
+<span class="keyword">type</span> T2 = <span class="function">TypeName</span>&lt;() =&gt; <span class="keyword">void</span>&gt;; <span class="comment">// "function"</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 4 ───────────── -->
+  <section id="mapped-types">
+    <h2>4. Mapped Types</h2>
+
+    <p>Mapped types transform every property of an existing type. They iterate over keys with <code>in</code>.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Make every property optional</span>
+<span class="keyword">type</span> <span class="function">MyPartial</span>&lt;T&gt; = {
+  [K <span class="keyword">in</span> <span class="keyword">keyof</span> T]?: T[K];
+};
+
+<span class="comment">// Make every property readonly</span>
+<span class="keyword">type</span> <span class="function">MyReadonly</span>&lt;T&gt; = {
+  <span class="keyword">readonly</span> [K <span class="keyword">in</span> <span class="keyword">keyof</span> T]: T[K];
+};
+</code></pre>
+
+    <h3>Key Remapping with <code>as</code></h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">Getters</span>&lt;T&gt; = {
+  [K <span class="keyword">in</span> <span class="keyword">keyof</span> T <span class="keyword">as</span> `get${Capitalize&lt;<span class="keyword">string</span> &amp; K&gt;}`]: () =&gt; T[K];
+};
+
+<span class="keyword">interface</span> <span class="function">User</span> { name: <span class="keyword">string</span>; age: <span class="keyword">number</span> }
+<span class="keyword">type</span> UserGetters = <span class="function">Getters</span>&lt;User&gt;;
+<span class="comment">// { getName: () => string; getAge: () => number }</span>
+</code></pre>
+
+    <h3>Filtering Keys</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Keep only string properties</span>
+<span class="keyword">type</span> <span class="function">StringProps</span>&lt;T&gt; = {
+  [K <span class="keyword">in</span> <span class="keyword">keyof</span> T <span class="keyword">as</span> T[K] <span class="keyword">extends</span> <span class="keyword">string</span> ? K : <span class="keyword">never</span>]: T[K];
+};
+
+<span class="keyword">type</span> R = <span class="function">StringProps</span>&lt;{ name: <span class="keyword">string</span>; age: <span class="keyword">number</span>; email: <span class="keyword">string</span> }&gt;;
+<span class="comment">// { name: string; email: string }</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 5 ───────────── -->
+  <section id="utility-types">
+    <h2>5. Utility Types</h2>
+
+    <p>TS ships with utility types built from generics + conditionals + mapped types. Here's how they work under the hood.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Partial&lt;T&gt; -- make all props optional</span>
+<span class="keyword">type</span> Partial&lt;T&gt; = { [K <span class="keyword">in</span> <span class="keyword">keyof</span> T]?: T[K] };
+
+<span class="comment">// Required&lt;T&gt; -- make all props required</span>
+<span class="keyword">type</span> Required&lt;T&gt; = { [K <span class="keyword">in</span> <span class="keyword">keyof</span> T]-?: T[K] };
+
+<span class="comment">// Readonly&lt;T&gt; -- make all props readonly</span>
+<span class="keyword">type</span> Readonly&lt;T&gt; = { <span class="keyword">readonly</span> [K <span class="keyword">in</span> <span class="keyword">keyof</span> T]: T[K] };
+
+<span class="comment">// Pick&lt;T, K&gt; -- select specific keys</span>
+<span class="keyword">type</span> Pick&lt;T, K <span class="keyword">extends</span> <span class="keyword">keyof</span> T&gt; = { [P <span class="keyword">in</span> K]: T[P] };
+
+<span class="comment">// Omit&lt;T, K&gt; -- remove specific keys</span>
+<span class="keyword">type</span> Omit&lt;T, K <span class="keyword">extends</span> <span class="keyword">keyof</span> <span class="keyword">any</span>&gt; = Pick&lt;T, Exclude&lt;<span class="keyword">keyof</span> T, K&gt;&gt;;
+
+<span class="comment">// Record&lt;K, V&gt; -- build an object type</span>
+<span class="keyword">type</span> Record&lt;K <span class="keyword">extends</span> <span class="keyword">keyof</span> <span class="keyword">any</span>, V&gt; = { [P <span class="keyword">in</span> K]: V };
+
+<span class="comment">// Exclude&lt;T, U&gt; -- remove types from a union</span>
+<span class="keyword">type</span> Exclude&lt;T, U&gt; = T <span class="keyword">extends</span> U ? <span class="keyword">never</span> : T;
+
+<span class="comment">// Extract&lt;T, U&gt; -- keep types from a union</span>
+<span class="keyword">type</span> Extract&lt;T, U&gt; = T <span class="keyword">extends</span> U ? T : <span class="keyword">never</span>;
+
+<span class="comment">// NonNullable&lt;T&gt; -- remove null and undefined</span>
+<span class="keyword">type</span> NonNullable&lt;T&gt; = T <span class="keyword">extends</span> <span class="keyword">null</span> | <span class="keyword">undefined</span> ? <span class="keyword">never</span> : T;
+
+<span class="comment">// ReturnType&lt;T&gt; -- extract function return type</span>
+<span class="keyword">type</span> ReturnType&lt;T <span class="keyword">extends</span> (...args: <span class="keyword">any</span>) =&gt; <span class="keyword">any</span>&gt; =
+  T <span class="keyword">extends</span> (...args: <span class="keyword">any</span>) =&gt; <span class="keyword">infer</span> R ? R : <span class="keyword">any</span>;
+
+<span class="comment">// Parameters&lt;T&gt; -- extract function params as tuple</span>
+<span class="keyword">type</span> Parameters&lt;T <span class="keyword">extends</span> (...args: <span class="keyword">any</span>) =&gt; <span class="keyword">any</span>&gt; =
+  T <span class="keyword">extends</span> (...args: <span class="keyword">infer</span> P) =&gt; <span class="keyword">any</span> ? P : <span class="keyword">never</span>;
+</code></pre>
+
+    <div class="example-box">
+      <strong>Using them together:</strong>
+      <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">User</span> { id: <span class="keyword">string</span>; name: <span class="keyword">string</span>; email: <span class="keyword">string</span>; role: <span class="keyword">string</span> }
+
+<span class="keyword">type</span> CreateUserInput = Omit&lt;User, <span class="string">"id"</span>&gt;;
+<span class="keyword">type</span> UpdateUserInput = Partial&lt;Pick&lt;User, <span class="string">"name"</span> | <span class="string">"email"</span>&gt;&gt;;
+<span class="keyword">type</span> UserLookup = Record&lt;<span class="keyword">string</span>, User&gt;;
+</code></pre>
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 6 ───────────── -->
+  <section id="keyof-typeof">
+    <h2>6. keyof, typeof &amp; Index Access</h2>
+
+    <h3>keyof -- Get All Keys</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">Config</span> { host: <span class="keyword">string</span>; port: <span class="keyword">number</span>; debug: <span class="keyword">boolean</span> }
+
+<span class="keyword">type</span> ConfigKey = <span class="keyword">keyof</span> Config; <span class="comment">// "host" | "port" | "debug"</span>
+
+<span class="keyword">function</span> <span class="function">getConfig</span>&lt;K <span class="keyword">extends</span> <span class="keyword">keyof</span> Config&gt;(key: K): Config[K] {
+  <span class="keyword">return</span> config[key];
+}
+
+<span class="keyword">const</span> h = <span class="function">getConfig</span>(<span class="string">"host"</span>);  <span class="comment">// type: string</span>
+<span class="keyword">const</span> p = <span class="function">getConfig</span>(<span class="string">"port"</span>);  <span class="comment">// type: number</span>
+</code></pre>
+
+    <h3>typeof -- Get Type from Value</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> defaults = { host: <span class="string">"localhost"</span>, port: <span class="number">3000</span>, debug: <span class="keyword">false</span> };
+
+<span class="keyword">type</span> Config = <span class="keyword">typeof</span> defaults;
+<span class="comment">// { host: string; port: number; debug: boolean }</span>
+
+<span class="comment">// Combine with keyof:</span>
+<span class="keyword">type</span> ConfigKey = <span class="keyword">keyof</span> <span class="keyword">typeof</span> defaults;
+<span class="comment">// "host" | "port" | "debug"</span>
+</code></pre>
+
+    <h3>Index Access Types</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">interface</span> <span class="function">User</span> { name: <span class="keyword">string</span>; address: { city: <span class="keyword">string</span>; zip: <span class="keyword">string</span> } }
+
+<span class="keyword">type</span> Address = User[<span class="string">"address"</span>];       <span class="comment">// { city: string; zip: string }</span>
+<span class="keyword">type</span> City = User[<span class="string">"address"</span>][<span class="string">"city"</span>]; <span class="comment">// string</span>
+
+<span class="comment">// Index into arrays:</span>
+<span class="keyword">const</span> roles = [<span class="string">"admin"</span>, <span class="string">"user"</span>, <span class="string">"guest"</span>] <span class="keyword">as const</span>;
+<span class="keyword">type</span> Role = (<span class="keyword">typeof</span> roles)[<span class="keyword">number</span>]; <span class="comment">// "admin" | "user" | "guest"</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 7 ───────────── -->
+  <section id="infer">
+    <h2>7. The <code>infer</code> Keyword</h2>
+
+    <p><code>infer</code> lets you <strong>extract types from within other types</strong> inside conditional type branches. Think of it as pattern matching for types.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Extract the return type of a function</span>
+<span class="keyword">type</span> <span class="function">MyReturnType</span>&lt;T&gt; =
+  T <span class="keyword">extends</span> (...args: <span class="keyword">any</span>[]) =&gt; <span class="keyword">infer</span> R ? R : <span class="keyword">never</span>;
+
+<span class="keyword">type</span> R1 = <span class="function">MyReturnType</span>&lt;() =&gt; <span class="keyword">string</span>&gt;;       <span class="comment">// string</span>
+<span class="keyword">type</span> R2 = <span class="function">MyReturnType</span>&lt;(x: <span class="keyword">number</span>) =&gt; User&gt;; <span class="comment">// User</span>
+</code></pre>
+
+    <h3>More infer Patterns</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Extract element type from array</span>
+<span class="keyword">type</span> <span class="function">ElementOf</span>&lt;T&gt; = T <span class="keyword">extends</span> (infer E)[] ? E : <span class="keyword">never</span>;
+<span class="keyword">type</span> E = <span class="function">ElementOf</span>&lt;<span class="keyword">string</span>[]&gt;; <span class="comment">// string</span>
+
+<span class="comment">// Extract Promise inner type</span>
+<span class="keyword">type</span> <span class="function">Awaited</span>&lt;T&gt; = T <span class="keyword">extends</span> Promise&lt;<span class="keyword">infer</span> U&gt; ? U : T;
+<span class="keyword">type</span> A = <span class="function">Awaited</span>&lt;Promise&lt;<span class="keyword">string</span>&gt;&gt;; <span class="comment">// string</span>
+
+<span class="comment">// Extract first arg of a function</span>
+<span class="keyword">type</span> <span class="function">FirstArg</span>&lt;T&gt; =
+  T <span class="keyword">extends</span> (first: <span class="keyword">infer</span> F, ...rest: <span class="keyword">any</span>[]) =&gt; <span class="keyword">any</span> ? F : <span class="keyword">never</span>;
+
+<span class="keyword">type</span> F = <span class="function">FirstArg</span>&lt;(name: <span class="keyword">string</span>, age: <span class="keyword">number</span>) =&gt; <span class="keyword">void</span>&gt;; <span class="comment">// string</span>
+
+<span class="comment">// Extract the type from a class constructor</span>
+<span class="keyword">type</span> <span class="function">InstanceOf</span>&lt;T&gt; =
+  T <span class="keyword">extends</span> <span class="keyword">new</span> (...args: <span class="keyword">any</span>[]) =&gt; <span class="keyword">infer</span> I ? I : <span class="keyword">never</span>;
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Rule:</strong> <code>infer</code> can only be used inside the <code>extends</code> clause of a conditional type. Think of it as "capture whatever type appears in this position."
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 8 ───────────── -->
+  <section id="decorators">
+    <h2>8. Decorators</h2>
+
+    <p>Decorators are <strong>functions that modify classes, methods, or properties</strong> at definition time. They're used heavily in frameworks like NestJS, TypeORM, and Angular.</p>
+
+    <div class="warning-box">
+      <strong>Stage 3 Decorators (TC39):</strong> TS 5.0+ supports the new standard decorator syntax. Older code uses <code>"experimentalDecorators": true</code> in tsconfig. The new standard does NOT require that flag.
+    </div>
+
+    <h3>Class Decorators</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// A decorator is just a function that receives the target</span>
+<span class="keyword">function</span> <span class="function">Sealed</span>(target: Function) {
+  Object.seal(target);
+  Object.seal(target.prototype);
+}
+
+@<span class="function">Sealed</span>
+<span class="keyword">class</span> <span class="function">UserService</span> {
+  <span class="function">getUser</span>() { <span class="comment">/* ... */</span> }
+}
+</code></pre>
+
+    <h3>Method Decorators</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">function</span> <span class="function">Log</span>(target: <span class="keyword">any</span>, key: <span class="keyword">string</span>, descriptor: PropertyDescriptor) {
+  <span class="keyword">const</span> original = descriptor.value;
+  descriptor.value = <span class="keyword">function</span>(...args: <span class="keyword">any</span>[]) {
+    console.log(`Calling ${key} with`, args);
+    <span class="keyword">return</span> original.apply(<span class="keyword">this</span>, args);
+  };
+}
+
+<span class="keyword">class</span> <span class="function">MathService</span> {
+  @<span class="function">Log</span>
+  <span class="function">add</span>(a: <span class="keyword">number</span>, b: <span class="keyword">number</span>) { <span class="keyword">return</span> a + b; }
+}
+</code></pre>
+
+    <h3>Decorator Factories (Decorators with Args)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">function</span> <span class="function">MinLength</span>(min: <span class="keyword">number</span>) {
+  <span class="keyword">return function</span>(target: <span class="keyword">any</span>, key: <span class="keyword">string</span>) {
+    <span class="keyword">let</span> value: <span class="keyword">string</span>;
+    Object.defineProperty(target, key, {
+      get: () =&gt; value,
+      set: (newVal: <span class="keyword">string</span>) =&gt; {
+        <span class="keyword">if</span> (newVal.length &lt; min)
+          <span class="keyword">throw new</span> Error(`${key} must be at least ${min} chars`);
+        value = newVal;
+      }
+    });
+  };
+}
+
+<span class="keyword">class</span> <span class="function">User</span> {
+  @<span class="function">MinLength</span>(<span class="number">3</span>)
+  name: <span class="keyword">string</span> = <span class="string">""</span>;
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 9 ───────────── -->
+  <section id="modules-namespaces">
+    <h2>9. Modules, Namespaces &amp; Declaration Files</h2>
+
+    <h3>ES Modules in TypeScript</h3>
+    <p>TS follows the ESM standard. Any file with a top-level <code>import</code> or <code>export</code> is a module.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// math.ts</span>
+<span class="keyword">export function</span> <span class="function">add</span>(a: <span class="keyword">number</span>, b: <span class="keyword">number</span>): <span class="keyword">number</span> {
+  <span class="keyword">return</span> a + b;
+}
+
+<span class="comment">// app.ts</span>
+<span class="keyword">import</span> { add } <span class="keyword">from</span> <span class="string">"./math"</span>;   <span class="comment">// named import</span>
+<span class="keyword">import</span> * <span class="keyword">as</span> math <span class="keyword">from</span> <span class="string">"./math"</span>; <span class="comment">// namespace import</span>
+</code></pre>
+
+    <h3>Namespaces (Legacy)</h3>
+    <p>Namespaces predate ES modules. They're still used in <code>.d.ts</code> files and ambient declarations but should be avoided in application code.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">namespace</span> Validation {
+  <span class="keyword">export interface</span> <span class="function">Validator</span> {
+    isValid(s: <span class="keyword">string</span>): <span class="keyword">boolean</span>;
+  }
+  <span class="keyword">export class</span> <span class="function">EmailValidator</span> <span class="keyword">implements</span> <span class="function">Validator</span> {
+    <span class="function">isValid</span>(s: <span class="keyword">string</span>) { <span class="keyword">return</span> s.includes(<span class="string">"@"</span>); }
+  }
+}
+
+<span class="keyword">const</span> v = <span class="keyword">new</span> Validation.<span class="function">EmailValidator</span>();
+</code></pre>
+
+    <h3>Declaration Files (<code>.d.ts</code>)</h3>
+    <p>Declaration files describe the shape of JS code so TS can type-check it. They contain only types, no runtime code.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// global.d.ts -- add types for things TS doesn't know about</span>
+<span class="keyword">declare module</span> <span class="string">"*.css"</span> {
+  <span class="keyword">const</span> classes: { [key: <span class="keyword">string</span>]: <span class="keyword">string</span> };
+  <span class="keyword">export default</span> classes;
+}
+
+<span class="keyword">declare module</span> <span class="string">"*.svg"</span> {
+  <span class="keyword">const</span> content: <span class="keyword">string</span>;
+  <span class="keyword">export default</span> content;
+}
+</code></pre>
+
+    <div class="warning-box">
+      <strong>This is why CSS imports cause TS errors!</strong> TypeScript doesn't know what a <code>.css</code> file exports. You need a declaration file (like above) or the <code>*.css</code> module declaration in a <code>.d.ts</code> file that your tsconfig includes. Without it, TS says "Cannot find module './styles.css'." Same applies to <code>.svg</code>, <code>.png</code>, <code>.json</code> (unless <code>resolveJsonModule</code> is on), etc.
+    </div>
+
+    <h3>declare module for Augmenting Existing Types</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Extend Express Request type to add your custom user field</span>
+<span class="keyword">declare module</span> <span class="string">"express"</span> {
+  <span class="keyword">interface</span> <span class="function">Request</span> {
+    user?: { id: <span class="keyword">string</span>; role: <span class="keyword">string</span> };
+  }
+}
+
+<span class="comment">// Now req.user is typed everywhere in your Express app</span>
+</code></pre>
+
+    <h3>Triple-Slash Directives</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">/// &lt;reference types="node" /&gt;</span>
+<span class="comment">/// &lt;reference path="./globals.d.ts" /&gt;</span>
+<span class="comment">// These are legacy -- prefer tsconfig "types" and "include" instead</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 10 ───────────── -->
+  <section id="tsconfig">
+    <h2>10. tsconfig.json Deep Dive</h2>
+
+    <p>Every TS project has a <code>tsconfig.json</code>. Here are the options that actually matter, grouped by what they do.</p>
+
+    <h3>Module &amp; Resolution</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"compilerOptions"</span>: {
+    <span class="comment">// What module system to output</span>
+    <span class="string">"module"</span>: <span class="string">"NodeNext"</span>,         <span class="comment">// or "ESNext", "CommonJS"</span>
+
+    <span class="comment">// How TS finds modules when you import</span>
+    <span class="string">"moduleResolution"</span>: <span class="string">"NodeNext"</span>, <span class="comment">// or "Bundler" for Vite/Webpack</span>
+
+    <span class="comment">// Where compiled JS goes</span>
+    <span class="string">"outDir"</span>: <span class="string">"./dist"</span>,
+
+    <span class="comment">// Root of source files</span>
+    <span class="string">"rootDir"</span>: <span class="string">"./src"</span>,
+
+    <span class="comment">// Allow importing JSON files</span>
+    <span class="string">"resolveJsonModule"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Path aliases: import from "@/utils" instead of "../../utils"</span>
+    <span class="string">"baseUrl"</span>: <span class="string">"."</span>,
+    <span class="string">"paths"</span>: {
+      <span class="string">"@/*"</span>: [<span class="string">"src/*"</span>]
+    }
+  }
+}
+</code></pre>
+
+    <h3>Strictness</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"compilerOptions"</span>: {
+    <span class="string">"strict"</span>: <span class="keyword">true</span>,              <span class="comment">// Enables ALL strict checks below:</span>
+    <span class="comment">// "strictNullChecks": true   -- null/undefined are their own types</span>
+    <span class="comment">// "strictFunctionTypes": true -- stricter function type checking</span>
+    <span class="comment">// "strictBindCallApply": true -- check bind/call/apply args</span>
+    <span class="comment">// "noImplicitAny": true      -- error on implicit 'any'</span>
+    <span class="comment">// "noImplicitThis": true     -- error on implicit 'this'</span>
+
+    <span class="string">"noUncheckedIndexedAccess"</span>: <span class="keyword">true</span>, <span class="comment">// obj[key] includes undefined</span>
+    <span class="string">"noUnusedLocals"</span>: <span class="keyword">true</span>,
+    <span class="string">"noUnusedParameters"</span>: <span class="keyword">true</span>
+  }
+}
+</code></pre>
+
+    <h3>Target &amp; Lib</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"compilerOptions"</span>: {
+    <span class="comment">// What JS version to compile down to</span>
+    <span class="string">"target"</span>: <span class="string">"ES2022"</span>,
+
+    <span class="comment">// What APIs are available (DOM, ES2022, etc.)</span>
+    <span class="string">"lib"</span>: [<span class="string">"ES2022"</span>, <span class="string">"DOM"</span>, <span class="string">"DOM.Iterable"</span>],
+
+    <span class="comment">// Emit .d.ts files for libraries</span>
+    <span class="string">"declaration"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Generate source maps for debugging</span>
+    <span class="string">"sourceMap"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Allow JS files in TS project</span>
+    <span class="string">"allowJs"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Skip type-checking node_modules .d.ts</span>
+    <span class="string">"skipLibCheck"</span>: <span class="keyword">true</span>
+  }
+}
+</code></pre>
+
+    <h3>Interop Flags</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"compilerOptions"</span>: {
+    <span class="comment">// Allow `import React from "react"` even if module has no default export</span>
+    <span class="string">"esModuleInterop"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Allow `import x from "./file"` where file is CJS</span>
+    <span class="string">"allowSyntheticDefaultImports"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Ensure consistent casing in imports (catches bugs on case-insensitive OS)</span>
+    <span class="string">"forceConsistentCasingInFileNames"</span>: <span class="keyword">true</span>,
+
+    <span class="comment">// Each file is treated as a separate module (faster builds, needed for Babel)</span>
+    <span class="string">"isolatedModules"</span>: <span class="keyword">true</span>
+  }
+}
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Common tsconfig starters:</strong><br>
+      <code>npx tsc --init</code> -- generates a tsconfig with all options commented out<br>
+      <code>@tsconfig/node20</code> -- community base config for Node 20<br>
+      <code>@tsconfig/strictest</code> -- maximum strictness
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 11 ───────────── -->
+  <section id="compiler">
+    <h2>11. The TypeScript Compiler</h2>
+
+    <p>The TS compiler (<code>tsc</code>) does two separate jobs: <strong>type checking</strong> and <strong>code emission</strong>. Modern setups often split these.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Type-check only (no output)</span>
+tsc --noEmit
+
+<span class="comment"># Compile and emit JS</span>
+tsc
+
+<span class="comment"># Watch mode</span>
+tsc --watch
+
+<span class="comment"># Check a specific file</span>
+tsc --noEmit src/index.ts
+</code></pre>
+
+    <h3>The Compilation Pipeline</h3>
+    <pre><code><span class="lang-label">Text</span>
+Source (.ts) → Scanner → Tokens → Parser → AST → Binder → Symbols
+  → Type Checker → Diagnostics (errors)
+  → Emitter → Output (.js, .d.ts, .js.map)
+</code></pre>
+
+    <h3>Why Modern Projects Don't Use tsc for Bundling</h3>
+    <div class="example-box">
+      <strong>Common modern setup:</strong>
+      <ul>
+        <li><strong>tsc --noEmit</strong> in CI for type checking only</li>
+        <li><strong>esbuild / swc / Vite</strong> for fast compilation (strips types, no type checking)</li>
+        <li><strong>tsup</strong> for library bundling (uses esbuild under the hood)</li>
+      </ul>
+      <p>This gives you fast builds + full type safety from separate type-check step.</p>
+    </div>
+
+    <h3>Project References</h3>
+    <p>For monorepos, use <code>references</code> to compile packages in order.</p>
+    <pre><code><span class="lang-label">JSON</span>
+<span class="comment">// tsconfig.json (root)</span>
+{
+  <span class="string">"references"</span>: [
+    { <span class="string">"path"</span>: <span class="string">"./packages/shared"</span> },
+    { <span class="string">"path"</span>: <span class="string">"./packages/api"</span> },
+    { <span class="string">"path"</span>: <span class="string">"./packages/web"</span> }
+  ]
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 12 ───────────── -->
+  <section id="real-patterns">
+    <h2>12. Real-World Patterns &amp; Gotchas</h2>
+
+    <h3>Type Assertion vs Type Guard</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Assertion (you're telling TS, "trust me") -- risky</span>
+<span class="keyword">const</span> el = document.getElementById(<span class="string">"app"</span>) <span class="keyword">as</span> HTMLDivElement;
+
+<span class="comment">// Type guard (TS verifies at runtime) -- safe</span>
+<span class="keyword">function</span> <span class="function">isHTMLDiv</span>(el: Element | <span class="keyword">null</span>): el <span class="keyword">is</span> HTMLDivElement {
+  <span class="keyword">return</span> el <span class="keyword">instanceof</span> HTMLDivElement;
+}
+</code></pre>
+
+    <h3>Exhaustive Checking with never</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">Action</span> = { type: <span class="string">"add"</span> } | { type: <span class="string">"remove"</span> } | { type: <span class="string">"update"</span> };
+
+<span class="keyword">function</span> <span class="function">handle</span>(action: Action) {
+  <span class="keyword">switch</span> (action.type) {
+    <span class="keyword">case</span> <span class="string">"add"</span>: <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"remove"</span>: <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"update"</span>: <span class="keyword">break</span>;
+    <span class="keyword">default</span>: {
+      <span class="comment">// If you miss a case, this line errors at compile time</span>
+      <span class="keyword">const</span> _exhaustive: <span class="keyword">never</span> = action;
+      <span class="keyword">throw new</span> Error(`Unhandled: ${_exhaustive}`);
+    }
+  }
+}
+</code></pre>
+
+    <h3>Branded / Opaque Types</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Prevent mixing up IDs that are all strings</span>
+<span class="keyword">type</span> <span class="function">UserId</span> = <span class="keyword">string</span> &amp; { __brand: <span class="string">"UserId"</span> };
+<span class="keyword">type</span> <span class="function">PostId</span> = <span class="keyword">string</span> &amp; { __brand: <span class="string">"PostId"</span> };
+
+<span class="keyword">function</span> <span class="function">getUser</span>(id: UserId) { <span class="comment">/* ... */</span> }
+
+<span class="keyword">const</span> uid = <span class="string">"abc"</span> <span class="keyword">as</span> UserId;
+<span class="keyword">const</span> pid = <span class="string">"abc"</span> <span class="keyword">as</span> PostId;
+
+<span class="function">getUser</span>(uid); <span class="comment">// ✅</span>
+<span class="function">getUser</span>(pid); <span class="comment">// ❌ Type 'PostId' is not assignable to 'UserId'</span>
+</code></pre>
+
+    <h3>Template Literal Types</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">HttpMethod</span> = <span class="string">"GET"</span> | <span class="string">"POST"</span> | <span class="string">"PUT"</span> | <span class="string">"DELETE"</span>;
+<span class="keyword">type</span> <span class="function">ApiRoute</span> = `/${<span class="keyword">string</span>}`;
+<span class="keyword">type</span> <span class="function">Endpoint</span> = `${HttpMethod} ${ApiRoute}`;
+<span class="comment">// "GET /users" ✅  "PATCH /users" ❌</span>
+
+<span class="comment">// Powerful with mapped types:</span>
+<span class="keyword">type</span> <span class="function">EventMap</span>&lt;T&gt; = {
+  [K <span class="keyword">in</span> <span class="keyword">keyof</span> T <span class="keyword">as</span> `on${Capitalize&lt;<span class="keyword">string</span> &amp; K&gt;}`]: (val: T[K]) =&gt; <span class="keyword">void</span>;
+};
+</code></pre>
+
+    <h3>The satisfies Operator (TS 4.9+)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">type</span> <span class="function">Colors</span> = Record&lt;<span class="keyword">string</span>, [<span class="keyword">number</span>, <span class="keyword">number</span>, <span class="keyword">number</span>] | <span class="keyword">string</span>&gt;;
+
+<span class="comment">// 'satisfies' validates the type but keeps the NARROW inferred type</span>
+<span class="keyword">const</span> palette = {
+  red: [<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>],
+  green: <span class="string">"#00ff00"</span>,
+} <span class="keyword">satisfies</span> Colors;
+
+palette.red[<span class="number">0</span>];     <span class="comment">// ✅ type: number (not string | number[] -- kept narrow)</span>
+palette.green.toUpperCase(); <span class="comment">// ✅ type: string</span>
+</code></pre>
+
+    <h3>Common Gotcha: Object.keys Returns string[]</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> obj = { a: <span class="number">1</span>, b: <span class="number">2</span> };
+Object.keys(obj); <span class="comment">// string[], NOT ("a" | "b")[]</span>
+
+<span class="comment">// Why? TS structural typing means obj could have MORE keys at runtime.</span>
+<span class="comment">// Workaround when you're sure:</span>
+<span class="keyword">const</span> keys = Object.keys(obj) <span class="keyword">as</span> (<span class="keyword">keyof typeof</span> obj)[];
+</code></pre>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Better Dev. For personal study use.</p>
+</footer>
+
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+  var si=document.querySelector('.sidebar-search-input');
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+  }
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
+    if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

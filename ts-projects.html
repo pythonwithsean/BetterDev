@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building with TypeScript - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Building with TS</div>
+    <h1>Building Real Tools with TypeScript</h1>
+    <p>Stop reading tutorials. Build things. This page walks through building CLIs, TUIs, HTTP APIs, an AI git commit tool, platform SDKs, npm packages, and Dockerizing TS apps -- all with real code patterns.</p>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#cli">1. Building CLIs</a>
+    <a href="#tui">2. TUIs with Ink (React for the Terminal)</a>
+    <a href="#http-frameworks">3. HTTP Frameworks: Express, Fastify, Hono</a>
+    <a href="#ai-commit">4. Project: AI Git Commit Message Tool</a>
+    <a href="#sdks">5. Building Platform SDKs</a>
+    <a href="#npm-publish">6. Publishing to npm</a>
+    <a href="#docker-ts">7. Docker for TypeScript</a>
+    <a href="#project-structure">8. TS Project Structure Patterns</a>
+  </div>
+
+  <!-- ───────────── SECTION 1 ───────────── -->
+  <section id="cli">
+    <h2>1. Building CLIs</h2>
+
+    <h3>Project Setup</h3>
+    <pre><code><span class="lang-label">Bash</span>
+mkdir my-cli && cd my-cli
+pnpm init
+pnpm add -D typescript @types/node tsup
+pnpm add commander chalk     <span class="comment"># CLI framework + colors</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">JSON</span>
+<span class="comment">// package.json</span>
+{
+  <span class="string">"name"</span>: <span class="string">"my-cli"</span>,
+  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,
+  <span class="string">"type"</span>: <span class="string">"module"</span>,
+  <span class="string">"bin"</span>: {
+    <span class="string">"my-cli"</span>: <span class="string">"./dist/index.js"</span>
+  },
+  <span class="string">"scripts"</span>: {
+    <span class="string">"build"</span>: <span class="string">"tsup src/index.ts --format esm --target node20"</span>,
+    <span class="string">"dev"</span>: <span class="string">"tsup src/index.ts --format esm --watch"</span>
+  }
+}
+</code></pre>
+
+    <h3>CLI with Commander</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/index.ts</span>
+#!/usr/bin/env node
+<span class="keyword">import</span> { Command } <span class="keyword">from</span> <span class="string">"commander"</span>;
+<span class="keyword">import</span> chalk <span class="keyword">from</span> <span class="string">"chalk"</span>;
+
+<span class="keyword">const</span> program = <span class="keyword">new</span> <span class="function">Command</span>();
+
+program
+  .name(<span class="string">"my-cli"</span>)
+  .description(<span class="string">"A tool that does cool stuff"</span>)
+  .version(<span class="string">"1.0.0"</span>);
+
+program
+  .command(<span class="string">"greet"</span>)
+  .description(<span class="string">"Greet someone"</span>)
+  .argument(<span class="string">"&lt;name&gt;"</span>, <span class="string">"person to greet"</span>)
+  .option(<span class="string">"-l, --loud"</span>, <span class="string">"shout the greeting"</span>)
+  .action((name, options) =&gt; {
+    <span class="keyword">let</span> msg = <span class="string">`Hello, ${name}!`</span>;
+    <span class="keyword">if</span> (options.loud) msg = msg.toUpperCase();
+    console.log(chalk.green(msg));
+  });
+
+program
+  .command(<span class="string">"init"</span>)
+  .description(<span class="string">"Initialize a new project"</span>)
+  .option(<span class="string">"--template &lt;name&gt;"</span>, <span class="string">"template to use"</span>, <span class="string">"default"</span>)
+  .action(<span class="keyword">async</span> (options) =&gt; {
+    console.log(chalk.blue(<span class="string">`Creating project with ${options.template} template...`</span>));
+    <span class="comment">// scaffold files here</span>
+  });
+
+program.parse();
+</code></pre>
+
+    <h3>Interactive Prompts</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { input, select, confirm } <span class="keyword">from</span> <span class="string">"@inquirer/prompts"</span>;
+
+<span class="keyword">const</span> name = <span class="keyword">await</span> <span class="function">input</span>({ message: <span class="string">"Project name?"</span> });
+<span class="keyword">const</span> template = <span class="keyword">await</span> <span class="function">select</span>({
+  message: <span class="string">"Pick a template"</span>,
+  choices: [
+    { name: <span class="string">"Minimal"</span>, value: <span class="string">"minimal"</span> },
+    { name: <span class="string">"Full"</span>, value: <span class="string">"full"</span> },
+  ],
+});
+<span class="keyword">const</span> ok = <span class="keyword">await</span> <span class="function">confirm</span>({ message: <span class="string">"Proceed?"</span> });
+</code></pre>
+
+    <div class="tip-box">
+      <strong>The shebang line</strong> <code>#!/usr/bin/env node</code> at the top of your entry file tells the OS to run it with Node. Without it, <code>my-cli</code> won't work when installed globally.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 2 ───────────── -->
+  <section id="tui">
+    <h2>2. TUIs with Ink (React for the Terminal)</h2>
+
+    <p>Ink lets you build terminal UIs using React components. State management, hooks, and JSX -- but rendered to the terminal instead of a browser.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+pnpm add ink react
+pnpm add -D @types/react
+</code></pre>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/ui.tsx</span>
+<span class="keyword">import</span> React, { useState, useEffect } <span class="keyword">from</span> <span class="string">"react"</span>;
+<span class="keyword">import</span> { render, Text, Box, useInput } <span class="keyword">from</span> <span class="string">"ink"</span>;
+
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">const</span> [count, setCount] = <span class="function">useState</span>(<span class="number">0</span>);
+  <span class="keyword">const</span> [items] = <span class="function">useState</span>([<span class="string">"Build CLI"</span>, <span class="string">"Write tests"</span>, <span class="string">"Deploy"</span>]);
+  <span class="keyword">const</span> [selected, setSelected] = <span class="function">useState</span>(<span class="number">0</span>);
+
+  <span class="function">useInput</span>((input, key) =&gt; {
+    <span class="keyword">if</span> (key.upArrow) setSelected(s =&gt; Math.max(<span class="number">0</span>, s - <span class="number">1</span>));
+    <span class="keyword">if</span> (key.downArrow) setSelected(s =&gt; Math.min(items.length - <span class="number">1</span>, s + <span class="number">1</span>));
+    <span class="keyword">if</span> (input === <span class="string">"q"</span>) process.exit();
+  });
+
+  <span class="keyword">return</span> (
+    &lt;Box flexDirection=<span class="string">"column"</span> padding={<span class="number">1</span>}&gt;
+      &lt;Text bold color=<span class="string">"green"</span>&gt;My TUI App&lt;/Text&gt;
+      {items.map((item, i) =&gt; (
+        &lt;Text key={i} color={i === selected ? <span class="string">"cyan"</span> : <span class="string">"white"</span>}&gt;
+          {i === selected ? <span class="string">"❯ "</span> : <span class="string">"  "</span>}{item}
+        &lt;/Text&gt;
+      ))}
+      &lt;Text dimColor&gt;↑↓ navigate, q quit&lt;/Text&gt;
+    &lt;/Box&gt;
+  );
+}
+
+<span class="function">render</span>(&lt;App /&gt;);
+</code></pre>
+
+    <div class="example-box">
+      <strong>Ink components:</strong> <code>&lt;Text&gt;</code> for text, <code>&lt;Box&gt;</code> for flexbox layout, <code>&lt;Spinner&gt;</code> for loading indicators, <code>&lt;TextInput&gt;</code> for user input. Ink also supports <code>useStdout</code>, <code>useStdin</code>, and custom hooks.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 3 ───────────── -->
+  <section id="http-frameworks">
+    <h2>3. HTTP Frameworks: Express, Fastify, Hono</h2>
+
+    <h3>Express (Most Popular)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
+
+<span class="keyword">const</span> app = <span class="function">express</span>();
+app.use(express.json());
+
+app.get(<span class="string">"/api/users"</span>, (req, res) =&gt; {
+  res.json([{ id: <span class="number">1</span>, name: <span class="string">"Sean"</span> }]);
+});
+
+app.post(<span class="string">"/api/users"</span>, (req, res) =&gt; {
+  <span class="keyword">const</span> { name, email } = req.body;
+  res.status(<span class="number">201</span>).json({ id: <span class="string">"new-id"</span>, name, email });
+});
+
+app.listen(<span class="number">3000</span>);
+</code></pre>
+
+    <h3>Fastify (Fastest)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> Fastify <span class="keyword">from</span> <span class="string">"fastify"</span>;
+
+<span class="keyword">const</span> app = <span class="function">Fastify</span>({ logger: <span class="keyword">true</span> });
+
+app.get(<span class="string">"/api/users"</span>, <span class="keyword">async</span> (req, reply) =&gt; {
+  <span class="keyword">return</span> [{ id: <span class="number">1</span>, name: <span class="string">"Sean"</span> }];
+});
+
+<span class="comment">// Schema validation built in</span>
+app.post(<span class="string">"/api/users"</span>, {
+  schema: {
+    body: {
+      type: <span class="string">"object"</span>,
+      required: [<span class="string">"name"</span>, <span class="string">"email"</span>],
+      properties: {
+        name: { type: <span class="string">"string"</span> },
+        email: { type: <span class="string">"string"</span>, format: <span class="string">"email"</span> },
+      },
+    },
+  },
+}, <span class="keyword">async</span> (req, reply) =&gt; {
+  reply.code(<span class="number">201</span>);
+  <span class="keyword">return</span> { id: <span class="string">"new-id"</span>, ...req.body };
+});
+
+app.listen({ port: <span class="number">3000</span> });
+</code></pre>
+
+    <h3>Hono (Edge + Node)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { Hono } <span class="keyword">from</span> <span class="string">"hono"</span>;
+<span class="keyword">import</span> { serve } <span class="keyword">from</span> <span class="string">"@hono/node-server"</span>;
+
+<span class="keyword">const</span> app = <span class="keyword">new</span> <span class="function">Hono</span>();
+
+app.get(<span class="string">"/api/users"</span>, (c) =&gt; {
+  <span class="keyword">return</span> c.json([{ id: <span class="number">1</span>, name: <span class="string">"Sean"</span> }]);
+});
+
+app.post(<span class="string">"/api/users"</span>, <span class="keyword">async</span> (c) =&gt; {
+  <span class="keyword">const</span> body = <span class="keyword">await</span> c.req.json();
+  <span class="keyword">return</span> c.json({ id: <span class="string">"new-id"</span>, ...body }, <span class="number">201</span>);
+});
+
+<span class="function">serve</span>(app, { port: <span class="number">3000</span> });
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Framework   Speed      Ecosystem      Best For
+──────────────────────────────────────────────────────
+Express     Slow       Massive        Legacy, middleware-heavy apps
+Fastify     Fast       Growing        Performance-critical APIs
+Hono        Fastest    Small          Edge computing, lightweight APIs
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 4 ───────────── -->
+  <section id="ai-commit">
+    <h2>4. Project: AI Git Commit Message Tool</h2>
+
+    <p>A real CLI tool that reads your <code>git diff</code>, sends it to an AI, and generates a commit message. Here's the architecture.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+Flow:
+1. Run `git diff --staged` to get changes
+2. Send diff to AI API (Anthropic/OpenAI)
+3. AI generates a commit message
+4. Show to user, let them accept/edit/reject
+5. Run `git commit -m "..."`
+</code></pre>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/index.ts</span>
+#!/usr/bin/env node
+<span class="keyword">import</span> { execSync } <span class="keyword">from</span> <span class="string">"node:child_process"</span>;
+<span class="keyword">import</span> Anthropic <span class="keyword">from</span> <span class="string">"@anthropic-ai/sdk"</span>;
+<span class="keyword">import</span> { confirm, editor } <span class="keyword">from</span> <span class="string">"@inquirer/prompts"</span>;
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">Anthropic</span>();
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="comment">// 1. Get the staged diff</span>
+  <span class="keyword">const</span> diff = <span class="function">execSync</span>(<span class="string">"git diff --staged"</span>, { encoding: <span class="string">"utf8"</span> });
+  <span class="keyword">if</span> (!diff.trim()) {
+    console.log(<span class="string">"No staged changes. Stage files with `git add` first."</span>);
+    process.exit(<span class="number">1</span>);
+  }
+
+  <span class="comment">// 2. Send to AI</span>
+  <span class="keyword">const</span> response = <span class="keyword">await</span> client.messages.create({
+    model: <span class="string">"claude-sonnet-4-6"</span>,
+    max_tokens: <span class="number">300</span>,
+    messages: [{
+      role: <span class="string">"user"</span>,
+      content: <span class="string">`Generate a concise git commit message for this diff.
+Use conventional commit format (feat:, fix:, refactor:, etc.).
+One line summary, then optional body.\n\n${diff}`</span>
+    }],
+  });
+
+  <span class="keyword">const</span> message = response.content[<span class="number">0</span>].type === <span class="string">"text"</span>
+    ? response.content[<span class="number">0</span>].text : <span class="string">""</span>;
+
+  console.log(<span class="string">`\nSuggested commit message:\n${message}\n`</span>);
+
+  <span class="comment">// 3. Let user accept, edit, or reject</span>
+  <span class="keyword">const</span> accept = <span class="keyword">await</span> <span class="function">confirm</span>({ message: <span class="string">"Use this message?"</span> });
+
+  <span class="keyword">if</span> (accept) {
+    <span class="function">execSync</span>(<span class="string">`git commit -m "${message.replace(/"/g, '\\"')}"`</span>);
+    console.log(<span class="string">"Committed!"</span>);
+  } <span class="keyword">else</span> {
+    <span class="keyword">const</span> edited = <span class="keyword">await</span> <span class="function">editor</span>({ message: <span class="string">"Edit the message:"</span>, default: message });
+    <span class="function">execSync</span>(<span class="string">`git commit -m "${edited.replace(/"/g, '\\"')}"`</span>);
+    console.log(<span class="string">"Committed with edited message!"</span>);
+  }
+}
+
+<span class="function">main</span>().catch(console.error);
+</code></pre>
+
+    <pre><code><span class="lang-label">JSON</span>
+<span class="comment">// package.json</span>
+{
+  <span class="string">"name"</span>: <span class="string">"ai-commit"</span>,
+  <span class="string">"bin"</span>: { <span class="string">"ai-commit"</span>: <span class="string">"./dist/index.js"</span> },
+  <span class="string">"dependencies"</span>: {
+    <span class="string">"@anthropic-ai/sdk"</span>: <span class="string">"^0.30.0"</span>,
+    <span class="string">"@inquirer/prompts"</span>: <span class="string">"^5.0.0"</span>
+  }
+}
+</code></pre>
+
+    <div class="tip-box">
+      <strong>To use:</strong> Set <code>ANTHROPIC_API_KEY</code> env var, then <code>git add .</code> and run <code>ai-commit</code>. It reads your diff, generates a message, and commits.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 5 ───────────── -->
+  <section id="sdks">
+    <h2>5. Building Platform SDKs</h2>
+
+    <p>An SDK wraps an API so users don't deal with raw HTTP. Here's the pattern.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/client.ts</span>
+<span class="keyword">interface</span> <span class="function">ClientConfig</span> {
+  apiKey: <span class="keyword">string</span>;
+  baseUrl?: <span class="keyword">string</span>;
+}
+
+<span class="keyword">export class</span> <span class="function">MyPlatformClient</span> {
+  <span class="keyword">private</span> apiKey: <span class="keyword">string</span>;
+  <span class="keyword">private</span> baseUrl: <span class="keyword">string</span>;
+
+  <span class="keyword">constructor</span>(config: ClientConfig) {
+    <span class="keyword">this</span>.apiKey = config.apiKey;
+    <span class="keyword">this</span>.baseUrl = config.baseUrl ?? <span class="string">"https://api.myplatform.com"</span>;
+  }
+
+  <span class="keyword">private async</span> <span class="function">request</span>&lt;T&gt;(path: <span class="keyword">string</span>, options?: RequestInit): Promise&lt;T&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`${<span class="keyword">this</span>.baseUrl}${path}`</span>, {
+      ...options,
+      headers: {
+        <span class="string">"Authorization"</span>: <span class="string">`Bearer ${<span class="keyword">this</span>.apiKey}`</span>,
+        <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,
+        ...options?.headers,
+      },
+    });
+
+    <span class="keyword">if</span> (!res.ok) {
+      <span class="keyword">const</span> body = <span class="keyword">await</span> res.text();
+      <span class="keyword">throw new</span> <span class="function">ApiError</span>(res.status, body);
+    }
+
+    <span class="keyword">return</span> res.json() <span class="keyword">as</span> Promise&lt;T&gt;;
+  }
+
+  <span class="comment">// Resource-specific methods</span>
+  <span class="keyword">readonly</span> users = {
+    list: () =&gt; <span class="keyword">this</span>.request&lt;User[]&gt;(<span class="string">"/users"</span>),
+    get: (id: <span class="keyword">string</span>) =&gt; <span class="keyword">this</span>.request&lt;User&gt;(<span class="string">`/users/${id}`</span>),
+    create: (data: CreateUserInput) =&gt;
+      <span class="keyword">this</span>.request&lt;User&gt;(<span class="string">"/users"</span>, {
+        method: <span class="string">"POST"</span>,
+        body: JSON.stringify(data),
+      }),
+  };
+}
+
+<span class="comment">// Usage:</span>
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">MyPlatformClient</span>({ apiKey: <span class="string">"sk-..."</span> });
+<span class="keyword">const</span> users = <span class="keyword">await</span> client.users.list();
+<span class="keyword">const</span> user = <span class="keyword">await</span> client.users.create({ name: <span class="string">"Sean"</span> });
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 6 ───────────── -->
+  <section id="npm-publish">
+    <h2>6. Publishing to npm</h2>
+
+    <h3>Package Setup</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"name"</span>: <span class="string">"@yourname/my-package"</span>,
+  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,
+  <span class="string">"type"</span>: <span class="string">"module"</span>,
+  <span class="string">"exports"</span>: {
+    <span class="string">"."</span>: {
+      <span class="string">"import"</span>: <span class="string">"./dist/index.js"</span>,
+      <span class="string">"require"</span>: <span class="string">"./dist/index.cjs"</span>,
+      <span class="string">"types"</span>: <span class="string">"./dist/index.d.ts"</span>
+    }
+  },
+  <span class="string">"files"</span>: [<span class="string">"dist"</span>],         <span class="comment">// only publish dist/</span>
+  <span class="string">"scripts"</span>: {
+    <span class="string">"build"</span>: <span class="string">"tsup src/index.ts --format cjs,esm --dts"</span>,
+    <span class="string">"prepublishOnly"</span>: <span class="string">"npm run build"</span>
+  }
+}
+</code></pre>
+
+    <h3>Publish Steps</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Login to npm</span>
+npm login
+
+<span class="comment"># Check what will be published</span>
+npm pack --dry-run
+
+<span class="comment"># Publish (public scoped package)</span>
+npm publish --access public
+
+<span class="comment"># Bump version and publish</span>
+npm version patch   <span class="comment"># 1.0.0 → 1.0.1</span>
+npm version minor   <span class="comment"># 1.0.1 → 1.1.0</span>
+npm version major   <span class="comment"># 1.1.0 → 2.0.0</span>
+npm publish
+</code></pre>
+
+    <div class="warning-box">
+      <strong>The <code>files</code> field is critical.</strong> Without it, npm publishes your entire project (including src, tests, configs). Set <code>"files": ["dist"]</code> to only publish the built output. Also add a <code>.npmignore</code> or rely on <code>files</code> as an allowlist.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 7 ───────────── -->
+  <section id="docker-ts">
+    <h2>7. Docker for TypeScript</h2>
+
+    <h3>Multi-Stage Build (The Right Way)</h3>
+    <pre><code><span class="lang-label">Dockerfile</span>
+<span class="comment"># Stage 1: Build</span>
+<span class="keyword">FROM</span> node:20-alpine <span class="keyword">AS</span> builder
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile
+COPY tsconfig.json ./
+COPY src/ ./src/
+RUN pnpm build
+
+<span class="comment"># Stage 2: Production (no dev deps, no TS source)</span>
+<span class="keyword">FROM</span> node:20-alpine
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile --prod
+COPY --from=builder /app/dist ./dist
+USER node
+CMD ["node", "dist/index.js"]
+</code></pre>
+
+    <h3>Why Multi-Stage?</h3>
+    <pre><code><span class="lang-label">Text</span>
+Single stage:  ~800MB (includes TS, dev deps, source)
+Multi-stage:   ~150MB (only JS output + prod deps)
+</code></pre>
+
+    <h3>docker-compose.yml for Dev</h3>
+    <pre><code><span class="lang-label">YAML</span>
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/mydb
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Dev workflow:</strong> Use <code>docker compose up</code> for databases and external services, but run your TS app locally with <code>tsx watch src/index.ts</code> for fast iteration. Only Dockerize the TS app for production builds and CI.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 8 ───────────── -->
+  <section id="project-structure">
+    <h2>8. TS Project Structure Patterns</h2>
+
+    <h3>Small CLI / Library</h3>
+    <pre><code><span class="lang-label">Text</span>
+my-lib/
+├── src/
+│   ├── index.ts          ← entry point, re-exports
+│   ├── client.ts
+│   └── types.ts
+├── tests/
+│   └── client.test.ts
+├── package.json
+├── tsconfig.json
+└── tsup.config.ts
+</code></pre>
+
+    <h3>API Server</h3>
+    <pre><code><span class="lang-label">Text</span>
+my-api/
+├── src/
+│   ├── index.ts          ← server entry
+│   ├── routes/
+│   │   ├── users.ts
+│   │   └── posts.ts
+│   ├── middleware/
+│   │   ├── auth.ts
+│   │   └── validate.ts
+│   ├── services/          ← business logic
+│   │   └── user-service.ts
+│   ├── db/
+│   │   ├── client.ts
+│   │   └── schema.ts
+│   └── types/
+│       └── index.ts
+├── tests/
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+└── tsconfig.json
+</code></pre>
+
+    <h3>Full-Stack Monorepo</h3>
+    <pre><code><span class="lang-label">Text</span>
+my-app/
+├── packages/
+│   ├── shared/            ← types, utils, validation
+│   │   ├── src/
+│   │   └── package.json
+│   ├── api/               ← backend
+│   │   ├── src/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   └── web/               ← frontend
+│       ├── src/
+│       └── package.json
+├── package.json           ← workspaces root
+├── pnpm-workspace.yaml
+├── turbo.json
+└── tsconfig.base.json     ← shared TS config
+</code></pre>
+
+    <div class="example-box">
+      <strong>Key principle:</strong> Separate <em>what</em> your code does (services, business logic) from <em>how</em> it's delivered (routes, CLI commands, UI components). This makes it testable and reusable.
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Better Dev. For personal study use.</p>
+</footer>
+
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+  var si=document.querySelector('.sidebar-search-input');
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+  }
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
+    if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

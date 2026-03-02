@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS/TS Testing - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Testing</div>
+    <h1>JS/TS Testing -- The Complete Guide</h1>
+    <p>Everything about testing JavaScript and TypeScript: the test doubles vocabulary (mocks, spies, stubs, fakes), dependency injection for testable code, Jest and Jasmine in depth, Vitest, real-world mocking patterns, async testing, HTTP API testing, TDD, E2E with Playwright, and CI integration.</p>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#why-test">1. Why Test &amp; Types of Tests</a>
+    <a href="#test-doubles">2. Test Doubles: Mocks, Spies, Stubs, Fakes</a>
+    <a href="#dependency-injection">3. Dependency Injection (DI) for Testable Code</a>
+    <a href="#jest-deep">4. Jest Deep Dive</a>
+    <a href="#jasmine">5. Jasmine</a>
+    <a href="#vitest">6. Vitest -- The Modern Runner</a>
+    <a href="#assertions">7. Assertions &amp; Matchers</a>
+    <a href="#mocking-deep">8. Mocking Deep Dive -- Real Patterns</a>
+    <a href="#spies-deep">9. Spies Deep Dive</a>
+    <a href="#async-testing">10. Testing Async Code</a>
+    <a href="#testing-examples">11. Real-World Testing Examples</a>
+    <a href="#http-testing">12. Testing HTTP APIs</a>
+    <a href="#snapshots">13. Snapshot Testing</a>
+    <a href="#coverage">14. Code Coverage</a>
+    <a href="#tdd">15. TDD (Test-Driven Development)</a>
+    <a href="#e2e">16. E2E Testing with Playwright</a>
+    <a href="#ci">17. Testing in CI</a>
+  </div>
+
+  <!-- ───────────── SECTION 1 ───────────── -->
+  <section id="why-test">
+    <h2>1. Why Test &amp; Types of Tests</h2>
+
+    <pre><code><span class="lang-label">Text</span>
+Testing Pyramid:
+
+         /  E2E  \          &larr; Slow, expensive, few of these
+        / &mdash;&mdash;&mdash;&mdash; \
+       / Integration\       &larr; Tests modules working together
+      / &mdash;&mdash;&mdash;&mdash;&mdash;&mdash; \
+     /    Unit Tests   \    &larr; Fast, isolated, many of these
+    / &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; \
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Type           Scope                        Speed    Tools
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Unit           Single function/class        Fast     Vitest, Jest, Jasmine
+Integration    Multiple modules together    Medium   Vitest, Jest + DB
+E2E            Full app from user's view    Slow     Playwright, Cypress
+</code></pre>
+
+    <div class="tip-box">
+      <strong>What makes a good test:</strong>
+      <ul>
+        <li><strong>Tests behavior, not implementation</strong> -- test what something does, not how it does it</li>
+        <li><strong>Fails when behavior breaks,</strong> passes when it's correct</li>
+        <li><strong>Fast and deterministic</strong> -- no flaky tests, no network calls, no randomness</li>
+        <li><strong>Readable</strong> -- serves as documentation for what the code should do</li>
+        <li><strong>Isolated</strong> -- one test failing shouldn't make others fail</li>
+      </ul>
+    </div>
+
+    <h3>The AAA Pattern</h3>
+    <p>Every test follows this structure:</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">it</span>(<span class="string">"calculates total with tax"</span>, () =&gt; {
+  <span class="comment">// ARRANGE -- set up the data and dependencies</span>
+  <span class="keyword">const</span> cart = <span class="keyword">new</span> <span class="function">Cart</span>();
+  cart.add({ name: <span class="string">"Widget"</span>, price: <span class="number">100</span> });
+
+  <span class="comment">// ACT -- do the thing you're testing</span>
+  <span class="keyword">const</span> total = cart.totalWithTax(<span class="number">0.1</span>);
+
+  <span class="comment">// ASSERT -- check the result</span>
+  expect(total).toBe(<span class="number">110</span>);
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 2 ───────────── -->
+  <section id="test-doubles">
+    <h2>2. Test Doubles: Mocks, Spies, Stubs, Fakes</h2>
+
+    <p>"Test double" is the umbrella term for any object you substitute for a real dependency in tests. There are 5 kinds, and most people mix up the names. Here's the actual vocabulary.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+Type       What it does                              Example
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Dummy      Passed around but never used              Placeholder to fill a parameter
+Stub       Returns pre-programmed values             getUser() always returns { name: "Sean" }
+Spy        Records calls (who, what, when)           Wraps real method, tracks calls
+Mock       Pre-programmed with expectations           Verifies it was called correctly
+Fake       Working implementation, simplified         In-memory database instead of Postgres
+</code></pre>
+
+    <h3>Dummy</h3>
+    <p>An object that exists just to satisfy a type signature. You don't care what it does.</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// We need a Logger to create UserService, but this test doesn't care about logging</span>
+<span class="keyword">const</span> dummyLogger: Logger = {
+  info: () =&gt; {},
+  error: () =&gt; {},
+  warn: () =&gt; {},
+};
+
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">UserService</span>(db, dummyLogger);
+</code></pre>
+
+    <h3>Stub</h3>
+    <p>Returns canned answers. You control the output so you can test how your code handles different scenarios.</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Stub: always returns the same user, no real DB call</span>
+<span class="keyword">const</span> stubUserRepo = {
+  findById: <span class="keyword">async</span> (id: <span class="keyword">string</span>) =&gt; ({ id, name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> }),
+  save: <span class="keyword">async</span> () =&gt; {},
+};
+
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">UserService</span>(stubUserRepo);
+<span class="keyword">const</span> user = <span class="keyword">await</span> service.getUser(<span class="string">"123"</span>);
+expect(user.name).toBe(<span class="string">"Sean"</span>);
+</code></pre>
+
+    <h3>Spy</h3>
+    <p>Wraps a real (or fake) function and <strong>records every call</strong>: arguments, return value, how many times.</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> spy = vi.fn(); <span class="comment">// or jest.fn()</span>
+
+<span class="function">spy</span>(<span class="string">"hello"</span>, <span class="number">42</span>);
+<span class="function">spy</span>(<span class="string">"world"</span>);
+
+expect(spy).toHaveBeenCalledTimes(<span class="number">2</span>);
+expect(spy).toHaveBeenCalledWith(<span class="string">"hello"</span>, <span class="number">42</span>);
+expect(spy).toHaveBeenLastCalledWith(<span class="string">"world"</span>);
+expect(spy.mock.calls).toEqual([[<span class="string">"hello"</span>, <span class="number">42</span>], [<span class="string">"world"</span>]]);
+</code></pre>
+
+    <h3>Mock</h3>
+    <p>A mock is a spy with <strong>built-in expectations</strong>. It verifies the interaction itself: "was this method called with these args?"</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Mock: we verify that sendEmail was called, not just what it returns</span>
+<span class="keyword">const</span> mockEmailService = {
+  sendEmail: vi.fn().mockResolvedValue(<span class="keyword">undefined</span>),
+};
+
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">RegistrationService</span>(userRepo, mockEmailService);
+<span class="keyword">await</span> service.register({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> });
+
+<span class="comment">// The test is about the INTERACTION -- did it send the welcome email?</span>
+expect(mockEmailService.sendEmail).toHaveBeenCalledWith(
+  <span class="string">"sean@test.com"</span>,
+  expect.stringContaining(<span class="string">"Welcome"</span>)
+);
+</code></pre>
+
+    <h3>Fake</h3>
+    <p>A fully working but simplified implementation. Unlike stubs/mocks, fakes have real logic.</p>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Fake: an in-memory implementation instead of a real database</span>
+<span class="keyword">class</span> <span class="function">FakeUserRepo</span> <span class="keyword">implements</span> UserRepository {
+  <span class="keyword">private</span> users: Map&lt;<span class="keyword">string</span>, User&gt; = <span class="keyword">new</span> Map();
+
+  <span class="keyword">async</span> <span class="function">save</span>(user: User) {
+    <span class="keyword">this</span>.users.set(user.id, user);
+  }
+
+  <span class="keyword">async</span> <span class="function">findById</span>(id: <span class="keyword">string</span>) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.users.get(id) ?? <span class="keyword">null</span>;
+  }
+
+  <span class="keyword">async</span> <span class="function">findAll</span>() {
+    <span class="keyword">return</span> [...<span class="keyword">this</span>.users.values()];
+  }
+}
+
+<span class="comment">// Use in tests -- it actually stores and retrieves, just in memory</span>
+<span class="keyword">const</span> repo = <span class="keyword">new</span> <span class="function">FakeUserRepo</span>();
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">UserService</span>(repo);
+<span class="keyword">await</span> service.createUser({ name: <span class="string">"Sean"</span> });
+<span class="keyword">const</span> found = <span class="keyword">await</span> service.getUser(<span class="string">"sean-id"</span>);
+expect(found).not.toBeNull();
+</code></pre>
+
+    <div class="warning-box">
+      <strong>When to use which:</strong>
+      <ul>
+        <li><strong>Dummy</strong> -- when a parameter is required but irrelevant to the test</li>
+        <li><strong>Stub</strong> -- when you need to control what a dependency returns</li>
+        <li><strong>Spy</strong> -- when you want to verify something was called</li>
+        <li><strong>Mock</strong> -- when the interaction IS the thing you're testing</li>
+        <li><strong>Fake</strong> -- for integration-style tests where you need real behavior without real infrastructure</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 3 ───────────── -->
+  <section id="dependency-injection">
+    <h2>3. Dependency Injection (DI) for Testable Code</h2>
+
+    <p>Dependency Injection means <strong>passing dependencies in from outside</strong> instead of creating them inside. This is the #1 pattern that makes code testable.</p>
+
+    <h3>The Problem: Hard-Coded Dependencies</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// ❌ BAD -- impossible to test without a real database</span>
+<span class="keyword">class</span> <span class="function">UserService</span> {
+  <span class="keyword">private</span> db = <span class="keyword">new</span> <span class="function">PostgresClient</span>(<span class="string">"postgres://localhost:5432/mydb"</span>);
+
+  <span class="keyword">async</span> <span class="function">getUser</span>(id: <span class="keyword">string</span>) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.db.query(<span class="string">"SELECT * FROM users WHERE id = $1"</span>, [id]);
+  }
+}
+
+<span class="comment">// How do you test this? You'd need a running Postgres.
+// What if the DB is down? What if you want to test the error path?
+// You can't swap it out because it's created INSIDE the class.</span>
+</code></pre>
+
+    <h3>The Solution: Constructor Injection</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// ✅ GOOD -- dependency is passed in, easy to swap for tests</span>
+<span class="keyword">interface</span> <span class="function">UserRepository</span> {
+  findById(id: <span class="keyword">string</span>): Promise&lt;User | <span class="keyword">null</span>&gt;;
+  save(user: User): Promise&lt;<span class="keyword">void</span>&gt;;
+}
+
+<span class="keyword">class</span> <span class="function">UserService</span> {
+  <span class="keyword">constructor</span>(<span class="keyword">private</span> repo: UserRepository) {}
+
+  <span class="keyword">async</span> <span class="function">getUser</span>(id: <span class="keyword">string</span>): Promise&lt;User&gt; {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="keyword">this</span>.repo.findById(id);
+    <span class="keyword">if</span> (!user) <span class="keyword">throw new</span> Error(<span class="string">"User not found"</span>);
+    <span class="keyword">return</span> user;
+  }
+}
+
+<span class="comment">// Production: real database</span>
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">UserService</span>(<span class="keyword">new</span> <span class="function">PostgresUserRepo</span>(pool));
+
+<span class="comment">// Tests: stub, mock, or fake -- your choice</span>
+<span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">UserService</span>(stubUserRepo);
+</code></pre>
+
+    <h3>Full DI Example: Service with Multiple Dependencies</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Define interfaces for each dependency</span>
+<span class="keyword">interface</span> <span class="function">UserRepository</span> {
+  findById(id: <span class="keyword">string</span>): Promise&lt;User | <span class="keyword">null</span>&gt;;
+  save(user: User): Promise&lt;<span class="keyword">void</span>&gt;;
+}
+
+<span class="keyword">interface</span> <span class="function">EmailService</span> {
+  send(to: <span class="keyword">string</span>, subject: <span class="keyword">string</span>, body: <span class="keyword">string</span>): Promise&lt;<span class="keyword">void</span>&gt;;
+}
+
+<span class="keyword">interface</span> <span class="function">Logger</span> {
+  info(msg: <span class="keyword">string</span>): <span class="keyword">void</span>;
+  error(msg: <span class="keyword">string</span>, err?: Error): <span class="keyword">void</span>;
+}
+
+<span class="comment">// Service depends on INTERFACES, not concrete classes</span>
+<span class="keyword">class</span> <span class="function">RegistrationService</span> {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private</span> users: UserRepository,
+    <span class="keyword">private</span> email: EmailService,
+    <span class="keyword">private</span> log: Logger,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">register</span>(input: { name: <span class="keyword">string</span>; email: <span class="keyword">string</span> }) {
+    <span class="keyword">const</span> user: User = { id: crypto.randomUUID(), ...input };
+    <span class="keyword">await</span> <span class="keyword">this</span>.users.save(user);
+    <span class="keyword">await</span> <span class="keyword">this</span>.email.send(input.email, <span class="string">"Welcome!"</span>, <span class="string">`Hi ${input.name}`</span>);
+    <span class="keyword">this</span>.log.info(<span class="string">`Registered user ${user.id}`</span>);
+    <span class="keyword">return</span> user;
+  }
+}
+</code></pre>
+
+    <h3>Testing the DI'd Service</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { describe, it, expect, vi } <span class="keyword">from</span> <span class="string">"vitest"</span>;
+
+<span class="function">describe</span>(<span class="string">"RegistrationService"</span>, () =&gt; {
+  <span class="comment">// Create test doubles for each dependency</span>
+  <span class="keyword">function</span> <span class="function">setup</span>() {
+    <span class="keyword">const</span> mockRepo: UserRepository = {
+      findById: vi.fn(),
+      save: vi.fn().mockResolvedValue(<span class="keyword">undefined</span>),
+    };
+    <span class="keyword">const</span> mockEmail: EmailService = {
+      send: vi.fn().mockResolvedValue(<span class="keyword">undefined</span>),
+    };
+    <span class="keyword">const</span> mockLog: Logger = {
+      info: vi.fn(),
+      error: vi.fn(),
+    };
+    <span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">RegistrationService</span>(mockRepo, mockEmail, mockLog);
+    <span class="keyword">return</span> { service, mockRepo, mockEmail, mockLog };
+  }
+
+  <span class="function">it</span>(<span class="string">"saves the user"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, mockRepo } = <span class="function">setup</span>();
+
+    <span class="keyword">await</span> service.register({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> });
+
+    expect(mockRepo.save).toHaveBeenCalledWith(
+      expect.objectContaining({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> })
+    );
+  });
+
+  <span class="function">it</span>(<span class="string">"sends a welcome email"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, mockEmail } = <span class="function">setup</span>();
+
+    <span class="keyword">await</span> service.register({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> });
+
+    expect(mockEmail.send).toHaveBeenCalledWith(
+      <span class="string">"sean@test.com"</span>,
+      <span class="string">"Welcome!"</span>,
+      expect.stringContaining(<span class="string">"Sean"</span>)
+    );
+  });
+
+  <span class="function">it</span>(<span class="string">"logs the registration"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, mockLog } = <span class="function">setup</span>();
+
+    <span class="keyword">const</span> user = <span class="keyword">await</span> service.register({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> });
+
+    expect(mockLog.info).toHaveBeenCalledWith(
+      expect.stringContaining(user.id)
+    );
+  });
+
+  <span class="function">it</span>(<span class="string">"still saves user if email fails"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, mockEmail, mockRepo } = <span class="function">setup</span>();
+    mockEmail.send = vi.fn().mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"SMTP down"</span>));
+
+    <span class="keyword">await</span> expect(service.register({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> }))
+      .rejects.toThrow(<span class="string">"SMTP down"</span>);
+
+    <span class="comment">// User was saved BEFORE the email step</span>
+    expect(mockRepo.save).toHaveBeenCalled();
+  });
+});
+</code></pre>
+
+    <div class="tip-box">
+      <strong>DI without a framework:</strong> You don't need NestJS or InversifyJS for DI. Just pass dependencies through constructors or function parameters. The pattern is the important part, not the framework.
+    </div>
+
+    <h3>Function-Based DI (No Classes Needed)</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// You can do DI with plain functions too</span>
+<span class="keyword">type</span> <span class="function">Deps</span> = {
+  getUser: (id: <span class="keyword">string</span>) =&gt; Promise&lt;User | <span class="keyword">null</span>&gt;;
+  sendEmail: (to: <span class="keyword">string</span>, body: <span class="keyword">string</span>) =&gt; Promise&lt;<span class="keyword">void</span>&gt;;
+};
+
+<span class="keyword">export function</span> <span class="function">createRegistrationHandler</span>(deps: Deps) {
+  <span class="keyword">return async function</span> <span class="function">register</span>(name: <span class="keyword">string</span>, email: <span class="keyword">string</span>) {
+    <span class="comment">// ... use deps.getUser, deps.sendEmail</span>
+  };
+}
+
+<span class="comment">// Production</span>
+<span class="keyword">const</span> register = <span class="function">createRegistrationHandler</span>({ getUser: dbGetUser, sendEmail: smtpSend });
+
+<span class="comment">// Test</span>
+<span class="keyword">const</span> register = <span class="function">createRegistrationHandler</span>({ getUser: vi.fn(), sendEmail: vi.fn() });
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 4 ───────────── -->
+  <section id="jest-deep">
+    <h2>4. Jest Deep Dive</h2>
+
+    <p>Jest is the most widely used JS test framework. Created by Facebook, batteries-included: runner, assertions, mocking, coverage, snapshots all built in.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Install for TypeScript</span>
+pnpm add -D jest @types/jest ts-jest
+
+<span class="comment"># Initialize config</span>
+npx ts-jest config:init
+
+<span class="comment"># Run</span>
+npx jest                    <span class="comment"># run all tests</span>
+npx jest --watch            <span class="comment"># watch mode</span>
+npx jest --coverage         <span class="comment"># with coverage report</span>
+npx jest path/to/file.test  <span class="comment"># run specific file</span>
+npx jest -t "user"          <span class="comment"># run tests matching name</span>
+</code></pre>
+
+    <h3>Jest Config</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// jest.config.js</span>
+<span class="keyword">export default</span> {
+  preset: <span class="string">"ts-jest"</span>,
+  testEnvironment: <span class="string">"node"</span>,
+  roots: [<span class="string">"&lt;rootDir&gt;/src"</span>],
+  testMatch: [<span class="string">"**/*.test.ts"</span>],
+  collectCoverageFrom: [<span class="string">"src/**/*.ts"</span>, <span class="string">"!src/**/*.d.ts"</span>],
+  coverageThreshold: {
+    global: { branches: <span class="number">80</span>, functions: <span class="number">80</span>, lines: <span class="number">80</span>, statements: <span class="number">80</span> },
+  },
+  clearMocks: <span class="keyword">true</span>,  <span class="comment">// auto-clear mock state between tests</span>
+};
+</code></pre>
+
+    <h3>Lifecycle Hooks</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">describe</span>(<span class="string">"UserService"</span>, () =&gt; {
+  <span class="keyword">let</span> service: UserService;
+  <span class="keyword">let</span> db: FakeDB;
+
+  <span class="comment">// Runs ONCE before all tests in this describe</span>
+  <span class="function">beforeAll</span>(<span class="keyword">async</span> () =&gt; {
+    db = <span class="keyword">await</span> FakeDB.connect();
+  });
+
+  <span class="comment">// Runs before EACH test</span>
+  <span class="function">beforeEach</span>(() =&gt; {
+    service = <span class="keyword">new</span> <span class="function">UserService</span>(db);
+  });
+
+  <span class="comment">// Runs after EACH test</span>
+  <span class="function">afterEach</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="keyword">await</span> db.clear(); <span class="comment">// clean state between tests</span>
+  });
+
+  <span class="comment">// Runs ONCE after all tests</span>
+  <span class="function">afterAll</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="keyword">await</span> db.disconnect();
+  });
+
+  <span class="function">it</span>(<span class="string">"creates a user"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> service.create({ name: <span class="string">"Sean"</span> });
+    expect(user.id).toBeDefined();
+  });
+});
+</code></pre>
+
+    <h3>Parameterized Tests: describe.each / it.each</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Run the same test with different data</span>
+describe.each([
+  { input: <span class="string">"hello"</span>,  expected: <span class="string">"HELLO"</span> },
+  { input: <span class="string">"world"</span>,  expected: <span class="string">"WORLD"</span> },
+  { input: <span class="string">""</span>,       expected: <span class="string">""</span> },
+])(<span class="string">"toUpperCase($input)"</span>, ({ input, expected }) =&gt; {
+  <span class="function">it</span>(<span class="string">`returns "${expected}"`</span>, () =&gt; {
+    expect(input.toUpperCase()).toBe(expected);
+  });
+});
+
+<span class="comment">// Shorter: table format</span>
+it.each([
+  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],
+  [-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>],
+])(<span class="string">"add(%i, %i) = %i"</span>, (a, b, expected) =&gt; {
+  expect(<span class="function">add</span>(a, b)).toBe(expected);
+});
+</code></pre>
+
+    <h3>Skipping &amp; Focusing Tests</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+it.skip(<span class="string">"this test is skipped"</span>, () =&gt; { <span class="comment">/* ... */</span> });
+it.only(<span class="string">"ONLY this test runs"</span>, () =&gt; { <span class="comment">/* ... */</span> });
+it.todo(<span class="string">"write this test later"</span>);
+
+describe.skip(<span class="string">"skip entire group"</span>, () =&gt; { <span class="comment">/* ... */</span> });
+describe.only(<span class="string">"only this group runs"</span>, () =&gt; { <span class="comment">/* ... */</span> });
+</code></pre>
+
+    <h3>Jest Mock Functions</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// jest.fn() creates a spy/mock function</span>
+<span class="keyword">const</span> mockFn = jest.fn();
+<span class="keyword">const</span> mockWithImpl = jest.fn((x: <span class="keyword">number</span>) =&gt; x * <span class="number">2</span>);
+<span class="keyword">const</span> mockAsync = jest.fn().mockResolvedValue({ id: <span class="string">"1"</span> });
+
+<span class="comment">// jest.spyOn() wraps an existing method</span>
+<span class="keyword">const</span> spy = jest.spyOn(myObject, <span class="string">"myMethod"</span>);
+spy.mockReturnValue(<span class="string">"fake"</span>);
+
+<span class="comment">// jest.mock() replaces an entire module</span>
+jest.mock(<span class="string">"./database"</span>);
+jest.mock(<span class="string">"axios"</span>);
+
+<span class="comment">// Manual mock: create __mocks__/database.ts alongside database.ts</span>
+<span class="comment">// Jest auto-uses it when you call jest.mock("./database")</span>
+</code></pre>
+
+    <h3>Jest Module Mocking Patterns</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Mock with custom implementation</span>
+jest.mock(<span class="string">"./database"</span>, () =&gt; ({
+  getUser: jest.fn().mockResolvedValue({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> }),
+  saveUser: jest.fn(),
+}));
+
+<span class="comment">// Partial mock: keep real implementation, mock specific exports</span>
+jest.mock(<span class="string">"./utils"</span>, () =&gt; ({
+  ...jest.requireActual(<span class="string">"./utils"</span>),
+  sendEmail: jest.fn(), <span class="comment">// only mock this one</span>
+}));
+
+<span class="comment">// Access the mocked module to change behavior per test</span>
+<span class="keyword">import</span> { getUser } <span class="keyword">from</span> <span class="string">"./database"</span>;
+<span class="keyword">const</span> mockedGetUser = getUser <span class="keyword">as</span> jest.MockedFunction&lt;<span class="keyword">typeof</span> getUser&gt;;
+
+<span class="function">it</span>(<span class="string">"handles not found"</span>, <span class="keyword">async</span> () =&gt; {
+  mockedGetUser.mockResolvedValueOnce(<span class="keyword">null</span>);
+  <span class="keyword">await</span> expect(service.getUser(<span class="string">"bad-id"</span>)).rejects.toThrow(<span class="string">"Not found"</span>);
+});
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Vitest vs Jest API mapping:</strong> They're almost identical.<br>
+      <code>jest.fn()</code> = <code>vi.fn()</code><br>
+      <code>jest.spyOn()</code> = <code>vi.spyOn()</code><br>
+      <code>jest.mock()</code> = <code>vi.mock()</code><br>
+      <code>jest.useFakeTimers()</code> = <code>vi.useFakeTimers()</code><br>
+      If you know one, you know the other.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 5 ───────────── -->
+  <section id="jasmine">
+    <h2>5. Jasmine</h2>
+
+    <p>Jasmine is the OG JavaScript test framework. It came before Jest and influenced its API. Angular still uses Jasmine by default. The syntax is very similar to Jest/Vitest but with some differences.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Install</span>
+pnpm add -D jasmine @types/jasmine jasmine-ts
+
+<span class="comment"># Initialize</span>
+npx jasmine init
+
+<span class="comment"># Run</span>
+npx jasmine
+</code></pre>
+
+    <h3>Jasmine Syntax vs Jest</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Jasmine uses the same describe/it/expect pattern</span>
+<span class="function">describe</span>(<span class="string">"Calculator"</span>, () =&gt; {
+  <span class="keyword">let</span> calc: Calculator;
+
+  <span class="function">beforeEach</span>(() =&gt; {
+    calc = <span class="keyword">new</span> <span class="function">Calculator</span>();
+  });
+
+  <span class="function">it</span>(<span class="string">"adds numbers"</span>, () =&gt; {
+    expect(calc.add(<span class="number">2</span>, <span class="number">3</span>)).toBe(<span class="number">5</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"throws on divide by zero"</span>, () =&gt; {
+    expect(() =&gt; calc.divide(<span class="number">1</span>, <span class="number">0</span>)).toThrowError(<span class="string">"Cannot divide by zero"</span>);
+  });
+});
+</code></pre>
+
+    <h3>Jasmine Spies</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create a spy on an existing method</span>
+spyOn(calculator, <span class="string">"add"</span>).and.returnValue(<span class="number">42</span>);
+calculator.add(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// returns 42, not 3</span>
+expect(calculator.add).toHaveBeenCalledWith(<span class="number">1</span>, <span class="number">2</span>);
+
+<span class="comment">// Create a standalone spy (like jest.fn())</span>
+<span class="keyword">const</span> callback = jasmine.createSpy(<span class="string">"callback"</span>);
+callback(<span class="string">"hello"</span>);
+expect(callback).toHaveBeenCalledWith(<span class="string">"hello"</span>);
+
+<span class="comment">// Spy strategies (what happens when the spy is called)</span>
+spyOn(obj, <span class="string">"method"</span>).and.callThrough();      <span class="comment">// call the real method</span>
+spyOn(obj, <span class="string">"method"</span>).and.returnValue(<span class="number">42</span>);     <span class="comment">// return a value</span>
+spyOn(obj, <span class="string">"method"</span>).and.callFake((x) =&gt; x); <span class="comment">// custom implementation</span>
+spyOn(obj, <span class="string">"method"</span>).and.throwError(<span class="string">"nope"</span>); <span class="comment">// throw</span>
+spyOn(obj, <span class="string">"method"</span>).and.returnValues(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>); <span class="comment">// different each call</span>
+</code></pre>
+
+    <h3>Jasmine Spy Matchers</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+expect(spy).toHaveBeenCalled();
+expect(spy).toHaveBeenCalledTimes(<span class="number">3</span>);
+expect(spy).toHaveBeenCalledWith(<span class="string">"arg1"</span>, <span class="string">"arg2"</span>);
+expect(spy).toHaveBeenCalledOnceWith(<span class="string">"arg"</span>);
+expect(spy).not.toHaveBeenCalled();
+
+<span class="comment">// Inspect call details</span>
+spy.calls.count();        <span class="comment">// how many times</span>
+spy.calls.argsFor(<span class="number">0</span>);     <span class="comment">// args of first call</span>
+spy.calls.allArgs();      <span class="comment">// args of all calls</span>
+spy.calls.mostRecent();   <span class="comment">// last call details</span>
+spy.calls.reset();        <span class="comment">// clear tracking</span>
+</code></pre>
+
+    <h3>Jasmine Custom Matchers</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">beforeEach</span>(() =&gt; {
+  jasmine.addMatchers({
+    <span class="function">toBeValidEmail</span>() {
+      <span class="keyword">return</span> {
+        <span class="function">compare</span>(actual: <span class="keyword">string</span>) {
+          <span class="keyword">const</span> pass = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(actual);
+          <span class="keyword">return</span> {
+            pass,
+            message: pass
+              ? <span class="string">`Expected "${actual}" not to be a valid email`</span>
+              : <span class="string">`Expected "${actual}" to be a valid email`</span>,
+          };
+        },
+      };
+    },
+  });
+});
+
+<span class="function">it</span>(<span class="string">"validates email"</span>, () =&gt; {
+  expect(<span class="string">"sean@test.com"</span>).toBeValidEmail();
+  expect(<span class="string">"not-an-email"</span>).not.toBeValidEmail();
+});
+</code></pre>
+
+    <h3>Jasmine Async</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// async/await works the same as Jest</span>
+<span class="function">it</span>(<span class="string">"fetches data"</span>, <span class="keyword">async</span> () =&gt; {
+  <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetchData</span>();
+  expect(data).toBeDefined();
+});
+
+<span class="comment">// Jasmine also supports done() callback (older style)</span>
+<span class="function">it</span>(<span class="string">"fetches data"</span>, (done) =&gt; {
+  <span class="function">fetchData</span>().then((data) =&gt; {
+    expect(data).toBeDefined();
+    <span class="function">done</span>();
+  });
+});
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Feature         Jest              Jasmine           Vitest
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Spies           jest.fn()         jasmine.createSpy  vi.fn()
+Spy on method   jest.spyOn()      spyOn()            vi.spyOn()
+Module mocking  jest.mock()       ❌ manual only      vi.mock()
+Snapshot tests  ✅ built-in        ❌ plugin           ✅ built-in
+Timer mocking   jest.useFakeTimers jasmine.clock()    vi.useFakeTimers
+Speed (w/ TS)   Slow (ts-jest)    Medium             Fast (native ESM)
+Used by         React, Node       Angular            Vite projects
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 6 ───────────── -->
+  <section id="vitest">
+    <h2>6. Vitest -- The Modern Runner</h2>
+
+    <p>Vitest is a Vite-native test runner. It understands TypeScript, ESM, and JSX out of the box with zero config. Same API as Jest.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+pnpm add -D vitest
+
+npx vitest           <span class="comment"># watch mode (default)</span>
+npx vitest run       <span class="comment"># single run (CI)</span>
+npx vitest run --reporter=verbose
+</code></pre>
+
+    <h3>Config</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// vitest.config.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">"vitest/config"</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  test: {
+    globals: <span class="keyword">true</span>,           <span class="comment">// no need to import describe/it/expect</span>
+    environment: <span class="string">"node"</span>,     <span class="comment">// or "jsdom" for browser APIs</span>
+    coverage: {
+      provider: <span class="string">"v8"</span>,
+      reporter: [<span class="string">"text"</span>, <span class="string">"html"</span>],
+    },
+    include: [<span class="string">"src/**/*.test.ts"</span>],
+    clearMocks: <span class="keyword">true</span>,       <span class="comment">// auto-reset mocks between tests</span>
+  },
+});
+</code></pre>
+
+    <h3>File Naming</h3>
+    <pre><code><span class="lang-label">Text</span>
+Vitest finds:  **/*.test.ts  **/*.spec.ts  **/__tests__/**
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 7 ───────────── -->
+  <section id="assertions">
+    <h2>7. Assertions &amp; Matchers</h2>
+
+    <p>These work in Jest, Vitest, and mostly in Jasmine too.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// ── Equality ──</span>
+expect(<span class="number">1</span> + <span class="number">1</span>).toBe(<span class="number">2</span>);               <span class="comment">// strict === (primitives)</span>
+expect({ a: <span class="number">1</span> }).toEqual({ a: <span class="number">1</span> }); <span class="comment">// deep equality (objects)</span>
+expect(obj).toStrictEqual(other);    <span class="comment">// deep + checks undefined props</span>
+
+<span class="comment">// ── Truthiness ──</span>
+expect(value).toBeTruthy();
+expect(value).toBeFalsy();
+expect(value).toBeNull();
+expect(value).toBeUndefined();
+expect(value).toBeDefined();
+
+<span class="comment">// ── Numbers ──</span>
+expect(<span class="number">10</span>).toBeGreaterThan(<span class="number">5</span>);
+expect(<span class="number">10</span>).toBeGreaterThanOrEqual(<span class="number">10</span>);
+expect(<span class="number">10</span>).toBeLessThan(<span class="number">20</span>);
+expect(<span class="number">0.1</span> + <span class="number">0.2</span>).toBeCloseTo(<span class="number">0.3</span>);   <span class="comment">// floating point safe</span>
+
+<span class="comment">// ── Strings ──</span>
+expect(<span class="string">"hello world"</span>).toContain(<span class="string">"world"</span>);
+expect(<span class="string">"hello"</span>).toMatch(/^hel/);
+
+<span class="comment">// ── Arrays ──</span>
+expect([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]).toContain(<span class="number">2</span>);
+expect([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]).toHaveLength(<span class="number">3</span>);
+expect([{ id: <span class="number">1</span> }, { id: <span class="number">2</span> }]).toContainEqual({ id: <span class="number">1</span> });
+expect([<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>]).toEqual(expect.arrayContaining([<span class="number">1</span>, <span class="number">2</span>]));
+
+<span class="comment">// ── Objects ──</span>
+expect(obj).toHaveProperty(<span class="string">"key"</span>);
+expect(obj).toHaveProperty(<span class="string">"nested.deep.key"</span>);
+expect(obj).toMatchObject({ name: <span class="string">"Sean"</span> }); <span class="comment">// partial match</span>
+expect(obj).toEqual(expect.objectContaining({ name: <span class="string">"Sean"</span> }));
+
+<span class="comment">// ── Exceptions ──</span>
+expect(() =&gt; <span class="function">throwingFn</span>()).toThrow();
+expect(() =&gt; <span class="function">throwingFn</span>()).toThrow(<span class="string">"specific message"</span>);
+expect(() =&gt; <span class="function">throwingFn</span>()).toThrow(TypeError);
+
+<span class="comment">// ── Negation ──</span>
+expect(<span class="number">1</span>).not.toBe(<span class="number">2</span>);
+
+<span class="comment">// ── Asymmetric matchers (inside other matchers) ──</span>
+expect(obj).toEqual({
+  id: expect.any(String),
+  name: expect.stringContaining(<span class="string">"Sean"</span>),
+  tags: expect.arrayContaining([<span class="string">"admin"</span>]),
+  createdAt: expect.any(Date),
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 8 ───────────── -->
+  <section id="mocking-deep">
+    <h2>8. Mocking Deep Dive -- Real Patterns</h2>
+
+    <h3>Mock Functions: The Complete API</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> fn = vi.fn(); <span class="comment">// or jest.fn()</span>
+
+<span class="comment">// ── Return values ──</span>
+fn.mockReturnValue(<span class="string">"always this"</span>);
+fn.mockReturnValueOnce(<span class="string">"first call"</span>);
+fn.mockResolvedValue({ data: <span class="number">1</span> });       <span class="comment">// async: resolves</span>
+fn.mockResolvedValueOnce({ data: <span class="number">1</span> });   <span class="comment">// async: resolves once</span>
+fn.mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"fail"</span>)); <span class="comment">// async: rejects</span>
+fn.mockRejectedValueOnce(<span class="keyword">new</span> Error());   <span class="comment">// async: rejects once</span>
+
+<span class="comment">// ── Custom implementation ──</span>
+fn.mockImplementation((x) =&gt; x * <span class="number">2</span>);
+fn.mockImplementationOnce((x) =&gt; x * <span class="number">10</span>);
+
+<span class="comment">// ── Chain them for different behavior per call ──</span>
+<span class="keyword">const</span> getUserMock = vi.fn()
+  .mockResolvedValueOnce({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> })   <span class="comment">// 1st call</span>
+  .mockResolvedValueOnce(<span class="keyword">null</span>)                         <span class="comment">// 2nd call</span>
+  .mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"DB down"</span>));           <span class="comment">// all after</span>
+
+<span class="comment">// ── Inspect calls ──</span>
+fn.mock.calls;           <span class="comment">// [[arg1, arg2], [arg3]]</span>
+fn.mock.calls[<span class="number">0</span>];        <span class="comment">// args of first call</span>
+fn.mock.results;         <span class="comment">// [{ type: "return", value: ... }]</span>
+fn.mock.lastCall;        <span class="comment">// args of most recent call</span>
+
+<span class="comment">// ── Reset ──</span>
+fn.mockClear();          <span class="comment">// clear calls & results (keep implementation)</span>
+fn.mockReset();          <span class="comment">// clear everything (implementation becomes () => undefined)</span>
+fn.mockRestore();        <span class="comment">// restore original (only for spyOn)</span>
+</code></pre>
+
+    <h3>Mocking Modules</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// ── Full module mock ──</span>
+vi.mock(<span class="string">"./database"</span>, () =&gt; ({
+  getUser: vi.fn().mockResolvedValue({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> }),
+  saveUser: vi.fn(),
+}));
+
+<span class="comment">// ── Partial module mock (keep real exports, mock some) ──</span>
+vi.mock(<span class="string">"./utils"</span>, <span class="keyword">async</span> (importOriginal) =&gt; {
+  <span class="keyword">const</span> actual = <span class="keyword">await</span> <span class="function">importOriginal</span>();
+  <span class="keyword">return</span> {
+    ...actual,
+    sendEmail: vi.fn(), <span class="comment">// only mock this one export</span>
+  };
+});
+
+<span class="comment">// ── Mock a third-party package ──</span>
+vi.mock(<span class="string">"axios"</span>, () =&gt; ({
+  <span class="keyword">default</span>: {
+    get: vi.fn().mockResolvedValue({ data: { users: [] } }),
+    post: vi.fn().mockResolvedValue({ data: { id: <span class="string">"new"</span> } }),
+  },
+}));
+</code></pre>
+
+    <h3>Mocking fetch / Network Requests</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Mock global fetch</span>
+<span class="keyword">const</span> mockFetch = vi.fn();
+global.fetch = mockFetch;
+
+<span class="function">beforeEach</span>(() =&gt; {
+  mockFetch.mockReset();
+});
+
+<span class="function">it</span>(<span class="string">"fetches users"</span>, <span class="keyword">async</span> () =&gt; {
+  mockFetch.mockResolvedValue({
+    ok: <span class="keyword">true</span>,
+    json: <span class="keyword">async</span> () =&gt; [{ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> }],
+  });
+
+  <span class="keyword">const</span> users = <span class="keyword">await</span> <span class="function">getUsers</span>();
+
+  expect(mockFetch).toHaveBeenCalledWith(<span class="string">"https://api.example.com/users"</span>);
+  expect(users).toHaveLength(<span class="number">1</span>);
+});
+
+<span class="function">it</span>(<span class="string">"handles network error"</span>, <span class="keyword">async</span> () =&gt; {
+  mockFetch.mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"Network failed"</span>));
+
+  <span class="keyword">await</span> expect(<span class="function">getUsers</span>()).rejects.toThrow(<span class="string">"Network failed"</span>);
+});
+
+<span class="function">it</span>(<span class="string">"handles non-OK response"</span>, <span class="keyword">async</span> () =&gt; {
+  mockFetch.mockResolvedValue({
+    ok: <span class="keyword">false</span>,
+    status: <span class="number">500</span>,
+    statusText: <span class="string">"Internal Server Error"</span>,
+  });
+
+  <span class="keyword">await</span> expect(<span class="function">getUsers</span>()).rejects.toThrow();
+});
+</code></pre>
+
+    <h3>Mocking Timers</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">beforeEach</span>(() =&gt; { vi.useFakeTimers(); });
+<span class="function">afterEach</span>(() =&gt; { vi.useRealTimers(); });
+
+<span class="function">it</span>(<span class="string">"debounces calls"</span>, () =&gt; {
+  <span class="keyword">const</span> callback = vi.fn();
+  <span class="keyword">const</span> debounced = <span class="function">debounce</span>(callback, <span class="number">300</span>);
+
+  <span class="function">debounced</span>();
+  <span class="function">debounced</span>();
+  <span class="function">debounced</span>();
+
+  expect(callback).not.toHaveBeenCalled(); <span class="comment">// not yet</span>
+
+  vi.advanceTimersByTime(<span class="number">300</span>);
+
+  expect(callback).toHaveBeenCalledTimes(<span class="number">1</span>); <span class="comment">// only once</span>
+});
+
+<span class="function">it</span>(<span class="string">"runs setInterval"</span>, () =&gt; {
+  <span class="keyword">const</span> callback = vi.fn();
+  setInterval(callback, <span class="number">1000</span>);
+
+  vi.advanceTimersByTime(<span class="number">3000</span>);
+  expect(callback).toHaveBeenCalledTimes(<span class="number">3</span>);
+});
+
+<span class="comment">// Other timer controls</span>
+vi.runAllTimers();         <span class="comment">// fast-forward until all timers fire</span>
+vi.runOnlyPendingTimers(); <span class="comment">// run currently pending timers only</span>
+vi.advanceTimersToNextTimer(); <span class="comment">// jump to next timer</span>
+vi.setSystemTime(<span class="keyword">new</span> Date(<span class="string">"2025-01-01"</span>)); <span class="comment">// mock Date.now()</span>
+</code></pre>
+
+    <h3>Mocking Classes</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Automatically mock all methods of a class</span>
+vi.mock(<span class="string">"./EmailService"</span>);
+<span class="keyword">import</span> { EmailService } <span class="keyword">from</span> <span class="string">"./EmailService"</span>;
+
+<span class="function">it</span>(<span class="string">"uses mocked EmailService"</span>, () =&gt; {
+  <span class="keyword">const</span> email = <span class="keyword">new</span> <span class="function">EmailService</span>();
+  <span class="comment">// All methods are now vi.fn() -- no real implementation</span>
+  email.send(<span class="string">"to"</span>, <span class="string">"subject"</span>, <span class="string">"body"</span>);
+  expect(email.send).toHaveBeenCalled();
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 9 ───────────── -->
+  <section id="spies-deep">
+    <h2>9. Spies Deep Dive</h2>
+
+    <p>A spy wraps an <strong>existing</strong> function/method and tracks its calls while optionally changing its behavior.</p>
+
+    <h3>spyOn -- Watch Without Changing</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> obj = {
+  <span class="function">greet</span>(name: <span class="keyword">string</span>) { <span class="keyword">return</span> <span class="string">`Hello ${name}`</span>; }
+};
+
+<span class="keyword">const</span> spy = vi.spyOn(obj, <span class="string">"greet"</span>);
+
+obj.greet(<span class="string">"Sean"</span>); <span class="comment">// still calls the REAL method</span>
+
+expect(spy).toHaveBeenCalledWith(<span class="string">"Sean"</span>);
+expect(spy).toHaveReturnedWith(<span class="string">"Hello Sean"</span>);
+
+spy.mockRestore(); <span class="comment">// remove the spy, restore original</span>
+</code></pre>
+
+    <h3>spyOn -- Replace Behavior</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> spy = vi.spyOn(obj, <span class="string">"greet"</span>).mockReturnValue(<span class="string">"mocked"</span>);
+
+obj.greet(<span class="string">"Sean"</span>); <span class="comment">// returns "mocked", NOT the real implementation</span>
+
+expect(spy).toHaveBeenCalledWith(<span class="string">"Sean"</span>);
+</code></pre>
+
+    <h3>Spy on Console, Date, Math</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Silence console.error in tests</span>
+<span class="keyword">const</span> errorSpy = vi.spyOn(console, <span class="string">"error"</span>).mockImplementation(() =&gt; {});
+
+<span class="function">doSomethingThatLogs</span>(); <span class="comment">// no output in test runner</span>
+
+expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining(<span class="string">"warning"</span>));
+errorSpy.mockRestore();
+
+<span class="comment">// Spy on Math.random for deterministic tests</span>
+vi.spyOn(Math, <span class="string">"random"</span>).mockReturnValue(<span class="number">0.5</span>);
+expect(<span class="function">rollDice</span>()).toBe(<span class="number">4</span>); <span class="comment">// deterministic</span>
+
+<span class="comment">// Spy on Date.now</span>
+vi.spyOn(Date, <span class="string">"now"</span>).mockReturnValue(<span class="number">1704067200000</span>); <span class="comment">// Jan 1 2024</span>
+</code></pre>
+
+    <h3>Tracking Call Order Across Multiple Spies</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> save = vi.fn();
+<span class="keyword">const</span> notify = vi.fn();
+
+<span class="keyword">await</span> <span class="function">registerUser</span>(save, notify);
+
+<span class="comment">// Verify save was called BEFORE notify</span>
+<span class="keyword">const</span> saveOrder = save.mock.invocationCallOrder[<span class="number">0</span>];
+<span class="keyword">const</span> notifyOrder = notify.mock.invocationCallOrder[<span class="number">0</span>];
+expect(saveOrder).toBeLessThan(notifyOrder);
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 10 ───────────── -->
+  <section id="async-testing">
+    <h2>10. Testing Async Code</h2>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// ── async/await (preferred) ──</span>
+<span class="function">it</span>(<span class="string">"fetches user"</span>, <span class="keyword">async</span> () =&gt; {
+  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="function">getUser</span>(<span class="string">"1"</span>);
+  expect(user.name).toBe(<span class="string">"Sean"</span>);
+});
+
+<span class="comment">// ── Testing rejections ──</span>
+<span class="function">it</span>(<span class="string">"throws on invalid id"</span>, <span class="keyword">async</span> () =&gt; {
+  <span class="keyword">await</span> expect(<span class="function">getUser</span>(<span class="string">""</span>)).rejects.toThrow(<span class="string">"Invalid ID"</span>);
+});
+
+<span class="comment">// ── Testing resolved values ──</span>
+<span class="function">it</span>(<span class="string">"resolves with user"</span>, <span class="keyword">async</span> () =&gt; {
+  <span class="keyword">await</span> expect(<span class="function">getUser</span>(<span class="string">"1"</span>)).resolves.toEqual(
+    expect.objectContaining({ name: <span class="string">"Sean"</span> })
+  );
+});
+
+<span class="comment">// ── Testing callbacks (legacy pattern) ──</span>
+<span class="function">it</span>(<span class="string">"calls back with data"</span>, (done) =&gt; {
+  <span class="function">fetchData</span>((err, data) =&gt; {
+    expect(err).toBeNull();
+    expect(data).toBeDefined();
+    <span class="function">done</span>(); <span class="comment">// MUST call done() or test hangs</span>
+  });
+});
+
+<span class="comment">// ── Testing event emitters ──</span>
+<span class="function">it</span>(<span class="string">"emits 'ready' event"</span>, <span class="keyword">async</span> () =&gt; {
+  <span class="keyword">const</span> server = <span class="keyword">new</span> <span class="function">MyServer</span>();
+  <span class="keyword">const</span> promise = <span class="keyword">new</span> Promise((resolve) =&gt; {
+    server.on(<span class="string">"ready"</span>, resolve);
+  });
+
+  server.start();
+
+  <span class="keyword">await</span> expect(promise).resolves.toBeDefined();
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 11 ───────────── -->
+  <section id="testing-examples">
+    <h2>11. Real-World Testing Examples</h2>
+
+    <h3>Example 1: Testing a Service with DI</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// order-service.ts</span>
+<span class="keyword">interface</span> <span class="function">Deps</span> {
+  inventory: { checkStock: (productId: <span class="keyword">string</span>) =&gt; Promise&lt;<span class="keyword">number</span>&gt; };
+  payments: { charge: (amount: <span class="keyword">number</span>, card: <span class="keyword">string</span>) =&gt; Promise&lt;{ txId: <span class="keyword">string</span> }&gt; };
+  orders: { save: (order: Order) =&gt; Promise&lt;<span class="keyword">void</span>&gt; };
+}
+
+<span class="keyword">export function</span> <span class="function">createOrderService</span>(deps: Deps) {
+  <span class="keyword">return</span> {
+    <span class="keyword">async</span> <span class="function">placeOrder</span>(productId: <span class="keyword">string</span>, qty: <span class="keyword">number</span>, card: <span class="keyword">string</span>) {
+      <span class="keyword">const</span> stock = <span class="keyword">await</span> deps.inventory.checkStock(productId);
+      <span class="keyword">if</span> (stock &lt; qty) <span class="keyword">throw new</span> Error(<span class="string">"Insufficient stock"</span>);
+
+      <span class="keyword">const</span> { txId } = <span class="keyword">await</span> deps.payments.charge(qty * <span class="number">10</span>, card);
+
+      <span class="keyword">const</span> order = { id: crypto.randomUUID(), productId, qty, txId };
+      <span class="keyword">await</span> deps.orders.save(order);
+      <span class="keyword">return</span> order;
+    },
+  };
+}
+</code></pre>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// order-service.test.ts</span>
+<span class="function">describe</span>(<span class="string">"OrderService.placeOrder"</span>, () =&gt; {
+  <span class="keyword">function</span> <span class="function">setup</span>(overrides: Partial&lt;Deps&gt; = {}) {
+    <span class="keyword">const</span> deps: Deps = {
+      inventory: { checkStock: vi.fn().mockResolvedValue(<span class="number">100</span>) },
+      payments:  { charge: vi.fn().mockResolvedValue({ txId: <span class="string">"tx-123"</span> }) },
+      orders:    { save: vi.fn().mockResolvedValue(<span class="keyword">undefined</span>) },
+      ...overrides,
+    };
+    <span class="keyword">return</span> { service: <span class="function">createOrderService</span>(deps), ...deps };
+  }
+
+  <span class="function">it</span>(<span class="string">"creates an order when stock is available"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, orders } = <span class="function">setup</span>();
+
+    <span class="keyword">const</span> order = <span class="keyword">await</span> service.placeOrder(<span class="string">"prod-1"</span>, <span class="number">2</span>, <span class="string">"card-xxx"</span>);
+
+    expect(order.productId).toBe(<span class="string">"prod-1"</span>);
+    expect(order.txId).toBe(<span class="string">"tx-123"</span>);
+    expect(orders.save).toHaveBeenCalledWith(expect.objectContaining({ qty: <span class="number">2</span> }));
+  });
+
+  <span class="function">it</span>(<span class="string">"rejects when out of stock"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service } = <span class="function">setup</span>({
+      inventory: { checkStock: vi.fn().mockResolvedValue(<span class="number">0</span>) },
+    });
+
+    <span class="keyword">await</span> expect(service.placeOrder(<span class="string">"prod-1"</span>, <span class="number">5</span>, <span class="string">"card"</span>))
+      .rejects.toThrow(<span class="string">"Insufficient stock"</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"does NOT save order if payment fails"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, orders } = <span class="function">setup</span>({
+      payments: { charge: vi.fn().mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"Card declined"</span>)) },
+    });
+
+    <span class="keyword">await</span> expect(service.placeOrder(<span class="string">"prod-1"</span>, <span class="number">1</span>, <span class="string">"bad-card"</span>))
+      .rejects.toThrow(<span class="string">"Card declined"</span>);
+
+    expect(orders.save).not.toHaveBeenCalled();
+  });
+
+  <span class="function">it</span>(<span class="string">"charges the correct amount"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> { service, payments } = <span class="function">setup</span>();
+
+    <span class="keyword">await</span> service.placeOrder(<span class="string">"prod-1"</span>, <span class="number">3</span>, <span class="string">"card-xxx"</span>);
+
+    expect(payments.charge).toHaveBeenCalledWith(<span class="number">30</span>, <span class="string">"card-xxx"</span>);
+  });
+});
+</code></pre>
+
+    <h3>Example 2: Testing Error Paths</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">describe</span>(<span class="string">"error handling"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"retries on transient failure then succeeds"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> mockFetch = vi.fn()
+      .mockRejectedValueOnce(<span class="keyword">new</span> Error(<span class="string">"timeout"</span>))    <span class="comment">// 1st: fail</span>
+      .mockRejectedValueOnce(<span class="keyword">new</span> Error(<span class="string">"timeout"</span>))    <span class="comment">// 2nd: fail</span>
+      .mockResolvedValue({ data: <span class="string">"success"</span> });       <span class="comment">// 3rd: ok</span>
+
+    <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="function">fetchWithRetry</span>(mockFetch, <span class="number">3</span>);
+
+    expect(result).toEqual({ data: <span class="string">"success"</span> });
+    expect(mockFetch).toHaveBeenCalledTimes(<span class="number">3</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"gives up after max retries"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> mockFetch = vi.fn().mockRejectedValue(<span class="keyword">new</span> Error(<span class="string">"timeout"</span>));
+
+    <span class="keyword">await</span> expect(<span class="function">fetchWithRetry</span>(mockFetch, <span class="number">3</span>)).rejects.toThrow(<span class="string">"timeout"</span>);
+    expect(mockFetch).toHaveBeenCalledTimes(<span class="number">3</span>);
+  });
+});
+</code></pre>
+
+    <h3>Example 3: Testing a Cache</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">describe</span>(<span class="string">"CachedUserService"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"calls DB on first request, returns cache on second"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> dbGet = vi.fn().mockResolvedValue({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> });
+    <span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">CachedUserService</span>({ findById: dbGet });
+
+    <span class="keyword">const</span> first  = <span class="keyword">await</span> service.getUser(<span class="string">"1"</span>);
+    <span class="keyword">const</span> second = <span class="keyword">await</span> service.getUser(<span class="string">"1"</span>);
+
+    expect(first).toEqual(second);
+    expect(dbGet).toHaveBeenCalledTimes(<span class="number">1</span>); <span class="comment">// only ONE db call</span>
+  });
+
+  <span class="function">it</span>(<span class="string">"cache miss for different IDs"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> dbGet = vi.fn().mockResolvedValue({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> });
+    <span class="keyword">const</span> service = <span class="keyword">new</span> <span class="function">CachedUserService</span>({ findById: dbGet });
+
+    <span class="keyword">await</span> service.getUser(<span class="string">"1"</span>);
+    <span class="keyword">await</span> service.getUser(<span class="string">"2"</span>);
+
+    expect(dbGet).toHaveBeenCalledTimes(<span class="number">2</span>); <span class="comment">// different IDs = 2 calls</span>
+  });
+});
+</code></pre>
+
+    <h3>Example 4: Testing Event Emitters</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { EventEmitter } <span class="keyword">from</span> <span class="string">"node:events"</span>;
+
+<span class="keyword">class</span> <span class="function">TaskRunner</span> <span class="keyword">extends</span> EventEmitter {
+  <span class="keyword">async</span> <span class="function">run</span>(task: () =&gt; Promise&lt;<span class="keyword">void</span>&gt;) {
+    <span class="keyword">this</span>.emit(<span class="string">"start"</span>);
+    <span class="keyword">try</span> {
+      <span class="keyword">await</span> <span class="function">task</span>();
+      <span class="keyword">this</span>.emit(<span class="string">"success"</span>);
+    } <span class="keyword">catch</span> (err) {
+      <span class="keyword">this</span>.emit(<span class="string">"error"</span>, err);
+    }
+  }
+}
+
+<span class="function">describe</span>(<span class="string">"TaskRunner"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"emits start then success"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> runner = <span class="keyword">new</span> <span class="function">TaskRunner</span>();
+    <span class="keyword">const</span> startSpy = vi.fn();
+    <span class="keyword">const</span> successSpy = vi.fn();
+
+    runner.on(<span class="string">"start"</span>, startSpy);
+    runner.on(<span class="string">"success"</span>, successSpy);
+
+    <span class="keyword">await</span> runner.run(<span class="keyword">async</span> () =&gt; {});
+
+    expect(startSpy).toHaveBeenCalledTimes(<span class="number">1</span>);
+    expect(successSpy).toHaveBeenCalledTimes(<span class="number">1</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"emits error on failure"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> runner = <span class="keyword">new</span> <span class="function">TaskRunner</span>();
+    <span class="keyword">const</span> errorSpy = vi.fn();
+    runner.on(<span class="string">"error"</span>, errorSpy);
+
+    <span class="keyword">await</span> runner.run(<span class="keyword">async</span> () =&gt; { <span class="keyword">throw new</span> Error(<span class="string">"boom"</span>); });
+
+    expect(errorSpy).toHaveBeenCalledWith(expect.any(Error));
+  });
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 12 ───────────── -->
+  <section id="http-testing">
+    <h2>12. Testing HTTP APIs</h2>
+
+    <p>Use <code>supertest</code> to test Express/Fastify/Hono apps without starting a real server.</p>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { describe, it, expect } <span class="keyword">from</span> <span class="string">"vitest"</span>;
+<span class="keyword">import</span> request <span class="keyword">from</span> <span class="string">"supertest"</span>;
+<span class="keyword">import</span> { app } <span class="keyword">from</span> <span class="string">"./app"</span>;
+
+<span class="function">describe</span>(<span class="string">"GET /api/users"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"returns 200 and users"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app)
+      .get(<span class="string">"/api/users"</span>)
+      .set(<span class="string">"Authorization"</span>, <span class="string">"Bearer test-token"</span>)
+      .expect(<span class="number">200</span>);
+
+    expect(res.body).toHaveLength(<span class="number">3</span>);
+    expect(res.body[<span class="number">0</span>]).toHaveProperty(<span class="string">"name"</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"returns 401 without auth"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">await</span> <span class="function">request</span>(app).get(<span class="string">"/api/users"</span>).expect(<span class="number">401</span>);
+  });
+});
+
+<span class="function">describe</span>(<span class="string">"POST /api/users"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"creates a user"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app)
+      .post(<span class="string">"/api/users"</span>)
+      .send({ name: <span class="string">"Sean"</span>, email: <span class="string">"sean@test.com"</span> })
+      .expect(<span class="number">201</span>);
+
+    expect(res.body.id).toBeDefined();
+  });
+
+  <span class="function">it</span>(<span class="string">"returns 400 on invalid input"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app)
+      .post(<span class="string">"/api/users"</span>)
+      .send({ name: <span class="string">""</span> }) <span class="comment">// missing email</span>
+      .expect(<span class="number">400</span>);
+
+    expect(res.body.errors).toBeDefined();
+  });
+});
+</code></pre>
+
+    <h3>Testing with DI in Express</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// app.ts -- accepts dependencies</span>
+<span class="keyword">export function</span> <span class="function">createApp</span>(deps: { userRepo: UserRepository }) {
+  <span class="keyword">const</span> app = <span class="function">express</span>();
+  app.use(express.json());
+
+  app.get(<span class="string">"/api/users/:id"</span>, <span class="keyword">async</span> (req, res) =&gt; {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> deps.userRepo.findById(req.params.id);
+    <span class="keyword">if</span> (!user) <span class="keyword">return</span> res.status(<span class="number">404</span>).json({ error: <span class="string">"Not found"</span> });
+    res.json(user);
+  });
+
+  <span class="keyword">return</span> app;
+}
+
+<span class="comment">// app.test.ts</span>
+<span class="function">describe</span>(<span class="string">"GET /api/users/:id"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"returns user when found"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> app = <span class="function">createApp</span>({
+      userRepo: { findById: vi.fn().mockResolvedValue({ id: <span class="string">"1"</span>, name: <span class="string">"Sean"</span> }) },
+    });
+
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app).get(<span class="string">"/api/users/1"</span>);
+    expect(res.status).toBe(<span class="number">200</span>);
+    expect(res.body.name).toBe(<span class="string">"Sean"</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"returns 404 when not found"</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> app = <span class="function">createApp</span>({
+      userRepo: { findById: vi.fn().mockResolvedValue(<span class="keyword">null</span>) },
+    });
+
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app).get(<span class="string">"/api/users/bad-id"</span>);
+    expect(res.status).toBe(<span class="number">404</span>);
+  });
+});
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 13 ───────────── -->
+  <section id="snapshots">
+    <h2>13. Snapshot Testing</h2>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="function">it</span>(<span class="string">"generates correct config"</span>, () =&gt; {
+  <span class="keyword">const</span> config = <span class="function">generateConfig</span>({ env: <span class="string">"production"</span> });
+  expect(config).toMatchSnapshot();
+  <span class="comment">// First run: creates __snapshots__/file.test.ts.snap</span>
+  <span class="comment">// Next runs: compares against saved snapshot</span>
+});
+
+<span class="comment">// Inline snapshot (stored in the test file itself)</span>
+<span class="function">it</span>(<span class="string">"formats name"</span>, () =&gt; {
+  expect(<span class="function">formatName</span>(<span class="string">"sean"</span>)).toMatchInlineSnapshot(<span class="string">`"Sean"`</span>);
+});
+</code></pre>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Update snapshots when output intentionally changes</span>
+npx vitest run --update     <span class="comment"># vitest</span>
+npx jest --updateSnapshot   <span class="comment"># jest</span>
+</code></pre>
+
+    <div class="warning-box">
+      <strong>Snapshot testing gotcha:</strong> Snapshots can become "rubber stamp" tests where devs just update them without checking. Use them for structured output (configs, serialized data) but prefer explicit assertions for business logic.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 14 ───────────── -->
+  <section id="coverage">
+    <h2>14. Code Coverage</h2>
+
+    <pre><code><span class="lang-label">Bash</span>
+npx vitest run --coverage
+npx jest --coverage
+
+<span class="comment"># Install coverage provider for Vitest</span>
+pnpm add -D @vitest/coverage-v8
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Coverage Metrics:
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Statements   How many statements were executed
+Branches     How many if/else/switch branches were taken
+Functions    How many functions were called
+Lines        How many lines were executed
+</code></pre>
+
+    <h3>Coverage Thresholds</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// vitest.config.ts</span>
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  test: {
+    coverage: {
+      thresholds: {
+        statements: <span class="number">80</span>,
+        branches: <span class="number">80</span>,
+        functions: <span class="number">80</span>,
+        lines: <span class="number">80</span>,
+      },
+    },
+  },
+});
+</code></pre>
+
+    <div class="tip-box">
+      <strong>80% coverage is a good target.</strong> 100% is usually wasteful -- you end up testing getters and trivial code. Focus coverage on business logic and edge cases.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 15 ───────────── -->
+  <section id="tdd">
+    <h2>15. TDD (Test-Driven Development)</h2>
+
+    <pre><code><span class="lang-label">Text</span>
+The TDD Cycle:
+
+1. RED    &rarr; Write a failing test first
+2. GREEN  &rarr; Write the minimum code to make it pass
+3. REFACTOR &rarr; Clean up, keep tests passing
+4. Repeat
+</code></pre>
+
+    <h3>TDD Example: Password Validator</h3>
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Step 1: RED -- write failing tests FIRST</span>
+<span class="function">describe</span>(<span class="string">"validatePassword"</span>, () =&gt; {
+  <span class="function">it</span>(<span class="string">"rejects empty string"</span>, () =&gt; {
+    expect(<span class="function">validatePassword</span>(<span class="string">""</span>)).toEqual({ valid: <span class="keyword">false</span>, errors: [<span class="string">"Too short"</span>] });
+  });
+
+  <span class="function">it</span>(<span class="string">"rejects short passwords"</span>, () =&gt; {
+    expect(<span class="function">validatePassword</span>(<span class="string">"abc"</span>)).toEqual({ valid: <span class="keyword">false</span>, errors: [<span class="string">"Too short"</span>] });
+  });
+
+  <span class="function">it</span>(<span class="string">"requires a number"</span>, () =&gt; {
+    <span class="keyword">const</span> result = <span class="function">validatePassword</span>(<span class="string">"abcdefgh"</span>);
+    expect(result.valid).toBe(<span class="keyword">false</span>);
+    expect(result.errors).toContain(<span class="string">"Must contain a number"</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">"accepts valid password"</span>, () =&gt; {
+    expect(<span class="function">validatePassword</span>(<span class="string">"abcdef1!"</span>)).toEqual({ valid: <span class="keyword">true</span>, errors: [] });
+  });
+});
+
+<span class="comment">// Step 2: GREEN -- implement just enough to pass</span>
+<span class="keyword">export function</span> <span class="function">validatePassword</span>(pw: <span class="keyword">string</span>) {
+  <span class="keyword">const</span> errors: <span class="keyword">string</span>[] = [];
+  <span class="keyword">if</span> (pw.length &lt; <span class="number">8</span>) errors.push(<span class="string">"Too short"</span>);
+  <span class="keyword">if</span> (!/\d/.test(pw)) errors.push(<span class="string">"Must contain a number"</span>);
+  <span class="keyword">if</span> (!/[!@#$%]/.test(pw)) errors.push(<span class="string">"Must contain a special character"</span>);
+  <span class="keyword">return</span> { valid: errors.length === <span class="number">0</span>, errors };
+}
+
+<span class="comment">// Step 3: REFACTOR -- maybe extract a Rule type, clean up, tests still pass</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 16 ───────────── -->
+  <section id="e2e">
+    <h2>16. E2E Testing with Playwright</h2>
+
+    <p>Playwright tests your app from a real browser -- clicks buttons, fills forms, checks what the user sees.</p>
+
+    <pre><code><span class="lang-label">Bash</span>
+pnpm add -D @playwright/test
+npx playwright install
+</code></pre>
+
+    <pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> { test, expect } <span class="keyword">from</span> <span class="string">"@playwright/test"</span>;
+
+test(<span class="string">"user can log in"</span>, <span class="keyword">async</span> ({ page }) =&gt; {
+  <span class="keyword">await</span> page.goto(<span class="string">"http://localhost:3000/login"</span>);
+  <span class="keyword">await</span> page.fill(<span class="string">'input[name="email"]'</span>, <span class="string">"sean@test.com"</span>);
+  <span class="keyword">await</span> page.fill(<span class="string">'input[name="password"]'</span>, <span class="string">"password123"</span>);
+  <span class="keyword">await</span> page.click(<span class="string">'button[type="submit"]'</span>);
+
+  <span class="keyword">await</span> expect(page).toHaveURL(<span class="string">"/dashboard"</span>);
+  <span class="keyword">await</span> expect(page.locator(<span class="string">"h1"</span>)).toHaveText(<span class="string">"Welcome, Sean"</span>);
+});
+
+test(<span class="string">"shows error on bad password"</span>, <span class="keyword">async</span> ({ page }) =&gt; {
+  <span class="keyword">await</span> page.goto(<span class="string">"http://localhost:3000/login"</span>);
+  <span class="keyword">await</span> page.fill(<span class="string">'input[name="email"]'</span>, <span class="string">"sean@test.com"</span>);
+  <span class="keyword">await</span> page.fill(<span class="string">'input[name="password"]'</span>, <span class="string">"wrong"</span>);
+  <span class="keyword">await</span> page.click(<span class="string">'button[type="submit"]'</span>);
+
+  <span class="keyword">await</span> expect(page.locator(<span class="string">".error"</span>)).toBeVisible();
+});
+</code></pre>
+
+    <pre><code><span class="lang-label">Bash</span>
+npx playwright test            <span class="comment"># run tests</span>
+npx playwright test --ui       <span class="comment"># visual debugging</span>
+npx playwright codegen http://localhost:3000  <span class="comment"># generate tests by clicking</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 17 ───────────── -->
+  <section id="ci">
+    <h2>17. Testing in CI</h2>
+
+    <pre><code><span class="lang-label">YAML</span>
+<span class="comment"># .github/workflows/test.yml</span>
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test:ci
+      - run: pnpm lint
+</code></pre>
+
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"scripts"</span>: {
+    <span class="string">"test"</span>: <span class="string">"vitest"</span>,
+    <span class="string">"test:ci"</span>: <span class="string">"vitest run --coverage --reporter=verbose"</span>,
+    <span class="string">"typecheck"</span>: <span class="string">"tsc --noEmit"</span>,
+    <span class="string">"lint"</span>: <span class="string">"eslint src/"</span>
+  }
+}
+</code></pre>
+
+    <div class="tip-box">
+      <strong>CI testing checklist:</strong>
+      <ul>
+        <li>Use <code>--frozen-lockfile</code> to ensure reproducible installs</li>
+        <li>Run type checking, tests, and linting as separate steps</li>
+        <li>Set coverage thresholds to prevent regression</li>
+        <li>Cache <code>node_modules</code> for faster CI runs</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Better Dev. For personal study use.</p>
+</footer>
+
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+  var si=document.querySelector('.sidebar-search-input');
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+  }
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
+    if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

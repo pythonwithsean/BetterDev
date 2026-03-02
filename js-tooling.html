@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS/TS Tooling &amp; Bundlers - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Tooling &amp; Bundlers</div>
+    <h1>JS/TS Tooling &amp; Bundlers</h1>
+    <p>The JavaScript ecosystem has a lot of tooling. This page cuts through the noise: package managers, bundlers, transpilers, linters, and module resolution -- what each does, when to use it, and how they fit together.</p>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#package-managers">1. Package Managers (npm, yarn, pnpm)</a>
+    <a href="#package-json">2. package.json Deep Dive</a>
+    <a href="#module-resolution">3. Module Resolution</a>
+    <a href="#bundlers">4. Bundlers: Webpack, Vite, esbuild</a>
+    <a href="#transpilers">5. Transpilers: Babel, SWC, tsc</a>
+    <a href="#linting-formatting">6. Linting &amp; Formatting</a>
+    <a href="#npm-audit">7. npm audit &amp; Security</a>
+    <a href="#monorepos">8. Monorepos &amp; Workspaces</a>
+    <a href="#task-runners">9. Task Runners &amp; Scripts</a>
+    <a href="#putting-together">10. Putting It All Together</a>
+  </div>
+
+  <!-- ───────────── SECTION 1 ───────────── -->
+  <section id="package-managers">
+    <h2>1. Package Managers (npm, yarn, pnpm)</h2>
+
+    <pre><code><span class="lang-label">Text</span>
+Tool     Lock File            node_modules         Speed
+──────────────────────────────────────────────────────────
+npm      package-lock.json    Flat (hoisted)       Baseline
+yarn     yarn.lock            Flat (hoisted)       Faster (cache)
+pnpm     pnpm-lock.yaml      Symlinked (strict)   Fastest (content-addressable)
+</code></pre>
+
+    <h3>Key Commands</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Install all dependencies</span>
+npm install          <span class="comment"># or: yarn, pnpm install</span>
+
+<span class="comment"># Add a dependency</span>
+npm install express  <span class="comment"># or: yarn add express, pnpm add express</span>
+
+<span class="comment"># Add a dev dependency</span>
+npm install -D vitest  <span class="comment"># or: yarn add -D, pnpm add -D</span>
+
+<span class="comment"># Remove a dependency</span>
+npm uninstall express
+
+<span class="comment"># Run a script from package.json</span>
+npm run build        <span class="comment"># or: yarn build, pnpm build</span>
+
+<span class="comment"># Run a binary from node_modules/.bin</span>
+npx vitest           <span class="comment"># or: yarn dlx, pnpm dlx</span>
+
+<span class="comment"># Clean install (CI, reproducible)</span>
+npm ci               <span class="comment"># deletes node_modules, installs from lock file exactly</span>
+</code></pre>
+
+    <h3>Why pnpm?</h3>
+    <div class="tip-box">
+      <strong>pnpm</strong> stores packages in a global content-addressable store and symlinks them into your project. This means:
+      <ul>
+        <li>Packages are never duplicated on disk (saves GBs across projects)</li>
+        <li>Installs are faster because packages are hard-linked</li>
+        <li>Strict node_modules prevents "phantom dependencies" (using packages you didn't declare)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 2 ───────────── -->
+  <section id="package-json">
+    <h2>2. package.json Deep Dive</h2>
+
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"name"</span>: <span class="string">"my-project"</span>,
+  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,
+  <span class="string">"type"</span>: <span class="string">"module"</span>,          <span class="comment">// ← ESM by default (.js files use import/export)</span>
+  <span class="string">"main"</span>: <span class="string">"./dist/index.cjs"</span>,  <span class="comment">// ← CJS entry point</span>
+  <span class="string">"module"</span>: <span class="string">"./dist/index.js"</span>, <span class="comment">// ← ESM entry point (bundlers)</span>
+
+  <span class="comment">// Modern exports field (replaces main/module)</span>
+  <span class="string">"exports"</span>: {
+    <span class="string">"."</span>: {
+      <span class="string">"import"</span>: <span class="string">"./dist/index.js"</span>,
+      <span class="string">"require"</span>: <span class="string">"./dist/index.cjs"</span>,
+      <span class="string">"types"</span>: <span class="string">"./dist/index.d.ts"</span>
+    },
+    <span class="string">"./utils"</span>: <span class="string">"./dist/utils.js"</span>
+  },
+
+  <span class="string">"scripts"</span>: {
+    <span class="string">"dev"</span>: <span class="string">"vite"</span>,
+    <span class="string">"build"</span>: <span class="string">"tsc && vite build"</span>,
+    <span class="string">"test"</span>: <span class="string">"vitest"</span>,
+    <span class="string">"lint"</span>: <span class="string">"eslint src/"</span>,
+    <span class="string">"typecheck"</span>: <span class="string">"tsc --noEmit"</span>
+  },
+
+  <span class="string">"dependencies"</span>: {
+    <span class="string">"express"</span>: <span class="string">"^4.18.0"</span>      <span class="comment">// ^ = compatible (4.18.x, 4.19.x, etc.)</span>
+  },
+  <span class="string">"devDependencies"</span>: {
+    <span class="string">"typescript"</span>: <span class="string">"~5.3.0"</span>,   <span class="comment">// ~ = patch only (5.3.0, 5.3.1, etc.)</span>
+    <span class="string">"vitest"</span>: <span class="string">"^1.0.0"</span>
+  },
+  <span class="string">"engines"</span>: {
+    <span class="string">"node"</span>: <span class="string">">=20.0.0"</span>        <span class="comment">// enforce minimum Node version</span>
+  }
+}
+</code></pre>
+
+    <h3>Semver Ranges</h3>
+    <pre><code><span class="lang-label">Text</span>
+^1.2.3  →  >=1.2.3  <1.0.0    (any 1.x.x, most common)
+~1.2.3  →  >=1.2.3  <1.3.0    (only patch updates)
+1.2.3   →  exactly 1.2.3      (pinned)
+*       →  any version         (dangerous)
+>=2.0.0 →  2.0.0 or higher
+</code></pre>
+
+    <div class="warning-box">
+      <strong>dependencies vs devDependencies:</strong> <code>dependencies</code> are needed at runtime (express, react). <code>devDependencies</code> are only needed during development (typescript, vitest, eslint). When someone installs your package, devDependencies are NOT installed.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 3 ───────────── -->
+  <section id="module-resolution">
+    <h2>3. Module Resolution</h2>
+
+    <p>When you write <code>import x from "foo"</code>, the resolver figures out what file "foo" actually points to.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+import "./math"          → Relative: looks for ./math.ts, ./math.js, ./math/index.ts
+import "express"         → Bare specifier: looks in node_modules
+import "node:fs"         → Node built-in (explicit)
+import "@scope/pkg"      → Scoped package in node_modules/@scope/pkg
+</code></pre>
+
+    <h3>Node Module Resolution Algorithm</h3>
+    <pre><code><span class="lang-label">Text</span>
+require("express")
+
+1. Check node_modules/express/package.json "main" field
+2. Check node_modules/express/index.js
+3. If not found, go to parent directory's node_modules/
+4. Repeat up to filesystem root
+
+ESM resolution (import):
+1. Check package.json "exports" field first
+2. Fall back to "main" field
+3. No automatic extension resolution (.js must be explicit!)
+</code></pre>
+
+    <div class="warning-box">
+      <strong>ESM gotcha:</strong> In ESM, you must include the file extension: <code>import { add } from "./math.js"</code> (not <code>"./math"</code>). TypeScript with <code>"moduleResolution": "NodeNext"</code> enforces this. Bundlers like Vite handle it for you.
+    </div>
+
+    <h3>tsconfig moduleResolution Options</h3>
+    <pre><code><span class="lang-label">Text</span>
+"node"       → Legacy CJS resolution (Node 12 style)
+"node16"     → Respects package.json "exports", requires extensions
+"nodenext"   → Same as node16 (latest Node resolution)
+"bundler"    → For Vite/Webpack: no extensions required, supports "exports"
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 4 ───────────── -->
+  <section id="bundlers">
+    <h2>4. Bundlers: Webpack, Vite, esbuild</h2>
+
+    <h3>What a Bundler Does</h3>
+    <pre><code><span class="lang-label">Text</span>
+Many source files → Bundle → One or few output files
+
+src/index.ts ─┐
+src/utils.ts ─┤→ [Bundler] → dist/bundle.js
+src/api.ts   ─┘              dist/bundle.css
+</code></pre>
+
+    <h3>Webpack</h3>
+    <p>The original. Extremely configurable, plugin-heavy, slower than modern alternatives.</p>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// webpack.config.js</span>
+<span class="keyword">export default</span> {
+  entry: <span class="string">"./src/index.ts"</span>,
+  output: { filename: <span class="string">"bundle.js"</span>, path: <span class="string">"./dist"</span> },
+  module: {
+    rules: [
+      { test: /\.tsx?$/, use: <span class="string">"ts-loader"</span> },
+      { test: /\.css$/,  use: [<span class="string">"style-loader"</span>, <span class="string">"css-loader"</span>] },
+    ]
+  },
+  resolve: { extensions: [<span class="string">".ts"</span>, <span class="string">".tsx"</span>, <span class="string">".js"</span>] }
+};
+</code></pre>
+
+    <h3>Vite</h3>
+    <p>Dev server uses native ESM (no bundling during dev = instant start). Production uses Rollup.</p>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// vite.config.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">"vite"</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  build: { outDir: <span class="string">"dist"</span> },
+  server: { port: <span class="number">3000</span> }
+});
+</code></pre>
+
+    <h3>esbuild</h3>
+    <p>Written in Go. 10-100x faster than Webpack. No config file needed.</p>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Bundle a TS file to JS</span>
+esbuild src/index.ts --bundle --outfile=dist/bundle.js --platform=node
+
+<span class="comment"># Minify for production</span>
+esbuild src/index.ts --bundle --minify --outfile=dist/bundle.min.js
+</code></pre>
+
+    <h3>tsup (Library Bundler)</h3>
+    <p>Built on esbuild. The go-to for bundling TypeScript libraries.</p>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Outputs CJS + ESM + .d.ts files</span>
+tsup src/index.ts --format cjs,esm --dts
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Tool       Speed       Config       Best For
+───────────────────────────────────────────────────
+Webpack    Slow        Heavy        Legacy projects, complex apps
+Vite       Fast        Minimal      Frontend apps, dev experience
+esbuild    Fastest     Minimal      Bundling, quick builds
+tsup       Fast        Zero-config  TypeScript libraries
+Rollup     Medium      Moderate     Libraries, tree-shaking
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 5 ───────────── -->
+  <section id="transpilers">
+    <h2>5. Transpilers: Babel, SWC, tsc</h2>
+
+    <p>Transpilers convert modern JS/TS into older JS that more environments can run.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+Tool    Written In    Speed       Does Type Checking?
+──────────────────────────────────────────────────────
+tsc     TypeScript    Slow        ✅ Yes (that's the point)
+Babel   JavaScript    Medium      ❌ No (strips types only)
+SWC     Rust          Very Fast   ❌ No (strips types only)
+</code></pre>
+
+    <h3>Modern Approach: Strip Types, Check Separately</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"scripts"</span>: {
+    <span class="string">"build"</span>: <span class="string">"tsup src/index.ts"</span>,
+    <span class="string">"typecheck"</span>: <span class="string">"tsc --noEmit"</span>,
+    <span class="string">"ci"</span>: <span class="string">"npm run typecheck && npm run build && npm run test"</span>
+  }
+}
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Don't use tsc as your build tool.</strong> Use it only for type checking (<code>--noEmit</code>). Let esbuild/swc/tsup handle the actual compilation -- they're 10-100x faster because they skip type checking.
+    </div>
+
+    <h3>Babel Config (babel.config.json)</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"presets"</span>: [
+    [<span class="string">"@babel/preset-env"</span>, { <span class="string">"targets"</span>: <span class="string">"node 20"</span> }],
+    <span class="string">"@babel/preset-typescript"</span>
+  ]
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 6 ───────────── -->
+  <section id="linting-formatting">
+    <h2>6. Linting &amp; Formatting</h2>
+
+    <h3>ESLint</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Setup</span>
+npm init @eslint/config@latest
+
+<span class="comment"># Run</span>
+npx eslint src/
+npx eslint --fix src/   <span class="comment"># auto-fix</span>
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// eslint.config.js (flat config, ESLint 9+)</span>
+<span class="keyword">import</span> tseslint <span class="keyword">from</span> <span class="string">"typescript-eslint"</span>;
+
+<span class="keyword">export default</span> tseslint.config(
+  tseslint.configs.recommended,
+  {
+    rules: {
+      <span class="string">"@typescript-eslint/no-unused-vars"</span>: <span class="string">"error"</span>,
+      <span class="string">"@typescript-eslint/no-explicit-any"</span>: <span class="string">"warn"</span>,
+    }
+  }
+);
+</code></pre>
+
+    <h3>Prettier (Formatting)</h3>
+    <pre><code><span class="lang-label">Bash</span>
+npx prettier --write src/    <span class="comment"># format all files</span>
+npx prettier --check src/    <span class="comment"># check without writing (CI)</span>
+</code></pre>
+
+    <h3>Biome (ESLint + Prettier alternative)</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Single tool that replaces ESLint + Prettier</span>
+npx @biomejs/biome check src/      <span class="comment"># lint + format check</span>
+npx @biomejs/biome check --fix src/ <span class="comment"># auto-fix both</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 7 ───────────── -->
+  <section id="npm-audit">
+    <h2>7. npm audit &amp; Security</h2>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Check for known vulnerabilities</span>
+npm audit
+
+<span class="comment"># Auto-fix what it can (updates to patched versions)</span>
+npm audit fix
+
+<span class="comment"># Force fix (may include breaking changes)</span>
+npm audit fix --force
+
+<span class="comment"># See detailed info about a vulnerability</span>
+npm audit --json
+</code></pre>
+
+    <h3>What npm audit Actually Does</h3>
+    <pre><code><span class="lang-label">Text</span>
+1. Reads your package-lock.json
+2. Sends the dependency tree to the npm registry
+3. Registry checks against the GitHub Advisory Database
+4. Returns vulnerabilities with severity levels:
+   - critical, high, moderate, low, info
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Not all audit warnings matter.</strong> A "critical" vulnerability in a dev-only tool (like a test framework) that never runs in production is often low-risk. Focus on vulnerabilities in <code>dependencies</code> that run in production.
+    </div>
+
+    <h3>Lockfile Importance</h3>
+    <p>The lock file (package-lock.json / yarn.lock / pnpm-lock.yaml) pins exact versions. <strong>Always commit it.</strong> Without it, <code>npm install</code> can resolve different versions on different machines.</p>
+  </section>
+
+  <!-- ───────────── SECTION 8 ───────────── -->
+  <section id="monorepos">
+    <h2>8. Monorepos &amp; Workspaces</h2>
+
+    <p>A monorepo holds multiple packages/apps in one repository. Workspaces let them share dependencies.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+my-monorepo/
+├── package.json          ← root, defines workspaces
+├── packages/
+│   ├── shared/           ← @myorg/shared
+│   │   ├── package.json
+│   │   └── src/
+│   ├── api/              ← @myorg/api
+│   │   ├── package.json
+│   │   └── src/
+│   └── web/              ← @myorg/web
+│       ├── package.json
+│       └── src/
+</code></pre>
+
+    <pre><code><span class="lang-label">JSON</span>
+<span class="comment">// root package.json</span>
+{
+  <span class="string">"private"</span>: <span class="keyword">true</span>,
+  <span class="string">"workspaces"</span>: [<span class="string">"packages/*"</span>]
+}
+</code></pre>
+
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Run a script in a specific workspace</span>
+npm run build --workspace=packages/api
+
+<span class="comment"># pnpm (more ergonomic)</span>
+pnpm --filter @myorg/api build
+
+<span class="comment"># Turborepo: run across all workspaces with caching</span>
+npx turbo build
+</code></pre>
+
+    <h3>Turborepo</h3>
+    <p>The go-to task runner for monorepos. Caches results, runs tasks in parallel, respects dependency order.</p>
+    <pre><code><span class="lang-label">JSON</span>
+<span class="comment">// turbo.json</span>
+{
+  <span class="string">"tasks"</span>: {
+    <span class="string">"build"</span>: { <span class="string">"dependsOn"</span>: [<span class="string">"^build"</span>], <span class="string">"outputs"</span>: [<span class="string">"dist/**"</span>] },
+    <span class="string">"test"</span>:  { <span class="string">"dependsOn"</span>: [<span class="string">"build"</span>] },
+    <span class="string">"lint"</span>:  {}
+  }
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 9 ───────────── -->
+  <section id="task-runners">
+    <h2>9. Task Runners &amp; Scripts</h2>
+
+    <h3>npm Scripts</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"scripts"</span>: {
+    <span class="string">"dev"</span>: <span class="string">"vite"</span>,
+    <span class="string">"build"</span>: <span class="string">"tsc --noEmit && vite build"</span>,
+    <span class="string">"preview"</span>: <span class="string">"vite preview"</span>,
+    <span class="string">"test"</span>: <span class="string">"vitest"</span>,
+    <span class="string">"test:ci"</span>: <span class="string">"vitest run --coverage"</span>,
+    <span class="string">"lint"</span>: <span class="string">"eslint src/"</span>,
+    <span class="string">"format"</span>: <span class="string">"prettier --write src/"</span>,
+    <span class="string">"typecheck"</span>: <span class="string">"tsc --noEmit"</span>,
+    <span class="string">"clean"</span>: <span class="string">"rm -rf dist node_modules"</span>,
+    <span class="string">"preinstall"</span>: <span class="string">"npx only-allow pnpm"</span>
+  }
+}
+</code></pre>
+
+    <h3>Lifecycle Scripts</h3>
+    <pre><code><span class="lang-label">Text</span>
+preinstall  → before npm install
+postinstall → after npm install
+prepare     → after install + before publish (great for husky)
+prepublish  → before npm publish
+</code></pre>
+
+    <h3>npm-run-all / concurrently</h3>
+    <pre><code><span class="lang-label">JSON</span>
+{
+  <span class="string">"scripts"</span>: {
+    <span class="string">"dev"</span>: <span class="string">"concurrently \"vite\" \"tsc --watch --noEmit\""</span>,
+    <span class="string">"check-all"</span>: <span class="string">"npm-run-all --parallel lint typecheck test"</span>
+  }
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 10 ───────────── -->
+  <section id="putting-together">
+    <h2>10. Putting It All Together</h2>
+
+    <div class="example-box">
+      <strong>Recommended TS project setup (2025):</strong>
+      <pre><code><span class="lang-label">Text</span>
+Tool          Choice          Why
+─────────────────────────────────────────────
+Package mgr   pnpm           Fast, strict, disk efficient
+Bundler       tsup/esbuild   Fast, zero-config for libs
+Dev server    Vite           Instant HMR, ESM-native
+Type check    tsc --noEmit   Gold standard
+Linter        ESLint 9+      Flat config, TS support
+Formatter     Prettier       No debates about style
+Test runner   Vitest         Fast, Vite-compatible
+Monorepo      Turborepo      Caching, parallel tasks
+</code></pre>
+    </div>
+
+    <h3>Starter Commands</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># New TS project from scratch</span>
+mkdir my-project && cd my-project
+pnpm init
+pnpm add -D typescript @types/node
+npx tsc --init
+
+<span class="comment"># Or use a starter template</span>
+pnpm create vite my-app --template vanilla-ts
+</code></pre>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Better Dev. For personal study use.</p>
+</footer>
+
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+  var si=document.querySelector('.sidebar-search-input');
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+  }
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
+    if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Internals - Better Dev</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Node.js Internals</div>
+    <h1>Node.js -- Under the Hood</h1>
+    <p>Node isn't "just JavaScript on the server." It's V8 + libuv + a massive C++ binding layer that gives you non-blocking I/O, streams, child processes, and worker threads. This page explains how it all fits together.</p>
+  </div>
+
+  <div class="toc">
+    <h4>Table of Contents</h4>
+    <a href="#architecture">1. Architecture: V8 + libuv</a>
+    <a href="#event-loop-phases">2. The Event Loop -- All 6 Phases</a>
+    <a href="#module-system">3. The Module System (CJS vs ESM)</a>
+    <a href="#streams">4. Streams</a>
+    <a href="#buffers">5. Buffers &amp; Binary Data</a>
+    <a href="#child-process">6. child_process</a>
+    <a href="#worker-threads">7. Worker Threads</a>
+    <a href="#cluster">8. Cluster &amp; Scaling</a>
+    <a href="#fs-path-os">9. fs, path, os -- Core Modules</a>
+    <a href="#http-internals">10. HTTP Internals</a>
+    <a href="#error-handling">11. Error Handling &amp; Debugging</a>
+    <a href="#performance">12. Performance &amp; Profiling</a>
+  </div>
+
+  <!-- ───────────── SECTION 1 ───────────── -->
+  <section id="architecture">
+    <h2>1. Architecture: V8 + libuv</h2>
+
+    <pre><code><span class="lang-label">Text</span>
+    Your JS Code
+         |
+    ┌────▼────┐
+    │   V8    │  ← Compiles & runs your JavaScript
+    │ Engine  │
+    └────┬────┘
+         |
+    ┌────▼────────────────────┐
+    │    Node.js Bindings     │  ← C++ glue code (node_api, internal modules)
+    │    (C++ / N-API)        │
+    └────┬───────────┬────────┘
+         |           |
+    ┌────▼────┐ ┌────▼────┐
+    │  libuv  │ │  c-ares │  ← libuv: async I/O, event loop, thread pool
+    │         │ │  zlib   │     c-ares: async DNS, zlib: compression
+    │         │ │  openssl│     openssl: TLS/crypto
+    └─────────┘ └─────────┘
+</code></pre>
+
+    <div class="tip-box">
+      <strong>V8</strong> handles JavaScript execution (parsing, compiling, GC). <strong>libuv</strong> handles everything that's async and OS-level: file I/O, networking, DNS, timers, the thread pool. They're connected by Node's C++ binding layer.
+    </div>
+
+    <h3>What libuv Actually Does</h3>
+    <ul>
+      <li><strong>Event loop</strong> -- the central mechanism that polls for I/O events</li>
+      <li><strong>Thread pool</strong> -- 4 threads (default, configurable via <code>UV_THREADPOOL_SIZE</code>) for blocking ops (fs, DNS, crypto)</li>
+      <li><strong>epoll/kqueue/IOCP</strong> -- OS-specific async I/O mechanisms abstracted by libuv</li>
+      <li><strong>Handles &amp; Requests</strong> -- long-lived (TCP sockets, timers) vs one-shot (fs read) operations</li>
+    </ul>
+  </section>
+
+  <!-- ───────────── SECTION 2 ───────────── -->
+  <section id="event-loop-phases">
+    <h2>2. The Event Loop -- All 6 Phases</h2>
+
+    <p>Node's event loop isn't a simple "check for callbacks" loop. It runs through <strong>6 distinct phases</strong> in order, each with its own queue.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+   ┌───────────────────────────┐
+┌─&gt;│         timers             │  ← setTimeout, setInterval callbacks
+│  └──────────┬────────────────┘
+│  ┌──────────▼────────────────┐
+│  │     pending callbacks     │  ← I/O callbacks deferred from previous loop
+│  └──────────┬────────────────┘
+│  ┌──────────▼────────────────┐
+│  │       idle, prepare       │  ← internal use only
+│  └──────────┬────────────────┘
+│  ┌──────────▼────────────────┐
+│  │          poll              │  ← retrieve new I/O events; execute I/O callbacks
+│  └──────────┬────────────────┘      (node blocks here when nothing else to do)
+│  ┌──────────▼────────────────┐
+│  │         check             │  ← setImmediate callbacks
+│  └──────────┬────────────────┘
+│  ┌──────────▼────────────────┐
+│  │     close callbacks       │  ← socket.on('close', ...)
+│  └──────────┬────────────────┘
+└─────────────┘
+</code></pre>
+
+    <h3>Microtask Queues (Between Every Phase)</h3>
+    <p>Between each phase, Node drains two microtask queues:</p>
+    <ol>
+      <li><strong>process.nextTick()</strong> queue -- always runs first</li>
+      <li><strong>Promise microtasks</strong> (.then, .catch, .finally, await)</li>
+    </ol>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+setTimeout(() =&gt; console.log(<span class="string">"1: timer"</span>), <span class="number">0</span>);
+setImmediate(() =&gt; console.log(<span class="string">"2: immediate"</span>));
+process.nextTick(() =&gt; console.log(<span class="string">"3: nextTick"</span>));
+Promise.resolve().then(() =&gt; console.log(<span class="string">"4: promise"</span>));
+
+<span class="comment">// Output: 3: nextTick → 4: promise → 1: timer → 2: immediate</span>
+<span class="comment">// (nextTick + promise run before timers phase)</span>
+</code></pre>
+
+    <div class="warning-box">
+      <strong>process.nextTick() can starve the event loop.</strong> If you recursively call nextTick, the I/O phase never runs. Use <code>setImmediate()</code> when you want to defer but still let I/O happen.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 3 ───────────── -->
+  <section id="module-system">
+    <h2>3. The Module System (CJS vs ESM)</h2>
+
+    <h3>CommonJS (CJS) -- The Original</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// CJS: synchronous require, module.exports</span>
+<span class="keyword">const</span> fs = require(<span class="string">"fs"</span>);
+<span class="keyword">const</span> { readFile } = require(<span class="string">"fs"</span>);
+
+module.exports = { myFunction };
+module.exports.myFunction = <span class="keyword">function</span>() {};
+exports.myFunction = <span class="keyword">function</span>() {};
+</code></pre>
+
+    <h3>ES Modules (ESM) -- The Standard</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// ESM: async import, export</span>
+<span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">"node:fs"</span>;
+<span class="keyword">import</span> { readFile } <span class="keyword">from</span> <span class="string">"node:fs/promises"</span>;
+
+<span class="keyword">export function</span> <span class="function">myFunction</span>() {}
+<span class="keyword">export default</span> <span class="keyword">function</span>() {}
+</code></pre>
+
+    <h3>How Node Decides CJS vs ESM</h3>
+    <pre><code><span class="lang-label">Text</span>
+.cjs file       → always CJS
+.mjs file       → always ESM
+.js file        → check nearest package.json "type" field:
+                     "type": "module"    → ESM
+                     "type": "commonjs"  → CJS (default if omitted)
+</code></pre>
+
+    <div class="tip-box">
+      <strong>The <code>node:</code> prefix</strong> (e.g., <code>import fs from "node:fs"</code>) explicitly tells Node this is a built-in module. It prevents name collisions with npm packages and is the recommended way to import built-ins.
+    </div>
+
+    <h3>Key Differences</h3>
+    <pre><code><span class="lang-label">Text</span>
+Feature          CJS                    ESM
+─────────────────────────────────────────────────────
+Loading          Synchronous            Asynchronous
+Top-level await  ❌                     ✅
+this at top      module.exports         undefined
+__filename       ✅ available           ❌ use import.meta.url
+__dirname        ✅ available           ❌ use import.meta.dirname (v21+)
+require()        ✅                     ❌ (use createRequire as escape hatch)
+import           ❌ static              ✅
+import()         ✅ dynamic             ✅ dynamic
+Circular deps    Partial exports        Live bindings (resolved)
+</code></pre>
+
+    <h3>import.meta in ESM</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Get __filename and __dirname equivalents in ESM</span>
+<span class="keyword">import</span> { fileURLToPath } <span class="keyword">from</span> <span class="string">"node:url"</span>;
+<span class="keyword">import</span> { dirname } <span class="keyword">from</span> <span class="string">"node:path"</span>;
+
+<span class="keyword">const</span> __filename = <span class="function">fileURLToPath</span>(import.meta.url);
+<span class="keyword">const</span> __dirname = <span class="function">dirname</span>(__filename);
+
+<span class="comment">// Node 21+: import.meta.dirname and import.meta.filename</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 4 ───────────── -->
+  <section id="streams">
+    <h2>4. Streams</h2>
+
+    <p>Streams let you process data <strong>piece by piece</strong> instead of loading everything into memory. There are 4 types.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+Type         Description                  Example
+─────────────────────────────────────────────────────
+Readable     Data source you read from    fs.createReadStream, http req
+Writable     Data sink you write to       fs.createWriteStream, http res
+Duplex       Both readable + writable     net.Socket, TCP connection
+Transform    Duplex that modifies data    zlib.createGzip, crypto
+</code></pre>
+
+    <h3>Piping (The Main Pattern)</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { createReadStream, createWriteStream } <span class="keyword">from</span> <span class="string">"node:fs"</span>;
+<span class="keyword">import</span> { createGzip } <span class="keyword">from</span> <span class="string">"node:zlib"</span>;
+<span class="keyword">import</span> { pipeline } <span class="keyword">from</span> <span class="string">"node:stream/promises"</span>;
+
+<span class="comment">// Compress a file: read → gzip → write</span>
+<span class="keyword">await</span> <span class="function">pipeline</span>(
+  <span class="function">createReadStream</span>(<span class="string">"input.txt"</span>),
+  <span class="function">createGzip</span>(),
+  <span class="function">createWriteStream</span>(<span class="string">"input.txt.gz"</span>)
+);
+</code></pre>
+
+    <div class="warning-box">
+      <strong>Always use <code>pipeline()</code></strong> instead of <code>.pipe()</code>. The old <code>.pipe()</code> method doesn't handle errors or cleanup properly. <code>pipeline</code> propagates errors and destroys streams when done.
+    </div>
+
+    <h3>Creating a Custom Transform Stream</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { Transform } <span class="keyword">from</span> <span class="string">"node:stream"</span>;
+
+<span class="keyword">const</span> upperCase = <span class="keyword">new</span> <span class="function">Transform</span>({
+  <span class="function">transform</span>(chunk, encoding, callback) {
+    <span class="keyword">this</span>.push(chunk.toString().toUpperCase());
+    <span class="function">callback</span>();
+  }
+});
+
+process.stdin.pipe(upperCase).pipe(process.stdout);
+</code></pre>
+
+    <h3>Readable Streams with async iteration</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { createReadStream } <span class="keyword">from</span> <span class="string">"node:fs"</span>;
+
+<span class="keyword">const</span> stream = <span class="function">createReadStream</span>(<span class="string">"big-file.txt"</span>, { encoding: <span class="string">"utf8"</span> });
+
+<span class="keyword">for await</span> (<span class="keyword">const</span> chunk <span class="keyword">of</span> stream) {
+  console.log(<span class="string">`Got ${chunk.length} chars`</span>);
+}
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 5 ───────────── -->
+  <section id="buffers">
+    <h2>5. Buffers &amp; Binary Data</h2>
+
+    <p>A <code>Buffer</code> is a fixed-size chunk of raw memory, outside the V8 heap. It's how Node handles binary data (files, network packets, images).</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Creating buffers</span>
+<span class="keyword">const</span> b1 = Buffer.alloc(<span class="number">10</span>);                  <span class="comment">// 10 zero-filled bytes</span>
+<span class="keyword">const</span> b2 = Buffer.from(<span class="string">"hello"</span>);              <span class="comment">// from string (UTF-8)</span>
+<span class="keyword">const</span> b3 = Buffer.from([<span class="number">0x48</span>, <span class="number">0x69</span>]);       <span class="comment">// from byte array → "Hi"</span>
+<span class="keyword">const</span> b4 = Buffer.from(<span class="string">"aGVsbG8="</span>, <span class="string">"base64"</span>); <span class="comment">// from base64</span>
+
+<span class="comment">// Converting</span>
+b2.toString(<span class="string">"utf8"</span>);    <span class="comment">// "hello"</span>
+b2.toString(<span class="string">"hex"</span>);     <span class="comment">// "68656c6c6f"</span>
+b2.toString(<span class="string">"base64"</span>);  <span class="comment">// "aGVsbG8="</span>
+
+<span class="comment">// Buffer is a Uint8Array subclass</span>
+b2[<span class="number">0</span>];          <span class="comment">// 104 (ASCII 'h')</span>
+b2.length;      <span class="comment">// 5 bytes</span>
+b2.slice(<span class="number">0</span>, <span class="number">2</span>); <span class="comment">// Buffer containing "he" (shares memory!)</span>
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Buffer.alloc() vs Buffer.allocUnsafe():</strong> <code>alloc</code> zeroes memory (safe), <code>allocUnsafe</code> skips zeroing (faster but may contain old data). Use <code>alloc</code> unless you have a performance reason and will overwrite all bytes.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 6 ───────────── -->
+  <section id="child-process">
+    <h2>6. child_process</h2>
+
+    <p>Run external commands or spawn new Node processes. Four main functions.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { exec, execFile, spawn, fork } <span class="keyword">from</span> <span class="string">"node:child_process"</span>;
+
+<span class="comment">// exec: runs in a SHELL, buffers entire output</span>
+<span class="function">exec</span>(<span class="string">"ls -la | grep .js"</span>, (err, stdout, stderr) =&gt; {
+  console.log(stdout);
+});
+
+<span class="comment">// execFile: no shell, safer, still buffers output</span>
+<span class="function">execFile</span>(<span class="string">"git"</span>, [<span class="string">"status"</span>], (err, stdout) =&gt; {
+  console.log(stdout);
+});
+
+<span class="comment">// spawn: no shell, STREAMS output (best for large output)</span>
+<span class="keyword">const</span> child = <span class="function">spawn</span>(<span class="string">"git"</span>, [<span class="string">"log"</span>, <span class="string">"--oneline"</span>]);
+child.stdout.on(<span class="string">"data"</span>, (chunk) =&gt; console.log(chunk.toString()));
+child.on(<span class="string">"close"</span>, (code) =&gt; console.log(<span class="string">`exited ${code}`</span>));
+
+<span class="comment">// fork: spawn a new NODE process with IPC channel</span>
+<span class="keyword">const</span> worker = <span class="function">fork</span>(<span class="string">"./worker.js"</span>);
+worker.send({ task: <span class="string">"compute"</span> });
+worker.on(<span class="string">"message"</span>, (result) =&gt; console.log(result));
+</code></pre>
+
+    <h3>Promise-based (Node 16+)</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { execFile } <span class="keyword">from</span> <span class="string">"node:child_process"</span>;
+<span class="keyword">import</span> { promisify } <span class="keyword">from</span> <span class="string">"node:util"</span>;
+
+<span class="keyword">const</span> execFileAsync = <span class="function">promisify</span>(execFile);
+<span class="keyword">const</span> { stdout } = <span class="keyword">await</span> <span class="function">execFileAsync</span>(<span class="string">"git"</span>, [<span class="string">"status"</span>]);
+</code></pre>
+
+    <pre><code><span class="lang-label">Text</span>
+Function    Shell?   Output     IPC?    Best For
+────────────────────────────────────────────────────────
+exec        ✅ yes   Buffered   ❌     Quick shell commands
+execFile    ❌ no    Buffered   ❌     Running binaries safely
+spawn       ❌ no    Streamed   ❌     Large output, long processes
+fork        ❌ no    Streamed   ✅     Node-to-Node communication
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 7 ───────────── -->
+  <section id="worker-threads">
+    <h2>7. Worker Threads</h2>
+
+    <p>Worker threads run JavaScript in <strong>separate V8 isolates</strong> within the same process. Unlike child_process, they share memory via <code>SharedArrayBuffer</code>.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// main.js</span>
+<span class="keyword">import</span> { Worker } <span class="keyword">from</span> <span class="string">"node:worker_threads"</span>;
+
+<span class="keyword">const</span> worker = <span class="keyword">new</span> <span class="function">Worker</span>(<span class="string">"./heavy-task.js"</span>, {
+  workerData: { iterations: <span class="number">1_000_000</span> }
+});
+
+worker.on(<span class="string">"message"</span>, (result) =&gt; console.log(<span class="string">"Result:"</span>, result));
+worker.on(<span class="string">"error"</span>, (err) =&gt; console.error(err));
+worker.on(<span class="string">"exit"</span>, (code) =&gt; console.log(<span class="string">"Worker exited"</span>, code));
+</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// heavy-task.js</span>
+<span class="keyword">import</span> { workerData, parentPort } <span class="keyword">from</span> <span class="string">"node:worker_threads"</span>;
+
+<span class="keyword">let</span> sum = <span class="number">0</span>;
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; workerData.iterations; i++) {
+  sum += Math.sqrt(i);
+}
+parentPort.postMessage(sum);
+</code></pre>
+
+    <div class="example-box">
+      <strong>When to use Worker Threads vs child_process:</strong>
+      <ul>
+        <li><strong>Worker Threads</strong> -- CPU-heavy JS work (hashing, parsing, math). Shares memory, lower overhead.</li>
+        <li><strong>child_process</strong> -- Running external binaries, isolating untrusted code, or when you need a full separate process.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 8 ───────────── -->
+  <section id="cluster">
+    <h2>8. Cluster &amp; Scaling</h2>
+
+    <p>The <code>cluster</code> module forks multiple Node processes that share the same server port. This lets you use all CPU cores.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> cluster <span class="keyword">from</span> <span class="string">"node:cluster"</span>;
+<span class="keyword">import</span> { cpus } <span class="keyword">from</span> <span class="string">"node:os"</span>;
+<span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">"node:http"</span>;
+
+<span class="keyword">if</span> (cluster.isPrimary) {
+  <span class="keyword">const</span> numCPUs = <span class="function">cpus</span>().length;
+  console.log(<span class="string">`Primary ${process.pid} forking ${numCPUs} workers`</span>);
+
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on(<span class="string">"exit"</span>, (worker) =&gt; {
+    console.log(<span class="string">`Worker ${worker.process.pid} died, restarting...`</span>);
+    cluster.fork(); <span class="comment">// auto-restart</span>
+  });
+} <span class="keyword">else</span> {
+  http.<span class="function">createServer</span>((req, res) =&gt; {
+    res.end(<span class="string">`Handled by worker ${process.pid}\n`</span>);
+  }).listen(<span class="number">3000</span>);
+}
+</code></pre>
+
+    <div class="tip-box">
+      <strong>In production, use PM2</strong> instead of rolling your own cluster code. <code>pm2 start app.js -i max</code> handles forking, restarting, log management, and zero-downtime reloads.
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 9 ───────────── -->
+  <section id="fs-path-os">
+    <h2>9. fs, path, os -- Core Modules</h2>
+
+    <h3>File System (fs)</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { readFile, writeFile, mkdir, readdir, stat, rm } <span class="keyword">from</span> <span class="string">"node:fs/promises"</span>;
+
+<span class="comment">// Always use fs/promises (not callback-based fs)</span>
+<span class="keyword">const</span> content = <span class="keyword">await</span> <span class="function">readFile</span>(<span class="string">"./data.json"</span>, <span class="string">"utf8"</span>);
+<span class="keyword">const</span> data = JSON.parse(content);
+
+<span class="keyword">await</span> <span class="function">writeFile</span>(<span class="string">"./output.json"</span>, JSON.stringify(data, <span class="keyword">null</span>, <span class="number">2</span>));
+<span class="keyword">await</span> <span class="function">mkdir</span>(<span class="string">"./nested/dirs"</span>, { recursive: <span class="keyword">true</span> });
+
+<span class="comment">// List directory</span>
+<span class="keyword">const</span> files = <span class="keyword">await</span> <span class="function">readdir</span>(<span class="string">"./src"</span>, { withFileTypes: <span class="keyword">true</span> });
+<span class="keyword">for</span> (<span class="keyword">const</span> f <span class="keyword">of</span> files) {
+  console.log(f.name, f.isDirectory() ? <span class="string">"dir"</span> : <span class="string">"file"</span>);
+}
+
+<span class="comment">// Watch for changes</span>
+<span class="keyword">import</span> { watch } <span class="keyword">from</span> <span class="string">"node:fs/promises"</span>;
+<span class="keyword">for await</span> (<span class="keyword">const</span> event <span class="keyword">of</span> <span class="function">watch</span>(<span class="string">"./src"</span>)) {
+  console.log(event.eventType, event.filename);
+}
+</code></pre>
+
+    <h3>Path</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">"node:path"</span>;
+
+path.join(<span class="string">"/users"</span>, <span class="string">"sean"</span>, <span class="string">"docs"</span>);     <span class="comment">// "/users/sean/docs"</span>
+path.resolve(<span class="string">"./src"</span>, <span class="string">"index.ts"</span>);       <span class="comment">// absolute path</span>
+path.basename(<span class="string">"/a/b/file.ts"</span>);            <span class="comment">// "file.ts"</span>
+path.extname(<span class="string">"file.ts"</span>);                  <span class="comment">// ".ts"</span>
+path.dirname(<span class="string">"/a/b/file.ts"</span>);             <span class="comment">// "/a/b"</span>
+path.parse(<span class="string">"/a/b/file.ts"</span>);               <span class="comment">// { root, dir, base, ext, name }</span>
+</code></pre>
+
+    <h3>OS</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> os <span class="keyword">from</span> <span class="string">"node:os"</span>;
+
+os.cpus().length;    <span class="comment">// number of CPU cores</span>
+os.totalmem();       <span class="comment">// total RAM in bytes</span>
+os.freemem();        <span class="comment">// free RAM</span>
+os.homedir();        <span class="comment">// "/home/sean"</span>
+os.tmpdir();         <span class="comment">// "/tmp"</span>
+os.platform();       <span class="comment">// "linux", "darwin", "win32"</span>
+os.hostname();       <span class="comment">// machine hostname</span>
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 10 ───────────── -->
+  <section id="http-internals">
+    <h2>10. HTTP Internals</h2>
+
+    <p>Node's built-in <code>http</code> module is what Express, Fastify, and Hono all build on top of.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">"node:http"</span>;
+
+<span class="keyword">const</span> server = http.<span class="function">createServer</span>((req, res) =&gt; {
+  <span class="comment">// req is a Readable stream</span>
+  <span class="comment">// res is a Writable stream</span>
+  console.log(req.method, req.url, req.headers);
+
+  <span class="keyword">if</span> (req.method === <span class="string">"POST"</span>) {
+    <span class="keyword">const</span> chunks = [];
+    req.on(<span class="string">"data"</span>, (chunk) =&gt; chunks.push(chunk));
+    req.on(<span class="string">"end"</span>, () =&gt; {
+      <span class="keyword">const</span> body = Buffer.concat(chunks).toString();
+      res.writeHead(<span class="number">200</span>, { <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> });
+      res.end(JSON.stringify({ received: body }));
+    });
+  } <span class="keyword">else</span> {
+    res.writeHead(<span class="number">200</span>, { <span class="string">"Content-Type"</span>: <span class="string">"text/plain"</span> });
+    res.end(<span class="string">"Hello World"</span>);
+  }
+});
+
+server.listen(<span class="number">3000</span>, () =&gt; console.log(<span class="string">"Listening on :3000"</span>));
+</code></pre>
+
+    <h3>Making HTTP Requests (fetch is built-in now)</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Node 18+: global fetch (uses undici under the hood)</span>
+<span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"https://api.github.com/users/sean"</span>);
+<span class="keyword">const</span> data = <span class="keyword">await</span> res.json();
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 11 ───────────── -->
+  <section id="error-handling">
+    <h2>11. Error Handling &amp; Debugging</h2>
+
+    <h3>Error Types</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Operational errors -- expected failures (file not found, network timeout)</span>
+<span class="keyword">try</span> {
+  <span class="keyword">await</span> readFile(<span class="string">"missing.txt"</span>);
+} <span class="keyword">catch</span> (err) {
+  <span class="keyword">if</span> (err.code === <span class="string">"ENOENT"</span>) console.log(<span class="string">"File not found"</span>);
+}
+
+<span class="comment">// Programmer errors -- bugs (TypeError, null reference)</span>
+<span class="comment">// These should crash the process (fix the bug, don't catch it)</span>
+</code></pre>
+
+    <h3>Global Error Handlers</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Uncaught exception -- something threw and nobody caught it</span>
+process.on(<span class="string">"uncaughtException"</span>, (err) =&gt; {
+  console.error(<span class="string">"UNCAUGHT:"</span>, err);
+  process.exit(<span class="number">1</span>); <span class="comment">// always exit -- state may be corrupt</span>
+});
+
+<span class="comment">// Unhandled promise rejection</span>
+process.on(<span class="string">"unhandledRejection"</span>, (reason) =&gt; {
+  console.error(<span class="string">"UNHANDLED REJECTION:"</span>, reason);
+  process.exit(<span class="number">1</span>);
+});
+</code></pre>
+
+    <h3>Debugging</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Built-in inspector (open chrome://inspect)</span>
+node --inspect src/index.js
+
+<span class="comment"># Break on first line</span>
+node --inspect-brk src/index.js
+
+<span class="comment"># Print memory usage</span>
+node -e "console.log(process.memoryUsage())"
+</code></pre>
+  </section>
+
+  <!-- ───────────── SECTION 12 ───────────── -->
+  <section id="performance">
+    <h2>12. Performance &amp; Profiling</h2>
+
+    <h3>process.hrtime.bigint() for Benchmarking</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> start = process.hrtime.bigint();
+<span class="comment">// ... do work ...</span>
+<span class="keyword">const</span> end = process.hrtime.bigint();
+console.log(<span class="string">`Took ${Number(end - start) / 1e6}ms`</span>);
+</code></pre>
+
+    <h3>Performance Hooks</h3>
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { performance, PerformanceObserver } <span class="keyword">from</span> <span class="string">"node:perf_hooks"</span>;
+
+performance.mark(<span class="string">"start"</span>);
+<span class="comment">// ... do work ...</span>
+performance.mark(<span class="string">"end"</span>);
+performance.measure(<span class="string">"my-op"</span>, <span class="string">"start"</span>, <span class="string">"end"</span>);
+
+<span class="keyword">const</span> [entry] = performance.getEntriesByName(<span class="string">"my-op"</span>);
+console.log(<span class="string">`Took ${entry.duration}ms`</span>);
+</code></pre>
+
+    <h3>CPU Profiling</h3>
+    <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Generate a CPU profile (load it in Chrome DevTools)</span>
+node --cpu-prof src/index.js
+
+<span class="comment"># Heap snapshot for memory leaks</span>
+node --heap-prof src/index.js
+
+<span class="comment"># Trace garbage collection</span>
+node --trace-gc src/index.js
+</code></pre>
+
+    <div class="tip-box">
+      <strong>Common performance killers in Node:</strong>
+      <ul>
+        <li>Synchronous I/O (<code>fs.readFileSync</code>) on the main thread</li>
+        <li>Blocking the event loop with CPU-heavy work (use worker threads)</li>
+        <li>Creating too many closures or callbacks (memory pressure)</li>
+        <li>Not streaming large payloads (buffering entire files in memory)</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Better Dev. For personal study use.</p>
+</footer>
+
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var toggleBtn=document.querySelector('.sidebar-toggle');
+  var closeBtn=document.querySelector('.sidebar-close');
+  var si=document.querySelector('.sidebar-search-input');
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('visible');
+    document.body.classList.add('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','true');
+    if(si)si.focus();
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.setAttribute('aria-expanded','false');
+  }
+  if(toggleBtn)toggleBtn.addEventListener('click',function(){
+    sidebar.classList.contains('open')?closeSidebar():openSidebar();
+  });
+  if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+  if(backdrop)backdrop.addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+  });
+
+  var currentPage=window.location.pathname.split('/').pop()||'index.html';
+  var navLinks=document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<navLinks.length;i++){
+    if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+  }
+
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');
+    idx=-1;
+  }
+  function highlight(items){
+    for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+  }
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');
+    if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>
