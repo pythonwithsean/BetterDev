@@ -814,3 +814,5 @@ footer {
   letter-spacing: -0.01em;
 }
 footer a { color: #000000; text-decoration: none; font-weight: 500; }
+footer .edit-link { color: #999999; text-decoration: none; font-weight: 400; }
+footer .edit-link:hover, footer .edit-link:focus { text-decoration: underline; }
