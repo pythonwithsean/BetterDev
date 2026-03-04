@@ -117,6 +117,7 @@
     <a href="#common-ports">11. Common Ports</a>
     <a href="#debugging-tools">12. Network Debugging Tools</a>
     <a href="#ssh-scp">13. SSH, SCP &amp; Secure File Transfer</a>
+    <a href="#socket-programming">14. Socket Programming</a>
   </div>
 
 
@@ -2121,6 +2122,530 @@ $ sftp myserver             # sftp uses the config too</code></pre>
       </ul>
     </div>
   </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 14: SOCKET PROGRAMMING                              -->
+  <!-- ============================================================ -->
+  <section id="socket-programming">
+    <h2>14. Socket Programming</h2>
+    <p>A <strong>socket</strong> is an endpoint for communication between two machines over a network. It is the lowest-level networking API most developers will ever use. Every HTTP request, every database connection, every WebSocket -- they all use sockets under the hood. Understanding sockets means understanding how network communication actually works at the code level.</p>
+
+    <div class="example-box">
+      <div class="label">What Is a Socket?</div>
+<pre><code>A socket is identified by 5 things (the "5-tuple"):
+
+  1. Protocol     (TCP or UDP)
+  2. Source IP    (your machine's address)
+  3. Source Port  (assigned by your OS, e.g., 54321)
+  4. Dest IP      (the server's address)
+  5. Dest Port    (the service port, e.g., 80 for HTTP)
+
+Think of it like a phone call:
+  - IP address = phone number (which building)
+  - Port = extension number (which desk in the building)
+  - Socket = the active phone line between two extensions
+
+  ┌──────────────────┐            ┌──────────────────┐
+  │  Your Machine     │            │  Server           │
+  │                   │            │                   │
+  │  Socket:          │   TCP/UDP  │  Socket:          │
+  │  192.168.1.5:54321│◄──────────►│  93.184.216.34:80 │
+  │                   │            │                   │
+  └──────────────────┘            └──────────────────┘
+
+The OS manages sockets through file descriptors (on Linux/Mac)
+or handles (on Windows). When you open a socket, the OS gives
+you a number (like 3, 4, 5...) and you read/write to it like a file.</code></pre>
+    </div>
+
+    <h3>TCP Sockets -- Reliable Communication</h3>
+    <p>TCP sockets provide a <strong>reliable, ordered, bidirectional byte stream</strong>. Data arrives in order, nothing is lost, and you get an error if the connection drops. This is what HTTP, SSH, databases, and most applications use.</p>
+
+    <div class="example-box">
+      <div class="label">TCP Socket Lifecycle</div>
+<pre><code>SERVER SIDE:                          CLIENT SIDE:
+
+1. socket()    ← create socket        1. socket()    ← create socket
+2. bind()      ← assign address:port
+3. listen()    ← start accepting
+4. accept()    ← wait for client ──── 2. connect()   ← connect to server
+   │                                      │
+   ▼                                      ▼
+5. recv()/send() ◄───────────────────► 3. send()/recv()
+   │                                      │
+   ▼                                      ▼
+6. close()     ← disconnect           4. close()     ← disconnect
+
+Key concepts:
+  bind()    → "I want to listen on this specific address:port"
+  listen()  → "Start queuing incoming connections" (backlog size)
+  accept()  → BLOCKS until a client connects, then returns a NEW socket
+              for that specific client (the original socket keeps listening)
+  connect() → Initiates the TCP 3-way handshake (SYN → SYN-ACK → ACK)</code></pre>
+    </div>
+
+    <h3>TCP Server and Client</h3>
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> socket
+
+<span class="comment"># ─── TCP SERVER ───</span>
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  <span class="comment"># AF_INET = IPv4, SOCK_STREAM = TCP</span>
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)  <span class="comment"># reuse port after restart</span>
+server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8080</span>))  <span class="comment"># listen on all interfaces, port 8080</span>
+server.listen(<span class="number">5</span>)                 <span class="comment"># queue up to 5 pending connections</span>
+print(<span class="string">"Server listening on port 8080..."</span>)
+
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    client_socket, address = server.accept()  <span class="comment"># blocks until client connects</span>
+    print(<span class="string">f"Connection from </span>{address}<span class="string">"</span>)
+
+    data = client_socket.recv(<span class="number">1024</span>)  <span class="comment"># receive up to 1024 bytes</span>
+    print(<span class="string">f"Received: </span>{data.decode()}<span class="string">"</span>)
+
+    client_socket.send(<span class="string">b"Hello from server!"</span>)  <span class="comment"># send response</span>
+    client_socket.close()  <span class="comment"># done with this client</span></code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> socket
+
+<span class="comment"># ─── TCP CLIENT ───</span>
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((<span class="string">'127.0.0.1'</span>, <span class="number">8080</span>))  <span class="comment"># connect to server</span>
+
+client.send(<span class="string">b"Hello from client!"</span>)   <span class="comment"># send data</span>
+
+response = client.recv(<span class="number">1024</span>)          <span class="comment"># receive response</span>
+print(<span class="string">f"Server replied: </span>{response.decode()}<span class="string">"</span>)
+
+client.close()  <span class="comment"># close connection</span></code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// ─── TCP SERVER (Node.js) ───</span>
+<span class="keyword">const</span> net = require(<span class="string">'net'</span>);
+
+<span class="keyword">const</span> server = net.createServer((socket) => {
+    console.log(<span class="string">`Client connected: </span>${socket.remoteAddress}:${socket.remotePort}<span class="string">`</span>);
+
+    socket.on(<span class="string">'data'</span>, (data) => {
+        console.log(<span class="string">`Received: </span>${data.toString()}<span class="string">`</span>);
+        socket.write(<span class="string">'Hello from server!'</span>);  <span class="comment">// send response</span>
+    });
+
+    socket.on(<span class="string">'end'</span>, () => console.log(<span class="string">'Client disconnected'</span>));
+    socket.on(<span class="string">'error'</span>, (err) => console.error(<span class="string">'Socket error:'</span>, err.message));
+});
+
+server.listen(<span class="number">8080</span>, () => console.log(<span class="string">'Server listening on port 8080'</span>));</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// ─── TCP CLIENT (Node.js) ───</span>
+<span class="keyword">const</span> net = require(<span class="string">'net'</span>);
+
+<span class="keyword">const</span> client = net.createConnection({ port: <span class="number">8080</span>, host: <span class="string">'127.0.0.1'</span> }, () => {
+    console.log(<span class="string">'Connected to server'</span>);
+    client.write(<span class="string">'Hello from client!'</span>);  <span class="comment">// send data</span>
+});
+
+client.on(<span class="string">'data'</span>, (data) => {
+    console.log(<span class="string">`Server replied: </span>${data.toString()}<span class="string">`</span>);
+    client.end();  <span class="comment">// close connection</span>
+});
+
+client.on(<span class="string">'end'</span>, () => console.log(<span class="string">'Disconnected'</span>));</code></pre>
+
+    <h3>UDP Sockets -- Fast, Connectionless</h3>
+    <p>UDP sockets send individual messages (datagrams) with <strong>no connection, no ordering, and no delivery guarantee</strong>. They are faster and simpler than TCP because there is no handshake, no acknowledgment, and no retransmission. Use UDP for real-time data where speed matters more than reliability: gaming, video streaming, DNS lookups, voice calls.</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> socket
+
+<span class="comment"># ─── UDP SERVER ───</span>
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  <span class="comment"># SOCK_DGRAM = UDP</span>
+server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">9090</span>))
+print(<span class="string">"UDP server listening on port 9090..."</span>)
+
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    data, addr = server.recvfrom(<span class="number">1024</span>)  <span class="comment"># receive data and sender address</span>
+    print(<span class="string">f"From </span>{addr}<span class="string">: </span>{data.decode()}<span class="string">"</span>)
+    server.sendto(<span class="string">b"ACK"</span>, addr)          <span class="comment"># reply to sender (optional)</span></code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> socket
+
+<span class="comment"># ─── UDP CLIENT ───</span>
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(<span class="string">b"Hello UDP!"</span>, (<span class="string">'127.0.0.1'</span>, <span class="number">9090</span>))  <span class="comment"># no connect() needed</span>
+
+data, addr = client.recvfrom(<span class="number">1024</span>)
+print(<span class="string">f"Reply: </span>{data.decode()}<span class="string">"</span>)
+client.close()</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// ─── UDP SERVER (Node.js) ───</span>
+<span class="keyword">const</span> dgram = require(<span class="string">'dgram'</span>);
+<span class="keyword">const</span> server = dgram.createSocket(<span class="string">'udp4'</span>);
+
+server.on(<span class="string">'message'</span>, (msg, rinfo) => {
+    console.log(<span class="string">`From </span>${rinfo.address}:${rinfo.port}<span class="string">: </span>${msg.toString()}<span class="string">`</span>);
+    server.send(<span class="string">'ACK'</span>, rinfo.port, rinfo.address);  <span class="comment">// reply</span>
+});
+
+server.bind(<span class="number">9090</span>, () => console.log(<span class="string">'UDP server listening on port 9090'</span>));</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// ─── UDP CLIENT (Node.js) ───</span>
+<span class="keyword">const</span> dgram = require(<span class="string">'dgram'</span>);
+<span class="keyword">const</span> client = dgram.createSocket(<span class="string">'udp4'</span>);
+
+client.send(<span class="string">'Hello UDP!'</span>, <span class="number">9090</span>, <span class="string">'127.0.0.1'</span>, (err) => {
+    <span class="keyword">if</span> (err) console.error(err);
+});
+
+client.on(<span class="string">'message'</span>, (msg) => {
+    console.log(<span class="string">`Reply: </span>${msg.toString()}<span class="string">`</span>);
+    client.close();
+});</code></pre>
+
+    <div class="example-box">
+      <div class="label">TCP vs UDP Sockets -- Side by Side</div>
+<pre><code>                    TCP (SOCK_STREAM)              UDP (SOCK_DGRAM)
+────────────────────────────────────────────────────────────────────
+Connection:         connect() + accept()           No connection needed
+Sending:            send() / recv()                sendto() / recvfrom()
+Delivery:           Guaranteed, in-order           Best effort, may be lost
+Overhead:           Higher (handshake, ACKs)       Lower (just send)
+Message boundary:   No (byte stream)               Yes (each sendto = 1 msg)
+Use cases:          HTTP, SSH, databases           DNS, gaming, streaming
+
+TCP is a byte stream -- if you send "Hello" and "World" separately,
+you might recv() "HelloWorld" as one chunk. You must handle framing.
+
+UDP preserves message boundaries -- each sendto() is one datagram.
+If you send "Hello" and "World", you recvfrom() them as two separate messages.
+But either one might get lost or arrive out of order.</code></pre>
+    </div>
+
+    <h3>Handling Multiple Clients</h3>
+    <p>A basic socket server handles one client at a time. In production, you need to handle many clients simultaneously. There are three main approaches:</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Approach 1: Threading -- one thread per client</span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> threading
+
+<span class="keyword">def</span> <span class="function">handle_client</span>(client_socket, address):
+    print(<span class="string">f"[Thread] Handling </span>{address}<span class="string">"</span>)
+    <span class="keyword">while</span> <span class="keyword">True</span>:
+        data = client_socket.recv(<span class="number">1024</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> data:
+            <span class="keyword">break</span>  <span class="comment"># client disconnected</span>
+        client_socket.send(data)  <span class="comment"># echo back</span>
+    client_socket.close()
+    print(<span class="string">f"[Thread] </span>{address}<span class="string"> disconnected"</span>)
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)
+server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8080</span>))
+server.listen(<span class="number">5</span>)
+
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    client_socket, address = server.accept()
+    thread = threading.Thread(target=handle_client, args=(client_socket, address))
+    thread.start()  <span class="comment"># each client gets its own thread</span></code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Approach 2: select() -- single-threaded multiplexing</span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> select
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)
+server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8080</span>))
+server.listen(<span class="number">5</span>)
+server.setblocking(<span class="keyword">False</span>)
+
+sockets_list = [server]  <span class="comment"># track all sockets to monitor</span>
+
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    <span class="comment"># select() blocks until at least one socket is ready</span>
+    readable, _, exceptional = select.select(sockets_list, [], sockets_list)
+
+    <span class="keyword">for</span> sock <span class="keyword">in</span> readable:
+        <span class="keyword">if</span> sock <span class="keyword">is</span> server:
+            <span class="comment"># New client connecting</span>
+            client_socket, address = server.accept()
+            client_socket.setblocking(<span class="keyword">False</span>)
+            sockets_list.append(client_socket)
+        <span class="keyword">else</span>:
+            <span class="comment"># Existing client sent data</span>
+            data = sock.recv(<span class="number">1024</span>)
+            <span class="keyword">if</span> data:
+                sock.send(data)  <span class="comment"># echo back</span>
+            <span class="keyword">else</span>:
+                sockets_list.remove(sock)
+                sock.close()</code></pre>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Approach 3: asyncio -- modern async sockets</span>
+<span class="keyword">import</span> asyncio
+
+<span class="keyword">async def</span> <span class="function">handle_client</span>(reader, writer):
+    addr = writer.get_extra_info(<span class="string">'peername'</span>)
+    print(<span class="string">f"Client connected: </span>{addr}<span class="string">"</span>)
+
+    <span class="keyword">while</span> <span class="keyword">True</span>:
+        data = <span class="keyword">await</span> reader.read(<span class="number">1024</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> data:
+            <span class="keyword">break</span>
+        writer.write(data)  <span class="comment"># echo back</span>
+        <span class="keyword">await</span> writer.drain()
+
+    writer.close()
+    print(<span class="string">f"Client disconnected: </span>{addr}<span class="string">"</span>)
+
+<span class="keyword">async def</span> <span class="function">main</span>():
+    server = <span class="keyword">await</span> asyncio.start_server(handle_client, <span class="string">'0.0.0.0'</span>, <span class="number">8080</span>)
+    print(<span class="string">"Async server listening on port 8080"</span>)
+    <span class="keyword">async with</span> server:
+        <span class="keyword">await</span> server.serve_forever()
+
+asyncio.run(main())</code></pre>
+
+    <div class="example-box">
+      <div class="label">Multi-Client Approaches Compared</div>
+<pre><code>Approach        How It Works              Pros                    Cons
+────────────────────────────────────────────────────────────────────────
+Threading       One thread per client     Simple, intuitive       Memory heavy (1MB/thread),
+                                                                  GIL limits Python CPU perf
+
+select/poll     OS monitors many sockets  Low memory, no threads  Complex code, fd limits
+                Single thread handles all                         (select: 1024 on some OS)
+
+epoll/kqueue    Like select but O(1)      Scales to millions      Linux/BSD specific
+                (used by nginx, Node.js)  of connections
+
+asyncio/        Coroutines + event loop   Clean code, scalable    Requires async everywhere,
+async-await     Single-threaded                                   learning curve
+
+In production, most frameworks use epoll/kqueue under the hood:
+  - Node.js uses libuv (epoll on Linux, kqueue on Mac)
+  - Python asyncio uses selectors (auto-picks best: epoll/kqueue/select)
+  - Go uses its own goroutine scheduler + epoll
+  - Nginx uses epoll for handling 10K+ connections on one thread</code></pre>
+    </div>
+
+    <h3>Socket Options and Common Settings</h3>
+    <div class="example-box">
+      <div class="label">Important Socket Options</div>
+<pre><code><span class="comment"># Python socket options you should know about</span>
+
+<span class="comment"># SO_REUSEADDR -- Allow reusing a port immediately after the server stops</span>
+<span class="comment"># Without this, you get "Address already in use" for ~60 seconds after restart</span>
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+<span class="comment"># TCP_NODELAY -- Disable Nagle's algorithm (send data immediately)</span>
+<span class="comment"># Nagle batches small writes for efficiency, but adds latency</span>
+<span class="comment"># Disable for real-time apps (gaming, interactive terminals)</span>
+sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+<span class="comment"># SO_KEEPALIVE -- Detect dead connections</span>
+<span class="comment"># OS sends periodic probes on idle connections</span>
+<span class="comment"># If peer doesn't respond, connection is closed automatically</span>
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+
+<span class="comment"># SO_RCVBUF / SO_SNDBUF -- Set receive/send buffer sizes</span>
+<span class="comment"># Larger buffers can improve throughput for bulk transfers</span>
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 65536)   # 64KB receive buffer
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 65536)   # 64KB send buffer
+
+<span class="comment"># Timeout -- Don't block forever on recv()</span>
+sock.settimeout(10.0)  # 10 second timeout, raises socket.timeout</code></pre>
+    </div>
+
+    <h3>Message Framing -- The #1 TCP Socket Mistake</h3>
+    <div class="warning-box">
+      <div class="label">TCP Does NOT Preserve Message Boundaries</div>
+      <p>The most common socket programming bug: assuming <code>recv()</code> returns exactly one "message." TCP is a <strong>byte stream</strong>, not a message stream. If you send "Hello" and "World" in two separate <code>send()</code> calls, the receiver might get "HelloWorld" in one <code>recv()</code>, or "Hel" and "loWorld" in two -- TCP makes no guarantees about how bytes are grouped.</p>
+    </div>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="comment"># WRONG -- will break with large messages or fast senders</span>
+data = sock.recv(<span class="number">1024</span>)  <span class="comment"># might get partial message or two messages merged</span>
+
+<span class="comment"># RIGHT -- length-prefixed framing</span>
+<span class="keyword">import</span> struct
+
+<span class="keyword">def</span> <span class="function">send_message</span>(sock, message):
+    data = message.encode()
+    length = struct.pack(<span class="string">'!I'</span>, len(data))  <span class="comment"># 4-byte big-endian length prefix</span>
+    sock.sendall(length + data)             <span class="comment"># send length + actual data</span>
+
+<span class="keyword">def</span> <span class="function">recv_message</span>(sock):
+    <span class="comment"># First, read exactly 4 bytes (the length prefix)</span>
+    raw_length = recv_exact(sock, <span class="number">4</span>)
+    <span class="keyword">if</span> <span class="keyword">not</span> raw_length:
+        <span class="keyword">return</span> <span class="keyword">None</span>
+    length = struct.unpack(<span class="string">'!I'</span>, raw_length)[<span class="number">0</span>]
+    <span class="comment"># Then, read exactly 'length' bytes (the message)</span>
+    <span class="keyword">return</span> recv_exact(sock, length).decode()
+
+<span class="keyword">def</span> <span class="function">recv_exact</span>(sock, num_bytes):
+    <span class="comment">"""Keep reading until we have exactly num_bytes."""</span>
+    data = <span class="string">b''</span>
+    <span class="keyword">while</span> len(data) < num_bytes:
+        chunk = sock.recv(num_bytes - len(data))
+        <span class="keyword">if</span> <span class="keyword">not</span> chunk:
+            <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># connection closed</span>
+        data += chunk
+    <span class="keyword">return</span> data</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Node.js -- handling TCP framing with length prefix</span>
+<span class="keyword">const</span> net = require(<span class="string">'net'</span>);
+
+<span class="keyword">function</span> <span class="function">sendMessage</span>(socket, message) {
+    <span class="keyword">const</span> data = Buffer.from(message, <span class="string">'utf8'</span>);
+    <span class="keyword">const</span> header = Buffer.alloc(<span class="number">4</span>);
+    header.writeUInt32BE(data.length);  <span class="comment">// 4-byte length prefix</span>
+    socket.write(Buffer.concat([header, data]));
+}
+
+<span class="comment">// On the receiving side, collect chunks until you have a full message</span>
+<span class="keyword">function</span> <span class="function">createParser</span>(onMessage) {
+    <span class="keyword">let</span> buffer = Buffer.alloc(<span class="number">0</span>);
+
+    <span class="keyword">return</span> (chunk) => {
+        buffer = Buffer.concat([buffer, chunk]);
+
+        <span class="keyword">while</span> (buffer.length >= <span class="number">4</span>) {
+            <span class="keyword">const</span> msgLen = buffer.readUInt32BE(<span class="number">0</span>);
+            <span class="keyword">if</span> (buffer.length < <span class="number">4</span> + msgLen) <span class="keyword">break</span>;  <span class="comment">// incomplete message</span>
+
+            <span class="keyword">const</span> message = buffer.slice(<span class="number">4</span>, <span class="number">4</span> + msgLen).toString(<span class="string">'utf8'</span>);
+            buffer = buffer.slice(<span class="number">4</span> + msgLen);  <span class="comment">// consume the message</span>
+            onMessage(message);
+        }
+    };
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> server = net.createServer((socket) => {
+    <span class="keyword">const</span> parse = createParser((msg) => {
+        console.log(<span class="string">'Received complete message:'</span>, msg);
+    });
+    socket.on(<span class="string">'data'</span>, parse);
+});</code></pre>
+
+    <div class="example-box">
+      <div class="label">Common Framing Strategies</div>
+<pre><code>Strategy              How It Works                         Used By
+──────────────────────────────────────────────────────────────────────
+Length prefix         4 bytes (uint32) + payload            Most binary protocols
+Delimiter             Messages end with \n or \r\n          Redis, SMTP, FTP
+Fixed size            Every message is exactly N bytes      Some game protocols
+HTTP-style            Headers + Content-Length + body        HTTP/1.1
+Type-Length-Value     1 byte type + 4 byte length + data    TLV-based protocols
+
+The length-prefix approach is the most common and reliable.
+Delimiter-based works for text protocols but fails if the
+delimiter appears in the data (unless you escape it).</code></pre>
+    </div>
+
+    <h3>Building a Simple Chat Server</h3>
+    <p>Putting it all together -- a multi-client TCP chat server that broadcasts messages to all connected clients.</p>
+
+    <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> threading
+
+clients = []  <span class="comment"># list of connected client sockets</span>
+lock = threading.Lock()
+
+<span class="keyword">def</span> <span class="function">broadcast</span>(message, sender):
+    <span class="string">"""Send a message to all clients except the sender."""</span>
+    <span class="keyword">with</span> lock:
+        <span class="keyword">for</span> client <span class="keyword">in</span> clients:
+            <span class="keyword">if</span> client != sender:
+                <span class="keyword">try</span>:
+                    client.send(message)
+                <span class="keyword">except</span>:
+                    clients.remove(client)
+
+<span class="keyword">def</span> <span class="function">handle_client</span>(client_socket, address):
+    print(<span class="string">f"</span>{address}<span class="string"> connected"</span>)
+    <span class="keyword">with</span> lock:
+        clients.append(client_socket)
+
+    <span class="keyword">try</span>:
+        <span class="keyword">while</span> <span class="keyword">True</span>:
+            data = client_socket.recv(<span class="number">1024</span>)
+            <span class="keyword">if</span> <span class="keyword">not</span> data:
+                <span class="keyword">break</span>
+            message = <span class="string">f"</span>{address}<span class="string">: </span>{data.decode()}<span class="string">"</span>
+            print(message)
+            broadcast(message.encode(), client_socket)
+    <span class="keyword">finally</span>:
+        <span class="keyword">with</span> lock:
+            clients.remove(client_socket)
+        client_socket.close()
+        print(<span class="string">f"</span>{address}<span class="string"> disconnected"</span>)
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)
+server.bind((<span class="string">'0.0.0.0'</span>, <span class="number">8080</span>))
+server.listen(<span class="number">5</span>)
+print(<span class="string">"Chat server running on port 8080"</span>)
+
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    client_socket, address = server.accept()
+    threading.Thread(target=handle_client, args=(client_socket, address)).start()</code></pre>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Chat server in Node.js</span>
+<span class="keyword">const</span> net = require(<span class="string">'net'</span>);
+<span class="keyword">const</span> clients = <span class="keyword">new</span> Set();
+
+<span class="keyword">const</span> server = net.createServer((socket) => {
+    clients.add(socket);
+    <span class="keyword">const</span> addr = <span class="string">`</span>${socket.remoteAddress}:${socket.remotePort}<span class="string">`</span>;
+    console.log(<span class="string">`</span>${addr}<span class="string"> connected`</span>);
+
+    socket.on(<span class="string">'data'</span>, (data) => {
+        <span class="keyword">const</span> message = <span class="string">`</span>${addr}<span class="string">: </span>${data.toString().trim()}<span class="string">`</span>;
+        console.log(message);
+        <span class="comment">// Broadcast to all OTHER clients</span>
+        <span class="keyword">for</span> (<span class="keyword">const</span> client <span class="keyword">of</span> clients) {
+            <span class="keyword">if</span> (client !== socket &amp;&amp; !client.destroyed) {
+                client.write(message + <span class="string">'\n'</span>);
+            }
+        }
+    });
+
+    socket.on(<span class="string">'end'</span>, () => {
+        clients.delete(socket);
+        console.log(<span class="string">`</span>${addr}<span class="string"> disconnected`</span>);
+    });
+
+    socket.on(<span class="string">'error'</span>, () => clients.delete(socket));
+});
+
+server.listen(<span class="number">8080</span>, () => console.log(<span class="string">'Chat server on port 8080'</span>));</code></pre>
+
+    <div class="tip-box">
+      <div class="label">Socket Programming Key Takeaways</div>
+      <ul>
+        <li><strong>TCP = reliable stream.</strong> Use for most applications. Always implement message framing (length-prefix or delimiter).</li>
+        <li><strong>UDP = fast datagrams.</strong> Use for real-time data where occasional loss is acceptable. Each <code>sendto()</code> is one message.</li>
+        <li><strong>Always set SO_REUSEADDR</strong> on server sockets to avoid "Address already in use" errors during development.</li>
+        <li><strong>Handle partial reads.</strong> <code>recv(1024)</code> can return anywhere from 1 to 1024 bytes. Never assume you got a complete message.</li>
+        <li><strong>Use sendall() not send()</strong> in Python. <code>send()</code> may not send all bytes; <code>sendall()</code> keeps sending until everything is sent.</li>
+        <li><strong>For production, use asyncio or an event loop</strong>, not threading. Threads work for learning but do not scale to thousands of connections.</li>
+        <li><strong>Close sockets in a finally block</strong> to avoid leaking file descriptors.</li>
+      </ul>
+    </div>
+  </section>
+
 
 </div><!-- end .container -->
 

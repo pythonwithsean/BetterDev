@@ -113,8 +113,9 @@
       <a href="#monotonic-stack">8. Monotonic Stack</a>
       <a href="#greedy">9. Greedy</a>
       <a href="#intervals">10. Interval Problems</a>
-      <a href="#cheat-sheet">11. Pattern Recognition Cheat Sheet</a>
-      <a href="#quiz">12. Practice Quiz</a>
+      <a href="#sweep-line">11. Sweep Line</a>
+      <a href="#cheat-sheet">12. Pattern Recognition Cheat Sheet</a>
+      <a href="#quiz">13. Practice Quiz</a>
     </div>
 
     <!-- ============================================================ -->
@@ -1132,10 +1133,257 @@ seen = {<span class="number">0</span>: <span class="number">1</span>}
     </section>
 
     <!-- ============================================================ -->
-    <!-- 11. PATTERN RECOGNITION CHEAT SHEET -->
+    <!-- 11. SWEEP LINE -->
+    <!-- ============================================================ -->
+    <section id="sweep-line">
+      <h2>11. Sweep Line</h2>
+      <p>
+        The sweep line (also called line sweep or event-based processing) technique converts a 2D or interval-based problem into a series of <strong>events</strong> sorted along one axis, then processes them in order. Instead of comparing every pair of objects (O(n^2)), you "sweep" through events left to right and maintain a data structure that tracks the current state.
+      </p>
+      <div class="formula-box">
+        When to use: overlapping intervals, counting concurrent events, meeting rooms, rectangle area/perimeter, skyline problems, calendar scheduling, maximum overlap at any point
+      </div>
+
+      <h3>Core Idea</h3>
+      <p>The pattern has three steps:</p>
+      <ol>
+        <li><strong>Create events:</strong> Turn each object (interval, rectangle, etc.) into a pair of events -- a START event and an END event.</li>
+        <li><strong>Sort events:</strong> Sort all events by their position along the sweep axis. Break ties carefully (usually starts before ends at the same position).</li>
+        <li><strong>Sweep and maintain state:</strong> Process events left to right. Use a counter, heap, or balanced BST to track the "active" set. At each event, update your answer.</li>
+      </ol>
+
+      <div class="example-box">
+        <div class="label">Sweep Line Visualization</div>
+<pre><code>Given intervals: [1,4], [2,6], [5,8], [7,9]
+
+Events (sorted):
+  pos=1 START   pos=2 START   pos=4 END   pos=5 START   pos=6 END   pos=7 START   pos=8 END   pos=9 END
+
+Sweep left to right, tracking active count:
+
+  Active:  0    1       2      1       2       1       2       1       0
+
+  Timeline:
+  1────4
+     2────────6
+            5────────8
+                  7──────9
+
+  Maximum overlap: 2 (at positions 2-4 and 5-6 and 7-8)</code></pre>
+      </div>
+
+      <h3>Meeting Rooms II -- Minimum Rooms Needed</h3>
+      <p>Given a list of meeting time intervals, find the minimum number of conference rooms required. This is the classic sweep line problem.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">min_meeting_rooms</span>(intervals):
+    events = []
+    <span class="keyword">for</span> start, end <span class="keyword">in</span> intervals:
+        events.append((start, <span class="number">1</span>))   <span class="comment"># +1 at start (meeting begins)</span>
+        events.append((end, -<span class="number">1</span>))    <span class="comment"># -1 at end (meeting ends)</span>
+
+    events.sort()  <span class="comment"># sort by time; ties: ends (-1) before starts (+1)</span>
+
+    max_rooms = <span class="number">0</span>
+    current_rooms = <span class="number">0</span>
+    <span class="keyword">for</span> time, delta <span class="keyword">in</span> events:
+        current_rooms += delta
+        max_rooms = max(max_rooms, current_rooms)
+
+    <span class="keyword">return</span> max_rooms
+
+<span class="comment"># Example: [[0,30],[5,10],[15,20]]</span>
+<span class="comment"># Events: (0,+1),(5,+1),(10,-1),(15,+1),(20,-1),(30,-1)</span>
+<span class="comment"># Sweep:   1     2      1      2       1       0</span>
+<span class="comment"># Answer: 2 rooms needed</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">minMeetingRooms</span>(intervals) {
+    <span class="keyword">const</span> events = [];
+    <span class="keyword">for</span> (<span class="keyword">const</span> [start, end] <span class="keyword">of</span> intervals) {
+        events.push([start, <span class="number">1</span>]);   <span class="comment">// meeting begins</span>
+        events.push([end, -<span class="number">1</span>]);    <span class="comment">// meeting ends</span>
+    }
+
+    events.sort((a, b) => a[<span class="number">0</span>] - b[<span class="number">0</span>] || a[<span class="number">1</span>] - b[<span class="number">1</span>]);  <span class="comment">// sort by time, ends before starts</span>
+
+    <span class="keyword">let</span> maxRooms = <span class="number">0</span>, currentRooms = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">const</span> [time, delta] <span class="keyword">of</span> events) {
+        currentRooms += delta;
+        maxRooms = Math.max(maxRooms, currentRooms);
+    }
+
+    <span class="keyword">return</span> maxRooms;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Why This Works</div>
+        <p>By converting intervals into +1 (start) and -1 (end) events, we turn a 2D overlap problem into a 1D running sum. The maximum value of the running sum is the peak number of overlapping intervals -- exactly the number of rooms (or resources) needed. Time complexity: <strong>O(n log n)</strong> for sorting, O(n) for the sweep. Space: O(n).</p>
+      </div>
+
+      <h3>The Skyline Problem</h3>
+      <p>Given buildings represented as [left, right, height], compute the skyline outline. This is a harder sweep line problem that uses a max-heap to track the tallest active building.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">get_skyline</span>(buildings):
+    <span class="comment"># Create events: (x, type, height)</span>
+    <span class="comment"># Start: negative height (for max-heap via min-heap trick)</span>
+    <span class="comment"># End: positive height</span>
+    events = []
+    <span class="keyword">for</span> left, right, height <span class="keyword">in</span> buildings:
+        events.append((left, -height, right))   <span class="comment"># start event</span>
+        events.append((right, <span class="number">0</span>, <span class="number">0</span>))             <span class="comment"># end event</span>
+
+    events.sort()  <span class="comment"># sort by x; at same x, taller buildings first (negative height)</span>
+
+    <span class="comment"># Max-heap: (-height, end_x). Start with ground level.</span>
+    result = []
+    heap = [(<span class="number">0</span>, float(<span class="string">'inf'</span>))]  <span class="comment"># (neg_height, end_x) -- ground never ends</span>
+
+    <span class="keyword">for</span> x, neg_h, end <span class="keyword">in</span> events:
+        <span class="keyword">if</span> neg_h != <span class="number">0</span>:  <span class="comment"># start event</span>
+            heapq.heappush(heap, (neg_h, end))
+        <span class="comment"># Remove buildings that have ended</span>
+        <span class="keyword">while</span> heap[<span class="number">0</span>][<span class="number">1</span>] <= x:
+            heapq.heappop(heap)
+
+        max_height = -heap[<span class="number">0</span>][<span class="number">0</span>]
+        <span class="keyword">if</span> <span class="keyword">not</span> result <span class="keyword">or</span> result[-<span class="number">1</span>][<span class="number">1</span>] != max_height:
+            result.append([x, max_height])
+
+    <span class="keyword">return</span> result
+
+<span class="comment"># Example: buildings = [[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]</span>
+<span class="comment"># Output: [[2,10],[3,15],[7,12],[12,0],[15,10],[20,8],[24,0]]</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Simplified approach using sorted events + tracking max height</span>
+<span class="keyword">function</span> <span class="function">getSkyline</span>(buildings) {
+    <span class="keyword">const</span> events = [];
+    <span class="keyword">for</span> (<span class="keyword">const</span> [left, right, height] <span class="keyword">of</span> buildings) {
+        events.push([left, -height, right]);  <span class="comment">// start: negative height</span>
+        events.push([right, <span class="number">0</span>, <span class="number">0</span>]);           <span class="comment">// end event</span>
+    }
+    events.sort((a, b) => a[<span class="number">0</span>] - b[<span class="number">0</span>] || a[<span class="number">1</span>] - b[<span class="number">1</span>]);
+
+    <span class="comment">// Use a sorted multiset or map to track active heights</span>
+    <span class="keyword">const</span> active = <span class="keyword">new</span> Map();  <span class="comment">// height -> count</span>
+    active.set(<span class="number">0</span>, <span class="number">1</span>);  <span class="comment">// ground level always active</span>
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">let</span> prevMax = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> [x, negH, end] <span class="keyword">of</span> events) {
+        <span class="keyword">if</span> (negH !== <span class="number">0</span>) {
+            <span class="comment">// Start event: add height</span>
+            <span class="keyword">const</span> h = -negH;
+            active.set(h, (active.get(h) || <span class="number">0</span>) + <span class="number">1</span>);
+        } <span class="keyword">else</span> {
+            <span class="comment">// End event: find and remove the building's height</span>
+            <span class="keyword">const</span> bld = buildings.find(b => b[<span class="number">1</span>] === x &amp;&amp; active.has(b[<span class="number">2</span>]));
+            <span class="keyword">if</span> (bld) {
+                <span class="keyword">const</span> h = bld[<span class="number">2</span>];
+                <span class="keyword">if</span> (active.get(h) === <span class="number">1</span>) active.delete(h);
+                <span class="keyword">else</span> active.set(h, active.get(h) - <span class="number">1</span>);
+            }
+        }
+        <span class="keyword">const</span> curMax = Math.max(...active.keys());
+        <span class="keyword">if</span> (curMax !== prevMax) {
+            result.push([x, curMax]);
+            prevMax = curMax;
+        }
+    }
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <h3>My Calendar I -- Booking Without Conflicts</h3>
+      <p>Implement a calendar that rejects overlapping bookings. Sweep line with sorted events makes checking conflicts efficient.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">MyCalendar</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.bookings = []
+
+    <span class="keyword">def</span> <span class="function">book</span>(self, start, end):
+        <span class="keyword">for</span> s, e <span class="keyword">in</span> self.bookings:
+            <span class="keyword">if</span> start < e <span class="keyword">and</span> s < end:  <span class="comment"># overlap check</span>
+                <span class="keyword">return</span> <span class="keyword">False</span>
+        self.bookings.append((start, end))
+        <span class="keyword">return</span> <span class="keyword">True</span>
+
+<span class="comment"># Optimized with sweep line for MyCalendar III (count max overlaps):</span>
+<span class="keyword">import</span> collections
+
+<span class="keyword">class</span> <span class="function">MyCalendarThree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.timeline = collections.defaultdict(int)
+
+    <span class="keyword">def</span> <span class="function">book</span>(self, start, end):
+        self.timeline[start] += <span class="number">1</span>   <span class="comment"># event begins</span>
+        self.timeline[end] -= <span class="number">1</span>     <span class="comment"># event ends</span>
+        <span class="comment"># Sweep through timeline</span>
+        active = <span class="number">0</span>
+        max_k = <span class="number">0</span>
+        <span class="keyword">for</span> time <span class="keyword">in</span> sorted(self.timeline):
+            active += self.timeline[time]
+            max_k = max(max_k, active)
+        <span class="keyword">return</span> max_k</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">MyCalendarThree</span> {
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.timeline = <span class="keyword">new</span> Map();
+    }
+
+    <span class="function">book</span>(start, end) {
+        <span class="keyword">this</span>.timeline.set(start, (<span class="keyword">this</span>.timeline.get(start) || <span class="number">0</span>) + <span class="number">1</span>);
+        <span class="keyword">this</span>.timeline.set(end, (<span class="keyword">this</span>.timeline.get(end) || <span class="number">0</span>) - <span class="number">1</span>);
+
+        <span class="keyword">let</span> active = <span class="number">0</span>, maxK = <span class="number">0</span>;
+        <span class="keyword">const</span> keys = [...<span class="keyword">this</span>.timeline.keys()].sort((a, b) => a - b);
+        <span class="keyword">for</span> (<span class="keyword">const</span> time <span class="keyword">of</span> keys) {
+            active += <span class="keyword">this</span>.timeline.get(time);
+            maxK = Math.max(maxK, active);
+        }
+        <span class="keyword">return</span> maxK;
+    }
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">When to Use Sweep Line vs Sorting Intervals</div>
+<pre><code>Regular Interval Problems (sort by start, check neighbors):
+  - Merge Intervals         → sort + linear scan
+  - Insert Interval         → find position + merge
+  - Non-Overlapping Count   → sort by end, greedy
+
+Sweep Line Problems (convert to events, sweep with counter/heap):
+  - Meeting Rooms II        → count max concurrent (events + counter)
+  - The Skyline Problem     → track tallest active (events + max-heap)
+  - Rectangle Area Union    → horizontal sweep + vertical sweep
+  - My Calendar III         → count k-booking (events + counter)
+  - Employee Free Time      → merge all intervals via sweep
+
+Rule of thumb:
+  If you need to count/track CONCURRENT or OVERLAPPING state → sweep line
+  If you need to MERGE or CHECK neighbors → sort + scan</code></pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Sweep Line Practice Problems</div>
+        <ul>
+          <li><strong>Meeting Rooms II (LC 253):</strong> Classic sweep line. Count peak overlapping meetings.</li>
+          <li><strong>The Skyline Problem (LC 218):</strong> Sweep line + max-heap. Hard but iconic.</li>
+          <li><strong>My Calendar I/II/III (LC 729/731/732):</strong> Progressively harder calendar booking problems.</li>
+          <li><strong>Corporate Flight Bookings (LC 1109):</strong> Difference array (a sweep line variant).</li>
+          <li><strong>Car Pooling (LC 1094):</strong> Track passenger count along a route using events.</li>
+          <li><strong>Points That Intersect With Cars (LC 2848):</strong> Sweep through car ranges.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12. PATTERN RECOGNITION CHEAT SHEET -->
     <!-- ============================================================ -->
     <section id="cheat-sheet">
-      <h2>11. Pattern Recognition Cheat Sheet</h2>
+      <h2>12. Pattern Recognition Cheat Sheet</h2>
       <p>
         When you read a problem, look for these clues to identify the right pattern. This is the single most valuable skill for LeetCode.
       </p>
@@ -1204,6 +1452,11 @@ seen = {<span class="number">0</span>: <span class="number">1</span>}
             <td>Sort by start, process left to right</td>
           </tr>
           <tr>
+            <td>"Max concurrent" / "peak overlap" / "how many at once"</td>
+            <td><strong>Sweep Line</strong></td>
+            <td>Convert to +1/-1 events, sweep to find peak running sum</td>
+          </tr>
+          <tr>
             <td>"Frequency" or "count occurrences"</td>
             <td><strong>Hash Map</strong></td>
             <td>O(1) lookups make counting fast</td>
@@ -1233,10 +1486,10 @@ seen = {<span class="number">0</span>: <span class="number">1</span>}
     </section>
 
     <!-- ============================================================ -->
-    <!-- 12. PRACTICE QUIZ -->
+    <!-- 13. PRACTICE QUIZ -->
     <!-- ============================================================ -->
     <section id="quiz">
-      <h2>12. Practice Quiz</h2>
+      <h2>13. Practice Quiz</h2>
       <p>Given each problem description, identify which algorithm pattern you would use. Think about the clues before clicking an answer.</p>
 
       <div class="quiz">
