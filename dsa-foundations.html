@@ -110,10 +110,18 @@
       <a href="#space-complexity">6. Space Complexity</a>
       <a href="#ds-overview">7. Every Data Structure Explained From Zero</a>
       <a href="#algorithms">8. Essential Algorithms Explained</a>
-      <a href="#problem-solving">9. How to Think About Problems</a>
-      <a href="#cp-tips">10. Tips to Become a World-Class Competitive Programmer</a>
-      <a href="#roadmap">11. Learning Roadmap</a>
-      <a href="#quiz">12. Practice Quiz</a>
+      <a href="#recursion">9. Recursion -- Functions That Call Themselves</a>
+      <a href="#backtracking">10. Backtracking -- Try All Possibilities</a>
+      <a href="#prefix-sum">11. Prefix Sum -- Precompute Cumulative Sums</a>
+      <a href="#suffix-sum">12. Suffix Sum -- Precompute from Right</a>
+      <a href="#sweep-line">13. Sweep Line -- Event-Based Processing</a>
+      <a href="#memoization">14. Memoization -- Remember Your Work</a>
+      <a href="#tabulation">15. Tabulation -- Build Up Solutions</a>
+      <a href="#python-java-dsa">16. Python & Java DSA Quick Reference</a>
+      <a href="#problem-solving">17. How to Think About Problems</a>
+      <a href="#cp-tips">18. Tips to Become a World-Class Competitive Programmer</a>
+      <a href="#roadmap">19. Learning Roadmap</a>
+      <a href="#quiz">20. Practice Quiz</a>
     </div>
 
 
@@ -748,12 +756,1210 @@ Remove from here              Add here
       <p><strong>Deep dive:</strong> <a href="sorting.html" style="color: #000000; font-weight: 500;">Sorting &amp; Searching page</a></p>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SECTION 9: RECURSION                                         -->
+    <!-- ============================================================ -->
+    <section id="recursion">
+      <h2>9. Recursion -- Functions That Call Themselves</h2>
+      
+      <p><strong>Analogy:</strong> Russian nesting dolls. Open a doll, find a smaller doll inside. Keep opening until you reach the smallest doll (the <strong>base case</strong>).</p>
+      
+      <p>Every recursive function needs:</p>
+      <ol>
+        <li><strong>Base case:</strong> When to stop (the smallest doll) -- returns a value without further recursion</li>
+        <li><strong>Recursive case:</strong> Break the problem into a smaller version of itself and call itself</li>
+      </ol>
+
+      <div class="formula-box">
+        Recursion Template:<br>
+        def function(inputs):<br>
+        &nbsp;&nbsp;if base_case:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return result<br>
+        &nbsp;&nbsp;return function(smaller_problem)
+      </div>
+
+      <h3>Why Recursion Works</h3>
+      <p>Each recursive call solves a <strong>smaller version</strong> of the same problem. Eventually you reach the base case, then the results "unwind" back up.</p>
+
+      <h3>Recursion Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Linear Recursion</h4>
+      <p>Process elements one at a time, moving forward or backward.</p>
+      <pre><code><span class="lang-label">Python - Reverse a String</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">reverse_string</span>(self, s: <span class="builtin">list</span>[<span class="builtin">str</span>]) -> <span class="keyword">None</span>:
+        <span class="keyword">def</span> <span class="function">solve</span>(left: <span class="builtin">int</span>, right: <span class="builtin">int</span>):
+            <span class="keyword">if</span> left >= right:
+                <span class="keyword">return</span>
+            s[left], s[right] = s[right], s[left]
+            <span class="function">solve</span>(left + <span class="number">1</span>, right - <span class="number">1</span>)
+        <span class="function">solve</span>(<span class="number">0</span>, <span class="builtin">len</span>(s) - <span class="number">1</span>)</code></pre>
+
+      <h4>Pattern 2: Binary Recursion</h4>
+      <p>Split problem into two halves, process each recursively.</p>
+      <pre><code><span class="lang-label">Python - Fibonacci</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">fib</span>(self, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        <span class="keyword">if</span> n <= <span class="number">1</span>:
+            <span class="keyword">return</span> n
+        <span class="keyword">return</span> self.<span class="function">fib</span>(n - <span class="number">1</span>) + self.<span class="function">fib</span>(n - <span class="number">2</span>)</code></pre>
+
+      <h4>Pattern 3: Recursion with Memoization</h4>
+      <p>Add caching to avoid recalculating the same subproblems.</p>
+      <pre><code><span class="lang-label">Python - Fibonacci with Memo</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">fib</span>(self, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(x: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> x <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[x]
+            <span class="keyword">if</span> x <= <span class="number">1</span>:
+                <span class="keyword">return</span> x
+            cache[x] = <span class="function">solve</span>(x - <span class="number">1</span>) + <span class="function">solve</span>(x - <span class="number">2</span>)
+            <span class="keyword">return</span> cache[x]
+        <span class="keyword">return</span> <span class="function">solve</span>(n)</code></pre>
+
+      <h4>Pattern 4: Tree Recursion</h4>
+      <p>Recursively process left and right subtrees.</p>
+      <pre><code><span class="lang-label">Python - Binary Tree Inorder Traversal</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">inorder_traversal</span>(self, root) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+        result = []
+        <span class="keyword">def</span> <span class="function">solve</span>(node):
+            <span class="keyword">if</span> <span class="keyword">not</span> node:
+                <span class="keyword">return</span>
+            <span class="function">solve</span>(node.left)
+            result.append(node.val)
+            <span class="function">solve</span>(node.right)
+        <span class="function">solve</span>(root)
+        <span class="keyword">return</span> result</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        <p>When writing recursive functions, ask: "What is the smallest version of this problem I can solve directly?" That's your base case. Then ask: "How do I reduce the current problem to a smaller one?" That's your recursive case.</p>
+      </div>
+    </section>
 
     <!-- ============================================================ -->
-    <!-- SECTION 9: PROBLEM SOLVING                                    -->
+    <!-- SECTION 10: BACKTRACKING                                      -->
+    <!-- ============================================================ -->
+    <section id="backtracking">
+      <h2>10. Backtracking -- Try All Possibilities</h2>
+      
+      <p><strong>Analogy:</strong> Exploring a maze. You try a path, if it hits a dead end, you backtrack to the last junction and try a different path.</p>
+      
+      <p>Backtracking = Recursion + Choice + Undo Choice. You explore all possibilities by making a choice, recursing, then undoing that choice to try another.</p>
+
+      <div class="formula-box">
+        Backtracking Template:<br>
+        def backtrack(path, choices):<br>
+        &nbsp;&nbsp;if valid solution:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;record solution<br>
+        &nbsp;&nbsp;for each choice in choices:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;make choice<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;backtrack(path, remaining_choices)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;undo choice (backtrack)
+      </div>
+
+      <h3>Backtracking Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Subsets (Include/Exclude)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">subsets</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]:
+        result = []
+        <span class="keyword">def</span> <span class="function">backtrack</span>(start: <span class="builtin">int</span>, path: <span class="builtin">list</span>[<span class="builtin">int</span>]):
+            result.append(path[:])
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(start, <span class="builtin">len</span>(nums)):
+                path.append(nums[i])
+                <span class="function">backtrack</span>(i + <span class="number">1</span>, path)
+                path.pop()
+        <span class="function">backtrack</span>(<span class="number">0</span>, [])
+        <span class="keyword">return</span> result</code></pre>
+
+      <h4>Pattern 2: Permutations</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">permute</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]:
+        result = []
+        used = [<span class="keyword">False</span>] * <span class="builtin">len</span>(nums)
+        <span class="keyword">def</span> <span class="function">backtrack</span>(path: <span class="builtin">list</span>[<span class="builtin">int</span>]):
+            <span class="keyword">if</span> <span class="builtin">len</span>(path) == <span class="builtin">len</span>(nums):
+                result.append(path[:])
+                <span class="keyword">return</span>
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(nums)):
+                <span class="keyword">if</span> <span class="keyword">not</span> used[i]:
+                    used[i] = <span class="keyword">True</span>
+                    path.append(nums[i])
+                    <span class="function">backtrack</span>(path)
+                    path.pop()
+                    used[i] = <span class="keyword">False</span>
+        <span class="function">backtrack</span>([])
+        <span class="keyword">return</span> result</code></pre>
+
+      <h4>Pattern 3: Combination Sum</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">combination_sum</span>(self, candidates: <span class="builtin">list</span>[<span class="builtin">int</span>], target: <span class="builtin">int</span>) -> <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]:
+        result = []
+        <span class="keyword">def</span> <span class="function">backtrack</span>(start: <span class="builtin">int</span>, path: <span class="builtin">list</span>[<span class="builtin">int</span>], remaining: <span class="builtin">int</span>):
+            <span class="keyword">if</span> remaining == <span class="number">0</span>:
+                result.append(path[:])
+                <span class="keyword">return</span>
+            <span class="keyword">if</span> remaining < <span class="number">0</span>:
+                <span class="keyword">return</span>
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(start, <span class="builtin">len</span>(candidates)):
+                path.append(candidates[i])
+                <span class="function">backtrack</span>(i, path, remaining - candidates[i])
+                path.pop()
+        <span class="function">backtrack</span>(<span class="number">0</span>, [], target)
+        <span class="keyword">return</span> result</code></pre>
+
+      <h4>Pattern 4: N-Queens</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">solve_n_queens</span>(self, n: <span class="builtin">int</span>) -> <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">str</span>]]:
+        result = []
+        cols = <span class="builtin">set</span>()
+        diag1 = <span class="builtin">set</span>()
+        diag2 = <span class="builtin">set</span>()
+        <span class="keyword">def</span> <span class="function">backtrack</span>(row: <span class="builtin">int</span>, path: <span class="builtin">list</span>[<span class="builtin">str</span>]):
+            <span class="keyword">if</span> row == n:
+                result.append(path[:])
+                <span class="keyword">return</span>
+            <span class="keyword">for</span> col <span class="keyword">in</span> <span class="builtin">range</span>(n):
+                <span class="keyword">if</span> col <span class="keyword">in</span> cols <span class="keyword">or</span> (row - col) <span class="keyword">in</span> diag1 <span class="keyword">or</span> (row + col) <span class="keyword">in</span> diag2:
+                    <span class="keyword">continue</span>
+                cols.add(col)
+                diag1.add(row - col)
+                diag2.add(row + col)
+                path.append(<span class="string">"."</span> * col + <span class="string">"Q"</span> + <span class="string">"."</span> * (n - col - <span class="number">1</span>))
+                <span class="function">backtrack</span>(row + <span class="number">1</span>, path)
+                path.pop()
+                cols.remove(col)
+                diag1.remove(row - col)
+                diag2.remove(row + col)
+        <span class="function">backtrack</span>(<span class="number">0</span>, [])
+        <span class="keyword">return</span> result</code></pre>
+
+      <div class="formula-box">
+        When to use Backtracking:<br>
+        - Generate all combinations/permutations<br>
+        - Solve puzzles (N-Queens, Sudoku)<br>
+        - Find all paths in a grid<br>
+        - Subset selection problems<br>
+        - Constraint satisfaction problems
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: PREFIX SUM                                        -->
+    <!-- ============================================================ -->
+    <section id="prefix-sum">
+      <h2>11. Prefix Sum -- Precompute Cumulative Sums</h2>
+      
+      <p><strong>Analogy:</strong> Instead of counting books on each shelf every time someone asks, you precompute cumulative totals and just subtract to get any range.</p>
+      
+      <p>Precompute a running sum array so you can answer any "sum from index i to j" query in O(1).</p>
+
+      <div class="formula-box">
+        prefix[i] = arr[0] + arr[1] + ... + arr[i]<br>
+        sum(arr[l..r]) = prefix[r] - prefix[l-1] (if l > 0)
+      </div>
+
+      <h3>Prefix Sum Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Range Sum Query</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">range_sum</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>], queries: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+        prefix = [<span class="number">0</span>] * (<span class="builtin">len</span>(nums) + <span class="number">1</span>)
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(nums)):
+            prefix[i + <span class="number">1</span>] = prefix[i] + nums[i]
+        
+        result = []
+        <span class="keyword">for</span> l, r <span class="keyword">in</span> queries:
+            result.append(prefix[r + <span class="number">1</span>] - prefix[l])
+        <span class="keyword">return</span> result</code></pre>
+
+      <h4>Pattern 2: Subarray Sum Equals K</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">subarray_sum</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>], k: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        count = <span class="number">0</span>
+        prefix = <span class="number">0</span>
+        prefix_counts = {<span class="number">0</span>: <span class="number">1</span>}
+        
+        <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+            prefix += num
+            count += prefix_counts.get(prefix - k, <span class="number">0</span>)
+            prefix_counts[prefix] = prefix_counts.get(prefix, <span class="number">0</span>) + <span class="number">1</span>
+        
+        <span class="keyword">return</span> count</code></pre>
+
+      <h4>Pattern 3: Continuous Subarray with Positive Sum</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">max_subarray_len</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>], k: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        prefix = <span class="number">0</span>
+        prefix_index = {<span class="number">0</span>: -<span class="number">1</span>}
+        max_len = <span class="number">0</span>
+        
+        <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="builtin">enumerate</span>(nums):
+            prefix += num
+            <span class="keyword">if</span> prefix - k <span class="keyword">in</span> prefix_index:
+                max_len = <span class="builtin">max</span>(max_len, i - prefix_index[prefix - k])
+            <span class="keyword">if</span> prefix <span class="keyword">not</span> <span class="keyword">in</span> prefix_index:
+                prefix_index[prefix] = i
+        
+        <span class="keyword">return</span> max_len</code></pre>
+
+      <h4>Pattern 4: Difference Array (Range Update)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">corp_flight_bookings</span>(self, bookings: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]], n: <span class="builtin">int</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+        diff = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+        
+        <span class="keyword">for</span> start, end, seats <span class="keyword">in</span> bookings:
+            diff[start - <span class="number">1</span>] += seats
+            diff[end] -= seats
+        
+        result = [<span class="number">0</span>] * n
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            result[i] = result[i - <span class="number">1</span>] + diff[i] <span class="keyword">if</span> i > <span class="number">0</span> <span class="keyword">else</span> diff[i]
+        
+        <span class="keyword">return</span> result</code></pre>
+
+      <div class="formula-box">
+        When to use Prefix Sum:<br>
+        - Range sum queries on static array<br>
+        - Subarray sum problems<br>
+        - Counting subarrays with certain sum<br>
+        - Range updates (difference array)<br>
+        - Any problem asking about "sum of subarray"
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: SUFFIX SUM                                        -->
+    <!-- ============================================================ -->
+    <section id="suffix-sum">
+      <h2>12. Suffix Sum -- Precompute from Right</h2>
+      
+      <p><strong>Analogy:</strong> Similar to prefix sum, but instead of "how much from the start," you want "how much from the end."</p>
+      
+      <p>Useful when you need to quickly answer queries like "sum from index i to end" or when processing from right to left.</p>
+
+      <div class="formula-box">
+        suffix[i] = arr[i] + arr[i+1] + ... + arr[n-1]<br>
+        sum(arr[i..end]) = suffix[i]
+      </div>
+
+      <h3>Suffix Sum Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Suffix Sum Array</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">suffix_sum</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+        n = <span class="builtin">len</span>(nums)
+        suffix = [<span class="number">0</span>] * n
+        suffix[n - <span class="number">1</span>] = nums[n - <span class="number">1</span>]
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+            suffix[i] = nums[i] + suffix[i + <span class="number">1</span>]
+        
+        <span class="keyword">return</span> suffix</code></pre>
+
+      <h4>Pattern 2: Right-side Processing</h4>
+      <pre><code><span class="lang-label">Python - Product of Array Except Self</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">product_except_self</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+        n = <span class="builtin">len</span>(nums)
+        result = [<span class="number">1</span>] * n
+        
+        prefix = <span class="number">1</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            result[i] = prefix
+            prefix *= nums[i]
+        
+        suffix = <span class="number">1</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+            result[i] *= suffix
+            suffix *= nums[i]
+        
+        <span class="keyword">return</span> result</code></pre>
+
+      <h4>Pattern 3: Minimum Path Sum from Right</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">min_path_sum</span>(self, grid: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]) -> <span class="builtin">int</span>:
+        m, n = <span class="builtin">len</span>(grid), <span class="builtin">len</span>(grid[<span class="number">0</span>])
+        
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+                <span class="keyword">if</span> i == m - <span class="number">1</span> <span class="keyword">and</span> j == n - <span class="number">1</span>:
+                    <span class="keyword">continue</span>
+                <span class="keyword">if</span> i == m - <span class="number">1</span>:
+                    grid[i][j] += grid[i][j + <span class="number">1</span>]
+                <span class="keyword">elif</span> j == n - <span class="number">1</span>:
+                    grid[i][j] += grid[i + <span class="number">1</span>][j]
+                <span class="keyword">else</span>:
+                    grid[i][j] += <span class="builtin">min</span>(grid[i + <span class="number">1</span>][j], grid[i][j + <span class="number">1</span>])
+        
+        <span class="keyword">return</span> grid[<span class="number">0</span>][<span class="number">0</span>]</code></pre>
+
+      <h4>Pattern 4: Longest Happy Prefix (Suffix-based)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">longest_prefix</span>(self, s: <span class="builtin">str</span>) -> <span class="builtin">str</span>:
+        n = <span class="builtin">len</span>(s)
+        <span class="keyword">for</span> length <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>):
+            <span class="keyword">if</span> s[:length] == s[n - length:]:
+                <span class="keyword">return</span> s[:length]
+        <span class="keyword">return</span> <span class="string">""</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        <p>Suffix sum is just prefix sum from the right side. Use it when you need to process from end to start or when queries ask about "from position i to end."</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 13: SWEEP LINE                                        -->
+    <!-- ============================================================ -->
+    <section id="sweep-line">
+      <h2>13. Sweep Line -- Event-Based Processing</h2>
+      
+      <p><strong>Analogy:</strong> A security guard walking along a street, counting how many people are on the street at each moment. When someone enters, count goes up; when someone leaves, count goes down.</p>
+      
+      <p>Convert 2D/interval problems into sorted 1D events. Sweep left to right, maintaining state.</p>
+
+      <div class="formula-box">
+        Sweep Line Steps:<br>
+        1. Create events: START (+1) and END (-1) for each interval<br>
+        2. Sort events by position<br>
+        3. Sweep and track current state (counter, max, etc.)
+      </div>
+
+      <h3>Sweep Line Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Meeting Rooms II</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">min_meeting_rooms</span>(self, intervals: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]) -> <span class="builtin">int</span>:
+        events = []
+        <span class="keyword">for</span> start, end <span class="keyword">in</span> intervals:
+            events.append((start, <span class="number">1</span>))
+            events.append((end, -<span class="number">1</span>))
+        
+        events.sort()
+        
+        max_rooms = <span class="number">0</span>
+        current = <span class="number">0</span>
+        <span class="keyword">for</span> _, delta <span class="keyword">in</span> events:
+            current += delta
+            max_rooms = <span class="builtin">max</span>(max_rooms, current)
+        
+        <span class="keyword">return</span> max_rooms</code></pre>
+
+      <h4>Pattern 2: My Calendar III (Maximum Overlap)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">MyCalendarThree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.events = collections.defaultdict(<span class="builtin">int</span>)
+
+    <span class="keyword">def</span> <span class="function">book</span>(self, start: <span class="builtin">int</span>, end: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        self.events[start] += <span class="number">1</span>
+        self.events[end] -= <span class="number">1</span>
+        
+        active = <span class="number">0</span>
+        max_overlap = <span class="number">0</span>
+        <span class="keyword">for</span> time <span class="keyword">in</span> <span class="builtin">sorted</span>(self.events):
+            active += self.events[time]
+            max_overlap = <span class="builtin">max</span>(max_overlap, active)
+        
+        <span class="keyword">return</span> max_overlap</code></pre>
+
+      <h4>Pattern 3: Rectangle Overlap</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">is_rectangle_overlap</span>(self, rec1: <span class="builtin">list</span>[<span class="builtin">int</span>], rec2: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">bool</span>:
+        x1, y1, x2, y2 = rec1
+        x3, y3, x4, y4 = rec2
+        
+        <span class="keyword">return not</span> (x2 <= x3 <span class="keyword">or</span> x4 <= x1 <span class="keyword">or</span> y2 <= y3 <span class="keyword">or</span> y4 <= y1)</code></pre>
+
+      <h4>Pattern 4: Car Pooling</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">car_pooling</span>(self, trips: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]], capacity: <span class="builtin">int</span>) -> <span class="builtin">bool</span>:
+        events = []
+        <span class="keyword">for</span> num, start, end <span class="keyword">in</span> trips:
+            events.append((start, num))
+            events.append((end, -num))
+        
+        events.sort()
+        
+        current = <span class="number">0</span>
+        <span class="keyword">for</span> _, delta <span class="keyword">in</span> events:
+            current += delta
+            <span class="keyword">if</span> current > capacity:
+                <span class="keyword">return</span> <span class="keyword">False</span>
+        
+        <span class="keyword">return</span> <span class="keyword">True</span></code></pre>
+
+      <div class="formula-box">
+        When to use Sweep Line:<br>
+        - Counting overlapping intervals<br>
+        - Meeting rooms problems<br>
+        - Calendar booking problems<br>
+        - Maximum concurrent events<br>
+        - Any problem with intervals [start, end)
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 14: MEMOIZATION                                        -->
+    <!-- ============================================================ -->
+    <section id="memoization">
+      <h2>14. Memoization -- Remember Your Work</h2>
+      
+      <p><strong>Analogy:</strong> Instead of recalculating your monthly budget every time someone asks, you write it on a sticky note and just read it next time.</p>
+      
+      <p>Memoization = Recursion + Cache. Store results of expensive function calls and return cached result when the same inputs occur again.</p>
+
+      <div class="formula-box">
+        Memoization Template:<br>
+        def solve(inputs):<br>
+        &nbsp;&nbsp;if inputs in cache: return cache[inputs]<br>
+        &nbsp;&nbsp;result = expensive_computation(inputs)<br>
+        &nbsp;&nbsp;cache[inputs] = result<br>
+        &nbsp;&nbsp;return result
+      </div>
+
+      <h3>Memoization Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Climbing Stairs (1D Memo)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">climb_stairs</span>(self, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(i: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> i <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[i]
+            <span class="keyword">if</span> i <= <span class="number">2</span>:
+                <span class="keyword">return</span> i
+            cache[i] = <span class="function">solve</span>(i - <span class="number">1</span>) + <span class="function">solve</span>(i - <span class="number">2</span>)
+            <span class="keyword">return</span> cache[i]
+        <span class="keyword">return</span> <span class="function">solve</span>(n)</code></pre>
+
+      <h4>Pattern 2: House Robber (1D Memo)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">rob</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(i: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> i <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[i]
+            <span class="keyword">if</span> i < <span class="number">0</span>:
+                <span class="keyword">return</span> <span class="number">0</span>
+            result = <span class="builtin">max</span>(<span class="function">solve</span>(i - <span class="number">1</span>), <span class="function">solve</span>(i - <span class="number">2</span>) + nums[i])
+            cache[i] = result
+            <span class="keyword">return</span> result
+        <span class="keyword">return</span> <span class="function">solve</span>(<span class="builtin">len</span>(nums) - <span class="number">1</span>)</code></pre>
+
+      <h4>Pattern 3: Unique Paths (2D Memo)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">unique_paths</span>(self, m: <span class="builtin">int</span>, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(i: <span class="builtin">int</span>, j: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> (i, j) <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[(i, j)]
+            <span class="keyword">if</span> i >= m <span class="keyword">or</span> j >= n:
+                <span class="keyword">return</span> <span class="number">0</span>
+            <span class="keyword">if</span> i == m - <span class="number">1</span> <span class="keyword">and</span> j == n - <span class="number">1</span>:
+                <span class="keyword">return</span> <span class="number">1</span>
+            cache[(i, j)] = <span class="function">solve</span>(i + <span class="number">1</span>, j) + <span class="function">solve</span>(i, j + <span class="number">1</span>)
+            <span class="keyword">return</span> cache[(i, j)]
+        <span class="keyword">return</span> <span class="function">solve</span>(<span class="number">0</span>, <span class="number">0</span>)</code></pre>
+
+      <h4>Pattern 4: Unique Paths with Obstacles</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">unique_paths_with_obstacles</span>(self, grid: <span class="builtin">list</span>[<span class="builtin">list</span>[<span class="builtin">int</span>]]) -> <span class="builtin">int</span>:
+        N = <span class="builtin">len</span>(grid)
+        M = <span class="builtin">len</span>(grid[<span class="number">0</span>])
+        
+        <span class="keyword">if</span> grid[N - <span class="number">1</span>][M - <span class="number">1</span>] == <span class="number">1</span>:
+            <span class="keyword">return</span> <span class="number">0</span>
+        
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(x: <span class="builtin">int</span>, y: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            key = <span class="builtin">str</span>(x) + <span class="string">","</span> + <span class="builtin">str</span>(y)
+            <span class="keyword">if</span> key <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[key]
+            <span class="keyword">if</span> x < <span class="number">0</span> <span class="keyword">or</span> x >= N <span class="keyword">or</span> y < <span class="number">0</span> <span class="keyword">or</span> y >= M:
+                <span class="keyword">return</span> <span class="number">0</span>
+            <span class="keyword">if</span> grid[x][y] == <span class="number">1</span>:
+                <span class="keyword">return</span> <span class="number">0</span>
+            <span class="keyword">if</span> x == N - <span class="number">1</span> <span class="keyword">and</span> y == M - <span class="number">1</span>:
+                <span class="keyword">return</span> <span class="number">1</span>
+            cache[key] = <span class="function">solve</span>(x + <span class="number">1</span>, y) + <span class="function">solve</span>(x, y + <span class="number">1</span>)
+            <span class="keyword">return</span> cache[key]
+        
+        <span class="function">solve</span>()
+        <span class="keyword">return</span> cache[<span class="string">"0,0"</span>] <span class="keyword">if</span> <span class="string">"0,0"</span> <span class="keyword">in</span> cache <span class="keyword">else</span> <span class="number">0</span></code></pre>
+
+      <h4>Pattern 5: Coin Change (Memo)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">coin_change</span>(self, coins: <span class="builtin">list</span>[<span class="builtin">int</span>], amount: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(remaining: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> remaining <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[remaining]
+            <span class="keyword">if</span> remaining == <span class="number">0</span>:
+                <span class="keyword">return</span> <span class="number">0</span>
+            <span class="keyword">if</span> remaining < <span class="number">0</span>:
+                <span class="keyword">return</span> <span class="builtin">float</span>(<span class="string">'inf'</span>)
+            
+            min_coins = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+            <span class="keyword">for</span> coin <span class="keyword">in</span> coins:
+                min_coins = <span class="builtin">min</span>(min_coins, <span class="function">solve</span>(remaining - coin) + <span class="number">1</span>)
+            
+            cache[remaining] = min_coins
+            <span class="keyword">return</span> min_coins
+        
+        result = <span class="function">solve</span>(amount)
+        <span class="keyword">return</span> result <span class="keyword">if</span> result != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">else</span> -<span class="number">1</span></code></pre>
+
+      <h4>Pattern 6: Longest Common Subsequence (String Memo)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">longest_common_subsequence</span>(self, text1: <span class="builtin">str</span>, text2: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+        cache = {}
+        <span class="keyword">def</span> <span class="function">solve</span>(i: <span class="builtin">int</span>, j: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+            <span class="keyword">if</span> (i, j) <span class="keyword">in</span> cache:
+                <span class="keyword">return</span> cache[(i, j)]
+            <span class="keyword">if</span> i == <span class="builtin">len</span>(text1) <span class="keyword">or</span> j == <span class="builtin">len</span>(text2):
+                <span class="keyword">return</span> <span class="number">0</span>
+            
+            <span class="keyword">if</span> text1[i] == text2[j]:
+                cache[(i, j)] = <span class="function">solve</span>(i + <span class="number">1</span>, j + <span class="number">1</span>) + <span class="number">1</span>
+            <span class="keyword">else</span>:
+                cache[(i, j)] = <span class="builtin">max</span>(<span class="function">solve</span>(i + <span class="number">1</span>, j), <span class="function">solve</span>(i, j + <span class="number">1</span>))
+            <span class="keyword">return</span> cache[(i, j)]
+        
+        <span class="keyword">return</span> <span class="function">solve</span>(<span class="number">0</span>, <span class="number">0</span>)</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        <p>Memoization turns O(2^n) exponential problems into O(n) or O(n*m) polynomial problems. The key is identifying what subproblem to cache. Ask: "What parameters uniquely define this subproblem?"</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 15: TABULATION                                        -->
+    <!-- ============================================================ -->
+    <section id="tabulation">
+      <h2>15. Tabulation -- Build Up Solutions</h2>
+      
+      <p><strong>Analogy:</strong> Instead of starting from the top and working down (like memoization), you start from the bottom (base cases) and build up to the final answer iteratively.</p>
+      
+      <p>Tabulation = Bottom-Up DP. No recursion. Just fill a table from base cases to final answer.</p>
+
+      <div class="formula-box">
+        Tabulation Steps:<br>
+        1. Identify the state (what does dp[i] represent?)<br>
+        2. Define base cases (dp[0], dp[1], etc.)<br>
+        3. Determine the order to fill (usually left to right)<br>
+        4. Write the recurrence relation<br>
+        5. Return dp[final_state]
+      </div>
+
+      <h3>Tabulation Patterns (LeetCode Style)</h3>
+
+      <h4>Pattern 1: Climbing Stairs (1D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">climb_stairs</span>(self, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        <span class="keyword">if</span> n <= <span class="number">2</span>:
+            <span class="keyword">return</span> n
+        dp = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+        dp[<span class="number">1</span>] = <span class="number">1</span>
+        dp[<span class="number">2</span>] = <span class="number">2</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">3</span>, n + <span class="number">1</span>):
+            dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>]
+        <span class="keyword">return</span> dp[n]</code></pre>
+
+      <h4>Pattern 2: House Robber (1D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">rob</span>(self, nums: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">int</span>:
+        <span class="keyword">if</span> <span class="keyword">not</span> nums:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> <span class="builtin">len</span>(nums) == <span class="number">1</span>:
+            <span class="keyword">return</span> nums[<span class="number">0</span>]
+        
+        dp = [<span class="number">0</span>] * <span class="builtin">len</span>(nums)
+        dp[<span class="number">0</span>] = nums[<span class="number">0</span>]
+        dp[<span class="number">1</span>] = <span class="builtin">max</span>(nums[<span class="number">0</span>], nums[<span class="number">1</span>])
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, <span class="builtin">len</span>(nums)):
+            dp[i] = <span class="builtin">max</span>(dp[i - <span class="number">1</span>], dp[i - <span class="number">2</span>] + nums[i])
+        
+        <span class="keyword">return</span> dp[-<span class="number">1</span>]</code></pre>
+
+      <h4>Pattern 3: Unique Paths (2D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">unique_paths</span>(self, m: <span class="builtin">int</span>, n: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        dp = [[<span class="number">1</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m)]
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n):
+                dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>]
+        
+        <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>]</code></pre>
+
+      <h4>Pattern 4: Longest Common Subsequence (2D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">longest_common_subsequence</span>(self, text1: <span class="builtin">str</span>, text2: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+        m, n = <span class="builtin">len</span>(text1), <span class="builtin">len</span>(text2)
+        dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+                <span class="keyword">if</span> text1[i - <span class="number">1</span>] == text2[j - <span class="number">1</span>]:
+                    dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>
+                <span class="keyword">else</span>:
+                    dp[i][j] = <span class="builtin">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>])
+        
+        <span class="keyword">return</span> dp[m][n]</code></pre>
+
+      <h4>Pattern 5: Coin Change (1D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">coin_change</span>(self, coins: <span class="builtin">list</span>[<span class="builtin">int</span>], amount: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        dp = [<span class="builtin">float</span>(<span class="string">'inf'</span>)] * (amount + <span class="number">1</span>)
+        dp[<span class="number">0</span>] = <span class="number">0</span>
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, amount + <span class="number">1</span>):
+            <span class="keyword">for</span> coin <span class="keyword">in</span> coins:
+                <span class="keyword">if</span> coin <= i:
+                    dp[i] = <span class="builtin">min</span>(dp[i], dp[i - coin] + <span class="number">1</span>)
+        
+        <span class="keyword">return</span> dp[amount] <span class="keyword">if</span> dp[amount] != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">else</span> -<span class="number">1</span></code></pre>
+
+      <h4>Pattern 6: 0/1 Knapsack (2D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">knapsack</span>(self, weights: <span class="builtin">list</span>[<span class="builtin">int</span>], values: <span class="builtin">list</span>[<span class="builtin">int</span>], capacity: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+        n = <span class="builtin">len</span>(weights)
+        dp = [[<span class="number">0</span>] * (capacity + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n + <span class="number">1</span>)]
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">for</span> w <span class="keyword">in</span> <span class="builtin">range</span>(capacity + <span class="number">1</span>):
+                <span class="keyword">if</span> weights[i - <span class="number">1</span>] <= w:
+                    dp[i][w] = <span class="builtin">max</span>(
+                        dp[i - <span class="number">1</span>][w],
+                        dp[i - <span class="number">1</span>][w - weights[i - <span class="number">1</span>]] + values[i - <span class="number">1</span>]
+                    )
+                <span class="keyword">else</span>:
+                    dp[i][w] = dp[i - <span class="number">1</span>][w]
+        
+        <span class="keyword">return</span> dp[n][capacity]</code></pre>
+
+      <h4>Pattern 7: Edit Distance (2D Tab)</h4>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">Solution</span>:
+    <span class="keyword">def</span> <span class="function">min_distance</span>(self, word1: <span class="builtin">str</span>, word2: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+        m, n = <span class="builtin">len</span>(word1), <span class="builtin">len</span>(word2)
+        dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>):
+            dp[i][<span class="number">0</span>] = i
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n + <span class="number">1</span>):
+            dp[<span class="number">0</span>][j] = j
+        
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+                <span class="keyword">if</span> word1[i - <span class="number">1</span>] == word2[j - <span class="number">1</span>]:
+                    dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>]
+                <span class="keyword">else</span>:
+                    dp[i][j] = <span class="number">1</span> + <span class="builtin">min</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>], dp[i - <span class="number">1</span>][j - <span class="number">1</span>])
+        
+        <span class="keyword">return</span> dp[m][n]</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Memoization vs Tabulation</div>
+        <p>Use memoization when you can't determine the order of computation easily. Use tabulation when you know the order and want to avoid recursion overhead. Both give the same time complexity, but tabulation often uses less memory (can drop old rows).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 16: PYTHON & JAVA DSA QUICK REFERENCE                -->
+    <!-- ============================================================ -->
+    <section id="python-java-dsa">
+      <h2>16. Python & Java DSA Quick Reference</h2>
+      
+      <p>Quick syntax reference for the most common DSA operations in both Python and Java.</p>
+
+      <h3>1. Arrays</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># Create array</span>
+arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+
+<span class="comment"># Access - O(1)</span>
+arr[<span class="number">0</span>]  <span class="comment"># first element</span>
+arr[-<span class="number">1</span>]  <span class="comment"># last element</span>
+
+<span class="comment"># Length - O(1)</span>
+len(arr)
+
+<span class="comment"># Append - O(1) amortized</span>
+arr.append(<span class="number">6</span>)
+
+<span class="comment"># Insert at index - O(n)</span>
+arr.insert(<span class="number">0</span>, <span class="number">0</span>)  <span class="comment"># insert 0 at beginning</span>
+
+<span class="comment"># Remove at index - O(n)</span>
+arr.pop()         <span class="comment"># remove last</span>
+arr.pop(<span class="number">0</span>)      <span class="comment"># remove first</span>
+
+<span class="comment"># Slicing - O(k)</span>
+arr[<span class="number">1</span>:<span class="number">4</span>]     <span class="comment"># elements at index 1,2,3</span>
+arr[:<span class="number">3</span>]      <span class="comment"># first 3 elements</span>
+arr[<span class="number">2</span>:]      <span class="comment"># from index 2 to end</span>
+
+<span class="comment"># Sort - O(n log n)</span>
+arr.sort()
+arr.sort(reverse=<span class="keyword">True</span>)
+sorted_arr = <span class="builtin">sorted</span>(arr)
+
+<span class="comment"># Search - O(n) for linear, O(log n) for binary</span>
+<span class="number">5</span> <span class="keyword">in</span> arr              <span class="comment"># linear search</span>
+<span class="comment"># Binary search requires sorted array</span>
+<span class="keyword">import</span> bisect
+bisect.bisect_left(arr, <span class="number">3</span>)  <span class="comment"># returns index</span>
+
+<span class="comment"># 2D Array</span>
+matrix = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]]
+matrix[<span class="number">0</span>][<span class="number">1</span>]  <span class="comment"># row 0, col 1 = 2</span></code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// Create array</span>
+<span class="keyword">int</span>[] arr = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+<span class="keyword">int</span>[] arr2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];
+
+<span class="comment">// Access - O(1)</span>
+arr[<span class="number">0</span>];   <span class="comment">// first element</span>
+arr[arr.length - <span class="number">1</span>];  <span class="comment">// last element</span>
+
+<span class="comment">// Length - O(1)</span>
+arr.length
+
+<span class="comment">// ArrayList - dynamic array</span>
+ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();
+list.add(<span class="number">1</span>);           <span class="comment">// O(1) amortized</span>
+list.get(<span class="number">0</span>);            <span class="comment">// O(1)</span>
+list.remove(<span class="number">0</span>);          <span class="comment">// O(n)</span>
+list.size();             <span class="comment">// O(1)</span>
+
+<span class="comment">// Sort - O(n log n)</span>
+Arrays.sort(arr);
+Arrays.sort(arr, Collections.reverseOrder());
+
+<span class="comment">// Binary search - O(log n)</span>
+Arrays.binarySearch(arr, <span class="number">3</span>);
+
+<span class="comment">// 2D Array</span>
+<span class="keyword">int</span>[][] matrix = {{<span class="number">1</span>, <span class="number">2</span>}, {<span class="number">3</span>, <span class="number">4</span>}};
+matrix[<span class="number">0</span>][<span class="number">1</span>];  <span class="comment">// row 0, col 1 = 2</span></code></pre>
+
+      <h3>2. Lists / ArrayLists</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># List is same as array above</span>
+
+<span class="comment"># List comprehension</span>
+squares = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>)]
+evens = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]
+
+<span class="comment"># List operations</span>
+arr.extend([<span class="number">6</span>, <span class="number">7</span>])  <span class="comment"># add multiple</span>
+arr.remove(<span class="number">3</span>)           <span class="comment"># remove first occurrence</span>
+arr.index(<span class="number">5</span>)           <span class="comment"># find index</span>
+arr.count(<span class="number">5</span>)           <span class="comment"># count occurrences</span></code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// ArrayList</span>
+ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();
+list.add(<span class="number">1</span>);
+list.add(<span class="number">2</span>);
+list.add(<span class="number">0</span>, <span class="number">5</span>);  <span class="comment">// insert at index 0</span>
+list.get(<span class="number">0</span>);
+list.set(<span class="number">0</span>, <span class="number">10</span>);  <span class="comment">// update</span>
+list.remove(<span class="number">0</span>);    <span class="comment">// by index</span>
+list.remove(Integer.valueOf(<span class="number">5</span>));  <span class="comment">// by value</span>
+list.contains(<span class="number">5</span>);
+list.indexOf(<span class="number">5</span>);
+list.size();
+
+<span class="comment">// Iterate</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> x : list) { ... }
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) { ... }</code></pre>
+
+      <h3>3. HashMap / Dict</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># Create</span>
+hashmap = {<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: <span class="number">2</span>}
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+dd = defaultdict(<span class="builtin">int</span>)  <span class="comment"># default value 0</span>
+
+<span class="comment"># Access - O(1)</span>
+hashmap[<span class="string">"a"</span>]
+hashmap.get(<span class="string">"c"</span>, <span class="number">0</span>)  <span class="comment"># default if not found</span>
+
+<span class="comment"># Insert/Update - O(1)</span>
+hashmap[<span class="string">"c"</span>] = <span class="number">3</span>
+
+<span class="comment"># Delete - O(1)</span>
+<span class="keyword">del</span> hashmap[<span class="string">"a"</span>]
+hashmap.pop(<span class="string">"b"</span>)
+
+<span class="comment"># Check existence</span>
+<span class="string">"a"</span> <span class="keyword">in</span> hashmap
+
+<span class="comment"># Iterate</span>
+<span class="keyword">for</span> key <span class="keyword">in</span> hashmap:
+    <span class="builtin">print</span>(key, hashmap[key])
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> hashmap.items():
+    <span class="builtin">print</span>(key, val)
+
+<span class="comment"># Get all keys/values</span>
+hashmap.keys()
+hashmap.values()
+hashmap.items()</code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// Create</span>
+HashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();
+map.put(<span class="string">"a"</span>, <span class="number">1</span>);
+map.put(<span class="string">"b"</span>, <span class="number">2</span>);
+
+<span class="comment">// Access - O(1)</span>
+map.get(<span class="string">"a"</span>);
+map.getOrDefault(<span class="string">"c"</span>, <span class="number">0</span>);
+
+<span class="comment">// Insert/Update - O(1)</span>
+map.put(<span class="string">"c"</span>, <span class="number">3</span>);
+map.putIfAbsent(<span class="string">"d"</span>, <span class="number">4</span>);
+
+<span class="comment">// Delete - O(1)</span>
+map.remove(<span class="string">"a"</span>);
+map.remove(<span class="string">"b"</span>, <span class="number">2</span>);  <span class="comment">// only if key=value</span>
+
+<span class="comment">// Check existence</span>
+map.containsKey(<span class="string">"a"</span>);
+map.containsValue(<span class="number">1</span>);
+
+<span class="comment">// Iterate</span>
+<span class="keyword">for</span> (String key : map.keySet()) { ... }
+<span class="keyword">for</span> (Integer val : map.values()) { ... }
+<span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; e : map.entrySet()) {
+    e.getKey();
+    e.getValue();
+}
+
+<span class="comment">// Get all</span>
+map.keySet();
+map.values();
+map.entrySet();</code></pre>
+
+      <h3>4. HashSet</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># Create</span>
+s = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
+s = <span class="builtin">set</span>()  <span class="comment"># empty set</span>
+
+<span class="comment"># Add - O(1)</span>
+s.add(<span class="number">4</span>)
+s.update([<span class="number">5</span>, <span class="number">6</span>])
+
+<span class="comment"># Remove - O(1)</span>
+s.remove(<span class="number">3</span>)    <span class="comment"># throws if not found</span>
+s.discard(<span class="number">3</span>)  <span class="comment"># no error if not found</span>
+s.pop()        <span class="comment"># remove and return arbitrary</span>
+
+<span class="comment"># Check</span>
+<span class="number">5</span> <span class="keyword">in</span> s
+
+<span class="comment"># Set operations</span>
+s1 | s2         <span class="comment"># union</span>
+s1 & s2         <span class="comment"># intersection</span>
+s1 - s2         <span class="comment"># difference</span>
+s1 ^ s2         <span class="comment"># symmetric difference</span></code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// Create</span>
+HashSet&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();
+set.add(<span class="number">1</span>);
+set.add(<span class="number">2</span>);
+set.add(<span class="number">3</span>);
+
+<span class="comment">// Add - O(1)</span>
+set.add(<span class="number">4</span>);
+
+<span class="comment">// Remove - O(1)</span>
+set.remove(<span class="number">3</span>);
+
+<span class="comment">// Check</span>
+set.contains(<span class="number">5</span>);
+
+<span class="comment">// Set operations</span>
+HashSet&lt;Integer&gt; set1 = <span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>));
+HashSet&lt;Integer&gt; set2 = <span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>));
+
+set1.addAll(set2);           <span class="comment">// union</span>
+set1.retainAll(set2);       <span class="comment">// intersection</span>
+set1.removeAll(set2);       <span class="comment">// difference</span></code></pre>
+
+      <h3>5. Stack & Queue</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># Stack (LIFO) - use list</span>
+stack = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+stack.append(<span class="number">4</span>)    <span class="comment"># push - O(1)</span>
+stack.pop()           <span class="comment"># pop - O(1)</span>
+stack[-<span class="number">1</span>]          <span class="comment"># peek - O(1)</span>
+
+<span class="comment"># Queue (FIFO) - use collections.deque</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+queue = deque([<span class="number">1</span>, <span class="number">2</span>])
+queue.append(<span class="number">3</span>)      <span class="comment"># enqueue - O(1)</span>
+queue.popleft()       <span class="comment"># dequeue - O(1)</span>
+queue[0]              <span class="comment"># peek - O(1)</span></code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// Stack (LIFO)</span>
+Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();
+stack.push(<span class="number">1</span>);        <span class="comment">// O(1)</span>
+stack.pop();          <span class="comment">// O(1)</span>
+stack.peek();         <span class="comment">// O(1)</span>
+
+<span class="comment">// Queue (FIFO)</span>
+Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();
+queue.add(<span class="number">1</span>);         <span class="comment">// enqueue - O(1)</span>
+queue.remove();       <span class="comment">// dequeue - O(1)</span>
+queue.peek();         <span class="comment">// peek - O(1)</span>
+
+<span class="comment">// Priority Queue (Heap)</span>
+PriorityQueue&lt;Integer&gt; minHeap = <span class="keyword">new</span> PriorityQueue&lt;&gt;();
+PriorityQueue&lt;Integer&gt; maxHeap = <span class="keyword">new</span> PriorityQueue&lt;&gt;(Collections.reverseOrder());
+minHeap.add(<span class="number">5</span>);
+minHeap.poll();       <span class="comment">// get min - O(log n)</span>
+minHeap.peek();</code></pre>
+
+      <h3>6. String Operations</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># Create</span>
+s = <span class="string">"hello"</span>
+
+<span class="comment"># Access - O(1)</span>
+s[<span class="number">0</span>]
+
+<span class="comment"># Length - O(1)</span>
+len(s)
+
+<span class="comment"># Find - O(n)</span>
+s.find(<span class="string">"ll"</span>)     <span class="comment"># returns index or -1</span>
+s.index(<span class="string">"ll"</span>)    <span class="comment"># throws if not found</span>
+
+<span class="comment"># Slice - O(k)</span>
+s[<span class="number">1</span>:<span class="number">4</span>]
+
+<span class="comment"># Split/Join - O(n)</span>
+s.split(<span class="string">","</span>)
+<span class="string">","</span>.join([<span class="string">"a"</span>, <span class="string">"b"</span>])
+
+<span class="comment"># Replace - O(n)</span>
+s.replace(<span class="string">"l"</span>, <span class="string">"x"</span>)
+
+<span class="comment"># Check</span>
+s.startswith(<span class="string">"he"</span>)
+s.endswith(<span class="string">"lo"</span>)
+s.isdigit()
+s.isalpha()
+
+<span class="comment"># Convert</span>
+s.upper()
+s.lower()
+s.strip()</code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// Create</span>
+String s = <span class="string">"hello"</span>;
+
+<span class="comment">// Access - O(1)</span>
+s.charAt(<span class="number">0</span>);
+
+<span class="comment">// Length - O(1)</span>
+s.length();
+
+<span class="comment">// Find - O(n)</span>
+s.indexOf(<span class="string">"ll"</span>);     <span class="comment">// returns index or -1</span>
+s.lastIndexOf(<span class="string">"l"</span>);
+
+<span class="comment">// Substring - O(k)</span>
+s.substring(<span class="number">1</span>, <span class="number">4</span>);   <span class="comment">// [1, 4)</span>
+
+<span class="comment">// Split/Join</span>
+s.split(<span class="string">","</span>);
+String.join(<span class="string">","</span>, Arrays.asList(<span class="string">"a"</span>, <span class="string">"b"</span>));
+
+<span class="comment">// Replace</span>
+s.replace(<span class="string">"l"</span>, <span class="string">"x"</span>);
+s.replaceAll(<span class="string">"regex"</span>, <span class="string">"x"</span>);
+
+<span class="comment">// Check</span>
+s.startsWith(<span class="string">"he"</span>);
+s.endsWith(<span class="string">"lo"</span>);
+Character.isDigit(s.charAt(<span class="number">0</span>));
+Character.isLetter(s.charAt(<span class="number">0</span>));
+
+<span class="comment">// Convert</span>
+s.toUpperCase();
+s.toLowerCase();
+s.trim();
+
+<span class="comment">// StringBuilder (mutable, efficient)</span>
+StringBuilder sb = <span class="keyword">new</span> StringBuilder();
+sb.append(<span class="string">"hello"</span>);
+sb.toString();</code></pre>
+
+      <h3>7. Loops & Iteration</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="comment"># For loop</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):        <span class="comment"># 0 to 9</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">10</span>):      <span class="comment"># 1 to 9</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>):  <span class="comment"># 0,2,4,6,8</span>
+
+<span class="comment"># For each</span>
+<span class="keyword">for</span> x <span class="keyword">in</span> arr:
+    <span class="builtin">print</span>(x)
+
+<span class="comment"># Enumerate (index + value)</span>
+<span class="keyword">for</span> i, val <span class="keyword">in</span> <span class="builtin">enumerate</span>(arr):
+    <span class="builtin">print</span>(i, val)
+
+<span class="comment"># While</span>
+<span class="keyword">while</span> condition:
+    ...
+
+<span class="comment"># List comprehension</span>
+doubled = [x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> arr]</code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="comment">// For loop</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) { ... }
+
+<span class="comment">// Enhanced for</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> x : arr) { ... }
+
+<span class="comment">// While</span>
+<span class="keyword">while</span> (condition) { ... }
+
+<span class="comment">// Stream (Java 8+)</span>
+Arrays.stream(arr)
+    .filter(x -&gt; x % <span class="number">2</span> == <span class="number">0</span>)
+    .map(x -&gt; x * <span class="number">2</span>)
+    .toArray();</code></pre>
+
+      <h3>8. Common Utilities</h3>
+
+      <h4>Python</h4>
+      <pre><code><span class="keyword">import</span> heapq
+<span class="keyword">import</span> collections
+
+<span class="comment"># Min Heap</span>
+heap = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>]
+heapq.heapify(heap)      <span class="comment"># O(n)</span>
+heapq.heappush(heap, <span class="number">2</span>)  <span class="comment"># O(log n)</span>
+heapq.heappop(heap)      <span class="comment"># O(log n)</span>
+
+<span class="comment"># Counter (frequency)</span>
+counter = collections.Counter(arr)
+counter.most_common(<span class="number">3</span>)  <span class="comment"># top 3</span>
+
+<span class="comment"># Max/Min</span>
+<span class="builtin">max</span>(arr)
+<span class="builtin">min</span>(arr)
+<span class="builtin">max</span>(arr, key=<span class="builtin">len</span>)
+
+<span class="comment"># Sum/Product</span>
+<span class="builtin">sum</span>(arr)
+<span class="builtin">prod</span>(arr)  <span class="comment"># Python 3.8+</span>
+
+<span class="comment"># Reversed</span>
+<span class="builtin">reversed</span>(arr)
+<span class="builtin">reversed</span>(<span class="builtin">range</span>(<span class="number">10</span>))
+
+<span class="comment"># Infinite</span>
+<span class="builtin">float</span>(<span class="string">'inf'</span>)
+-<span class="builtin">float</span>(<span class="string">'inf'</span>)</code></pre>
+
+      <h4>Java</h4>
+      <pre><code><span class="keyword">import</span> java.util.*;
+
+<span class="comment">// Min Heap</span>
+PriorityQueue&lt;Integer&gt; minHeap = <span class="keyword">new</span> PriorityQueue&lt;&gt;();
+<span class="comment">// Max Heap</span>
+PriorityQueue&lt;Integer&gt; maxHeap = <span class="keyword">new</span> PriorityQueue&lt;&gt;(Collections.reverseOrder());
+
+<span class="comment">// Counter - use HashMap</span>
+HashMap&lt;Integer, Integer&gt; counter = <span class="keyword">new</span> HashMap&lt;&gt;();
+<span class="keyword">for</span> (<span class="keyword">int</span> x : arr) {
+    counter.put(x, counter.getOrDefault(x, <span class="number">0</span>) + <span class="number">1</span>);
+}
+
+<span class="comment">// Max/Min</span>
+Collections.max(list);
+Collections.min(list);
+Arrays.stream(arr).max().getAsInt();
+
+<span class="comment">// Sum</span>
+Arrays.stream(arr).sum();
+
+<span class="comment">// Reverse</span>
+Collections.reverse(list);
+<span class="comment">// For array: convert to list, reverse, convert back</span>
+
+<span class="comment">// Infinity</span>
+Integer.MAX_VALUE;
+Integer.MIN_VALUE;
+Double.POSITIVE_INFINITY;
+Double.NEGATIVE_INFINITY;</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Quick Tip</div>
+        <p>For LeetCode: Use Python for faster coding, Java for more structure. Both are equally accepted in interviews. Pick one and stick with it!</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 17: PROBLEM SOLVING                                  -->
     <!-- ============================================================ -->
     <section id="problem-solving">
-      <h2>9. How to Think About Problems</h2>
+      <h2>17. How to Think About Problems</h2>
 
       <p>This is where most people get stuck -- not because they don't know data structures, but because they don't have a <strong>systematic approach</strong> to problem-solving.</p>
 
@@ -798,10 +2004,10 @@ Remove from here              Add here
 
 
     <!-- ============================================================ -->
-    <!-- SECTION 10: CP TIPS                                           -->
+    <!-- SECTION 18: CP TIPS                                           -->
     <!-- ============================================================ -->
     <section id="cp-tips">
-      <h2>10. Tips to Become a World-Class Competitive Programmer</h2>
+      <h2>18. Tips to Become a World-Class Competitive Programmer</h2>
 
       <ul class="strategy-list">
         <li>
@@ -849,10 +2055,10 @@ Remove from here              Add here
 
 
     <!-- ============================================================ -->
-    <!-- SECTION 11: ROADMAP                                           -->
+    <!-- SECTION 19: ROADMAP                                           -->
     <!-- ============================================================ -->
     <section id="roadmap">
-      <h2>11. Learning Roadmap</h2>
+      <h2>19. Learning Roadmap</h2>
 
       <p>Follow this order. Each topic builds on the previous one.</p>
 
@@ -932,10 +2138,10 @@ Remove from here              Add here
 
 
     <!-- ============================================================ -->
-    <!-- SECTION 12: QUIZ                                              -->
+    <!-- SECTION 20: QUIZ                                              -->
     <!-- ============================================================ -->
     <section id="quiz">
-      <h2>12. Practice Quiz</h2>
+      <h2>20. Practice Quiz</h2>
 
       <div class="quiz">
         <div class="quiz-q">
