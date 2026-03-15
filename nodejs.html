@@ -60,6 +60,7 @@
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
         <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
         <a href="javascript.html">JavaScript Deep Dive</a>
         <a href="typescript.html">TypeScript</a>
         <a href="nodejs.html">Node.js Internals</a>
@@ -110,6 +111,7 @@
     <a href="#http-internals">10. HTTP Internals</a>
     <a href="#error-handling">11. Error Handling &amp; Debugging</a>
     <a href="#performance">12. Performance &amp; Profiling</a>
+    <a href="#concurrency-control">13. Concurrency Control -- p-limit, Semaphores &amp; Resource Pools</a>
   </div>
 
   <!-- ───────────── SECTION 1 ───────────── -->
@@ -658,6 +660,439 @@ node --trace-gc src/index.js
         <li>Blocking the event loop with CPU-heavy work (use worker threads)</li>
         <li>Creating too many closures or callbacks (memory pressure)</li>
         <li>Not streaming large payloads (buffering entire files in memory)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────── SECTION 13 ───────────── -->
+  <section id="concurrency-control">
+    <h2>13. Concurrency Control -- p-limit, Semaphores &amp; Resource Pools</h2>
+
+    <h3>Why Node Needs Concurrency Control</h3>
+
+    <p>Node is single-threaded, but it handles <strong>many concurrent I/O operations</strong> at once. That's usually a strength -- until you accidentally launch 10,000 file reads or HTTP requests simultaneously and overwhelm the system.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// This looks innocent but will crash on large arrays</span>
+<span class="keyword">const</span> files = <span class="keyword">await</span> <span class="function">getFileList</span>(); <span class="comment">// 10,000 files</span>
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.all(
+  files.map(f =&gt; readFile(f, <span class="string">"utf8"</span>))
+); <span class="comment">// BOOM: EMFILE -- too many open files</span>
+</code></pre>
+
+    <div class="warning-box">
+      <strong>What goes wrong when you don't limit concurrency:</strong>
+      <ul>
+        <li><strong>EMFILE</strong> -- OS file descriptor limit (typically 1024 on Linux)</li>
+        <li><strong>ECONNRESET / ETIMEDOUT</strong> -- too many TCP connections at once</li>
+        <li><strong>API rate limits</strong> -- external services return 429 Too Many Requests</li>
+        <li><strong>Thread pool starvation</strong> -- libuv's thread pool only has 4 threads by default, so 10,000 <code>fs.readFile</code> calls queue up massively</li>
+        <li><strong>Memory exhaustion</strong> -- thousands of in-flight buffers pile up in memory</li>
+      </ul>
+    </div>
+
+    <div class="formula-box">
+      <strong>The core idea:</strong> Instead of <code>Promise.all(everything)</code>, run at most N operations at a time. When one finishes, start the next. This is <strong>concurrency limiting</strong>.
+    </div>
+
+    <h3>p-limit -- Concurrency Limiter</h3>
+
+    <p>The <code>p-limit</code> npm package is the standard tool for this. It wraps async functions so that only N run concurrently.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> pLimit <span class="keyword">from</span> <span class="string">"p-limit"</span>;
+<span class="keyword">import</span> { readFile } <span class="keyword">from</span> <span class="string">"node:fs/promises"</span>;
+
+<span class="keyword">const</span> limit = <span class="function">pLimit</span>(<span class="number">10</span>); <span class="comment">// max 10 concurrent operations</span>
+
+<span class="keyword">const</span> files = <span class="keyword">await</span> <span class="function">getFileList</span>(); <span class="comment">// 1000 files</span>
+
+<span class="comment">// All 1000 are "scheduled" but only 10 run at a time</span>
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.all(
+  files.map(f =&gt; <span class="function">limit</span>(() =&gt; readFile(f, <span class="string">"utf8"</span>)))
+);
+</code></pre>
+
+    <h3>Build p-limit From Scratch</h3>
+
+    <p>Understanding how it works under the hood is more valuable than just using the package. The core is a queue + counter.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">pLimit</span>(concurrency) {
+  <span class="keyword">let</span> active = <span class="number">0</span>;
+  <span class="keyword">const</span> queue = [];
+
+  <span class="keyword">function</span> <span class="function">next</span>() {
+    <span class="keyword">if</span> (active &gt;= concurrency || queue.length === <span class="number">0</span>) <span class="keyword">return</span>;
+    active++;
+    <span class="keyword">const</span> { fn, resolve, reject } = queue.shift();
+    <span class="function">fn</span>().then(resolve, reject).finally(() =&gt; {
+      active--;
+      <span class="function">next</span>();
+    });
+  }
+
+  <span class="keyword">return function</span> <span class="function">limit</span>(fn) {
+    <span class="keyword">return new</span> Promise((resolve, reject) =&gt; {
+      queue.push({ fn, resolve, reject });
+      <span class="function">next</span>();
+    });
+  };
+}
+
+<span class="comment">// Usage -- identical to the npm package</span>
+<span class="keyword">const</span> limit = <span class="function">pLimit</span>(<span class="number">5</span>);
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.all(
+  urls.map(url =&gt; <span class="function">limit</span>(() =&gt; <span class="function">fetch</span>(url)))
+);
+</code></pre>
+
+    <div class="tip-box">
+      <strong>How it works step by step:</strong>
+      <ol>
+        <li><code>limit(fn)</code> pushes the task onto a queue and returns a promise</li>
+        <li><code>next()</code> checks if we're under the concurrency cap</li>
+        <li>If yes, it dequeues a task, runs it, and increments <code>active</code></li>
+        <li>When the task finishes (<code>.finally</code>), it decrements <code>active</code> and calls <code>next()</code> again</li>
+        <li>This creates a self-sustaining pipeline -- always N tasks running until the queue is empty</li>
+      </ol>
+    </div>
+
+    <h3>Real Example: Reading 1000 Files with Concurrency of 10</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { readFile, readdir } <span class="keyword">from</span> <span class="string">"node:fs/promises"</span>;
+<span class="keyword">import</span> { join } <span class="keyword">from</span> <span class="string">"node:path"</span>;
+
+<span class="keyword">function</span> <span class="function">pLimit</span>(concurrency) {
+  <span class="keyword">let</span> active = <span class="number">0</span>;
+  <span class="keyword">const</span> queue = [];
+  <span class="keyword">function</span> <span class="function">next</span>() {
+    <span class="keyword">if</span> (active &gt;= concurrency || queue.length === <span class="number">0</span>) <span class="keyword">return</span>;
+    active++;
+    <span class="keyword">const</span> { fn, resolve, reject } = queue.shift();
+    <span class="function">fn</span>().then(resolve, reject).finally(() =&gt; { active--; <span class="function">next</span>(); });
+  }
+  <span class="keyword">return</span> (fn) =&gt; <span class="keyword">new</span> Promise((resolve, reject) =&gt; {
+    queue.push({ fn, resolve, reject });
+    <span class="function">next</span>();
+  });
+}
+
+<span class="keyword">async function</span> <span class="function">processAllFiles</span>(dir) {
+  <span class="keyword">const</span> entries = <span class="keyword">await</span> <span class="function">readdir</span>(dir);
+  <span class="keyword">const</span> limit = <span class="function">pLimit</span>(<span class="number">10</span>); <span class="comment">// only 10 files open at a time</span>
+
+  <span class="keyword">const</span> contents = <span class="keyword">await</span> Promise.all(
+    entries.map(name =&gt;
+      <span class="function">limit</span>(() =&gt; readFile(join(dir, name), <span class="string">"utf8"</span>))
+    )
+  );
+
+  console.log(<span class="string">`Read ${contents.length} files`</span>);
+  <span class="keyword">return</span> contents;
+}
+</code></pre>
+
+    <h3>Semaphore Pattern</h3>
+
+    <p>A <strong>semaphore</strong> is the classic computer science primitive behind concurrency limiting. It's a counter with two operations: <code>acquire()</code> (decrement and wait if zero) and <code>release()</code> (increment and wake up a waiter). This gives you more control than p-limit when you need to hold a resource across multiple async steps.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">Semaphore</span> {
+  <span class="function">constructor</span>(max) {
+    <span class="keyword">this</span>.max = max;
+    <span class="keyword">this</span>.active = <span class="number">0</span>;
+    <span class="keyword">this</span>.waiters = [];
+  }
+
+  <span class="keyword">async</span> <span class="function">acquire</span>() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.active &lt; <span class="keyword">this</span>.max) {
+      <span class="keyword">this</span>.active++;
+      <span class="keyword">return</span>;
+    }
+    <span class="comment">// At capacity -- wait until someone releases</span>
+    <span class="keyword">await new</span> Promise(resolve =&gt; <span class="keyword">this</span>.waiters.push(resolve));
+  }
+
+  <span class="function">release</span>() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.waiters.length &gt; <span class="number">0</span>) {
+      <span class="comment">// Wake up the next waiter (they get our slot)</span>
+      <span class="keyword">const</span> next = <span class="keyword">this</span>.waiters.shift();
+      <span class="function">next</span>();
+    } <span class="keyword">else</span> {
+      <span class="keyword">this</span>.active--;
+    }
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> sem = <span class="keyword">new</span> <span class="function">Semaphore</span>(<span class="number">5</span>);
+
+<span class="keyword">async function</span> <span class="function">doWork</span>(item) {
+  <span class="keyword">await</span> sem.<span class="function">acquire</span>();
+  <span class="keyword">try</span> {
+    <span class="comment">// ... do async work with the resource ...</span>
+    <span class="keyword">await</span> <span class="function">processItem</span>(item);
+  } <span class="keyword">finally</span> {
+    sem.<span class="function">release</span>(); <span class="comment">// always release, even on error</span>
+  }
+}
+
+<span class="comment">// Launch many tasks -- only 5 run concurrently</span>
+<span class="keyword">await</span> Promise.all(items.map(item =&gt; <span class="function">doWork</span>(item)));
+</code></pre>
+
+    <div class="example-box">
+      <strong>p-limit vs Semaphore -- when to use which:</strong>
+      <ul>
+        <li><strong>p-limit</strong> -- when each task is a single async function call. Simpler API.</li>
+        <li><strong>Semaphore</strong> -- when you need to hold the "slot" across multiple await points (e.g., acquire a DB connection, run 3 queries, then release). The <code>acquire/release</code> pattern gives you explicit control.</li>
+      </ul>
+    </div>
+
+    <h3>Resource Pool</h3>
+
+    <p>A <strong>resource pool</strong> is a pre-allocated set of reusable resources (database connections, worker threads, etc). Instead of creating a new connection for every request (expensive), you check one out from the pool and return it when done.</p>
+
+    <div class="formula-box">
+      <strong>Why pooling matters:</strong> Creating a PostgreSQL connection takes ~50-100ms (TCP handshake + TLS + auth). Reusing one from a pool takes ~0ms. With 1000 requests/sec, that's the difference between working and melting.
+    </div>
+
+    <h3>Build a Simple Generic Resource Pool From Scratch</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">Pool</span> {
+  <span class="function">constructor</span>({ create, destroy, max = <span class="number">10</span> }) {
+    <span class="keyword">this</span>.create = create;     <span class="comment">// factory: () =&gt; Promise&lt;Resource&gt;</span>
+    <span class="keyword">this</span>.destroy = destroy;   <span class="comment">// cleanup: (resource) =&gt; Promise&lt;void&gt;</span>
+    <span class="keyword">this</span>.max = max;
+    <span class="keyword">this</span>.available = [];      <span class="comment">// idle resources ready for reuse</span>
+    <span class="keyword">this</span>.size = <span class="number">0</span>;            <span class="comment">// total created (available + in-use)</span>
+    <span class="keyword">this</span>.waiters = [];        <span class="comment">// callers waiting for a resource</span>
+  }
+
+  <span class="keyword">async</span> <span class="function">acquire</span>() {
+    <span class="comment">// 1. Reuse an idle resource if available</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.available.length &gt; <span class="number">0</span>) {
+      <span class="keyword">return</span> <span class="keyword">this</span>.available.pop();
+    }
+
+    <span class="comment">// 2. Create a new one if under the limit</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.size &lt; <span class="keyword">this</span>.max) {
+      <span class="keyword">this</span>.size++;
+      <span class="keyword">return await</span> <span class="keyword">this</span>.<span class="function">create</span>();
+    }
+
+    <span class="comment">// 3. At capacity -- wait for one to be released</span>
+    <span class="keyword">return new</span> Promise(resolve =&gt; <span class="keyword">this</span>.waiters.push(resolve));
+  }
+
+  <span class="function">release</span>(resource) {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.waiters.length &gt; <span class="number">0</span>) {
+      <span class="comment">// Hand directly to a waiting caller</span>
+      <span class="keyword">const</span> next = <span class="keyword">this</span>.waiters.shift();
+      <span class="function">next</span>(resource);
+    } <span class="keyword">else</span> {
+      <span class="comment">// No one waiting -- put back in the idle list</span>
+      <span class="keyword">this</span>.available.push(resource);
+    }
+  }
+
+  <span class="keyword">async</span> <span class="function">drain</span>() {
+    <span class="comment">// Destroy all idle resources (for graceful shutdown)</span>
+    <span class="keyword">for</span> (<span class="keyword">const</span> r <span class="keyword">of</span> <span class="keyword">this</span>.available) {
+      <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">destroy</span>(r);
+    }
+    <span class="keyword">this</span>.available = [];
+  }
+}
+</code></pre>
+
+    <h3>Using the Pool</h3>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> pool = <span class="keyword">new</span> <span class="function">Pool</span>({
+  create: <span class="keyword">async</span> () =&gt; {
+    console.log(<span class="string">"Creating new DB connection..."</span>);
+    <span class="keyword">return await</span> <span class="function">connectToDatabase</span>();
+  },
+  destroy: <span class="keyword">async</span> (conn) =&gt; {
+    <span class="keyword">await</span> conn.<span class="function">close</span>();
+  },
+  max: <span class="number">20</span>
+});
+
+<span class="keyword">async function</span> <span class="function">handleRequest</span>(req) {
+  <span class="keyword">const</span> conn = <span class="keyword">await</span> pool.<span class="function">acquire</span>();
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> rows = <span class="keyword">await</span> conn.<span class="function">query</span>(<span class="string">"SELECT * FROM users WHERE id = $1"</span>, [req.userId]);
+    <span class="keyword">return</span> rows;
+  } <span class="keyword">finally</span> {
+    pool.<span class="function">release</span>(conn); <span class="comment">// always return to pool</span>
+  }
+}
+</code></pre>
+
+    <h3>generic-pool npm Package</h3>
+
+    <p>For production, the <code>generic-pool</code> package adds idle timeouts, validation, min/max sizing, and priority queuing.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { createPool } <span class="keyword">from</span> <span class="string">"generic-pool"</span>;
+
+<span class="keyword">const</span> pool = <span class="function">createPool</span>({
+  <span class="keyword">async</span> <span class="function">create</span>() {
+    <span class="keyword">return await</span> <span class="function">connectToDatabase</span>();
+  },
+  <span class="keyword">async</span> <span class="function">destroy</span>(conn) {
+    <span class="keyword">await</span> conn.<span class="function">close</span>();
+  }
+}, {
+  min: <span class="number">2</span>,               <span class="comment">// keep 2 idle connections warm</span>
+  max: <span class="number">20</span>,              <span class="comment">// never exceed 20 connections</span>
+  idleTimeoutMillis: <span class="number">30000</span>  <span class="comment">// destroy idle connections after 30s</span>
+});
+
+<span class="keyword">const</span> conn = <span class="keyword">await</span> pool.<span class="function">acquire</span>();
+<span class="keyword">try</span> {
+  <span class="keyword">await</span> conn.<span class="function">query</span>(<span class="string">"..."</span>);
+} <span class="keyword">finally</span> {
+  pool.<span class="function">release</span>(conn);
+}
+
+<span class="comment">// Graceful shutdown</span>
+<span class="keyword">await</span> pool.<span class="function">drain</span>();
+pool.<span class="function">clear</span>();
+</code></pre>
+
+    <h3>Database Connection Pools (pg.Pool)</h3>
+
+    <p>Most database drivers have built-in pooling. PostgreSQL's <code>pg</code> module is the canonical example.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> pg <span class="keyword">from</span> <span class="string">"pg"</span>;
+
+<span class="keyword">const</span> pool = <span class="keyword">new</span> pg.<span class="function">Pool</span>({
+  host: <span class="string">"localhost"</span>,
+  port: <span class="number">5432</span>,
+  database: <span class="string">"myapp"</span>,
+  user: <span class="string">"sean"</span>,
+  password: process.env.DB_PASSWORD,
+  max: <span class="number">20</span>,                <span class="comment">// max connections in pool</span>
+  idleTimeoutMillis: <span class="number">30000</span>, <span class="comment">// close idle connections after 30s</span>
+  connectionTimeoutMillis: <span class="number">2000</span> <span class="comment">// fail if can't connect in 2s</span>
+});
+
+<span class="comment">// Option 1: auto-acquire and release</span>
+<span class="keyword">const</span> { rows } = <span class="keyword">await</span> pool.<span class="function">query</span>(<span class="string">"SELECT * FROM users WHERE id = $1"</span>, [<span class="number">42</span>]);
+
+<span class="comment">// Option 2: manual acquire for transactions</span>
+<span class="keyword">const</span> client = <span class="keyword">await</span> pool.<span class="function">connect</span>();
+<span class="keyword">try</span> {
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">"BEGIN"</span>);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">"UPDATE accounts SET balance = balance - $1 WHERE id = $2"</span>, [<span class="number">100</span>, <span class="number">1</span>]);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">"UPDATE accounts SET balance = balance + $1 WHERE id = $2"</span>, [<span class="number">100</span>, <span class="number">2</span>]);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">"COMMIT"</span>);
+} <span class="keyword">catch</span> (err) {
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">"ROLLBACK"</span>);
+  <span class="keyword">throw</span> err;
+} <span class="keyword">finally</span> {
+  client.<span class="function">release</span>(); <span class="comment">// return to pool, NOT close</span>
+}
+
+<span class="comment">// Graceful shutdown</span>
+<span class="keyword">await</span> pool.<span class="function">end</span>();
+</code></pre>
+
+    <div class="warning-box">
+      <strong>Always release/return connections.</strong> If you acquire a connection and forget to release it (e.g., an error path skips the release), the pool eventually runs out. Always use <code>try/finally</code> to guarantee release.
+    </div>
+
+    <h3>Backpressure</h3>
+
+    <p><strong>Backpressure</strong> is what happens when a producer generates data faster than a consumer can handle it. Without backpressure, the in-between buffer grows without bound and you run out of memory.</p>
+
+    <pre><code><span class="lang-label">Text</span>
+Producer (fast)  →  Buffer (growing!)  →  Consumer (slow)
+  1000 items/s        [####......]          100 items/s
+
+Without backpressure: buffer grows forever → OOM crash
+With backpressure:    producer slows down to match consumer
+</code></pre>
+
+    <h3>Streams Already Handle Backpressure</h3>
+
+    <p>Node streams have built-in backpressure via <code>highWaterMark</code>. When the internal buffer fills up, the readable stream pauses automatically.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { createReadStream, createWriteStream } <span class="keyword">from</span> <span class="string">"node:fs"</span>;
+
+<span class="keyword">const</span> src = <span class="function">createReadStream</span>(<span class="string">"huge-file.csv"</span>);
+<span class="keyword">const</span> dest = <span class="function">createWriteStream</span>(<span class="string">"output.csv"</span>);
+
+<span class="comment">// .write() returns false when the internal buffer is full</span>
+src.on(<span class="string">"data"</span>, (chunk) =&gt; {
+  <span class="keyword">const</span> canContinue = dest.<span class="function">write</span>(chunk);
+  <span class="keyword">if</span> (!canContinue) {
+    src.<span class="function">pause</span>();                 <span class="comment">// stop reading until drain</span>
+    dest.once(<span class="string">"drain"</span>, () =&gt; src.<span class="function">resume</span>());
+  }
+});
+
+<span class="comment">// pipeline() handles all this automatically</span>
+<span class="keyword">import</span> { pipeline } <span class="keyword">from</span> <span class="string">"node:stream/promises"</span>;
+<span class="keyword">await</span> <span class="function">pipeline</span>(src, dest); <span class="comment">// backpressure built in</span>
+</code></pre>
+
+    <h3>Backpressure with Queues and p-limit</h3>
+
+    <p>When you're not using streams (e.g., processing API responses, database rows), combine p-limit with controlled batching to create backpressure.</p>
+
+    <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { createReadStream } <span class="keyword">from</span> <span class="string">"node:fs"</span>;
+<span class="keyword">import</span> { createInterface } <span class="keyword">from</span> <span class="string">"node:readline"</span>;
+
+<span class="keyword">function</span> <span class="function">pLimit</span>(concurrency) {
+  <span class="keyword">let</span> active = <span class="number">0</span>;
+  <span class="keyword">const</span> queue = [];
+  <span class="keyword">function</span> <span class="function">next</span>() {
+    <span class="keyword">if</span> (active &gt;= concurrency || queue.length === <span class="number">0</span>) <span class="keyword">return</span>;
+    active++;
+    <span class="keyword">const</span> { fn, resolve, reject } = queue.shift();
+    <span class="function">fn</span>().then(resolve, reject).finally(() =&gt; { active--; <span class="function">next</span>(); });
+  }
+  <span class="keyword">return</span> (fn) =&gt; <span class="keyword">new</span> Promise((resolve, reject) =&gt; {
+    queue.push({ fn, resolve, reject });
+    <span class="function">next</span>();
+  });
+}
+
+<span class="comment">// Process a huge CSV: read rows as a stream, but limit DB writes</span>
+<span class="keyword">const</span> limit = <span class="function">pLimit</span>(<span class="number">20</span>); <span class="comment">// max 20 concurrent DB writes</span>
+<span class="keyword">const</span> promises = [];
+
+<span class="keyword">const</span> rl = <span class="function">createInterface</span>({
+  input: <span class="function">createReadStream</span>(<span class="string">"million-rows.csv"</span>)
+});
+
+<span class="keyword">for await</span> (<span class="keyword">const</span> line <span class="keyword">of</span> rl) {
+  <span class="keyword">const</span> record = <span class="function">parseCsvLine</span>(line);
+  promises.push(
+    <span class="function">limit</span>(() =&gt; db.<span class="function">query</span>(<span class="string">"INSERT INTO records VALUES ($1, $2)"</span>, [record.id, record.name]))
+  );
+}
+
+<span class="keyword">await</span> Promise.all(promises);
+console.log(<span class="string">"All rows inserted"</span>);
+</code></pre>
+
+    <div class="tip-box">
+      <strong>The backpressure trifecta:</strong>
+      <ul>
+        <li><strong>Streams</strong> -- use <code>pipeline()</code> and let Node handle it automatically</li>
+        <li><strong>p-limit</strong> -- cap concurrent async operations (API calls, DB writes)</li>
+        <li><strong>Batching</strong> -- accumulate items and flush in groups (e.g., bulk INSERT instead of row-by-row)</li>
       </ul>
     </div>
   </section>

@@ -63,6 +63,7 @@
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
         <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
         <a href="javascript.html">JavaScript Deep Dive</a>
         <a href="typescript.html">TypeScript</a>
         <a href="nodejs.html">Node.js Internals</a>
@@ -118,6 +119,10 @@
     <a href="#debugging-tools">12. Network Debugging Tools</a>
     <a href="#ssh-scp">13. SSH, SCP &amp; Secure File Transfer</a>
     <a href="#socket-programming">14. Socket Programming</a>
+    <a href="#network-patterns">15. Network Programming Patterns</a>
+    <a href="#nat">16. NAT (Network Address Translation)</a>
+    <a href="#firewalls">17. Firewalls &amp; iptables</a>
+    <a href="#vpns-tunneling">18. VPNs &amp; Tunneling</a>
   </div>
 
 
@@ -2112,6 +2117,1213 @@ $ scp file.txt myserver:~/  # scp uses the config too
 $ sftp myserver             # sftp uses the config too</code></pre>
     </div>
 
+    <h3>Setting Up an SSH Server (sshd)</h3>
+    <p>So far we have talked about the SSH <strong>client</strong> -- the program that connects TO a server. But what about the other side? The SSH <strong>server</strong> (called <code>sshd</code>, the SSH daemon) is what listens on port 22 and accepts incoming connections. If you have a VPS, a Raspberry Pi, or any Linux machine you want to access remotely, you need to set this up.</p>
+
+    <div class="example-box">
+      <div class="label">Installing and Starting OpenSSH Server (Ubuntu/Debian)</div>
+<pre><code># Install the SSH server package
+$ sudo apt update
+$ sudo apt install openssh-server
+
+# The service starts automatically after install. Check its status:
+$ sudo systemctl status sshd
+● sshd.service - OpenBSD Secure Shell server
+     Active: active (running) since Sat 2026-03-14 10:00:00 UTC
+     ...
+
+# If it is not running, start and enable it (so it survives reboots):
+$ sudo systemctl start sshd
+$ sudo systemctl enable sshd
+
+# Verify it is actually listening on port 22:
+$ sudo ss -tlnp | grep 22
+LISTEN  0  128  0.0.0.0:22  0.0.0.0:*  users:(("sshd",pid=1234,fd=3))
+
+# Find your machine's IP address so others can connect:
+$ ip addr show | grep "inet "
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.1.50/24 brd 192.168.1.255 scope global eth0
+
+# Now anyone on your network can: ssh youruser@192.168.1.50</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Understanding /etc/ssh/sshd_config</div>
+<pre><code># The SSH server configuration file. Edit with:
+$ sudo nano /etc/ssh/sshd_config
+
+# After ANY change, restart the service:
+$ sudo systemctl restart sshd
+
+# ──────────────────────────────────────────────────
+# KEY SETTINGS AND WHAT THEY MEAN
+# ──────────────────────────────────────────────────
+
+Port 22
+  # Which port sshd listens on. Change to something like 2222 to
+  # reduce brute-force noise (not real security, but fewer bot hits).
+
+PermitRootLogin no
+  # Can someone SSH in as root? Almost always set this to "no."
+  # Use a normal user and sudo instead. Options:
+  #   yes              → root can log in (dangerous)
+  #   no               → root cannot log in at all (recommended)
+  #   prohibit-password → root can log in with key only, not password
+
+PasswordAuthentication no
+  # Allow password-based logins? Set to "no" once your SSH keys work.
+  # This is the SINGLE MOST IMPORTANT security setting.
+  # With this off, brute-force attacks are impossible.
+
+PubkeyAuthentication yes
+  # Allow public key logins? Yes, always. This is the secure method.
+
+AuthorizedKeysFile .ssh/authorized_keys
+  # Where sshd looks for allowed public keys (relative to user's home).
+  # When you run ssh-copy-id, your key goes into this file.
+
+MaxAuthTries 3
+  # How many authentication attempts per connection before disconnect.
+
+AllowUsers sean deploy
+  # Only these usernames can SSH in. Everyone else is rejected.
+  # Very useful for multi-user servers.
+
+X11Forwarding no
+  # Forward graphical applications? Usually "no" for servers.
+
+ClientAliveInterval 300
+ClientAliveCountMax 2
+  # Send a keepalive every 300 seconds. After 2 missed responses,
+  # disconnect. Prevents zombie sessions (300 × 2 = 600s timeout).
+
+Banner /etc/ssh/banner.txt
+  # Display a message before login (legal warning, etc.).</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Recommended sshd_config for a Production Server</div>
+<pre><code># /etc/ssh/sshd_config -- hardened settings
+Port 2222
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+MaxAuthTries 3
+AllowUsers deploy
+X11Forwarding no
+ClientAliveInterval 300
+ClientAliveCountMax 2
+Protocol 2</code></pre>
+      <p>After editing, always test your config before restarting to avoid locking yourself out:</p>
+<pre><code>$ sudo sshd -t            # Test config for syntax errors
+$ sudo systemctl restart sshd  # Apply changes</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Do Not Lock Yourself Out</div>
+      <ul>
+        <li><strong>Before disabling password auth:</strong> Make sure your SSH key login actually works. Open a SECOND terminal, SSH in with your key. If it works, then disable passwords. If you disable passwords and your key does not work, you are locked out permanently (unless you have physical/console access).</li>
+        <li><strong>Before changing the port:</strong> Make sure your firewall allows the new port. <code>sudo ufw allow 2222/tcp</code> BEFORE restarting sshd.</li>
+        <li><strong>Keep a session open:</strong> When editing sshd_config, keep your current SSH session open. Test the new config in a new terminal. If the new config is broken, your old session still works.</li>
+      </ul>
+    </div>
+
+    <h3>Connecting From Phones &amp; Other Devices</h3>
+    <p>SSH is not just for laptops. You can connect from your phone, your tablet, or any device with a network connection. This is incredibly useful for managing servers on the go, checking logs, or restarting a service while away from your desk.</p>
+
+    <div class="example-box">
+      <div class="label">Android -- Termux (Full Terminal)</div>
+<pre><code>Termux gives you a real Linux terminal on your Android phone.
+It has the actual OpenSSH client built in, not some watered-down version.
+
+1. Install Termux from F-Droid (NOT the Play Store, that version is outdated)
+   https://f-droid.org/en/packages/com.termux/
+
+2. Open Termux and install OpenSSH:
+   $ pkg update && pkg install openssh
+
+3. Now you have the full ssh command:
+   $ ssh sean@192.168.1.50
+
+4. Generate a key pair on your phone:
+   $ ssh-keygen -t ed25519 -C "my-android-phone"
+   # Keys saved to: ~/.ssh/id_ed25519 (private) and ~/.ssh/id_ed25519.pub (public)
+
+5. Copy your public key to the server:
+   $ ssh-copy-id sean@192.168.1.50
+   # Or manually: cat ~/.ssh/id_ed25519.pub and paste it into the server's
+   #              ~/.ssh/authorized_keys file
+
+6. Create a config file for shortcuts:
+   $ nano ~/.ssh/config
+
+   Host myserver
+       HostName 192.168.1.50
+       User sean
+       IdentityFile ~/.ssh/id_ed25519
+
+   $ ssh myserver   # Done. Works exactly like on a laptop.
+
+Bonus: Termux also supports scp, sftp, rsync, and SSH tunneling.
+       It is a full Linux environment in your pocket.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Android -- JuiceSSH (GUI App)</div>
+<pre><code>JuiceSSH is a graphical SSH client for Android. Good for people
+who prefer tapping over typing commands.
+
+1. Install from the Google Play Store
+2. Tap "Connections" → "+" to add a new connection
+3. Fill in:
+   - Nickname:  myserver
+   - Type:      SSH
+   - Address:   192.168.1.50
+   - Identity:  (create one with your username and key/password)
+4. Tap the connection to connect
+
+Key management in JuiceSSH:
+  - Go to "Identities" → create a new identity
+  - You can generate a key pair inside the app
+  - Export the PUBLIC key and add it to your server's authorized_keys
+  - The private key stays on the phone
+
+JuiceSSH also supports:
+  - Port forwarding (tunnels)
+  - Multiple simultaneous sessions
+  - Snippets (saved commands you can tap to run)
+  - Team sharing (share connections without sharing passwords)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">iOS / iPad -- Blink Shell &amp; Termius</div>
+<pre><code>BLINK SHELL (iOS/iPad -- paid, but the best)
+──────────────────────────────────────────────
+- Full terminal emulator with mosh + ssh support
+- Mosh = "Mobile Shell" -- stays connected even when you switch
+  WiFi networks or lose signal temporarily. SSH drops, mosh reconnects.
+- Supports Ed25519 keys, ssh-agent, and config files
+- Has a built-in key generator
+- Supports ProxyJump for jump hosts
+- Great keyboard support on iPad with external keyboards
+
+Setup:
+  1. Install from App Store
+  2. Go to Settings → Keys → Generate a new Ed25519 key
+  3. Copy the public key to your server's authorized_keys
+  4. Add a host: Settings → Hosts → Add
+  5. Type: ssh myserver
+
+TERMIUS (iOS/Android/Desktop -- free tier available)
+──────────────────────────────────────────────
+- Cross-platform SSH client (phone, tablet, desktop)
+- Syncs your connections and keys across devices (with account)
+- Supports SFTP (file transfer with a GUI file browser)
+- Built-in snippet library for common commands
+- Port forwarding support
+- Free tier: basic SSH. Paid: SFTP, sync, vaults.
+
+Setup:
+  1. Install from App Store / Play Store
+  2. Add a new host with your server details
+  3. Generate or import an SSH key in the app
+  4. Connect and manage your servers</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">From Other Computers (Windows / Mac / Linux)</div>
+<pre><code>WINDOWS (modern -- Windows 10/11)
+──────────────────────────────────
+OpenSSH is built into Windows now. Open PowerShell or Command Prompt:
+
+  > ssh sean@192.168.1.50
+  > ssh-keygen -t ed25519
+  > scp file.txt sean@192.168.1.50:/home/sean/
+
+Keys are stored in: C:\Users\YourName\.ssh\
+Config file:        C:\Users\YourName\.ssh\config
+
+If OpenSSH is not installed:
+  Settings → Apps → Optional Features → Add "OpenSSH Client"
+
+WINDOWS (older / GUI preference) -- PuTTY
+──────────────────────────────────────────
+  1. Download PuTTY from putty.org
+  2. Enter hostname and port 22, click "Open"
+  3. For key auth, use PuTTYgen to generate keys
+     - PuTTY uses .ppk format (not standard OpenSSH format)
+     - PuTTYgen can convert between formats
+  4. Load your .ppk key in Connection → SSH → Auth → Private key file
+
+MAC / LINUX
+───────────
+SSH is pre-installed. Open Terminal:
+
+  $ ssh sean@192.168.1.50
+  $ ssh-keygen -t ed25519
+
+Everything works out of the box. Keys in ~/.ssh/, config in ~/.ssh/config.
+macOS also has Keychain integration so you do not have to type your
+key passphrase every time:
+
+  $ ssh-add --apple-use-keychain ~/.ssh/id_ed25519</code></pre>
+    </div>
+
+    <h3>Complete Walkthrough: SSH Into Your Laptop From Your Android Phone</h3>
+    <p>This is the full, end-to-end process. No skipping steps. By the end, you will be sitting on your couch with your phone, running commands on your laptop across the room. We will cover the normal Linux case first, then handle WSL2 quirks separately at the end.</p>
+
+    <div class="example-box">
+      <div class="label">Step 1: Prepare Your Laptop (Linux / WSL)</div>
+<pre><code># ──────────────────────────────────────────────────
+# 1A. Install OpenSSH server
+# ──────────────────────────────────────────────────
+$ sudo apt update
+$ sudo apt install openssh-server
+
+# ──────────────────────────────────────────────────
+# 1B. Start sshd and enable it on boot
+# ──────────────────────────────────────────────────
+$ sudo systemctl start sshd
+$ sudo systemctl enable sshd
+
+# Verify it is running:
+$ sudo systemctl status sshd
+● sshd.service - OpenBSD Secure Shell server
+     Active: active (running)
+
+# ──────────────────────────────────────────────────
+# 1C. Find your laptop's IP address
+# ──────────────────────────────────────────────────
+$ ip addr show | grep "inet " | grep -v 127.0.0.1
+    inet 192.168.1.50/24 brd 192.168.1.255 scope global wlan0
+
+# Write down the IP. In this example: 192.168.1.50
+# "wlan0" means WiFi. "eth0" would mean ethernet cable.
+
+# ──────────────────────────────────────────────────
+# 1D. Open the firewall (if ufw is active)
+# ──────────────────────────────────────────────────
+$ sudo ufw status
+# If it says "active", allow SSH:
+$ sudo ufw allow 22/tcp
+$ sudo ufw reload
+
+# If ufw is inactive, you can skip this -- nothing is blocking port 22.
+
+# ──────────────────────────────────────────────────
+# 1E. Make sure PasswordAuthentication is ON (for now)
+# ──────────────────────────────────────────────────
+# We will use password auth for the initial setup, then switch to keys.
+$ sudo nano /etc/ssh/sshd_config
+# Find "PasswordAuthentication" and set it to yes:
+#   PasswordAuthentication yes
+$ sudo systemctl restart sshd</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">WSL2 Users: Read This Before Continuing</div>
+      <p>If your laptop runs Windows and you are using WSL2, there is a networking catch. WSL2 runs in its own virtual machine with its own internal IP address (usually something like 172.x.x.x). Your phone cannot reach that IP directly -- it can only see the Windows host IP (192.168.x.x).</p>
+      <p>You have two options:</p>
+      <ul>
+        <li><strong>Option A:</strong> Set up port forwarding from Windows to WSL2 (covered in the WSL2-specific section below).</li>
+        <li><strong>Option B:</strong> Use Tailscale on both WSL2 and your phone (it creates a direct tunnel, bypassing all the NAT issues).</li>
+      </ul>
+      <p>If you are on native Linux (not WSL), ignore this and continue normally.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step 2: Make Sure Both Devices Are on the Same WiFi</div>
+<pre><code>This sounds obvious, but it trips people up constantly.
+
+WHY IT MATTERS
+──────────────
+SSH over a local network (LAN) means your phone and laptop talk
+directly through your WiFi router. No internet needed. No port
+forwarding. No DNS. Just two devices on the same network.
+
+  Phone (192.168.1.71)  &lt;──WiFi──&gt;  Router  &lt;──WiFi──&gt;  Laptop (192.168.1.50)
+
+Both IPs start with "192.168.1." -- that means same subnet, same network.
+
+HOW TO VERIFY
+─────────────
+On your laptop:
+  $ ip addr show | grep "inet " | grep -v 127.0.0.1
+      inet 192.168.1.50/24 ...
+
+On your phone (Termux, or Settings → WiFi → tap your network):
+  $ ifconfig wlan0
+      inet addr:192.168.1.71
+
+If both start with the same prefix (e.g., 192.168.1.x), you are good.
+If they differ (e.g., one is 192.168.1.x and the other is 10.0.0.x),
+they are on different networks and SSH will NOT connect.
+
+QUICK TEST -- PING FROM YOUR PHONE
+───────────────────────────────────
+From Termux on your phone:
+  $ ping -c 3 192.168.1.50
+  PING 192.168.1.50: 3 packets transmitted, 3 received, 0% packet loss
+
+If you see "0% packet loss" → your phone can reach your laptop. Move on.
+If you see "100% packet loss" → check the troubleshooting below.
+
+TROUBLESHOOTING "CANNOT REACH LAPTOP"
+──────────────────────────────────────
+1. AP Isolation / Client Isolation
+   Some routers block devices from talking to each other on WiFi.
+   Check your router admin panel (usually 192.168.1.1 in a browser):
+   → Wireless Settings → AP Isolation → Disable it
+
+2. Guest Network
+   If your phone is on a "Guest" WiFi network, it is deliberately
+   isolated. Connect both devices to the same non-guest network.
+
+3. Firewall on laptop
+   Make sure you ran: sudo ufw allow 22/tcp
+
+4. Wrong IP
+   Double-check the laptop's IP. It can change if your router
+   uses DHCP. Re-run: ip addr show</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step 3: Set Up Your Android Phone (Termux)</div>
+<pre><code># ──────────────────────────────────────────────────
+# 3A. Install Termux
+# ──────────────────────────────────────────────────
+# Download Termux from F-Droid (NOT the Play Store -- that version is abandoned):
+#   https://f-droid.org/en/packages/com.termux/
+#
+# Install it and open it. You now have a real Linux terminal on your phone.
+
+# ──────────────────────────────────────────────────
+# 3B. Install OpenSSH inside Termux
+# ──────────────────────────────────────────────────
+$ pkg update &amp;&amp; pkg upgrade
+$ pkg install openssh
+
+# ──────────────────────────────────────────────────
+# 3C. Test the connection with a password first
+# ──────────────────────────────────────────────────
+$ ssh sean@192.168.1.50
+# Replace "sean" with your laptop username and "192.168.1.50" with your laptop IP.
+# Type "yes" when it asks about the fingerprint (first time only).
+# Enter your laptop password.
+#
+# If you see your laptop's shell prompt → IT WORKS. Type "exit" to disconnect.
+
+# ──────────────────────────────────────────────────
+# 3D. Generate an SSH key pair on your phone
+# ──────────────────────────────────────────────────
+$ ssh-keygen -t ed25519 -C "android-phone"
+# Press Enter for default file location (~/.ssh/id_ed25519)
+# Enter a passphrase (optional but recommended)
+#
+# Two files created:
+#   ~/.ssh/id_ed25519       ← PRIVATE key (never share this)
+#   ~/.ssh/id_ed25519.pub   ← PUBLIC key (this goes on the laptop)
+
+# ──────────────────────────────────────────────────
+# 3E. Copy your public key to the laptop
+# ──────────────────────────────────────────────────
+$ ssh-copy-id sean@192.168.1.50
+# Enter your laptop password one last time.
+# This appends your public key to ~/.ssh/authorized_keys on the laptop.
+
+# ──────────────────────────────────────────────────
+# 3F. Test key-based login (no password prompt!)
+# ──────────────────────────────────────────────────
+$ ssh sean@192.168.1.50
+# If it logs you in without asking for a password → keys are working.
+
+# ──────────────────────────────────────────────────
+# 3G. (Optional) Create an SSH config for convenience
+# ──────────────────────────────────────────────────
+$ mkdir -p ~/.ssh
+$ nano ~/.ssh/config
+
+# Paste this:
+Host laptop
+    HostName 192.168.1.50
+    User sean
+    IdentityFile ~/.ssh/id_ed25519
+
+# Now you can just type:
+$ ssh laptop</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Now Disable Password Auth on Your Laptop</div>
+      <p>Key-based login is working. Time to lock the door behind you.</p>
+<pre><code># On your laptop:
+$ sudo nano /etc/ssh/sshd_config
+
+# Change these lines:
+PasswordAuthentication no
+PubkeyAuthentication yes
+
+# Restart sshd:
+$ sudo systemctl restart sshd
+
+# Test from your phone again -- it should still connect using your key.
+# If it asks for a password, something went wrong. DO NOT close your
+# current session. Debug with a second terminal.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step 4: Access From Outside Your Home Network (Optional)</div>
+<pre><code>Everything above works on your local WiFi. But what if you want to
+SSH into your laptop from a coffee shop, your office, or over
+mobile data? Now your phone and laptop are NOT on the same network.
+
+You have several options, ranked from easiest to hardest:
+
+──────────────────────────────────────────────────
+OPTION 1: Tailscale (Easiest -- Recommended)
+──────────────────────────────────────────────────
+Tailscale creates a private VPN mesh. Your devices get stable IPs
+(like 100.x.x.x) that work from ANYWHERE -- no port forwarding,
+no dynamic DNS, no router changes.
+
+On your laptop:
+  $ curl -fsSL https://tailscale.com/install.sh | sh
+  $ sudo tailscale up
+  # Log in with Google/GitHub/etc. Note the Tailscale IP (e.g., 100.64.0.1)
+
+On your phone:
+  Install "Tailscale" from the Play Store.
+  Log in with the same account.
+  Now from Termux:
+  $ ssh sean@100.64.0.1    # Works from anywhere in the world
+
+Why Tailscale is great:
+  - No firewall/router config needed
+  - Encrypted WireGuard tunnel
+  - Works behind NAT, cellular, hotel WiFi -- everything
+  - Free for personal use (up to 100 devices)
+
+──────────────────────────────────────────────────
+OPTION 2: WireGuard (More Control, More Setup)
+──────────────────────────────────────────────────
+WireGuard is the VPN protocol that Tailscale is built on. If you
+want to self-host your VPN (no third-party account), set up
+WireGuard manually. This requires a server with a public IP
+(e.g., a cheap VPS) to act as the relay.
+
+──────────────────────────────────────────────────
+OPTION 3: Router Port Forwarding + Dynamic DNS
+──────────────────────────────────────────────────
+This is the traditional approach. It works but has more moving parts.
+
+Step A: Forward port 22 on your router
+  1. Log into your router (usually http://192.168.1.1)
+  2. Find "Port Forwarding" (sometimes under NAT or Firewall)
+  3. Add a rule:
+     - External port: 22 (or a non-standard port like 2222)
+     - Internal IP: 192.168.1.50 (your laptop)
+     - Internal port: 22
+     - Protocol: TCP
+  4. Save
+
+Step B: Find your public IP
+  $ curl ifconfig.me
+  203.0.113.42
+
+Step C: Test from outside your network
+  $ ssh sean@203.0.113.42
+
+The problem: your public IP can change (most ISPs use dynamic IPs).
+
+Step D: Set up Dynamic DNS so you have a stable hostname
+  - DuckDNS (free):   https://www.duckdns.org
+    Gives you: mylaptop.duckdns.org
+  - No-IP (free tier): https://www.noip.com
+    Gives you: mylaptop.ddns.net
+
+  Install the DuckDNS update script on your laptop to keep the
+  DNS record pointing to your current IP.
+
+  Then connect with:
+  $ ssh sean@mylaptop.duckdns.org</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Security Warnings: Exposing SSH to the Internet</div>
+      <ul>
+        <li><strong>Bots will find you.</strong> Within minutes of opening port 22 to the internet, automated scanners will start trying to log in. This is not hypothetical -- it happens to every public SSH server.</li>
+        <li><strong>Disable password auth.</strong> This is non-negotiable. Key-only auth makes brute-force attacks impossible.</li>
+        <li><strong>Use a non-standard port.</strong> Change sshd to listen on 2222 or similar. It does not stop a determined attacker, but it drops 99% of bot traffic.</li>
+        <li><strong>Install fail2ban.</strong> It bans IPs after a few failed login attempts: <code>sudo apt install fail2ban</code>.</li>
+        <li><strong>Consider Tailscale instead.</strong> If you just need personal access, Tailscale avoids exposing any port to the public internet. It is safer by design.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Step 5: WSL2-Specific Setup (Windows Laptop)</div>
+<pre><code>WSL2 runs inside a lightweight VM. It has its own virtual network
+adapter with its own IP address. This means:
+
+  Your phone  →  sees Windows IP (192.168.1.50)
+  WSL2        →  has internal IP (172.28.123.45)
+  Phone CANNOT reach 172.28.x.x directly
+
+You need to tell Windows: "when something connects to port 22 on
+my Windows IP, forward it to port 22 on the WSL2 internal IP."
+
+# ──────────────────────────────────────────────────
+# 5A. Find your WSL2 IP address (run inside WSL2)
+# ──────────────────────────────────────────────────
+$ ip addr show eth0 | grep "inet "
+    inet 172.28.123.45/20 brd 172.28.127.255 scope global eth0
+
+# Note: This IP changes every time WSL2 restarts.
+
+# ──────────────────────────────────────────────────
+# 5B. Start sshd inside WSL2
+# ──────────────────────────────────────────────────
+# WSL2 does not use systemd by default (older versions).
+# Start sshd manually:
+$ sudo service ssh start
+
+# On newer WSL2 with systemd enabled:
+$ sudo systemctl start sshd
+
+# Verify:
+$ sudo ss -tlnp | grep 22
+LISTEN  0  128  0.0.0.0:22  0.0.0.0:*  users:(("sshd",...))
+
+# ──────────────────────────────────────────────────
+# 5C. Set up port forwarding (run in Windows PowerShell as Admin)
+# ──────────────────────────────────────────────────
+# Open PowerShell as Administrator and run:
+
+# First, get the WSL2 IP from Windows:
+&gt; wsl hostname -I
+172.28.123.45
+
+# Set up the port proxy:
+&gt; netsh interface portproxy add v4tov4 `
+    listenport=22 `
+    listenaddress=0.0.0.0 `
+    connectport=22 `
+    connectaddress=172.28.123.45
+
+# Verify the rule was created:
+&gt; netsh interface portproxy show v4tov4
+
+Listen on ipv4:             Connect to ipv4:
+Address         Port        Address         Port
+--------------- ----------  --------------- ----------
+0.0.0.0         22          172.28.123.45   22
+
+# ──────────────────────────────────────────────────
+# 5D. Open Windows Firewall for port 22
+# ──────────────────────────────────────────────────
+# Still in admin PowerShell:
+&gt; New-NetFirewallRule -DisplayName "SSH" `
+    -Direction Inbound `
+    -Action Allow `
+    -Protocol TCP `
+    -LocalPort 22
+
+# ──────────────────────────────────────────────────
+# 5E. Now connect from your phone
+# ──────────────────────────────────────────────────
+# Use the WINDOWS IP (not the WSL2 internal IP):
+$ ssh sean@192.168.1.50
+# This hits Windows port 22 → forwarded to WSL2 port 22 → you are in WSL2.
+
+# ──────────────────────────────────────────────────
+# 5F. The IP-changes-on-reboot problem
+# ──────────────────────────────────────────────────
+# WSL2's internal IP changes every time you restart it.
+# You need to update the port proxy rule each time.
+#
+# Automate it with a script. Save this as wsl-ssh-forward.ps1:
+#
+#   $wslIp = (wsl hostname -I).Trim()
+#   netsh interface portproxy delete v4tov4 listenport=22 listenaddress=0.0.0.0
+#   netsh interface portproxy add v4tov4 `
+#       listenport=22 listenaddress=0.0.0.0 `
+#       connectport=22 connectaddress=$wslIp
+#   Write-Host "SSH forwarding to WSL2 at $wslIp"
+#
+# Run it after each WSL2 restart, or add it to Task Scheduler.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">WSL2 Shortcut: Just Use Tailscale</div>
+      <p>All the port forwarding above is fragile. The IP changes, the proxy rules break, the firewall gets in the way. If you install Tailscale <strong>inside WSL2</strong>, it gets its own stable 100.x.x.x IP that works from anywhere -- bypassing all the Windows-to-WSL2 networking issues entirely.</p>
+<pre><code># Inside WSL2:
+$ curl -fsSL https://tailscale.com/install.sh | sh
+$ sudo tailscale up
+
+# On your phone (Termux):
+$ ssh sean@100.64.0.2   # Tailscale IP -- works anywhere, no port forwarding</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Transferring SSH Keys to Mobile Devices</div>
+      <ul>
+        <li><strong>Best approach:</strong> Generate the key ON the device (Termux, Blink, Termius all support this). Then copy only the public key to your server. The private key never leaves the device.</li>
+        <li><strong>If you must transfer an existing key:</strong> Use a secure method -- AirDrop (iOS/Mac), a password manager's secure notes, or a QR code. NEVER email or text a private key.</li>
+        <li><strong>One key per device:</strong> Generate a separate key pair for each device. If your phone is lost/stolen, you revoke only that key from your server's <code>authorized_keys</code> without affecting your laptop.</li>
+      </ul>
+    </div>
+
+    <h3>How Password Authentication Works (Deep Dive)</h3>
+    <p>Even though key-based auth is recommended, understanding password authentication teaches you why it is less secure and how SSH protects (and fails to fully protect) passwords.</p>
+
+    <div class="example-box">
+      <div class="label">SSH Password Authentication -- The Full Flow</div>
+<pre><code>When you type: ssh sean@server.com and then enter your password:
+
+  ┌──────────┐                              ┌──────────┐
+  │  CLIENT  │                              │  SERVER   │
+  └────┬─────┘                              └────┬─────┘
+       │                                          │
+       │  1. TCP handshake (SYN, SYN-ACK, ACK)    │
+       │─────────────────────────────────────────►│
+       │                                          │
+       │  2. SSH version exchange                  │
+       │◄────────────────────────────────────────►│
+       │                                          │
+       │  3. Diffie-Hellman key exchange           │
+       │    Both sides compute shared secret K     │
+       │    Encryption is now ACTIVE (AES-256)     │
+       │◄────────────────────────────────────────►│
+       │                                          │
+       │  ═══════ ENCRYPTED TUNNEL READY ═══════  │
+       │                                          │
+       │  4. Client sends: "I want to auth with   │
+       │     method: password, user: sean,         │
+       │     password: MyP@ssw0rd123"              │
+       │─────────────────────────────────────────►│
+       │  (encrypted -- eavesdroppers see garbage) │
+       │                                          │
+       │                    5. Server checks:      │
+       │                    - Find user "sean" in  │
+       │                      /etc/passwd          │
+       │                    - Read password hash   │
+       │                      from /etc/shadow     │
+       │                    - Hash the received    │
+       │                      password with same   │
+       │                      salt and algorithm   │
+       │                    - Compare hashes       │
+       │                                          │
+       │  6. "Authentication successful"           │
+       │◄─────────────────────────────────────────│
+       │                                          │
+       │  7. Shell session starts                  │
+       │◄────────────────────────────────────────►│</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">How the Server Checks Your Password (/etc/shadow)</div>
+<pre><code># The server does NOT store your actual password. It stores a HASH.
+# The hash lives in /etc/shadow (readable only by root):
+
+$ sudo cat /etc/shadow | grep sean
+sean:$6$rK3G.x7z$Wv8q...(long hash)...:19500:0:99999:7:::
+
+# Breaking down that hash string:
+#   $6$rK3G.x7z$Wv8q...
+#    │  │         │
+#    │  │         └─ The actual hash output
+#    │  └─ The salt (random string, unique per user)
+#    └─ The algorithm: $6$ = SHA-512 (most common on modern Linux)
+#                      $5$ = SHA-256
+#                      $y$ = yescrypt (newer, on Ubuntu 22.04+)
+
+# When you send your password, the server does:
+#   1. Extract the salt from the stored hash
+#   2. Compute: hash(your_password + salt)
+#   3. Compare result with stored hash
+#   4. If they match → you are in. If not → rejected.
+
+# The salt prevents rainbow table attacks (precomputed hash lookups).
+# Even if two users have the same password, their hashes differ
+# because they have different salts.</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Why Password Auth Is Vulnerable (Even Though Encrypted)</div>
+      <ul>
+        <li><strong>Brute force attacks:</strong> An attacker cannot read your password on the wire (it is encrypted). But they CAN try thousands of passwords by opening new SSH connections. Bots do this 24/7 on every public server. Common passwords like "admin123" are tried within seconds.</li>
+        <li><strong>Credential stuffing:</strong> If your password was leaked in a data breach from another site, attackers will try it against your SSH server automatically.</li>
+        <li><strong>No proof of identity:</strong> A password proves you KNOW something, not that you ARE someone. Anyone who learns the password can log in from anywhere.</li>
+        <li><strong>Phishing risk:</strong> If you accidentally SSH into an attacker's server (typo in hostname), you just gave them your password.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Fail2Ban -- Stopping Brute Force Attacks</div>
+<pre><code># Fail2Ban monitors your SSH logs and bans IPs that fail too many times.
+
+# Install:
+$ sudo apt install fail2ban
+
+# Create a local config (do not edit the main file directly):
+$ sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+$ sudo nano /etc/fail2ban/jail.local
+
+# Find the [sshd] section and configure:
+[sshd]
+enabled  = true
+port     = ssh        # or 2222 if you changed it
+filter   = sshd
+logpath  = /var/log/auth.log
+maxretry = 3          # ban after 3 failed attempts
+bantime  = 3600       # ban for 1 hour (in seconds)
+findtime = 600        # within a 10-minute window
+
+# Start and enable:
+$ sudo systemctl start fail2ban
+$ sudo systemctl enable fail2ban
+
+# Check banned IPs:
+$ sudo fail2ban-client status sshd
+Status for the jail: sshd
+|- Filter
+|  |- Currently failed: 2
+|  |- Total failed:     847
+|  `- File list:        /var/log/auth.log
+`- Actions
+   |- Currently banned: 14
+   |- Total banned:     203
+   `- Banned IP list:   103.x.x.x 185.x.x.x ...
+
+# Unban a specific IP (if you accidentally locked yourself out):
+$ sudo fail2ban-client set sshd unbanip 192.168.1.100</code></pre>
+    </div>
+
+    <h3>How Public Key Authentication Works (Deep Dive)</h3>
+    <p>Public key authentication is the gold standard for SSH. It is more secure than passwords, cannot be brute-forced, and (once set up) more convenient. Here is exactly what happens at the cryptographic level.</p>
+
+    <div class="example-box">
+      <div class="label">What Is Inside Your Key Files</div>
+<pre><code>When you run: ssh-keygen -t ed25519
+
+You get TWO files:
+
+~/.ssh/id_ed25519       ← PRIVATE KEY (never share this)
+~/.ssh/id_ed25519.pub   ← PUBLIC KEY (safe to share with anyone)
+
+PRIVATE KEY (id_ed25519):
+─────────────────────────
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACB0h7k... (base64-encoded binary data) ...
+-----END OPENSSH PRIVATE KEY-----
+
+This contains:
+  - The private key (32 bytes for Ed25519)
+  - The public key (embedded as well)
+  - Metadata (key type, comment, encryption info if passphrase-protected)
+  - If you set a passphrase, this file is encrypted with AES-256
+    using a key derived from your passphrase. Without the passphrase,
+    the file is useless.
+
+PUBLIC KEY (id_ed25519.pub):
+────────────────────────────
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHSHuT... sean@laptop
+
+This is a single line with three parts:
+  [key-type] [base64-encoded-public-key] [comment]
+
+The server stores this line in ~/.ssh/authorized_keys.
+You can have multiple public keys in authorized_keys (one per line),
+allowing multiple devices to log in.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">The Challenge-Response Flow -- Step by Step</div>
+<pre><code>When you SSH with key auth, the server NEVER sees your private key.
+Instead, it uses a challenge-response protocol:
+
+  ┌──────────┐                              ┌──────────┐
+  │  CLIENT  │                              │  SERVER   │
+  └────┬─────┘                              └────┬─────┘
+       │                                          │
+       │  1. TCP + SSH handshake (same as before)  │
+       │    Encrypted channel established          │
+       │◄────────────────────────────────────────►│
+       │                                          │
+       │  2. "I want to authenticate as sean       │
+       │     using public key: ssh-ed25519 AAAA.." │
+       │─────────────────────────────────────────►│
+       │                                          │
+       │              3. Server checks:            │
+       │              Does /home/sean/.ssh/        │
+       │              authorized_keys contain      │
+       │              this public key?             │
+       │                                          │
+       │              YES → continue               │
+       │              NO  → reject                 │
+       │                                          │
+       │  4. Server creates a CHALLENGE:           │
+       │     A random session ID + data, encrypted │
+       │     or hashed in a specific way.          │
+       │     "Prove you own this key by signing    │
+       │      this data."                          │
+       │◄─────────────────────────────────────────│
+       │                                          │
+       │  5. Client uses PRIVATE KEY to create     │
+       │     a digital signature of the challenge. │
+       │     Private key never leaves the client.  │
+       │                                          │
+       │  6. Client sends the SIGNATURE (not the   │
+       │     private key!) back to the server.     │
+       │─────────────────────────────────────────►│
+       │                                          │
+       │              7. Server uses the PUBLIC    │
+       │              KEY (from authorized_keys)   │
+       │              to VERIFY the signature.     │
+       │                                          │
+       │              Only the matching private    │
+       │              key could have produced      │
+       │              this signature. Math proves  │
+       │              the client has the key.      │
+       │                                          │
+       │  8. "Authentication successful"           │
+       │◄─────────────────────────────────────────│
+
+KEY INSIGHT: The private key NEVER leaves your machine. The server
+only sees the public key and a signature. Even if someone intercepts
+everything, they cannot log in because they cannot produce valid
+signatures without the private key.</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>Why This Is Secure:</strong><br><br>
+      <strong>Private key</strong> = can sign data (prove identity)<br>
+      <strong>Public key</strong> = can verify signatures (check identity)<br><br>
+      You <strong>cannot derive</strong> the private key from the public key.<br>
+      You <strong>cannot forge</strong> a signature without the private key.<br>
+      Each signature is <strong>unique</strong> to the challenge, so replaying it is useless.
+    </div>
+
+    <div class="example-box">
+      <div class="label">Ed25519 vs RSA vs ECDSA -- Which Key Type?</div>
+<pre><code>┌──────────────┬────────────┬─────────────┬──────────────────────────┐
+│ Algorithm    │ Key Size   │ Performance │ Recommendation           │
+├──────────────┼────────────┼─────────────┼──────────────────────────┤
+│ Ed25519      │ 256 bits   │ Fastest     │ USE THIS. Modern,        │
+│              │            │             │ fast, small keys, secure │
+├──────────────┼────────────┼─────────────┼──────────────────────────┤
+│ RSA          │ 3072-4096  │ Slower      │ OK for compatibility.    │
+│              │ bits       │             │ Use 4096 bits minimum.   │
+│              │            │             │ Larger keys, slower.     │
+├──────────────┼────────────┼─────────────┼──────────────────────────┤
+│ ECDSA        │ 256-521    │ Fast        │ Avoid. Fragile --        │
+│              │ bits       │             │ implementation bugs can  │
+│              │            │             │ leak your private key.   │
+│              │            │             │ (Needs perfect random    │
+│              │            │             │ numbers for each sig.)   │
+├──────────────┼────────────┼─────────────┼──────────────────────────┤
+│ DSA          │ 1024 bits  │ --          │ DEPRECATED. Do not use.  │
+│              │            │             │ Disabled in OpenSSH 7.0+ │
+└──────────────┴────────────┴─────────────┴──────────────────────────┘
+
+Generate the right key:
+  $ ssh-keygen -t ed25519 -C "sean@laptop-2026"       # Best choice
+  $ ssh-keygen -t rsa -b 4096 -C "sean@old-system"    # Compatibility</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">ssh-agent -- Stop Typing Your Passphrase</div>
+<pre><code># If your private key has a passphrase (it should), you have to type
+# it every time you SSH. ssh-agent caches the decrypted key in memory
+# so you only type the passphrase ONCE per session.
+
+# Start the agent (usually already running on most systems):
+$ eval "$(ssh-agent -s)"
+Agent pid 12345
+
+# Add your key to the agent:
+$ ssh-add ~/.ssh/id_ed25519
+Enter passphrase for /home/sean/.ssh/id_ed25519: ********
+Identity added: /home/sean/.ssh/id_ed25519 (sean@laptop)
+
+# Now SSH connections use the cached key -- no passphrase prompt:
+$ ssh myserver    # just works, no passphrase asked
+
+# List keys currently in the agent:
+$ ssh-add -l
+256 SHA256:abc123... sean@laptop (ED25519)
+
+# Remove all keys from agent (e.g., when leaving your desk):
+$ ssh-add -D
+
+# macOS: persist across reboots with Keychain:
+$ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+
+# Linux: add to your ~/.bashrc to auto-start the agent:
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval "$(ssh-agent -s)" > /dev/null
+  ssh-add ~/.ssh/id_ed25519 2> /dev/null
+fi</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">SSH Agent Forwarding -- Use Your Keys on Remote Servers</div>
+<pre><code># Problem: You SSH into ServerA, then from ServerA you want to SSH
+# into ServerB (or git pull from GitHub). ServerA does not have your
+# private key, and you should NOT copy it there.
+
+# Solution: Agent forwarding. ServerA asks your LOCAL agent to sign
+# the challenge, through the forwarded connection.
+
+  ┌────────────┐         ┌────────────┐         ┌────────────┐
+  │  Laptop    │   SSH   │  ServerA   │   SSH   │  ServerB   │
+  │            │────────►│            │────────►│            │
+  │ [ssh-agent]│         │ (no keys!) │         │            │
+  │ [keys here]│◄ ─ ─ ─ ─│ forwards   │         │            │
+  │            │ signing │ auth back  │         │            │
+  └────────────┘ request └────────────┘         └────────────┘
+
+# Enable for a single connection:
+$ ssh -A sean@serverA
+
+# Or in ~/.ssh/config:
+Host serverA
+    HostName 10.0.1.5
+    ForwardAgent yes
+
+# Then on serverA:
+serverA$ ssh serverB    # works! Uses your laptop's key via forwarding
+serverA$ git pull       # works for GitHub too, if your key is on GitHub</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Agent Forwarding Security Risk</div>
+      <ul>
+        <li><strong>Only forward to servers you trust.</strong> A root user on the remote server can use your forwarded agent to authenticate as you to other servers while your session is active.</li>
+        <li><strong>Use <code>ProxyJump</code> instead when possible.</strong> It is safer because the intermediate server never gets access to your agent. See the SSH Config Deep Dive below.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Multiple Keys for Different Servers</div>
+<pre><code># You should use DIFFERENT keys for different purposes:
+# - One for GitHub
+# - One for your production servers
+# - One for your homelab
+# - One per device (laptop key, phone key, work computer key)
+
+# Generate separate keys:
+$ ssh-keygen -t ed25519 -f ~/.ssh/github_key -C "github"
+$ ssh-keygen -t ed25519 -f ~/.ssh/prod_key -C "production-servers"
+$ ssh-keygen -t ed25519 -f ~/.ssh/homelab_key -C "homelab"
+
+# Tell SSH which key to use for which server in ~/.ssh/config:
+Host github.com
+    IdentityFile ~/.ssh/github_key
+
+Host prod-*
+    IdentityFile ~/.ssh/prod_key
+
+Host homelab pi raspberry
+    IdentityFile ~/.ssh/homelab_key
+
+# Why separate keys?
+# 1. If one key is compromised, only those servers are affected
+# 2. You can revoke a single key without disrupting everything
+# 3. You can see in server logs WHICH key was used to log in
+# 4. Different keys can have different passphrases (or none for automation)</code></pre>
+    </div>
+
+    <h3>SSH Config File Deep Dive</h3>
+    <p>The SSH config file (<code>~/.ssh/config</code>) is one of the most powerful and underused features of SSH. It lets you create aliases, set defaults, configure jump hosts, and manage dozens of servers without remembering any connection details.</p>
+
+    <div class="example-box">
+      <div class="label">Full ~/.ssh/config -- Managing Multiple Servers</div>
+<pre><code># ──────────────────────────────────────────────────
+# ~/.ssh/config -- Your SSH address book
+# ──────────────────────────────────────────────────
+# Each "Host" block defines a shortcut. When you type "ssh prod",
+# SSH looks up the "prod" block and uses those settings.
+
+# ── DEFAULTS FOR ALL CONNECTIONS ──
+Host *
+    # Keep connections alive (prevent "broken pipe" disconnects)
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    # Automatically add new hosts to known_hosts
+    StrictHostKeyChecking accept-new
+    # Reuse connections for speed (multiplexing)
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 600
+    # Default to Ed25519 keys
+    IdentitiesOnly yes
+
+# ── GITHUB ──
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_ed25519
+
+# ── PRODUCTION SERVERS ──
+Host prod
+    HostName prod.example.com
+    User deploy
+    Port 2222
+    IdentityFile ~/.ssh/prod_ed25519
+    ForwardAgent no
+
+Host staging
+    HostName staging.example.com
+    User deploy
+    Port 2222
+    IdentityFile ~/.ssh/prod_ed25519
+
+# ── HOME LAB ──
+Host pi
+    HostName 192.168.1.100
+    User pi
+    IdentityFile ~/.ssh/homelab_ed25519
+
+Host nas
+    HostName 192.168.1.200
+    User admin
+    IdentityFile ~/.ssh/homelab_ed25519
+
+# ── WORK (behind corporate VPN) ──
+Host work
+    HostName 10.0.5.25
+    User sean.dev
+    IdentityFile ~/.ssh/work_ed25519
+    ProxyJump bastion
+
+# ── CLOUD VPS ──
+Host vps
+    HostName 203.0.113.42
+    User root
+    IdentityFile ~/.ssh/vps_ed25519</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Jump Hosts and ProxyJump -- Reaching Servers Behind Firewalls</div>
+<pre><code># Many servers are NOT directly accessible from the internet.
+# They sit behind a "bastion" or "jump" host:
+
+  ┌──────────┐        ┌──────────────┐        ┌──────────────┐
+  │  You     │──SSH──►│  Bastion      │──SSH──►│  Internal    │
+  │ (laptop) │        │  (public IP)  │        │  Server      │
+  └──────────┘        │  jump.example │        │  (private IP)│
+   Internet           │  .com         │        │  10.0.5.25   │
+                      └──────────────┘        └──────────────┘
+
+# OLD WAY (two separate SSH commands):
+$ ssh sean@jump.example.com
+bastion$ ssh sean@10.0.5.25     # now you are on the internal server
+
+# BETTER WAY -- ProxyJump (one command, one step):
+$ ssh -J sean@jump.example.com sean@10.0.5.25
+
+# BEST WAY -- put it in your config:
+Host bastion
+    HostName jump.example.com
+    User sean
+    IdentityFile ~/.ssh/work_ed25519
+
+Host internal-server
+    HostName 10.0.5.25
+    User sean
+    IdentityFile ~/.ssh/work_ed25519
+    ProxyJump bastion
+
+# Now just:
+$ ssh internal-server
+# SSH automatically connects through the bastion. One command.
+# SCP and SFTP work through ProxyJump too:
+$ scp report.pdf internal-server:~/
+
+# CHAINING -- multiple jump hosts:
+Host deeply-buried-server
+    HostName 172.16.0.99
+    ProxyJump bastion,middle-server
+    # Goes: you → bastion → middle-server → 172.16.0.99</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Wildcard Hosts and Pattern Matching</div>
+<pre><code># Apply settings to GROUPS of hosts using wildcards:
+
+# All servers at example.com get the same user and key:
+Host *.example.com
+    User deploy
+    IdentityFile ~/.ssh/deploy_ed25519
+    Port 2222
+
+# All hosts starting with "dev-" use the dev key:
+Host dev-*
+    User developer
+    IdentityFile ~/.ssh/dev_ed25519
+    ForwardAgent yes
+
+# All hosts starting with "prod-" use strict settings:
+Host prod-*
+    User deploy
+    IdentityFile ~/.ssh/prod_ed25519
+    ForwardAgent no
+    LogLevel ERROR
+
+# Now these all work automatically:
+$ ssh web.example.com     # uses deploy user, deploy key, port 2222
+$ ssh api.example.com     # same settings
+$ ssh dev-backend         # uses developer user, dev key
+$ ssh prod-database       # uses deploy user, prod key, no forwarding
+
+# Negation patterns -- match everything EXCEPT:
+Host * !github.com
+    # These settings apply to all hosts except github.com
+    ServerAliveInterval 60</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">SSH Connection Multiplexing -- Reuse Connections</div>
+<pre><code># Opening an SSH connection takes time (TCP handshake, key exchange,
+# authentication). Multiplexing lets subsequent connections reuse
+# an existing one, making them nearly instant.
+
+# In ~/.ssh/config:
+Host *
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 600
+
+# ControlMaster auto   → first connection becomes the "master"
+# ControlPath          → where to store the socket file
+#                        %r = remote user, %h = host, %p = port
+# ControlPersist 600   → keep master alive 600s after last session closes
+
+# Create the sockets directory:
+$ mkdir -p ~/.ssh/sockets
+
+# Now:
+$ ssh myserver            # first connection: normal speed (2-3 seconds)
+$ ssh myserver            # second connection: instant (under 0.1 seconds)
+$ scp file.txt myserver:~ # also instant, reuses the connection
+
+# This is especially useful with ProxyJump (jump hosts), where each
+# connection would otherwise require TWO handshakes.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">SSH Config Best Practices</div>
+      <ul>
+        <li><strong>Use <code>IdentitiesOnly yes</code> in Host *:</strong> Without this, SSH tries ALL your keys against every server, which can trigger lockouts if you have many keys.</li>
+        <li><strong>Set permissions:</strong> <code>chmod 600 ~/.ssh/config</code> -- SSH may refuse to use the config if it is world-readable.</li>
+        <li><strong>Use <code>ProxyJump</code> over <code>ForwardAgent</code>:</strong> ProxyJump is safer because the jump host never gets access to your SSH agent.</li>
+        <li><strong>Comment your config:</strong> Future you will forget what <code>Host x7b-prod-02</code> is. Add comments with <code>#</code>.</li>
+        <li><strong>Use <code>StrictHostKeyChecking accept-new</code>:</strong> Automatically accepts keys for NEW hosts but still warns if a KNOWN host's key changes (possible MITM).</li>
+      </ul>
+    </div>
+
     <div class="warning-box">
       <div class="label">Common SSH Mistakes</div>
       <ul>
@@ -2642,6 +3854,837 @@ server.listen(<span class="number">8080</span>, () => console.log(<span class="s
         <li><strong>Use sendall() not send()</strong> in Python. <code>send()</code> may not send all bytes; <code>sendall()</code> keeps sending until everything is sent.</li>
         <li><strong>For production, use asyncio or an event loop</strong>, not threading. Threads work for learning but do not scale to thousands of connections.</li>
         <li><strong>Close sockets in a finally block</strong> to avoid leaking file descriptors.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 15: NETWORK PROGRAMMING PATTERNS                     -->
+  <!-- ============================================================ -->
+  <section id="network-patterns">
+    <h2>15. Network Programming Patterns</h2>
+    <p>Understanding how servers handle thousands (or millions) of simultaneous connections is one of the most important concepts in modern backend engineering. This section covers the C10K problem, I/O models, and tracing a web request end-to-end.</p>
+
+    <h3>The C10K Problem</h3>
+    <p>In 1999, Dan Kegel asked: how do you handle <strong>10,000 concurrent connections</strong> on a single server? At the time, most servers spawned one thread (or process) per connection. With 10K connections, that meant 10K threads -- each consuming memory for its stack, plus the overhead of context switching between them. Servers would grind to a halt.</p>
+
+    <div class="example-box">
+      <div class="label">Why One-Thread-Per-Connection Fails</div>
+<pre><code>One thread per connection at 10K connections:
+
+  Thread stack size:   ~1 MB each (default on Linux)
+  10,000 threads  =    ~10 GB of RAM just for stacks
+  Context switches =   OS spends more time switching than doing work
+
+  ┌────────────────────────────────────────────────┐
+  │  CPU with one-thread-per-connection             │
+  │                                                 │
+  │  Time:  [T1][T2][T3]...[T9999][T10000][T1]...  │
+  │          ▲                              ▲       │
+  │          │                              │       │
+  │       Thread 1 runs               Back to T1    │
+  │       for ~10μs                   after 100ms!  │
+  │                                                 │
+  │  Each thread gets a tiny slice. Most time is    │
+  │  spent SWITCHING, not doing useful work.        │
+  └────────────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <p>Modern solutions all share one idea: <strong>use a small number of threads to handle many connections</strong>, by not blocking on any single one.</p>
+
+    <div class="example-box">
+      <div class="label">Modern Approaches to C10K+</div>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│  APPROACH 1: Event-Driven I/O (Node.js, Nginx)                      │
+│                                                                     │
+│  Single thread + event loop. Register interest in sockets,          │
+│  OS notifies when data is ready. No blocking, no thread overhead.   │
+│                                                                     │
+│  1 thread handles 10,000+ connections:                              │
+│                                                                     │
+│  Event Loop: ──►[socket 1 ready]──►[process]──►[socket 47 ready]──► │
+│                                                                     │
+│  System calls: epoll (Linux), kqueue (macOS/BSD), IOCP (Windows)    │
+├─────────────────────────────────────────────────────────────────────┤
+│  APPROACH 2: Lightweight Green Threads (Go, Erlang)                  │
+│                                                                     │
+│  Go spawns goroutines (~2-8 KB stack each, not 1 MB).               │
+│  M:N scheduling: M goroutines on N OS threads (N = num CPU cores).  │
+│  The Go runtime multiplexes goroutines onto threads.                │
+│                                                                     │
+│  10,000 goroutines = ~80 MB (vs ~10 GB with OS threads)             │
+│                                                                     │
+│  OS Threads (N=8):  [T1][T2][T3][T4][T5][T6][T7][T8]               │
+│  Goroutines (M=10K): g1,g2,...,g10000 distributed across T1-T8     │
+├─────────────────────────────────────────────────────────────────────┤
+│  APPROACH 3: io_uring (Linux 5.1+)                                   │
+│                                                                     │
+│  Shared ring buffer between userspace and kernel.                   │
+│  Submit I/O requests to submission queue (SQ).                      │
+│  Kernel completes them and puts results in completion queue (CQ).   │
+│  Zero syscall overhead for batched I/O. The future of Linux I/O.   │
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Nginx vs Apache -- Connection Handling</div>
+<pre><code>APACHE (prefork MPM):                   NGINX:
+┌───────────────────────┐               ┌───────────────────────┐
+│  Master Process        │               │  Master Process        │
+│  ├── Worker Process 1  │               │  ├── Worker 1 (1 thread)│
+│  │   └── 1 connection  │               │  │   └── 10K connections │
+│  ├── Worker Process 2  │               │  ├── Worker 2 (1 thread)│
+│  │   └── 1 connection  │               │  │   └── 10K connections │
+│  ├── Worker Process 3  │               │  ├── Worker 3 (1 thread)│
+│  │   └── 1 connection  │               │  │   └── 10K connections │
+│  ...                   │               │  ...                   │
+│  └── Worker Process N  │               │  └── Worker N (1 thread)│
+│      └── 1 connection  │               │      └── 10K connections │
+│                        │               │                        │
+│  10K connections =     │               │  10K connections =     │
+│  10K processes         │               │  1-4 workers           │
+│  ~10 GB RAM            │               │  ~50 MB RAM            │
+└───────────────────────┘               └───────────────────────┘
+
+Apache forks a process per connection (or thread with worker MPM).
+Nginx uses event-driven I/O -- each worker handles thousands of
+connections using epoll/kqueue. That is why Nginx dominates.</code></pre>
+    </div>
+
+    <h3>Blocking vs Non-Blocking I/O</h3>
+    <p>Every network operation involves waiting for data. How your program waits determines how many connections it can handle.</p>
+
+    <div class="example-box">
+      <div class="label">The Four I/O Models</div>
+<pre><code>MODEL 1: BLOCKING I/O
+─────────────────────
+Application          Kernel
+    │                  │
+    │── read() ───────►│
+    │   (thread blocks) │── wait for data ──►
+    │   (sleeping...)   │◄── data arrives ───
+    │◄── data ─────────│
+    │                  │
+Thread is STUCK until data arrives. Simple code, but one thread
+per connection. Cannot scale past a few thousand connections.
+
+MODEL 2: NON-BLOCKING I/O
+──────────────────────────
+Application          Kernel
+    │                  │
+    │── read() ───────►│
+    │◄── EWOULDBLOCK ──│  (no data yet)
+    │── read() ───────►│
+    │◄── EWOULDBLOCK ──│  (still no data)
+    │── read() ───────►│
+    │◄── EWOULDBLOCK ──│  (nope)
+    │── read() ───────►│
+    │◄── data ─────────│  (finally!)
+    │                  │
+Thread is NOT stuck, but wastes CPU spinning (busy-wait).
+Rarely used alone -- usually combined with I/O multiplexing.
+
+MODEL 3: I/O MULTIPLEXING (select / poll / epoll)
+──────────────────────────────────────────────────
+Application          Kernel
+    │                  │
+    │── epoll_wait() ──►│  "tell me when ANY of these
+    │   (blocks here)   │   1000 sockets have data"
+    │                  │
+    │                  │── socket 47 has data!
+    │◄── socket 47 ────│
+    │── read(47) ──────►│
+    │◄── data ─────────│
+    │                  │
+ONE thread watches MANY sockets. Only blocks on epoll_wait(),
+then processes whichever sockets are ready. This is what
+Node.js, Nginx, and Redis use.
+
+MODEL 4: ASYNC I/O (io_uring, IOCP)
+────────────────────────────────────
+Application          Kernel
+    │                  │
+    │── submit read ───►│  "read socket 47 into this buffer"
+    │   (returns        │
+    │    immediately)   │── kernel does the read ──►
+    │                  │◄── done ──────────────────
+    │◄── completion ───│  "buffer is filled, here you go"
+    │                  │
+Application does OTHER WORK while kernel handles I/O.
+True async -- no blocking, no polling. Most efficient model.
+io_uring on Linux, IOCP on Windows.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">I/O Model Comparison</div>
+<pre><code>┌──────────────────┬──────────────────┬─────────────┬───────────────┐
+│ Model            │ Threads Needed   │ Complexity  │ Throughput    │
+├──────────────────┼──────────────────┼─────────────┼───────────────┤
+│ Blocking         │ 1 per connection │ Very Low    │ Low (~1K conn)│
+│ Non-blocking     │ 1 (busy-wait)    │ Medium      │ Medium        │
+│ I/O Multiplexing │ 1 (or few)       │ Medium-High │ High (~100K)  │
+│ Async (io_uring) │ 1 (or few)       │ High        │ Highest (1M+) │
+└──────────────────┴──────────────────┴─────────────┴───────────────┘</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">select() vs poll() vs epoll()</div>
+<pre><code>select():
+  - Oldest (POSIX). Works everywhere.
+  - Limited to 1024 file descriptors (FD_SETSIZE).
+  - O(n) -- kernel checks ALL fds every time.
+  - Must rebuild the fd set after every call.
+
+poll():
+  - No fd limit (uses an array, not a bitmask).
+  - Still O(n) -- kernel checks all fds.
+  - Slightly better API than select().
+
+epoll() (Linux only):
+  - O(1) for ready events. Kernel tracks state internally.
+  - No fd limit. Handles millions of connections.
+  - Two modes: level-triggered (default) and edge-triggered.
+  - Edge-triggered: only notifies on STATE CHANGES (more efficient
+    but you must read ALL available data or you miss events).
+
+kqueue (macOS/BSD):
+  - Similar to epoll. Single syscall for both registering and waiting.
+  - Handles various event types (sockets, files, signals, timers).</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Which I/O Model Should You Use?</div>
+      <ul>
+        <li><strong>Learning/prototyping:</strong> Blocking I/O with threads. Simple and understandable.</li>
+        <li><strong>Production web servers:</strong> I/O multiplexing (epoll). This is what Node.js and Nginx use under the hood.</li>
+        <li><strong>High-performance systems:</strong> io_uring for Linux. Still newer, but rapidly being adopted (used in Tigerbeetle, Bun, etc.).</li>
+        <li><strong>Go programs:</strong> Just use goroutines. Go's runtime does I/O multiplexing for you automatically via the netpoller.</li>
+      </ul>
+    </div>
+
+    <h3>How a Web Request Actually Works (End-to-End)</h3>
+    <p>When you type a URL and hit Enter, here is <em>everything</em> that happens, step by step, with approximate timings.</p>
+
+    <div class="example-box">
+      <div class="label">Complete Journey of a Web Request</div>
+<pre><code>You type: https://example.com/page
+
+STEP 1: URL PARSING (~0ms)
+  Browser extracts: protocol=https, host=example.com, path=/page
+
+STEP 2: DNS RESOLUTION (~20-120ms, or 0ms if cached)
+  Browser cache → OS cache → Router cache → ISP DNS → Root DNS
+  Result: example.com → 93.184.216.34
+
+  Your Machine            DNS Resolver         Root DNS    .com TLD    Auth DNS
+      │──── A example.com? ──►│                    │           │           │
+      │                       │── where is .com? ──►│           │           │
+      │                       │◄── try 192.5.6.30 ──│           │           │
+      │                       │── where is          │           │           │
+      │                       │   example.com? ─────────────────►│           │
+      │                       │◄── try 199.43.135.53 ───────────│           │
+      │                       │── A example.com? ───────────────────────────►│
+      │                       │◄── 93.184.216.34 ───────────────────────────│
+      │◄── 93.184.216.34 ─────│
+
+STEP 3: TCP HANDSHAKE (~20-100ms)
+  Client                    Server (93.184.216.34:443)
+      │── SYN ──────────────────►│
+      │◄── SYN-ACK ─────────────│
+      │── ACK ──────────────────►│
+  Connection established. 1.5 round trips.
+
+STEP 4: TLS HANDSHAKE (~30-150ms, adds 1-2 more round trips)
+  Client                    Server
+      │── ClientHello ──────────►│  (supported ciphers, TLS version)
+      │◄── ServerHello ─────────│  (chosen cipher, certificate)
+      │   (verify certificate    │
+      │    against CA bundle)    │
+      │── Key Exchange ──────────►│  (Diffie-Hellman params)
+      │◄── Finished ────────────│
+      │── Finished ──────────────►│
+  Symmetric encryption key established. All data encrypted from here.
+
+STEP 5: HTTP REQUEST (~1ms to send)
+  GET /page HTTP/1.1
+  Host: example.com
+  User-Agent: Mozilla/5.0 ...
+  Accept: text/html
+  Accept-Encoding: gzip, br
+  Connection: keep-alive
+
+STEP 6: SERVER PROCESSING (~5-500ms)
+  Web server (Nginx) receives request
+  → Reverse proxy to application server (Node/Django/Go)
+  → Application queries database (~5-50ms)
+  → Application renders HTML template (~1-10ms)
+  → Response sent back through Nginx
+
+STEP 7: HTTP RESPONSE (~5-50ms transfer)
+  HTTP/1.1 200 OK
+  Content-Type: text/html; charset=UTF-8
+  Content-Encoding: gzip
+  Content-Length: 3842
+  Cache-Control: max-age=3600
+
+  &lt;!DOCTYPE html&gt;&lt;html&gt;...&lt;/html&gt;
+
+STEP 8: BROWSER RENDERING (~50-500ms)
+  Parse HTML → Build DOM tree
+  Parse CSS → Build CSSOM
+  Combine → Render tree
+  Layout → Paint → Composite
+  Execute JavaScript
+
+TOTAL: ~150ms - 1500ms for a typical page load</code></pre>
+    </div>
+
+    <h4>What <code>curl -v</code> Shows You at Each Stage</h4>
+    <p>The <code>curl -v</code> (verbose) flag shows you every step of the request in real time. Here is real output annotated with what each line means.</p>
+
+    <div class="example-box">
+      <div class="label">Annotated curl -v Output</div>
+<pre><code class="lang-bash">$ curl -v https://example.com
+
+# ── DNS Resolution ──
+* Host example.com:443 was resolved.
+* IPv6: 2606:2800:21f:cb07:6820:80da:af6b:8b2c
+* IPv4: 93.184.216.34
+*   Trying 93.184.216.34:443...          ← connecting to resolved IP
+
+# ── TCP Handshake ──
+* Connected to example.com (93.184.216.34) port 443
+                                          ← TCP 3-way handshake done
+
+# ── TLS Handshake ──
+* ALPN: curl offers h2,http/1.1          ← client supports HTTP/2
+* TLSv1.3 (OUT), TLS handshake, Client hello
+* TLSv1.3 (IN), TLS handshake, Server hello
+* TLSv1.3 (IN), TLS handshake, Certificate
+* TLSv1.3 (IN), TLS handshake, CERT verify
+* TLSv1.3 (OUT), TLS handshake, Finished
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+                                          ← TLS established, cipher chosen
+* Server certificate:
+*  subject: CN=www.example.org            ← who the cert is for
+*  issuer: C=US; O=DigiCert Inc           ← who signed the cert (CA)
+*  expire date: Mar 14 23:59:59 2026 GMT  ← cert expiry
+
+# ── HTTP Request ──
+&gt; GET / HTTP/2                            ← request method and path
+&gt; Host: example.com                       ← which domain (for shared IPs)
+&gt; User-Agent: curl/8.5.0                  ← who is making the request
+&gt; Accept: */*                             ← accepted content types
+
+# ── HTTP Response ──
+&lt; HTTP/2 200                              ← status code (200 = OK)
+&lt; content-type: text/html; charset=UTF-8  ← response format
+&lt; content-length: 1256                    ← body size in bytes
+&lt; cache-control: max-age=604800           ← cache for 7 days
+&lt; age: 337133                             ← seconds since cached by CDN
+
+# ── Response Body ──
+&lt;!doctype html&gt;
+&lt;html&gt;...&lt;/html&gt;</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Useful curl Flags for Network Debugging</div>
+      <ul>
+        <li><code>curl -v</code> -- verbose output showing every step</li>
+        <li><code>curl -w "\n%{time_namelookup} %{time_connect} %{time_appconnect} %{time_total}\n"</code> -- timing breakdown for DNS, TCP, TLS, total</li>
+        <li><code>curl -I</code> -- fetch only headers (HEAD request)</li>
+        <li><code>curl --resolve example.com:443:1.2.3.4</code> -- bypass DNS and connect to a specific IP</li>
+        <li><code>curl -k</code> -- skip TLS certificate verification (dev only!)</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 16: NAT (NETWORK ADDRESS TRANSLATION)                -->
+  <!-- ============================================================ -->
+  <section id="nat">
+    <h2>16. NAT (Network Address Translation)</h2>
+    <p>IPv4 only provides about 4.3 billion addresses, but there are far more devices on the internet. <strong>NAT</strong> solves this by letting multiple devices on a local network share a single public IP address. Your home router is a NAT device -- every phone, laptop, and smart device in your house appears to the outside world as one IP.</p>
+
+    <div class="example-box">
+      <div class="label">How NAT Works</div>
+<pre><code>Your home network:                         The Internet:
+
+┌──────────────────────────────────────┐     ┌──────────────────┐
+│  Phone:     192.168.1.10             │     │                  │
+│  Laptop:    192.168.1.20             │     │  example.com     │
+│  Desktop:   192.168.1.30             │     │  93.184.216.34   │
+│                                      │     │                  │
+│          ┌───────────────┐           │     └──────────────────┘
+│          │ Router (NAT)  │           │              ▲
+│          │               │           │              │
+│          │ Internal:     │           │              │
+│          │ 192.168.1.1   │───────────────────────────
+│          │               │  Public IP:              │
+│          │ External:     │  73.45.123.89            │
+│          │ 73.45.123.89  │                          │
+│          └───────────────┘                          │
+└──────────────────────────────────────┘              │
+
+All three devices share ONE public IP: 73.45.123.89</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">NAT Translation Table</div>
+<pre><code>When your laptop (192.168.1.20) visits example.com:
+
+OUTGOING packet (laptop → internet):
+  Original:    src=192.168.1.20:54321  dst=93.184.216.34:443
+  After NAT:   src=73.45.123.89:10001  dst=93.184.216.34:443
+                ▲                ▲
+                public IP        NAT-assigned port
+
+Router's NAT table:
+┌──────────────────────────┬───────────────────────────┐
+│ Internal (LAN)           │ External (WAN)            │
+├──────────────────────────┼───────────────────────────┤
+│ 192.168.1.20:54321       │ 73.45.123.89:10001        │
+│ 192.168.1.10:48000       │ 73.45.123.89:10002        │
+│ 192.168.1.30:60123       │ 73.45.123.89:10003        │
+└──────────────────────────┴───────────────────────────┘
+
+INCOMING reply (internet → laptop):
+  Arrives at:  dst=73.45.123.89:10001
+  Router looks up port 10001 → 192.168.1.20:54321
+  Forwards to: dst=192.168.1.20:54321
+
+The external server never sees your internal 192.168.x.x address.
+It only sees 73.45.123.89.</code></pre>
+    </div>
+
+    <h3>Why NAT Breaks Peer-to-Peer</h3>
+    <p>If both Alice and Bob are behind NAT, neither can directly connect to the other. Alice's router will drop incoming connections from Bob because there is no NAT table entry for them -- Bob never initiated a connection from inside the network.</p>
+
+    <div class="example-box">
+      <div class="label">NAT Traversal: STUN, TURN, ICE</div>
+<pre><code>The P2P problem:
+
+  Alice (behind NAT)              Bob (behind NAT)
+  Internal: 192.168.1.5           Internal: 10.0.0.8
+  Public:   73.45.123.89          Public:   98.76.54.32
+
+  Alice → Bob?  Bob's router drops it (no NAT entry)
+  Bob → Alice?  Alice's router drops it (no NAT entry)
+
+SOLUTION 1: STUN (Session Traversal Utilities for NAT)
+  - Alice asks a STUN server: "What is my public IP:port?"
+  - STUN replies: "You are 73.45.123.89:10001"
+  - Alice tells Bob (via a signaling server) her public address
+  - Both sides send packets simultaneously → NAT creates entries
+  - Works ~85% of the time (fails with symmetric NAT)
+
+SOLUTION 2: TURN (Traversal Using Relays around NAT)
+  - A relay server in the middle forwards all traffic
+  - Alice → TURN server → Bob
+  - Always works but adds latency and costs bandwidth
+  - Used as fallback when STUN fails
+
+SOLUTION 3: ICE (Interactive Connectivity Establishment)
+  - Used by WebRTC and VoIP
+  - Tries multiple strategies in order:
+    1. Direct connection (if on same network)
+    2. STUN (punch through NAT)
+    3. TURN (relay as last resort)
+  - Picks the best working path automatically</code></pre>
+    </div>
+
+    <h3>Port Forwarding</h3>
+    <p>If you want to run a server behind NAT (e.g., a game server, a self-hosted website), you must manually tell your router to forward traffic on a specific external port to your internal machine.</p>
+
+    <div class="example-box">
+      <div class="label">Port Forwarding Configuration</div>
+<pre><code>Router port forwarding rule:
+
+  External port 8080 → Internal 192.168.1.30:8080
+
+  Someone on the internet connects to 73.45.123.89:8080
+  → Router forwards to 192.168.1.30:8080
+  → Your server receives the connection
+
+Common port forwarding use cases:
+  - Minecraft server: forward port 25565
+  - Web server: forward port 80 and 443
+  - SSH access: forward port 22 (or a custom port like 2222)
+  - Security cameras: forward camera's web port</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">NAT is Not a Firewall</div>
+      <p>NAT hides your internal IPs, but that is a <em>side effect</em>, not a security feature. NAT was designed to solve address exhaustion, not to protect you. A proper firewall filters traffic based on rules. Do not rely on NAT alone for security.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 17: FIREWALLS & IPTABLES                             -->
+  <!-- ============================================================ -->
+  <section id="firewalls">
+    <h2>17. Firewalls &amp; iptables</h2>
+    <p>A <strong>firewall</strong> inspects network packets and decides whether to <strong>allow</strong>, <strong>drop</strong>, or <strong>reject</strong> them based on a set of rules. On Linux, the built-in firewall is implemented via <strong>iptables</strong> (or its modern replacement, <strong>nftables</strong>). For simpler configuration, <strong>ufw</strong> (Uncomplicated Firewall) provides a friendly frontend.</p>
+
+    <div class="example-box">
+      <div class="label">iptables Chains</div>
+<pre><code>Every packet passes through one or more CHAINS of rules:
+
+                     ┌──────────────┐
+  Incoming packet ──►│   INPUT      │──► Local process (your app)
+                     └──────────────┘
+
+                     ┌──────────────┐
+  Local process ────►│   OUTPUT     │──► Outgoing packet
+                     └──────────────┘
+
+                     ┌──────────────┐
+  Forwarded packet ─►│   FORWARD    │──► Another network interface
+  (router/gateway)   └──────────────┘
+
+Each chain has an ordered list of rules. For each packet:
+  1. Check rule 1 → match? → ACCEPT / DROP / REJECT
+  2. Check rule 2 → match? → ACCEPT / DROP / REJECT
+  3. ...
+  N. No rules matched → apply DEFAULT POLICY (usually DROP)</code></pre>
+    </div>
+
+    <h3>Stateful vs Stateless Firewalls</h3>
+
+    <div class="example-box">
+      <div class="label">Stateful vs Stateless</div>
+<pre><code>STATELESS FIREWALL:
+  - Examines each packet independently.
+  - No memory of previous packets.
+  - You must create rules for BOTH directions:
+    "Allow outgoing to port 443" AND "Allow incoming from port 443"
+  - Simpler but harder to configure correctly.
+
+STATEFUL FIREWALL (iptables with conntrack):
+  - Tracks connection state (NEW, ESTABLISHED, RELATED).
+  - If you allow an outgoing connection, replies are automatically allowed.
+  - Much easier to configure:
+    "Allow outgoing to port 443" → replies come back automatically.
+  - iptables is stateful by default when using -m conntrack.
+
+  Example of connection tracking:
+  ┌────────────┐                    ┌────────────┐
+  │ Your Server │── SYN (NEW) ──────►│ Remote     │
+  │             │◄── SYN-ACK ────────│            │
+  │             │   (ESTABLISHED)    │            │
+  │             │── ACK ────────────►│            │
+  │             │   (ESTABLISHED)    │            │
+  └────────────┘                    └────────────┘
+
+  conntrack table: src=10.0.0.1 dst=93.184.216.34 sport=54321
+  dport=443 state=ESTABLISHED</code></pre>
+    </div>
+
+    <h3>Common iptables Rules</h3>
+
+    <div class="example-box">
+      <div class="label">Practical iptables Commands</div>
+<pre><code class="lang-bash"># View current rules
+sudo iptables -L -n -v
+
+# Set default policies: drop everything, then whitelist
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT ACCEPT      # allow all outgoing
+
+# Allow loopback (localhost) traffic
+sudo iptables -A INPUT -i lo -j ACCEPT
+
+# Allow established and related connections (stateful)
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# Allow SSH (port 22)
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Allow HTTP and HTTPS (ports 80, 443)
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+# Allow ping (ICMP)
+sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+# Block a specific IP
+sudo iptables -A INPUT -s 203.0.113.50 -j DROP
+
+# Rate-limit SSH to prevent brute force (max 3 new connections per minute)
+sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW \
+  -m limit --limit 3/min --limit-burst 3 -j ACCEPT
+
+# Log dropped packets (for debugging)
+sudo iptables -A INPUT -j LOG --log-prefix "IPT-DROP: " --log-level 4
+
+# Save rules (Debian/Ubuntu)
+sudo iptables-save > /etc/iptables/rules.v4
+
+# Delete a rule (by line number -- use iptables -L --line-numbers)
+sudo iptables -D INPUT 5</code></pre>
+    </div>
+
+    <h3>ufw -- The Simpler Frontend</h3>
+
+    <div class="example-box">
+      <div class="label">Practical ufw Commands</div>
+<pre><code class="lang-bash"># Enable ufw (careful -- may lock you out of SSH!)
+sudo ufw enable
+
+# Default: deny incoming, allow outgoing
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Allow SSH (ALWAYS do this before enabling ufw on a remote server!)
+sudo ufw allow ssh         # or: sudo ufw allow 22/tcp
+
+# Allow HTTP and HTTPS
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Allow a port range
+sudo ufw allow 8000:8100/tcp
+
+# Allow from a specific IP only
+sudo ufw allow from 10.0.0.5 to any port 22
+
+# Allow from a subnet
+sudo ufw allow from 192.168.1.0/24
+
+# Deny a specific port
+sudo ufw deny 3306/tcp     # block MySQL from outside
+
+# Check status and rules
+sudo ufw status verbose
+
+# Delete a rule
+sudo ufw delete allow 80/tcp
+
+# Reset all rules
+sudo ufw reset</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Do Not Lock Yourself Out</div>
+      <p>If you are configuring a firewall on a remote server (VPS), <strong>always allow SSH first</strong> before enabling the firewall. If you block port 22 and enable the firewall, you will lose access to your server. Many hosting providers offer an emergency console, but prevention is better.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Firewall Key Takeaways</div>
+      <ul>
+        <li><strong>Default deny</strong> is the safest approach. Block everything, then whitelist only what you need.</li>
+        <li><strong>Use ufw</strong> unless you need advanced features. It generates iptables rules under the hood.</li>
+        <li><strong>Always allow ESTABLISHED,RELATED</strong> connections so replies to your outgoing connections are not blocked.</li>
+        <li><strong>Rate-limit SSH</strong> to prevent brute-force attacks. Combine with fail2ban for even better protection.</li>
+        <li><strong>Save your rules</strong> -- iptables rules are lost on reboot unless you persist them.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 18: VPNs & TUNNELING                                 -->
+  <!-- ============================================================ -->
+  <section id="vpns-tunneling">
+    <h2>18. VPNs &amp; Tunneling</h2>
+    <p>A <strong>VPN (Virtual Private Network)</strong> creates an encrypted tunnel between your device and a remote server. All your traffic flows through this tunnel, hiding it from your ISP, Wi-Fi snoopers, and anyone else on the network path. VPNs are also used to connect offices, access internal resources, and build secure overlay networks.</p>
+
+    <div class="example-box">
+      <div class="label">How a VPN Works</div>
+<pre><code>WITHOUT VPN:
+  Your Device ──► ISP ──► Internet ──► Destination
+                  ▲
+                  │ ISP can see ALL your traffic
+                  │ (which sites, what data if not HTTPS)
+
+WITH VPN:
+  Your Device ══► ISP ══► VPN Server ──► Internet ──► Destination
+       │          │           │
+       │    Encrypted tunnel  │
+       │    ISP sees only     │
+       │    "gibberish" going │
+       │    to VPN server IP  │
+
+  ══► = encrypted tunnel
+  ──► = normal traffic
+
+Your real IP is hidden. Destination sees VPN server's IP.
+ISP sees encrypted traffic to a single IP (the VPN server).</code></pre>
+    </div>
+
+    <h3>WireGuard vs OpenVPN</h3>
+
+    <div class="example-box">
+      <div class="label">VPN Protocol Comparison</div>
+<pre><code>┌──────────────────────┬────────────────────────┬──────────────────────┐
+│                      │ WireGuard              │ OpenVPN              │
+├──────────────────────┼────────────────────────┼──────────────────────┤
+│ Code size            │ ~4,000 lines           │ ~100,000+ lines      │
+│ Speed                │ Very fast              │ Slower               │
+│ Crypto               │ Modern (ChaCha20,      │ Configurable (can    │
+│                      │ Curve25519, BLAKE2s)   │ use outdated ciphers)│
+│ Connection           │ Instant (1 RTT)        │ Slow (multi-step     │
+│                      │                        │ TLS handshake)       │
+│ Runs as              │ Kernel module          │ Userspace daemon     │
+│ Configuration        │ Simple config file     │ Complex config file  │
+│ Roaming              │ Handles IP changes     │ Reconnects on change │
+│ Audit surface        │ Small, audited         │ Large, complex       │
+│ Platform             │ Linux, macOS, Windows, │ Everything           │
+│                      │ iOS, Android           │                      │
+├──────────────────────┼────────────────────────┼──────────────────────┤
+│ When to use          │ Default choice for     │ Legacy systems,      │
+│                      │ new setups             │ or need TCP mode     │
+└──────────────────────┴────────────────────────┴──────────────────────┘</code></pre>
+    </div>
+
+    <h3>Mesh VPNs: Tailscale &amp; ZeroTier</h3>
+
+    <div class="example-box">
+      <div class="label">Traditional VPN vs Mesh VPN</div>
+<pre><code>TRADITIONAL VPN (hub-and-spoke):
+  All traffic goes through a central server.
+
+  Device A ──► VPN Server ──► Device B
+  Device C ──► VPN Server ──► Device D
+
+  Problem: VPN server is a bottleneck and single point of failure.
+  All traffic takes a detour through the server, even if devices
+  are on the same network.
+
+MESH VPN (Tailscale, ZeroTier):
+  Devices connect DIRECTLY to each other (peer-to-peer).
+
+  Device A ◄───────────────► Device B
+      ▲                         ▲
+      │                         │
+      └────── Device C ─────────┘
+              ▲
+              │
+           Device D
+
+  A coordination server handles key exchange and NAT traversal,
+  but actual data flows directly between devices.
+
+  Tailscale: Built on WireGuard. Uses DERP relay servers as fallback.
+  ZeroTier:  Custom protocol. Creates virtual Layer 2 network.
+
+  Use cases:
+  - Access your home server from anywhere
+  - Connect dev machines across locations
+  - Replace traditional VPNs for remote teams
+  - Self-hosted alternative: Headscale (open-source Tailscale control server)</code></pre>
+    </div>
+
+    <h3>SSH Tunneling</h3>
+    <p>SSH is not just for remote shells. It can create <strong>encrypted tunnels</strong> to forward traffic between ports. This is incredibly useful for accessing services behind firewalls or encrypting insecure protocols.</p>
+
+    <div class="example-box">
+      <div class="label">SSH Local Port Forwarding</div>
+<pre><code class="lang-bash"># LOCAL PORT FORWARDING (-L)
+# "Make a remote service available on my local machine"
+#
+# Syntax: ssh -L local_port:remote_host:remote_port user@ssh_server
+
+# Example: Access a database on a remote server that only allows
+# local connections (port 5432 is not exposed to the internet)
+
+ssh -L 5432:localhost:5432 user@myserver.com
+
+# Now connect to localhost:5432 on YOUR machine
+# → traffic is tunneled through SSH to myserver.com
+# → myserver.com connects to its own localhost:5432 (PostgreSQL)
+
+# Diagram:
+#   Your Machine              SSH Server (myserver.com)
+#   localhost:5432 ═══════════► localhost:5432 (PostgreSQL)
+#        ▲         encrypted          │
+#        │         SSH tunnel          │
+#   Your app connects                 Database lives here
+#   to localhost:5432                  (not exposed to internet)</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">SSH Remote Port Forwarding</div>
+<pre><code class="lang-bash"># REMOTE PORT FORWARDING (-R)
+# "Make my local service available on the remote server"
+#
+# Syntax: ssh -R remote_port:local_host:local_port user@ssh_server
+
+# Example: Expose your local dev server (port 3000) to the internet
+# through a VPS with a public IP
+
+ssh -R 8080:localhost:3000 user@myvps.com
+
+# Now anyone can visit http://myvps.com:8080
+# → traffic is tunneled back to YOUR machine's port 3000
+
+# Diagram:
+#   Your Machine              VPS (myvps.com)
+#   localhost:3000 ◄═══════════ 0.0.0.0:8080
+#        │         encrypted          ▲
+#        │         SSH tunnel          │
+#   Your dev server               Internet users
+#   (React, Flask, etc.)          visit myvps.com:8080</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">SSH Dynamic Port Forwarding (SOCKS Proxy)</div>
+<pre><code class="lang-bash"># DYNAMIC PORT FORWARDING (-D)
+# "Route ALL my traffic through the SSH server (like a VPN)"
+#
+# Syntax: ssh -D local_port user@ssh_server
+
+ssh -D 1080 user@myserver.com
+
+# Configure your browser to use SOCKS5 proxy: localhost:1080
+# All browser traffic is now tunneled through myserver.com
+# Useful for bypassing network restrictions or accessing
+# geo-restricted content
+
+# Tip: combine flags for background tunnels:
+ssh -f -N -D 1080 user@myserver.com
+#  -f = go to background after connecting
+#  -N = no remote command (tunnel only)
+#  -D = dynamic SOCKS proxy</code></pre>
+    </div>
+
+    <h3>When to Use Which</h3>
+
+    <div class="example-box">
+      <div class="label">VPN & Tunnel Decision Guide</div>
+<pre><code>┌──────────────────────────┬───────────────────────────────────────────┐
+│ Scenario                 │ Best Tool                                 │
+├──────────────────────────┼───────────────────────────────────────────┤
+│ Privacy from ISP         │ WireGuard VPN (or commercial VPN)         │
+│ Access home network      │ Tailscale or WireGuard                    │
+│   from anywhere          │                                           │
+│ Connect office networks  │ WireGuard site-to-site or Tailscale       │
+│ Quick access to a remote │ SSH local port forwarding (-L)            │
+│   database or service    │                                           │
+│ Expose local dev server  │ SSH remote port forwarding (-R)           │
+│   temporarily            │   or ngrok / Cloudflare Tunnel            │
+│ Route browser traffic    │ SSH dynamic proxy (-D) or VPN             │
+│   through another server │                                           │
+│ Team remote access       │ Tailscale / ZeroTier (easiest)            │
+│   (replace corporate VPN)│   or WireGuard (more control)             │
+│ Air-gapped / high-       │ WireGuard with strict firewall rules      │
+│   security environments  │                                           │
+└──────────────────────────┴───────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">VPN & Tunneling Key Takeaways</div>
+      <ul>
+        <li><strong>WireGuard is the modern default.</strong> Faster, simpler, and more secure than OpenVPN. Use it unless you have a specific reason not to.</li>
+        <li><strong>Tailscale makes WireGuard easy.</strong> No port forwarding, no manual key exchange. Install and go. Free for personal use.</li>
+        <li><strong>SSH tunnels are underrated.</strong> You already have SSH access to your servers -- use <code>-L</code> and <code>-R</code> for quick, secure access without setting up a full VPN.</li>
+        <li><strong>A VPN does not make you anonymous.</strong> The VPN provider can still see your traffic. For true anonymity, you need Tor (which is much slower).</li>
+        <li><strong>Always use a kill switch</strong> with privacy VPNs. If the VPN drops, your traffic should stop -- not fall back to your real IP.</li>
       </ul>
     </div>
   </section>

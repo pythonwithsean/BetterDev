@@ -63,6 +63,7 @@
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
         <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
         <a href="javascript.html">JavaScript Deep Dive</a>
         <a href="typescript.html">TypeScript</a>
         <a href="nodejs.html">Node.js Internals</a>
@@ -109,6 +110,9 @@
     <a href="#buffers">3. Buffers in Node.js</a>
     <a href="#streams">4. Streams in Node.js</a>
     <a href="#db-scale">5. Database Essentials: Transactions, Indexes &amp; Scale</a>
+    <a href="#chunking">6. Chunked Reading &amp; Streaming Servers</a>
+    <a href="#scalability">7. Scalability Patterns</a>
+    <a href="#backend-patterns">8. Backend Design Patterns</a>
   </div>
 
 
@@ -1442,6 +1446,1478 @@ CREATE INDEX idx_orders_user_id ON orders (user_id);
       </ul>
     </div>
   </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 6: CHUNKED READING & STREAMING SERVERS              -->
+  <!-- ============================================================ -->
+  <section id="chunking">
+    <h2>6. Chunked Reading &amp; Streaming Servers</h2>
+    <p>Most tutorials teach you to read a file and send it. That works for tiny files. In production, you stream data in chunks -- keeping memory constant whether the file is 1KB or 10GB. This section explains why and how.</p>
+
+    <h3>The Problem with Reading Entire Files</h3>
+    <p>The naive approach loads the <strong>entire file</strong> into RAM before sending it to the client. This is fine for a config file. It is catastrophic for media files.</p>
+
+    <div class="warning-box">
+      <div class="label">Why This Kills Production Servers</div>
+      <p><code>fs.readFile()</code> loads the whole file into a single Buffer in memory. If your file is 500MB, that is 500MB of RAM per request. 100 concurrent downloads = <strong>50GB of RAM</strong>. Your server will OOM-crash long before that.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Naive vs Streamed -- Memory Comparison</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// BAD: Reads entire file into memory
+const http = require("http");
+const fs = require("fs");
+
+http.createServer((req, res) => {
+  const data = fs.readFileSync("big-video.mp4");  // 500MB in RAM!
+  res.writeHead(200, { "Content-Type": "video/mp4" });
+  res.end(data);
+}).listen(3000);
+
+// GOOD: Streams file in chunks (~64KB in memory at a time)
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "video/mp4" });
+  const stream = fs.createReadStream("big-video.mp4");
+  stream.pipe(res);  // Chunks flow from disk to network automatically
+}).listen(3000);</code></pre>
+      <p>With streaming, memory usage stays at roughly 64KB regardless of file size. The file is read chunk by chunk from disk and each chunk is sent to the client before the next is read.</p>
+    </div>
+
+    <h3>How Chunked Reading Works</h3>
+    <p>Files are read in fixed-size chunks, typically 16KB to 64KB. Each chunk is sent to the client as soon as it is read. Memory usage remains constant no matter how large the file is.</p>
+
+    <div class="formula-box">
+      <strong>The Chunked Reading Pipeline:</strong><br><br>
+<pre><code>Disk                    Server Memory           Network              Client
+┌──────────┐           ┌──────────────┐        ┌──────────┐       ┌──────────┐
+│          │  read()   │              │ write() │          │       │          │
+│  File    │──[64KB]──▶│    Buffer    │──[64KB]─▶│  Socket  │──────▶│ Browser  │
+│  (10GB)  │           │   (~64KB)    │         │          │       │          │
+│          │  repeat   │              │  repeat │          │       │          │
+└──────────┘           └──────────────┘        └──────────┘       └──────────┘
+
+Memory used: ~64KB constant          NOT 10GB!</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Key Insight</div>
+      <p>The chunk size is controlled by the <code>highWaterMark</code> option in Node.js streams. The default is 64KB for file streams. You can tune this: smaller chunks use less memory but more syscalls; larger chunks use more memory but fewer syscalls.</p>
+    </div>
+
+    <h3>HTTP Chunked Transfer Encoding</h3>
+    <p>When the server does not know the total size of the response upfront (e.g., dynamically generated content), it uses <code>Transfer-Encoding: chunked</code>. Each chunk is framed with its size in hexadecimal, followed by CRLF, the data, and another CRLF.</p>
+
+    <div class="example-box">
+      <div class="label">Raw Chunked HTTP Response Format</div>
+<pre><code><span class="lang-label">Terminal</span>
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Transfer-Encoding: chunked
+
+7\r\n
+Hello, \r\n
+6\r\n
+World!\r\n
+0\r\n
+\r\n
+
+# Breakdown:
+# "7"      = next chunk is 7 bytes (hex)
+# "Hello, " = the 7 bytes of data
+# "6"      = next chunk is 6 bytes
+# "World!" = the 6 bytes of data
+# "0"      = zero-length chunk signals end of response</code></pre>
+      <p>This format lets the server start sending data before it knows how much there is. The client reads chunk by chunk until it sees the zero-length terminator.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">When Chunked vs Content-Length</div>
+      <p>If you know the exact size (static file), use <code>Content-Length</code> -- it is more efficient and lets clients show progress bars. Use <code>Transfer-Encoding: chunked</code> when the total size is unknown: server-sent events, dynamically generated responses, or proxied streams.</p>
+    </div>
+
+    <h3>Implementing a Chunked File Server in Node.js</h3>
+    <p>A production file server needs to handle range requests (for video seeking), set correct headers, and stream efficiently.</p>
+
+    <div class="example-box">
+      <div class="label">File Server with Range Request Support (206 Partial Content)</div>
+<pre><code><span class="lang-label">JavaScript</span>
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+
+http.createServer((req, res) => {
+  const filePath = path.join(__dirname, "videos", "demo.mp4");
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+
+  const range = req.headers.range;
+
+  if (range) {
+    // Range request: "bytes=32324-"
+    const parts = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = end - start + 1;
+
+    res.writeHead(206, {
+      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunkSize,
+      "Content-Type": "video/mp4",
+    });
+
+    const stream = fs.createReadStream(filePath, { start, end });
+    stream.pipe(res);
+  } else {
+    // Full file request
+    res.writeHead(200, {
+      "Content-Length": fileSize,
+      "Content-Type": "video/mp4",
+    });
+
+    fs.createReadStream(filePath).pipe(res);
+  }
+}).listen(3000, () => console.log("File server on :3000"));</code></pre>
+      <p>When a browser plays an MP4 and the user seeks to 2:30, the browser sends a <code>Range: bytes=15000000-</code> header. The server responds with <strong>206 Partial Content</strong> and streams only the requested portion.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Custom highWaterMark for Tuning</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// Default: 64KB chunks
+const stream = fs.createReadStream("large.bin");
+
+// Custom: 256KB chunks (fewer syscalls, more memory per stream)
+const stream = fs.createReadStream("large.bin", {
+  highWaterMark: 256 * 1024  // 256KB
+});
+
+// Custom: 16KB chunks (less memory, more syscalls)
+const stream = fs.createReadStream("large.bin", {
+  highWaterMark: 16 * 1024   // 16KB
+});</code></pre>
+    </div>
+
+    <h3>Chunked File Server in Go</h3>
+    <p>Go's standard library handles much of this for you, but understanding the internals matters.</p>
+
+    <div class="example-box">
+      <div class="label">Go File Server -- From Simple to Custom</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    // Method 1: http.ServeFile (handles Range requests automatically)
+    http.HandleFunc("/video", func(w http.ResponseWriter, r *http.Request) {
+        http.ServeFile(w, r, "./videos/demo.mp4")
+    })
+
+    // Method 2: Manual chunk-by-chunk reading
+    http.HandleFunc("/download", func(w http.ResponseWriter, r *http.Request) {
+        file, err := os.Open("./files/large.bin")
+        if err != nil {
+            http.Error(w, "File not found", 404)
+            return
+        }
+        defer file.Close()
+
+        w.Header().Set("Content-Type", "application/octet-stream")
+
+        // io.Copy reads in 32KB chunks internally
+        // It calls file.Read() repeatedly and writes to the ResponseWriter
+        io.Copy(w, file)
+    })
+
+    // Method 3: Custom chunk size with a buffer
+    http.HandleFunc("/custom", func(w http.ResponseWriter, r *http.Request) {
+        file, err := os.Open("./files/large.bin")
+        if err != nil {
+            http.Error(w, "File not found", 404)
+            return
+        }
+        defer file.Close()
+
+        buf := make([]byte, 128*1024) // 128KB chunks
+        for {
+            n, err := file.Read(buf)
+            if n > 0 {
+                w.Write(buf[:n])
+            }
+            if err == io.EOF {
+                break
+            }
+            if err != nil {
+                break
+            }
+        }
+    })
+
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Go vs Node.js for File Serving</div>
+      <p><code>http.ServeFile</code> in Go automatically handles <code>Range</code> headers, <code>If-Modified-Since</code>, <code>Content-Type</code> detection, and proper caching headers. In Node.js, you must implement these yourself or use a library. For production static file serving, both languages are fast -- the bottleneck is disk I/O, not the language.</p>
+    </div>
+
+    <h3>Chunked Uploads</h3>
+    <p>Downloading files in chunks is only half the story. Uploading large files reliably requires chunking too -- especially over unreliable networks.</p>
+
+    <div class="example-box">
+      <div class="label">Multipart Upload Strategy</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// Client-side: Split a large file into chunks and upload each
+async function uploadInChunks(file, chunkSize = 5 * 1024 * 1024) {
+  const totalChunks = Math.ceil(file.size / chunkSize);
+
+  // Step 1: Initiate upload, get an upload ID
+  const { uploadId } = await fetch("/api/upload/init", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      filename: file.name,
+      totalChunks,
+      fileSize: file.size,
+    }),
+  }).then(r => r.json());
+
+  // Step 2: Upload each chunk
+  for (let i = 0; i &lt; totalChunks; i++) {
+    const start = i * chunkSize;
+    const end = Math.min(start + chunkSize, file.size);
+    const chunk = file.slice(start, end);
+
+    const formData = new FormData();
+    formData.append("chunk", chunk);
+    formData.append("chunkIndex", i);
+    formData.append("uploadId", uploadId);
+
+    await fetch("/api/upload/chunk", {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log(`Uploaded chunk ${i + 1}/${totalChunks}`);
+  }
+
+  // Step 3: Finalize -- server assembles chunks
+  await fetch("/api/upload/complete", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uploadId }),
+  });
+}</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">How Cloud Storage Handles This</div>
+      <ul>
+        <li><strong>AWS S3 Multipart Upload:</strong> Files over 100MB should use multipart. You initiate, upload parts (min 5MB each), then complete. S3 assembles them server-side.</li>
+        <li><strong>Resumable Uploads:</strong> If a chunk fails, you retry only that chunk -- not the entire file. The server tracks which chunks have been received.</li>
+        <li><strong>Why 5MB minimum?</strong> S3 requires each part to be at least 5MB (except the last). This prevents excessive overhead from managing millions of tiny parts.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 7: SCALABILITY PATTERNS                             -->
+  <!-- ============================================================ -->
+  <section id="scalability">
+    <h2>7. Scalability Patterns</h2>
+    <p>Your app works on localhost. Then real users show up. This section covers the patterns that take you from "works on my machine" to "handles millions of requests."</p>
+
+    <h3>Vertical vs Horizontal Scaling</h3>
+    <p>There are exactly two ways to get more capacity: make the server bigger, or add more servers.</p>
+
+    <div class="formula-box">
+      <strong>Vertical vs Horizontal Scaling:</strong><br><br>
+<pre><code>VERTICAL SCALING                    HORIZONTAL SCALING
+(Scale Up)                          (Scale Out)
+
+┌─────────────────┐                ┌─────────┐ ┌─────────┐ ┌─────────┐
+│                 │                │ Server  │ │ Server  │ │ Server  │
+│   BIG SERVER    │                │   1     │ │   2     │ │   3     │
+│                 │                └────┬────┘ └────┬────┘ └────┬────┘
+│  64 CPU cores   │                     │           │           │
+│  512 GB RAM     │                     └─────┬─────┘───────────┘
+│  10TB SSD       │                           │
+│                 │                    ┌──────┴──────┐
+└─────────────────┘                    │ Load Balancer│
+                                       └─────────────┘
+Pro: Simple, no code changes           Pro: No single point of failure
+Con: Has a ceiling, expensive          Con: Requires stateless design
+Con: Single point of failure           Con: More operational complexity</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">When to Use Which</div>
+      <ul>
+        <li><strong>Start vertical.</strong> It is simpler. A single beefy server can handle more traffic than most startups will ever see.</li>
+        <li><strong>Go horizontal when:</strong> You need fault tolerance (server dies, others keep running), you hit the ceiling of the biggest machine available, or your workload is embarrassingly parallel.</li>
+        <li><strong>Most apps do both:</strong> Vertically scale each node to a reasonable size, then horizontally scale the number of nodes.</li>
+      </ul>
+    </div>
+
+    <h3>Stateless Services</h3>
+    <p>The golden rule of horizontal scaling: <strong>any server must be able to handle any request</strong>. This means no request-specific state stored in the server's memory.</p>
+
+    <div class="warning-box">
+      <div class="label">The Stateful Trap</div>
+      <p>If you store user sessions in memory (<code>const sessions = {}</code>), you cannot add more servers. User A logs in on Server 1, but their next request hits Server 2 -- which has no idea who they are. This is why you must externalize state.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Stateful vs Stateless Authentication</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// STATEFUL: Sessions stored in server memory (breaks with multiple servers)
+const sessions = {};
+
+app.post("/login", (req, res) => {
+  const sessionId = crypto.randomUUID();
+  sessions[sessionId] = { userId: user.id, email: user.email };
+  res.cookie("sessionId", sessionId);
+  res.json({ success: true });
+});
+
+app.get("/profile", (req, res) => {
+  const session = sessions[req.cookies.sessionId]; // Only works on THIS server!
+  if (!session) return res.status(401).json({ error: "Not authenticated" });
+  res.json(session);
+});
+
+// STATELESS: JWT (works with any number of servers)
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET;
+
+app.post("/login", (req, res) => {
+  const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, {
+    expiresIn: "24h",
+  });
+  res.json({ token });
+});
+
+app.get("/profile", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  try {
+    const payload = jwt.verify(token, SECRET); // Any server can verify this
+    res.json(payload);
+  } catch {
+    res.status(401).json({ error: "Invalid token" });
+  }
+});</code></pre>
+      <p>With JWTs, the token itself contains the user's data, signed by the server. Any server with the secret key can verify it -- no shared state needed.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Where to Put State Instead</div>
+      <ul>
+        <li><strong>Sessions:</strong> Redis (fast, shared across all servers)</li>
+        <li><strong>File uploads:</strong> S3 or object storage (not local disk)</li>
+        <li><strong>Cache:</strong> Redis or Memcached (shared cache layer)</li>
+        <li><strong>Database:</strong> PostgreSQL, MySQL, MongoDB (already external)</li>
+      </ul>
+    </div>
+
+    <h3>Load Balancing</h3>
+    <p>A load balancer distributes incoming requests across multiple servers. It is the entry point for all traffic in a horizontally scaled system.</p>
+
+    <div class="example-box">
+      <div class="label">Load Balancing Algorithms</div>
+<pre><code><span class="lang-label">Terminal</span>
+# Round-Robin: Requests go to servers in order (1, 2, 3, 1, 2, 3...)
+# Simple and fair. Default for most load balancers.
+Request 1 → Server A
+Request 2 → Server B
+Request 3 → Server C
+Request 4 → Server A  (back to start)
+
+# Least Connections: Send to the server with fewest active connections.
+# Better when requests have variable processing time.
+Server A (3 active) ← skip
+Server B (1 active) ← SEND HERE
+Server C (2 active) ← skip
+
+# IP Hash: Hash the client IP to always route them to the same server.
+# Useful for session affinity without shared session stores.
+hash("192.168.1.1") % 3 = 1 → always Server B
+
+# Weighted: Servers with more capacity get more traffic.
+# Server A (weight 5): gets 50% of requests
+# Server B (weight 3): gets 30% of requests
+# Server C (weight 2): gets 20% of requests</code></pre>
+    </div>
+
+    <div class="formula-box">
+      <strong>L4 (Transport) vs L7 (Application) Load Balancing:</strong><br><br>
+      <strong>L4 Load Balancer:</strong> Works at the TCP level. Sees IP addresses and ports. Very fast (just forwards packets). Cannot inspect HTTP headers, URLs, or cookies.<br><br>
+      <strong>L7 Load Balancer:</strong> Works at the HTTP level. Can route based on URL path, headers, cookies. Can terminate TLS, add headers, rewrite URLs. Slower but much more flexible.<br><br>
+      <strong>Example:</strong> L7 can route <code>/api/*</code> to backend servers and <code>/static/*</code> to a CDN. L4 cannot -- it sees only the destination port.
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Sticky Sessions Are a Code Smell</div>
+      <p>Sticky sessions (always routing the same user to the same server) defeat the purpose of load balancing. If that server dies, the user loses their session. If it gets overloaded, you cannot redistribute. Fix the root cause: make your services stateless.</p>
+    </div>
+
+    <h3>Caching Layers</h3>
+    <p>The fastest request is one you never make. Caching stores computed results so they can be served instantly on subsequent requests.</p>
+
+    <div class="formula-box">
+      <strong>The Cache Hierarchy (request flows left to right, first hit wins):</strong><br><br>
+<pre><code>Browser     CDN        Reverse       Application    Database
+Cache       Cache      Proxy Cache   Cache (Redis)  Query Cache
+┌─────┐   ┌─────┐    ┌─────────┐   ┌───────────┐  ┌──────────┐
+│ HIT │──▶│ HIT │──▶ │  HIT    │──▶│   HIT     │──▶│  Query   │
+│     │   │     │    │ (Nginx) │   │  (Redis)  │  │  (MySQL) │
+└──┬──┘   └──┬──┘    └────┬────┘   └─────┬─────┘  └──────────┘
+   │         │            │              │
+ ~0ms      ~5ms        ~10ms          ~1ms           ~50-500ms
+
+The closer to the user, the faster. But invalidation gets harder.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Cache-Aside Pattern with Redis</div>
+<pre><code><span class="lang-label">JavaScript</span>
+const Redis = require("ioredis");
+const redis = new Redis();
+
+async function getUserById(userId) {
+  const cacheKey = `user:${userId}`;
+
+  // Step 1: Check cache first
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    console.log("Cache HIT");
+    return JSON.parse(cached);
+  }
+
+  // Step 2: Cache miss -- query database
+  console.log("Cache MISS");
+  const user = await db.query("SELECT * FROM users WHERE id = $1", [userId]);
+
+  // Step 3: Store in cache for next time (expire after 5 minutes)
+  await redis.set(cacheKey, JSON.stringify(user), "EX", 300);
+
+  return user;
+}
+
+// When user data changes, invalidate the cache
+async function updateUser(userId, data) {
+  await db.query("UPDATE users SET name = $1 WHERE id = $2", [data.name, userId]);
+  await redis.del(`user:${userId}`);  // Invalidate cache
+}</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Cache Invalidation Strategies</div>
+      <ul>
+        <li><strong>TTL (Time-To-Live):</strong> Cache expires after N seconds. Simple, but data can be stale for up to N seconds.</li>
+        <li><strong>Event-Based:</strong> When data changes, explicitly delete the cache entry. Precise, but requires discipline.</li>
+        <li><strong>Cache-Aside (Lazy):</strong> Application checks cache first, loads from DB on miss, writes to cache. Most common pattern.</li>
+        <li><strong>Write-Through:</strong> Every write goes to both cache and DB. Consistent, but slower writes.</li>
+      </ul>
+      <p><em>"There are only two hard things in computer science: cache invalidation and naming things."</em> -- Phil Karlton</p>
+    </div>
+
+    <h3>Database Scaling</h3>
+    <p>The database is almost always the bottleneck. Here are the main strategies for scaling it.</p>
+
+    <div class="formula-box">
+      <strong>Database Scaling Strategies:</strong><br><br>
+<pre><code>READ REPLICAS                          SHARDING
+(Scale reads)                          (Scale reads AND writes)
+
+   Writes ───▶ ┌──────────┐            ┌───────────┐
+               │ Primary  │            │  Shard 1  │  Users A-M
+               │   (RW)   │            │  (RW)     │
+               └────┬─────┘            └───────────┘
+          ┌─────────┼──────────┐
+          ▼         ▼          ▼        ┌───────────┐
+     ┌────────┐ ┌────────┐ ┌────────┐  │  Shard 2  │  Users N-Z
+     │Replica │ │Replica │ │Replica │  │  (RW)     │
+     │ (RO)   │ │ (RO)   │ │ (RO)   │  └───────────┘
+     └────────┘ └────────┘ └────────┘
+          ▲         ▲          ▲        Cross-shard queries
+     Reads distributed across replicas  are painful. Avoid if possible.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Connection Pooling -- Why It Matters</div>
+<pre><code><span class="lang-label">JavaScript</span>
+const { Pool } = require("pg");
+
+// WITHOUT pooling: new connection per query (~50-100ms overhead each)
+// WITH pooling: reuse connections from a pool (~0ms overhead)
+
+const pool = new Pool({
+  host: "localhost",
+  database: "myapp",
+  max: 20,           // Maximum 20 connections in the pool
+  idleTimeoutMillis: 30000,  // Close idle connections after 30s
+  connectionTimeoutMillis: 2000,  // Fail if can't connect in 2s
+});
+
+// Every query borrows a connection, uses it, and returns it
+const result = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
+
+// The connection is NOT closed -- it goes back to the pool for reuse</code></pre>
+      <p>A database server can typically handle 100-500 concurrent connections. Without pooling, a busy Node.js app can exhaust connections in seconds. Pooling keeps the count bounded and reuses existing connections.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">SQL vs NoSQL -- A Simple Decision Framework</div>
+      <ul>
+        <li><strong>Use SQL (PostgreSQL, MySQL) when:</strong> You have structured data with relationships, need transactions (ACID), need complex queries with JOINs, or need strong consistency.</li>
+        <li><strong>Use NoSQL (MongoDB, DynamoDB) when:</strong> Your data is document-shaped (nested JSON), you need flexible schemas that change often, you need extreme horizontal scale for simple key-value lookups, or you have no cross-document relationships.</li>
+        <li><strong>Default choice:</strong> Start with PostgreSQL. It handles JSON, full-text search, and most "NoSQL" use cases too.</li>
+      </ul>
+    </div>
+
+    <h3>Message Queues for Async Processing</h3>
+    <p>Not everything needs to happen during the HTTP request. Heavy or slow operations should be pushed to a queue and processed in the background.</p>
+
+    <div class="example-box">
+      <div class="label">Why Queues -- The Email Example</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// WITHOUT a queue: user waits for email to send (~2-5 seconds)
+app.post("/signup", async (req, res) => {
+  const user = await db.createUser(req.body);
+  await sendWelcomeEmail(user.email);  // SLOW! User waits for this
+  await sendSlackNotification(user);    // Even slower!
+  res.json({ success: true });          // 5 seconds later...
+});
+
+// WITH a queue: user gets instant response, email sends in background
+app.post("/signup", async (req, res) => {
+  const user = await db.createUser(req.body);
+  await queue.publish("user.created", { userId: user.id, email: user.email });
+  res.json({ success: true });  // Instant! (~50ms)
+});
+
+// Separate worker process picks up the job
+queue.subscribe("user.created", async (message) => {
+  await sendWelcomeEmail(message.email);
+  await sendSlackNotification(message);
+  // If this fails, the queue retries automatically
+});</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Common Queue Use Cases</div>
+      <ul>
+        <li><strong>Email / Notifications:</strong> Send asynchronously, retry on failure</li>
+        <li><strong>Image / Video Processing:</strong> Resize, transcode in background workers</li>
+        <li><strong>Data Pipelines:</strong> ETL jobs, analytics event processing</li>
+        <li><strong>Order Processing:</strong> Payment, inventory, shipping as separate steps</li>
+      </ul>
+      <p>Popular options: <strong>RabbitMQ</strong> (full-featured), <strong>Redis Streams</strong> (simple, already have Redis), <strong>AWS SQS</strong> (managed, serverless), <strong>Kafka</strong> (high-throughput, event streaming).</p>
+    </div>
+
+    <h3>Rate Limiting</h3>
+    <p>Rate limiting protects your server from being overwhelmed -- whether by a traffic spike, a misbehaving client, or a deliberate attack. It is both a <strong>scalability</strong> and <strong>security</strong> tool.</p>
+
+    <div class="formula-box">
+      <strong>Token Bucket Algorithm:</strong><br><br>
+<pre><code>Bucket capacity: 10 tokens
+Refill rate: 1 token per second
+
+Time 0s:  [● ● ● ● ● ● ● ● ● ●]  10 tokens (full)
+          Request! → consume 1 token → ALLOWED
+
+Time 0s:  [● ● ● ● ● ● ● ● ●  ]  9 tokens
+          Request! → consume 1 token → ALLOWED
+
+          ... 8 more requests in rapid succession ...
+
+Time 1s:  [                       ]  0 tokens (empty)
+          Request! → no tokens → REJECTED (429 Too Many Requests)
+
+Time 2s:  [●                      ]  1 token (refilled)
+          Request! → consume 1 token → ALLOWED
+
+Key insight: Allows bursts (up to bucket size) but enforces
+an average rate (refill rate) over time.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Rate Limiter in Node.js</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// Simple in-memory rate limiter using sliding window
+const rateLimits = new Map();
+
+function rateLimit(key, maxRequests, windowMs) {
+  const now = Date.now();
+  const windowStart = now - windowMs;
+
+  if (!rateLimits.has(key)) {
+    rateLimits.set(key, []);
+  }
+
+  const timestamps = rateLimits.get(key);
+
+  // Remove expired timestamps
+  while (timestamps.length > 0 &amp;&amp; timestamps[0] &lt; windowStart) {
+    timestamps.shift();
+  }
+
+  if (timestamps.length >= maxRequests) {
+    return false;  // Rate limited
+  }
+
+  timestamps.push(now);
+  return true;  // Allowed
+}
+
+// Express middleware
+app.use((req, res, next) => {
+  const key = req.ip;
+  const allowed = rateLimit(key, 100, 60 * 1000);  // 100 requests per minute
+
+  if (!allowed) {
+    return res.status(429).json({
+      error: "Too many requests",
+      retryAfter: "60 seconds",
+    });
+  }
+
+  next();
+});</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Rate Limiter in Go</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "net/http"
+    "sync"
+    "time"
+)
+
+type RateLimiter struct {
+    mu       sync.Mutex
+    tokens   float64
+    maxTokens float64
+    refillRate float64   // tokens per second
+    lastTime time.Time
+}
+
+func NewRateLimiter(maxTokens, refillRate float64) *RateLimiter {
+    return &amp;RateLimiter{
+        tokens:     maxTokens,
+        maxTokens:  maxTokens,
+        refillRate: refillRate,
+        lastTime:   time.Now(),
+    }
+}
+
+func (rl *RateLimiter) Allow() bool {
+    rl.mu.Lock()
+    defer rl.mu.Unlock()
+
+    now := time.Now()
+    elapsed := now.Sub(rl.lastTime).Seconds()
+    rl.tokens += elapsed * rl.refillRate
+    if rl.tokens > rl.maxTokens {
+        rl.tokens = rl.maxTokens
+    }
+    rl.lastTime = now
+
+    if rl.tokens &lt; 1 {
+        return false
+    }
+    rl.tokens--
+    return true
+}
+
+func main() {
+    limiter := NewRateLimiter(10, 1) // 10 burst, 1/sec refill
+
+    http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
+        if !limiter.Allow() {
+            http.Error(w, "Too Many Requests", http.StatusTooManyRequests)
+            return
+        }
+        w.Write([]byte("OK"))
+    })
+
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">In-Memory Rate Limiting Does Not Scale</div>
+      <p>The examples above store rate limit state in the server's memory. With multiple servers, each has its own counter -- a user could send 100 requests to each of 5 servers (500 total). For production, use <strong>Redis</strong> with atomic operations (INCR + EXPIRE) so all servers share one counter per key.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!--  SECTION 8: BACKEND DESIGN PATTERNS                          -->
+  <!-- ============================================================ -->
+  <section id="backend-patterns">
+    <h2>8. Backend Design Patterns</h2>
+    <p>These are the recurring solutions to common backend problems. Learn them and you will recognize (and solve) architectural issues faster than engineers with twice your experience.</p>
+
+    <h3>Repository Pattern</h3>
+    <p>Separate data access from business logic. A repository is an abstraction layer between your application code and the database. Your business logic asks the repository for data -- it never knows or cares whether the data comes from PostgreSQL, MongoDB, or a test mock.</p>
+
+    <div class="example-box">
+      <div class="label">Repository Pattern in Node.js (TypeScript-style)</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// repository/userRepository.js -- defines the contract
+class UserRepository {
+  async findById(id) { throw new Error("Not implemented"); }
+  async findByEmail(email) { throw new Error("Not implemented"); }
+  async create(userData) { throw new Error("Not implemented"); }
+  async update(id, userData) { throw new Error("Not implemented"); }
+  async delete(id) { throw new Error("Not implemented"); }
+}
+
+// repository/pgUserRepository.js -- PostgreSQL implementation
+class PgUserRepository extends UserRepository {
+  constructor(pool) {
+    super();
+    this.pool = pool;
+  }
+
+  async findById(id) {
+    const { rows } = await this.pool.query(
+      "SELECT * FROM users WHERE id = $1", [id]
+    );
+    return rows[0] || null;
+  }
+
+  async create(userData) {
+    const { rows } = await this.pool.query(
+      "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *",
+      [userData.name, userData.email]
+    );
+    return rows[0];
+  }
+
+  // ... update, delete, findByEmail
+}
+
+// In tests: swap with a mock
+class MockUserRepository extends UserRepository {
+  constructor() {
+    super();
+    this.users = [];
+  }
+
+  async findById(id) {
+    return this.users.find(u => u.id === id) || null;
+  }
+
+  async create(userData) {
+    const user = { id: this.users.length + 1, ...userData };
+    this.users.push(user);
+    return user;
+  }
+}
+
+// Business logic doesn't know which implementation it's using
+async function getUserProfile(userRepo, userId) {
+  const user = await userRepo.findById(userId);
+  if (!user) throw new Error("User not found");
+  return { name: user.name, email: user.email };
+}</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Repository Pattern in Go (Interface-driven)</div>
+<pre><code><span class="lang-label">Go</span>
+package repository
+
+import "context"
+
+// Interface -- the contract
+type UserRepository interface {
+    FindByID(ctx context.Context, id int64) (*User, error)
+    FindByEmail(ctx context.Context, email string) (*User, error)
+    Create(ctx context.Context, user *User) error
+    Update(ctx context.Context, user *User) error
+    Delete(ctx context.Context, id int64) error
+}
+
+// PostgreSQL implementation
+type pgUserRepo struct {
+    db *sql.DB
+}
+
+func NewPgUserRepo(db *sql.DB) UserRepository {
+    return &amp;pgUserRepo{db: db}
+}
+
+func (r *pgUserRepo) FindByID(ctx context.Context, id int64) (*User, error) {
+    user := &amp;User{}
+    err := r.db.QueryRowContext(ctx,
+        "SELECT id, name, email FROM users WHERE id = $1", id,
+    ).Scan(&amp;user.ID, &amp;user.Name, &amp;user.Email)
+    if err == sql.ErrNoRows {
+        return nil, nil
+    }
+    return user, err
+}
+
+// In tests: use a mock that satisfies the same interface
+type mockUserRepo struct {
+    users map[int64]*User
+}
+
+func (m *mockUserRepo) FindByID(ctx context.Context, id int64) (*User, error) {
+    return m.users[id], nil
+}</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why the Repository Pattern Matters</div>
+      <ul>
+        <li><strong>Swap databases:</strong> Move from PostgreSQL to DynamoDB without touching business logic</li>
+        <li><strong>Testing:</strong> Inject a mock repository -- no database needed in unit tests</li>
+        <li><strong>Single Responsibility:</strong> Business logic handles rules, repositories handle data access</li>
+      </ul>
+    </div>
+
+    <h3>Service Layer Pattern</h3>
+    <p>The service layer sits between your HTTP controllers and your data repositories. Controllers handle HTTP concerns (parsing requests, sending responses). Services handle business logic (validation, rules, orchestration). Repositories handle data access.</p>
+
+    <div class="formula-box">
+      <strong>The Three-Layer Architecture:</strong><br><br>
+<pre><code>HTTP Request
+    │
+    ▼
+┌──────────────┐  Parses request, validates input format,
+│  Controller  │  calls service, sends HTTP response.
+│  (HTTP)      │  Knows about req/res. Thin.
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐  Contains business rules, orchestrates
+│   Service    │  repository calls, handles validation.
+│  (Logic)     │  Knows nothing about HTTP.
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐  Talks to the database. Returns data.
+│  Repository  │  Knows nothing about business rules.
+│  (Data)      │
+└──────────────┘
+       │
+       ▼
+   Database</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Service Layer in Practice</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// service/userService.js -- business logic lives here
+class UserService {
+  constructor(userRepo, emailService) {
+    this.userRepo = userRepo;
+    this.emailService = emailService;
+  }
+
+  async signup(name, email, password) {
+    // Business rule: check for existing user
+    const existing = await this.userRepo.findByEmail(email);
+    if (existing) throw new Error("Email already registered");
+
+    // Business rule: hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user via repository
+    const user = await this.userRepo.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    // Side effect: send welcome email (via another service)
+    await this.emailService.sendWelcome(user.email, user.name);
+
+    return { id: user.id, name: user.name, email: user.email };
+  }
+}
+
+// controller/userController.js -- HTTP concerns only
+app.post("/api/signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const user = await userService.signup(name, email, password);
+    res.status(201).json(user);
+  } catch (err) {
+    if (err.message === "Email already registered") {
+      return res.status(409).json({ error: err.message });
+    }
+    res.status(500).json({ error: "Internal server error" });
+  }
+});</code></pre>
+      <p>The controller is thin -- it parses the request, calls the service, and maps the result to an HTTP response. All business logic (duplicate check, password hashing, email sending) lives in the service.</p>
+    </div>
+
+    <h3>Middleware Pattern</h3>
+    <p>Middleware functions form a chain. Each function can process the request, modify it, and decide whether to pass it to the next function. This is how you add cross-cutting concerns (logging, auth, rate limiting) without cluttering your route handlers.</p>
+
+    <div class="example-box">
+      <div class="label">Middleware Chain in Express</div>
+<pre><code><span class="lang-label">JavaScript</span>
+// Each middleware: do something, then call next()
+// If you don't call next(), the chain stops.
+
+// 1. Logging middleware
+function logger(req, res, next) {
+  const start = Date.now();
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+  });
+  next();
+}
+
+// 2. Auth middleware
+function authenticate(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token" });
+
+  try {
+    req.user = jwt.verify(token, SECRET);
+    next();  // Token valid, continue to next middleware
+  } catch {
+    res.status(401).json({ error: "Invalid token" });
+    // No next() call -- chain stops here
+  }
+}
+
+// 3. Rate limiting middleware
+function rateLimit(req, res, next) {
+  if (!limiter.allow(req.ip)) {
+    return res.status(429).json({ error: "Too many requests" });
+  }
+  next();
+}
+
+// Apply middleware in order: logger → rateLimit → auth → handler
+app.use(logger);
+app.use(rateLimit);
+
+app.get("/api/profile", authenticate, (req, res) => {
+  // Only reached if logger, rateLimit, AND authenticate all called next()
+  res.json({ user: req.user });
+});</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Middleware Chain in Go</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "log"
+    "net/http"
+    "time"
+)
+
+// Middleware type: takes a handler, returns a handler
+type Middleware func(http.Handler) http.Handler
+
+// Logging middleware
+func Logger(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        start := time.Now()
+        next.ServeHTTP(w, r)
+        log.Printf("%s %s %v", r.Method, r.URL.Path, time.Since(start))
+    })
+}
+
+// Auth middleware
+func Auth(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        token := r.Header.Get("Authorization")
+        if token == "" {
+            http.Error(w, "Unauthorized", 401)
+            return // Chain stops -- next is NOT called
+        }
+        // Validate token, set user in context...
+        next.ServeHTTP(w, r)
+    })
+}
+
+// Chain middleware: Logger → Auth → Handler
+func Chain(handler http.Handler, middlewares ...Middleware) http.Handler {
+    for i := len(middlewares) - 1; i >= 0; i-- {
+        handler = middlewares[i](handler)
+    }
+    return handler
+}
+
+func main() {
+    api := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("Hello, authenticated user!"))
+    })
+
+    http.Handle("/api/profile", Chain(api, Logger, Auth))
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+    </div>
+
+    <h3>Circuit Breaker</h3>
+    <p>When a downstream service (database, external API, microservice) goes down, every request to it will hang or fail. Without a circuit breaker, your entire service grinds to a halt waiting for timeouts.</p>
+
+    <div class="formula-box">
+      <strong>Circuit Breaker State Machine:</strong><br><br>
+<pre><code>                    N failures
+   ┌──────────┐    exceeded     ┌──────────┐
+   │  CLOSED  │────────────────▶│   OPEN   │
+   │ (normal) │                 │(fail fast)│
+   └──────────┘                 └─────┬────┘
+        ▲                             │
+        │  Success                    │ After timeout
+        │                             ▼
+        │                       ┌───────────┐
+        └───────────────────────│ HALF-OPEN │
+              Success           │ (test one) │
+                                └───────────┘
+                                      │
+                                      │ Failure
+                                      ▼
+                                ┌──────────┐
+                                │   OPEN   │
+                                │(fail fast)│
+                                └──────────┘
+
+CLOSED:    Normal operation. Requests pass through. Failures are counted.
+OPEN:      All requests fail immediately (no network call). Fast failure.
+HALF-OPEN: One test request is allowed through. Success → CLOSED. Failure → OPEN.</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Circuit Breaker Implementation</div>
+<pre><code><span class="lang-label">JavaScript</span>
+class CircuitBreaker {
+  constructor(fn, options = {}) {
+    this.fn = fn;
+    this.failureThreshold = options.failureThreshold || 5;
+    this.resetTimeout = options.resetTimeout || 30000; // 30 seconds
+    this.state = "CLOSED";
+    this.failureCount = 0;
+    this.lastFailureTime = null;
+  }
+
+  async call(...args) {
+    if (this.state === "OPEN") {
+      // Check if enough time has passed to try again
+      if (Date.now() - this.lastFailureTime > this.resetTimeout) {
+        this.state = "HALF-OPEN";
+      } else {
+        throw new Error("Circuit is OPEN -- failing fast");
+      }
+    }
+
+    try {
+      const result = await this.fn(...args);
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+
+  onSuccess() {
+    this.failureCount = 0;
+    this.state = "CLOSED";
+  }
+
+  onFailure() {
+    this.failureCount++;
+    this.lastFailureTime = Date.now();
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = "OPEN";
+    }
+  }
+}
+
+// Usage
+const paymentBreaker = new CircuitBreaker(
+  (orderId) => fetch(`https://payments.api/charge/${orderId}`),
+  { failureThreshold: 3, resetTimeout: 10000 }
+);
+
+app.post("/checkout", async (req, res) => {
+  try {
+    const result = await paymentBreaker.call(req.body.orderId);
+    res.json(result);
+  } catch (err) {
+    if (err.message.includes("OPEN")) {
+      res.status(503).json({ error: "Payment service unavailable, try later" });
+    } else {
+      res.status(500).json({ error: "Payment failed" });
+    }
+  }
+});</code></pre>
+    </div>
+
+    <h3>Retry with Exponential Backoff</h3>
+    <p>When a request fails, do not retry immediately. Wait a little, then try again. If it fails again, wait longer. This prevents a thundering herd of retries from overwhelming a recovering service.</p>
+
+    <div class="formula-box">
+      <strong>Exponential Backoff Formula:</strong><br><br>
+      <code>delay = baseDelay * 2^attempt + randomJitter</code><br><br>
+      <strong>Example with baseDelay = 1 second:</strong><br>
+      Attempt 1: 1s + jitter<br>
+      Attempt 2: 2s + jitter<br>
+      Attempt 3: 4s + jitter<br>
+      Attempt 4: 8s + jitter<br>
+      Attempt 5: 16s + jitter (give up after this)<br><br>
+      <strong>Why jitter?</strong> Without it, if 1000 clients all fail at the same time, they all retry at 1s, then 2s, then 4s -- creating synchronized bursts. Random jitter spreads retries out over time.
+    </div>
+
+    <div class="example-box">
+      <div class="label">Retry with Exponential Backoff</div>
+<pre><code><span class="lang-label">JavaScript</span>
+async function retryWithBackoff(fn, options = {}) {
+  const maxRetries = options.maxRetries || 5;
+  const baseDelay = options.baseDelay || 1000;
+  const maxDelay = options.maxDelay || 30000;
+
+  for (let attempt = 0; attempt &lt; maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (attempt === maxRetries - 1) throw error;  // Last attempt, give up
+
+      const delay = Math.min(baseDelay * Math.pow(2, attempt), maxDelay);
+      const jitter = Math.random() * delay * 0.1;  // 10% jitter
+      const totalDelay = delay + jitter;
+
+      console.log(`Attempt ${attempt + 1} failed. Retrying in ${totalDelay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, totalDelay));
+    }
+  }
+}
+
+// Usage
+const data = await retryWithBackoff(
+  () => fetch("https://api.example.com/data").then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }),
+  { maxRetries: 3, baseDelay: 1000 }
+);</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Retry with Exponential Backoff in Go</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "fmt"
+    "math"
+    "math/rand"
+    "time"
+)
+
+func RetryWithBackoff(fn func() error, maxRetries int, baseDelay time.Duration) error {
+    for attempt := 0; attempt &lt; maxRetries; attempt++ {
+        err := fn()
+        if err == nil {
+            return nil
+        }
+
+        if attempt == maxRetries-1 {
+            return fmt.Errorf("all %d attempts failed: %w", maxRetries, err)
+        }
+
+        delay := time.Duration(float64(baseDelay) * math.Pow(2, float64(attempt)))
+        jitter := time.Duration(rand.Float64() * float64(delay) * 0.1)
+        totalDelay := delay + jitter
+
+        fmt.Printf("Attempt %d failed. Retrying in %v...\n", attempt+1, totalDelay)
+        time.Sleep(totalDelay)
+    }
+    return nil
+}</code></pre>
+    </div>
+
+    <h3>Event-Driven Architecture</h3>
+    <p>Instead of services calling each other directly, they emit events. Other services listen for events they care about. This decouples services -- the emitter does not know or care who is listening.</p>
+
+    <div class="example-box">
+      <div class="label">Event-Driven with Node.js EventEmitter</div>
+<pre><code><span class="lang-label">JavaScript</span>
+const EventEmitter = require("events");
+const bus = new EventEmitter();
+
+// Service A: User signup (emits an event, doesn't know who listens)
+async function signup(name, email, password) {
+  const user = await db.createUser({ name, email, password });
+  bus.emit("user.created", { userId: user.id, email, name });
+  return user;
+}
+
+// Service B: Email service (listens for user.created)
+bus.on("user.created", async ({ email, name }) => {
+  await sendWelcomeEmail(email, name);
+  console.log(`Welcome email sent to ${email}`);
+});
+
+// Service C: Analytics (also listens for user.created)
+bus.on("user.created", async ({ userId }) => {
+  await analytics.track("signup", { userId });
+});
+
+// Service D: Audit log (listens for everything)
+bus.on("user.created", async (data) => {
+  await auditLog.write("user.created", data);
+});
+
+// Adding a new listener requires ZERO changes to the signup function.
+// That's the power of event-driven architecture.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">When to Use Event-Driven Architecture</div>
+      <ul>
+        <li><strong>Decoupled microservices:</strong> Services communicate through events, not direct HTTP calls</li>
+        <li><strong>Audit logs:</strong> Record every significant action without cluttering business logic</li>
+        <li><strong>Notifications:</strong> Email, SMS, push -- triggered by events, not inline code</li>
+        <li><strong>Eventual consistency:</strong> When immediate consistency is not required (e.g., search index updates)</li>
+      </ul>
+      <p>For cross-process events, use a message broker (Redis Pub/Sub, RabbitMQ, Kafka) instead of in-process EventEmitter.</p>
+    </div>
+
+    <h3>Graceful Shutdown</h3>
+    <p>When your server receives a shutdown signal (deploy, scale-down, crash recovery), it should not just die. It should stop accepting new requests, wait for in-flight requests to finish, close database connections, and then exit cleanly.</p>
+
+    <div class="example-box">
+      <div class="label">Graceful Shutdown in Node.js</div>
+<pre><code><span class="lang-label">JavaScript</span>
+const http = require("http");
+
+const server = http.createServer(app);
+const connections = new Set();
+
+server.on("connection", (conn) => {
+  connections.add(conn);
+  conn.on("close", () => connections.delete(conn));
+});
+
+function gracefulShutdown(signal) {
+  console.log(`\n${signal} received. Starting graceful shutdown...`);
+
+  // Step 1: Stop accepting new connections
+  server.close(() => {
+    console.log("All connections closed. Exiting.");
+    process.exit(0);
+  });
+
+  // Step 2: Close idle keep-alive connections
+  for (const conn of connections) {
+    conn.end();
+  }
+
+  // Step 3: Force exit after 30 seconds if shutdown hangs
+  setTimeout(() => {
+    console.error("Forced shutdown after timeout.");
+    process.exit(1);
+  }, 30000);
+}
+
+// Catch termination signals
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
+server.listen(3000, () => console.log("Server on :3000"));</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Graceful Shutdown in Go</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "context"
+    "fmt"
+    "net/http"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
+)
+
+func main() {
+    mux := http.NewServeMux()
+    mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        time.Sleep(2 * time.Second) // Simulate work
+        w.Write([]byte("Hello!"))
+    })
+
+    server := &amp;http.Server{Addr: ":8080", Handler: mux}
+
+    // Start server in a goroutine
+    go func() {
+        fmt.Println("Server listening on :8080")
+        if err := server.ListenAndServe(); err != http.ErrServerClosed {
+            fmt.Printf("Server error: %v\n", err)
+        }
+    }()
+
+    // Wait for shutdown signal
+    quit := make(chan os.Signal, 1)
+    signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+    sig := &lt;-quit
+    fmt.Printf("\n%v received. Shutting down gracefully...\n", sig)
+
+    // Give in-flight requests 30 seconds to complete
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+    defer cancel()
+
+    if err := server.Shutdown(ctx); err != nil {
+        fmt.Printf("Forced shutdown: %v\n", err)
+    }
+
+    fmt.Println("Server exited cleanly.")
+}</code></pre>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Why Graceful Shutdown Matters in Production</div>
+      <p>Without graceful shutdown, deploying a new version kills in-flight requests. Users see errors. Database transactions are left incomplete. WebSocket connections drop with no explanation. Kubernetes sends SIGTERM before killing a pod -- your app must handle it.</p>
+    </div>
+
+    <h3>Health Check &amp; Readiness Endpoints</h3>
+    <p>Load balancers and orchestrators (Kubernetes) need to know: Is this server alive? Can it handle traffic? These two questions have different answers.</p>
+
+    <div class="example-box">
+      <div class="label">Health and Readiness in Node.js</div>
+<pre><code><span class="lang-label">JavaScript</span>
+let isReady = false;
+
+// /health -- Is the process alive? (liveness probe)
+// If this fails, Kubernetes restarts the pod.
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "alive" });
+});
+
+// /ready -- Can it serve traffic? (readiness probe)
+// If this fails, Kubernetes stops sending traffic to this pod.
+app.get("/ready", async (req, res) => {
+  try {
+    // Check database connection
+    await pool.query("SELECT 1");
+
+    // Check Redis connection
+    await redis.ping();
+
+    // Check any other critical dependencies
+    res.status(200).json({
+      status: "ready",
+      checks: {
+        database: "connected",
+        redis: "connected",
+      },
+    });
+  } catch (err) {
+    res.status(503).json({
+      status: "not ready",
+      error: err.message,
+    });
+  }
+});
+
+// Mark as ready after initialization is complete
+async function startServer() {
+  await pool.connect();
+  await redis.connect();
+  isReady = true;
+  console.log("Server is ready to accept traffic");
+}</code></pre>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Health and Readiness in Go</div>
+<pre><code><span class="lang-label">Go</span>
+package main
+
+import (
+    "encoding/json"
+    "net/http"
+)
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]string{
+        "status": "alive",
+    })
+}
+
+func readyHandler(db *sql.DB, redisClient *redis.Client) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+
+        // Check database
+        if err := db.Ping(); err != nil {
+            w.WriteHeader(http.StatusServiceUnavailable)
+            json.NewEncoder(w).Encode(map[string]string{
+                "status": "not ready",
+                "error":  "database: " + err.Error(),
+            })
+            return
+        }
+
+        // Check Redis
+        if err := redisClient.Ping(r.Context()).Err(); err != nil {
+            w.WriteHeader(http.StatusServiceUnavailable)
+            json.NewEncoder(w).Encode(map[string]string{
+                "status": "not ready",
+                "error":  "redis: " + err.Error(),
+            })
+            return
+        }
+
+        json.NewEncoder(w).Encode(map[string]string{
+            "status": "ready",
+        })
+    }
+}
+
+func main() {
+    http.HandleFunc("/health", healthHandler)
+    http.HandleFunc("/ready", readyHandler(db, redisClient))
+    http.ListenAndServe(":8080", nil)
+}</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Liveness vs Readiness -- The Kubernetes Connection</div>
+      <ul>
+        <li><strong>Liveness probe (<code>/health</code>):</strong> "Is the process alive?" If this fails repeatedly, Kubernetes <strong>restarts</strong> the pod. Keep this check lightweight -- just return 200.</li>
+        <li><strong>Readiness probe (<code>/ready</code>):</strong> "Can it handle traffic?" If this fails, Kubernetes <strong>removes the pod from the service load balancer</strong> but does NOT restart it. The pod stays alive, waiting for dependencies to recover.</li>
+        <li><strong>Example scenario:</strong> Your app starts, but the database is still booting. Liveness passes (process is alive), readiness fails (database not connected). Kubernetes waits, no traffic is sent. Once the database connects, readiness passes, traffic flows.</li>
+      </ul>
+    </div>
+  </section>
+
 
 </div><!-- end .container -->
 

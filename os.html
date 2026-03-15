@@ -63,6 +63,7 @@
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
         <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
         <a href="javascript.html">JavaScript Deep Dive</a>
         <a href="typescript.html">TypeScript</a>
         <a href="nodejs.html">Node.js Internals</a>
@@ -120,8 +121,12 @@
         <a href="#io">11. I/O &amp; Devices</a>
         <a href="#filesystems">12. File Systems</a>
         <a href="#security">13. OS Security Basics</a>
-        <a href="#linux-commands">14. Essential Linux Commands</a>
-        <a href="#quiz">15. Practice Quiz</a>
+        <a href="#context-switch">14. Context Switching</a>
+        <a href="#ipc">15. Inter-Process Communication (IPC)</a>
+        <a href="#program-execution">16. How Programs Actually Run</a>
+        <a href="#containers-os">17. Containers &amp; Virtualization</a>
+        <a href="#linux-commands">18. Essential Linux Commands</a>
+        <a href="#quiz">19. Practice Quiz</a>
       </div>
     </aside>
 
@@ -143,8 +148,12 @@
         <a href="#io">11. I/O &amp; Devices</a>
         <a href="#filesystems">12. File Systems</a>
         <a href="#security">13. OS Security Basics</a>
-        <a href="#linux-commands">14. Essential Linux Commands</a>
-        <a href="#quiz">15. Practice Quiz</a>
+        <a href="#context-switch">14. Context Switching</a>
+        <a href="#ipc">15. Inter-Process Communication (IPC)</a>
+        <a href="#program-execution">16. How Programs Actually Run</a>
+        <a href="#containers-os">17. Containers &amp; Virtualization</a>
+        <a href="#linux-commands">18. Essential Linux Commands</a>
+        <a href="#quiz">19. Practice Quiz</a>
       </div>
 
 
@@ -1222,10 +1231,597 @@ chown alice:devs file.txt
 
 
 <!-- ============================================================ -->
-<!--  SECTION 14: ESSENTIAL LINUX COMMANDS                         -->
+<!--  SECTION 14: CONTEXT SWITCHING                                -->
+<!-- ============================================================ -->
+<section id="context-switch">
+  <h2>14. Context Switching</h2>
+
+  <p>We mentioned context switches briefly in section 2. Now let's go deeper. A <strong>context switch</strong> is when the OS stops running one process (or thread) on a CPU core and starts running a different one. This is the fundamental mechanism that makes multitasking work.</p>
+
+  <h3>What Actually Happens During a Context Switch</h3>
+
+  <p>When the OS decides to switch from Process A to Process B, here's exactly what happens:</p>
+
+  <div class="memory-diagram">
+Process A running on CPU
+          │
+          ▼
+┌─────────────────────────────────────────────┐
+│ 1. Trap/interrupt fires (timer, syscall)    │
+│    → CPU switches to kernel mode            │
+├─────────────────────────────────────────────┤
+│ 2. Save Process A's state:                  │
+│    • General-purpose registers (rax..r15)   │
+│    • Program counter (RIP) -- where A was   │
+│    • Stack pointer (RSP)                    │
+│    • Flags register (RFLAGS)                │
+│    • Floating-point/SIMD registers          │
+│    → All saved into A's PCB                 │
+├─────────────────────────────────────────────┤
+│ 3. Save A's memory mapping info             │
+│    • Page table base register (CR3 on x86)  │
+├─────────────────────────────────────────────┤
+│ 4. Switch kernel stack to B's kernel stack  │
+├─────────────────────────────────────────────┤
+│ 5. Load Process B's state from B's PCB:     │
+│    • Restore all registers                  │
+│    • Restore program counter                │
+│    • Restore stack pointer                  │
+├─────────────────────────────────────────────┤
+│ 6. Load B's page table (write to CR3)       │
+│    → TLB is flushed (expensive!)            │
+├─────────────────────────────────────────────┤
+│ 7. Return from trap                         │
+│    → CPU switches to user mode              │
+│    → B resumes exactly where it left off    │
+└─────────────────────────────────────────────┘
+          │
+          ▼
+Process B running on CPU</div>
+
+  <h3>The Cost of Context Switching</h3>
+
+  <p>A context switch typically takes <strong>1-10 microseconds</strong> of direct CPU time. That sounds tiny, but there are hidden costs:</p>
+
+  <ul>
+    <li><strong>TLB flush</strong> -- this is the expensive part. When you load a new page table, the Translation Lookaside Buffer (TLB) entries from the old process are invalid. The new process starts with a cold TLB, meaning every memory access causes a page table walk until the TLB warms up again. This can cost tens of microseconds of indirect slowdown.</li>
+    <li><strong>Cache pollution</strong> -- Process A's data was in L1/L2/L3 cache. Process B's data isn't. B will suffer cache misses until its working set is loaded.</li>
+    <li><strong>Pipeline flush</strong> -- the CPU's instruction pipeline and branch predictor state are useless for the new process.</li>
+  </ul>
+
+  <div class="warning-box">
+    <div class="label">Why Too Many Context Switches Kill Performance</div>
+    <p>If the OS is switching thousands of times per second, processes spend more time warming up caches and TLBs than doing actual work. This is called <strong>thrashing</strong>. It's why a system with 500 runnable processes feels sluggish even if the CPU isn't "100% busy" -- the useful work per time slice drops dramatically.</p>
+  </div>
+
+  <h3>Voluntary vs Involuntary Context Switches</h3>
+
+  <ul>
+    <li><strong>Voluntary</strong> -- the process gives up the CPU willingly. It made a blocking syscall (read from disk, sleep, wait for a lock). The process can't continue, so it tells the OS "I'm done for now."</li>
+    <li><strong>Involuntary</strong> -- the OS forces the process off the CPU. Usually because the timer interrupt fired and the process used up its time slice (quantum). This is preemption.</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="label">Diagnosing Context Switches</div>
+    <p>High involuntary context switches = too many runnable processes fighting for CPU. High voluntary context switches = process is doing lots of I/O (which might be fine, or might indicate excessive blocking).</p>
+  </div>
+
+  <h3>How to Measure Context Switches</h3>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># System-wide context switches per second</span>
+vmstat 1
+<span class="comment"># Look at the 'cs' column (context switches)</span>
+
+<span class="comment"># Per-process context switches</span>
+grep ctxt /proc/PID/status
+<span class="comment"># voluntary_ctxt_switches:     150</span>
+<span class="comment"># nonvoluntary_ctxt_switches:  30</span>
+
+<span class="comment"># Watch context switches live with pidstat</span>
+pidstat -w 1
+<span class="comment"># Shows cswch/s (voluntary) and nvcswch/s (involuntary) per process</span>
+
+<span class="comment"># Trace context switches with perf</span>
+sudo perf stat -e context-switches ./my_program</code></pre>
+
+  <div class="example-box">
+    <div class="label">Reading vmstat Output</div>
+<pre><code><span class="lang-label">Terminal</span>
+$ vmstat 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 2  0      0 3201024  89456 1123456  0    0     4    12  156  320 15  5 78  2  0
+ 1  0      0 3200896  89456 1123460  0    0     0     0  203  450 22  8 68  2  0</code></pre>
+    <p>The <code>cs</code> column shows 320 and 450 context switches per second. The <code>r</code> column shows runnable processes (2 and 1). If <code>r</code> is consistently much higher than your CPU count and <code>cs</code> is in the thousands, you likely have too many processes competing.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 15: INTER-PROCESS COMMUNICATION (IPC)                -->
+<!-- ============================================================ -->
+<section id="ipc">
+  <h2>15. Inter-Process Communication (IPC)</h2>
+
+  <p>Every process has its own isolated address space -- process A cannot read or write process B's memory. This is great for security and stability, but programs often <em>need</em> to talk to each other. That's what IPC is for.</p>
+
+  <h3>Pipes (Unnamed)</h3>
+
+  <p>The simplest IPC mechanism. When you write <code>ls | grep foo</code> in your shell, the shell creates a pipe between <code>ls</code> and <code>grep</code>.</p>
+
+  <ul>
+    <li><strong>One-directional</strong> -- data flows one way (writer → reader)</li>
+    <li><strong>Parent-child only</strong> -- the pipe exists as a file descriptor inherited by fork()</li>
+    <li><strong>Buffered</strong> -- the kernel provides a small buffer (typically 64KB on Linux)</li>
+    <li>If the buffer is full, the writer blocks. If the buffer is empty, the reader blocks.</li>
+  </ul>
+
+<pre><code><span class="lang-label">C</span>
+<span class="keyword">#include</span> &lt;unistd.h&gt;
+
+<span class="builtin">int</span> fd[<span class="number">2</span>];
+pipe(fd);  <span class="comment">// fd[0] = read end, fd[1] = write end</span>
+
+<span class="keyword">if</span> (fork() == <span class="number">0</span>) {
+    <span class="comment">// Child: read from pipe</span>
+    close(fd[<span class="number">1</span>]);
+    <span class="builtin">char</span> buf[<span class="number">128</span>];
+    read(fd[<span class="number">0</span>], buf, <span class="keyword">sizeof</span>(buf));
+    printf(<span class="string">"Child got: %s\n"</span>, buf);
+} <span class="keyword">else</span> {
+    <span class="comment">// Parent: write to pipe</span>
+    close(fd[<span class="number">0</span>]);
+    write(fd[<span class="number">1</span>], <span class="string">"hello from parent"</span>, <span class="number">17</span>);
+    close(fd[<span class="number">1</span>]);
+    wait(NULL);
+}</code></pre>
+
+  <h3>Named Pipes (FIFOs)</h3>
+
+  <p>Like unnamed pipes but they exist as files on the filesystem, so <em>any</em> two processes can use them (not just parent-child).</p>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Create a named pipe</span>
+mkfifo /tmp/my_pipe
+
+<span class="comment"># Terminal 1: read from it (blocks until someone writes)</span>
+cat /tmp/my_pipe
+
+<span class="comment"># Terminal 2: write to it</span>
+echo "hello" > /tmp/my_pipe</code></pre>
+
+  <h3>Shared Memory</h3>
+
+  <p>The <strong>fastest</strong> IPC method. Two processes map the same physical memory into their address spaces. No copying, no kernel involvement after setup -- just read and write memory directly.</p>
+
+  <ul>
+    <li>POSIX API: <code>shmget()</code> / <code>shmat()</code> (older) or <code>mmap()</code> with <code>MAP_SHARED</code> (modern)</li>
+    <li><strong>Needs synchronization</strong> -- since both processes access the same memory, you need semaphores or mutexes to avoid races</li>
+    <li>Used when performance matters: databases, game engines, scientific computing</li>
+  </ul>
+
+<pre><code><span class="lang-label">C</span>
+<span class="comment">// Process A: create shared memory</span>
+<span class="builtin">int</span> fd = shm_open(<span class="string">"/my_shm"</span>, O_CREAT | O_RDWR, <span class="number">0666</span>);
+ftruncate(fd, <span class="number">4096</span>);
+<span class="builtin">char</span>* ptr = mmap(NULL, <span class="number">4096</span>, PROT_READ | PROT_WRITE, MAP_SHARED, fd, <span class="number">0</span>);
+sprintf(ptr, <span class="string">"shared data here"</span>);
+
+<span class="comment">// Process B: open the same shared memory</span>
+<span class="builtin">int</span> fd = shm_open(<span class="string">"/my_shm"</span>, O_RDONLY, <span class="number">0</span>);
+<span class="builtin">char</span>* ptr = mmap(NULL, <span class="number">4096</span>, PROT_READ, MAP_SHARED, fd, <span class="number">0</span>);
+printf(<span class="string">"%s\n"</span>, ptr);  <span class="comment">// prints "shared data here"</span></code></pre>
+
+  <h3>Message Queues</h3>
+
+  <p>Structured message passing. A process sends a message to a queue, another process reads from it. Messages have types, so you can selectively receive.</p>
+
+  <ul>
+    <li>Decoupled -- sender and receiver don't need to be running at the same time</li>
+    <li>POSIX: <code>mq_open()</code>, <code>mq_send()</code>, <code>mq_receive()</code></li>
+    <li>Used for task queues, job dispatching</li>
+  </ul>
+
+  <h3>Signals</h3>
+
+  <p>Asynchronous notifications sent to a process. Like software interrupts.</p>
+
+  <ul>
+    <li><code>SIGTERM</code> (15) -- "please terminate gracefully" (the default <code>kill</code> signal)</li>
+    <li><code>SIGKILL</code> (9) -- "die immediately, no cleanup" (cannot be caught or ignored)</li>
+    <li><code>SIGINT</code> (2) -- sent when you press Ctrl+C</li>
+    <li><code>SIGUSR1</code> / <code>SIGUSR2</code> -- user-defined signals for custom behaviour</li>
+    <li><code>SIGSEGV</code> (11) -- segmentation fault (invalid memory access)</li>
+    <li><code>SIGCHLD</code> -- sent to parent when a child process exits</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Send SIGTERM to process 1234</span>
+kill 1234
+
+<span class="comment"># Send SIGKILL (force kill)</span>
+kill -9 1234
+
+<span class="comment"># Send SIGUSR1</span>
+kill -USR1 1234
+
+<span class="comment"># List all signals</span>
+kill -l</code></pre>
+
+  <h3>Unix Domain Sockets</h3>
+
+  <p>Like TCP/IP sockets but for local communication only. No network overhead, no TCP handshake -- just fast, bidirectional, byte-stream or datagram communication between processes on the same machine.</p>
+
+  <ul>
+    <li>Used by Docker (communicates via <code>/var/run/docker.sock</code>)</li>
+    <li>Used by PostgreSQL, MySQL for local connections</li>
+    <li>Used by X11/Wayland for display communication</li>
+    <li>About 2x faster than TCP loopback (localhost)</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># See Unix domain sockets in use</span>
+ss -xl
+<span class="comment"># Or check what Docker uses</span>
+ls -la /var/run/docker.sock</code></pre>
+
+  <h3>Comparing IPC Methods</h3>
+
+  <div class="memory-diagram">
+Speed vs Complexity of IPC Methods
+
+Fast ▲
+     │  ★ Shared Memory
+     │        (fastest, but needs sync)
+     │
+     │       ★ Unix Domain Sockets
+     │           (fast, bidirectional)
+     │
+     │     ★ Pipes / FIFOs
+     │         (simple, one-way)
+     │
+     │        ★ Message Queues
+     │            (structured, decoupled)
+     │
+     │  ★ Signals
+Slow │      (tiny data, async only)
+     └───────────────────────────────────► Complex
+      Simple                          Complex</div>
+
+  <div class="formula-box">
+    <div class="label">IPC Methods Summary</div>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+      <tr style="border-bottom: 2px solid var(--border);">
+        <th style="text-align: left; padding: 0.5rem;">Method</th>
+        <th style="text-align: left; padding: 0.5rem;">Direction</th>
+        <th style="text-align: left; padding: 0.5rem;">Speed</th>
+        <th style="text-align: left; padding: 0.5rem;">Use Case</th>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 0.5rem;">Pipe</td>
+        <td style="padding: 0.5rem;">One-way</td>
+        <td style="padding: 0.5rem;">Fast</td>
+        <td style="padding: 0.5rem;">Shell pipelines, parent-child</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 0.5rem;">Named pipe (FIFO)</td>
+        <td style="padding: 0.5rem;">One-way</td>
+        <td style="padding: 0.5rem;">Fast</td>
+        <td style="padding: 0.5rem;">Unrelated processes, simple streaming</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 0.5rem;">Shared memory</td>
+        <td style="padding: 0.5rem;">Both</td>
+        <td style="padding: 0.5rem;">Fastest</td>
+        <td style="padding: 0.5rem;">High-throughput data sharing, databases</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 0.5rem;">Message queue</td>
+        <td style="padding: 0.5rem;">Both</td>
+        <td style="padding: 0.5rem;">Medium</td>
+        <td style="padding: 0.5rem;">Task queues, structured messages</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 0.5rem;">Signal</td>
+        <td style="padding: 0.5rem;">One-way</td>
+        <td style="padding: 0.5rem;">Fast</td>
+        <td style="padding: 0.5rem;">Async notifications (kill, Ctrl+C)</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem;">Unix domain socket</td>
+        <td style="padding: 0.5rem;">Both</td>
+        <td style="padding: 0.5rem;">Fast</td>
+        <td style="padding: 0.5rem;">Docker, databases, local services</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 16: HOW PROGRAMS ACTUALLY RUN                        -->
+<!-- ============================================================ -->
+<section id="program-execution">
+  <h2>16. How Programs Actually Run</h2>
+
+  <p>You type <code>./myprogram</code> and hit Enter. What actually happens? Most CS students can't explain this clearly. Let's fix that.</p>
+
+  <h3>The Full Sequence</h3>
+
+  <div class="memory-diagram">
+You type: ./myprogram
+          │
+          ▼
+┌─────────────────────────────────────────────┐
+│ 1. Shell calls fork()                       │
+│    → Creates a child process (copy of shell)│
+├─────────────────────────────────────────────┤
+│ 2. Child calls execve("./myprogram", ...)   │
+│    → Replaces itself with the new program   │
+│    → Old shell code is gone from child      │
+├─────────────────────────────────────────────┤
+│ 3. Kernel loads the ELF binary              │
+│    → Reads ELF header to find segments      │
+│    → Maps .text (code) into memory          │
+│    → Maps .data (initialized globals)       │
+│    → Allocates .bss (zero-initialized data) │
+│    → Sets up stack                          │
+├─────────────────────────────────────────────┤
+│ 4. Dynamic linker runs (ld-linux.so)        │
+│    → Finds shared libraries (.so files)     │
+│    → Maps them into process address space   │
+│    → Resolves symbols (function addresses)  │
+├─────────────────────────────────────────────┤
+│ 5. Jump to _start (C runtime entry point)   │
+│    → _start calls __libc_start_main()       │
+│    → Sets up argc, argv, envp              │
+│    → Calls your main() function             │
+├─────────────────────────────────────────────┤
+│ 6. main() runs your code                    │
+│    → When main() returns, exit() is called  │
+│    → Kernel cleans up process resources     │
+└─────────────────────────────────────────────┘</div>
+
+  <h3>The ELF Format</h3>
+
+  <p><strong>ELF</strong> (Executable and Linkable Format) is the binary format used on Linux. Every compiled C/C++/Rust/Go program on Linux is an ELF file. Here are the key sections:</p>
+
+  <ul>
+    <li><code>.text</code> -- your compiled machine code (read-only, executable)</li>
+    <li><code>.data</code> -- initialized global/static variables (e.g., <code>int x = 42;</code>)</li>
+    <li><code>.bss</code> -- uninitialized global/static variables (e.g., <code>int y;</code>) -- zeroed at startup, doesn't take space in the file</li>
+    <li><code>.rodata</code> -- read-only data (string literals like <code>"hello"</code>)</li>
+    <li><code>.plt</code> / <code>.got</code> -- used for dynamic linking (jumping to shared library functions)</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Inspect ELF headers</span>
+readelf -h ./myprogram
+
+<span class="comment"># See all sections</span>
+readelf -S ./myprogram
+
+<span class="comment"># See program headers (segments loaded into memory)</span>
+readelf -l ./myprogram
+
+<span class="comment"># Quick check if something is an ELF file</span>
+file ./myprogram
+<span class="comment"># Output: ELF 64-bit LSB pie executable, x86-64, ...</span></code></pre>
+
+  <h3>Static vs Dynamic Linking</h3>
+
+  <ul>
+    <li><strong>Static linking</strong> -- all library code is copied into your executable at compile time. Bigger binary, but no external dependencies. The binary runs anywhere (same architecture).</li>
+    <li><strong>Dynamic linking</strong> -- your binary just records which shared libraries it needs. At runtime, the dynamic linker (<code>ld-linux.so</code>) loads them. Smaller binary, shared memory for libraries, but the .so files must exist on the system.</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Compile statically (everything baked in)</span>
+gcc -static -o myprogram myprogram.c
+ls -la myprogram   <span class="comment"># ~1-2 MB (includes all of libc)</span>
+
+<span class="comment"># Compile dynamically (default)</span>
+gcc -o myprogram myprogram.c
+ls -la myprogram   <span class="comment"># ~16 KB (just your code + references)</span>
+
+<span class="comment"># See what shared libraries a dynamic binary needs</span>
+ldd ./myprogram
+<span class="comment">#   linux-vdso.so.1 (0x00007ffd3a1f2000)</span>
+<span class="comment">#   libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f2a1c000000)</span>
+<span class="comment">#   /lib64/ld-linux-x86-64.so.2 (0x00007f2a1c400000)</span></code></pre>
+
+  <h3>Seeing the Memory Layout: /proc/PID/maps</h3>
+
+  <p>Every running process has a file at <code>/proc/PID/maps</code> that shows its complete virtual memory layout. This is the actual address space we talked about in section 9, but for a real process.</p>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># See the memory map of the current shell</span>
+cat /proc/self/maps</code></pre>
+
+  <p>Here's what real output looks like (simplified):</p>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Address range          Perms  Offset  Dev   Inode  Pathname</span>
+55a1d7a00000-55a1d7a02000 r--p  00000000 08:01 12345  /usr/bin/myprogram   <span class="comment"># ELF header + read-only data</span>
+55a1d7a02000-55a1d7a04000 r-xp  00002000 08:01 12345  /usr/bin/myprogram   <span class="comment"># .text (executable code)</span>
+55a1d7a04000-55a1d7a05000 r--p  00004000 08:01 12345  /usr/bin/myprogram   <span class="comment"># .rodata (string literals)</span>
+55a1d7a05000-55a1d7a06000 rw-p  00005000 08:01 12345  /usr/bin/myprogram   <span class="comment"># .data + .bss (globals)</span>
+55a1d8200000-55a1d8221000 rw-p  00000000 00:00 0      [heap]               <span class="comment"># heap (malloc'd memory)</span>
+7f2a1c000000-7f2a1c1b0000 r-xp  00000000 08:01 67890  /lib/x86_64-linux-gnu/libc.so.6  <span class="comment"># libc code</span>
+7f2a1c1b0000-7f2a1c1b4000 rw-p  001b0000 08:01 67890  /lib/x86_64-linux-gnu/libc.so.6  <span class="comment"># libc data</span>
+7ffd3a1d0000-7ffd3a1f1000 rw-p  00000000 00:00 0      [stack]              <span class="comment"># the stack</span>
+7ffd3a1f2000-7ffd3a1f4000 r--p  00000000 00:00 0      [vdso]               <span class="comment"># virtual dynamic shared object</span></code></pre>
+
+  <div class="tip-box">
+    <div class="label">Reading the Permissions</div>
+    <p><code>r</code> = readable, <code>w</code> = writable, <code>x</code> = executable, <code>p</code> = private (copy-on-write), <code>s</code> = shared. Notice that <code>.text</code> is <code>r-x</code> (read + execute, but NOT writable) -- this is the NX bit in action. The stack is <code>rw-</code> (read + write, but NOT executable) -- preventing code injection.</p>
+  </div>
+
+  <div class="example-box">
+    <div class="label">Try It Yourself</div>
+    <p>Run <code>cat /proc/self/maps</code> on your Linux machine (or in WSL). You'll see the memory layout of the <code>cat</code> process itself. Find the <code>[heap]</code>, <code>[stack]</code>, and <code>libc</code> entries. Compare the addresses to the memory layout diagrams from section 9.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 17: CONTAINERS & VIRTUALIZATION (OS PERSPECTIVE)     -->
+<!-- ============================================================ -->
+<section id="containers-os">
+  <h2>17. Containers &amp; Virtualization (OS Perspective)</h2>
+
+  <p>You've probably used Docker or heard of VMs. But how do they actually work at the OS level? This section explains the kernel mechanisms that make containers and VMs possible.</p>
+
+  <h3>How Virtual Machines Work</h3>
+
+  <p>A VM runs a <strong>complete guest operating system</strong> on top of emulated hardware. A piece of software called a <strong>hypervisor</strong> creates the illusion of real hardware for each guest OS.</p>
+
+  <ul>
+    <li><strong>Type 1 (bare-metal)</strong> -- the hypervisor runs directly on hardware, no host OS. Examples: VMware ESXi, KVM (Linux's built-in hypervisor), Microsoft Hyper-V, Xen. Used in datacentres.</li>
+    <li><strong>Type 2 (hosted)</strong> -- the hypervisor runs as a program on top of a regular OS. Examples: VirtualBox, VMware Workstation. Used on developer laptops.</li>
+  </ul>
+
+  <p>Each VM has its own kernel, its own init system, its own everything. This provides strong isolation but has significant overhead: each VM might use 512MB-2GB just for the guest OS.</p>
+
+  <h3>How Containers Work: NOT VMs</h3>
+
+  <p>Containers are fundamentally different from VMs. A container does <strong>not</strong> run its own kernel. It shares the host's kernel but gets its own isolated view of the system using two Linux kernel features: <strong>namespaces</strong> and <strong>cgroups</strong>.</p>
+
+  <div class="memory-diagram">
+┌───────────────────────────────────────────────────────────────────┐
+│                   VIRTUAL MACHINES                                │
+│                                                                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
+│  │    App A     │  │    App B     │  │    App C     │              │
+│  ├─────────────┤  ├─────────────┤  ├─────────────┤              │
+│  │   Bins/Libs  │  │   Bins/Libs  │  │   Bins/Libs  │              │
+│  ├─────────────┤  ├─────────────┤  ├─────────────┤              │
+│  │  Guest OS    │  │  Guest OS    │  │  Guest OS    │  ← Each has │
+│  │  (full       │  │  (full       │  │  (full       │    its own  │
+│  │   kernel)    │  │   kernel)    │  │   kernel)    │    kernel!  │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘              │
+│         └────────────────┼────────────────┘                      │
+│                    ┌─────┴──────┐                                 │
+│                    │ Hypervisor │  ← Emulates hardware            │
+│                    ├────────────┤                                 │
+│                    │  Host OS   │  (or bare metal for Type 1)     │
+│                    ├────────────┤                                 │
+│                    │  Hardware  │                                 │
+│                    └────────────┘                                 │
+└───────────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────┐
+│                      CONTAINERS                                   │
+│                                                                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
+│  │    App A     │  │    App B     │  │    App C     │              │
+│  ├─────────────┤  ├─────────────┤  ├─────────────┤              │
+│  │   Bins/Libs  │  │   Bins/Libs  │  │   Bins/Libs  │              │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘              │
+│         └────────────────┼────────────────┘                      │
+│              ┌───────────┴───────────┐                            │
+│              │   Container Runtime   │  ← Docker, containerd      │
+│              │  (namespaces + cgroups)│                            │
+│              ├───────────────────────┤                            │
+│              │ Single Shared Kernel  │  ← ONE kernel for all!     │
+│              ├───────────────────────┤                            │
+│              │      Hardware         │                            │
+│              └───────────────────────┘                            │
+└───────────────────────────────────────────────────────────────────┘</div>
+
+  <h3>Linux Namespaces</h3>
+
+  <p>Namespaces give each container its own isolated view of system resources. The kernel supports these namespace types:</p>
+
+  <ul>
+    <li><strong>PID namespace</strong> -- the container sees its own set of process IDs. PID 1 inside the container is just a regular process on the host with a different PID.</li>
+    <li><strong>Network namespace</strong> -- the container gets its own network stack: its own IP address, routing table, ports. Port 80 inside the container doesn't conflict with port 80 on the host.</li>
+    <li><strong>Mount namespace</strong> -- the container sees its own filesystem tree. It can mount/unmount without affecting the host.</li>
+    <li><strong>UTS namespace</strong> -- the container can have its own hostname.</li>
+    <li><strong>User namespace</strong> -- UID 0 (root) inside the container maps to an unprivileged user on the host. This is how rootless containers work.</li>
+    <li><strong>Cgroup namespace</strong> -- the container sees its own cgroup hierarchy.</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># See what namespaces a process belongs to</span>
+ls -la /proc/self/ns/
+<span class="comment"># lrwxrwxrwx 1 user user 0 ... cgroup -> 'cgroup:[4026531835]'</span>
+<span class="comment"># lrwxrwxrwx 1 user user 0 ... mnt -> 'mnt:[4026531840]'</span>
+<span class="comment"># lrwxrwxrwx 1 user user 0 ... net -> 'net:[4026531992]'</span>
+<span class="comment"># lrwxrwxrwx 1 user user 0 ... pid -> 'pid:[4026531836]'</span>
+
+<span class="comment"># Create a new PID namespace (you become PID 1 inside it!)</span>
+sudo unshare --pid --fork --mount-proc bash
+ps aux   <span class="comment"># Only shows processes in this namespace</span></code></pre>
+
+  <h3>Control Groups (cgroups)</h3>
+
+  <p>While namespaces control <em>what</em> a container can see, cgroups control <em>how much</em> it can use. They limit and account for resource usage:</p>
+
+  <ul>
+    <li><strong>CPU</strong> -- limit a container to e.g. 0.5 CPU cores</li>
+    <li><strong>Memory</strong> -- limit to e.g. 512MB. If the container exceeds this, the OOM killer terminates it.</li>
+    <li><strong>I/O</strong> -- throttle disk read/write bandwidth</li>
+    <li><strong>PIDs</strong> -- limit the number of processes (prevent fork bombs)</li>
+  </ul>
+
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Run a Docker container with resource limits</span>
+docker run --memory=256m --cpus=0.5 --pids-limit=100 ubuntu
+
+<span class="comment"># See cgroup limits for a running container</span>
+cat /sys/fs/cgroup/memory/docker/CONTAINER_ID/memory.limit_in_bytes</code></pre>
+
+  <div class="warning-box">
+    <div class="label">Why Containers Are Faster Than VMs</div>
+    <p>There's no guest OS to boot, no second kernel consuming memory, no hardware emulation overhead. A container starts in milliseconds (it's just a process with namespaces). A VM takes seconds to minutes (it's booting an entire OS). Containers also share the base image layers, so 10 containers based on the same image use barely more disk/memory than one.</p>
+  </div>
+
+  <h3>How Docker Puts It All Together</h3>
+
+  <p>Docker isn't magic. It's a user-friendly wrapper around three Linux kernel features:</p>
+
+  <ul>
+    <li><strong>Namespaces</strong> -- process isolation (PID, network, mount, etc.)</li>
+    <li><strong>Cgroups</strong> -- resource limits (CPU, memory, I/O)</li>
+    <li><strong>Overlay filesystem (OverlayFS)</strong> -- layered filesystem. The base image is read-only; the container's changes are written to a thin writable layer on top. This is why images are built in layers and why <code>docker commit</code> works.</li>
+  </ul>
+
+  <div class="tip-box">
+    <div class="label">Connection</div>
+    <p>If you want to build a simple container from scratch and really understand these mechanisms, check out the <a href="docker.html">Docker page</a> -- there's a section on building your own Docker in Go using these exact syscalls (clone with CLONE_NEWPID, CLONE_NEWNS, etc.).</p>
+  </div>
+
+  <div class="example-box">
+    <div class="label">Verify It Yourself</div>
+    <p>Run a Docker container, then from the host, inspect it:</p>
+<pre><code><span class="lang-label">Terminal</span>
+<span class="comment"># Start a container</span>
+docker run -d --name test ubuntu sleep 3600
+
+<span class="comment"># Find its PID on the host</span>
+docker inspect --format '{{.State.Pid}}' test
+<span class="comment"># e.g., 12345</span>
+
+<span class="comment"># Look at its namespaces</span>
+ls -la /proc/12345/ns/
+
+<span class="comment"># Look at its cgroup limits</span>
+cat /proc/12345/cgroup
+
+<span class="comment"># See its memory map (same as any process!)</span>
+cat /proc/12345/maps</code></pre>
+    <p>A container is just a process. A heavily namespaced and cgroup-limited process, but a process nonetheless.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--  SECTION 18: ESSENTIAL LINUX COMMANDS                         -->
 <!-- ============================================================ -->
 <section id="linux-commands">
-  <h2>14. Essential Linux Commands</h2>
+  <h2>18. Essential Linux Commands</h2>
 
   <p>These commands let you observe and control everything we've discussed. Every developer should know these.</p>
 
@@ -1328,10 +1924,10 @@ traceroute example.com</code></pre>
 
 
 <!-- ============================================================ -->
-<!--  SECTION 15: QUIZ                                             -->
+<!--  SECTION 19: QUIZ                                             -->
 <!-- ============================================================ -->
 <section id="quiz">
-  <h2>15. Practice Quiz</h2>
+  <h2>19. Practice Quiz</h2>
 
   <div class="quiz">
     <div class="quiz-q" data-answer="1">

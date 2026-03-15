@@ -60,6 +60,7 @@
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
         <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
         <a href="javascript.html">JavaScript Deep Dive</a>
         <a href="typescript.html">TypeScript</a>
         <a href="nodejs.html">Node.js Internals</a>
@@ -105,11 +106,12 @@
     <a href="#prototypes">5. Prototypes &amp; Inheritance</a>
     <a href="#event-loop">6. The Event Loop</a>
     <a href="#promises">7. Promises &amp; Async/Await</a>
-    <a href="#es6-features">8. ES6+ Features (Harmony)</a>
-    <a href="#proxy-reflect">9. Proxy &amp; Reflect</a>
-    <a href="#modules">10. Modules (CJS vs ESM)</a>
-    <a href="#memory">11. Memory Management</a>
-    <a href="#gotchas">12. Weird Parts &amp; Gotchas</a>
+    <a href="#concurrency-control">8. Async Patterns -- p-limit, Resource Pools &amp; Concurrency Control</a>
+    <a href="#es6-features">9. ES6+ Features (Harmony)</a>
+    <a href="#proxy-reflect">10. Proxy &amp; Reflect</a>
+    <a href="#modules">11. Modules (CJS vs ESM)</a>
+    <a href="#memory">12. Memory Management</a>
+    <a href="#gotchas">13. Weird Parts &amp; Gotchas</a>
   </div>
 
 
@@ -504,6 +506,84 @@ promise
   .<span class="function">finally</span>(() => console.<span class="function">log</span>(<span class="string">"done"</span>)); <span class="comment">// always runs</span>
 </code></pre>
 
+    <h3>Promise Internals -- How It Actually Works</h3>
+    <p>When you write <code>new Promise(executor)</code>, the engine does several things that are worth understanding deeply. The Promise spec (Promises/A+) is surprisingly small, but its implications are huge.</p>
+
+    <p><strong>The executor runs synchronously.</strong> This is the most common misconception. The function you pass to <code>new Promise()</code> runs immediately, on the current call stack. It is NOT deferred:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+console.<span class="function">log</span>(<span class="string">"before"</span>);
+
+<span class="keyword">const</span> p = <span class="keyword">new</span> <span class="function">Promise</span>((resolve) => {
+  console.<span class="function">log</span>(<span class="string">"executor runs NOW"</span>); <span class="comment">// synchronous!</span>
+  <span class="function">resolve</span>(<span class="string">"done"</span>);
+  console.<span class="function">log</span>(<span class="string">"after resolve -- still runs"</span>); <span class="comment">// resolve doesn't return/throw</span>
+});
+
+console.<span class="function">log</span>(<span class="string">"after constructor"</span>);
+
+p.<span class="function">then</span>(v => console.<span class="function">log</span>(<span class="string">"then:"</span>, v));
+
+console.<span class="function">log</span>(<span class="string">"end"</span>);
+
+<span class="comment">// Output:</span>
+<span class="comment">// "before"</span>
+<span class="comment">// "executor runs NOW"</span>
+<span class="comment">// "after resolve -- still runs"</span>
+<span class="comment">// "after constructor"</span>
+<span class="comment">// "end"</span>
+<span class="comment">// "then: done"            &lt;-- microtask, runs after all sync code</span>
+</code></pre>
+
+    <p><strong><code>.then()</code> registers microtasks.</strong> When you call <code>.then()</code>, the callback is not invoked immediately even if the Promise is already resolved. Instead, it is scheduled as a microtask. This guarantees consistent asynchronous behavior -- you can always rely on <code>.then()</code> callbacks running after the current synchronous code finishes.</p>
+
+    <p><strong>The Promise Resolution Procedure (thenable detection).</strong> When you resolve a Promise with a value, the engine checks: is this value a "thenable" (an object with a <code>.then</code> method)? If so, it recursively unwraps it. This is why you can resolve a Promise with another Promise and it "flattens" automatically:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> inner = <span class="keyword">new</span> <span class="function">Promise</span>(r => <span class="function">setTimeout</span>(() => <span class="function">r</span>(<span class="string">"inner value"</span>), <span class="number">1000</span>));
+
+<span class="keyword">const</span> outer = <span class="keyword">new</span> <span class="function">Promise</span>(resolve => {
+  <span class="function">resolve</span>(inner); <span class="comment">// resolve with a Promise -- it unwraps!</span>
+});
+
+outer.<span class="function">then</span>(v => console.<span class="function">log</span>(v)); <span class="comment">// "inner value" (after 1s, not a Promise object)</span>
+
+<span class="comment">// This also works with any "thenable" (duck typing):</span>
+<span class="keyword">const</span> fakeThenable = {
+  <span class="function">then</span>(onFulfill) {
+    <span class="function">onFulfill</span>(<span class="string">"I'm not a real Promise but I quack like one"</span>);
+  }
+};
+Promise.<span class="function">resolve</span>(fakeThenable).<span class="function">then</span>(console.log);
+<span class="comment">// "I'm not a real Promise but I quack like one"</span>
+</code></pre>
+
+    <p><strong>Why you cannot cancel a Promise.</strong> A Promise represents a value that will exist in the future. Once created, there is no built-in mechanism to cancel it. The executor has already started running. The best you can do is ignore the result (using an <code>AbortController</code> pattern or a cancellation token), but the underlying work (network request, timer, etc.) may still complete. This is a deliberate design choice -- Promises are about the <em>result</em>, not the <em>operation</em>.</p>
+
+    <p><strong><code>Promise.withResolvers()</code> (ES2024).</strong> A newer addition that gives you the resolve/reject functions without nesting inside the executor. This is extremely useful when the resolution happens in a completely different context:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Old pattern: awkward variable hoisting</span>
+<span class="keyword">let</span> resolve, reject;
+<span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="function">Promise</span>((res, rej) => {
+  resolve = res;
+  reject = rej;
+});
+
+<span class="comment">// New pattern: Promise.withResolvers()</span>
+<span class="keyword">const</span> { promise: p, resolve: res, reject: rej } = Promise.<span class="function">withResolvers</span>();
+
+<span class="comment">// Now you can resolve/reject from anywhere:</span>
+<span class="function">setTimeout</span>(() => <span class="function">res</span>(<span class="string">"resolved from a timer!"</span>), <span class="number">1000</span>);
+
+<span class="comment">// Real use case: wrapping event emitters</span>
+<span class="keyword">function</span> <span class="function">waitForEvent</span>(emitter, eventName) {
+  <span class="keyword">const</span> { promise, resolve } = Promise.<span class="function">withResolvers</span>();
+  emitter.<span class="function">once</span>(eventName, resolve);
+  <span class="keyword">return</span> promise;
+}
+</code></pre>
+
     <h3>Promise Combinators</h3>
     <table>
       <tr><th>Method</th><th>Resolves when</th><th>Rejects when</th></tr>
@@ -513,8 +593,116 @@ promise
       <tr><td><code>Promise.any()</code></td><td>FIRST promise resolves</td><td>ALL promises reject</td></tr>
     </table>
 
-    <h3>Async/Await</h3>
-    <p><code>async/await</code> is syntactic sugar over Promises. An <code>async</code> function always returns a Promise. <code>await</code> pauses execution until the Promise settles.</p>
+    <h3>Async/Await -- What the Engine Actually Does</h3>
+    <p><code>async/await</code> is syntactic sugar over Promises, but understanding the transformation the engine performs helps you reason about execution order and avoid bugs.</p>
+
+    <p><strong>An <code>async</code> function always returns a Promise.</strong> Even if you return a plain value, it gets wrapped in <code>Promise.resolve()</code>. If you throw, the returned Promise is rejected:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">async function</span> <span class="function">getNumber</span>() {
+  <span class="keyword">return</span> <span class="number">42</span>;
+}
+<span class="comment">// Equivalent to:</span>
+<span class="keyword">function</span> <span class="function">getNumber</span>() {
+  <span class="keyword">return</span> Promise.<span class="function">resolve</span>(<span class="number">42</span>);
+}
+
+<span class="keyword">async function</span> <span class="function">throwError</span>() {
+  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">Error</span>(<span class="string">"oops"</span>);
+}
+<span class="comment">// Equivalent to:</span>
+<span class="keyword">function</span> <span class="function">throwError</span>() {
+  <span class="keyword">return</span> Promise.<span class="function">reject</span>(<span class="keyword">new</span> <span class="function">Error</span>(<span class="string">"oops"</span>));
+}
+</code></pre>
+
+    <p><strong><code>await</code> suspends the function and adds a continuation to the microtask queue.</strong> When the engine hits <code>await</code>, it pauses the async function, returns control to the caller, and schedules the rest of the function as a microtask that runs when the awaited Promise settles. The call stack is free to do other work in the meantime:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">async function</span> <span class="function">demo</span>() {
+  console.<span class="function">log</span>(<span class="string">"A"</span>);
+  <span class="keyword">await</span> Promise.<span class="function">resolve</span>();
+  console.<span class="function">log</span>(<span class="string">"B"</span>); <span class="comment">// this is a microtask continuation</span>
+}
+
+console.<span class="function">log</span>(<span class="string">"1"</span>);
+<span class="function">demo</span>();
+console.<span class="function">log</span>(<span class="string">"2"</span>);
+
+<span class="comment">// Output: "1", "A", "2", "B"</span>
+<span class="comment">// "A" runs synchronously (before the first await)</span>
+<span class="comment">// "2" runs because demo() returned control at the await</span>
+<span class="comment">// "B" runs as a microtask after the synchronous code finishes</span>
+</code></pre>
+
+    <p><strong>How <code>try/catch</code> maps to <code>.catch()</code>.</strong> When you use <code>try/catch</code> around an <code>await</code>, the engine transforms it into a <code>.catch()</code> handler on the Promise chain. A rejection becomes a thrown exception inside the async function:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// This async/await code:</span>
+<span class="keyword">async function</span> <span class="function">fetchData</span>() {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"/api"</span>);
+    <span class="keyword">return</span> data;
+  } <span class="keyword">catch</span> (err) {
+    console.<span class="function">error</span>(err);
+  }
+}
+
+<span class="comment">// Is roughly equivalent to this Promise chain:</span>
+<span class="keyword">function</span> <span class="function">fetchData</span>() {
+  <span class="keyword">return</span> <span class="function">fetch</span>(<span class="string">"/api"</span>)
+    .<span class="function">then</span>(data => data)
+    .<span class="function">catch</span>(err => console.<span class="function">error</span>(err));
+}
+</code></pre>
+
+    <div class="warning-box">
+      <div class="label">Common Gotcha: Forgetting to <code>await</code> (Fire-and-Forget)</div>
+      <p>If you call an async function without <code>await</code>, it returns a Promise that nobody is listening to. If that Promise rejects, you get an <strong>unhandled rejection</strong> -- one of the most common bugs in Node.js applications. The function still runs, but errors vanish silently:</p>
+    </div>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">async function</span> <span class="function">saveToDb</span>(data) {
+  <span class="keyword">await</span> db.<span class="function">insert</span>(data); <span class="comment">// might throw!</span>
+}
+
+<span class="comment">// BUG: no await -- if db.insert fails, we'll never know</span>
+<span class="function">saveToDb</span>({ name: <span class="string">"Sean"</span> });
+
+<span class="comment">// FIX: always await (or handle the returned Promise)</span>
+<span class="keyword">await</span> <span class="function">saveToDb</span>({ name: <span class="string">"Sean"</span> });
+</code></pre>
+
+    <h3>Sequential vs Parallel Execution Patterns</h3>
+    <p>One of the most impactful performance mistakes is accidentally running independent async operations sequentially when they could run in parallel:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// SLOW: sequential -- each waits for the previous to finish</span>
+<span class="comment">// Total time: time(A) + time(B) + time(C)</span>
+<span class="keyword">const</span> a = <span class="keyword">await</span> <span class="function">fetchA</span>();
+<span class="keyword">const</span> b = <span class="keyword">await</span> <span class="function">fetchB</span>();
+<span class="keyword">const</span> c = <span class="keyword">await</span> <span class="function">fetchC</span>();
+
+<span class="comment">// FAST: parallel -- all start at the same time</span>
+<span class="comment">// Total time: max(time(A), time(B), time(C))</span>
+<span class="keyword">const</span> [a, b, c] = <span class="keyword">await</span> Promise.<span class="function">all</span>([
+  <span class="function">fetchA</span>(),
+  <span class="function">fetchB</span>(),
+  <span class="function">fetchC</span>(),
+]);
+
+<span class="comment">// PARALLEL WITH ERROR ISOLATION: if one fails, you still get the others</span>
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.<span class="function">allSettled</span>([
+  <span class="function">fetchA</span>(),
+  <span class="function">fetchB</span>(),
+  <span class="function">fetchC</span>(),
+]);
+
+results.<span class="function">forEach</span>(r => {
+  <span class="keyword">if</span> (r.status === <span class="string">"fulfilled"</span>) console.<span class="function">log</span>(r.value);
+  <span class="keyword">else</span> console.<span class="function">error</span>(r.reason);
+});
+</code></pre>
 
 <pre><code><span class="lang-label">JavaScript</span>
 <span class="keyword">async function</span> <span class="function">fetchUser</span>(id) {
@@ -538,8 +726,335 @@ promise
 
 
   <!-- ============================================================ -->
+  <section id="concurrency-control">
+    <h2>8. Async Patterns -- p-limit, Resource Pools &amp; Concurrency Control</h2>
+
+    <p>In the previous section, we saw that <code>Promise.all()</code> runs everything in parallel. But what happens when "everything" is 1,000 HTTP requests, or 500 database queries? You will overwhelm the server, exhaust your connection pool, hit rate limits, or run out of file descriptors. This section is about the patterns that sit between "one at a time" (sequential) and "everything at once" (unbounded parallel).</p>
+
+    <h3>The Problem: Unbounded Concurrency</h3>
+    <p>Consider this seemingly reasonable code:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> urls = <span class="function">Array</span>(<span class="number">1000</span>).<span class="function">fill</span>(<span class="keyword">null</span>).<span class="function">map</span>((_, i) => <span class="string">`https://api.example.com/item/${i}`</span>);
+
+<span class="comment">// This fires ALL 1000 requests simultaneously</span>
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.<span class="function">all</span>(
+  urls.<span class="function">map</span>(url => <span class="function">fetch</span>(url).<span class="function">then</span>(r => r.<span class="function">json</span>()))
+);
+</code></pre>
+
+    <p>What goes wrong:</p>
+    <ul>
+      <li><strong>Server overwhelm:</strong> The target API gets 1,000 connections at once and starts returning 429 (Too Many Requests) or 503 errors</li>
+      <li><strong>Memory pressure:</strong> 1,000 in-flight HTTP responses with their buffers, headers, and parsed JSON all in memory simultaneously</li>
+      <li><strong>Connection limits:</strong> Browsers cap concurrent connections per origin (~6 in Chrome). Node.js has no hard limit but your OS does (file descriptor limits)</li>
+      <li><strong>Rate limiting:</strong> Most APIs enforce 10-100 requests/second. Blasting 1,000 at once gets you banned</li>
+    </ul>
+
+    <p>What you actually want is: run at most N tasks at the same time. When one finishes, start the next. This is <strong>concurrency control</strong>.</p>
+
+    <h3>What is p-limit?</h3>
+    <p><code>p-limit</code> is a popular npm package (by Sindre Sorhus) that limits the number of Promises running concurrently. The API is simple: you create a limiter with a concurrency number, then wrap your async functions with it:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> pLimit <span class="keyword">from</span> <span class="string">"p-limit"</span>;
+
+<span class="keyword">const</span> limit = <span class="function">pLimit</span>(<span class="number">5</span>); <span class="comment">// max 5 concurrent</span>
+
+<span class="keyword">const</span> urls = <span class="function">Array</span>(<span class="number">1000</span>).<span class="function">fill</span>(<span class="keyword">null</span>).<span class="function">map</span>((_, i) => <span class="string">`https://api.example.com/item/${i}`</span>);
+
+<span class="comment">// Only 5 fetches run at any given time</span>
+<span class="keyword">const</span> results = <span class="keyword">await</span> Promise.<span class="function">all</span>(
+  urls.<span class="function">map</span>(url =>
+    <span class="function">limit</span>(() => <span class="function">fetch</span>(url).<span class="function">then</span>(r => r.<span class="function">json</span>()))
+  )
+);
+</code></pre>
+
+    <p>But how does it work? It is not magic. Let's build it from scratch.</p>
+
+    <h3>Building p-limit From Scratch</h3>
+    <p>The core idea is a <strong>semaphore</strong> -- a concurrency primitive that tracks how many operations are "active" and queues the rest. Here is a complete implementation with detailed comments explaining every line:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">pLimit</span>(concurrency) {
+  <span class="comment">// Validate input</span>
+  <span class="keyword">if</span> (concurrency < <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">RangeError</span>(<span class="string">"Concurrency must be >= 1"</span>);
+
+  <span class="comment">// The queue of functions waiting to run</span>
+  <span class="keyword">const</span> queue = [];
+
+  <span class="comment">// How many are currently running</span>
+  <span class="keyword">let</span> activeCount = <span class="number">0</span>;
+
+  <span class="comment">// Called when a task finishes -- tries to start the next queued task</span>
+  <span class="keyword">function</span> <span class="function">next</span>() {
+    activeCount--;
+
+    <span class="keyword">if</span> (queue.length > <span class="number">0</span>) {
+      <span class="comment">// Pull the next task off the queue and run it</span>
+      <span class="keyword">const</span> fn = queue.<span class="function">shift</span>();
+      <span class="function">fn</span>();
+    }
+  }
+
+  <span class="comment">// The "run" function: starts the task immediately</span>
+  <span class="keyword">function</span> <span class="function">run</span>(fn, resolve, reject) {
+    activeCount++;
+
+    <span class="comment">// Call the user's async function, then resolve/reject the wrapper Promise</span>
+    <span class="function">fn</span>().<span class="function">then</span>(resolve, reject).<span class="function">finally</span>(next);
+  }
+
+  <span class="comment">// The "enqueue" function: either runs immediately or queues</span>
+  <span class="keyword">function</span> <span class="function">enqueue</span>(fn, resolve, reject) {
+    <span class="keyword">if</span> (activeCount < concurrency) {
+      <span class="comment">// We have capacity -- run now</span>
+      <span class="function">run</span>(fn, resolve, reject);
+    } <span class="keyword">else</span> {
+      <span class="comment">// At capacity -- queue it for later</span>
+      queue.<span class="function">push</span>(() => <span class="function">run</span>(fn, resolve, reject));
+    }
+  }
+
+  <span class="comment">// The limiter function itself -- wraps user's fn in a Promise</span>
+  <span class="keyword">function</span> <span class="function">limit</span>(fn) {
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="function">Promise</span>((resolve, reject) => {
+      <span class="function">enqueue</span>(fn, resolve, reject);
+    });
+  }
+
+  <span class="comment">// Expose metadata for debugging</span>
+  Object.<span class="function">defineProperties</span>(limit, {
+    activeCount: { <span class="keyword">get</span>: () => activeCount },
+    pendingCount: { <span class="keyword">get</span>: () => queue.length },
+  });
+
+  <span class="keyword">return</span> limit;
+}
+</code></pre>
+
+    <p>Let's trace through what happens when you run 3 tasks with a concurrency of 2:</p>
+
+    <div class="example-box">
+      <div class="label">Execution Trace: pLimit(2) with 3 tasks</div>
+<pre><code>limit(taskA)  -->  activeCount=0 < 2, run immediately.  activeCount=1
+limit(taskB)  -->  activeCount=1 < 2, run immediately.  activeCount=2
+limit(taskC)  -->  activeCount=2 >= 2, push to queue.   queue=[taskC]
+
+... taskA finishes ...
+  next() called: activeCount=1, queue has taskC
+  taskC starts.  activeCount=2, queue=[]
+
+... taskB finishes ...
+  next() called: activeCount=1, queue empty. Done.
+
+... taskC finishes ...
+  next() called: activeCount=0, queue empty. All done.</code></pre>
+    </div>
+
+    <div class="tip-box">
+      <div class="label">Why Build It From Scratch?</div>
+      <p>Understanding the internals of p-limit teaches you the <strong>semaphore pattern</strong> -- one of the foundational concurrency primitives in all of computer science. The same pattern appears in Go (buffered channels), Java (<code>Semaphore</code>), Python (<code>asyncio.Semaphore</code>), and operating systems (POSIX semaphores). Once you understand this, you can solve any concurrency-limiting problem in any language.</p>
+    </div>
+
+    <h3>Resource Pool / Semaphore</h3>
+    <p>A resource pool is the next step up from p-limit. While p-limit controls <em>how many</em> tasks run, a resource pool manages <em>actual resources</em> -- database connections, API client instances, browser pages in Puppeteer, etc. The key difference: tasks "check out" a resource, use it, then "return" it.</p>
+
+    <p>Why does this pattern exist? Because many resources are expensive to create and have hard limits:</p>
+    <ul>
+      <li><strong>Database connections:</strong> PostgreSQL defaults to max 100 connections. Each connection consumes memory on the server. Opening a new TCP connection takes time (handshake, auth, TLS).</li>
+      <li><strong>API rate limits:</strong> External APIs often give you a fixed number of API keys or tokens. You need to reuse them, not create new ones.</li>
+      <li><strong>Browser instances:</strong> Puppeteer/Playwright browser pages consume 50-100MB each. You cannot open 500 at once.</li>
+    </ul>
+
+    <h3>Building a Resource Pool From Scratch</h3>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> ResourcePool {
+  <span class="function">constructor</span>(createFn, destroyFn, maxSize) {
+    <span class="keyword">this</span>.createFn = createFn;     <span class="comment">// async () => resource</span>
+    <span class="keyword">this</span>.destroyFn = destroyFn;   <span class="comment">// async (resource) => void</span>
+    <span class="keyword">this</span>.maxSize = maxSize;
+    <span class="keyword">this</span>.available = [];          <span class="comment">// resources ready to be used</span>
+    <span class="keyword">this</span>.waiting = [];            <span class="comment">// queued resolve functions</span>
+    <span class="keyword">this</span>.size = <span class="number">0</span>;               <span class="comment">// total resources created</span>
+  }
+
+  <span class="keyword">async</span> <span class="function">acquire</span>() {
+    <span class="comment">// 1. If a resource is available, return it immediately</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.available.length > <span class="number">0</span>) {
+      <span class="keyword">return</span> <span class="keyword">this</span>.available.<span class="function">pop</span>();
+    }
+
+    <span class="comment">// 2. If we haven't hit the limit, create a new one</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.size < <span class="keyword">this</span>.maxSize) {
+      <span class="keyword">this</span>.size++;
+      <span class="keyword">try</span> {
+        <span class="keyword">return</span> <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">createFn</span>();
+      } <span class="keyword">catch</span> (err) {
+        <span class="keyword">this</span>.size--; <span class="comment">// creation failed, don't count it</span>
+        <span class="keyword">throw</span> err;
+      }
+    }
+
+    <span class="comment">// 3. At capacity -- wait for one to be released</span>
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="function">Promise</span>(resolve => {
+      <span class="keyword">this</span>.waiting.<span class="function">push</span>(resolve);
+    });
+  }
+
+  <span class="function">release</span>(resource) {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.waiting.length > <span class="number">0</span>) {
+      <span class="comment">// Someone is waiting -- give the resource directly to them</span>
+      <span class="keyword">const</span> resolve = <span class="keyword">this</span>.waiting.<span class="function">shift</span>();
+      <span class="function">resolve</span>(resource);
+    } <span class="keyword">else</span> {
+      <span class="comment">// Nobody waiting -- put it back in the available pool</span>
+      <span class="keyword">this</span>.available.<span class="function">push</span>(resource);
+    }
+  }
+
+  <span class="comment">// Convenience: acquire, use, and automatically release</span>
+  <span class="keyword">async</span> <span class="function">use</span>(fn) {
+    <span class="keyword">const</span> resource = <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">acquire</span>();
+    <span class="keyword">try</span> {
+      <span class="keyword">return</span> <span class="keyword">await</span> <span class="function">fn</span>(resource);
+    } <span class="keyword">finally</span> {
+      <span class="keyword">this</span>.<span class="function">release</span>(resource);
+    }
+  }
+
+  <span class="comment">// Clean up all resources</span>
+  <span class="keyword">async</span> <span class="function">drain</span>() {
+    <span class="keyword">for</span> (<span class="keyword">const</span> resource <span class="keyword">of</span> <span class="keyword">this</span>.available) {
+      <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">destroyFn</span>(resource);
+    }
+    <span class="keyword">this</span>.available = [];
+    <span class="keyword">this</span>.size = <span class="number">0</span>;
+  }
+}
+</code></pre>
+
+    <h3>Using the Resource Pool</h3>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Example: Database connection pool</span>
+<span class="keyword">const</span> pool = <span class="keyword">new</span> <span class="function">ResourcePool</span>(
+  <span class="keyword">async</span> () => {
+    console.<span class="function">log</span>(<span class="string">"Creating new DB connection..."</span>);
+    <span class="keyword">return</span> <span class="keyword">await</span> <span class="function">createDbConnection</span>(<span class="string">"postgres://localhost/mydb"</span>);
+  },
+  <span class="keyword">async</span> (conn) => {
+    console.<span class="function">log</span>(<span class="string">"Closing DB connection..."</span>);
+    <span class="keyword">await</span> conn.<span class="function">close</span>();
+  },
+  <span class="number">10</span> <span class="comment">// max 10 connections</span>
+);
+
+<span class="comment">// Use it -- the pool handles acquire/release automatically</span>
+<span class="keyword">const</span> user = <span class="keyword">await</span> pool.<span class="function">use</span>(<span class="keyword">async</span> (conn) => {
+  <span class="keyword">return</span> <span class="keyword">await</span> conn.<span class="function">query</span>(<span class="string">"SELECT * FROM users WHERE id = $1"</span>, [<span class="number">1</span>]);
+});
+
+<span class="comment">// Run 100 queries with only 10 connections</span>
+<span class="keyword">const</span> userIds = <span class="function">Array</span>(<span class="number">100</span>).<span class="function">fill</span>(<span class="keyword">null</span>).<span class="function">map</span>((_, i) => i + <span class="number">1</span>);
+<span class="keyword">const</span> users = <span class="keyword">await</span> Promise.<span class="function">all</span>(
+  userIds.<span class="function">map</span>(id =>
+    pool.<span class="function">use</span>(<span class="keyword">async</span> (conn) => conn.<span class="function">query</span>(<span class="string">"SELECT * FROM users WHERE id = $1"</span>, [id]))
+  )
+);
+<span class="comment">// At most 10 queries run at once. As each finishes, its connection</span>
+<span class="comment">// is released back and picked up by the next waiting query.</span>
+</code></pre>
+
+    <h3>Real-World Pattern: Rate-Limited API Calls</h3>
+    <p>Combining p-limit with delay gives you rate limiting -- critical for working with external APIs that enforce requests-per-second limits:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">pLimitWithRate</span>(concurrency, minInterval) {
+  <span class="keyword">const</span> limit = <span class="function">pLimit</span>(concurrency);
+  <span class="keyword">let</span> lastRun = <span class="number">0</span>;
+
+  <span class="keyword">return</span> <span class="keyword">function</span>(fn) {
+    <span class="keyword">return</span> <span class="function">limit</span>(<span class="keyword">async</span> () => {
+      <span class="comment">// Ensure minimum time between requests</span>
+      <span class="keyword">const</span> now = Date.<span class="function">now</span>();
+      <span class="keyword">const</span> elapsed = now - lastRun;
+      <span class="keyword">if</span> (elapsed < minInterval) {
+        <span class="keyword">await</span> <span class="keyword">new</span> <span class="function">Promise</span>(r => <span class="function">setTimeout</span>(r, minInterval - elapsed));
+      }
+      lastRun = Date.<span class="function">now</span>();
+      <span class="keyword">return</span> <span class="function">fn</span>();
+    });
+  };
+}
+
+<span class="comment">// GitHub API: 5000 requests/hour = ~1.4/second</span>
+<span class="comment">// Use 3 concurrent with 750ms min gap for safety</span>
+<span class="keyword">const</span> ghFetch = <span class="function">pLimitWithRate</span>(<span class="number">3</span>, <span class="number">750</span>);
+
+<span class="keyword">const</span> repos = <span class="keyword">await</span> Promise.<span class="function">all</span>(
+  usernames.<span class="function">map</span>(name =>
+    <span class="function">ghFetch</span>(() => <span class="function">fetch</span>(<span class="string">`https://api.github.com/users/${name}/repos`</span>).<span class="function">then</span>(r => r.<span class="function">json</span>()))
+  )
+);
+</code></pre>
+
+    <h3>Real-World Pattern: Connection Pool with Health Checks</h3>
+    <p>Production connection pools need health validation. A connection might have been dropped by the server, timed out, or become stale. Here is how you add health checking to the resource pool pattern:</p>
+
+<pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> HealthCheckedPool <span class="keyword">extends</span> ResourcePool {
+  <span class="function">constructor</span>(createFn, destroyFn, validateFn, maxSize) {
+    <span class="keyword">super</span>(createFn, destroyFn, maxSize);
+    <span class="keyword">this</span>.validateFn = validateFn; <span class="comment">// async (resource) => boolean</span>
+  }
+
+  <span class="keyword">async</span> <span class="function">acquire</span>() {
+    <span class="keyword">while</span> (<span class="keyword">this</span>.available.length > <span class="number">0</span>) {
+      <span class="keyword">const</span> resource = <span class="keyword">this</span>.available.<span class="function">pop</span>();
+      <span class="keyword">const</span> isHealthy = <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">validateFn</span>(resource);
+      <span class="keyword">if</span> (isHealthy) <span class="keyword">return</span> resource;
+
+      <span class="comment">// Resource is dead -- destroy it and try the next one</span>
+      <span class="keyword">this</span>.size--;
+      <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">destroyFn</span>(resource);
+    }
+
+    <span class="comment">// No healthy resources available -- create or wait</span>
+    <span class="keyword">return</span> <span class="keyword">super</span>.<span class="function">acquire</span>();
+  }
+}
+
+<span class="comment">// Usage:</span>
+<span class="keyword">const</span> pool = <span class="keyword">new</span> <span class="function">HealthCheckedPool</span>(
+  () => <span class="function">createDbConnection</span>(connectionString),
+  (conn) => conn.<span class="function">close</span>(),
+  <span class="keyword">async</span> (conn) => {
+    <span class="keyword">try</span> {
+      <span class="keyword">await</span> conn.<span class="function">query</span>(<span class="string">"SELECT 1"</span>); <span class="comment">// ping</span>
+      <span class="keyword">return</span> <span class="keyword">true</span>;
+    } <span class="keyword">catch</span> {
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+  },
+  <span class="number">10</span>
+);
+</code></pre>
+
+    <div class="tip-box">
+      <div class="label">When to Use What</div>
+      <p><strong>p-limit:</strong> Use when you just need to cap how many async operations run at once. Great for bulk API calls, file processing, or any "map over N items with bounded concurrency" scenario.</p>
+      <p><strong>Resource Pool:</strong> Use when the limiting factor is an actual reusable resource (database connections, browser pages, API tokens). The resource itself gets checked out and returned, not just a concurrency slot.</p>
+      <p><strong>Rate limiter:</strong> Use when you need to respect a requests-per-second limit. Combine p-limit with timing logic.</p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
   <section id="es6-features">
-    <h2>8. ES6+ Features (Harmony)</h2>
+    <h2>9. ES6+ Features (Harmony)</h2>
 
     <p>ES6 (ECMAScript 2015, codenamed "Harmony") was the biggest update to JavaScript ever. Here's every major feature and why it matters:</p>
 
@@ -648,7 +1163,7 @@ obj.<span class="function">method</span>?.();                       <span class=
 
   <!-- ============================================================ -->
   <section id="proxy-reflect">
-    <h2>9. Proxy &amp; Reflect</h2>
+    <h2>10. Proxy &amp; Reflect</h2>
 
     <p>A <code>Proxy</code> wraps an object and lets you intercept and customize operations on it (get, set, delete, function calls, etc.). This is how reactive frameworks like Vue 3 work.</p>
 
@@ -679,7 +1194,7 @@ user.age = <span class="string">"old"</span>;            <span class="comment">/
 
   <!-- ============================================================ -->
   <section id="modules">
-    <h2>10. Modules (CJS vs ESM)</h2>
+    <h2>11. Modules (CJS vs ESM)</h2>
 
     <p>JavaScript has two module systems, and understanding the difference is critical for Node.js and bundler configuration.</p>
 
@@ -725,7 +1240,7 @@ module.exports = { add };
 
   <!-- ============================================================ -->
   <section id="memory">
-    <h2>11. Memory Management</h2>
+    <h2>12. Memory Management</h2>
 
     <h3>Common Memory Leaks</h3>
     <ul>
@@ -753,7 +1268,7 @@ module.exports = { add };
 
   <!-- ============================================================ -->
   <section id="gotchas">
-    <h2>12. Weird Parts &amp; Gotchas</h2>
+    <h2>13. Weird Parts &amp; Gotchas</h2>
 
     <h3>Type Coercion</h3>
 <pre><code><span class="lang-label">JavaScript</span>
