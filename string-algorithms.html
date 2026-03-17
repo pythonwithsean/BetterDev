@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String Algorithms - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / String Algorithms</div>
+      <h1>String Algorithms</h1>
+      <p>The complete guide to string processing algorithms used in competitive programming, software engineering interviews, and real-world applications like search engines, spell checkers, DNA sequence analysis, and text editors. From pattern matching to suffix structures.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#kmp">1. KMP (Knuth-Morris-Pratt)</a>
+      <a href="#z-algorithm">2. Z-Algorithm</a>
+      <a href="#rabin-karp">3. Rabin-Karp</a>
+      <a href="#edit-distance">4. Edit Distance / Levenshtein</a>
+      <a href="#lcs">5. Longest Common Subsequence</a>
+      <a href="#suffix-arrays">6. Suffix Arrays</a>
+      <a href="#aho-corasick">7. Aho-Corasick</a>
+      <a href="#manachers">8. Manacher's Algorithm</a>
+      <a href="#string-hashing">9. String Hashing</a>
+      <a href="#trie">10. Trie</a>
+      <a href="#string-dp">11. String DP Patterns</a>
+      <a href="#real-world">12. Real-World Applications</a>
+      <a href="#practice">13. Practice Problems</a>
+    </div>
+
+    <!-- ============ SECTION 1: KMP ============ -->
+    <div class="section" id="kmp">
+      <h2>1. KMP (Knuth-Morris-Pratt)</h2>
+
+      <p>KMP finds all occurrences of a pattern in a text in <strong>O(n + m)</strong> time, where n is the text length and m is the pattern length. The key insight is the <strong>failure function</strong> (also called the prefix function): when a mismatch occurs, we already know some characters in the text match the beginning of the pattern, so we never re-examine characters we have already matched.</p>
+
+      <div class="formula-box">
+        <div class="label">Failure Function</div>
+        <p><strong>lps[i]</strong> = length of the longest proper prefix of pattern[0..i] that is also a suffix of pattern[0..i].</p>
+        <p>Example: pattern = "ABACABAB"</p>
+        <p>lps = [0, 0, 1, 0, 1, 2, 3, 2]</p>
+        <p>At index 6, "ABACABA" has prefix "ABA" matching suffix "ABA", so lps[6] = 3.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Why KMP Matters</div>
+        <p>Naive string matching is O(n*m). KMP guarantees linear time because we never backtrack in the text. Each character in the text is visited at most twice (once for matching, once for a potential failure link jump).</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">compute_lps</span>(pattern: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Build the longest proper prefix-suffix array."""</span>
+    m = <span class="builtin">len</span>(pattern)
+    lps = [<span class="number">0</span>] * m
+    length = <span class="number">0</span>  <span class="comment"># length of previous longest prefix suffix</span>
+    i = <span class="number">1</span>
+
+    <span class="keyword">while</span> i < m:
+        <span class="keyword">if</span> pattern[i] == pattern[length]:
+            length += <span class="number">1</span>
+            lps[i] = length
+            i += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">if</span> length != <span class="number">0</span>:
+                length = lps[length - <span class="number">1</span>]  <span class="comment"># fall back, don't increment i</span>
+            <span class="keyword">else</span>:
+                lps[i] = <span class="number">0</span>
+                i += <span class="number">1</span>
+    <span class="keyword">return</span> lps
+
+
+<span class="keyword">def</span> <span class="function">kmp_search</span>(text: <span class="builtin">str</span>, pattern: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Return all starting indices where pattern occurs in text."""</span>
+    n, m = <span class="builtin">len</span>(text), <span class="builtin">len</span>(pattern)
+    <span class="keyword">if</span> m == <span class="number">0</span>:
+        <span class="keyword">return</span> []
+    lps = <span class="function">compute_lps</span>(pattern)
+    matches = []
+    i = <span class="number">0</span>  <span class="comment"># index in text</span>
+    j = <span class="number">0</span>  <span class="comment"># index in pattern</span>
+
+    <span class="keyword">while</span> i < n:
+        <span class="keyword">if</span> text[i] == pattern[j]:
+            i += <span class="number">1</span>
+            j += <span class="number">1</span>
+        <span class="keyword">if</span> j == m:
+            matches.<span class="function">append</span>(i - j)
+            j = lps[j - <span class="number">1</span>]  <span class="comment"># continue searching for overlapping matches</span>
+        <span class="keyword">elif</span> i < n <span class="keyword">and</span> text[i] != pattern[j]:
+            <span class="keyword">if</span> j != <span class="number">0</span>:
+                j = lps[j - <span class="number">1</span>]
+            <span class="keyword">else</span>:
+                i += <span class="number">1</span>
+    <span class="keyword">return</span> matches
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">kmp_search</span>(<span class="string">"ABABDABACDABABCABAB"</span>, <span class="string">"ABABCABAB"</span>))  <span class="comment"># [9]</span>
+<span class="builtin">print</span>(<span class="function">kmp_search</span>(<span class="string">"AAAAAA"</span>, <span class="string">"AAA"</span>))  <span class="comment"># [0, 1, 2, 3] (overlapping)</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">computeLPS</span>(<span class="keyword">const</span> string&amp; pat) {
+    <span class="keyword">int</span> m = pat.size();
+    vector&lt;<span class="keyword">int</span>&gt; lps(m, <span class="number">0</span>);
+    <span class="keyword">int</span> len = <span class="number">0</span>, i = <span class="number">1</span>;
+    <span class="keyword">while</span> (i &lt; m) {
+        <span class="keyword">if</span> (pat[i] == pat[len]) {
+            lps[i++] = ++len;
+        } <span class="keyword">else if</span> (len) {
+            len = lps[len - <span class="number">1</span>];
+        } <span class="keyword">else</span> {
+            lps[i++] = <span class="number">0</span>;
+        }
+    }
+    <span class="keyword">return</span> lps;
+}
+
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">kmpSearch</span>(<span class="keyword">const</span> string&amp; text, <span class="keyword">const</span> string&amp; pat) {
+    <span class="keyword">int</span> n = text.size(), m = pat.size();
+    vector&lt;<span class="keyword">int</span>&gt; lps = <span class="function">computeLPS</span>(pat), res;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; ) {
+        <span class="keyword">if</span> (text[i] == pat[j]) { i++; j++; }
+        <span class="keyword">if</span> (j == m) { res.<span class="function">push_back</span>(i - m); j = lps[j - <span class="number">1</span>]; }
+        <span class="keyword">else if</span> (i &lt; n &amp;&amp; text[i] != pat[j]) {
+            j ? j = lps[j - <span class="number">1</span>] : i++;
+        }
+    }
+    <span class="keyword">return</span> res;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(n + m) for both preprocessing and search.</p>
+        <p><strong>Space:</strong> O(m) for the LPS array.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 2: Z-Algorithm ============ -->
+    <div class="section" id="z-algorithm">
+      <h2>2. Z-Algorithm</h2>
+
+      <p>The Z-algorithm computes, for each position i in a string, the length of the longest substring starting at i that matches a prefix of the string. This Z-array can be used for pattern matching by concatenating pattern + "$" + text and looking for Z-values equal to the pattern length.</p>
+
+      <div class="formula-box">
+        <div class="label">Z-Array Definition</div>
+        <p><strong>Z[i]</strong> = length of the longest substring starting at position i that matches a prefix of the string.</p>
+        <p>Example: s = "aabxaab"</p>
+        <p>Z = [-, 1, 0, 0, 3, 1, 0] (Z[0] is undefined/set to 0 by convention)</p>
+        <p>Z[4] = 3 because "aab" starting at index 4 matches the prefix "aab".</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">z_function</span>(s: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Compute the Z-array in O(n) time."""</span>
+    n = <span class="builtin">len</span>(s)
+    z = [<span class="number">0</span>] * n
+    l, r = <span class="number">0</span>, <span class="number">0</span>  <span class="comment"># [l, r) is the rightmost Z-box</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n):
+        <span class="keyword">if</span> i < r:
+            z[i] = <span class="builtin">min</span>(r - i, z[i - l])
+        <span class="keyword">while</span> i + z[i] < n <span class="keyword">and</span> s[z[i]] == s[i + z[i]]:
+            z[i] += <span class="number">1</span>
+        <span class="keyword">if</span> i + z[i] > r:
+            l, r = i, i + z[i]
+    <span class="keyword">return</span> z
+
+
+<span class="keyword">def</span> <span class="function">z_search</span>(text: <span class="builtin">str</span>, pattern: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Find all occurrences of pattern in text using Z-algorithm."""</span>
+    combined = pattern + <span class="string">"$"</span> + text
+    z = <span class="function">z_function</span>(combined)
+    m = <span class="builtin">len</span>(pattern)
+    <span class="keyword">return</span> [i - m - <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>, <span class="builtin">len</span>(combined)) <span class="keyword">if</span> z[i] == m]
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">z_search</span>(<span class="string">"ABABDABACDABABCABAB"</span>, <span class="string">"ABABCABAB"</span>))  <span class="comment"># [9]</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">zFunction</span>(<span class="keyword">const</span> string&amp; s) {
+    <span class="keyword">int</span> n = s.size();
+    vector&lt;<span class="keyword">int</span>&gt; z(n, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, l = <span class="number">0</span>, r = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">if</span> (i &lt; r) z[i] = <span class="function">min</span>(r - i, z[i - l]);
+        <span class="keyword">while</span> (i + z[i] &lt; n &amp;&amp; s[z[i]] == s[i + z[i]]) z[i]++;
+        <span class="keyword">if</span> (i + z[i] &gt; r) { l = i; r = i + z[i]; }
+    }
+    <span class="keyword">return</span> z;
+}
+
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">zSearch</span>(<span class="keyword">const</span> string&amp; text, <span class="keyword">const</span> string&amp; pat) {
+    string combined = pat + <span class="string">"$"</span> + text;
+    vector&lt;<span class="keyword">int</span>&gt; z = <span class="function">zFunction</span>(combined);
+    <span class="keyword">int</span> m = pat.size();
+    vector&lt;<span class="keyword">int</span>&gt; res;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = m + <span class="number">1</span>; i &lt; (<span class="keyword">int</span>)combined.size(); i++)
+        <span class="keyword">if</span> (z[i] == m) res.<span class="function">push_back</span>(i - m - <span class="number">1</span>);
+    <span class="keyword">return</span> res;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">KMP vs Z-Algorithm</div>
+        <p>Both are O(n + m) for pattern matching. Z-algorithm is often simpler to implement and reason about. KMP is more natural for streaming data (processing one character at a time). In competitive programming, Z-algorithm is often preferred for its simplicity.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(n) to build the Z-array. O(n + m) for pattern search.</p>
+        <p><strong>Space:</strong> O(n + m) for the combined string.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 3: Rabin-Karp ============ -->
+    <div class="section" id="rabin-karp">
+      <h2>3. Rabin-Karp</h2>
+
+      <p>Rabin-Karp uses a <strong>rolling hash</strong> to compare the pattern hash with substring hashes in O(1) per position. If hashes match, we verify character by character. It is especially useful for <strong>multi-pattern matching</strong> (searching for many patterns at once).</p>
+
+      <div class="formula-box">
+        <div class="label">Rolling Hash</div>
+        <p>hash(s[0..m-1]) = (s[0]*p^(m-1) + s[1]*p^(m-2) + ... + s[m-1]*p^0) mod M</p>
+        <p>To slide the window one position right:</p>
+        <p>hash(s[1..m]) = (hash(s[0..m-1]) - s[0]*p^(m-1)) * p + s[m]</p>
+        <p>Common choices: p = 31 or 131, M = 10^9 + 7 or 10^9 + 9</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Hash Collisions</div>
+        <p>A single hash can collide. For competitive programming, use <strong>double hashing</strong> (two different mod values) to make collision probability negligible (~10^-18). Always verify matches character by character when correctness matters.</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">rabin_karp</span>(text: <span class="builtin">str</span>, pattern: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Rabin-Karp with rolling hash. Returns all match positions."""</span>
+    n, m = <span class="builtin">len</span>(text), <span class="builtin">len</span>(pattern)
+    <span class="keyword">if</span> m > n:
+        <span class="keyword">return</span> []
+
+    BASE = <span class="number">131</span>
+    MOD = <span class="number">10</span>**<span class="number">18</span> + <span class="number">9</span>
+
+    <span class="comment"># Precompute BASE^m mod MOD</span>
+    power = <span class="builtin">pow</span>(BASE, m, MOD)
+
+    <span class="comment"># Compute hash of pattern and first window</span>
+    pat_hash = <span class="number">0</span>
+    win_hash = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m):
+        pat_hash = (pat_hash * BASE + <span class="builtin">ord</span>(pattern[i])) % MOD
+        win_hash = (win_hash * BASE + <span class="builtin">ord</span>(text[i])) % MOD
+
+    matches = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - m + <span class="number">1</span>):
+        <span class="keyword">if</span> win_hash == pat_hash:
+            <span class="comment"># Verify to avoid false positives</span>
+            <span class="keyword">if</span> text[i:i + m] == pattern:
+                matches.<span class="function">append</span>(i)
+        <span class="comment"># Slide window</span>
+        <span class="keyword">if</span> i + m < n:
+            win_hash = (win_hash * BASE - <span class="builtin">ord</span>(text[i]) * power + <span class="builtin">ord</span>(text[i + m])) % MOD
+    <span class="keyword">return</span> matches
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">rabin_karp</span>(<span class="string">"abcabcabc"</span>, <span class="string">"abc"</span>))  <span class="comment"># [0, 3, 6]</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">rabinKarp</span>(<span class="keyword">const</span> string&amp; text, <span class="keyword">const</span> string&amp; pat) {
+    <span class="keyword">int</span> n = text.size(), m = pat.size();
+    <span class="keyword">if</span> (m &gt; n) <span class="keyword">return</span> {};
+    <span class="keyword">const long long</span> BASE = <span class="number">131</span>, MOD = <span class="number">1000000007LL</span>;
+
+    <span class="keyword">long long</span> power = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) power = power * BASE % MOD;
+
+    <span class="keyword">long long</span> ph = <span class="number">0</span>, wh = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) {
+        ph = (ph * BASE + pat[i]) % MOD;
+        wh = (wh * BASE + text[i]) % MOD;
+    }
+
+    vector&lt;<span class="keyword">int</span>&gt; res;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n - m; i++) {
+        <span class="keyword">if</span> (wh == ph &amp;&amp; text.<span class="function">substr</span>(i, m) == pat)
+            res.<span class="function">push_back</span>(i);
+        <span class="keyword">if</span> (i + m &lt; n)
+            wh = ((wh * BASE - text[i] * power % MOD + MOD) % MOD + text[i + m]) % MOD;
+    }
+    <span class="keyword">return</span> res;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(n + m) expected, O(n*m) worst case (many collisions). With double hashing, worst case is negligible.</p>
+        <p><strong>Space:</strong> O(1) extra (beyond input).</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 4: Edit Distance ============ -->
+    <div class="section" id="edit-distance">
+      <h2>4. Edit Distance / Levenshtein Distance</h2>
+
+      <p>Edit distance measures the minimum number of single-character operations (insert, delete, replace) to transform one string into another. This is one of the most practically important string algorithms -- it powers <strong>spell checkers, autocorrect, fuzzy search, diff tools, DNA sequence alignment</strong>, and typing accuracy services.</p>
+
+      <div class="formula-box">
+        <div class="label">DP Recurrence</div>
+        <p>dp[i][j] = edit distance between s1[0..i-1] and s2[0..j-1]</p>
+        <p><strong>Base cases:</strong> dp[i][0] = i, dp[0][j] = j</p>
+        <p><strong>Transition:</strong></p>
+        <p>If s1[i-1] == s2[j-1]: dp[i][j] = dp[i-1][j-1]</p>
+        <p>Else: dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])</p>
+        <p>The three choices are: delete from s1, insert into s1, replace in s1.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Real-World: Typing Accuracy and Fuzzy Matching</div>
+        <p>Typing services like MonkeyType and TypeRacer use edit distance to measure accuracy. When you type "hte" instead of "the", the edit distance is 1 (one transposition, or two operations in standard Levenshtein). Services compute:</p>
+        <p><strong>Accuracy = 1 - (edit_distance / max(len(typed), len(expected)))</strong></p>
+        <p>Fuzzy matching in search (like fzf, VS Code's Ctrl+P) uses edit distance or weighted variants where certain operations cost less (e.g., transpositions are common typos and may count as 1 operation via Damerau-Levenshtein).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Detailed Walkthrough: "kitten" to "sitting"</div>
+        <p>k->s (replace), e->i (replace), n->g (replace), _->g (insert) = edit distance 3</p>
+        <p>Full DP table (rows = "kitten", cols = "sitting"):</p>
+        <pre>    ""  s  i  t  t  i  n  g
+""   0  1  2  3  4  5  6  7
+k    1  1  2  3  4  5  6  7
+i    2  2  1  2  3  4  5  6
+t    3  3  2  1  2  3  4  5
+t    4  4  3  2  1  2  3  4
+e    5  5  4  3  2  2  3  4
+n    6  6  5  4  3  3  2  3</pre>
+        <p>Answer: dp[6][7] = 3</p>
+      </div>
+
+      <h3>Python Implementation (with backtracking)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">edit_distance</span>(s1: <span class="builtin">str</span>, s2: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+    <span class="string">"""Compute minimum edit distance using O(n) space."""</span>
+    m, n = <span class="builtin">len</span>(s1), <span class="builtin">len</span>(s2)
+    prev = <span class="builtin">list</span>(<span class="builtin">range</span>(n + <span class="number">1</span>))
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        curr = [i] + [<span class="number">0</span>] * n
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]:
+                curr[j] = prev[j - <span class="number">1</span>]
+            <span class="keyword">else</span>:
+                curr[j] = <span class="number">1</span> + <span class="builtin">min</span>(prev[j], curr[j - <span class="number">1</span>], prev[j - <span class="number">1</span>])
+        prev = curr
+    <span class="keyword">return</span> prev[n]
+
+
+<span class="keyword">def</span> <span class="function">edit_distance_with_ops</span>(s1: <span class="builtin">str</span>, s2: <span class="builtin">str</span>) -> <span class="builtin">tuple</span>[<span class="builtin">int</span>, <span class="builtin">list</span>[<span class="builtin">str</span>]]:
+    <span class="string">"""Return edit distance and the actual operations to transform s1 -> s2."""</span>
+    m, n = <span class="builtin">len</span>(s1), <span class="builtin">len</span>(s2)
+    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>): dp[i][<span class="number">0</span>] = i
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n + <span class="number">1</span>): dp[<span class="number">0</span>][j] = j
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]:
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>]
+            <span class="keyword">else</span>:
+                dp[i][j] = <span class="number">1</span> + <span class="builtin">min</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>], dp[i - <span class="number">1</span>][j - <span class="number">1</span>])
+
+    <span class="comment"># Backtrack to find operations</span>
+    ops = []
+    i, j = m, n
+    <span class="keyword">while</span> i > <span class="number">0</span> <span class="keyword">or</span> j > <span class="number">0</span>:
+        <span class="keyword">if</span> i > <span class="number">0</span> <span class="keyword">and</span> j > <span class="number">0</span> <span class="keyword">and</span> s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]:
+            i -= <span class="number">1</span>; j -= <span class="number">1</span>
+        <span class="keyword">elif</span> i > <span class="number">0</span> <span class="keyword">and</span> j > <span class="number">0</span> <span class="keyword">and</span> dp[i][j] == dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>:
+            ops.<span class="function">append</span>(<span class="string">f"Replace '{s1[i-1]}' with '{s2[j-1]}' at pos {i-1}"</span>)
+            i -= <span class="number">1</span>; j -= <span class="number">1</span>
+        <span class="keyword">elif</span> i > <span class="number">0</span> <span class="keyword">and</span> dp[i][j] == dp[i - <span class="number">1</span>][j] + <span class="number">1</span>:
+            ops.<span class="function">append</span>(<span class="string">f"Delete '{s1[i-1]}' at pos {i-1}"</span>)
+            i -= <span class="number">1</span>
+        <span class="keyword">else</span>:
+            ops.<span class="function">append</span>(<span class="string">f"Insert '{s2[j-1]}' at pos {i}"</span>)
+            j -= <span class="number">1</span>
+    ops.<span class="function">reverse</span>()
+    <span class="keyword">return</span> dp[m][n], ops
+
+
+<span class="comment"># Typing accuracy example</span>
+<span class="keyword">def</span> <span class="function">typing_accuracy</span>(expected: <span class="builtin">str</span>, typed: <span class="builtin">str</span>) -> <span class="builtin">float</span>:
+    <span class="string">"""Calculate typing accuracy as used by typing speed services."""</span>
+    dist = <span class="function">edit_distance</span>(expected, typed)
+    max_len = <span class="builtin">max</span>(<span class="builtin">len</span>(expected), <span class="builtin">len</span>(typed))
+    <span class="keyword">return</span> <span class="number">1.0</span> - dist / max_len <span class="keyword">if</span> max_len > <span class="number">0</span> <span class="keyword">else</span> <span class="number">1.0</span>
+
+
+<span class="comment"># Examples</span>
+<span class="builtin">print</span>(<span class="function">edit_distance</span>(<span class="string">"kitten"</span>, <span class="string">"sitting"</span>))  <span class="comment"># 3</span>
+dist, ops = <span class="function">edit_distance_with_ops</span>(<span class="string">"kitten"</span>, <span class="string">"sitting"</span>)
+<span class="keyword">for</span> op <span class="keyword">in</span> ops: <span class="builtin">print</span>(op)
+<span class="builtin">print</span>(<span class="string">f"Typing accuracy: {<span class="function">typing_accuracy</span>(<span class="string">'the quick brown'</span>, <span class="string">'teh quikc brown'</span>):.1%}"</span>)  <span class="comment"># 86.7%</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">editDistance</span>(<span class="keyword">const</span> string&amp; s1, <span class="keyword">const</span> string&amp; s2) {
+    <span class="keyword">int</span> m = s1.size(), n = s2.size();
+    vector&lt;<span class="keyword">int</span>&gt; prev(n + <span class="number">1</span>), curr(n + <span class="number">1</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++) prev[j] = j;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) {
+        curr[<span class="number">0</span>] = i;
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++) {
+            <span class="keyword">if</span> (s1[i-<span class="number">1</span>] == s2[j-<span class="number">1</span>])
+                curr[j] = prev[j-<span class="number">1</span>];
+            <span class="keyword">else</span>
+                curr[j] = <span class="number">1</span> + <span class="function">min</span>({prev[j], curr[j-<span class="number">1</span>], prev[j-<span class="number">1</span>]});
+        }
+        <span class="function">swap</span>(prev, curr);
+    }
+    <span class="keyword">return</span> prev[n];
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Damerau-Levenshtein (Transpositions)</div>
+        <p>Standard Levenshtein counts "ab" -> "ba" as 2 operations (delete + insert or two replaces). <strong>Damerau-Levenshtein</strong> adds transposition as a single operation, which is more natural for typos. Add this check: if s1[i-1] == s2[j-2] and s1[i-2] == s2[j-1], then also consider dp[i-2][j-2] + 1.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(m * n)</p>
+        <p><strong>Space:</strong> O(min(m, n)) with rolling array optimization, O(m * n) if you need backtracking.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 5: LCS ============ -->
+    <div class="section" id="lcs">
+      <h2>5. Longest Common Subsequence (LCS)</h2>
+
+      <p>LCS finds the longest sequence of characters that appear in both strings in the same order (not necessarily contiguous). It is used in diff tools, version control, bioinformatics, and plagiarism detection.</p>
+
+      <div class="formula-box">
+        <div class="label">DP Recurrence</div>
+        <p>dp[i][j] = LCS length of s1[0..i-1] and s2[0..j-1]</p>
+        <p>If s1[i-1] == s2[j-1]: dp[i][j] = dp[i-1][j-1] + 1</p>
+        <p>Else: dp[i][j] = max(dp[i-1][j], dp[i][j-1])</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">lcs</span>(s1: <span class="builtin">str</span>, s2: <span class="builtin">str</span>) -> <span class="builtin">str</span>:
+    <span class="string">"""Return the actual LCS string via DP + backtracking."""</span>
+    m, n = <span class="builtin">len</span>(s1), <span class="builtin">len</span>(s2)
+    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]:
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>
+            <span class="keyword">else</span>:
+                dp[i][j] = <span class="builtin">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>])
+
+    <span class="comment"># Backtrack to build the LCS</span>
+    result = []
+    i, j = m, n
+    <span class="keyword">while</span> i > <span class="number">0</span> <span class="keyword">and</span> j > <span class="number">0</span>:
+        <span class="keyword">if</span> s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]:
+            result.<span class="function">append</span>(s1[i - <span class="number">1</span>])
+            i -= <span class="number">1</span>; j -= <span class="number">1</span>
+        <span class="keyword">elif</span> dp[i - <span class="number">1</span>][j] > dp[i][j - <span class="number">1</span>]:
+            i -= <span class="number">1</span>
+        <span class="keyword">else</span>:
+            j -= <span class="number">1</span>
+
+    <span class="keyword">return</span> <span class="string">""</span>.<span class="function">join</span>(<span class="builtin">reversed</span>(result))
+
+
+<span class="comment"># Example</span>
+<span class="builtin">print</span>(<span class="function">lcs</span>(<span class="string">"ABCBDAB"</span>, <span class="string">"BDCAB"</span>))  <span class="comment"># "BCAB" (length 4)</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+string <span class="function">lcs</span>(<span class="keyword">const</span> string&amp; s1, <span class="keyword">const</span> string&amp; s2) {
+    <span class="keyword">int</span> m = s1.size(), n = s2.size();
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(m + <span class="number">1</span>, vector&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)
+            dp[i][j] = s1[i-<span class="number">1</span>] == s2[j-<span class="number">1</span>]
+                ? dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + <span class="number">1</span>
+                : <span class="function">max</span>(dp[i-<span class="number">1</span>][j], dp[i][j-<span class="number">1</span>]);
+
+    string res;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = m, j = n; i &gt; <span class="number">0</span> &amp;&amp; j &gt; <span class="number">0</span>; ) {
+        <span class="keyword">if</span> (s1[i-<span class="number">1</span>] == s2[j-<span class="number">1</span>]) { res += s1[--i]; --j; }
+        <span class="keyword">else if</span> (dp[i-<span class="number">1</span>][j] &gt; dp[i][j-<span class="number">1</span>]) i--;
+        <span class="keyword">else</span> j--;
+    }
+    <span class="function">reverse</span>(res.<span class="function">begin</span>(), res.<span class="function">end</span>());
+    <span class="keyword">return</span> res;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(m * n)</p>
+        <p><strong>Space:</strong> O(m * n) for the full table (needed for backtracking), O(min(m,n)) for length only.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 6: Suffix Arrays ============ -->
+    <div class="section" id="suffix-arrays">
+      <h2>6. Suffix Arrays</h2>
+
+      <p>A suffix array is a sorted array of all suffixes of a string, represented by their starting indices. Combined with an <strong>LCP (Longest Common Prefix) array</strong>, it enables powerful operations: finding any substring in O(m log n), counting distinct substrings, and computing longest repeated substrings.</p>
+
+      <div class="formula-box">
+        <div class="label">Suffix Array Example</div>
+        <p>s = "banana$"</p>
+        <p>All suffixes: banana$, anana$, nana$, ana$, na$, a$, $</p>
+        <p>Sorted: $, a$, ana$, anana$, banana$, na$, nana$</p>
+        <p>Suffix Array (indices): [6, 5, 3, 1, 0, 4, 2]</p>
+        <p>LCP Array: [0, 1, 3, 0, 0, 2] (LCP between consecutive sorted suffixes)</p>
+      </div>
+
+      <h3>Python Implementation (O(n log^2 n))</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">build_suffix_array</span>(s: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Build suffix array in O(n log^2 n) using rank doubling."""</span>
+    n = <span class="builtin">len</span>(s)
+    sa = <span class="builtin">list</span>(<span class="builtin">range</span>(n))
+    rank = [<span class="builtin">ord</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> s]
+    tmp = [<span class="number">0</span>] * n
+    k = <span class="number">1</span>
+
+    <span class="keyword">while</span> k < n:
+        <span class="keyword">def</span> <span class="function">cmp_key</span>(i):
+            <span class="keyword">return</span> (rank[i], rank[i + k] <span class="keyword">if</span> i + k < n <span class="keyword">else</span> -<span class="number">1</span>)
+
+        sa.<span class="function">sort</span>(key=cmp_key)
+
+        <span class="comment"># Recompute ranks</span>
+        tmp[sa[<span class="number">0</span>]] = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n):
+            tmp[sa[i]] = tmp[sa[i - <span class="number">1</span>]]
+            <span class="keyword">if</span> <span class="function">cmp_key</span>(sa[i]) != <span class="function">cmp_key</span>(sa[i - <span class="number">1</span>]):
+                tmp[sa[i]] += <span class="number">1</span>
+        rank = tmp[:]
+        <span class="keyword">if</span> rank[sa[-<span class="number">1</span>]] == n - <span class="number">1</span>:
+            <span class="keyword">break</span>
+        k *= <span class="number">2</span>
+    <span class="keyword">return</span> sa
+
+
+<span class="keyword">def</span> <span class="function">build_lcp</span>(s: <span class="builtin">str</span>, sa: <span class="builtin">list</span>[<span class="builtin">int</span>]) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Build LCP array in O(n) using Kasai's algorithm."""</span>
+    n = <span class="builtin">len</span>(s)
+    rank = [<span class="number">0</span>] * n
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        rank[sa[i]] = i
+
+    lcp = [<span class="number">0</span>] * (n - <span class="number">1</span>)
+    k = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> rank[i] == <span class="number">0</span>:
+            k = <span class="number">0</span>
+            <span class="keyword">continue</span>
+        j = sa[rank[i] - <span class="number">1</span>]
+        <span class="keyword">while</span> i + k < n <span class="keyword">and</span> j + k < n <span class="keyword">and</span> s[i + k] == s[j + k]:
+            k += <span class="number">1</span>
+        lcp[rank[i] - <span class="number">1</span>] = k
+        <span class="keyword">if</span> k > <span class="number">0</span>:
+            k -= <span class="number">1</span>
+    <span class="keyword">return</span> lcp
+
+
+<span class="comment"># Example</span>
+s = <span class="string">"banana"</span>
+sa = <span class="function">build_suffix_array</span>(s)
+lcp = <span class="function">build_lcp</span>(s, sa)
+<span class="builtin">print</span>(<span class="string">"SA:"</span>, sa)   <span class="comment"># [5, 3, 1, 0, 4, 2]</span>
+<span class="builtin">print</span>(<span class="string">"LCP:"</span>, lcp)  <span class="comment"># [1, 3, 0, 0, 2]</span>
+
+<span class="comment"># Number of distinct substrings = n*(n+1)/2 - sum(lcp)</span>
+n = <span class="builtin">len</span>(s)
+distinct = n * (n + <span class="number">1</span>) // <span class="number">2</span> - <span class="builtin">sum</span>(lcp)
+<span class="builtin">print</span>(<span class="string">f"Distinct substrings: {distinct}"</span>)  <span class="comment"># 15</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Key Applications of Suffix Arrays</div>
+        <p><strong>1. Find any substring</strong> in O(m log n) via binary search on the suffix array.</p>
+        <p><strong>2. Count distinct substrings:</strong> n*(n+1)/2 - sum(LCP).</p>
+        <p><strong>3. Longest repeated substring:</strong> max value in the LCP array.</p>
+        <p><strong>4. Longest common substring of two strings:</strong> concatenate with separator, build SA + LCP, find max LCP between suffixes from different strings.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Suffix Array Construction:</strong> O(n log^2 n) with the above approach, O(n log n) with radix sort, O(n) with SA-IS.</p>
+        <p><strong>LCP Array (Kasai):</strong> O(n)</p>
+        <p><strong>Space:</strong> O(n)</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 7: Aho-Corasick ============ -->
+    <div class="section" id="aho-corasick">
+      <h2>7. Aho-Corasick</h2>
+
+      <p>Aho-Corasick is a multi-pattern string matching algorithm. Given a set of k patterns with total length M and a text of length N, it finds all occurrences of all patterns in <strong>O(N + M + Z)</strong> time, where Z is the number of matches. It builds a trie of all patterns, then adds <strong>failure links</strong> (like KMP's failure function, but on a trie) and <strong>dictionary suffix links</strong>.</p>
+
+      <div class="tip-box">
+        <div class="label">When to Use Aho-Corasick</div>
+        <p>Use it when you need to search for <strong>many patterns simultaneously</strong>: content filtering (banned words), virus signature detection, network intrusion detection, DNA motif finding. Running KMP separately for each pattern would be O(N*k), but Aho-Corasick is O(N + M + Z).</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">class</span> <span class="function">AhoCorasick</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.goto = [{}]       <span class="comment"># goto[state][char] -> next_state</span>
+        self.fail = [<span class="number">0</span>]        <span class="comment"># failure links</span>
+        self.output = [[]]     <span class="comment"># output[state] = list of pattern indices</span>
+
+    <span class="keyword">def</span> <span class="function">add_pattern</span>(self, pattern: <span class="builtin">str</span>, idx: <span class="builtin">int</span>):
+        <span class="string">"""Insert a pattern into the trie."""</span>
+        state = <span class="number">0</span>
+        <span class="keyword">for</span> ch <span class="keyword">in</span> pattern:
+            <span class="keyword">if</span> ch <span class="keyword">not in</span> self.goto[state]:
+                self.goto[state][ch] = <span class="builtin">len</span>(self.goto)
+                self.goto.<span class="function">append</span>({})
+                self.fail.<span class="function">append</span>(<span class="number">0</span>)
+                self.output.<span class="function">append</span>([])
+            state = self.goto[state][ch]
+        self.output[state].<span class="function">append</span>(idx)
+
+    <span class="keyword">def</span> <span class="function">build</span>(self):
+        <span class="string">"""Build failure links using BFS (like KMP on a trie)."""</span>
+        queue = deque()
+        <span class="comment"># Initialize: depth-1 nodes fail to root</span>
+        <span class="keyword">for</span> ch, s <span class="keyword">in</span> self.goto[<span class="number">0</span>].<span class="function">items</span>():
+            queue.<span class="function">append</span>(s)
+
+        <span class="keyword">while</span> queue:
+            u = queue.<span class="function">popleft</span>()
+            <span class="keyword">for</span> ch, v <span class="keyword">in</span> self.goto[u].<span class="function">items</span>():
+                queue.<span class="function">append</span>(v)
+                <span class="comment"># Follow failure links until we find a node with edge ch</span>
+                f = self.fail[u]
+                <span class="keyword">while</span> f <span class="keyword">and</span> ch <span class="keyword">not in</span> self.goto[f]:
+                    f = self.fail[f]
+                self.fail[v] = self.goto[f].get(ch, <span class="number">0</span>)
+                <span class="keyword">if</span> self.fail[v] == v:
+                    self.fail[v] = <span class="number">0</span>
+                <span class="comment"># Merge output from failure link (dictionary suffix link)</span>
+                self.output[v] = self.output[v] + self.output[self.fail[v]]
+
+    <span class="keyword">def</span> <span class="function">search</span>(self, text: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">tuple</span>[<span class="builtin">int</span>, <span class="builtin">int</span>]]:
+        <span class="string">"""Return list of (position, pattern_index) for all matches."""</span>
+        state = <span class="number">0</span>
+        results = []
+        <span class="keyword">for</span> i, ch <span class="keyword">in</span> <span class="builtin">enumerate</span>(text):
+            <span class="keyword">while</span> state <span class="keyword">and</span> ch <span class="keyword">not in</span> self.goto[state]:
+                state = self.fail[state]
+            state = self.goto[state].get(ch, <span class="number">0</span>)
+            <span class="keyword">for</span> pat_idx <span class="keyword">in</span> self.output[state]:
+                results.<span class="function">append</span>((i, pat_idx))
+        <span class="keyword">return</span> results
+
+
+<span class="comment"># Example: find banned words</span>
+ac = <span class="function">AhoCorasick</span>()
+patterns = [<span class="string">"he"</span>, <span class="string">"she"</span>, <span class="string">"his"</span>, <span class="string">"hers"</span>]
+<span class="keyword">for</span> i, p <span class="keyword">in</span> <span class="builtin">enumerate</span>(patterns):
+    ac.<span class="function">add_pattern</span>(p, i)
+ac.<span class="function">build</span>()
+
+text = <span class="string">"ahishers"</span>
+<span class="keyword">for</span> pos, idx <span class="keyword">in</span> ac.<span class="function">search</span>(text):
+    <span class="builtin">print</span>(<span class="string">f"Pattern '{patterns[idx]}' found ending at position {pos}"</span>)
+<span class="comment"># Pattern 'his' found ending at position 3</span>
+<span class="comment"># Pattern 'she' found ending at position 5</span>
+<span class="comment"># Pattern 'he' found ending at position 6</span>
+<span class="comment"># Pattern 'hers' found ending at position 7</span></code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Build:</strong> O(M * A) where M = total pattern length, A = alphabet size (26 for lowercase).</p>
+        <p><strong>Search:</strong> O(N + Z) where N = text length, Z = number of matches.</p>
+        <p><strong>Space:</strong> O(M * A) for the automaton.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 8: Manacher's ============ -->
+    <div class="section" id="manachers">
+      <h2>8. Manacher's Algorithm</h2>
+
+      <p>Manacher's algorithm finds all palindromic substrings in <strong>O(n)</strong> time. It computes, for each center position, the radius of the longest palindrome centered there. The key trick: we use previously computed palindromes to skip redundant comparisons, similar to how Z-algorithm reuses the Z-box.</p>
+
+      <div class="formula-box">
+        <div class="label">Core Idea</div>
+        <p>Transform the string to handle even-length palindromes: "abc" becomes "#a#b#c#".</p>
+        <p>p[i] = radius of longest palindrome centered at i in the transformed string.</p>
+        <p>Maintain a rightmost palindrome boundary [c, r). For each i:</p>
+        <p>1. If i &lt; r, initialize p[i] = min(p[2*c - i], r - i) (mirror property).</p>
+        <p>2. Try to expand the palindrome centered at i.</p>
+        <p>3. If i + p[i] &gt; r, update c = i, r = i + p[i].</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">manachers</span>(s: <span class="builtin">str</span>) -> <span class="builtin">list</span>[<span class="builtin">int</span>]:
+    <span class="string">"""Return palindrome radii for the transformed string."""</span>
+    <span class="comment"># Transform: "abc" -> "^#a#b#c#$"</span>
+    t = <span class="string">"^#"</span> + <span class="string">"#"</span>.<span class="function">join</span>(s) + <span class="string">"#$"</span>
+    n = <span class="builtin">len</span>(t)
+    p = [<span class="number">0</span>] * n
+    c = r = <span class="number">0</span>  <span class="comment"># center and right boundary</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n - <span class="number">1</span>):
+        mirror = <span class="number">2</span> * c - i
+        <span class="keyword">if</span> i < r:
+            p[i] = <span class="builtin">min</span>(r - i, p[mirror])
+        <span class="comment"># Attempt to expand</span>
+        <span class="keyword">while</span> t[i + p[i] + <span class="number">1</span>] == t[i - p[i] - <span class="number">1</span>]:
+            p[i] += <span class="number">1</span>
+        <span class="comment"># Update center if we expanded past r</span>
+        <span class="keyword">if</span> i + p[i] > r:
+            c, r = i, i + p[i]
+    <span class="keyword">return</span> p
+
+
+<span class="keyword">def</span> <span class="function">longest_palindrome</span>(s: <span class="builtin">str</span>) -> <span class="builtin">str</span>:
+    <span class="string">"""Find the longest palindromic substring in O(n)."""</span>
+    p = <span class="function">manachers</span>(s)
+    max_len = <span class="builtin">max</span>(p)
+    center = p.<span class="function">index</span>(max_len)
+    <span class="comment"># Convert back from transformed index to original</span>
+    start = (center - max_len) // <span class="number">2</span>
+    <span class="keyword">return</span> s[start:start + max_len]
+
+
+<span class="keyword">def</span> <span class="function">count_palindromes</span>(s: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+    <span class="string">"""Count total number of palindromic substrings."""</span>
+    p = <span class="function">manachers</span>(s)
+    <span class="comment"># Each p[i] in the transformed string gives (p[i]+1)//2</span>
+    <span class="comment"># palindromes centered at that position (for # positions: even-length, for char positions: odd-length)</span>
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(p) - <span class="number">1</span>):
+        total += (p[i] + <span class="number">1</span>) // <span class="number">2</span>  <span class="comment"># integer ceiling of p[i]/2</span>
+    <span class="keyword">return</span> total
+
+
+<span class="comment"># Examples</span>
+<span class="builtin">print</span>(<span class="function">longest_palindrome</span>(<span class="string">"babad"</span>))      <span class="comment"># "bab" or "aba"</span>
+<span class="builtin">print</span>(<span class="function">longest_palindrome</span>(<span class="string">"cbbd"</span>))       <span class="comment"># "bb"</span>
+<span class="builtin">print</span>(<span class="function">count_palindromes</span>(<span class="string">"aaa"</span>))        <span class="comment"># 6: "a","a","a","aa","aa","aaa"</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+string <span class="function">longestPalindrome</span>(<span class="keyword">const</span> string&amp; s) {
+    string t = <span class="string">"^#"</span>;
+    <span class="keyword">for</span> (<span class="keyword">char</span> c : s) { t += c; t += <span class="string">'#'</span>; }
+    t += <span class="string">'$'</span>;
+    <span class="keyword">int</span> n = t.size();
+    vector&lt;<span class="keyword">int</span>&gt; p(n, <span class="number">0</span>);
+    <span class="keyword">int</span> c = <span class="number">0</span>, r = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n - <span class="number">1</span>; i++) {
+        <span class="keyword">if</span> (i &lt; r) p[i] = <span class="function">min</span>(r - i, p[<span class="number">2</span>*c - i]);
+        <span class="keyword">while</span> (t[i + p[i] + <span class="number">1</span>] == t[i - p[i] - <span class="number">1</span>]) p[i]++;
+        <span class="keyword">if</span> (i + p[i] &gt; r) { c = i; r = i + p[i]; }
+    }
+
+    <span class="keyword">int</span> maxLen = *<span class="function">max_element</span>(p.<span class="function">begin</span>(), p.<span class="function">end</span>());
+    <span class="keyword">int</span> center = <span class="function">find</span>(p.<span class="function">begin</span>(), p.<span class="function">end</span>(), maxLen) - p.<span class="function">begin</span>();
+    <span class="keyword">return</span> s.<span class="function">substr</span>((center - maxLen) / <span class="number">2</span>, maxLen);
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Time:</strong> O(n) -- each character is part of at most one expansion.</p>
+        <p><strong>Space:</strong> O(n) for the P array and transformed string.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 9: String Hashing ============ -->
+    <div class="section" id="string-hashing">
+      <h2>9. String Hashing</h2>
+
+      <p>Polynomial string hashing allows <strong>O(1) substring comparison</strong> after O(n) preprocessing. This is essential for competitive programming problems involving substring equality checks, counting distinct substrings, or solving problems with binary search on string length.</p>
+
+      <div class="formula-box">
+        <div class="label">Polynomial Hash</div>
+        <p>hash(s) = s[0]*p^(n-1) + s[1]*p^(n-2) + ... + s[n-1]*p^0 (mod M)</p>
+        <p>Prefix hashes: H[i] = hash(s[0..i-1])</p>
+        <p>Substring hash: hash(s[l..r]) = (H[r+1] - H[l] * p^(r-l+1)) mod M</p>
+        <p>Use double hashing (two mod values) to virtually eliminate collisions.</p>
+      </div>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">StringHasher</span>:
+    <span class="string">"""O(n) preprocessing, O(1) substring hash queries. Double hashing."""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, s: <span class="builtin">str</span>):
+        self.n = <span class="builtin">len</span>(s)
+        self.MOD1 = <span class="number">10</span>**<span class="number">9</span> + <span class="number">7</span>
+        self.MOD2 = <span class="number">10</span>**<span class="number">9</span> + <span class="number">9</span>
+        self.BASE1 = <span class="number">131</span>
+        self.BASE2 = <span class="number">137</span>
+
+        <span class="comment"># Build prefix hashes and power arrays</span>
+        self.h1 = [<span class="number">0</span>] * (self.n + <span class="number">1</span>)
+        self.h2 = [<span class="number">0</span>] * (self.n + <span class="number">1</span>)
+        self.pw1 = [<span class="number">1</span>] * (self.n + <span class="number">1</span>)
+        self.pw2 = [<span class="number">1</span>] * (self.n + <span class="number">1</span>)
+
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(self.n):
+            self.h1[i + <span class="number">1</span>] = (self.h1[i] * self.BASE1 + <span class="builtin">ord</span>(s[i])) % self.MOD1
+            self.h2[i + <span class="number">1</span>] = (self.h2[i] * self.BASE2 + <span class="builtin">ord</span>(s[i])) % self.MOD2
+            self.pw1[i + <span class="number">1</span>] = self.pw1[i] * self.BASE1 % self.MOD1
+            self.pw2[i + <span class="number">1</span>] = self.pw2[i] * self.BASE2 % self.MOD2
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, l: <span class="builtin">int</span>, r: <span class="builtin">int</span>) -> <span class="builtin">tuple</span>[<span class="builtin">int</span>, <span class="builtin">int</span>]:
+        <span class="string">"""Return double hash of s[l..r] (inclusive) in O(1)."""</span>
+        length = r - l + <span class="number">1</span>
+        h1 = (self.h1[r + <span class="number">1</span>] - self.h1[l] * self.pw1[length]) % self.MOD1
+        h2 = (self.h2[r + <span class="number">1</span>] - self.h2[l] * self.pw2[length]) % self.MOD2
+        <span class="keyword">return</span> (h1, h2)
+
+    <span class="keyword">def</span> <span class="function">equal</span>(self, l1: <span class="builtin">int</span>, r1: <span class="builtin">int</span>, l2: <span class="builtin">int</span>, r2: <span class="builtin">int</span>) -> <span class="builtin">bool</span>:
+        <span class="string">"""Check if s[l1..r1] == s[l2..r2] in O(1)."""</span>
+        <span class="keyword">return</span> self.<span class="function">query</span>(l1, r1) == self.<span class="function">query</span>(l2, r2)
+
+
+<span class="comment"># Example: count distinct substrings of length k</span>
+<span class="keyword">def</span> <span class="function">count_distinct_k</span>(s: <span class="builtin">str</span>, k: <span class="builtin">int</span>) -> <span class="builtin">int</span>:
+    hasher = <span class="function">StringHasher</span>(s)
+    seen = <span class="builtin">set</span>()
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(s) - k + <span class="number">1</span>):
+        seen.<span class="function">add</span>(hasher.<span class="function">query</span>(i, i + k - <span class="number">1</span>))
+    <span class="keyword">return</span> <span class="builtin">len</span>(seen)
+
+<span class="builtin">print</span>(<span class="function">count_distinct_k</span>(<span class="string">"abcabc"</span>, <span class="number">3</span>))  <span class="comment"># 3: "abc", "bca", "cab"</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Birthday Paradox</div>
+        <p>With a single mod of ~10^9, collision probability for n = 10^6 comparisons is about 10^-3 (birthday paradox). With <strong>double hashing</strong> (two independent mods), the probability drops to ~10^-12. Always use double hashing in contests unless the time limit is extremely tight.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Preprocessing:</strong> O(n)</p>
+        <p><strong>Substring hash query:</strong> O(1)</p>
+        <p><strong>Space:</strong> O(n)</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 10: Trie ============ -->
+    <div class="section" id="trie">
+      <h2>10. Trie (Prefix Tree)</h2>
+
+      <p>A trie stores a set of strings by sharing common prefixes. Each edge represents a character, and each node may mark the end of a word. Tries support insert, search, and prefix queries in <strong>O(m)</strong> time (m = word length), and are the backbone of autocomplete systems, spell checkers, IP routing tables, and Boggle solvers.</p>
+
+      <h3>Python Implementation</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">TrieNode</span>:
+    __slots__ = [<span class="string">'children'</span>, <span class="string">'is_end'</span>, <span class="string">'count'</span>]
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.children: <span class="builtin">dict</span>[<span class="builtin">str</span>, TrieNode] = {}
+        self.is_end = <span class="keyword">False</span>
+        self.count = <span class="number">0</span>  <span class="comment"># number of words passing through this node</span>
+
+
+<span class="keyword">class</span> <span class="function">Trie</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.root = <span class="function">TrieNode</span>()
+
+    <span class="keyword">def</span> <span class="function">insert</span>(self, word: <span class="builtin">str</span>) -> <span class="keyword">None</span>:
+        node = self.root
+        <span class="keyword">for</span> ch <span class="keyword">in</span> word:
+            <span class="keyword">if</span> ch <span class="keyword">not in</span> node.children:
+                node.children[ch] = <span class="function">TrieNode</span>()
+            node = node.children[ch]
+            node.count += <span class="number">1</span>
+        node.is_end = <span class="keyword">True</span>
+
+    <span class="keyword">def</span> <span class="function">search</span>(self, word: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+        <span class="string">"""Return True if word is in the trie."""</span>
+        node = self._find(word)
+        <span class="keyword">return</span> node <span class="keyword">is not</span> <span class="keyword">None</span> <span class="keyword">and</span> node.is_end
+
+    <span class="keyword">def</span> <span class="function">starts_with</span>(self, prefix: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+        <span class="string">"""Return True if any word starts with prefix."""</span>
+        <span class="keyword">return</span> self._find(prefix) <span class="keyword">is not</span> <span class="keyword">None</span>
+
+    <span class="keyword">def</span> <span class="function">count_prefix</span>(self, prefix: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+        <span class="string">"""Return number of words that start with prefix."""</span>
+        node = self._find(prefix)
+        <span class="keyword">return</span> node.count <span class="keyword">if</span> node <span class="keyword">else</span> <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">_find</span>(self, prefix: <span class="builtin">str</span>):
+        node = self.root
+        <span class="keyword">for</span> ch <span class="keyword">in</span> prefix:
+            <span class="keyword">if</span> ch <span class="keyword">not in</span> node.children:
+                <span class="keyword">return</span> <span class="keyword">None</span>
+            node = node.children[ch]
+        <span class="keyword">return</span> node
+
+    <span class="keyword">def</span> <span class="function">autocomplete</span>(self, prefix: <span class="builtin">str</span>, limit: <span class="builtin">int</span> = <span class="number">5</span>) -> <span class="builtin">list</span>[<span class="builtin">str</span>]:
+        <span class="string">"""Return up to `limit` words starting with prefix."""</span>
+        node = self._find(prefix)
+        <span class="keyword">if</span> <span class="keyword">not</span> node:
+            <span class="keyword">return</span> []
+        results = []
+        <span class="keyword">def</span> <span class="function">dfs</span>(n, path):
+            <span class="keyword">if</span> <span class="builtin">len</span>(results) >= limit:
+                <span class="keyword">return</span>
+            <span class="keyword">if</span> n.is_end:
+                results.<span class="function">append</span>(prefix + <span class="string">""</span>.<span class="function">join</span>(path))
+            <span class="keyword">for</span> ch <span class="keyword">in</span> <span class="builtin">sorted</span>(n.children):
+                <span class="function">dfs</span>(n.children[ch], path + [ch])
+        <span class="function">dfs</span>(node, [])
+        <span class="keyword">return</span> results
+
+
+<span class="comment"># Example</span>
+trie = <span class="function">Trie</span>()
+<span class="keyword">for</span> word <span class="keyword">in</span> [<span class="string">"apple"</span>, <span class="string">"app"</span>, <span class="string">"application"</span>, <span class="string">"apt"</span>, <span class="string">"bat"</span>]:
+    trie.<span class="function">insert</span>(word)
+
+<span class="builtin">print</span>(trie.<span class="function">search</span>(<span class="string">"app"</span>))          <span class="comment"># True</span>
+<span class="builtin">print</span>(trie.<span class="function">starts_with</span>(<span class="string">"ap"</span>))      <span class="comment"># True</span>
+<span class="builtin">print</span>(trie.<span class="function">count_prefix</span>(<span class="string">"app"</span>))    <span class="comment"># 3 (app, apple, application)</span>
+<span class="builtin">print</span>(trie.<span class="function">autocomplete</span>(<span class="string">"app"</span>))    <span class="comment"># ['app', 'apple', 'application']</span></code></pre>
+
+      <h3>C++ Implementation</h3>
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> TrieNode {
+    <span class="keyword">int</span> children[<span class="number">26</span>];
+    <span class="keyword">bool</span> is_end;
+    <span class="keyword">int</span> count;
+    <span class="function">TrieNode</span>() : is_end(<span class="keyword">false</span>), count(<span class="number">0</span>) {
+        <span class="function">memset</span>(children, -<span class="number">1</span>, <span class="keyword">sizeof</span>(children));
+    }
+};
+
+<span class="keyword">class</span> Trie {
+    vector&lt;TrieNode&gt; nodes;
+<span class="keyword">public</span>:
+    <span class="function">Trie</span>() { nodes.<span class="function">emplace_back</span>(); }
+
+    <span class="keyword">void</span> <span class="function">insert</span>(<span class="keyword">const</span> string&amp; word) {
+        <span class="keyword">int</span> cur = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">char</span> c : word) {
+            <span class="keyword">int</span> idx = c - <span class="string">'a'</span>;
+            <span class="keyword">if</span> (nodes[cur].children[idx] == -<span class="number">1</span>) {
+                nodes[cur].children[idx] = nodes.<span class="function">size</span>();
+                nodes.<span class="function">emplace_back</span>();
+            }
+            cur = nodes[cur].children[idx];
+            nodes[cur].count++;
+        }
+        nodes[cur].is_end = <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">bool</span> <span class="function">search</span>(<span class="keyword">const</span> string&amp; word) {
+        <span class="keyword">int</span> cur = <span class="function">find</span>(word);
+        <span class="keyword">return</span> cur != -<span class="number">1</span> &amp;&amp; nodes[cur].is_end;
+    }
+
+    <span class="keyword">int</span> <span class="function">countPrefix</span>(<span class="keyword">const</span> string&amp; prefix) {
+        <span class="keyword">int</span> cur = <span class="function">find</span>(prefix);
+        <span class="keyword">return</span> cur == -<span class="number">1</span> ? <span class="number">0</span> : nodes[cur].count;
+    }
+
+<span class="keyword">private</span>:
+    <span class="keyword">int</span> <span class="function">find</span>(<span class="keyword">const</span> string&amp; s) {
+        <span class="keyword">int</span> cur = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">char</span> c : s) {
+            <span class="keyword">int</span> idx = c - <span class="string">'a'</span>;
+            <span class="keyword">if</span> (nodes[cur].children[idx] == -<span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+            cur = nodes[cur].children[idx];
+        }
+        <span class="keyword">return</span> cur;
+    }
+};</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Trie Applications</div>
+        <p><strong>Autocomplete:</strong> DFS from the prefix node to enumerate completions.</p>
+        <p><strong>Spell checker:</strong> Trie + edit distance (search within edit distance k from query).</p>
+        <p><strong>XOR maximum:</strong> Binary trie to find max XOR pair in O(n * 30).</p>
+        <p><strong>IP routing:</strong> Longest prefix match in routing tables.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <p><strong>Insert/Search/Prefix:</strong> O(m) where m is the word/prefix length.</p>
+        <p><strong>Space:</strong> O(total characters * alphabet size) in worst case, but shared prefixes save space.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 11: String DP ============ -->
+    <div class="section" id="string-dp">
+      <h2>11. String DP Patterns</h2>
+
+      <p>Many competitive programming and interview problems involve dynamic programming on strings. Here are the most important patterns.</p>
+
+      <h3>Palindrome Partitioning (Minimum Cuts)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">min_palindrome_cuts</span>(s: <span class="builtin">str</span>) -> <span class="builtin">int</span>:
+    <span class="string">"""Minimum cuts to partition s into palindromes. O(n^2)."""</span>
+    n = <span class="builtin">len</span>(s)
+    <span class="comment"># is_pal[i][j] = True if s[i..j] is a palindrome</span>
+    is_pal = [[<span class="keyword">False</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i, n):
+            <span class="keyword">if</span> s[i] == s[j] <span class="keyword">and</span> (j - i <= <span class="number">2</span> <span class="keyword">or</span> is_pal[i + <span class="number">1</span>][j - <span class="number">1</span>]):
+                is_pal[i][j] = <span class="keyword">True</span>
+
+    <span class="comment"># dp[i] = minimum cuts for s[0..i]</span>
+    dp = <span class="builtin">list</span>(<span class="builtin">range</span>(n))  <span class="comment"># worst case: cut after every char</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> is_pal[<span class="number">0</span>][i]:
+            dp[i] = <span class="number">0</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):
+                <span class="keyword">if</span> is_pal[j][i]:
+                    dp[i] = <span class="builtin">min</span>(dp[i], dp[j - <span class="number">1</span>] + <span class="number">1</span>)
+    <span class="keyword">return</span> dp[n - <span class="number">1</span>]
+
+<span class="builtin">print</span>(<span class="function">min_palindrome_cuts</span>(<span class="string">"aab"</span>))   <span class="comment"># 1 ("aa" | "b")</span>
+<span class="builtin">print</span>(<span class="function">min_palindrome_cuts</span>(<span class="string">"abcba"</span>)) <span class="comment"># 0 (already palindrome)</span></code></pre>
+
+      <h3>Regular Expression Matching</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">is_match</span>(s: <span class="builtin">str</span>, p: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+    <span class="string">"""
+    Regex matching with '.' (any single char) and '*' (zero or more of preceding).
+    dp[i][j] = does s[0..i-1] match p[0..j-1]?
+    """</span>
+    m, n = <span class="builtin">len</span>(s), <span class="builtin">len</span>(p)
+    dp = [[<span class="keyword">False</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+    dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="keyword">True</span>
+
+    <span class="comment"># Handle patterns like a*, a*b*, a*b*c* that match empty string</span>
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        <span class="keyword">if</span> p[j - <span class="number">1</span>] == <span class="string">'*'</span>:
+            dp[<span class="number">0</span>][j] = dp[<span class="number">0</span>][j - <span class="number">2</span>]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> p[j - <span class="number">1</span>] == <span class="string">'*'</span>:
+                <span class="comment"># Zero occurrences of preceding element</span>
+                dp[i][j] = dp[i][j - <span class="number">2</span>]
+                <span class="comment"># One or more occurrences</span>
+                <span class="keyword">if</span> p[j - <span class="number">2</span>] == <span class="string">'.'</span> <span class="keyword">or</span> p[j - <span class="number">2</span>] == s[i - <span class="number">1</span>]:
+                    dp[i][j] = dp[i][j] <span class="keyword">or</span> dp[i - <span class="number">1</span>][j]
+            <span class="keyword">elif</span> p[j - <span class="number">1</span>] == <span class="string">'.'</span> <span class="keyword">or</span> p[j - <span class="number">1</span>] == s[i - <span class="number">1</span>]:
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>]
+
+    <span class="keyword">return</span> dp[m][n]
+
+<span class="builtin">print</span>(<span class="function">is_match</span>(<span class="string">"aab"</span>, <span class="string">"c*a*b"</span>))    <span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">is_match</span>(<span class="string">"mississippi"</span>, <span class="string">"mis*is*ip*."</span>))  <span class="comment"># True</span></code></pre>
+
+      <h3>Wildcard Matching</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">wildcard_match</span>(s: <span class="builtin">str</span>, p: <span class="builtin">str</span>) -> <span class="builtin">bool</span>:
+    <span class="string">"""
+    Wildcard matching: '?' matches any single char, '*' matches any sequence.
+    """</span>
+    m, n = <span class="builtin">len</span>(s), <span class="builtin">len</span>(p)
+    dp = [[<span class="keyword">False</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(m + <span class="number">1</span>)]
+    dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="keyword">True</span>
+
+    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        <span class="keyword">if</span> p[j - <span class="number">1</span>] == <span class="string">'*'</span>:
+            dp[<span class="number">0</span>][j] = dp[<span class="number">0</span>][j - <span class="number">1</span>]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+            <span class="keyword">if</span> p[j - <span class="number">1</span>] == <span class="string">'*'</span>:
+                dp[i][j] = dp[i - <span class="number">1</span>][j] <span class="keyword">or</span> dp[i][j - <span class="number">1</span>]
+            <span class="keyword">elif</span> p[j - <span class="number">1</span>] == <span class="string">'?'</span> <span class="keyword">or</span> p[j - <span class="number">1</span>] == s[i - <span class="number">1</span>]:
+                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>]
+
+    <span class="keyword">return</span> dp[m][n]
+
+<span class="builtin">print</span>(<span class="function">wildcard_match</span>(<span class="string">"adceb"</span>, <span class="string">"*a*b"</span>))   <span class="comment"># True</span>
+<span class="builtin">print</span>(<span class="function">wildcard_match</span>(<span class="string">"acdcb"</span>, <span class="string">"a*c?b"</span>))  <span class="comment"># False</span></code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity (all above)</div>
+        <p><strong>Time:</strong> O(m * n) where m = string length, n = pattern length.</p>
+        <p><strong>Space:</strong> O(m * n), optimizable to O(n) with rolling array.</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 12: Real-World ============ -->
+    <div class="section" id="real-world">
+      <h2>12. Real-World Applications</h2>
+
+      <div class="tip-box">
+        <div class="label">Typing Accuracy Services (MonkeyType, TypeRacer)</div>
+        <p>These services compare your typed text against a reference using <strong>edit distance</strong> (Section 4). The core pipeline:</p>
+        <p>1. Split into words. For each word, compute Levenshtein distance against the expected word.</p>
+        <p>2. Accuracy = correct_chars / total_chars, where incorrect chars are counted via edit distance.</p>
+        <p>3. Some services use <strong>Damerau-Levenshtein</strong> (counting transpositions as 1 edit) since "teh" -> "the" is a common slip.</p>
+        <p>4. Advanced services also track <strong>per-key error rates</strong> using character-level diff alignment (similar to LCS backtracking).</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Spell Checkers and Autocorrect</div>
+        <p>Modern spell checkers combine multiple string algorithms:</p>
+        <p><strong>1. Trie</strong> for dictionary storage and fast lookup.</p>
+        <p><strong>2. Edit distance</strong> to find candidates within distance 1-2 of the misspelled word.</p>
+        <p><strong>3. BK-trees</strong> (metric trees using edit distance) for efficient nearest-neighbor search in large dictionaries.</p>
+        <p><strong>4. Norvig's spell corrector:</strong> generate all strings within edit distance 2, filter by dictionary membership, rank by word frequency. ~80% of misspellings are within edit distance 1.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">DNA Sequence Analysis</div>
+        <p><strong>Pattern matching:</strong> KMP/Rabin-Karp to find gene sequences (motifs) in genomes.</p>
+        <p><strong>Sequence alignment:</strong> Edit distance variants (Smith-Waterman for local alignment, Needleman-Wunsch for global) with custom scoring matrices (BLOSUM, PAM).</p>
+        <p><strong>Repeat finding:</strong> Suffix arrays + LCP to find tandem repeats in DNA.</p>
+        <p><strong>Genome assembly:</strong> Overlap graphs built using suffix-prefix matching (Aho-Corasick).</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Search Engines and Text Editors</div>
+        <p><strong>Ctrl+F (Find):</strong> Uses Boyer-Moore or KMP for exact matching.</p>
+        <p><strong>Fuzzy search (fzf, VS Code):</strong> Substring/subsequence matching + scoring based on match positions, consecutive matches, and word boundaries.</p>
+        <p><strong>Full-text search (Elasticsearch):</strong> Inverted index + n-gram tokenization + edit distance for typo tolerance.</p>
+        <p><strong>Diff tools (git diff):</strong> LCS-based algorithms (Myers diff) to compute minimal edit scripts between files.</p>
+      </div>
+
+      <h3>Simple Spell Corrector (Norvig-style)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+
+<span class="keyword">def</span> <span class="function">spell_corrector</span>(word: <span class="builtin">str</span>, dictionary: <span class="builtin">set</span>[<span class="builtin">str</span>], freq: Counter) -> <span class="builtin">str</span>:
+    <span class="string">"""Return most likely correction for a misspelled word."""</span>
+    <span class="keyword">if</span> word <span class="keyword">in</span> dictionary:
+        <span class="keyword">return</span> word
+
+    <span class="keyword">def</span> <span class="function">edits1</span>(w):
+        <span class="string">"""All strings within edit distance 1."""</span>
+        letters = <span class="string">'abcdefghijklmnopqrstuvwxyz'</span>
+        splits = [(w[:i], w[i:]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(w) + <span class="number">1</span>)]
+        deletes = [a + b[<span class="number">1</span>:] <span class="keyword">for</span> a, b <span class="keyword">in</span> splits <span class="keyword">if</span> b]
+        transposes = [a + b[<span class="number">1</span>] + b[<span class="number">0</span>] + b[<span class="number">2</span>:] <span class="keyword">for</span> a, b <span class="keyword">in</span> splits <span class="keyword">if</span> <span class="builtin">len</span>(b) > <span class="number">1</span>]
+        replaces = [a + c + b[<span class="number">1</span>:] <span class="keyword">for</span> a, b <span class="keyword">in</span> splits <span class="keyword">if</span> b <span class="keyword">for</span> c <span class="keyword">in</span> letters]
+        inserts = [a + c + b <span class="keyword">for</span> a, b <span class="keyword">in</span> splits <span class="keyword">for</span> c <span class="keyword">in</span> letters]
+        <span class="keyword">return</span> <span class="builtin">set</span>(deletes + transposes + replaces + inserts)
+
+    <span class="comment"># Try edit distance 1 first, then 2</span>
+    candidates = {w <span class="keyword">for</span> w <span class="keyword">in</span> <span class="function">edits1</span>(word) <span class="keyword">if</span> w <span class="keyword">in</span> dictionary}
+    <span class="keyword">if</span> <span class="keyword">not</span> candidates:
+        candidates = {e2 <span class="keyword">for</span> e1 <span class="keyword">in</span> <span class="function">edits1</span>(word)
+                      <span class="keyword">for</span> e2 <span class="keyword">in</span> <span class="function">edits1</span>(e1) <span class="keyword">if</span> e2 <span class="keyword">in</span> dictionary}
+    <span class="keyword">if</span> <span class="keyword">not</span> candidates:
+        <span class="keyword">return</span> word  <span class="comment"># no correction found</span>
+    <span class="keyword">return</span> <span class="builtin">max</span>(candidates, key=<span class="keyword">lambda</span> w: freq[w])
+
+
+<span class="comment"># Example usage</span>
+dictionary = {<span class="string">"the"</span>, <span class="string">"their"</span>, <span class="string">"there"</span>, <span class="string">"then"</span>, <span class="string">"they"</span>, <span class="string">"this"</span>, <span class="string">"that"</span>}
+freq = Counter({<span class="string">"the"</span>: <span class="number">100</span>, <span class="string">"their"</span>: <span class="number">20</span>, <span class="string">"there"</span>: <span class="number">30</span>, <span class="string">"then"</span>: <span class="number">15</span>})
+<span class="builtin">print</span>(<span class="function">spell_corrector</span>(<span class="string">"teh"</span>, dictionary, freq))   <span class="comment"># "the"</span>
+<span class="builtin">print</span>(<span class="function">spell_corrector</span>(<span class="string">"thier"</span>, dictionary, freq))  <span class="comment"># "their"</span></code></pre>
+    </div>
+
+    <!-- ============ SECTION 13: Practice ============ -->
+    <div class="section" id="practice">
+      <h2>13. Practice Problems</h2>
+
+      <div class="example-box">
+        <div class="label">Pattern Matching (KMP / Z / Rabin-Karp)</div>
+        <p><strong>LC 28:</strong> Find the Index of the First Occurrence in a String</p>
+        <p><strong>LC 214:</strong> Shortest Palindrome (KMP trick: reverse + KMP failure function)</p>
+        <p><strong>LC 459:</strong> Repeated Substring Pattern (KMP: check if lps[n-1] divides n)</p>
+        <p><strong>LC 686:</strong> Repeated String Match (Rabin-Karp)</p>
+        <p><strong>CF 126B:</strong> Password (Z-function)</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Edit Distance / LCS</div>
+        <p><strong>LC 72:</strong> Edit Distance</p>
+        <p><strong>LC 583:</strong> Delete Operation for Two Strings (LCS variant)</p>
+        <p><strong>LC 1143:</strong> Longest Common Subsequence</p>
+        <p><strong>LC 712:</strong> Minimum ASCII Delete Sum for Two Strings</p>
+        <p><strong>LC 97:</strong> Interleaving String</p>
+        <p><strong>LC 115:</strong> Distinct Subsequences</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Palindromes</div>
+        <p><strong>LC 5:</strong> Longest Palindromic Substring (Manacher's for O(n))</p>
+        <p><strong>LC 647:</strong> Palindromic Substrings (count all)</p>
+        <p><strong>LC 131:</strong> Palindrome Partitioning (backtracking)</p>
+        <p><strong>LC 132:</strong> Palindrome Partitioning II (min cuts DP)</p>
+        <p><strong>LC 516:</strong> Longest Palindromic Subsequence</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Trie</div>
+        <p><strong>LC 208:</strong> Implement Trie (Prefix Tree)</p>
+        <p><strong>LC 211:</strong> Design Add and Search Words Data Structure</p>
+        <p><strong>LC 212:</strong> Word Search II (trie + backtracking)</p>
+        <p><strong>LC 421:</strong> Maximum XOR of Two Numbers in an Array (binary trie)</p>
+        <p><strong>LC 745:</strong> Prefix and Suffix Search</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">String DP</div>
+        <p><strong>LC 10:</strong> Regular Expression Matching</p>
+        <p><strong>LC 44:</strong> Wildcard Matching</p>
+        <p><strong>LC 87:</strong> Scramble String</p>
+        <p><strong>LC 1312:</strong> Minimum Insertion Steps to Make a String Palindrome</p>
+        <p><strong>LC 940:</strong> Distinct Subsequences II</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Advanced / Suffix Array / Aho-Corasick</div>
+        <p><strong>SPOJ SUBST1:</strong> New Distinct Substrings (suffix array + LCP)</p>
+        <p><strong>CF 271D:</strong> Good Substrings (trie)</p>
+        <p><strong>CF 710F:</strong> String Set Queries (Aho-Corasick)</p>
+        <p><strong>LC 336:</strong> Palindrome Pairs (trie or hashing)</p>
+        <p><strong>POJ 3294:</strong> Life Forms (suffix array, LCS of multiple strings)</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Study Order Recommendation</div>
+        <p><strong>Start with:</strong> Edit Distance (LC 72), LCS (LC 1143), Trie (LC 208) -- these appear in interviews constantly.</p>
+        <p><strong>Then learn:</strong> KMP (LC 28, 459), Rabin-Karp, String DP (LC 10, 44).</p>
+        <p><strong>For competitive programming:</strong> Z-algorithm, Suffix Arrays, Aho-Corasick, Manacher's, String Hashing.</p>
+        <p><strong>Master all of these and you can solve any string problem.</strong></p>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

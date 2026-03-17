@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe & Payments - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Stripe &amp; Payments</div>
+      <h1>Stripe &amp; Payments</h1>
+      <p>Everything you need to accept payments on the web. From understanding how card payments actually work to building production-ready Stripe integrations with Node.js and TypeScript -- payment intents, checkout, subscriptions, webhooks, error handling, and security.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#how-payments-work">1. How Payments Work</a>
+      <a href="#stripe-architecture">2. Stripe Architecture</a>
+      <a href="#setup">3. Setting Up Stripe</a>
+      <a href="#payment-intents">4. Payment Intents</a>
+      <a href="#checkout">5. Stripe Checkout (Hosted)</a>
+      <a href="#elements">6. Stripe Elements (Embedded)</a>
+      <a href="#subscriptions">7. Subscriptions</a>
+      <a href="#webhooks">8. Webhooks</a>
+      <a href="#customers">9. Customers &amp; Payment Methods</a>
+      <a href="#error-handling">10. Error Handling</a>
+      <a href="#security">11. Security &amp; PCI Compliance</a>
+      <a href="#testing">12. Testing</a>
+      <a href="#common-patterns">13. Common Patterns</a>
+      <a href="#full-example">14. Full Integration Example</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: How Payments Work                                  -->
+    <!-- ============================================================ -->
+    <section id="how-payments-work" class="section">
+      <h2>1. How Payments Work</h2>
+
+      <p>Before writing a single line of Stripe code, you need to understand what happens when a customer swipes, taps, or types their card number. The payment lifecycle involves multiple parties and distinct phases.</p>
+
+      <div class="formula-box">
+        <div class="label">The Payment Flow</div>
+        <p>Customer -> Merchant -> Acquirer (merchant's bank) -> Card Network (Visa/MC) -> Issuer (customer's bank)</p>
+        <p>Response flows back the same path in reverse.</p>
+      </div>
+
+      <h3>Authorization</h3>
+      <p>When a customer submits payment, an <strong>authorization request</strong> travels from the merchant through the acquiring bank, through the card network (Visa, Mastercard, Amex), to the issuing bank. The issuer checks if the card is valid, has sufficient funds, passes fraud checks, and then sends back an approval or decline. This entire round-trip happens in under 2 seconds. No money has moved yet -- the issuer has only placed a <strong>hold</strong> on the funds.</p>
+
+      <h3>Capture</h3>
+      <p>After authorization, the merchant <strong>captures</strong> the payment. This tells the system "yes, I want this money." In many integrations, authorization and capture happen simultaneously (called an <strong>auto-capture</strong>). But some businesses (hotels, car rentals, marketplaces) authorize first and capture later -- this is called <strong>auth-and-capture</strong> or <strong>manual capture</strong>.</p>
+
+      <div class="tip-box">
+        <div class="label">Auth-and-Capture Use Case</div>
+        <p>A hotel authorizes $500 at check-in but only captures $350 at checkout (the actual stay cost). Authorizations expire after ~7 days, so you must capture within that window or re-authorize.</p>
+      </div>
+
+      <h3>Settlement</h3>
+      <p>Settlement is when money actually moves between banks. The card network batches up all the day's captured transactions and orchestrates fund transfers between issuing and acquiring banks. This typically takes 1-3 business days. Stripe abstracts this -- you see payouts to your bank account on a rolling basis (usually 2 business days after the charge).</p>
+
+      <h3>Refunds and Chargebacks</h3>
+      <p>A <strong>refund</strong> is merchant-initiated: you return funds to the customer. A <strong>chargeback</strong> (or dispute) is customer-initiated: they contact their bank to reverse the charge. Chargebacks cost you the transaction amount plus a fee ($15 on Stripe). Too many chargebacks and your account gets flagged or terminated.</p>
+
+      <div class="warning-box">
+        <div class="label">Chargeback Rate</div>
+        <p>Card networks flag merchants with dispute rates above 0.9% (Visa) or 1.0% (Mastercard). If you cross this threshold, you enter a monitoring program with escalating fines. Track your dispute rate in the Stripe Dashboard under Radar.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: Stripe Architecture                                -->
+    <!-- ============================================================ -->
+    <section id="stripe-architecture" class="section">
+      <h2>2. Stripe Architecture</h2>
+
+      <p>Stripe is an API-first payment processor. Everything -- charges, customers, subscriptions, payouts -- is a REST API call. The Dashboard is just a UI on top of the same API you use.</p>
+
+      <h3>API-First Design</h3>
+      <p>Every Stripe resource is a JSON object with a unique ID (e.g., <code>pi_1234abc</code> for a PaymentIntent, <code>cus_xyz</code> for a Customer). You create, read, update, and delete these via HTTP requests. The Node.js SDK wraps these calls into clean async methods.</p>
+
+      <h3>Test Mode vs Live Mode</h3>
+      <p>Stripe gives you two completely isolated environments. Test mode uses fake card numbers, generates no real charges, and has its own Dashboard view. Live mode processes real money. Each mode has its own API keys. You toggle between them in the Dashboard with a single switch.</p>
+
+      <div class="example-box">
+        <div class="label">API Key Prefixes</div>
+        <p><code>sk_test_...</code> -- Secret key (test mode). Server-side only.</p>
+        <p><code>pk_test_...</code> -- Publishable key (test mode). Safe for client-side.</p>
+        <p><code>sk_live_...</code> -- Secret key (live mode). NEVER expose this.</p>
+        <p><code>pk_live_...</code> -- Publishable key (live mode). Client-side.</p>
+      </div>
+
+      <h3>Secret vs Publishable Keys</h3>
+      <p>The <strong>secret key</strong> can do anything: create charges, read customer data, issue refunds. It lives exclusively on your server. The <strong>publishable key</strong> can only do limited operations like tokenizing card details. It is safe to include in frontend JavaScript. Leaking your secret key is a catastrophic security incident.</p>
+
+      <div class="warning-box">
+        <div class="label">Never Commit API Keys</div>
+        <p>Store Stripe keys in environment variables. Never hardcode them. Never commit <code>.env</code> files. Use Stripe's restricted keys in production to limit permissions to only what each service needs.</p>
+      </div>
+
+      <h3>Stripe API Versioning</h3>
+      <p>Stripe versions its API by date (e.g., <code>2024-06-20</code>). Your account is pinned to the version you signed up with. You can override per-request with the <code>Stripe-Version</code> header, or set a default in your SDK initialization. Stripe never removes fields from existing versions -- breaking changes only appear in new versions.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: Setting Up                                         -->
+    <!-- ============================================================ -->
+    <section id="setup" class="section">
+      <h2>3. Setting Up Stripe</h2>
+
+      <h3>Install the SDK</h3>
+<pre><code><span class="lang-label">bash</span>
+<span class="comment"># Install Stripe Node.js SDK</span>
+npm install stripe
+
+<span class="comment"># If using TypeScript (types are included in the stripe package)</span>
+npm install stripe typescript @types/node
+
+<span class="comment"># Install dotenv for environment variables</span>
+npm install dotenv
+</code></pre>
+
+      <h3>Environment Variables</h3>
+<pre><code><span class="lang-label">.env</span>
+<span class="comment"># Stripe API Keys</span>
+STRIPE_SECRET_KEY=sk_test_51ABC123...
+STRIPE_PUBLISHABLE_KEY=pk_test_51ABC123...
+STRIPE_WEBHOOK_SECRET=whsec_abc123...
+
+<span class="comment"># App config</span>
+PORT=<span class="number">3000</span>
+CLIENT_URL=http://localhost:5173
+</code></pre>
+
+      <h3>Initialize Stripe in Node.js</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> Stripe <span class="keyword">from</span> <span class="string">'stripe'</span>;
+<span class="keyword">import</span> dotenv <span class="keyword">from</span> <span class="string">'dotenv'</span>;
+
+dotenv.<span class="function">config</span>();
+
+<span class="keyword">const</span> stripe = <span class="keyword">new</span> <span class="function">Stripe</span>(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: <span class="string">'2024-06-20'</span>,
+  typescript: <span class="keyword">true</span>,
+});
+
+<span class="keyword">export default</span> stripe;
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">TypeScript Benefits</div>
+        <p>The Stripe SDK has excellent TypeScript support. Every API response is fully typed, every parameter has autocomplete, and you get compile-time errors for invalid fields. Always use TypeScript with Stripe -- the type safety alone prevents countless bugs.</p>
+      </div>
+
+      <h3>Project Structure</h3>
+<pre><code><span class="lang-label">text</span>
+my-stripe-app/
+  src/
+    config/
+      stripe.ts          <span class="comment">// Stripe instance</span>
+    routes/
+      payments.ts        <span class="comment">// Payment endpoints</span>
+      webhooks.ts        <span class="comment">// Webhook handler</span>
+      subscriptions.ts   <span class="comment">// Subscription endpoints</span>
+    services/
+      stripe.service.ts  <span class="comment">// Business logic</span>
+    middleware/
+      auth.ts            <span class="comment">// Authentication</span>
+    index.ts             <span class="comment">// Express app</span>
+  .env
+  package.json
+  tsconfig.json
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: Payment Intents                                    -->
+    <!-- ============================================================ -->
+    <section id="payment-intents" class="section">
+      <h2>4. Payment Intents</h2>
+
+      <p>PaymentIntent is Stripe's core payment object. It represents the lifecycle of a single payment from creation to confirmation to completion. It handles 3D Secure authentication, retries, and state management automatically.</p>
+
+      <div class="formula-box">
+        <div class="label">PaymentIntent Lifecycle</div>
+        <p>requires_payment_method -> requires_confirmation -> requires_action (optional, for 3DS) -> processing -> succeeded / requires_capture</p>
+      </div>
+
+      <h3>Create a PaymentIntent (Server-Side)</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> stripe <span class="keyword">from</span> <span class="string">'../config/stripe'</span>;
+
+<span class="keyword">const</span> router = express.<span class="function">Router</span>();
+
+<span class="comment">// POST /api/create-payment-intent</span>
+router.<span class="function">post</span>(<span class="string">'/create-payment-intent'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> { amount, currency = <span class="string">'usd'</span>, metadata } = req.body;
+
+    <span class="comment">// Validate amount (Stripe uses smallest currency unit -- cents for USD)</span>
+    <span class="keyword">if</span> (!amount || amount < <span class="number">50</span>) {
+      <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">400</span>).<span class="function">json</span>({ error: <span class="string">'Minimum amount is $0.50'</span> });
+    }
+
+    <span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>({
+      amount,           <span class="comment">// e.g., 2000 = $20.00</span>
+      currency,
+      metadata: metadata || {},
+      automatic_payment_methods: {
+        enabled: <span class="keyword">true</span>,  <span class="comment">// Accept cards, wallets, etc.</span>
+      },
+    });
+
+    <span class="comment">// Send the client_secret to the frontend</span>
+    res.<span class="function">json</span>({
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+    });
+  } <span class="keyword">catch</span> (error: <span class="keyword">any</span>) {
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: error.message });
+  }
+});
+
+<span class="keyword">export default</span> router;
+</code></pre>
+
+      <h3>Confirm on the Client</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Frontend: React or vanilla JS</span>
+<span class="keyword">import</span> { loadStripe } <span class="keyword">from</span> <span class="string">'@stripe/stripe-js'</span>;
+
+<span class="keyword">const</span> stripePromise = <span class="function">loadStripe</span>(<span class="string">'pk_test_...'</span>);
+
+<span class="keyword">async function</span> <span class="function">handlePayment</span>() {
+  <span class="keyword">const</span> stripe = <span class="keyword">await</span> stripePromise;
+  <span class="keyword">if</span> (!stripe) <span class="keyword">return</span>;
+
+  <span class="comment">// 1. Create PaymentIntent on the server</span>
+  <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'/api/create-payment-intent'</span>, {
+    method: <span class="string">'POST'</span>,
+    headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+    body: JSON.<span class="function">stringify</span>({ amount: <span class="number">2000</span> }),
+  });
+  <span class="keyword">const</span> { clientSecret } = <span class="keyword">await</span> response.<span class="function">json</span>();
+
+  <span class="comment">// 2. Confirm with Stripe.js (handles 3D Secure automatically)</span>
+  <span class="keyword">const</span> { error, paymentIntent } = <span class="keyword">await</span> stripe.<span class="function">confirmCardPayment</span>(clientSecret, {
+    payment_method: {
+      card: cardElement,     <span class="comment">// From Stripe Elements</span>
+      billing_details: {
+        name: <span class="string">'Sean'</span>,
+      },
+    },
+  });
+
+  <span class="keyword">if</span> (error) {
+    console.<span class="function">error</span>(error.message);
+  } <span class="keyword">else if</span> (paymentIntent.status === <span class="string">'succeeded'</span>) {
+    console.<span class="function">log</span>(<span class="string">'Payment succeeded!'</span>);
+  }
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Why Client Secret?</div>
+        <p>The <code>client_secret</code> lets the frontend confirm the payment without exposing your secret key. It is scoped to one PaymentIntent and cannot be used to create new payments or access other data. The server creates the intent, the client confirms it -- this split is the core Stripe security model.</p>
+      </div>
+
+      <h3>Manual Capture (Auth-then-Capture)</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create with manual capture</span>
+<span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>({
+  amount: <span class="number">50000</span>,       <span class="comment">// $500 hold</span>
+  currency: <span class="string">'usd'</span>,
+  capture_method: <span class="string">'manual'</span>,
+  automatic_payment_methods: { enabled: <span class="keyword">true</span> },
+});
+
+<span class="comment">// Later: capture a different (lower) amount</span>
+<span class="keyword">const</span> captured = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">capture</span>(paymentIntent.id, {
+  amount_to_capture: <span class="number">35000</span>,  <span class="comment">// Only capture $350</span>
+});
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: Stripe Checkout                                    -->
+    <!-- ============================================================ -->
+    <section id="checkout" class="section">
+      <h2>5. Stripe Checkout (Hosted)</h2>
+
+      <p>Stripe Checkout is a pre-built, hosted payment page. You redirect customers to Stripe's domain, they pay, and Stripe redirects them back. Zero frontend payment UI code. It handles card input, validation, 3D Secure, Apple Pay, Google Pay, and localization automatically.</p>
+
+      <div class="tip-box">
+        <div class="label">When to Use Checkout</div>
+        <p>Use Checkout when you want the fastest integration, highest conversion rates (Stripe A/B tests it constantly), and minimal PCI scope. It is the recommended approach for most businesses unless you need a fully custom payment UI.</p>
+      </div>
+
+      <h3>One-Time Payment Checkout Session</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// POST /api/create-checkout-session</span>
+router.<span class="function">post</span>(<span class="string">'/create-checkout-session'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+      mode: <span class="string">'payment'</span>,
+      payment_method_types: [<span class="string">'card'</span>],
+      line_items: [
+        {
+          price_data: {
+            currency: <span class="string">'usd'</span>,
+            product_data: {
+              name: <span class="string">'Pro License'</span>,
+              description: <span class="string">'Lifetime access to all features'</span>,
+              images: [<span class="string">'https://example.com/product.png'</span>],
+            },
+            unit_amount: <span class="number">4999</span>,  <span class="comment">// $49.99</span>
+          },
+          quantity: <span class="number">1</span>,
+        },
+      ],
+      success_url: <span class="string">`${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`</span>,
+      cancel_url: <span class="string">`${process.env.CLIENT_URL}/cancel`</span>,
+      metadata: {
+        userId: req.body.userId,
+      },
+    });
+
+    res.<span class="function">json</span>({ url: session.url });
+  } <span class="keyword">catch</span> (error: <span class="keyword">any</span>) {
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: error.message });
+  }
+});
+</code></pre>
+
+      <h3>Redirect on the Client</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Frontend: redirect to Stripe Checkout</span>
+<span class="keyword">async function</span> <span class="function">goToCheckout</span>() {
+  <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'/api/create-checkout-session'</span>, {
+    method: <span class="string">'POST'</span>,
+    headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+    body: JSON.<span class="function">stringify</span>({ userId: <span class="string">'user_123'</span> }),
+  });
+
+  <span class="keyword">const</span> { url } = <span class="keyword">await</span> response.<span class="function">json</span>();
+  window.location.href = url;  <span class="comment">// Redirect to Stripe's hosted page</span>
+}
+</code></pre>
+
+      <h3>Subscription Checkout Session</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Checkout for recurring payments</span>
+<span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+  mode: <span class="string">'subscription'</span>,
+  line_items: [
+    {
+      price: <span class="string">'price_monthly_pro'</span>,  <span class="comment">// Pre-created Price ID</span>
+      quantity: <span class="number">1</span>,
+    },
+  ],
+  success_url: <span class="string">`${process.env.CLIENT_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`</span>,
+  cancel_url: <span class="string">`${process.env.CLIENT_URL}/pricing`</span>,
+  customer_email: <span class="string">'user@example.com'</span>,
+  subscription_data: {
+    trial_period_days: <span class="number">14</span>,
+    metadata: { plan: <span class="string">'pro'</span> },
+  },
+});
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Checkout Session Modes</div>
+        <p><code>payment</code> -- One-time charge</p>
+        <p><code>subscription</code> -- Recurring billing</p>
+        <p><code>setup</code> -- Save a card for later (no charge now)</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: Stripe Elements                                    -->
+    <!-- ============================================================ -->
+    <section id="elements" class="section">
+      <h2>6. Stripe Elements (Embedded)</h2>
+
+      <p>Stripe Elements lets you embed payment inputs directly in your page with full control over styling. The <code>PaymentElement</code> is the modern, recommended component -- it renders all payment methods (cards, wallets, bank transfers) in a single, adaptive UI.</p>
+
+      <h3>Setting Up Elements</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Frontend: initialize Stripe Elements</span>
+<span class="keyword">import</span> { loadStripe } <span class="keyword">from</span> <span class="string">'@stripe/stripe-js'</span>;
+
+<span class="keyword">const</span> stripe = <span class="keyword">await</span> <span class="function">loadStripe</span>(<span class="string">'pk_test_...'</span>);
+
+<span class="comment">// Fetch client secret from your server</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'/api/create-payment-intent'</span>, {
+  method: <span class="string">'POST'</span>,
+  headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+  body: JSON.<span class="function">stringify</span>({ amount: <span class="number">2999</span> }),
+});
+<span class="keyword">const</span> { clientSecret } = <span class="keyword">await</span> response.<span class="function">json</span>();
+
+<span class="comment">// Create Elements instance with appearance customization</span>
+<span class="keyword">const</span> elements = stripe.<span class="function">elements</span>({
+  clientSecret,
+  appearance: {
+    theme: <span class="string">'stripe'</span>,  <span class="comment">// or 'night', 'flat', 'none'</span>
+    variables: {
+      colorPrimary: <span class="string">'#0570de'</span>,
+      borderRadius: <span class="string">'8px'</span>,
+      fontFamily: <span class="string">'Inter, sans-serif'</span>,
+    },
+  },
+});
+
+<span class="comment">// Mount the PaymentElement</span>
+<span class="keyword">const</span> paymentElement = elements.<span class="function">create</span>(<span class="string">'payment'</span>);
+paymentElement.<span class="function">mount</span>(<span class="string">'#payment-element'</span>);
+</code></pre>
+
+      <h3>HTML Container</h3>
+<pre><code><span class="lang-label">HTML</span>
+&lt;form id=<span class="string">"payment-form"</span>&gt;
+  &lt;div id=<span class="string">"payment-element"</span>&gt;
+    <span class="comment">&lt;!-- Stripe injects the PaymentElement here --&gt;</span>
+  &lt;/div&gt;
+  &lt;button id=<span class="string">"submit"</span> type=<span class="string">"submit"</span>&gt;Pay now&lt;/button&gt;
+  &lt;div id=<span class="string">"error-message"</span>&gt;&lt;/div&gt;
+&lt;/form&gt;
+</code></pre>
+
+      <h3>Handle Form Submission</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> form = document.<span class="function">getElementById</span>(<span class="string">'payment-form'</span>)!;
+
+form.<span class="function">addEventListener</span>(<span class="string">'submit'</span>, <span class="keyword">async</span> (e) => {
+  e.<span class="function">preventDefault</span>();
+  <span class="keyword">const</span> submitBtn = document.<span class="function">getElementById</span>(<span class="string">'submit'</span>) <span class="keyword">as</span> HTMLButtonElement;
+  submitBtn.disabled = <span class="keyword">true</span>;
+
+  <span class="keyword">const</span> { error } = <span class="keyword">await</span> stripe.<span class="function">confirmPayment</span>({
+    elements,
+    confirmParams: {
+      return_url: <span class="string">'http://localhost:5173/success'</span>,
+    },
+  });
+
+  <span class="comment">// This point is only reached if there is an immediate error</span>
+  <span class="comment">// (e.g., card declined). Otherwise, the customer is redirected.</span>
+  <span class="keyword">if</span> (error) {
+    <span class="keyword">const</span> errorDiv = document.<span class="function">getElementById</span>(<span class="string">'error-message'</span>)!;
+    errorDiv.textContent = error.message || <span class="string">'An unexpected error occurred.'</span>;
+    submitBtn.disabled = <span class="keyword">false</span>;
+  }
+});
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Never Collect Raw Card Numbers</div>
+        <p>Always use Stripe Elements or Checkout. If you collect raw card numbers yourself, you must be PCI DSS Level 1 certified -- an extremely expensive, time-consuming audit. Elements and Checkout handle card data on Stripe's servers, keeping you at PCI SAQ-A (the lightest level).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: Subscriptions                                      -->
+    <!-- ============================================================ -->
+    <section id="subscriptions" class="section">
+      <h2>7. Subscriptions</h2>
+
+      <p>Stripe's subscription system is built on two core objects: <strong>Products</strong> (what you sell) and <strong>Prices</strong> (how much it costs). A Product can have many Prices (monthly, yearly, different tiers). A Subscription ties a Customer to one or more Prices.</p>
+
+      <h3>Create a Product and Price</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Usually you create these in the Dashboard, but here's the API way</span>
+<span class="keyword">const</span> product = <span class="keyword">await</span> stripe.products.<span class="function">create</span>({
+  name: <span class="string">'Pro Plan'</span>,
+  description: <span class="string">'All features, unlimited projects'</span>,
+});
+
+<span class="comment">// Monthly price</span>
+<span class="keyword">const</span> monthlyPrice = <span class="keyword">await</span> stripe.prices.<span class="function">create</span>({
+  product: product.id,
+  unit_amount: <span class="number">1999</span>,        <span class="comment">// $19.99/month</span>
+  currency: <span class="string">'usd'</span>,
+  recurring: {
+    interval: <span class="string">'month'</span>,
+  },
+});
+
+<span class="comment">// Yearly price (with discount)</span>
+<span class="keyword">const</span> yearlyPrice = <span class="keyword">await</span> stripe.prices.<span class="function">create</span>({
+  product: product.id,
+  unit_amount: <span class="number">19990</span>,       <span class="comment">// $199.90/year (~$16.66/month)</span>
+  currency: <span class="string">'usd'</span>,
+  recurring: {
+    interval: <span class="string">'year'</span>,
+  },
+});
+</code></pre>
+
+      <h3>Create a Subscription</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create subscription for an existing customer</span>
+<span class="keyword">const</span> subscription = <span class="keyword">await</span> stripe.subscriptions.<span class="function">create</span>({
+  customer: <span class="string">'cus_abc123'</span>,
+  items: [
+    { price: <span class="string">'price_monthly_pro'</span> },
+  ],
+  payment_behavior: <span class="string">'default_incomplete'</span>,
+  payment_settings: {
+    save_default_payment_method: <span class="string">'on_subscription'</span>,
+  },
+  expand: [<span class="string">'latest_invoice.payment_intent'</span>],
+});
+
+<span class="comment">// Send client_secret to frontend to confirm the first payment</span>
+<span class="keyword">const</span> clientSecret =
+  (subscription.latest_invoice <span class="keyword">as</span> Stripe.Invoice)
+    .payment_intent <span class="keyword">as</span> Stripe.PaymentIntent;
+res.<span class="function">json</span>({ clientSecret: clientSecret.client_secret });
+</code></pre>
+
+      <h3>Free Trials</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// 14-day free trial -- no charge until trial ends</span>
+<span class="keyword">const</span> subscription = <span class="keyword">await</span> stripe.subscriptions.<span class="function">create</span>({
+  customer: <span class="string">'cus_abc123'</span>,
+  items: [{ price: <span class="string">'price_monthly_pro'</span> }],
+  trial_period_days: <span class="number">14</span>,
+});
+
+<span class="comment">// Trial with no card required (collect card later)</span>
+<span class="keyword">const</span> trialSub = <span class="keyword">await</span> stripe.subscriptions.<span class="function">create</span>({
+  customer: <span class="string">'cus_abc123'</span>,
+  items: [{ price: <span class="string">'price_monthly_pro'</span> }],
+  trial_period_days: <span class="number">14</span>,
+  payment_settings: {
+    save_default_payment_method: <span class="string">'on_subscription'</span>,
+  },
+  trial_settings: {
+    end_behavior: { missing_payment_method: <span class="string">'cancel'</span> },
+  },
+});
+</code></pre>
+
+      <h3>Proration</h3>
+      <p>When a customer upgrades or downgrades mid-cycle, Stripe calculates the prorated amount automatically. If a customer on a $10/month plan upgrades to $20/month halfway through the cycle, they get credited $5 for the unused portion and charged $10 for the remaining half on the new plan.</p>
+
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Upgrade a subscription (proration happens automatically)</span>
+<span class="keyword">const</span> subscription = <span class="keyword">await</span> stripe.subscriptions.<span class="function">retrieve</span>(<span class="string">'sub_abc123'</span>);
+
+<span class="keyword">await</span> stripe.subscriptions.<span class="function">update</span>(<span class="string">'sub_abc123'</span>, {
+  items: [
+    {
+      id: subscription.items.data[<span class="number">0</span>].id,
+      price: <span class="string">'price_yearly_pro'</span>,  <span class="comment">// Switch to yearly</span>
+    },
+  ],
+  proration_behavior: <span class="string">'create_prorations'</span>,  <span class="comment">// or 'none' or 'always_invoice'</span>
+});
+</code></pre>
+
+      <h3>Cancel a Subscription</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Cancel at end of current billing period (most common)</span>
+<span class="keyword">await</span> stripe.subscriptions.<span class="function">update</span>(<span class="string">'sub_abc123'</span>, {
+  cancel_at_period_end: <span class="keyword">true</span>,
+});
+
+<span class="comment">// Cancel immediately (prorated refund)</span>
+<span class="keyword">await</span> stripe.subscriptions.<span class="function">cancel</span>(<span class="string">'sub_abc123'</span>, {
+  prorate: <span class="keyword">true</span>,
+});
+
+<span class="comment">// Pause instead of cancel (resume later)</span>
+<span class="keyword">await</span> stripe.subscriptions.<span class="function">update</span>(<span class="string">'sub_abc123'</span>, {
+  pause_collection: {
+    behavior: <span class="string">'mark_uncollectible'</span>,  <span class="comment">// or 'keep_as_draft', 'void'</span>
+  },
+});
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Subscription Statuses</div>
+        <p><code>trialing</code> -- In trial period</p>
+        <p><code>active</code> -- Paid and current</p>
+        <p><code>past_due</code> -- Payment failed, retrying</p>
+        <p><code>unpaid</code> -- All retries exhausted</p>
+        <p><code>canceled</code> -- Terminated</p>
+        <p><code>incomplete</code> -- First payment not yet confirmed</p>
+        <p><code>incomplete_expired</code> -- First payment window expired</p>
+        <p><code>paused</code> -- Collection paused</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: Webhooks                                           -->
+    <!-- ============================================================ -->
+    <section id="webhooks" class="section">
+      <h2>8. Webhooks</h2>
+
+      <p>Webhooks are how Stripe tells your server about events: a payment succeeded, a subscription was cancelled, a dispute was created. They are not optional -- they are essential. You cannot build a reliable Stripe integration without webhooks.</p>
+
+      <div class="warning-box">
+        <div class="label">Do Not Rely on Redirects</div>
+        <p>The <code>success_url</code> redirect after Checkout is NOT reliable. The customer might close the tab, lose connection, or their browser might crash. The ONLY reliable way to know a payment succeeded is via the <code>checkout.session.completed</code> webhook. Always fulfill orders in your webhook handler, not on the success page.</p>
+      </div>
+
+      <h3>Setting Up the Webhook Endpoint</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> Stripe <span class="keyword">from</span> <span class="string">'stripe'</span>;
+<span class="keyword">import</span> stripe <span class="keyword">from</span> <span class="string">'../config/stripe'</span>;
+
+<span class="keyword">const</span> router = express.<span class="function">Router</span>();
+
+<span class="comment">// CRITICAL: This route must use express.raw(), NOT express.json()</span>
+router.<span class="function">post</span>(
+  <span class="string">'/webhook'</span>,
+  express.<span class="function">raw</span>({ type: <span class="string">'application/json'</span> }),
+  <span class="keyword">async</span> (req, res) => {
+    <span class="keyword">const</span> sig = req.headers[<span class="string">'stripe-signature'</span>] <span class="keyword">as</span> <span class="builtin">string</span>;
+    <span class="keyword">let</span> event: Stripe.Event;
+
+    <span class="keyword">try</span> {
+      event = stripe.webhooks.<span class="function">constructEvent</span>(
+        req.body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET!
+      );
+    } <span class="keyword">catch</span> (err: <span class="keyword">any</span>) {
+      console.<span class="function">error</span>(<span class="string">`Webhook signature verification failed: ${err.message}`</span>);
+      <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">400</span>).<span class="function">send</span>(<span class="string">`Webhook Error: ${err.message}`</span>);
+    }
+
+    <span class="comment">// Handle the event</span>
+    <span class="keyword">switch</span> (event.type) {
+      <span class="keyword">case</span> <span class="string">'payment_intent.succeeded'</span>:
+        <span class="keyword">await</span> <span class="function">handlePaymentSuccess</span>(event.data.object <span class="keyword">as</span> Stripe.PaymentIntent);
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'payment_intent.payment_failed'</span>:
+        <span class="keyword">await</span> <span class="function">handlePaymentFailure</span>(event.data.object <span class="keyword">as</span> Stripe.PaymentIntent);
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'checkout.session.completed'</span>:
+        <span class="keyword">await</span> <span class="function">handleCheckoutComplete</span>(event.data.object <span class="keyword">as</span> Stripe.Checkout.Session);
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'customer.subscription.updated'</span>:
+        <span class="keyword">await</span> <span class="function">handleSubscriptionUpdate</span>(event.data.object <span class="keyword">as</span> Stripe.Subscription);
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'customer.subscription.deleted'</span>:
+        <span class="keyword">await</span> <span class="function">handleSubscriptionCanceled</span>(event.data.object <span class="keyword">as</span> Stripe.Subscription);
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'invoice.payment_failed'</span>:
+        <span class="keyword">await</span> <span class="function">handleInvoicePaymentFailed</span>(event.data.object <span class="keyword">as</span> Stripe.Invoice);
+        <span class="keyword">break</span>;
+      <span class="keyword">default</span>:
+        console.<span class="function">log</span>(<span class="string">`Unhandled event type: ${event.type}`</span>);
+    }
+
+    <span class="comment">// Always return 200 quickly -- do heavy processing async</span>
+    res.<span class="function">json</span>({ received: <span class="keyword">true</span> });
+  }
+);
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">express.raw() is Required</div>
+        <p>Signature verification needs the raw request body. If you use <code>express.json()</code> on the webhook route, the body gets parsed and the signature check fails. Apply <code>express.raw()</code> specifically to the webhook route, and <code>express.json()</code> to everything else.</p>
+      </div>
+
+      <h3>Signature Verification</h3>
+      <p>Every webhook request includes a <code>Stripe-Signature</code> header. You verify it using your webhook secret (<code>whsec_...</code>). This prevents attackers from sending fake webhook events to your endpoint. Never skip signature verification in production.</p>
+
+      <h3>Handling Events: Example Handlers</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">async function</span> <span class="function">handleCheckoutComplete</span>(session: Stripe.Checkout.Session) {
+  <span class="keyword">const</span> userId = session.metadata?.userId;
+  <span class="keyword">if</span> (!userId) {
+    console.<span class="function">error</span>(<span class="string">'No userId in session metadata'</span>);
+    <span class="keyword">return</span>;
+  }
+
+  <span class="keyword">if</span> (session.mode === <span class="string">'payment'</span>) {
+    <span class="comment">// One-time payment: grant access</span>
+    <span class="keyword">await</span> db.users.<span class="function">update</span>({
+      <span class="keyword">where</span>: { id: userId },
+      data: { hasPro: <span class="keyword">true</span>, stripeCustomerId: session.customer <span class="keyword">as</span> <span class="builtin">string</span> },
+    });
+  } <span class="keyword">else if</span> (session.mode === <span class="string">'subscription'</span>) {
+    <span class="comment">// Subscription: store subscription ID</span>
+    <span class="keyword">await</span> db.users.<span class="function">update</span>({
+      <span class="keyword">where</span>: { id: userId },
+      data: {
+        stripeCustomerId: session.customer <span class="keyword">as</span> <span class="builtin">string</span>,
+        stripeSubscriptionId: session.subscription <span class="keyword">as</span> <span class="builtin">string</span>,
+        plan: <span class="string">'pro'</span>,
+      },
+    });
+  }
+}
+
+<span class="keyword">async function</span> <span class="function">handleSubscriptionCanceled</span>(subscription: Stripe.Subscription) {
+  <span class="keyword">const</span> customerId = subscription.customer <span class="keyword">as</span> <span class="builtin">string</span>;
+
+  <span class="keyword">await</span> db.users.<span class="function">update</span>({
+    <span class="keyword">where</span>: { stripeCustomerId: customerId },
+    data: { plan: <span class="string">'free'</span>, stripeSubscriptionId: <span class="keyword">null</span> },
+  });
+}
+</code></pre>
+
+      <h3>Idempotency</h3>
+      <p>Stripe may send the same webhook event more than once (network issues, retries). Your handler must be <strong>idempotent</strong> -- processing the same event twice should produce the same result. Use the event ID (<code>event.id</code>) to deduplicate.</p>
+
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Idempotent webhook handler with event tracking</span>
+<span class="keyword">async function</span> <span class="function">handleWebhookEvent</span>(event: Stripe.Event) {
+  <span class="comment">// Check if we already processed this event</span>
+  <span class="keyword">const</span> existing = <span class="keyword">await</span> db.stripeEvents.<span class="function">findUnique</span>({
+    <span class="keyword">where</span>: { eventId: event.id },
+  });
+
+  <span class="keyword">if</span> (existing) {
+    console.<span class="function">log</span>(<span class="string">`Event ${event.id} already processed, skipping`</span>);
+    <span class="keyword">return</span>;
+  }
+
+  <span class="comment">// Process the event</span>
+  <span class="keyword">await</span> <span class="function">processEvent</span>(event);
+
+  <span class="comment">// Record that we processed it</span>
+  <span class="keyword">await</span> db.stripeEvents.<span class="function">create</span>({
+    data: {
+      eventId: event.id,
+      type: event.type,
+      processedAt: <span class="keyword">new</span> <span class="function">Date</span>(),
+    },
+  });
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Key Webhook Events</div>
+        <p><code>checkout.session.completed</code> -- Customer completed Checkout</p>
+        <p><code>payment_intent.succeeded</code> -- Payment confirmed</p>
+        <p><code>payment_intent.payment_failed</code> -- Payment declined</p>
+        <p><code>customer.subscription.created</code> -- New subscription</p>
+        <p><code>customer.subscription.updated</code> -- Plan change, renewal, etc.</p>
+        <p><code>customer.subscription.deleted</code> -- Subscription ended</p>
+        <p><code>invoice.payment_failed</code> -- Subscription renewal failed</p>
+        <p><code>charge.dispute.created</code> -- Chargeback initiated</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: Customers                                          -->
+    <!-- ============================================================ -->
+    <section id="customers" class="section">
+      <h2>9. Customers &amp; Payment Methods</h2>
+
+      <p>A Stripe Customer object stores payment methods, billing info, and links to subscriptions and invoices. Always create a Customer for users who will pay more than once -- it enables saved cards, subscription management, and better analytics.</p>
+
+      <h3>Create a Customer</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create a Stripe customer when a user signs up</span>
+<span class="keyword">async function</span> <span class="function">createStripeCustomer</span>(user: { id: <span class="builtin">string</span>; email: <span class="builtin">string</span>; name: <span class="builtin">string</span> }) {
+  <span class="keyword">const</span> customer = <span class="keyword">await</span> stripe.customers.<span class="function">create</span>({
+    email: user.email,
+    name: user.name,
+    metadata: {
+      userId: user.id,  <span class="comment">// Link back to your database</span>
+    },
+  });
+
+  <span class="comment">// Store the Stripe customer ID in your database</span>
+  <span class="keyword">await</span> db.users.<span class="function">update</span>({
+    <span class="keyword">where</span>: { id: user.id },
+    data: { stripeCustomerId: customer.id },
+  });
+
+  <span class="keyword">return</span> customer;
+}
+</code></pre>
+
+      <h3>Attach a Payment Method</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Attach a payment method to a customer</span>
+<span class="keyword">const</span> paymentMethod = <span class="keyword">await</span> stripe.paymentMethods.<span class="function">attach</span>(
+  <span class="string">'pm_card_visa'</span>,        <span class="comment">// Payment method ID from the frontend</span>
+  { customer: <span class="string">'cus_abc123'</span> }
+);
+
+<span class="comment">// Set as default payment method</span>
+<span class="keyword">await</span> stripe.customers.<span class="function">update</span>(<span class="string">'cus_abc123'</span>, {
+  invoice_settings: {
+    default_payment_method: paymentMethod.id,
+  },
+});
+</code></pre>
+
+      <h3>Setup Intents (Save Card Without Charging)</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create a SetupIntent to save a card for later</span>
+router.<span class="function">post</span>(<span class="string">'/create-setup-intent'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { customerId } = req.body;
+
+  <span class="keyword">const</span> setupIntent = <span class="keyword">await</span> stripe.setupIntents.<span class="function">create</span>({
+    customer: customerId,
+    payment_method_types: [<span class="string">'card'</span>],
+  });
+
+  res.<span class="function">json</span>({ clientSecret: setupIntent.client_secret });
+});
+
+<span class="comment">// Frontend: confirm the SetupIntent</span>
+<span class="keyword">const</span> { error } = <span class="keyword">await</span> stripe.<span class="function">confirmCardSetup</span>(clientSecret, {
+  payment_method: {
+    card: cardElement,
+    billing_details: { name: <span class="string">'Sean'</span> },
+  },
+});
+</code></pre>
+
+      <h3>List a Customer's Payment Methods</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">const</span> paymentMethods = <span class="keyword">await</span> stripe.paymentMethods.<span class="function">list</span>({
+  customer: <span class="string">'cus_abc123'</span>,
+  type: <span class="string">'card'</span>,
+});
+
+paymentMethods.data.<span class="function">forEach</span>((pm) => {
+  console.<span class="function">log</span>(<span class="string">`${pm.card?.brand} ending in ${pm.card?.last4}`</span>);
+  console.<span class="function">log</span>(<span class="string">`Expires: ${pm.card?.exp_month}/${pm.card?.exp_year}`</span>);
+});
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Customer Portal</div>
+        <p>Stripe offers a pre-built Customer Portal where customers can update their payment method, switch plans, cancel subscriptions, and view invoices -- zero UI code on your end. Enable it in Dashboard > Settings > Customer Portal, then create a portal session:</p>
+      </div>
+
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create a Customer Portal session</span>
+<span class="keyword">const</span> portalSession = <span class="keyword">await</span> stripe.billingPortal.sessions.<span class="function">create</span>({
+  customer: <span class="string">'cus_abc123'</span>,
+  return_url: <span class="string">`${process.env.CLIENT_URL}/dashboard`</span>,
+});
+
+res.<span class="function">json</span>({ url: portalSession.url });
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: Error Handling                                    -->
+    <!-- ============================================================ -->
+    <section id="error-handling" class="section">
+      <h2>10. Error Handling</h2>
+
+      <p>Payment failures are not bugs -- they are expected. Cards get declined, banks flag transactions, 3D Secure challenges time out. Your integration must handle every failure gracefully.</p>
+
+      <h3>Stripe Error Types</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="keyword">try</span> {
+  <span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>({
+    amount: <span class="number">2000</span>,
+    currency: <span class="string">'usd'</span>,
+  });
+} <span class="keyword">catch</span> (error) {
+  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeCardError) {
+    <span class="comment">// Card was declined</span>
+    console.<span class="function">log</span>(<span class="string">`Card declined: ${error.decline_code}`</span>);
+    <span class="comment">// e.g., 'insufficient_funds', 'lost_card', 'stolen_card'</span>
+  } <span class="keyword">else if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeRateLimitError) {
+    <span class="comment">// Too many requests -- back off and retry</span>
+    console.<span class="function">log</span>(<span class="string">'Rate limited, retrying...'</span>);
+  } <span class="keyword">else if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeInvalidRequestError) {
+    <span class="comment">// Invalid parameters (your bug, not the customer's)</span>
+    console.<span class="function">error</span>(<span class="string">`Invalid request: ${error.message}`</span>);
+  } <span class="keyword">else if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeAPIError) {
+    <span class="comment">// Stripe's servers had an error (rare)</span>
+    console.<span class="function">error</span>(<span class="string">'Stripe API error'</span>);
+  } <span class="keyword">else if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeConnectionError) {
+    <span class="comment">// Network issue between your server and Stripe</span>
+    console.<span class="function">error</span>(<span class="string">'Connection to Stripe failed'</span>);
+  } <span class="keyword">else if</span> (error <span class="keyword">instanceof</span> Stripe.errors.StripeAuthenticationError) {
+    <span class="comment">// Invalid API key</span>
+    console.<span class="function">error</span>(<span class="string">'Invalid Stripe API key'</span>);
+  }
+}
+</code></pre>
+
+      <h3>Common Decline Codes</h3>
+      <div class="example-box">
+        <div class="label">Decline Code Reference</div>
+        <p><code>insufficient_funds</code> -- Not enough money. Ask to try another card.</p>
+        <p><code>card_declined</code> -- Generic decline. The issuer did not give a reason.</p>
+        <p><code>expired_card</code> -- Card is past its expiration date.</p>
+        <p><code>incorrect_cvc</code> -- Wrong CVC/CVV number.</p>
+        <p><code>processing_error</code> -- Temporary issue. Retry once.</p>
+        <p><code>lost_card</code> / <code>stolen_card</code> -- Do NOT retry. Do NOT tell the customer the specific reason (security risk).</p>
+        <p><code>fraudulent</code> -- Stripe Radar flagged it. Review in Dashboard.</p>
+      </div>
+
+      <h3>3D Secure / Strong Customer Authentication (SCA)</h3>
+      <p>European regulations (PSD2) require Strong Customer Authentication for online payments. This usually means a 3D Secure challenge -- a popup or redirect where the customer confirms the payment with their bank (via SMS code, fingerprint, etc.).</p>
+
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// PaymentIntent may require action (3D Secure)</span>
+<span class="keyword">const</span> { error, paymentIntent } = <span class="keyword">await</span> stripe.<span class="function">confirmCardPayment</span>(clientSecret, {
+  payment_method: { card: cardElement },
+});
+
+<span class="keyword">if</span> (error) {
+  <span class="keyword">if</span> (error.type === <span class="string">'card_error'</span> || error.type === <span class="string">'validation_error'</span>) {
+    <span class="comment">// Show error to customer</span>
+    showError(error.message);
+  } <span class="keyword">else</span> {
+    <span class="comment">// Unexpected error</span>
+    showError(<span class="string">'An unexpected error occurred.'</span>);
+  }
+} <span class="keyword">else if</span> (paymentIntent.status === <span class="string">'requires_action'</span>) {
+  <span class="comment">// Stripe.js handles the 3DS popup automatically when you use</span>
+  <span class="comment">// confirmCardPayment. This branch usually is not reached.</span>
+} <span class="keyword">else if</span> (paymentIntent.status === <span class="string">'succeeded'</span>) {
+  showSuccess();
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Stripe.js Handles 3DS</div>
+        <p>If you use <code>confirmCardPayment</code> or <code>confirmPayment</code> from Stripe.js, 3D Secure is handled automatically. Stripe opens the authentication modal, waits for the customer to complete it, and resolves the promise. You do not need to build 3DS handling manually.</p>
+      </div>
+
+      <h3>Retry Logic for API Errors</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Simple retry wrapper for transient Stripe errors</span>
+<span class="keyword">async function</span> <span class="function">withRetry</span>&lt;T&gt;(
+  fn: () => Promise&lt;T&gt;,
+  maxRetries = <span class="number">3</span>,
+  delay = <span class="number">1000</span>
+): Promise&lt;T&gt; {
+  <span class="keyword">for</span> (<span class="keyword">let</span> attempt = <span class="number">1</span>; attempt &lt;= maxRetries; attempt++) {
+    <span class="keyword">try</span> {
+      <span class="keyword">return await</span> <span class="function">fn</span>();
+    } <span class="keyword">catch</span> (error) {
+      <span class="keyword">const</span> isRetryable =
+        error <span class="keyword">instanceof</span> Stripe.errors.StripeConnectionError ||
+        error <span class="keyword">instanceof</span> Stripe.errors.StripeRateLimitError ||
+        (error <span class="keyword">instanceof</span> Stripe.errors.StripeAPIError);
+
+      <span class="keyword">if</span> (!isRetryable || attempt === maxRetries) {
+        <span class="keyword">throw</span> error;
+      }
+
+      <span class="keyword">await new</span> Promise(r => <span class="function">setTimeout</span>(r, delay * attempt));
+    }
+  }
+  <span class="keyword">throw new</span> <span class="function">Error</span>(<span class="string">'Unreachable'</span>);
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> customer = <span class="keyword">await</span> <span class="function">withRetry</span>(() =>
+  stripe.customers.<span class="function">create</span>({ email: <span class="string">'user@example.com'</span> })
+);
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: Security                                          -->
+    <!-- ============================================================ -->
+    <section id="security" class="section">
+      <h2>11. Security &amp; PCI Compliance</h2>
+
+      <h3>PCI DSS Levels</h3>
+      <p>The Payment Card Industry Data Security Standard (PCI DSS) governs how cardholder data is handled. Your compliance level depends on how you collect card data:</p>
+
+      <div class="example-box">
+        <div class="label">PCI Compliance Levels with Stripe</div>
+        <p><strong>SAQ-A</strong> (lightest) -- You use Stripe Checkout or Stripe Elements. Card data never touches your server. You fill out a short self-assessment questionnaire annually. This is where you want to be.</p>
+        <p><strong>SAQ A-EP</strong> -- Your page controls the payment form but card data goes directly to Stripe (Elements). Slightly more requirements.</p>
+        <p><strong>SAQ D</strong> (heaviest) -- You handle raw card numbers on your server. Full audit required. Avoid this at all costs.</p>
+      </div>
+
+      <h3>Tokenization</h3>
+      <p>When a customer enters their card number in Stripe Elements, the data goes directly from the browser to Stripe's servers via an iframe. Your server never sees the card number. Instead, Stripe gives you a <strong>token</strong> (a PaymentMethod ID like <code>pm_1234</code>) that represents the card. You use this token for all operations.</p>
+
+      <div class="formula-box">
+        <div class="label">The Tokenization Flow</div>
+        <p>Customer enters card in Elements iframe -> Browser sends card to Stripe -> Stripe returns token (pm_xxx) -> Your JS sends token to your server -> Your server uses token to create charges</p>
+      </div>
+
+      <h3>Security Best Practices</h3>
+      <div class="warning-box">
+        <div class="label">Stripe Security Checklist</div>
+        <p>1. NEVER log or store raw card numbers, CVVs, or full card data.</p>
+        <p>2. ALWAYS use HTTPS in production (Stripe rejects HTTP requests).</p>
+        <p>3. ALWAYS verify webhook signatures.</p>
+        <p>4. Store API keys in environment variables, never in code.</p>
+        <p>5. Use restricted API keys in production (limit permissions per service).</p>
+        <p>6. Enable Stripe Radar for fraud detection.</p>
+        <p>7. Validate amounts server-side (never trust the client).</p>
+        <p>8. Use idempotency keys for critical operations.</p>
+      </div>
+
+      <h3>Idempotency Keys</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Use idempotency keys to prevent duplicate charges</span>
+<span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>(
+  {
+    amount: <span class="number">2000</span>,
+    currency: <span class="string">'usd'</span>,
+    customer: <span class="string">'cus_abc123'</span>,
+  },
+  {
+    idempotencyKey: <span class="string">`payment_${orderId}_${Date.now()}`</span>,
+  }
+);
+
+<span class="comment">// If you retry with the same idempotency key,</span>
+<span class="comment">// Stripe returns the original result instead of creating a duplicate</span>
+</code></pre>
+
+      <h3>Stripe Radar</h3>
+      <p>Radar is Stripe's built-in machine learning fraud detection system. It analyzes every payment across all Stripe merchants and blocks suspicious ones. It is enabled by default. You can add custom rules in the Dashboard (e.g., block payments from specific countries, require 3DS for transactions over $100).</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: Testing                                           -->
+    <!-- ============================================================ -->
+    <section id="testing" class="section">
+      <h2>12. Testing</h2>
+
+      <h3>Test Card Numbers</h3>
+      <div class="example-box">
+        <div class="label">Common Test Cards</div>
+        <p><code>4242 4242 4242 4242</code> -- Visa, always succeeds</p>
+        <p><code>4000 0000 0000 3220</code> -- Requires 3D Secure authentication</p>
+        <p><code>4000 0000 0000 9995</code> -- Always declined (insufficient funds)</p>
+        <p><code>4000 0000 0000 0002</code> -- Always declined (generic)</p>
+        <p><code>4000 0000 0000 0069</code> -- Declined, expired card</p>
+        <p><code>4000 0000 0000 0127</code> -- Declined, incorrect CVC</p>
+        <p><code>5555 5555 5555 4444</code> -- Mastercard, always succeeds</p>
+        <p>Any future expiry date works. Any 3-digit CVC works. Any 5-digit zip works.</p>
+      </div>
+
+      <h3>Stripe CLI for Local Testing</h3>
+<pre><code><span class="lang-label">bash</span>
+<span class="comment"># Install Stripe CLI</span>
+<span class="comment"># macOS</span>
+brew install stripe/stripe-cli/stripe
+
+<span class="comment"># Login to your Stripe account</span>
+stripe login
+
+<span class="comment"># Forward webhooks to your local server</span>
+stripe listen --forward-to localhost:<span class="number">3000</span>/api/webhook
+
+<span class="comment"># Output: Ready! Your webhook signing secret is whsec_abc123...</span>
+<span class="comment"># Use this secret in your .env for local development</span>
+
+<span class="comment"># Trigger a specific event for testing</span>
+stripe trigger payment_intent.succeeded
+stripe trigger checkout.session.completed
+stripe trigger customer.subscription.created
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">CLI Workflow</div>
+        <p>Run <code>stripe listen --forward-to localhost:3000/api/webhook</code> in one terminal and your server in another. Every Stripe event (from test payments in the Dashboard or your app) gets forwarded to your local endpoint. This is the fastest way to develop and debug webhook handlers.</p>
+      </div>
+
+      <h3>Writing Automated Tests</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Using Jest to test Stripe integration</span>
+<span class="keyword">import</span> stripe <span class="keyword">from</span> <span class="string">'../config/stripe'</span>;
+
+<span class="function">describe</span>(<span class="string">'Stripe Integration'</span>, () => {
+  <span class="function">it</span>(<span class="string">'should create a payment intent'</span>, <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>({
+      amount: <span class="number">2000</span>,
+      currency: <span class="string">'usd'</span>,
+    });
+
+    <span class="function">expect</span>(paymentIntent.id).<span class="function">toMatch</span>(<span class="string">/^pi_/</span>);
+    <span class="function">expect</span>(paymentIntent.amount).<span class="function">toBe</span>(<span class="number">2000</span>);
+    <span class="function">expect</span>(paymentIntent.status).<span class="function">toBe</span>(<span class="string">'requires_payment_method'</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">'should create a customer'</span>, <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> customer = <span class="keyword">await</span> stripe.customers.<span class="function">create</span>({
+      email: <span class="string">'test@example.com'</span>,
+      name: <span class="string">'Test User'</span>,
+    });
+
+    <span class="function">expect</span>(customer.id).<span class="function">toMatch</span>(<span class="string">/^cus_/</span>);
+    <span class="function">expect</span>(customer.email).<span class="function">toBe</span>(<span class="string">'test@example.com'</span>);
+
+    <span class="comment">// Clean up</span>
+    <span class="keyword">await</span> stripe.customers.<span class="function">del</span>(customer.id);
+  });
+
+  <span class="function">it</span>(<span class="string">'should create a checkout session'</span>, <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+      mode: <span class="string">'payment'</span>,
+      line_items: [
+        {
+          price_data: {
+            currency: <span class="string">'usd'</span>,
+            product_data: { name: <span class="string">'Test Product'</span> },
+            unit_amount: <span class="number">1000</span>,
+          },
+          quantity: <span class="number">1</span>,
+        },
+      ],
+      success_url: <span class="string">'https://example.com/success'</span>,
+      cancel_url: <span class="string">'https://example.com/cancel'</span>,
+    });
+
+    <span class="function">expect</span>(session.id).<span class="function">toMatch</span>(<span class="string">/^cs_test_/</span>);
+    <span class="function">expect</span>(session.url).<span class="function">toBeTruthy</span>();
+  });
+});
+</code></pre>
+
+      <h3>Testing Webhooks with Mock Events</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Mock webhook event for unit testing</span>
+<span class="keyword">import</span> { Request, Response } <span class="keyword">from</span> <span class="string">'express'</span>;
+
+<span class="keyword">function</span> <span class="function">createMockEvent</span>(type: <span class="builtin">string</span>, data: <span class="keyword">any</span>): Stripe.Event {
+  <span class="keyword">return</span> {
+    id: <span class="string">`evt_test_${Date.now()}`</span>,
+    type,
+    data: { object: data },
+    api_version: <span class="string">'2024-06-20'</span>,
+    created: Math.<span class="function">floor</span>(Date.<span class="function">now</span>() / <span class="number">1000</span>),
+    livemode: <span class="keyword">false</span>,
+    object: <span class="string">'event'</span>,
+    pending_webhooks: <span class="number">0</span>,
+    request: <span class="keyword">null</span>,
+  } <span class="keyword">as</span> <span class="keyword">any</span>;
+}
+
+<span class="function">describe</span>(<span class="string">'Webhook Handlers'</span>, () => {
+  <span class="function">it</span>(<span class="string">'should handle checkout.session.completed'</span>, <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> mockSession = {
+      id: <span class="string">'cs_test_123'</span>,
+      mode: <span class="string">'payment'</span>,
+      customer: <span class="string">'cus_test_123'</span>,
+      metadata: { userId: <span class="string">'user_1'</span> },
+    };
+
+    <span class="keyword">const</span> event = <span class="function">createMockEvent</span>(<span class="string">'checkout.session.completed'</span>, mockSession);
+    <span class="keyword">await</span> <span class="function">handleCheckoutComplete</span>(event.data.object <span class="keyword">as</span> <span class="keyword">any</span>);
+
+    <span class="comment">// Assert database was updated</span>
+    <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findUnique</span>({ <span class="keyword">where</span>: { id: <span class="string">'user_1'</span> } });
+    <span class="function">expect</span>(user?.hasPro).<span class="function">toBe</span>(<span class="keyword">true</span>);
+  });
+});
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 13: Common Patterns                                   -->
+    <!-- ============================================================ -->
+    <section id="common-patterns" class="section">
+      <h2>13. Common Patterns</h2>
+
+      <h3>Pattern 1: One-Time Payment (Digital Product)</h3>
+      <p>Selling a course, template, or license. Customer pays once, gets access forever.</p>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Server: create Checkout session for one-time purchase</span>
+router.<span class="function">post</span>(<span class="string">'/buy-course'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { userId, courseId } = req.body;
+
+  <span class="keyword">const</span> course = <span class="keyword">await</span> db.courses.<span class="function">findUnique</span>({ <span class="keyword">where</span>: { id: courseId } });
+  <span class="keyword">if</span> (!course) <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">404</span>).<span class="function">json</span>({ error: <span class="string">'Course not found'</span> });
+
+  <span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+    mode: <span class="string">'payment'</span>,
+    line_items: [{
+      price_data: {
+        currency: <span class="string">'usd'</span>,
+        product_data: {
+          name: course.title,
+          description: course.description,
+        },
+        unit_amount: course.priceInCents,
+      },
+      quantity: <span class="number">1</span>,
+    }],
+    metadata: { userId, courseId },
+    success_url: <span class="string">`${process.env.CLIENT_URL}/courses/${courseId}?purchased=true`</span>,
+    cancel_url: <span class="string">`${process.env.CLIENT_URL}/courses/${courseId}`</span>,
+  });
+
+  res.<span class="function">json</span>({ url: session.url });
+});
+
+<span class="comment">// Webhook: grant access when payment completes</span>
+<span class="keyword">async function</span> <span class="function">handleCourseCheckout</span>(session: Stripe.Checkout.Session) {
+  <span class="keyword">const</span> { userId, courseId } = session.metadata!;
+  <span class="keyword">await</span> db.purchases.<span class="function">create</span>({
+    data: { userId, courseId, stripeSessionId: session.id },
+  });
+}
+</code></pre>
+
+      <h3>Pattern 2: SaaS Subscription</h3>
+      <p>Monthly/yearly billing with multiple tiers. The most common Stripe use case.</p>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Pricing page: fetch prices from Stripe</span>
+router.<span class="function">get</span>(<span class="string">'/pricing'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> prices = <span class="keyword">await</span> stripe.prices.<span class="function">list</span>({
+    active: <span class="keyword">true</span>,
+    expand: [<span class="string">'data.product'</span>],
+    type: <span class="string">'recurring'</span>,
+  });
+
+  <span class="keyword">const</span> plans = prices.data.<span class="function">map</span>((price) => ({
+    id: price.id,
+    name: (price.product <span class="keyword">as</span> Stripe.Product).name,
+    amount: price.unit_amount,
+    interval: price.recurring?.interval,
+  }));
+
+  res.<span class="function">json</span>(plans);
+});
+
+<span class="comment">// Subscribe endpoint</span>
+router.<span class="function">post</span>(<span class="string">'/subscribe'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { userId, priceId } = req.body;
+  <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findUnique</span>({ <span class="keyword">where</span>: { id: userId } });
+
+  <span class="comment">// Ensure customer exists in Stripe</span>
+  <span class="keyword">let</span> customerId = user?.stripeCustomerId;
+  <span class="keyword">if</span> (!customerId) {
+    <span class="keyword">const</span> customer = <span class="keyword">await</span> stripe.customers.<span class="function">create</span>({
+      email: user!.email,
+      metadata: { userId },
+    });
+    customerId = customer.id;
+    <span class="keyword">await</span> db.users.<span class="function">update</span>({
+      <span class="keyword">where</span>: { id: userId },
+      data: { stripeCustomerId: customerId },
+    });
+  }
+
+  <span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+    mode: <span class="string">'subscription'</span>,
+    customer: customerId,
+    line_items: [{ price: priceId, quantity: <span class="number">1</span> }],
+    success_url: <span class="string">`${process.env.CLIENT_URL}/dashboard`</span>,
+    cancel_url: <span class="string">`${process.env.CLIENT_URL}/pricing`</span>,
+  });
+
+  res.<span class="function">json</span>({ url: session.url });
+});
+</code></pre>
+
+      <h3>Pattern 3: Marketplace (Connect)</h3>
+      <p>Platforms where customers pay sellers (like Uber, Etsy). Use Stripe Connect to split payments between your platform and sellers.</p>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// Create a connected account for a seller</span>
+<span class="keyword">const</span> account = <span class="keyword">await</span> stripe.accounts.<span class="function">create</span>({
+  type: <span class="string">'express'</span>,  <span class="comment">// Stripe handles onboarding UI</span>
+  country: <span class="string">'US'</span>,
+  email: <span class="string">'seller@example.com'</span>,
+  capabilities: {
+    card_payments: { requested: <span class="keyword">true</span> },
+    transfers: { requested: <span class="keyword">true</span> },
+  },
+});
+
+<span class="comment">// Create an onboarding link for the seller</span>
+<span class="keyword">const</span> accountLink = <span class="keyword">await</span> stripe.accountLinks.<span class="function">create</span>({
+  account: account.id,
+  refresh_url: <span class="string">`${process.env.CLIENT_URL}/seller/retry`</span>,
+  return_url: <span class="string">`${process.env.CLIENT_URL}/seller/dashboard`</span>,
+  type: <span class="string">'account_onboarding'</span>,
+});
+
+<span class="comment">// Payment with platform fee (destination charge)</span>
+<span class="keyword">const</span> paymentIntent = <span class="keyword">await</span> stripe.paymentIntents.<span class="function">create</span>({
+  amount: <span class="number">10000</span>,       <span class="comment">// $100 total</span>
+  currency: <span class="string">'usd'</span>,
+  application_fee_amount: <span class="number">1500</span>,  <span class="comment">// $15 platform fee</span>
+  transfer_data: {
+    destination: <span class="string">'acct_seller123'</span>,  <span class="comment">// Seller gets $85</span>
+  },
+});
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Connect Account Types</div>
+        <p><strong>Express</strong> -- Stripe handles onboarding and identity verification. Best for most marketplaces. The seller gets a Stripe Dashboard with limited access.</p>
+        <p><strong>Standard</strong> -- The seller has their own full Stripe account. You redirect them to connect it to your platform via OAuth.</p>
+        <p><strong>Custom</strong> -- You control everything including onboarding UI. Most work, most flexibility. Only for large platforms.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 14: Full Integration Example                          -->
+    <!-- ============================================================ -->
+    <section id="full-example" class="section">
+      <h2>14. Full Integration Example</h2>
+
+      <p>Here is a complete Express + Stripe integration with Checkout, webhooks, and database persistence. This is a real-world SaaS billing backend you can adapt for production.</p>
+
+      <h3>Express App Setup</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/index.ts</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> cors <span class="keyword">from</span> <span class="string">'cors'</span>;
+<span class="keyword">import</span> dotenv <span class="keyword">from</span> <span class="string">'dotenv'</span>;
+<span class="keyword">import</span> paymentRoutes <span class="keyword">from</span> <span class="string">'./routes/payments'</span>;
+<span class="keyword">import</span> webhookRoutes <span class="keyword">from</span> <span class="string">'./routes/webhooks'</span>;
+
+dotenv.<span class="function">config</span>();
+
+<span class="keyword">const</span> app = <span class="function">express</span>();
+
+<span class="comment">// IMPORTANT: webhook route must use raw body parser</span>
+<span class="comment">// Register it BEFORE the JSON parser</span>
+app.<span class="function">use</span>(<span class="string">'/api/webhook'</span>, express.<span class="function">raw</span>({ type: <span class="string">'application/json'</span> }));
+
+<span class="comment">// JSON parser for all other routes</span>
+app.<span class="function">use</span>(express.<span class="function">json</span>());
+app.<span class="function">use</span>(<span class="function">cors</span>({ origin: process.env.CLIENT_URL }));
+
+<span class="comment">// Routes</span>
+app.<span class="function">use</span>(<span class="string">'/api'</span>, paymentRoutes);
+app.<span class="function">use</span>(<span class="string">'/api'</span>, webhookRoutes);
+
+<span class="keyword">const</span> PORT = process.env.PORT || <span class="number">3000</span>;
+app.<span class="function">listen</span>(PORT, () => {
+  console.<span class="function">log</span>(<span class="string">`Server running on port ${PORT}`</span>);
+});
+</code></pre>
+
+      <h3>Payment Routes</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/routes/payments.ts</span>
+<span class="keyword">import</span> { Router } <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> stripe <span class="keyword">from</span> <span class="string">'../config/stripe'</span>;
+<span class="keyword">import</span> { db } <span class="keyword">from</span> <span class="string">'../db'</span>;
+
+<span class="keyword">const</span> router = <span class="function">Router</span>();
+
+<span class="comment">// Create a Checkout session for subscription</span>
+router.<span class="function">post</span>(<span class="string">'/create-checkout'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> { userId, priceId } = req.body;
+    <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findUnique</span>({ <span class="keyword">where</span>: { id: userId } });
+
+    <span class="keyword">if</span> (!user) {
+      <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">404</span>).<span class="function">json</span>({ error: <span class="string">'User not found'</span> });
+    }
+
+    <span class="comment">// Create or retrieve Stripe customer</span>
+    <span class="keyword">let</span> customerId = user.stripeCustomerId;
+    <span class="keyword">if</span> (!customerId) {
+      <span class="keyword">const</span> customer = <span class="keyword">await</span> stripe.customers.<span class="function">create</span>({
+        email: user.email,
+        name: user.name,
+        metadata: { userId: user.id },
+      });
+      customerId = customer.id;
+      <span class="keyword">await</span> db.users.<span class="function">update</span>({
+        <span class="keyword">where</span>: { id: userId },
+        data: { stripeCustomerId: customerId },
+      });
+    }
+
+    <span class="comment">// Prevent duplicate subscriptions</span>
+    <span class="keyword">if</span> (user.stripeSubscriptionId) {
+      <span class="keyword">const</span> existingSub = <span class="keyword">await</span> stripe.subscriptions.<span class="function">retrieve</span>(user.stripeSubscriptionId);
+      <span class="keyword">if</span> (existingSub.status === <span class="string">'active'</span> || existingSub.status === <span class="string">'trialing'</span>) {
+        <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">400</span>).<span class="function">json</span>({ error: <span class="string">'Already subscribed'</span> });
+      }
+    }
+
+    <span class="keyword">const</span> session = <span class="keyword">await</span> stripe.checkout.sessions.<span class="function">create</span>({
+      mode: <span class="string">'subscription'</span>,
+      customer: customerId,
+      line_items: [{ price: priceId, quantity: <span class="number">1</span> }],
+      subscription_data: {
+        trial_period_days: <span class="number">7</span>,
+        metadata: { userId: user.id },
+      },
+      success_url: <span class="string">`${process.env.CLIENT_URL}/dashboard?subscribed=true`</span>,
+      cancel_url: <span class="string">`${process.env.CLIENT_URL}/pricing`</span>,
+    });
+
+    res.<span class="function">json</span>({ url: session.url });
+  } <span class="keyword">catch</span> (error: <span class="keyword">any</span>) {
+    console.<span class="function">error</span>(<span class="string">'Checkout error:'</span>, error);
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: <span class="string">'Failed to create checkout session'</span> });
+  }
+});
+
+<span class="comment">// Create a Customer Portal session</span>
+router.<span class="function">post</span>(<span class="string">'/customer-portal'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> { userId } = req.body;
+    <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findUnique</span>({ <span class="keyword">where</span>: { id: userId } });
+
+    <span class="keyword">if</span> (!user?.stripeCustomerId) {
+      <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">400</span>).<span class="function">json</span>({ error: <span class="string">'No billing account'</span> });
+    }
+
+    <span class="keyword">const</span> portalSession = <span class="keyword">await</span> stripe.billingPortal.sessions.<span class="function">create</span>({
+      customer: user.stripeCustomerId,
+      return_url: <span class="string">`${process.env.CLIENT_URL}/dashboard`</span>,
+    });
+
+    res.<span class="function">json</span>({ url: portalSession.url });
+  } <span class="keyword">catch</span> (error: <span class="keyword">any</span>) {
+    console.<span class="function">error</span>(<span class="string">'Portal error:'</span>, error);
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: <span class="string">'Failed to create portal session'</span> });
+  }
+});
+
+<span class="comment">// Get subscription status</span>
+router.<span class="function">get</span>(<span class="string">'/subscription-status/:userId'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findUnique</span>({
+      <span class="keyword">where</span>: { id: req.params.userId },
+    });
+
+    <span class="keyword">if</span> (!user?.stripeSubscriptionId) {
+      <span class="keyword">return</span> res.<span class="function">json</span>({ status: <span class="string">'none'</span>, plan: <span class="string">'free'</span> });
+    }
+
+    <span class="keyword">const</span> subscription = <span class="keyword">await</span> stripe.subscriptions.<span class="function">retrieve</span>(
+      user.stripeSubscriptionId
+    );
+
+    res.<span class="function">json</span>({
+      status: subscription.status,
+      plan: user.plan,
+      currentPeriodEnd: <span class="keyword">new</span> <span class="function">Date</span>(subscription.current_period_end * <span class="number">1000</span>),
+      cancelAtPeriodEnd: subscription.cancel_at_period_end,
+    });
+  } <span class="keyword">catch</span> (error: <span class="keyword">any</span>) {
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: <span class="string">'Failed to get subscription status'</span> });
+  }
+});
+
+<span class="keyword">export default</span> router;
+</code></pre>
+
+      <h3>Webhook Handler</h3>
+<pre><code><span class="lang-label">TypeScript</span>
+<span class="comment">// src/routes/webhooks.ts</span>
+<span class="keyword">import</span> { Router } <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> Stripe <span class="keyword">from</span> <span class="string">'stripe'</span>;
+<span class="keyword">import</span> stripe <span class="keyword">from</span> <span class="string">'../config/stripe'</span>;
+<span class="keyword">import</span> { db } <span class="keyword">from</span> <span class="string">'../db'</span>;
+
+<span class="keyword">const</span> router = <span class="function">Router</span>();
+
+router.<span class="function">post</span>(<span class="string">'/webhook'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> sig = req.headers[<span class="string">'stripe-signature'</span>] <span class="keyword">as</span> <span class="builtin">string</span>;
+  <span class="keyword">let</span> event: Stripe.Event;
+
+  <span class="keyword">try</span> {
+    event = stripe.webhooks.<span class="function">constructEvent</span>(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+  } <span class="keyword">catch</span> (err: <span class="keyword">any</span>) {
+    console.<span class="function">error</span>(<span class="string">`Webhook signature failed: ${err.message}`</span>);
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">400</span>).<span class="function">send</span>(<span class="string">`Webhook Error: ${err.message}`</span>);
+  }
+
+  <span class="comment">// Idempotency check</span>
+  <span class="keyword">const</span> processed = <span class="keyword">await</span> db.stripeEvents.<span class="function">findUnique</span>({
+    <span class="keyword">where</span>: { eventId: event.id },
+  });
+  <span class="keyword">if</span> (processed) {
+    <span class="keyword">return</span> res.<span class="function">json</span>({ received: <span class="keyword">true</span>, duplicate: <span class="keyword">true</span> });
+  }
+
+  <span class="keyword">try</span> {
+    <span class="keyword">switch</span> (event.type) {
+      <span class="keyword">case</span> <span class="string">'checkout.session.completed'</span>: {
+        <span class="keyword">const</span> session = event.data.object <span class="keyword">as</span> Stripe.Checkout.Session;
+        <span class="keyword">const</span> userId = session.metadata?.userId;
+
+        <span class="keyword">if</span> (session.mode === <span class="string">'subscription'</span> && userId) {
+          <span class="keyword">await</span> db.users.<span class="function">update</span>({
+            <span class="keyword">where</span>: { id: userId },
+            data: {
+              stripeCustomerId: session.customer <span class="keyword">as</span> <span class="builtin">string</span>,
+              stripeSubscriptionId: session.subscription <span class="keyword">as</span> <span class="builtin">string</span>,
+              plan: <span class="string">'pro'</span>,
+            },
+          });
+        }
+        <span class="keyword">break</span>;
+      }
+
+      <span class="keyword">case</span> <span class="string">'customer.subscription.updated'</span>: {
+        <span class="keyword">const</span> sub = event.data.object <span class="keyword">as</span> Stripe.Subscription;
+        <span class="keyword">const</span> customerId = sub.customer <span class="keyword">as</span> <span class="builtin">string</span>;
+
+        <span class="keyword">if</span> (sub.status === <span class="string">'active'</span>) {
+          <span class="keyword">await</span> db.users.<span class="function">update</span>({
+            <span class="keyword">where</span>: { stripeCustomerId: customerId },
+            data: { plan: <span class="string">'pro'</span> },
+          });
+        } <span class="keyword">else if</span> (sub.status === <span class="string">'past_due'</span>) {
+          <span class="comment">// Notify user that payment failed</span>
+          <span class="keyword">const</span> user = <span class="keyword">await</span> db.users.<span class="function">findFirst</span>({
+            <span class="keyword">where</span>: { stripeCustomerId: customerId },
+          });
+          <span class="keyword">if</span> (user) {
+            <span class="keyword">await</span> <span class="function">sendEmail</span>(user.email, <span class="string">'Payment Failed'</span>,
+              <span class="string">'Your subscription payment failed. Please update your payment method.'</span>
+            );
+          }
+        }
+        <span class="keyword">break</span>;
+      }
+
+      <span class="keyword">case</span> <span class="string">'customer.subscription.deleted'</span>: {
+        <span class="keyword">const</span> sub = event.data.object <span class="keyword">as</span> Stripe.Subscription;
+        <span class="keyword">const</span> customerId = sub.customer <span class="keyword">as</span> <span class="builtin">string</span>;
+
+        <span class="keyword">await</span> db.users.<span class="function">update</span>({
+          <span class="keyword">where</span>: { stripeCustomerId: customerId },
+          data: {
+            plan: <span class="string">'free'</span>,
+            stripeSubscriptionId: <span class="keyword">null</span>,
+          },
+        });
+        <span class="keyword">break</span>;
+      }
+
+      <span class="keyword">case</span> <span class="string">'invoice.payment_failed'</span>: {
+        <span class="keyword">const</span> invoice = event.data.object <span class="keyword">as</span> Stripe.Invoice;
+        <span class="keyword">const</span> customerId = invoice.customer <span class="keyword">as</span> <span class="builtin">string</span>;
+
+        console.<span class="function">error</span>(<span class="string">`Invoice payment failed for customer ${customerId}`</span>);
+        <span class="comment">// Stripe automatically retries failed invoices</span>
+        <span class="comment">// You can configure retry schedule in Dashboard > Settings > Billing</span>
+        <span class="keyword">break</span>;
+      }
+
+      <span class="keyword">default</span>:
+        console.<span class="function">log</span>(<span class="string">`Unhandled event: ${event.type}`</span>);
+    }
+
+    <span class="comment">// Record the processed event</span>
+    <span class="keyword">await</span> db.stripeEvents.<span class="function">create</span>({
+      data: { eventId: event.id, type: event.type, processedAt: <span class="keyword">new</span> <span class="function">Date</span>() },
+    });
+  } <span class="keyword">catch</span> (error) {
+    console.<span class="function">error</span>(<span class="string">`Error processing ${event.type}:`</span>, error);
+    <span class="comment">// Return 500 so Stripe retries the webhook</span>
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({ error: <span class="string">'Webhook handler failed'</span> });
+  }
+
+  res.<span class="function">json</span>({ received: <span class="keyword">true</span> });
+});
+
+<span class="keyword">export default</span> router;
+</code></pre>
+
+      <h3>Database Schema (Prisma)</h3>
+<pre><code><span class="lang-label">prisma</span>
+<span class="comment">// prisma/schema.prisma</span>
+model User {
+  id                    String   @id @default(<span class="function">cuid</span>())
+  email                 String   @unique
+  name                  String
+  plan                  String   @default(<span class="string">"free"</span>)  <span class="comment">// "free" | "pro"</span>
+  stripeCustomerId      String?  @unique
+  stripeSubscriptionId  String?  @unique
+  hasPro                Boolean  @default(<span class="keyword">false</span>)
+  createdAt             DateTime @default(<span class="function">now</span>())
+  updatedAt             DateTime @updatedAt
+}
+
+model StripeEvent {
+  id          String   @id @default(<span class="function">cuid</span>())
+  eventId     String   @unique    <span class="comment">// Stripe event ID for idempotency</span>
+  type        String
+  processedAt DateTime
+}
+
+model Purchase {
+  id              String   @id @default(<span class="function">cuid</span>())
+  userId          String
+  courseId         String
+  stripeSessionId String   @unique
+  createdAt       DateTime @default(<span class="function">now</span>())
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Production Checklist</div>
+        <p>Before going live: (1) Switch to live API keys, (2) Set up live webhook endpoint in Dashboard (not just CLI), (3) Enable Stripe Radar, (4) Test with real cards in live mode (refund immediately), (5) Set up alerts for failed payments and disputes, (6) Configure retry schedule for failed subscription payments, (7) Add logging and monitoring for your webhook handler, (8) Set the STRIPE_WEBHOOK_SECRET for your production webhook endpoint.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Amount Validation</div>
+        <p>ALWAYS validate payment amounts on the server. A malicious client could send <code>amount: 1</code> to your create-payment-intent endpoint and pay $0.01 for a $100 product. Calculate the amount from your database on the server side, never from the client request. Use Checkout with pre-defined Prices when possible -- it eliminates this attack vector entirely.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Quick Reference: Stripe Object ID Prefixes</div>
+        <p><code>pi_</code> -- PaymentIntent</p>
+        <p><code>cs_</code> -- Checkout Session</p>
+        <p><code>cus_</code> -- Customer</p>
+        <p><code>sub_</code> -- Subscription</p>
+        <p><code>pm_</code> -- PaymentMethod</p>
+        <p><code>in_</code> -- Invoice</p>
+        <p><code>price_</code> -- Price</p>
+        <p><code>prod_</code> -- Product</p>
+        <p><code>seti_</code> -- SetupIntent</p>
+        <p><code>evt_</code> -- Event</p>
+        <p><code>ch_</code> -- Charge</p>
+        <p><code>re_</code> -- Refund</p>
+        <p><code>acct_</code> -- Connected Account</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

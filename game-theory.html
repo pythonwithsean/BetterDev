@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Theory for CP - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Game Theory</div>
+      <h1>Game Theory for Competitive Programming</h1>
+      <p>Everything you need to solve game theory problems in CP -- from Nim and Sprague-Grundy fundamentals to minimax, alpha-beta pruning, and classic competition problems. Full code in C++ and Python with proofs and visual examples.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#basics">1. Combinatorial Game Theory Basics</a>
+      <a href="#win-lose">2. Winning &amp; Losing Positions</a>
+      <a href="#nim">3. Nim</a>
+      <a href="#sprague-grundy">4. Sprague-Grundy Theorem</a>
+      <a href="#combining">5. Combining Games</a>
+      <a href="#minimax">6. Minimax Algorithm</a>
+      <a href="#alpha-beta">7. Alpha-Beta Pruning</a>
+      <a href="#graph-games">8. Game Theory on Graphs</a>
+      <a href="#staircase-nim">9. Staircase Nim</a>
+      <a href="#wythoff">10. Wythoff's Game</a>
+      <a href="#cp-problems">11. Common CP Problems</a>
+      <a href="#practice">12. Practice Problems</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <section id="basics">
+      <h2>1. Combinatorial Game Theory Basics</h2>
+
+      <p>Combinatorial game theory (CGT) studies two-player games with <strong>perfect information</strong> where both players know the entire game state at all times. These are not the "game theory" from economics (Nash equilibria, mixed strategies) -- these are deterministic, sequential games where the last player to move either wins or loses.</p>
+
+      <h3>Defining Properties</h3>
+      <p>A game qualifies as a <strong>combinatorial game</strong> if it satisfies all of the following:</p>
+
+      <div class="example-box">
+        <div class="label">Properties of a Combinatorial Game</div>
+        <p><strong>1. Two players</strong> -- they alternate turns.</p>
+        <p><strong>2. Perfect information</strong> -- both players see the entire game state. No hidden cards, no fog of war.</p>
+        <p><strong>3. No randomness</strong> -- no dice, no shuffling, no probability. The outcome is entirely determined by player choices.</p>
+        <p><strong>4. Finite</strong> -- the game must end in a finite number of moves. No infinite loops.</p>
+        <p><strong>5. Normal play convention</strong> -- the player who cannot move <em>loses</em>. (The mis&egrave;re convention reverses this -- the player who cannot move <em>wins</em>.)</p>
+      </div>
+
+      <p>Examples that fit: Nim, Chess (abstractly), Go, Tic-Tac-Toe. Examples that do NOT fit: Poker (hidden info), Backgammon (dice), Rock-Paper-Scissors (simultaneous moves).</p>
+
+      <h3>Impartial vs. Partisan Games</h3>
+      <p>An <strong>impartial</strong> game is one where both players have the exact same set of available moves from any position. Nim is impartial -- either player can take stones from any pile. A <strong>partisan</strong> game is one where players have different move sets. Chess is partisan -- you can only move your own pieces.</p>
+
+      <div class="tip-box">
+        <div class="label">CP Focus</div>
+        <p>Almost all game theory problems in competitive programming are <strong>impartial games under normal play convention</strong>. This is great news because it means we can use the Sprague-Grundy theorem to solve them systematically.</p>
+      </div>
+
+      <h3>Game States as a DAG</h3>
+      <p>Every combinatorial game can be modeled as a <strong>directed acyclic graph (DAG)</strong>. Each node is a game state, and each edge is a valid move. Terminal nodes (no outgoing edges) are positions where the current player loses (under normal play). Because the game is finite and has no cycles, we can always do backward induction from the terminal states.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="win-lose">
+      <h2>2. Winning &amp; Losing Positions</h2>
+
+      <p>The foundation of all game theory in CP: classifying every position as either a <strong>winning position</strong> or a <strong>losing position</strong> for the player whose turn it is.</p>
+
+      <h3>P-Positions and N-Positions</h3>
+
+      <div class="formula-box">
+        <strong>P-position</strong> (Previous player wins): The player who just moved is in a winning state. Equivalently, the current player <em>loses</em> with optimal play.<br>
+        <strong>N-position</strong> (Next player wins): The current player can force a win with optimal play.
+      </div>
+
+      <h3>Rules for Classification (Backward Induction)</h3>
+
+      <div class="example-box">
+        <div class="label">Classification Rules</div>
+        <p><strong>Rule 1:</strong> A terminal position (no moves available) is a <strong>P-position</strong> (the current player loses because they cannot move).</p>
+        <p><strong>Rule 2:</strong> A position is an <strong>N-position</strong> if there exists <em>at least one</em> move to a P-position (the current player can move to a state where the opponent loses).</p>
+        <p><strong>Rule 3:</strong> A position is a <strong>P-position</strong> if <em>every</em> move leads to an N-position (no matter what the current player does, the opponent will be in a winning state).</p>
+      </div>
+
+      <h3>Visual Example: Subtraction Game</h3>
+      <p>Consider a game with a pile of n stones. On each turn, a player can remove 1, 2, or 3 stones. The player who takes the last stone wins.</p>
+
+      <div class="example-box">
+        <div class="label">Position Analysis (S = {1, 2, 3})</div>
+        <p><strong>n=0:</strong> No moves &rarr; P-position (current player loses)</p>
+        <p><strong>n=1:</strong> Can move to 0 (P) &rarr; N-position (take 1, win)</p>
+        <p><strong>n=2:</strong> Can move to 1(N) or 0(P) &rarr; N-position (take 2, win)</p>
+        <p><strong>n=3:</strong> Can move to 2(N), 1(N), or 0(P) &rarr; N-position (take 3, win)</p>
+        <p><strong>n=4:</strong> Can move to 3(N), 2(N), 1(N) &rarr; all N-positions &rarr; <strong>P-position!</strong></p>
+        <p><strong>n=5:</strong> Can move to 4(P) &rarr; N-position</p>
+        <p><strong>Pattern:</strong> P-positions are exactly the multiples of 4: {0, 4, 8, 12, ...}</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">classify_positions</span>(n, moves):
+    <span class="comment"># Classify all positions 0..n as P or N</span>
+    <span class="comment"># pos[i] = True means N-position (current player wins)</span>
+    pos = [<span class="keyword">False</span>] * (n + <span class="number">1</span>)  <span class="comment"># pos[0] = False (P-position)</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        <span class="keyword">for</span> m <span class="keyword">in</span> moves:
+            <span class="keyword">if</span> i >= m <span class="keyword">and</span> <span class="keyword">not</span> pos[i - m]:
+                pos[i] = <span class="keyword">True</span>  <span class="comment"># Found a move to a P-position</span>
+                <span class="keyword">break</span>
+    <span class="keyword">return</span> pos
+
+<span class="comment"># Subtraction game with moves {1, 2, 3}</span>
+positions = <span class="function">classify_positions</span>(<span class="number">20</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">21</span>):
+    <span class="builtin">print</span>(f<span class="string">"n={i}: {'N' if positions[i] else 'P'}"</span>)</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="function">classifyPositions</span>(<span class="keyword">int</span> n, <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; moves) {
+    <span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; pos(n + <span class="number">1</span>, <span class="keyword">false</span>); <span class="comment">// pos[0] = false (P-position)</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> m : moves) {
+            <span class="keyword">if</span> (i >= m && !pos[i - m]) {
+                pos[i] = <span class="keyword">true</span>; <span class="comment">// move to a P-position exists</span>
+                <span class="keyword">break</span>;
+            }
+        }
+    }
+    <span class="keyword">return</span> pos;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; moves = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>};
+    <span class="keyword">auto</span> pos = <span class="function">classifyPositions</span>(<span class="number">20</span>, moves);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= <span class="number">20</span>; i++)
+        cout << <span class="string">"n="</span> << i << <span class="string">": "</span> << (pos[i] ? <span class="string">"N"</span> : <span class="string">"P"</span>) << <span class="string">"\n"</span>;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">CP Pattern Recognition</div>
+        <p>When you see a game theory problem, <strong>always start by computing positions for small values</strong> (n=0 through n=20 or so). Look for a pattern. Most CP game theory problems have a clean mathematical pattern that you can prove and then compute in O(1).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="nim">
+      <h2>3. Nim</h2>
+
+      <p>Nim is the most fundamental game in combinatorial game theory. Understanding Nim is the key to understanding virtually every game theory problem in CP.</p>
+
+      <h3>Rules</h3>
+      <p>There are k piles of stones with sizes n<sub>1</sub>, n<sub>2</sub>, ..., n<sub>k</sub>. Two players alternate turns. On each turn, a player must choose one pile and remove <em>at least one</em> stone from it (they can remove the entire pile). The player who takes the last stone wins (normal play).</p>
+
+      <h3>Nim-Sum (XOR) Solution</h3>
+
+      <div class="formula-box">
+        <strong>Bouton's Theorem (1902):</strong> A Nim position is a P-position (losing for the current player) if and only if the XOR (nim-sum) of all pile sizes is 0.<br><br>
+        nim-sum = n<sub>1</sub> &oplus; n<sub>2</sub> &oplus; ... &oplus; n<sub>k</sub><br><br>
+        If nim-sum = 0 &rarr; current player <strong>loses</strong> (P-position).<br>
+        If nim-sum &ne; 0 &rarr; current player <strong>wins</strong> (N-position).
+      </div>
+
+      <h3>Proof of Bouton's Theorem</h3>
+
+      <div class="example-box">
+        <div class="label">Proof Sketch</div>
+        <p>We prove three things:</p>
+        <p><strong>(1) Terminal position has nim-sum 0.</strong> The only terminal position is all piles empty: 0 &oplus; 0 &oplus; ... &oplus; 0 = 0. This is indeed a P-position.</p>
+        <p><strong>(2) From any position with nim-sum &ne; 0, there exists a move to a position with nim-sum 0.</strong> Let S = n<sub>1</sub> &oplus; ... &oplus; n<sub>k</sub> &ne; 0. Let d be the position of the highest set bit in S. There exists some pile n<sub>i</sub> that has this bit set (otherwise the XOR would not have it). Now n<sub>i</sub> &oplus; S &lt; n<sub>i</sub> (because we cleared the highest bit and possibly set lower ones). So we can reduce pile i from n<sub>i</sub> to n<sub>i</sub> &oplus; S. After this move, the new XOR is S &oplus; n<sub>i</sub> &oplus; (n<sub>i</sub> &oplus; S) = 0.</p>
+        <p><strong>(3) From any position with nim-sum 0, every move leads to a position with nim-sum &ne; 0.</strong> If we change pile i from n<sub>i</sub> to n<sub>i</sub>&prime; where n<sub>i</sub>&prime; &lt; n<sub>i</sub>, then n<sub>i</sub> &ne; n<sub>i</sub>&prime;, so n<sub>i</sub> &oplus; n<sub>i</sub>&prime; &ne; 0. The new XOR is 0 &oplus; n<sub>i</sub> &oplus; n<sub>i</sub>&prime; = n<sub>i</sub> &oplus; n<sub>i</sub>&prime; &ne; 0.</p>
+        <p>Together: P-positions (nim-sum 0) and N-positions (nim-sum &ne; 0) satisfy our classification rules exactly.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">nim_winner</span>(piles):
+    <span class="comment">"""Return 'First' if the first player wins, 'Second' otherwise."""</span>
+    xor_sum = <span class="number">0</span>
+    <span class="keyword">for</span> p <span class="keyword">in</span> piles:
+        xor_sum ^= p
+    <span class="keyword">return</span> <span class="string">"First"</span> <span class="keyword">if</span> xor_sum != <span class="number">0</span> <span class="keyword">else</span> <span class="string">"Second"</span>
+
+<span class="keyword">def</span> <span class="function">nim_winning_move</span>(piles):
+    <span class="comment">"""Find a winning move: return (pile_index, new_size) or None."""</span>
+    xor_sum = <span class="number">0</span>
+    <span class="keyword">for</span> p <span class="keyword">in</span> piles:
+        xor_sum ^= p
+    <span class="keyword">if</span> xor_sum == <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># losing position, no winning move</span>
+    <span class="keyword">for</span> i, p <span class="keyword">in</span> <span class="builtin">enumerate</span>(piles):
+        target = p ^ xor_sum
+        <span class="keyword">if</span> target < p:
+            <span class="keyword">return</span> (i, target)  <span class="comment"># reduce pile i to target</span>
+    <span class="keyword">return</span> <span class="keyword">None</span>
+
+<span class="comment"># Example: piles = [3, 4, 5]</span>
+<span class="comment"># XOR = 3^4^5 = 2 != 0, so first player wins</span>
+<span class="builtin">print</span>(<span class="function">nim_winner</span>([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))        <span class="comment"># "First"</span>
+<span class="builtin">print</span>(<span class="function">nim_winning_move</span>([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))  <span class="comment"># (2, 7) -- reduce pile 2 from 5 to 7? No...</span>
+<span class="comment"># Actually: 3^4^5 = 010 XOR 100 XOR 101 = 011 = 2</span>
+<span class="comment"># Pile 0: 3^2 = 1 < 3? Yes! Reduce pile 0 from 3 to 1.</span>
+<span class="comment"># New state: [1, 4, 5], XOR = 1^4^5 = 0. Winning move!</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">string</span> <span class="function">nimWinner</span>(<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; piles) {
+    <span class="keyword">int</span> xorSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> p : piles) xorSum ^= p;
+    <span class="keyword">return</span> xorSum ? <span class="string">"First"</span> : <span class="string">"Second"</span>;
+}
+
+<span class="function">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="function">nimWinningMove</span>(<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; piles) {
+    <span class="keyword">int</span> xorSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> p : piles) xorSum ^= p;
+    <span class="keyword">if</span> (xorSum == <span class="number">0</span>) <span class="keyword">return</span> {-<span class="number">1</span>, -<span class="number">1</span>}; <span class="comment">// losing</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < piles.<span class="function">size</span>(); i++) {
+        <span class="keyword">int</span> target = piles[i] ^ xorSum;
+        <span class="keyword">if</span> (target < piles[i])
+            <span class="keyword">return</span> {i, target};
+    }
+    <span class="keyword">return</span> {-<span class="number">1</span>, -<span class="number">1</span>};
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; piles = {<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+    cout << <span class="function">nimWinner</span>(piles) << <span class="string">"\n"</span>;
+    <span class="keyword">auto</span> [idx, val] = <span class="function">nimWinningMove</span>(piles);
+    cout << <span class="string">"Reduce pile "</span> << idx << <span class="string">" to "</span> << val << <span class="string">"\n"</span>;
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Mis&egrave;re Nim</div>
+        <p>In mis&egrave;re Nim the player who takes the last stone <em>loses</em>. The strategy changes slightly: if all piles have size &le; 1, the losing position is when there is an odd number of piles. Otherwise, the XOR strategy is the same as normal Nim but you aim to leave an odd number of piles of size 1 when all piles are reduced to &le; 1. Specifically: a mis&egrave;re Nim position is losing if and only if the XOR of all pile sizes is 0 AND all piles have size &le; 1, or the XOR is nonzero AND at least one pile has size &gt; 1.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="sprague-grundy">
+      <h2>4. Sprague-Grundy Theorem</h2>
+
+      <p>The Sprague-Grundy theorem is the single most powerful tool in combinatorial game theory. It reduces every impartial game to a single non-negative integer -- the <strong>Grundy number</strong> (also called the nimber or SG-value) -- which tells you everything about the position.</p>
+
+      <h3>Grundy Number Definition</h3>
+
+      <div class="formula-box">
+        <strong>Grundy number</strong> of a position P:<br><br>
+        G(P) = mex({G(Q) : Q is reachable from P in one move})<br><br>
+        where <strong>mex</strong> (minimum excludant) of a set S is the smallest non-negative integer NOT in S.<br><br>
+        mex({}) = 0<br>
+        mex({0}) = 1<br>
+        mex({0, 1}) = 2<br>
+        mex({0, 1, 3}) = 2<br>
+        mex({1, 2, 3}) = 0
+      </div>
+
+      <h3>Key Insight</h3>
+      <p>A position is a <strong>P-position</strong> (losing for current player) if and only if its Grundy number is 0. A position is an <strong>N-position</strong> (winning) if and only if its Grundy number is nonzero. But Grundy numbers give us MORE than just win/lose -- they tell us how the game "behaves" when combined with other games.</p>
+
+      <h3>Computing Grundy Numbers</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">compute_grundy</span>(n, moves):
+    <span class="comment">"""Compute Grundy numbers for positions 0..n in a subtraction game."""</span>
+    grundy = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        reachable = <span class="builtin">set</span>()
+        <span class="keyword">for</span> m <span class="keyword">in</span> moves:
+            <span class="keyword">if</span> i >= m:
+                reachable.add(grundy[i - m])
+        <span class="comment"># mex: smallest non-negative integer not in reachable</span>
+        mex = <span class="number">0</span>
+        <span class="keyword">while</span> mex <span class="keyword">in</span> reachable:
+            mex += <span class="number">1</span>
+        grundy[i] = mex
+    <span class="keyword">return</span> grundy
+
+<span class="comment"># Subtraction game with moves {1, 2, 3}</span>
+g = <span class="function">compute_grundy</span>(<span class="number">16</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">17</span>):
+    <span class="builtin">print</span>(f<span class="string">"G({i}) = {g[i]}"</span>)
+<span class="comment"># Output: 0,1,2,3,0,1,2,3,0,1,2,3,... (period 4)</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="function">computeGrundy</span>(<span class="keyword">int</span> n, <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; moves) {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; grundy(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++) {
+        <span class="function">set</span>&lt;<span class="keyword">int</span>&gt; reachable;
+        <span class="keyword">for</span> (<span class="keyword">int</span> m : moves)
+            <span class="keyword">if</span> (i >= m)
+                reachable.<span class="function">insert</span>(grundy[i - m]);
+        <span class="keyword">int</span> mex = <span class="number">0</span>;
+        <span class="keyword">while</span> (reachable.<span class="function">count</span>(mex)) mex++;
+        grundy[i] = mex;
+    }
+    <span class="keyword">return</span> grundy;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; moves = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>};
+    <span class="keyword">auto</span> g = <span class="function">computeGrundy</span>(<span class="number">16</span>, moves);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= <span class="number">16</span>; i++)
+        cout << <span class="string">"G("</span> << i << <span class="string">") = "</span> << g[i] << <span class="string">"\n"</span>;
+}</code></pre>
+
+      <h3>Sprague-Grundy Theorem Statement</h3>
+
+      <div class="formula-box">
+        <strong>Theorem:</strong> Every impartial game under normal play convention is equivalent to a Nim pile of size equal to its Grundy number.<br><br>
+        A position with Grundy number g behaves <em>identically</em> to a single Nim pile of size g. This means:<br>
+        - G(P) = 0 &hArr; P is a losing position<br>
+        - G(P) &gt; 0 &hArr; P is a winning position<br>
+        - When combining independent games, you XOR their Grundy numbers (just like Nim piles!)
+      </div>
+
+      <div class="example-box">
+        <div class="label">Subtraction Game S = {1, 3, 4}</div>
+        <p>Let us compute Grundy numbers for this less obvious case:</p>
+        <p>G(0) = mex({}) = 0</p>
+        <p>G(1) = mex({G(0)}) = mex({0}) = 1</p>
+        <p>G(2) = mex({G(1)}) = mex({1}) = 0 &nbsp; (can only remove 1)</p>
+        <p>G(3) = mex({G(2), G(0)}) = mex({0, 0}) = mex({0}) = 1</p>
+        <p>G(4) = mex({G(3), G(1), G(0)}) = mex({1, 1, 0}) = mex({0, 1}) = 2</p>
+        <p>G(5) = mex({G(4), G(2), G(1)}) = mex({2, 0, 1}) = 3</p>
+        <p>G(6) = mex({G(5), G(3), G(2)}) = mex({3, 1, 0}) = 2</p>
+        <p>G(7) = mex({G(6), G(4), G(3)}) = mex({2, 2, 1}) = mex({1, 2}) = 0</p>
+        <p><strong>Pattern:</strong> 0, 1, 0, 1, 2, 3, 2, 0, 1, 0, 1, 2, 3, 2, ... (period 7)</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Grundy Numbers are Periodic</div>
+        <p>For subtraction games with a finite move set, Grundy numbers are eventually periodic. This is known as the <strong>Sprague-Grundy periodicity</strong>. In CP, compute enough values to spot the period, then answer any query in O(1).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="combining">
+      <h2>5. Combining Games</h2>
+
+      <p>The real power of Sprague-Grundy: when a game consists of multiple independent sub-games, the Grundy number of the combined game is the XOR of the Grundy numbers of the individual sub-games.</p>
+
+      <h3>Formal Statement</h3>
+
+      <div class="formula-box">
+        If a game G consists of independent sub-games G<sub>1</sub>, G<sub>2</sub>, ..., G<sub>k</sub> where a player must choose one sub-game and make a move in it, then:<br><br>
+        Grundy(G) = Grundy(G<sub>1</sub>) &oplus; Grundy(G<sub>2</sub>) &oplus; ... &oplus; Grundy(G<sub>k</sub>)
+      </div>
+
+      <h3>Why This Works</h3>
+      <p>Each sub-game is equivalent to a Nim pile of its Grundy number. So the combined game is equivalent to a multi-pile Nim game with those pile sizes. And we already know how to solve multi-pile Nim -- XOR everything.</p>
+
+      <h3>Example: Multiple Subtraction Games</h3>
+      <p>Suppose we have 3 independent piles of sizes 5, 8, 13 and the allowed moves in each pile are to remove 1, 3, or 4 stones (the S={1,3,4} subtraction game from above).</p>
+
+      <div class="example-box">
+        <div class="label">Combining Three Games</div>
+        <p>Grundy values for S = {1, 3, 4} repeat with period 7: [0, 1, 0, 1, 2, 3, 2]</p>
+        <p>G(5) = 3, G(8) = G(8 mod 7) = G(1) = 1, G(13) = G(13 mod 7) = G(6) = 2</p>
+        <p>Combined Grundy = 3 &oplus; 1 &oplus; 2 = 0</p>
+        <p>Result: <strong>Second player wins</strong> (P-position).</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">solve_combined_game</span>(pile_sizes, moves):
+    <span class="comment">"""Solve a game with multiple independent subtraction sub-games."""</span>
+    <span class="comment"># Compute enough Grundy values to find the period</span>
+    max_val = <span class="builtin">max</span>(moves) * <span class="number">2</span> + <span class="builtin">max</span>(pile_sizes) + <span class="number">1</span>
+    grundy = <span class="function">compute_grundy</span>(max_val, moves)
+
+    <span class="comment"># XOR all Grundy values</span>
+    xor_sum = <span class="number">0</span>
+    <span class="keyword">for</span> s <span class="keyword">in</span> pile_sizes:
+        xor_sum ^= grundy[s]
+
+    <span class="keyword">return</span> <span class="string">"First"</span> <span class="keyword">if</span> xor_sum != <span class="number">0</span> <span class="keyword">else</span> <span class="string">"Second"</span>
+
+<span class="builtin">print</span>(<span class="function">solve_combined_game</span>([<span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>], [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>]))  <span class="comment"># "Second"</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; moves = {<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>};
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; piles = {<span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>};
+    <span class="keyword">int</span> maxVal = *<span class="function">max_element</span>(piles.<span class="function">begin</span>(), piles.<span class="function">end</span>());
+    <span class="keyword">auto</span> grundy = <span class="function">computeGrundy</span>(maxVal, moves);
+
+    <span class="keyword">int</span> xorSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> p : piles) xorSum ^= grundy[p];
+    cout << (xorSum ? <span class="string">"First"</span> : <span class="string">"Second"</span>) << <span class="string">"\n"</span>;
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Independence is Critical</div>
+        <p>The XOR rule only works when the sub-games are truly independent -- a move in one sub-game does not affect any other sub-game. If the sub-games interact (e.g., you can move stones between piles), you cannot simply XOR Grundy values. This is a common trap in CP problems.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="minimax">
+      <h2>6. Minimax Algorithm</h2>
+
+      <p>While Sprague-Grundy handles impartial games elegantly, many CP and interview problems involve <strong>partisan games</strong> or games with scores (not just win/lose). For these, we use the minimax algorithm.</p>
+
+      <h3>Core Idea</h3>
+      <p>In a two-player game, one player (the <strong>maximizer</strong>) tries to maximize the score, while the other (the <strong>minimizer</strong>) tries to minimize it. At each node of the game tree:</p>
+
+      <div class="formula-box">
+        minimax(node) = max(minimax(child) for child in children) &nbsp;&nbsp; if maximizer's turn<br>
+        minimax(node) = min(minimax(child) for child in children) &nbsp;&nbsp; if minimizer's turn<br>
+        minimax(leaf) = evaluation score of the position
+      </div>
+
+      <h3>Tic-Tac-Toe Implementation</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">check_winner</span>(board):
+    <span class="comment">"""Return 'X', 'O', or None."""</span>
+    lines = [
+        [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>], [<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>],  <span class="comment"># rows</span>
+        [<span class="number">0</span>,<span class="number">3</span>,<span class="number">6</span>], [<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>], [<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>],  <span class="comment"># cols</span>
+        [<span class="number">0</span>,<span class="number">4</span>,<span class="number">8</span>], [<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>]               <span class="comment"># diagonals</span>
+    ]
+    <span class="keyword">for</span> a, b, c <span class="keyword">in</span> lines:
+        <span class="keyword">if</span> board[a] == board[b] == board[c] <span class="keyword">and</span> board[a] != <span class="string">'.'</span>:
+            <span class="keyword">return</span> board[a]
+    <span class="keyword">return</span> <span class="keyword">None</span>
+
+<span class="keyword">def</span> <span class="function">minimax</span>(board, is_maximizer):
+    <span class="comment">"""X is maximizer (+1), O is minimizer (-1). Return best score."""</span>
+    winner = <span class="function">check_winner</span>(board)
+    <span class="keyword">if</span> winner == <span class="string">'X'</span>: <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">if</span> winner == <span class="string">'O'</span>: <span class="keyword">return</span> -<span class="number">1</span>
+    <span class="keyword">if</span> <span class="string">'.'</span> <span class="keyword">not</span> <span class="keyword">in</span> board: <span class="keyword">return</span> <span class="number">0</span>  <span class="comment"># draw</span>
+
+    <span class="keyword">if</span> is_maximizer:
+        best = <span class="builtin">float</span>(<span class="string">'-inf'</span>)
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">9</span>):
+            <span class="keyword">if</span> board[i] == <span class="string">'.'</span>:
+                board[i] = <span class="string">'X'</span>
+                best = <span class="builtin">max</span>(best, <span class="function">minimax</span>(board, <span class="keyword">False</span>))
+                board[i] = <span class="string">'.'</span>
+        <span class="keyword">return</span> best
+    <span class="keyword">else</span>:
+        best = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">9</span>):
+            <span class="keyword">if</span> board[i] == <span class="string">'.'</span>:
+                board[i] = <span class="string">'O'</span>
+                best = <span class="builtin">min</span>(best, <span class="function">minimax</span>(board, <span class="keyword">True</span>))
+                board[i] = <span class="string">'.'</span>
+        <span class="keyword">return</span> best
+
+<span class="keyword">def</span> <span class="function">best_move</span>(board, is_maximizer):
+    <span class="comment">"""Return the index of the best move."""</span>
+    best_score = <span class="builtin">float</span>(<span class="string">'-inf'</span>) <span class="keyword">if</span> is_maximizer <span class="keyword">else</span> <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    best_idx = -<span class="number">1</span>
+    mark = <span class="string">'X'</span> <span class="keyword">if</span> is_maximizer <span class="keyword">else</span> <span class="string">'O'</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">9</span>):
+        <span class="keyword">if</span> board[i] == <span class="string">'.'</span>:
+            board[i] = mark
+            score = <span class="function">minimax</span>(board, <span class="keyword">not</span> is_maximizer)
+            board[i] = <span class="string">'.'</span>
+            <span class="keyword">if</span> is_maximizer <span class="keyword">and</span> score > best_score:
+                best_score = score
+                best_idx = i
+            <span class="keyword">elif</span> <span class="keyword">not</span> is_maximizer <span class="keyword">and</span> score < best_score:
+                best_score = score
+                best_idx = i
+    <span class="keyword">return</span> best_idx
+
+<span class="comment"># Empty board, X goes first (maximizer)</span>
+board = <span class="builtin">list</span>(<span class="string">'.........'</span>)
+<span class="builtin">print</span>(<span class="function">minimax</span>(board, <span class="keyword">True</span>))  <span class="comment"># 0 (draw with perfect play)</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">char</span> <span class="function">checkWinner</span>(<span class="function">vector</span>&lt;<span class="keyword">char</span>&gt;&amp; b) {
+    <span class="keyword">int</span> lines[<span class="number">8</span>][<span class="number">3</span>] = {
+        {<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>},{<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>},{<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>},
+        {<span class="number">0</span>,<span class="number">3</span>,<span class="number">6</span>},{<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>},{<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>},
+        {<span class="number">0</span>,<span class="number">4</span>,<span class="number">8</span>},{<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>}
+    };
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; l : lines)
+        <span class="keyword">if</span> (b[l[<span class="number">0</span>]] == b[l[<span class="number">1</span>]] && b[l[<span class="number">1</span>]] == b[l[<span class="number">2</span>]] && b[l[<span class="number">0</span>]] != <span class="string">'.'</span>)
+            <span class="keyword">return</span> b[l[<span class="number">0</span>]];
+    <span class="keyword">return</span> <span class="string">'.'</span>;
+}
+
+<span class="keyword">int</span> <span class="function">minimax</span>(<span class="function">vector</span>&lt;<span class="keyword">char</span>&gt;&amp; b, <span class="keyword">bool</span> isMax) {
+    <span class="keyword">char</span> w = <span class="function">checkWinner</span>(b);
+    <span class="keyword">if</span> (w == <span class="string">'X'</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">if</span> (w == <span class="string">'O'</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+    <span class="keyword">bool</span> hasEmpty = <span class="keyword">false</span>;
+    <span class="keyword">for</span> (<span class="keyword">char</span> c : b) <span class="keyword">if</span> (c == <span class="string">'.'</span>) hasEmpty = <span class="keyword">true</span>;
+    <span class="keyword">if</span> (!hasEmpty) <span class="keyword">return</span> <span class="number">0</span>;
+
+    <span class="keyword">int</span> best = isMax ? -<span class="number">2</span> : <span class="number">2</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">9</span>; i++) {
+        <span class="keyword">if</span> (b[i] == <span class="string">'.'</span>) {
+            b[i] = isMax ? <span class="string">'X'</span> : <span class="string">'O'</span>;
+            <span class="keyword">int</span> val = <span class="function">minimax</span>(b, !isMax);
+            b[i] = <span class="string">'.'</span>;
+            best = isMax ? <span class="function">max</span>(best, val) : <span class="function">min</span>(best, val);
+        }
+    }
+    <span class="keyword">return</span> best;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="function">vector</span>&lt;<span class="keyword">char</span>&gt; board(<span class="number">9</span>, <span class="string">'.'</span>);
+    cout << <span class="function">minimax</span>(board, <span class="keyword">true</span>) << <span class="string">"\n"</span>; <span class="comment">// 0 (draw)</span>
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Memoization is Essential</div>
+        <p>Minimax without memoization explores the same game states repeatedly. For tic-tac-toe, there are 9! = 362880 possible game sequences but only ~5478 unique board states. Use a hash map to cache results. For larger games, this is the difference between TLE and AC.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="alpha-beta">
+      <h2>7. Alpha-Beta Pruning</h2>
+
+      <p>Alpha-beta pruning optimizes minimax by eliminating branches that cannot possibly affect the final decision. It maintains two values, alpha and beta, representing the best options already available to the maximizer and minimizer respectively.</p>
+
+      <h3>How It Works</h3>
+
+      <div class="example-box">
+        <div class="label">Alpha-Beta Intuition</div>
+        <p><strong>Alpha</strong> = the best (highest) value the maximizer can guarantee so far along the path.</p>
+        <p><strong>Beta</strong> = the best (lowest) value the minimizer can guarantee so far along the path.</p>
+        <p><strong>Prune</strong> when alpha &ge; beta. This means the maximizer already has a better option elsewhere, so the minimizer would never allow this branch to be reached (or vice versa).</p>
+      </div>
+
+      <div class="formula-box">
+        Best case: alpha-beta examines O(b<sup>d/2</sup>) nodes instead of O(b<sup>d</sup>)<br>
+        where b = branching factor and d = depth. This effectively doubles the searchable depth!
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">alpha_beta</span>(board, depth, alpha, beta, is_maximizer):
+    <span class="comment">"""Minimax with alpha-beta pruning."""</span>
+    winner = <span class="function">check_winner</span>(board)
+    <span class="keyword">if</span> winner == <span class="string">'X'</span>: <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">if</span> winner == <span class="string">'O'</span>: <span class="keyword">return</span> -<span class="number">1</span>
+    <span class="keyword">if</span> <span class="string">'.'</span> <span class="keyword">not</span> <span class="keyword">in</span> board: <span class="keyword">return</span> <span class="number">0</span>
+
+    <span class="keyword">if</span> is_maximizer:
+        max_eval = <span class="builtin">float</span>(<span class="string">'-inf'</span>)
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">9</span>):
+            <span class="keyword">if</span> board[i] == <span class="string">'.'</span>:
+                board[i] = <span class="string">'X'</span>
+                val = <span class="function">alpha_beta</span>(board, depth + <span class="number">1</span>, alpha, beta, <span class="keyword">False</span>)
+                board[i] = <span class="string">'.'</span>
+                max_eval = <span class="builtin">max</span>(max_eval, val)
+                alpha = <span class="builtin">max</span>(alpha, val)
+                <span class="keyword">if</span> beta <= alpha:
+                    <span class="keyword">break</span>  <span class="comment"># Beta cutoff -- minimizer won't allow this</span>
+        <span class="keyword">return</span> max_eval
+    <span class="keyword">else</span>:
+        min_eval = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">9</span>):
+            <span class="keyword">if</span> board[i] == <span class="string">'.'</span>:
+                board[i] = <span class="string">'O'</span>
+                val = <span class="function">alpha_beta</span>(board, depth + <span class="number">1</span>, alpha, beta, <span class="keyword">True</span>)
+                board[i] = <span class="string">'.'</span>
+                min_eval = <span class="builtin">min</span>(min_eval, val)
+                beta = <span class="builtin">min</span>(beta, val)
+                <span class="keyword">if</span> beta <= alpha:
+                    <span class="keyword">break</span>  <span class="comment"># Alpha cutoff -- maximizer won't allow this</span>
+        <span class="keyword">return</span> min_eval
+
+<span class="comment"># Usage: alpha_beta(board, 0, float('-inf'), float('inf'), True)</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">alphaBeta</span>(<span class="function">vector</span>&lt;<span class="keyword">char</span>&gt;&amp; b, <span class="keyword">int</span> alpha, <span class="keyword">int</span> beta, <span class="keyword">bool</span> isMax) {
+    <span class="keyword">char</span> w = <span class="function">checkWinner</span>(b);
+    <span class="keyword">if</span> (w == <span class="string">'X'</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">if</span> (w == <span class="string">'O'</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+    <span class="keyword">bool</span> hasEmpty = <span class="keyword">false</span>;
+    <span class="keyword">for</span> (<span class="keyword">char</span> c : b) <span class="keyword">if</span> (c == <span class="string">'.'</span>) hasEmpty = <span class="keyword">true</span>;
+    <span class="keyword">if</span> (!hasEmpty) <span class="keyword">return</span> <span class="number">0</span>;
+
+    <span class="keyword">if</span> (isMax) {
+        <span class="keyword">int</span> maxEval = -<span class="number">2</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">9</span>; i++) {
+            <span class="keyword">if</span> (b[i] == <span class="string">'.'</span>) {
+                b[i] = <span class="string">'X'</span>;
+                maxEval = <span class="function">max</span>(maxEval, <span class="function">alphaBeta</span>(b, alpha, beta, <span class="keyword">false</span>));
+                b[i] = <span class="string">'.'</span>;
+                alpha = <span class="function">max</span>(alpha, maxEval);
+                <span class="keyword">if</span> (beta <= alpha) <span class="keyword">break</span>;
+            }
+        }
+        <span class="keyword">return</span> maxEval;
+    } <span class="keyword">else</span> {
+        <span class="keyword">int</span> minEval = <span class="number">2</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">9</span>; i++) {
+            <span class="keyword">if</span> (b[i] == <span class="string">'.'</span>) {
+                b[i] = <span class="string">'O'</span>;
+                minEval = <span class="function">min</span>(minEval, <span class="function">alphaBeta</span>(b, alpha, beta, <span class="keyword">true</span>));
+                b[i] = <span class="string">'.'</span>;
+                beta = <span class="function">min</span>(beta, minEval);
+                <span class="keyword">if</span> (beta <= alpha) <span class="keyword">break</span>;
+            }
+        }
+        <span class="keyword">return</span> minEval;
+    }
+}
+
+<span class="comment">// Usage: alphaBeta(board, -2, 2, true)</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Move Ordering Matters</div>
+        <p>Alpha-beta pruning is most effective when the best moves are examined first. In chess engines, moves are ordered by captures, checks, and killer heuristics. In CP, if you can order moves from most promising to least, you can get close to the optimal O(b<sup>d/2</sup>) performance. Random ordering gives about O(b<sup>3d/4</sup>).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="graph-games">
+      <h2>8. Game Theory on Graphs</h2>
+
+      <p>Many CP problems model games on directed graphs (DAGs). A token starts at some node, and players alternately move it along edges. The player who cannot move loses.</p>
+
+      <h3>Grundy Numbers on DAGs</h3>
+      <p>For a game on a DAG, we compute Grundy numbers via topological order. Nodes with no outgoing edges (sinks) have Grundy number 0. Then we process nodes in reverse topological order.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">grundy_on_dag</span>(adj, n):
+    <span class="comment">"""Compute Grundy numbers for a game on a DAG with nodes 0..n-1."""</span>
+    <span class="comment"># Topological sort (Kahn's algorithm)</span>
+    in_deg = [<span class="number">0</span>] * n
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            in_deg[v] += <span class="number">1</span>
+
+    <span class="comment"># Process in reverse topological order (sinks first)</span>
+    grundy = [<span class="number">0</span>] * n
+    order = []
+    q = []
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> in_deg[u] == <span class="number">0</span>:
+            q.append(u)
+
+    <span class="comment"># Actually, we need reverse topo -- process sinks first</span>
+    <span class="comment"># Use DFS-based approach instead</span>
+    visited = [<span class="keyword">False</span>] * n
+    computed = [<span class="keyword">False</span>] * n
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(u):
+        <span class="keyword">if</span> computed[u]:
+            <span class="keyword">return</span> grundy[u]
+        visited[u] = <span class="keyword">True</span>
+        reachable = <span class="builtin">set</span>()
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            reachable.add(<span class="function">dfs</span>(v))
+        mex = <span class="number">0</span>
+        <span class="keyword">while</span> mex <span class="keyword">in</span> reachable:
+            mex += <span class="number">1</span>
+        grundy[u] = mex
+        computed[u] = <span class="keyword">True</span>
+        <span class="keyword">return</span> mex
+
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> <span class="keyword">not</span> computed[u]:
+            <span class="function">dfs</span>(u)
+    <span class="keyword">return</span> grundy
+
+<span class="comment"># Example DAG: 0->1, 0->2, 1->3, 2->3 (sinks: {3})</span>
+adj = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>], [<span class="number">3</span>], []]
+g = <span class="function">grundy_on_dag</span>(adj, <span class="number">4</span>)
+<span class="builtin">print</span>(g)  <span class="comment"># [2, 1, 1, 0]</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> n;
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; adj[<span class="number">100005</span>];
+<span class="keyword">int</span> grundy[<span class="number">100005</span>];
+<span class="keyword">bool</span> computed[<span class="number">100005</span>];
+
+<span class="keyword">int</span> <span class="function">dfs</span>(<span class="keyword">int</span> u) {
+    <span class="keyword">if</span> (computed[u]) <span class="keyword">return</span> grundy[u];
+    computed[u] = <span class="keyword">true</span>;
+    <span class="function">set</span>&lt;<span class="keyword">int</span>&gt; reachable;
+    <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u])
+        reachable.<span class="function">insert</span>(<span class="function">dfs</span>(v));
+    <span class="keyword">int</span> mex = <span class="number">0</span>;
+    <span class="keyword">while</span> (reachable.<span class="function">count</span>(mex)) mex++;
+    grundy[u] = mex;
+    <span class="keyword">return</span> mex;
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    cin >> n;
+    <span class="keyword">int</span> m; cin >> m;
+    <span class="keyword">while</span> (m--) {
+        <span class="keyword">int</span> u, v; cin >> u >> v;
+        adj[u].<span class="function">push_back</span>(v);
+    }
+    <span class="function">memset</span>(computed, <span class="keyword">false</span>, <span class="keyword">sizeof</span>(computed));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++)
+        <span class="keyword">if</span> (!computed[i]) <span class="function">dfs</span>(i);
+    <span class="comment">// Now grundy[start] tells you if first player wins from 'start'</span>
+}</code></pre>
+
+      <h3>Multiple Tokens on a DAG</h3>
+      <p>If there are multiple tokens on the same DAG and each turn a player picks one token and moves it, this is a sum of independent games. The answer is the XOR of the Grundy numbers at each token's position.</p>
+
+      <div class="example-box">
+        <div class="label">Multi-Token Example</div>
+        <p>DAG with nodes 0-5. Tokens at positions {1, 3, 4}.</p>
+        <p>If G(1)=2, G(3)=1, G(4)=3, then combined Grundy = 2 &oplus; 1 &oplus; 3 = 0.</p>
+        <p>Second player wins.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="staircase-nim">
+      <h2>9. Staircase Nim</h2>
+
+      <p>Staircase Nim is a beautiful variant that appears frequently in disguise in CP problems.</p>
+
+      <h3>Setup</h3>
+      <p>There are n stairs (indexed 0, 1, 2, ..., n-1) each containing some number of stones. On each turn, a player picks any stair i &gt; 0 and moves any positive number of stones from stair i down to stair i-1. The player who cannot move loses (equivalently, the game ends when all stones are on stair 0).</p>
+
+      <h3>Solution</h3>
+
+      <div class="formula-box">
+        <strong>Staircase Nim Theorem:</strong> The first player wins if and only if the XOR of stones on all <em>odd-indexed</em> stairs is nonzero.<br><br>
+        Grundy value = stair[1] &oplus; stair[3] &oplus; stair[5] &oplus; ...
+      </div>
+
+      <h3>Proof Intuition</h3>
+
+      <div class="example-box">
+        <div class="label">Why Only Odd Stairs Matter</div>
+        <p><strong>Key insight:</strong> Moving stones from an even stair to an odd stair is essentially a "free" move that the opponent can mirror. If player A moves k stones from stair 2i to stair 2i-1, player B can immediately move those same k stones from stair 2i-1 to stair 2i-2, "canceling" the move. Stones on even stairs are irrelevant -- only odd stairs matter.</p>
+        <p>Since moves on odd stairs behave exactly like Nim (removing stones from an odd stair by moving them to the even stair below), the game reduces to standard Nim on the odd-indexed piles.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">staircase_nim</span>(stairs):
+    <span class="comment">"""Return 'First' if first player wins, 'Second' otherwise."""</span>
+    xor_sum = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(stairs), <span class="number">2</span>):  <span class="comment"># odd indices only</span>
+        xor_sum ^= stairs[i]
+    <span class="keyword">return</span> <span class="string">"First"</span> <span class="keyword">if</span> xor_sum != <span class="number">0</span> <span class="keyword">else</span> <span class="string">"Second"</span>
+
+<span class="comment"># stairs[0]=3, stairs[1]=5, stairs[2]=1, stairs[3]=4</span>
+<span class="comment"># XOR of odd indices: 5 ^ 4 = 1 != 0 -> First wins</span>
+<span class="builtin">print</span>(<span class="function">staircase_nim</span>([<span class="number">3</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">4</span>]))  <span class="comment"># "First"</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> n; cin >> n;
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; stairs(n);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) cin >> stairs[i];
+    <span class="keyword">int</span> xorSum = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < n; i += <span class="number">2</span>)
+        xorSum ^= stairs[i];
+    cout << (xorSum ? <span class="string">"First"</span> : <span class="string">"Second"</span>) << <span class="string">"\n"</span>;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Hidden Staircase Nim</div>
+        <p>Many CP problems are staircase Nim in disguise. Any time you see a game where moves shift resources "downward" through a sequence of positions, think staircase Nim. The classic example: Turning Turtles, where flipping coins on a line reduces to staircase Nim with binary encoding.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="wythoff">
+      <h2>10. Wythoff's Game</h2>
+
+      <p>Wythoff's game is a two-pile Nim variant with an elegant connection to the golden ratio.</p>
+
+      <h3>Rules</h3>
+      <p>Two piles of stones (a, b). On each turn, a player can either:</p>
+      <ul>
+        <li>Remove any positive number of stones from <strong>one</strong> pile (standard Nim move), OR</li>
+        <li>Remove the same positive number of stones from <strong>both</strong> piles simultaneously.</li>
+      </ul>
+      <p>The player who takes the last stone wins.</p>
+
+      <h3>Cold Positions (P-positions)</h3>
+
+      <div class="formula-box">
+        The P-positions (losing for the player to move) of Wythoff's game are:<br><br>
+        (a<sub>k</sub>, b<sub>k</sub>) where a<sub>k</sub> = &lfloor;k&phi;&rfloor; and b<sub>k</sub> = &lfloor;k&phi;<sup>2</sup>&rfloor; for k = 0, 1, 2, ...<br><br>
+        where &phi; = (1 + &radic;5) / 2 &approx; 1.618... (the golden ratio)<br><br>
+        First few P-positions: (0,0), (1,2), (3,5), (4,7), (6,10), (8,13), (9,15), (11,18), ...
+      </div>
+
+      <h3>Why the Golden Ratio?</h3>
+
+      <div class="example-box">
+        <div class="label">Beatty's Theorem Connection</div>
+        <p>The P-positions of Wythoff's game partition the positive integers. Each positive integer appears exactly once among all the a<sub>k</sub> and b<sub>k</sub> values. This is a consequence of <strong>Beatty's theorem</strong>: if &alpha; and &beta; are positive irrationals with 1/&alpha; + 1/&beta; = 1, then the sequences &lfloor;n&alpha;&rfloor; and &lfloor;n&beta;&rfloor; partition the positive integers. Since 1/&phi; + 1/&phi;<sup>2</sup> = 1, we get this beautiful partition.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">def</span> <span class="function">wythoff_is_losing</span>(a, b):
+    <span class="comment">"""Check if position (a, b) is a P-position (losing for current player)."""</span>
+    <span class="keyword">if</span> a > b:
+        a, b = b, a  <span class="comment"># ensure a <= b</span>
+    phi = (<span class="number">1</span> + math.sqrt(<span class="number">5</span>)) / <span class="number">2</span>
+    k = b - a  <span class="comment"># the difference determines k</span>
+    <span class="keyword">return</span> a == <span class="builtin">int</span>(k * phi)
+
+<span class="comment"># Test first few P-positions</span>
+phi = (<span class="number">1</span> + <span class="number">5</span> ** <span class="number">0.5</span>) / <span class="number">2</span>
+<span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    a = <span class="builtin">int</span>(k * phi)
+    b = <span class="builtin">int</span>(k * phi * phi)
+    <span class="builtin">print</span>(f<span class="string">"k={k}: ({a}, {b}) -- losing={wythoff_is_losing(a, b)}"</span>)
+
+<span class="comment"># Verify some N-positions</span>
+<span class="builtin">print</span>(<span class="function">wythoff_is_losing</span>(<span class="number">2</span>, <span class="number">3</span>))  <span class="comment"># False (N-position)</span>
+<span class="builtin">print</span>(<span class="function">wythoff_is_losing</span>(<span class="number">3</span>, <span class="number">5</span>))  <span class="comment"># True (P-position)</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">bool</span> <span class="function">wythoffIsLosing</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">if</span> (a > b) <span class="function">swap</span>(a, b);
+    <span class="keyword">double</span> phi = (<span class="number">1.0</span> + <span class="function">sqrt</span>(<span class="number">5.0</span>)) / <span class="number">2.0</span>;
+    <span class="keyword">long long</span> k = b - a;
+    <span class="keyword">return</span> a == (<span class="keyword">long long</span>)(k * phi);
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// First 10 P-positions</span>
+    <span class="keyword">double</span> phi = (<span class="number">1.0</span> + <span class="function">sqrt</span>(<span class="number">5.0</span>)) / <span class="number">2.0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k < <span class="number">10</span>; k++) {
+        <span class="keyword">long long</span> a = (<span class="keyword">long long</span>)(k * phi);
+        <span class="keyword">long long</span> b = (<span class="keyword">long long</span>)(k * phi * phi);
+        cout << <span class="string">"("</span> << a << <span class="string">", "</span> << b << <span class="string">")\n"</span>;
+    }
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Floating Point Precision</div>
+        <p>For large values of a and b, floating-point computation of &lfloor;k&phi;&rfloor; can give wrong results. For CP problems with a, b up to 10<sup>18</sup>, use the identity k = b - a and check a == &lfloor;k&phi;&rfloor; using integer arithmetic. One approach: compute k * phi using 128-bit integers or check that a = &lfloor;k * (1 + sqrt(5)) / 2&rfloor; by verifying a * 2 &le; k * (1 + sqrt(5)) &lt; (a+1) * 2 with careful integer square root computation.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="cp-problems">
+      <h2>11. Common CP Problems</h2>
+
+      <h3>Divisor Game (LeetCode 1025)</h3>
+      <p><strong>Problem:</strong> Alice and Bob take turns. Given n, a player picks x where 0 &lt; x &lt; n and n % x == 0, then replaces n with n - x. The player who cannot move loses. Alice goes first. Does Alice win?</p>
+
+      <div class="example-box">
+        <div class="label">Analysis</div>
+        <p>n=1: Alice cannot move, loses. P-position.</p>
+        <p>n=2: Alice picks x=1, leaves n=1 (P). N-position.</p>
+        <p>n=3: Only divisor &lt; 3 is 1. Leaves n=2 (N). P-position.</p>
+        <p>n=4: Pick x=1 leaves 3(P). N-position.</p>
+        <p><strong>Pattern:</strong> Alice wins if and only if n is even.</p>
+        <p><strong>Proof:</strong> If n is even, Alice picks x=1 (always a divisor), leaving n-1 which is odd. If n is odd, all divisors of n are odd, so n-x is even. So even positions can always move to odd, and odd positions can only move to even. Since n=1 (odd) is losing, all odd positions are losing and all even positions are winning.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">divisorGame</span>(n):
+    <span class="keyword">return</span> n % <span class="number">2</span> == <span class="number">0</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">bool</span> <span class="function">divisorGame</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">return</span> n % <span class="number">2</span> == <span class="number">0</span>;
+}</code></pre>
+
+      <h3>Stone Game (LeetCode 877)</h3>
+      <p><strong>Problem:</strong> Piles of stones in a row. Alice and Bob alternate. Each turn, take the entire first or last pile. Alice goes first. Both play optimally. Does Alice win?</p>
+
+      <div class="example-box">
+        <div class="label">DP Solution</div>
+        <p>This is a classic interval DP problem. Let dp[i][j] = maximum score difference (current player minus opponent) when piles[i..j] remain.</p>
+        <p>dp[i][j] = max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1])</p>
+        <p>Base case: dp[i][i] = piles[i]</p>
+        <p>Alice wins if dp[0][n-1] > 0.</p>
+        <p><strong>Fun fact:</strong> With an even number of piles, Alice ALWAYS wins (she can choose all even-indexed or all odd-indexed piles, whichever sum is larger).</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">stoneGame</span>(piles):
+    <span class="comment">"""Return True if Alice (first player) wins."""</span>
+    n = <span class="builtin">len</span>(piles)
+    <span class="comment"># dp[i][j] = best score diff for current player on piles[i..j]</span>
+    dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        dp[i][i] = piles[i]
+    <span class="keyword">for</span> length <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - length + <span class="number">1</span>):
+            j = i + length - <span class="number">1</span>
+            dp[i][j] = <span class="builtin">max</span>(piles[i] - dp[i+<span class="number">1</span>][j],
+                            piles[j] - dp[i][j-<span class="number">1</span>])
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n-<span class="number">1</span>] > <span class="number">0</span>
+
+<span class="builtin">print</span>(<span class="function">stoneGame</span>([<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))  <span class="comment"># True (Alice: 5+4=9 vs Bob: 3+5=8)</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">bool</span> <span class="function">stoneGame</span>(<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; piles) {
+    <span class="keyword">int</span> n = piles.<span class="function">size</span>();
+    <span class="function">vector</span>&lt;<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp(n, <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;(n, <span class="number">0</span>));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) dp[i][i] = piles[i];
+    <span class="keyword">for</span> (<span class="keyword">int</span> len = <span class="number">2</span>; len <= n; len++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + len - <span class="number">1</span> < n; i++) {
+            <span class="keyword">int</span> j = i + len - <span class="number">1</span>;
+            dp[i][j] = <span class="function">max</span>(piles[i] - dp[i+<span class="number">1</span>][j],
+                            piles[j] - dp[i][j-<span class="number">1</span>]);
+        }
+    }
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n-<span class="number">1</span>] > <span class="number">0</span>;
+}</code></pre>
+
+      <h3>Stone Game II (LeetCode 1140)</h3>
+      <p><strong>Problem:</strong> Piles in a row. On each turn, take the first 1 to 2M piles (M starts at 1, updated to max(M, x) after taking x piles). Maximize your stones.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache
+
+<span class="keyword">def</span> <span class="function">stoneGameII</span>(piles):
+    n = <span class="builtin">len</span>(piles)
+    <span class="comment"># suffix sums for quick range sum</span>
+    suffix = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+        suffix[i] = suffix[i + <span class="number">1</span>] + piles[i]
+
+    <span class="builtin">@lru_cache</span>(maxsize=<span class="keyword">None</span>)
+    <span class="keyword">def</span> <span class="function">dp</span>(i, m):
+        <span class="comment"># Max stones current player can get from piles[i:] with parameter M=m</span>
+        <span class="keyword">if</span> i >= n:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> i + <span class="number">2</span> * m >= n:
+            <span class="keyword">return</span> suffix[i]  <span class="comment"># take everything</span>
+        best = <span class="number">0</span>
+        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">2</span> * m + <span class="number">1</span>):
+            <span class="comment"># Take x piles, opponent gets dp(i+x, max(m,x))</span>
+            <span class="comment"># We get: total remaining - what opponent gets</span>
+            best = <span class="builtin">max</span>(best, suffix[i] - <span class="function">dp</span>(i + x, <span class="builtin">max</span>(m, x)))
+        <span class="keyword">return</span> best
+
+    <span class="keyword">return</span> <span class="function">dp</span>(<span class="number">0</span>, <span class="number">1</span>)</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> <span class="function">stoneGameII</span>(<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; piles) {
+    <span class="keyword">int</span> n = piles.<span class="function">size</span>();
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; suffix(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i >= <span class="number">0</span>; i--)
+        suffix[i] = suffix[i + <span class="number">1</span>] + piles[i];
+
+    <span class="comment">// dp[i][m] = max stones for current player from piles[i:] with M=m</span>
+    <span class="function">vector</span>&lt;<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp(n + <span class="number">1</span>, <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i >= <span class="number">0</span>; i--) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> m = n; m >= <span class="number">1</span>; m--) {
+            <span class="keyword">if</span> (i + <span class="number">2</span> * m >= n) {
+                dp[i][m] = suffix[i];
+            } <span class="keyword">else</span> {
+                <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x <= <span class="number">2</span> * m; x++)
+                    dp[i][m] = <span class="function">max</span>(dp[i][m], suffix[i] - dp[i + x][<span class="function">max</span>(m, x)]);
+            }
+        }
+    }
+    <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">1</span>];
+}</code></pre>
+
+      <h3>Nim with Restricted Moves (Fibonacci Nim / Zeckendorf)</h3>
+      <p><strong>Problem:</strong> Single pile of n stones. On the first turn, take 1 to n-1 stones. On subsequent turns, take 1 to 2k stones, where k is the number your opponent just took. Losing positions are Fibonacci numbers.</p>
+
+      <div class="formula-box">
+        <strong>Fibonacci Nim Theorem (Schwenk):</strong> The second player wins if and only if n is a Fibonacci number.<br><br>
+        This is connected to Zeckendorf's representation: every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers. The winning strategy is to take the smallest Fibonacci number in n's Zeckendorf representation.
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">is_fibonacci</span>(n):
+    <span class="comment">"""Check if n is a Fibonacci number."""</span>
+    <span class="keyword">if</span> n <= <span class="number">0</span>:
+        <span class="keyword">return</span> n == <span class="number">0</span>
+    a, b = <span class="number">1</span>, <span class="number">1</span>
+    <span class="keyword">while</span> b < n:
+        a, b = b, a + b
+    <span class="keyword">return</span> b == n
+
+<span class="keyword">def</span> <span class="function">fibonacci_nim</span>(n):
+    <span class="comment">"""First player wins iff n is NOT a Fibonacci number."""</span>
+    <span class="keyword">return</span> <span class="string">"Second"</span> <span class="keyword">if</span> <span class="function">is_fibonacci</span>(n) <span class="keyword">else</span> <span class="string">"First"</span>
+
+<span class="keyword">def</span> <span class="function">zeckendorf</span>(n):
+    <span class="comment">"""Return Zeckendorf representation (list of Fibonacci numbers)."""</span>
+    fibs = [<span class="number">1</span>, <span class="number">2</span>]
+    <span class="keyword">while</span> fibs[-<span class="number">1</span>] < n:
+        fibs.append(fibs[-<span class="number">1</span>] + fibs[-<span class="number">2</span>])
+    result = []
+    <span class="keyword">for</span> f <span class="keyword">in</span> <span class="builtin">reversed</span>(fibs):
+        <span class="keyword">if</span> f <= n:
+            result.append(f)
+            n -= f
+    <span class="keyword">return</span> result
+
+<span class="builtin">print</span>(<span class="function">zeckendorf</span>(<span class="number">20</span>))  <span class="comment"># [13, 5, 2] -- first move: take 2 stones</span></code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> <span class="string">&lt;bits/stdc++.h&gt;</span>
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">bool</span> <span class="function">isFibonacci</span>(<span class="keyword">long long</span> n) {
+    <span class="keyword">long long</span> a = <span class="number">1</span>, b = <span class="number">1</span>;
+    <span class="keyword">while</span> (b < n) { <span class="keyword">long long</span> t = b; b = a + b; a = t; }
+    <span class="keyword">return</span> b == n;
+}
+
+<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; <span class="function">zeckendorf</span>(<span class="keyword">long long</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; fibs = {<span class="number">1</span>, <span class="number">2</span>};
+    <span class="keyword">while</span> (fibs.<span class="function">back</span>() < n)
+        fibs.<span class="function">push_back</span>(fibs[fibs.<span class="function">size</span>()-<span class="number">1</span>] + fibs[fibs.<span class="function">size</span>()-<span class="number">2</span>]);
+    <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; result;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = fibs.<span class="function">size</span>() - <span class="number">1</span>; i >= <span class="number">0</span>; i--) {
+        <span class="keyword">if</span> (fibs[i] <= n) {
+            result.<span class="function">push_back</span>(fibs[i]);
+            n -= fibs[i];
+        }
+    }
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <h3>Bogus Nim / Green Hackenbush</h3>
+      <p>Another common variant: Nim where you can also add stones to a pile (but not to a pile you just added to). Surprisingly, the analysis does not change -- the optimal player never adds, because adding just gives the opponent more options.</p>
+
+      <div class="tip-box">
+        <div class="label">Game Theory Problem-Solving Framework</div>
+        <p><strong>Step 1:</strong> Compute results for small cases (n=0 to ~20).</p>
+        <p><strong>Step 2:</strong> Look for a pattern. Common patterns: modular (n%k), powers of 2, Fibonacci, etc.</p>
+        <p><strong>Step 3:</strong> Prove the pattern using the P/N-position rules (backward induction).</p>
+        <p><strong>Step 4:</strong> If no simple pattern, compute Grundy numbers and look for periodicity.</p>
+        <p><strong>Step 5:</strong> If the game has multiple independent components, XOR the Grundy numbers.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="practice">
+      <h2>12. Practice Problems</h2>
+
+      <p>Organized by difficulty. Start from the top and work your way down.</p>
+
+      <h3>Beginner -- Direct Application</h3>
+      <div class="example-box">
+        <div class="label">Warm-Up Problems</div>
+        <p><strong>LeetCode 292 - Nim Game:</strong> Single pile, remove 1-3 stones. Classic modular analysis. Answer: n%4 != 0.</p>
+        <p><strong>LeetCode 1025 - Divisor Game:</strong> Remove a divisor. Answer: n is even.</p>
+        <p><strong>LeetCode 877 - Stone Game:</strong> Interval DP or parity argument.</p>
+        <p><strong>Codeforces 768B - Code For 1:</strong> Recursive game on binary representation.</p>
+        <p><strong>SPOJ GNYR09F - Game of Nim:</strong> Direct Nim XOR application.</p>
+      </div>
+
+      <h3>Intermediate -- Sprague-Grundy</h3>
+      <div class="example-box">
+        <div class="label">SG Value Problems</div>
+        <p><strong>LeetCode 1140 - Stone Game II:</strong> DP with parameter M.</p>
+        <p><strong>LeetCode 1406 - Stone Game III:</strong> Take 1-3 piles from the front, maximize score.</p>
+        <p><strong>Codeforces 850C - Arpa and a game with Mojtaba:</strong> Grundy values on digit transformations.</p>
+        <p><strong>Codeforces 768E - Game of Stones:</strong> Multi-pile Nim variant with Grundy analysis.</p>
+        <p><strong>SPOJ MATGAME - A game with matrices:</strong> Sprague-Grundy on a matrix game.</p>
+        <p><strong>AtCoder ABC206E - Divide Both:</strong> Game on number pairs.</p>
+      </div>
+
+      <h3>Advanced -- Combining Techniques</h3>
+      <div class="example-box">
+        <div class="label">Hard Problems</div>
+        <p><strong>Codeforces 1823F - LCT:</strong> Game theory on trees with Grundy values.</p>
+        <p><strong>Codeforces 1498F - Christmas Game:</strong> Nim on a tree -- combine staircase Nim with tree DP.</p>
+        <p><strong>LeetCode 1510 - Stone Game IV:</strong> Square number removal -- compute Grundy values.</p>
+        <p><strong>LeetCode 1563 - Stone Game V:</strong> Split-and-choose with DP.</p>
+        <p><strong>Codeforces 603C - Lieges of Legendre:</strong> Mis&egrave;re Nim variant on odd/even analysis.</p>
+        <p><strong>AtCoder ABC255G - Constrained Nim:</strong> Nim with forbidden positions -- Sprague-Grundy with modified mex.</p>
+      </div>
+
+      <h3>Expert -- Competition Level</h3>
+      <div class="example-box">
+        <div class="label">Hardest Problems</div>
+        <p><strong>Codeforces 1149E - Election Promises:</strong> Game on a DAG with Grundy on XOR of outgoing values.</p>
+        <p><strong>IOI 2019 - Shoes:</strong> A game-theoretic sorting problem.</p>
+        <p><strong>USACO Platinum - Game:</strong> Multi-dimensional game state with Sprague-Grundy.</p>
+        <p><strong>Codeforces 1442E - Black, White and Grey Tree:</strong> Binary search + game theory on trees.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Study Order Recommendation</div>
+        <p>1. Master basic Nim and the XOR trick (problems should take seconds).</p>
+        <p>2. Learn to compute Grundy numbers for subtraction games.</p>
+        <p>3. Practice identifying independent sub-games and combining with XOR.</p>
+        <p>4. Study staircase Nim and Wythoff's game for variant recognition.</p>
+        <p>5. Learn minimax + alpha-beta for interview-style game problems.</p>
+        <p>6. For hard CP: recognize hidden game structures (tree games, graph games, disguised Nim).</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Common Mistakes in Game Theory Problems</div>
+        <p><strong>1. Forgetting optimal play.</strong> Both players play perfectly. Do not simulate greedy strategies.</p>
+        <p><strong>2. Wrong base case.</strong> Terminal position (no moves) is a LOSING position under normal play. Double-check mis&egrave;re conventions.</p>
+        <p><strong>3. Assuming independence.</strong> Only XOR Grundy values when sub-games are truly independent.</p>
+        <p><strong>4. Floating point in Wythoff.</strong> Use integer checks for large values.</p>
+        <p><strong>5. Not looking for patterns.</strong> Always compute small cases first. The pattern is almost always there.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

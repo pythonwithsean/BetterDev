@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Graph Algorithms - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Advanced Graph Algorithms</div>
+      <h1>Advanced Graph Algorithms</h1>
+      <p>The heavy artillery of graph theory: MSTs, bridges, SCCs, LCA, max flow, bipartite matching, shortest paths with negative weights, Euler paths, 2-SAT, and centroid decomposition. Full implementations in Python and C++ with ASCII diagrams and complexity analysis.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#mst">1. Minimum Spanning Trees</a>
+      <a href="#bridges">2. Bridges &amp; Articulation Points</a>
+      <a href="#scc">3. Strongly Connected Components</a>
+      <a href="#lca">4. Lowest Common Ancestor (LCA)</a>
+      <a href="#maxflow">5. Maximum Flow</a>
+      <a href="#bipartite">6. Bipartite Matching</a>
+      <a href="#bellman-ford">7. Bellman-Ford</a>
+      <a href="#floyd-warshall">8. Floyd-Warshall</a>
+      <a href="#euler-paths">9. Euler Paths &amp; Circuits</a>
+      <a href="#two-sat">10. 2-SAT</a>
+      <a href="#centroid">11. Centroid Decomposition</a>
+      <a href="#practice">12. Practice Problems</a>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 1: MST -->
+    <!-- ================================================================== -->
+    <section id="mst" class="section">
+      <h2>1. Minimum Spanning Trees</h2>
+      <p>A <strong>Minimum Spanning Tree (MST)</strong> of a weighted, connected, undirected graph is a subset of edges that connects all vertices with the minimum total edge weight and no cycles.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- MST Example</div>
+<pre>
+  Original Graph:              MST (total weight = 7):
+
+    1 ---2--- 2                  1 ---2--- 2
+    |  \      |                  |         |
+    4    3    1                  4         1
+    |      \  |                  |         |
+    3 ---5--- 4                  3         4
+</pre>
+      </div>
+
+      <div class="formula-box">
+        <div class="label">Key MST Properties</div>
+        <p><strong>Cut Property:</strong> For any cut of the graph, the minimum weight edge crossing the cut belongs to some MST.</p>
+        <p><strong>Cycle Property:</strong> For any cycle, the maximum weight edge does NOT belong to some MST (unless there are ties).</p>
+        <p>An MST of a graph with V vertices has exactly <strong>V - 1</strong> edges.</p>
+      </div>
+
+      <h3>Kruskal's Algorithm with Disjoint Set Union (DSU)</h3>
+      <p>Sort all edges by weight, then greedily add edges that do not form a cycle (detected via DSU).</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(E log E)</strong> -- dominated by sorting. DSU operations are nearly O(1) amortized with path compression + union by rank.</p>
+        <p>Space: <strong>O(V + E)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">DSU</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n):
+        <span class="builtin">self</span>.parent = <span class="builtin">list</span>(<span class="builtin">range</span>(n))
+        <span class="builtin">self</span>.rank = [<span class="number">0</span>] * n
+
+    <span class="keyword">def</span> <span class="function">find</span>(<span class="builtin">self</span>, x):
+        <span class="keyword">if</span> <span class="builtin">self</span>.parent[x] != x:
+            <span class="builtin">self</span>.parent[x] = <span class="builtin">self</span>.find(<span class="builtin">self</span>.parent[x])  <span class="comment"># path compression</span>
+        <span class="keyword">return</span> <span class="builtin">self</span>.parent[x]
+
+    <span class="keyword">def</span> <span class="function">union</span>(<span class="builtin">self</span>, a, b):
+        a, b = <span class="builtin">self</span>.find(a), <span class="builtin">self</span>.find(b)
+        <span class="keyword">if</span> a == b:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        <span class="keyword">if</span> <span class="builtin">self</span>.rank[a] &lt; <span class="builtin">self</span>.rank[b]:
+            a, b = b, a
+        <span class="builtin">self</span>.parent[b] = a
+        <span class="keyword">if</span> <span class="builtin">self</span>.rank[a] == <span class="builtin">self</span>.rank[b]:
+            <span class="builtin">self</span>.rank[a] += <span class="number">1</span>
+        <span class="keyword">return</span> <span class="keyword">True</span>
+
+<span class="keyword">def</span> <span class="function">kruskal</span>(n, edges):
+    <span class="comment"># edges = [(weight, u, v), ...]</span>
+    edges.sort()
+    dsu = DSU(n)
+    mst_weight = <span class="number">0</span>
+    mst_edges = []
+    <span class="keyword">for</span> w, u, v <span class="keyword">in</span> edges:
+        <span class="keyword">if</span> dsu.union(u, v):
+            mst_weight += w
+            mst_edges.append((u, v, w))
+            <span class="keyword">if</span> <span class="builtin">len</span>(mst_edges) == n - <span class="number">1</span>:
+                <span class="keyword">break</span>
+    <span class="keyword">return</span> mst_weight, mst_edges
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">DSU</span> {
+    vector&lt;<span class="keyword">int</span>&gt; parent, rank_;
+    <span class="function">DSU</span>(<span class="keyword">int</span> n) : parent(n), rank_(n, <span class="number">0</span>) {
+        <span class="function">iota</span>(parent.begin(), parent.end(), <span class="number">0</span>);
+    }
+    <span class="keyword">int</span> <span class="function">find</span>(<span class="keyword">int</span> x) {
+        <span class="keyword">return</span> parent[x] == x ? x : parent[x] = <span class="function">find</span>(parent[x]);
+    }
+    <span class="keyword">bool</span> <span class="function">unite</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+        a = <span class="function">find</span>(a); b = <span class="function">find</span>(b);
+        <span class="keyword">if</span> (a == b) <span class="keyword">return</span> <span class="keyword">false</span>;
+        <span class="keyword">if</span> (rank_[a] &lt; rank_[b]) <span class="function">swap</span>(a, b);
+        parent[b] = a;
+        <span class="keyword">if</span> (rank_[a] == rank_[b]) rank_[a]++;
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+};
+
+<span class="keyword">long long</span> <span class="function">kruskal</span>(<span class="keyword">int</span> n, vector&lt;tuple&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;&amp; edges) {
+    <span class="function">sort</span>(edges.begin(), edges.end());
+    DSU dsu(n);
+    <span class="keyword">long long</span> mst = <span class="number">0</span>;
+    <span class="keyword">int</span> cnt = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [w, u, v] : edges) {
+        <span class="keyword">if</span> (dsu.<span class="function">unite</span>(u, v)) {
+            mst += w;
+            <span class="keyword">if</span> (++cnt == n - <span class="number">1</span>) <span class="keyword">break</span>;
+        }
+    }
+    <span class="keyword">return</span> mst;
+}
+</code></pre>
+
+      <h3>Prim's Algorithm</h3>
+      <p>Grow the MST from a single vertex, always adding the cheapest edge that connects a new vertex to the current tree. Uses a priority queue.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(E log V)</strong> with a binary heap, <strong>O(E + V log V)</strong> with a Fibonacci heap.</p>
+        <p>Space: <strong>O(V + E)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">prim</span>(n, adj):
+    <span class="comment"># adj[u] = [(weight, v), ...]</span>
+    visited = [<span class="keyword">False</span>] * n
+    heap = [(<span class="number">0</span>, <span class="number">0</span>)]  <span class="comment"># (weight, vertex)</span>
+    mst_weight = <span class="number">0</span>
+    edges_used = <span class="number">0</span>
+    <span class="keyword">while</span> heap <span class="keyword">and</span> edges_used &lt; n:
+        w, u = heapq.heappop(heap)
+        <span class="keyword">if</span> visited[u]:
+            <span class="keyword">continue</span>
+        visited[u] = <span class="keyword">True</span>
+        mst_weight += w
+        edges_used += <span class="number">1</span>
+        <span class="keyword">for</span> wt, v <span class="keyword">in</span> adj[u]:
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                heapq.heappush(heap, (wt, v))
+    <span class="keyword">return</span> mst_weight
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">prim</span>(<span class="keyword">int</span> n, vector&lt;vector&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;&gt;&amp; adj) {
+    vector&lt;<span class="keyword">bool</span>&gt; vis(n, <span class="keyword">false</span>);
+    priority_queue&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;, vector&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;, greater&lt;&gt;&gt; pq;
+    pq.push({<span class="number">0</span>, <span class="number">0</span>});
+    <span class="keyword">long long</span> mst = <span class="number">0</span>;
+    <span class="keyword">while</span> (!pq.empty()) {
+        <span class="keyword">auto</span> [w, u] = pq.top(); pq.pop();
+        <span class="keyword">if</span> (vis[u]) <span class="keyword">continue</span>;
+        vis[u] = <span class="keyword">true</span>;
+        mst += w;
+        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [wt, v] : adj[u])
+            <span class="keyword">if</span> (!vis[v]) pq.push({wt, v});
+    }
+    <span class="keyword">return</span> mst;
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Which?</div>
+        <p><strong>Kruskal's:</strong> Better for sparse graphs (E close to V). Simple to implement. Requires edge list.</p>
+        <p><strong>Prim's:</strong> Better for dense graphs (E close to V^2). Works with adjacency list directly.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 2: BRIDGES & ARTICULATION POINTS -->
+    <!-- ================================================================== -->
+    <section id="bridges" class="section">
+      <h2>2. Bridges &amp; Articulation Points</h2>
+      <p>A <strong>bridge</strong> is an edge whose removal disconnects the graph. An <strong>articulation point</strong> is a vertex whose removal (along with its edges) disconnects the graph. Both are found using Tarjan's algorithm in a single DFS.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram</div>
+<pre>
+    1 --- 2 --- 3          Bridges: (2,3), (3,4)
+    |   / |     |          Articulation Points: 2, 3
+    |  /  |     |
+    4     5     6
+              / |
+             7  8
+
+  Edge (2,3) is a bridge: removing it disconnects {1,2,4,5} from {3,6,7,8}
+</pre>
+      </div>
+
+      <div class="formula-box">
+        <div class="label">Core Idea</div>
+        <p>Maintain <code>disc[u]</code> (discovery time) and <code>low[u]</code> (lowest discovery time reachable via back edges from the subtree of u).</p>
+        <p><strong>Bridge:</strong> Edge (u, v) is a bridge if <code>low[v] &gt; disc[u]</code>.</p>
+        <p><strong>Articulation Point:</strong> Vertex u is an AP if: (1) u is root of DFS tree and has 2+ children, OR (2) u is not root and has a child v with <code>low[v] &gt;= disc[u]</code>.</p>
+        <p>Time: <strong>O(V + E)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">find_bridges_and_aps</span>(n, adj):
+    disc = [<span class="number">-1</span>] * n
+    low = [<span class="number">0</span>] * n
+    parent = [<span class="number">-1</span>] * n
+    bridges = []
+    aps = <span class="builtin">set</span>()
+    timer = [<span class="number">0</span>]
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(u):
+        disc[u] = low[u] = timer[<span class="number">0</span>]
+        timer[<span class="number">0</span>] += <span class="number">1</span>
+        children = <span class="number">0</span>
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            <span class="keyword">if</span> disc[v] == <span class="number">-1</span>:
+                children += <span class="number">1</span>
+                parent[v] = u
+                dfs(v)
+                low[u] = <span class="builtin">min</span>(low[u], low[v])
+                <span class="comment"># Bridge check</span>
+                <span class="keyword">if</span> low[v] &gt; disc[u]:
+                    bridges.append((u, v))
+                <span class="comment"># AP check</span>
+                <span class="keyword">if</span> parent[u] == <span class="number">-1</span> <span class="keyword">and</span> children &gt; <span class="number">1</span>:
+                    aps.add(u)
+                <span class="keyword">if</span> parent[u] != <span class="number">-1</span> <span class="keyword">and</span> low[v] &gt;= disc[u]:
+                    aps.add(u)
+            <span class="keyword">elif</span> v != parent[u]:
+                low[u] = <span class="builtin">min</span>(low[u], disc[v])
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> disc[i] == <span class="number">-1</span>:
+            dfs(i)
+    <span class="keyword">return</span> bridges, aps
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> timer_ = <span class="number">0</span>;
+vector&lt;<span class="keyword">int</span>&gt; disc, low, par;
+vector&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; bridges;
+set&lt;<span class="keyword">int</span>&gt; aps;
+
+<span class="keyword">void</span> <span class="function">dfs</span>(<span class="keyword">int</span> u, vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; adj) {
+    disc[u] = low[u] = timer_++;
+    <span class="keyword">int</span> children = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+        <span class="keyword">if</span> (disc[v] == <span class="number">-1</span>) {
+            children++;
+            par[v] = u;
+            <span class="function">dfs</span>(v, adj);
+            low[u] = <span class="function">min</span>(low[u], low[v]);
+            <span class="keyword">if</span> (low[v] &gt; disc[u])
+                bridges.push_back({u, v});
+            <span class="keyword">if</span> (par[u] == <span class="number">-1</span> &amp;&amp; children &gt; <span class="number">1</span>)
+                aps.insert(u);
+            <span class="keyword">if</span> (par[u] != <span class="number">-1</span> &amp;&amp; low[v] &gt;= disc[u])
+                aps.insert(u);
+        } <span class="keyword">else if</span> (v != par[u]) {
+            low[u] = <span class="function">min</span>(low[u], disc[v]);
+        }
+    }
+}
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Watch Out -- Parallel Edges</div>
+        <p>If the graph has multiple edges between the same pair of vertices, tracking parent by vertex ID is incorrect. Instead, track the <strong>edge index</strong> to avoid confusing a parallel edge with a back edge. Pass the edge index into DFS and skip that specific edge, not all edges to the parent.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 3: SCCs -->
+    <!-- ================================================================== -->
+    <section id="scc" class="section">
+      <h2>3. Strongly Connected Components</h2>
+      <p>An SCC is a maximal set of vertices such that every vertex is reachable from every other vertex in the set (in a directed graph).</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- SCCs &amp; Condensation</div>
+<pre>
+  Directed Graph:                    Condensation (DAG):
+
+    1 --&gt; 2 --&gt; 3                    {1,2,4} --&gt; {3,5} --&gt; {6}
+    ^    /      |
+    |  /        v
+    4           5 --&gt; 6
+
+  SCC 1: {1, 2, 4}   SCC 2: {3, 5}   SCC 3: {6}
+</pre>
+      </div>
+
+      <h3>Kosaraju's Algorithm</h3>
+      <p>Two-pass DFS: (1) DFS on original graph, record finish order. (2) DFS on reversed graph in reverse finish order. Each DFS tree in pass 2 is an SCC.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(V + E)</strong> -- two DFS passes.</p>
+        <p>Space: <strong>O(V + E)</strong> for the reversed graph.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">kosaraju</span>(n, adj):
+    <span class="comment"># Pass 1: DFS on original graph, record finish order</span>
+    visited = [<span class="keyword">False</span>] * n
+    order = []
+
+    <span class="keyword">def</span> <span class="function">dfs1</span>(u):
+        visited[u] = <span class="keyword">True</span>
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                dfs1(v)
+        order.append(u)
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">if</span> <span class="keyword">not</span> visited[i]:
+            dfs1(i)
+
+    <span class="comment"># Build reversed graph</span>
+    radj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            radj[v].append(u)
+
+    <span class="comment"># Pass 2: DFS on reversed graph in reverse finish order</span>
+    visited = [<span class="keyword">False</span>] * n
+    sccs = []
+
+    <span class="keyword">def</span> <span class="function">dfs2</span>(u, comp):
+        visited[u] = <span class="keyword">True</span>
+        comp.append(u)
+        <span class="keyword">for</span> v <span class="keyword">in</span> radj[u]:
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                dfs2(v, comp)
+
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">reversed</span>(order):
+        <span class="keyword">if</span> <span class="keyword">not</span> visited[u]:
+            comp = []
+            dfs2(u, comp)
+            sccs.append(comp)
+    <span class="keyword">return</span> sccs
+</code></pre>
+
+      <h3>Tarjan's SCC Algorithm</h3>
+      <p>Single-pass DFS using a stack. Maintains disc and low values. When <code>low[u] == disc[u]</code>, pop the stack to get the SCC.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> timer_ = <span class="number">0</span>, nscc = <span class="number">0</span>;
+vector&lt;<span class="keyword">int</span>&gt; disc, low, comp, stk;
+vector&lt;<span class="keyword">bool</span>&gt; on_stk;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; sccs;
+
+<span class="keyword">void</span> <span class="function">dfs</span>(<span class="keyword">int</span> u, vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; adj) {
+    disc[u] = low[u] = timer_++;
+    stk.push_back(u);
+    on_stk[u] = <span class="keyword">true</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+        <span class="keyword">if</span> (disc[v] == <span class="number">-1</span>) {
+            <span class="function">dfs</span>(v, adj);
+            low[u] = <span class="function">min</span>(low[u], low[v]);
+        } <span class="keyword">else if</span> (on_stk[v]) {
+            low[u] = <span class="function">min</span>(low[u], disc[v]);
+        }
+    }
+    <span class="keyword">if</span> (low[u] == disc[u]) {
+        vector&lt;<span class="keyword">int</span>&gt; scc;
+        <span class="keyword">while</span> (<span class="keyword">true</span>) {
+            <span class="keyword">int</span> v = stk.back(); stk.pop_back();
+            on_stk[v] = <span class="keyword">false</span>;
+            comp[v] = nscc;
+            scc.push_back(v);
+            <span class="keyword">if</span> (v == u) <span class="keyword">break</span>;
+        }
+        sccs.push_back(scc);
+        nscc++;
+    }
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Condensation Graph</div>
+        <p>After finding SCCs, contract each SCC into a single super-node. The result is a DAG. This is useful for many problems: you can run DP on the DAG, find the minimum number of edges to add to make the graph strongly connected (count sources and sinks in the condensation), etc.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 4: LCA -->
+    <!-- ================================================================== -->
+    <section id="lca" class="section">
+      <h2>4. Lowest Common Ancestor (LCA)</h2>
+      <p>Given a rooted tree, the LCA of two nodes u and v is the deepest node that is an ancestor of both u and v. LCA is fundamental for tree path queries.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- LCA</div>
+<pre>
+            1
+          / | \
+         2  3  4
+        / \    |
+       5   6   7
+      / \
+     8   9
+
+  LCA(8, 6) = 2       (2 is the deepest common ancestor)
+  LCA(8, 7) = 1       (root is the only common ancestor)
+  LCA(5, 9) = 5       (5 is an ancestor of 9... wait, 9's parent is 5)
+  LCA(8, 9) = 5       (both are children of 5)
+</pre>
+      </div>
+
+      <h3>Binary Lifting</h3>
+      <p>Precompute <code>up[v][k]</code> = the 2^k-th ancestor of v. To find LCA(u, v): first equalize depths, then lift both nodes simultaneously until they meet.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Preprocessing: <strong>O(N log N)</strong></p>
+        <p>Query: <strong>O(log N)</strong></p>
+        <p>Space: <strong>O(N log N)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">class</span> <span class="function">LCABinaryLifting</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n, adj, root=<span class="number">0</span>):
+        <span class="builtin">self</span>.LOG = max(<span class="number">1</span>, math.ceil(math.log2(n)))
+        <span class="builtin">self</span>.depth = [<span class="number">0</span>] * n
+        <span class="builtin">self</span>.up = [[<span class="number">-1</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.LOG + <span class="number">1</span>)]
+
+        <span class="comment"># BFS to compute depth and immediate parent</span>
+        <span class="keyword">from</span> collections <span class="keyword">import</span> deque
+        q = deque([root])
+        visited = [<span class="keyword">False</span>] * n
+        visited[root] = <span class="keyword">True</span>
+        <span class="builtin">self</span>.up[<span class="number">0</span>][root] = root
+        <span class="keyword">while</span> q:
+            u = q.popleft()
+            <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+                <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                    visited[v] = <span class="keyword">True</span>
+                    <span class="builtin">self</span>.depth[v] = <span class="builtin">self</span>.depth[u] + <span class="number">1</span>
+                    <span class="builtin">self</span>.up[<span class="number">0</span>][v] = u
+                    q.append(v)
+
+        <span class="comment"># Fill binary lifting table</span>
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">self</span>.LOG + <span class="number">1</span>):
+            <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(n):
+                <span class="builtin">self</span>.up[k][v] = <span class="builtin">self</span>.up[k-<span class="number">1</span>][<span class="builtin">self</span>.up[k-<span class="number">1</span>][v]]
+
+    <span class="keyword">def</span> <span class="function">query</span>(<span class="builtin">self</span>, u, v):
+        <span class="comment"># Make u the deeper node</span>
+        <span class="keyword">if</span> <span class="builtin">self</span>.depth[u] &lt; <span class="builtin">self</span>.depth[v]:
+            u, v = v, u
+        diff = <span class="builtin">self</span>.depth[u] - <span class="builtin">self</span>.depth[v]
+
+        <span class="comment"># Lift u to same depth as v</span>
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.LOG + <span class="number">1</span>):
+            <span class="keyword">if</span> (diff &gt;&gt; k) &amp; <span class="number">1</span>:
+                u = <span class="builtin">self</span>.up[k][u]
+
+        <span class="keyword">if</span> u == v:
+            <span class="keyword">return</span> u
+
+        <span class="comment"># Lift both until they converge</span>
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.LOG, <span class="number">-1</span>, <span class="number">-1</span>):
+            <span class="keyword">if</span> <span class="builtin">self</span>.up[k][u] != <span class="builtin">self</span>.up[k][v]:
+                u = <span class="builtin">self</span>.up[k][u]
+                v = <span class="builtin">self</span>.up[k][v]
+        <span class="keyword">return</span> <span class="builtin">self</span>.up[<span class="number">0</span>][u]
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">200005</span>, LOG = <span class="number">18</span>;
+<span class="keyword">int</span> up[LOG][MAXN], depth_[MAXN];
+vector&lt;<span class="keyword">int</span>&gt; adj[MAXN];
+
+<span class="keyword">void</span> <span class="function">bfs</span>(<span class="keyword">int</span> root, <span class="keyword">int</span> n) {
+    <span class="function">memset</span>(depth_, <span class="number">-1</span>, <span class="keyword">sizeof</span>(depth_));
+    queue&lt;<span class="keyword">int</span>&gt; q;
+    q.push(root);
+    depth_[root] = <span class="number">0</span>;
+    up[<span class="number">0</span>][root] = root;
+    <span class="keyword">while</span> (!q.empty()) {
+        <span class="keyword">int</span> u = q.front(); q.pop();
+        <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+            <span class="keyword">if</span> (depth_[v] == <span class="number">-1</span>) {
+                depth_[v] = depth_[u] + <span class="number">1</span>;
+                up[<span class="number">0</span>][v] = u;
+                q.push(v);
+            }
+        }
+    }
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; LOG; k++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; n; v++)
+            up[k][v] = up[k-<span class="number">1</span>][up[k-<span class="number">1</span>][v]];
+}
+
+<span class="keyword">int</span> <span class="function">lca</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v) {
+    <span class="keyword">if</span> (depth_[u] &lt; depth_[v]) <span class="function">swap</span>(u, v);
+    <span class="keyword">int</span> diff = depth_[u] - depth_[v];
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; LOG; k++)
+        <span class="keyword">if</span> ((diff &gt;&gt; k) &amp; <span class="number">1</span>) u = up[k][u];
+    <span class="keyword">if</span> (u == v) <span class="keyword">return</span> u;
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = LOG - <span class="number">1</span>; k &gt;= <span class="number">0</span>; k--)
+        <span class="keyword">if</span> (up[k][u] != up[k][v]) {
+            u = up[k][u];
+            v = up[k][v];
+        }
+    <span class="keyword">return</span> up[<span class="number">0</span>][u];
+}
+</code></pre>
+
+      <h3>Euler Tour + Sparse Table (O(1) Queries)</h3>
+      <p>Reduce LCA to Range Minimum Query (RMQ). Build an Euler tour recording (depth, node) at each step. LCA(u, v) = node with minimum depth between the first occurrences of u and v in the Euler tour. Use a sparse table for O(1) RMQ.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Preprocessing: <strong>O(N log N)</strong> for the sparse table.</p>
+        <p>Query: <strong>O(1)</strong></p>
+        <p>Space: <strong>O(N log N)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">class</span> <span class="function">LCAEulerTour</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n, adj, root=<span class="number">0</span>):
+        <span class="builtin">self</span>.euler = []       <span class="comment"># (depth, node) at each step</span>
+        <span class="builtin">self</span>.first = [<span class="number">-1</span>] * n  <span class="comment"># first occurrence of node in euler</span>
+        <span class="builtin">self</span>.depth = [<span class="number">0</span>] * n
+
+        <span class="comment"># Iterative DFS for Euler tour</span>
+        stack = [(root, <span class="number">-1</span>, <span class="keyword">False</span>)]
+        <span class="keyword">while</span> stack:
+            u, par, returning = stack.pop()
+            <span class="builtin">self</span>.euler.append((<span class="builtin">self</span>.depth[u], u))
+            <span class="keyword">if</span> <span class="builtin">self</span>.first[u] == <span class="number">-1</span>:
+                <span class="builtin">self</span>.first[u] = <span class="builtin">len</span>(<span class="builtin">self</span>.euler) - <span class="number">1</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> returning:
+                <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">reversed</span>(adj[u]):
+                    <span class="keyword">if</span> v != par:
+                        <span class="builtin">self</span>.depth[v] = <span class="builtin">self</span>.depth[u] + <span class="number">1</span>
+                        stack.append((u, par, <span class="keyword">True</span>))  <span class="comment"># return to u after v</span>
+                        stack.append((v, u, <span class="keyword">False</span>))
+                        <span class="keyword">break</span>
+
+        <span class="comment"># Build sparse table on euler array</span>
+        m = <span class="builtin">len</span>(<span class="builtin">self</span>.euler)
+        <span class="builtin">self</span>.LOG = max(<span class="number">1</span>, <span class="builtin">int</span>(math.log2(m))) + <span class="number">1</span>
+        <span class="builtin">self</span>.sparse = [<span class="keyword">None</span>] * <span class="builtin">self</span>.LOG
+        <span class="builtin">self</span>.sparse[<span class="number">0</span>] = <span class="builtin">self</span>.euler[:]
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">self</span>.LOG):
+            length = <span class="number">1</span> &lt;&lt; k
+            <span class="builtin">self</span>.sparse[k] = []
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m - length + <span class="number">1</span>):
+                <span class="builtin">self</span>.sparse[k].append(
+                    <span class="builtin">min</span>(<span class="builtin">self</span>.sparse[k-<span class="number">1</span>][i],
+                        <span class="builtin">self</span>.sparse[k-<span class="number">1</span>][i + (<span class="number">1</span> &lt;&lt; (k-<span class="number">1</span>))])
+                )
+
+    <span class="keyword">def</span> <span class="function">query</span>(<span class="builtin">self</span>, u, v):
+        l = <span class="builtin">self</span>.first[u]
+        r = <span class="builtin">self</span>.first[v]
+        <span class="keyword">if</span> l &gt; r:
+            l, r = r, l
+        k = <span class="builtin">int</span>(math.log2(r - l + <span class="number">1</span>))
+        result = <span class="builtin">min</span>(<span class="builtin">self</span>.sparse[k][l], <span class="builtin">self</span>.sparse[k][r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>])
+        <span class="keyword">return</span> result[<span class="number">1</span>]  <span class="comment"># return the node</span>
+</code></pre>
+
+      <h3>Path Queries Using LCA</h3>
+      <p>Many tree problems reduce to path queries. With LCA + prefix sums on the tree:</p>
+
+      <div class="formula-box">
+        <div class="label">Path Sum Formula</div>
+        <p><code>path_sum(u, v) = prefix[u] + prefix[v] - 2 * prefix[LCA(u,v)] + value[LCA(u,v)]</code></p>
+        <p>where <code>prefix[v]</code> = sum of values from root to v.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Path Query Example</div>
+<pre>
+  Tree with values on nodes:
+
+        (3) 1              prefix[1] = 3
+        / \                prefix[2] = 5, prefix[3] = 7
+     (2)2  (4)3            prefix[4] = 6, prefix[5] = 8
+      / \
+   (1)4  (3)5
+
+  path_sum(4, 5) = prefix[4] + prefix[5] - 2*prefix[LCA(4,5)] + value[LCA(4,5)]
+                 = 6 + 8 - 2*5 + 2  =  6
+                 = value[4] + value[2] + value[5]  =  1 + 2 + 3  =  6  ✓
+</pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">LCA Applications in CP</div>
+        <p><strong>Distance between nodes:</strong> dist(u,v) = depth[u] + depth[v] - 2*depth[LCA(u,v)]</p>
+        <p><strong>Path max/min:</strong> Combine binary lifting with storing max/min along each jump.</p>
+        <p><strong>k-th ancestor:</strong> Binary lifting directly gives O(log N) k-th ancestor queries.</p>
+        <p><strong>Virtual tree (auxiliary tree):</strong> Given a set of key nodes, build a compressed tree containing only those nodes and their pairwise LCAs -- reduces tree DP from O(N) to O(K log K) per query.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 5: MAX FLOW -->
+    <!-- ================================================================== -->
+    <section id="maxflow" class="section">
+      <h2>5. Maximum Flow</h2>
+      <p>Given a directed graph with edge capacities, a source s, and a sink t, find the maximum amount of flow that can be pushed from s to t.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- Flow Network</div>
+<pre>
+         10       10
+    s --------&gt; A --------&gt; t
+    |           ^           ^
+    |  10       |  5        |  10
+    v           |           |
+    B --------&gt; C --------&gt; D
+         15          10
+
+  Max flow = 20 (push 10 via s-&gt;A-&gt;t, and 10 via s-&gt;B-&gt;C-&gt;D-&gt;t)
+</pre>
+      </div>
+
+      <div class="formula-box">
+        <div class="label">Max-Flow Min-Cut Theorem</div>
+        <p>The maximum flow from s to t equals the minimum capacity of an s-t cut (a partition of vertices into two sets S and T where s is in S and t is in T, and the cut capacity is the sum of capacities of edges from S to T).</p>
+      </div>
+
+      <h3>Ford-Fulkerson Method</h3>
+      <p>Repeatedly find an augmenting path from s to t in the residual graph and push flow along it. The residual graph includes reverse edges to allow "undoing" flow.</p>
+
+      <div class="warning-box">
+        <div class="label">Ford-Fulkerson with DFS</div>
+        <p>Using DFS to find augmenting paths can lead to <strong>non-termination</strong> with irrational capacities and <strong>O(E * max_flow)</strong> time with integer capacities. Always prefer Edmonds-Karp or Dinic's in practice.</p>
+      </div>
+
+      <h3>Edmonds-Karp (BFS-based Ford-Fulkerson)</h3>
+      <p>Use BFS to find the shortest augmenting path. This guarantees O(VE^2) time.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">edmonds_karp</span>(n, adj, cap, s, t):
+    <span class="comment"># adj[u] = list of neighbors (including reverse edges)</span>
+    <span class="comment"># cap = 2D capacity matrix, cap[u][v] = remaining capacity</span>
+    <span class="keyword">def</span> <span class="function">bfs</span>():
+        parent = [<span class="number">-1</span>] * n
+        parent[s] = s
+        q = deque([s])
+        <span class="keyword">while</span> q:
+            u = q.popleft()
+            <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+                <span class="keyword">if</span> parent[v] == <span class="number">-1</span> <span class="keyword">and</span> cap[u][v] &gt; <span class="number">0</span>:
+                    parent[v] = u
+                    <span class="keyword">if</span> v == t:
+                        <span class="keyword">return</span> parent
+                    q.append(v)
+        <span class="keyword">return</span> <span class="keyword">None</span>
+
+    flow = <span class="number">0</span>
+    <span class="keyword">while</span> <span class="keyword">True</span>:
+        parent = bfs()
+        <span class="keyword">if</span> parent <span class="keyword">is</span> <span class="keyword">None</span>:
+            <span class="keyword">break</span>
+        <span class="comment"># Find bottleneck</span>
+        path_flow = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+        v = t
+        <span class="keyword">while</span> v != s:
+            u = parent[v]
+            path_flow = <span class="builtin">min</span>(path_flow, cap[u][v])
+            v = u
+        <span class="comment"># Update residual capacities</span>
+        v = t
+        <span class="keyword">while</span> v != s:
+            u = parent[v]
+            cap[u][v] -= path_flow
+            cap[v][u] += path_flow
+            v = u
+        flow += path_flow
+    <span class="keyword">return</span> flow
+</code></pre>
+
+      <h3>Dinic's Algorithm</h3>
+      <p>The gold standard for max flow in competitive programming. Uses BFS to build level graphs, then DFS with blocking flow. Achieves O(V^2 * E) in general, O(E * sqrt(V)) for unit-capacity graphs.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Dinic's: <strong>O(V^2 * E)</strong> general, <strong>O(E * sqrt(V))</strong> for unit capacity.</p>
+        <p>Edmonds-Karp: <strong>O(V * E^2)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">Dinic</span> {
+    <span class="keyword">struct</span> Edge { <span class="keyword">int</span> to, rev; <span class="keyword">long long</span> cap; };
+    vector&lt;vector&lt;Edge&gt;&gt; graph;
+    vector&lt;<span class="keyword">int</span>&gt; level, iter_;
+    <span class="keyword">int</span> n;
+
+    <span class="function">Dinic</span>(<span class="keyword">int</span> n) : n(n), graph(n), level(n), iter_(n) {}
+
+    <span class="keyword">void</span> <span class="function">add_edge</span>(<span class="keyword">int</span> from, <span class="keyword">int</span> to, <span class="keyword">long long</span> cap) {
+        graph[from].push_back({to, (<span class="keyword">int</span>)graph[to].size(), cap});
+        graph[to].push_back({from, (<span class="keyword">int</span>)graph[from].size() - <span class="number">1</span>, <span class="number">0</span>});
+    }
+
+    <span class="keyword">bool</span> <span class="function">bfs</span>(<span class="keyword">int</span> s, <span class="keyword">int</span> t) {
+        <span class="function">fill</span>(level.begin(), level.end(), <span class="number">-1</span>);
+        queue&lt;<span class="keyword">int</span>&gt; q;
+        level[s] = <span class="number">0</span>;
+        q.push(s);
+        <span class="keyword">while</span> (!q.empty()) {
+            <span class="keyword">int</span> v = q.front(); q.pop();
+            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : graph[v]) {
+                <span class="keyword">if</span> (e.cap &gt; <span class="number">0</span> &amp;&amp; level[e.to] &lt; <span class="number">0</span>) {
+                    level[e.to] = level[v] + <span class="number">1</span>;
+                    q.push(e.to);
+                }
+            }
+        }
+        <span class="keyword">return</span> level[t] &gt;= <span class="number">0</span>;
+    }
+
+    <span class="keyword">long long</span> <span class="function">dfs</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> t, <span class="keyword">long long</span> f) {
+        <span class="keyword">if</span> (v == t) <span class="keyword">return</span> f;
+        <span class="keyword">for</span> (<span class="keyword">int</span>&amp; i = iter_[v]; i &lt; (<span class="keyword">int</span>)graph[v].size(); i++) {
+            Edge&amp; e = graph[v][i];
+            <span class="keyword">if</span> (e.cap &gt; <span class="number">0</span> &amp;&amp; level[v] &lt; level[e.to]) {
+                <span class="keyword">long long</span> d = <span class="function">dfs</span>(e.to, t, <span class="function">min</span>(f, e.cap));
+                <span class="keyword">if</span> (d &gt; <span class="number">0</span>) {
+                    e.cap -= d;
+                    graph[e.to][e.rev].cap += d;
+                    <span class="keyword">return</span> d;
+                }
+            }
+        }
+        <span class="keyword">return</span> <span class="number">0</span>;
+    }
+
+    <span class="keyword">long long</span> <span class="function">max_flow</span>(<span class="keyword">int</span> s, <span class="keyword">int</span> t) {
+        <span class="keyword">long long</span> flow = <span class="number">0</span>;
+        <span class="keyword">while</span> (<span class="function">bfs</span>(s, t)) {
+            <span class="function">fill</span>(iter_.begin(), iter_.end(), <span class="number">0</span>);
+            <span class="keyword">long long</span> d;
+            <span class="keyword">while</span> ((d = <span class="function">dfs</span>(s, t, LLONG_MAX)) &gt; <span class="number">0</span>)
+                flow += d;
+        }
+        <span class="keyword">return</span> flow;
+    }
+};
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Finding the Min-Cut</div>
+        <p>After running max flow, do a BFS/DFS from s using only edges with remaining capacity &gt; 0. All reachable vertices form set S. The min-cut consists of all edges (u, v) where u is in S and v is not. The total capacity of these edges equals the max flow.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 6: BIPARTITE MATCHING -->
+    <!-- ================================================================== -->
+    <section id="bipartite" class="section">
+      <h2>6. Bipartite Matching</h2>
+      <p>Given a bipartite graph with left vertices L and right vertices R, find the maximum number of edges such that no vertex appears more than once.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- Bipartite Matching</div>
+<pre>
+  L    R          Maximum Matching (bold):
+  1 -- a          1 == a
+  1 -- b          2 == b
+  2 -- b          3 == c
+  2 -- c
+  3 -- c          Size = 3
+  3 -- a
+</pre>
+      </div>
+
+      <h3>Kuhn's Algorithm (Hungarian-style DFS)</h3>
+      <p>For each left vertex, try to find an augmenting path via DFS. If the right vertex is free, match it. If not, try to re-match the current occupant.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(V * E)</strong></p>
+        <p>Space: <strong>O(V + E)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_matching</span>(n_left, n_right, adj):
+    <span class="comment"># adj[u] = list of right vertices that left vertex u connects to</span>
+    match_right = [<span class="number">-1</span>] * n_right
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(u, visited):
+        <span class="keyword">for</span> v <span class="keyword">in</span> adj[u]:
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                visited[v] = <span class="keyword">True</span>
+                <span class="keyword">if</span> match_right[v] == <span class="number">-1</span> <span class="keyword">or</span> dfs(match_right[v], visited):
+                    match_right[v] = u
+                    <span class="keyword">return</span> <span class="keyword">True</span>
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    result = <span class="number">0</span>
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n_left):
+        visited = [<span class="keyword">False</span>] * n_right
+        <span class="keyword">if</span> dfs(u, visited):
+            result += <span class="number">1</span>
+    <span class="keyword">return</span> result
+</code></pre>
+
+      <h3>Hopcroft-Karp Algorithm</h3>
+      <p>Finds augmenting paths in phases using BFS (to find shortest augmenting paths) then DFS (to find a maximal set of vertex-disjoint augmenting paths). Each phase increases matching by at least 1 and there are at most O(sqrt(V)) phases.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(E * sqrt(V))</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">HopcroftKarp</span> {
+    <span class="keyword">int</span> n, m;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj;
+    vector&lt;<span class="keyword">int</span>&gt; matchL, matchR, dist;
+
+    <span class="function">HopcroftKarp</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> m) : n(n), m(m), adj(n), matchL(n, <span class="number">-1</span>), matchR(m, <span class="number">-1</span>), dist(n) {}
+
+    <span class="keyword">void</span> <span class="function">add_edge</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v) { adj[u].push_back(v); }
+
+    <span class="keyword">bool</span> <span class="function">bfs</span>() {
+        queue&lt;<span class="keyword">int</span>&gt; q;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u = <span class="number">0</span>; u &lt; n; u++) {
+            <span class="keyword">if</span> (matchL[u] == <span class="number">-1</span>) {
+                dist[u] = <span class="number">0</span>;
+                q.push(u);
+            } <span class="keyword">else</span> {
+                dist[u] = INT_MAX;
+            }
+        }
+        <span class="keyword">bool</span> found = <span class="keyword">false</span>;
+        <span class="keyword">while</span> (!q.empty()) {
+            <span class="keyword">int</span> u = q.front(); q.pop();
+            <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+                <span class="keyword">int</span> w = matchR[v];
+                <span class="keyword">if</span> (w == <span class="number">-1</span>) {
+                    found = <span class="keyword">true</span>;
+                } <span class="keyword">else if</span> (dist[w] == INT_MAX) {
+                    dist[w] = dist[u] + <span class="number">1</span>;
+                    q.push(w);
+                }
+            }
+        }
+        <span class="keyword">return</span> found;
+    }
+
+    <span class="keyword">bool</span> <span class="function">dfs</span>(<span class="keyword">int</span> u) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+            <span class="keyword">int</span> w = matchR[v];
+            <span class="keyword">if</span> (w == <span class="number">-1</span> || (dist[w] == dist[u] + <span class="number">1</span> &amp;&amp; <span class="function">dfs</span>(w))) {
+                matchL[u] = v;
+                matchR[v] = u;
+                <span class="keyword">return</span> <span class="keyword">true</span>;
+            }
+        }
+        dist[u] = INT_MAX;
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">int</span> <span class="function">solve</span>() {
+        <span class="keyword">int</span> ans = <span class="number">0</span>;
+        <span class="keyword">while</span> (<span class="function">bfs</span>())
+            <span class="keyword">for</span> (<span class="keyword">int</span> u = <span class="number">0</span>; u &lt; n; u++)
+                <span class="keyword">if</span> (matchL[u] == <span class="number">-1</span> &amp;&amp; <span class="function">dfs</span>(u))
+                    ans++;
+        <span class="keyword">return</span> ans;
+    }
+};
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Konig's Theorem</div>
+        <p>In a bipartite graph, the size of the <strong>maximum matching</strong> equals the size of the <strong>minimum vertex cover</strong>. Also: max independent set = V - max matching. This is a powerful tool for converting between matching and covering problems.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 7: BELLMAN-FORD -->
+    <!-- ================================================================== -->
+    <section id="bellman-ford" class="section">
+      <h2>7. Bellman-Ford</h2>
+      <p>Single-source shortest path algorithm that handles <strong>negative edge weights</strong>. Can also detect negative-weight cycles.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p>Time: <strong>O(V * E)</strong></p>
+        <p>Space: <strong>O(V)</strong></p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Why Dijkstra Fails with Negative Edges</div>
+<pre>
+      A --(-5)--> B
+      |           ^
+      1           |
+      v           |
+      C ---2------+
+
+  From A: Dijkstra visits C (dist=1), then B via C (dist=3).
+  But the correct shortest path is A-&gt;B with dist=-5.
+  Dijkstra never revisits A-&gt;B because it greedily finalized B=3.
+</pre>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">bellman_ford</span>(n, edges, src):
+    <span class="comment"># edges = [(u, v, w), ...]</span>
+    dist = [<span class="builtin">float</span>(<span class="string">'inf'</span>)] * n
+    dist[src] = <span class="number">0</span>
+
+    <span class="comment"># Relax all edges V-1 times</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>):
+        <span class="keyword">for</span> u, v, w <span class="keyword">in</span> edges:
+            <span class="keyword">if</span> dist[u] != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">and</span> dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+
+    <span class="comment"># Check for negative cycles (V-th relaxation)</span>
+    <span class="keyword">for</span> u, v, w <span class="keyword">in</span> edges:
+        <span class="keyword">if</span> dist[u] != <span class="builtin">float</span>(<span class="string">'inf'</span>) <span class="keyword">and</span> dist[u] + w &lt; dist[v]:
+            <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># negative cycle detected</span>
+
+    <span class="keyword">return</span> dist
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const</span> <span class="keyword">long long</span> INF = <span class="number">1e18</span>;
+
+vector&lt;<span class="keyword">long long</span>&gt; <span class="function">bellman_ford</span>(<span class="keyword">int</span> n, vector&lt;tuple&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">long long</span>&gt;&gt;&amp; edges, <span class="keyword">int</span> src) {
+    vector&lt;<span class="keyword">long long</span>&gt; dist(n, INF);
+    dist[src] = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) {
+        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [u, v, w] : edges) {
+            <span class="keyword">if</span> (dist[u] != INF &amp;&amp; dist[u] + w &lt; dist[v]) {
+                dist[v] = dist[u] + w;
+            }
+        }
+    }
+
+    <span class="comment">// Detect negative cycle</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [u, v, w] : edges) {
+        <span class="keyword">if</span> (dist[u] != INF &amp;&amp; dist[u] + w &lt; dist[v]) {
+            <span class="keyword">return</span> {};  <span class="comment">// negative cycle</span>
+        }
+    }
+    <span class="keyword">return</span> dist;
+}
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Negative Cycle Detection -- Finding the Cycle</div>
+        <p>To actually find the cycle: on the V-th pass, if any edge (u,v) relaxes, trace back the predecessor chain from v for N steps (guaranteed to land inside the cycle). Then follow predecessors until you revisit a node -- that traces out the cycle.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">SPFA (Shortest Path Faster Algorithm)</div>
+        <p>SPFA is a queue-based optimization of Bellman-Ford. Average case is much faster, but worst case is still O(V * E). In competitive programming, use it when you suspect the test cases are not adversarial. For guaranteed performance with negative weights, stick to Bellman-Ford or use Johnson's algorithm (Bellman-Ford + Dijkstra).</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 8: FLOYD-WARSHALL -->
+    <!-- ================================================================== -->
+    <section id="floyd-warshall" class="section">
+      <h2>8. Floyd-Warshall</h2>
+      <p>All-pairs shortest path in O(V^3). Elegantly simple: try every vertex as an intermediate node.</p>
+
+      <div class="formula-box">
+        <div class="label">The Recurrence</div>
+        <p><code>dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code> for each intermediate vertex k.</p>
+        <p>Time: <strong>O(V^3)</strong>, Space: <strong>O(V^2)</strong></p>
+        <p>Works with negative edges but NOT negative cycles.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">floyd_warshall</span>(n, dist):
+    <span class="comment"># dist[i][j] = weight of edge i-&gt;j, or float('inf') if no edge</span>
+    <span class="comment"># dist[i][i] = 0</span>
+    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n):
+                <span class="keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    <span class="keyword">return</span> dist
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const</span> <span class="keyword">long long</span> INF = <span class="number">1e18</span>;
+
+<span class="keyword">void</span> <span class="function">floyd_warshall</span>(<span class="keyword">int</span> n, vector&lt;vector&lt;<span class="keyword">long long</span>&gt;&gt;&amp; dist) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; n; k++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)
+                <span class="keyword">if</span> (dist[i][k] + dist[k][j] &lt; dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+}
+</code></pre>
+
+      <h3>Transitive Closure</h3>
+      <p>Determine which vertices can reach which. Replace + with OR and min with OR:</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">transitive_closure</span>(n, reachable):
+    <span class="comment"># reachable[i][j] = True if edge from i to j exists</span>
+    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n):
+                reachable[i][j] = reachable[i][j] <span class="keyword">or</span> (reachable[i][k] <span class="keyword">and</span> reachable[k][j])
+    <span class="keyword">return</span> reachable
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Detecting Negative Cycles</div>
+        <p>After running Floyd-Warshall, if <code>dist[i][i] &lt; 0</code> for any i, there is a negative cycle. To find all vertices affected by a negative cycle: if <code>dist[i][k] + dist[k][j] &lt; dist[i][j]</code> AND <code>dist[k][k] &lt; 0</code>, then dist[i][j] = -infinity.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When to Use Floyd-Warshall</div>
+        <p>V &lt;= 400-500 is the typical limit. For larger graphs needing all-pairs shortest paths, run Dijkstra from each vertex: O(V * E log V) which is better when E is small relative to V^2.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 9: EULER PATHS/CIRCUITS -->
+    <!-- ================================================================== -->
+    <section id="euler-paths" class="section">
+      <h2>9. Euler Paths &amp; Circuits</h2>
+      <p>An <strong>Euler path</strong> visits every edge exactly once. An <strong>Euler circuit</strong> is an Euler path that starts and ends at the same vertex.</p>
+
+      <div class="formula-box">
+        <div class="label">Existence Conditions</div>
+        <p><strong>Undirected graph:</strong></p>
+        <ul>
+          <li>Euler circuit exists iff every vertex has even degree and the graph is connected.</li>
+          <li>Euler path exists iff exactly 0 or 2 vertices have odd degree and the graph is connected.</li>
+        </ul>
+        <p><strong>Directed graph:</strong></p>
+        <ul>
+          <li>Euler circuit exists iff in-degree = out-degree for every vertex and the graph is connected.</li>
+          <li>Euler path exists iff at most one vertex has out-degree - in-degree = 1 (start) and at most one vertex has in-degree - out-degree = 1 (end), with all other vertices balanced.</li>
+        </ul>
+      </div>
+
+      <h3>Hierholzer's Algorithm</h3>
+      <p>Efficiently finds an Euler path/circuit in O(E) time by walking along unused edges and splicing in sub-tours.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">hierholzer</span>(edges, directed=<span class="keyword">True</span>):
+    <span class="comment"># Build adjacency list with edge indices for removal</span>
+    adj = defaultdict(<span class="builtin">list</span>)
+    <span class="keyword">if</span> directed:
+        <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+            adj[u].append(v)
+    <span class="keyword">else</span>:
+        <span class="keyword">for</span> i, (u, v) <span class="keyword">in</span> <span class="builtin">enumerate</span>(edges):
+            adj[u].append((v, i))
+            adj[v].append((u, i))
+
+    <span class="comment"># Find start vertex</span>
+    <span class="keyword">if</span> directed:
+        start = edges[<span class="number">0</span>][<span class="number">0</span>]
+        <span class="comment"># Prefer vertex with out-degree > in-degree</span>
+        in_deg = defaultdict(<span class="builtin">int</span>)
+        out_deg = defaultdict(<span class="builtin">int</span>)
+        <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+            out_deg[u] += <span class="number">1</span>
+            in_deg[v] += <span class="number">1</span>
+        <span class="keyword">for</span> node <span class="keyword">in</span> out_deg:
+            <span class="keyword">if</span> out_deg[node] - in_deg[node] == <span class="number">1</span>:
+                start = node
+                <span class="keyword">break</span>
+    <span class="keyword">else</span>:
+        start = edges[<span class="number">0</span>][<span class="number">0</span>]
+        <span class="keyword">for</span> node <span class="keyword">in</span> adj:
+            <span class="keyword">if</span> <span class="builtin">len</span>(adj[node]) % <span class="number">2</span> == <span class="number">1</span>:
+                start = node
+                <span class="keyword">break</span>
+
+    <span class="comment"># Hierholzer's</span>
+    stack = [start]
+    circuit = []
+    <span class="keyword">if</span> directed:
+        <span class="keyword">while</span> stack:
+            v = stack[-<span class="number">1</span>]
+            <span class="keyword">if</span> adj[v]:
+                u = adj[v].pop()
+                stack.append(u)
+            <span class="keyword">else</span>:
+                circuit.append(stack.pop())
+    <span class="keyword">else</span>:
+        used = [<span class="keyword">False</span>] * <span class="builtin">len</span>(edges)
+        <span class="keyword">while</span> stack:
+            v = stack[-<span class="number">1</span>]
+            <span class="keyword">while</span> adj[v] <span class="keyword">and</span> used[adj[v][-<span class="number">1</span>][<span class="number">1</span>]]:
+                adj[v].pop()
+            <span class="keyword">if</span> adj[v]:
+                u, idx = adj[v].pop()
+                used[idx] = <span class="keyword">True</span>
+                stack.append(u)
+            <span class="keyword">else</span>:
+                circuit.append(stack.pop())
+
+    circuit.reverse()
+    <span class="keyword">return</span> circuit
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Directed Euler path/circuit using Hierholzer's</span>
+vector&lt;<span class="keyword">int</span>&gt; <span class="function">hierholzer</span>(<span class="keyword">int</span> start, vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; adj) {
+    stack&lt;<span class="keyword">int</span>&gt; stk;
+    vector&lt;<span class="keyword">int</span>&gt; circuit;
+    stk.push(start);
+    <span class="keyword">while</span> (!stk.empty()) {
+        <span class="keyword">int</span> v = stk.top();
+        <span class="keyword">if</span> (!adj[v].empty()) {
+            <span class="keyword">int</span> u = adj[v].back();
+            adj[v].pop_back();
+            stk.push(u);
+        } <span class="keyword">else</span> {
+            circuit.push_back(v);
+            stk.pop();
+        }
+    }
+    <span class="function">reverse</span>(circuit.begin(), circuit.end());
+    <span class="keyword">return</span> circuit;
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Classic Problem: Reconstruct Itinerary</div>
+        <p>LeetCode 332 -- given flight tickets, reconstruct the itinerary in lexicographic order. This is Hierholzer's on a directed multigraph. Sort adjacency lists in reverse lexicographic order (so that popping from the back gives the smallest neighbor first).</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 10: 2-SAT -->
+    <!-- ================================================================== -->
+    <section id="two-sat" class="section">
+      <h2>10. 2-SAT</h2>
+      <p>Given a boolean formula in 2-CNF (each clause has exactly 2 literals), determine if there is a satisfying assignment. Solved in O(V + E) using SCCs on the implication graph.</p>
+
+      <div class="formula-box">
+        <div class="label">Implication Graph Construction</div>
+        <p>For each clause (a OR b), add two implications: (NOT a =&gt; b) and (NOT b =&gt; a).</p>
+        <p>Variable x_i is represented by vertex 2*i (true) and vertex 2*i+1 (false).</p>
+        <p><strong>Satisfiable iff:</strong> for no variable i, both x_i and NOT x_i are in the same SCC.</p>
+        <p><strong>Assignment:</strong> x_i = true if comp[2*i] &gt; comp[2*i+1] (using reverse topological order from Tarjan's).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">2-SAT Example</div>
+<pre>
+  Formula: (x1 OR x2) AND (NOT x1 OR x3) AND (NOT x2 OR NOT x3)
+
+  Implication graph edges:
+    NOT x1 =&gt; x2,   NOT x2 =&gt; x1    (from clause 1)
+    x1 =&gt; x3,       NOT x3 =&gt; NOT x1 (from clause 2)
+    x2 =&gt; NOT x3,   x3 =&gt; NOT x2     (from clause 3)
+
+  Solution: x1=true, x2=false, x3=true
+</pre>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">TwoSAT</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n):
+        <span class="builtin">self</span>.n = n
+        <span class="builtin">self</span>.adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span> * n)]
+
+    <span class="keyword">def</span> <span class="function">add_clause</span>(<span class="builtin">self</span>, u, neg_u, v, neg_v):
+        <span class="comment"># clause: (u if not neg_u, else NOT u) OR (v if not neg_v, else NOT v)</span>
+        a = <span class="number">2</span> * u + neg_u
+        b = <span class="number">2</span> * v + neg_v
+        <span class="builtin">self</span>.adj[a ^ <span class="number">1</span>].append(b)  <span class="comment"># NOT a =&gt; b</span>
+        <span class="builtin">self</span>.adj[b ^ <span class="number">1</span>].append(a)  <span class="comment"># NOT b =&gt; a</span>
+
+    <span class="keyword">def</span> <span class="function">solve</span>(<span class="builtin">self</span>):
+        N = <span class="number">2</span> * <span class="builtin">self</span>.n
+        order = []
+        comp = [<span class="number">-1</span>] * N
+        visited = [<span class="keyword">False</span>] * N
+
+        <span class="keyword">def</span> <span class="function">dfs1</span>(v):
+            visited[v] = <span class="keyword">True</span>
+            <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">self</span>.adj[v]:
+                <span class="keyword">if</span> <span class="keyword">not</span> visited[u]:
+                    dfs1(u)
+            order.append(v)
+
+        <span class="comment"># Build reverse graph</span>
+        radj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(N)]
+        <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(N):
+            <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">self</span>.adj[v]:
+                radj[u].append(v)
+
+        <span class="keyword">def</span> <span class="function">dfs2</span>(v, c):
+            comp[v] = c
+            <span class="keyword">for</span> u <span class="keyword">in</span> radj[v]:
+                <span class="keyword">if</span> comp[u] == <span class="number">-1</span>:
+                    dfs2(u, c)
+
+        <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(N):
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:
+                dfs1(v)
+
+        c = <span class="number">0</span>
+        <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">reversed</span>(order):
+            <span class="keyword">if</span> comp[v] == <span class="number">-1</span>:
+                dfs2(v, c)
+                c += <span class="number">1</span>
+
+        <span class="comment"># Check satisfiability</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.n):
+            <span class="keyword">if</span> comp[<span class="number">2</span> * i] == comp[<span class="number">2</span> * i + <span class="number">1</span>]:
+                <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># unsatisfiable</span>
+
+        <span class="comment"># Extract assignment</span>
+        assignment = [<span class="keyword">False</span>] * <span class="builtin">self</span>.n
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">self</span>.n):
+            assignment[i] = comp[<span class="number">2</span> * i] &gt; comp[<span class="number">2</span> * i + <span class="number">1</span>]
+        <span class="keyword">return</span> assignment
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">TwoSAT</span> {
+    <span class="keyword">int</span> n;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj, radj;
+    vector&lt;<span class="keyword">int</span>&gt; order, comp;
+    vector&lt;<span class="keyword">bool</span>&gt; vis;
+
+    <span class="function">TwoSAT</span>(<span class="keyword">int</span> n) : n(n), adj(<span class="number">2</span>*n), radj(<span class="number">2</span>*n), comp(<span class="number">2</span>*n, <span class="number">-1</span>), vis(<span class="number">2</span>*n, <span class="keyword">false</span>) {}
+
+    <span class="comment">// (u, neg_u) OR (v, neg_v)</span>
+    <span class="keyword">void</span> <span class="function">add_clause</span>(<span class="keyword">int</span> u, <span class="keyword">bool</span> nu, <span class="keyword">int</span> v, <span class="keyword">bool</span> nv) {
+        <span class="keyword">int</span> a = <span class="number">2</span>*u + nu, b = <span class="number">2</span>*v + nv;
+        adj[a^<span class="number">1</span>].push_back(b);
+        radj[b].push_back(a^<span class="number">1</span>);
+        adj[b^<span class="number">1</span>].push_back(a);
+        radj[a].push_back(b^<span class="number">1</span>);
+    }
+
+    <span class="keyword">void</span> <span class="function">dfs1</span>(<span class="keyword">int</span> v) {
+        vis[v] = <span class="keyword">true</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v]) <span class="keyword">if</span> (!vis[u]) <span class="function">dfs1</span>(u);
+        order.push_back(v);
+    }
+
+    <span class="keyword">void</span> <span class="function">dfs2</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> c) {
+        comp[v] = c;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : radj[v]) <span class="keyword">if</span> (comp[u] == <span class="number">-1</span>) <span class="function">dfs2</span>(u, c);
+    }
+
+    <span class="keyword">bool</span> <span class="function">solve</span>(vector&lt;<span class="keyword">bool</span>&gt;&amp; result) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; <span class="number">2</span>*n; v++)
+            <span class="keyword">if</span> (!vis[v]) <span class="function">dfs1</span>(v);
+        <span class="keyword">int</span> c = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>*n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)
+            <span class="keyword">if</span> (comp[order[i]] == <span class="number">-1</span>) <span class="function">dfs2</span>(order[i], c++);
+        result.resize(n);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+            <span class="keyword">if</span> (comp[<span class="number">2</span>*i] == comp[<span class="number">2</span>*i+<span class="number">1</span>]) <span class="keyword">return</span> <span class="keyword">false</span>;
+            result[i] = comp[<span class="number">2</span>*i] &gt; comp[<span class="number">2</span>*i+<span class="number">1</span>];
+        }
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+};
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Common 2-SAT Encodings</div>
+        <p><strong>"At least one of x, y":</strong> Add clause (x OR y).</p>
+        <p><strong>"At most one of x, y":</strong> Add clause (NOT x OR NOT y).</p>
+        <p><strong>"Exactly one of x, y":</strong> Add both (x OR y) AND (NOT x OR NOT y).</p>
+        <p><strong>"x implies y":</strong> Add clause (NOT x OR y).</p>
+        <p><strong>"x must be true":</strong> Add clause (x OR x).</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 11: CENTROID DECOMPOSITION -->
+    <!-- ================================================================== -->
+    <section id="centroid" class="section">
+      <h2>11. Centroid Decomposition</h2>
+      <p>A divide-and-conquer technique on trees. The <strong>centroid</strong> of a tree is a vertex whose removal results in no subtree with more than N/2 vertices. Recursively decompose the tree by finding and removing centroids.</p>
+
+      <div class="example-box">
+        <div class="label">ASCII Diagram -- Centroid Decomposition</div>
+<pre>
+  Original tree:           Centroid decomposition tree:
+       1                          3
+      / \                       / | \
+     2   3                     1  5  6
+    /   / \                    |
+   4   5   6                   2
+  /                            |
+ 7                             4
+                               |
+                               7
+
+  Centroid of original tree: 3 (removing 3 gives subtrees of size &lt;= 3)
+  Depth of centroid tree: O(log N)
+</pre>
+      </div>
+
+      <div class="formula-box">
+        <div class="label">Key Properties</div>
+        <p>The centroid decomposition tree has depth <strong>O(log N)</strong>.</p>
+        <p>Every path in the original tree passes through the LCA (in the centroid tree) of its endpoints.</p>
+        <p>This means: for any path query, you only need to consider O(log N) centroid ancestors.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> sys
+sys.setrecursionlimit(<span class="number">300000</span>)
+
+<span class="keyword">class</span> <span class="function">CentroidDecomposition</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>, n, adj):
+        <span class="builtin">self</span>.n = n
+        <span class="builtin">self</span>.adj = adj
+        <span class="builtin">self</span>.sub_size = [<span class="number">0</span>] * n
+        <span class="builtin">self</span>.removed = [<span class="keyword">False</span>] * n
+        <span class="builtin">self</span>.centroid_parent = [<span class="number">-1</span>] * n
+        <span class="builtin">self</span>.root = <span class="builtin">self</span>._build(<span class="number">0</span>, n)
+
+    <span class="keyword">def</span> <span class="function">_get_subtree_size</span>(<span class="builtin">self</span>, v, p):
+        <span class="builtin">self</span>.sub_size[v] = <span class="number">1</span>
+        <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">self</span>.adj[v]:
+            <span class="keyword">if</span> u != p <span class="keyword">and</span> <span class="keyword">not</span> <span class="builtin">self</span>.removed[u]:
+                <span class="builtin">self</span>._get_subtree_size(u, v)
+                <span class="builtin">self</span>.sub_size[v] += <span class="builtin">self</span>.sub_size[u]
+        <span class="keyword">return</span> <span class="builtin">self</span>.sub_size[v]
+
+    <span class="keyword">def</span> <span class="function">_get_centroid</span>(<span class="builtin">self</span>, v, p, tree_size):
+        <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">self</span>.adj[v]:
+            <span class="keyword">if</span> u != p <span class="keyword">and</span> <span class="keyword">not</span> <span class="builtin">self</span>.removed[u] <span class="keyword">and</span> <span class="builtin">self</span>.sub_size[u] &gt; tree_size // <span class="number">2</span>:
+                <span class="keyword">return</span> <span class="builtin">self</span>._get_centroid(u, v, tree_size)
+        <span class="keyword">return</span> v
+
+    <span class="keyword">def</span> <span class="function">_build</span>(<span class="builtin">self</span>, v, size_hint):
+        tree_size = <span class="builtin">self</span>._get_subtree_size(v, <span class="number">-1</span>)
+        centroid = <span class="builtin">self</span>._get_centroid(v, <span class="number">-1</span>, tree_size)
+        <span class="builtin">self</span>.removed[centroid] = <span class="keyword">True</span>
+
+        <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">self</span>.adj[centroid]:
+            <span class="keyword">if</span> <span class="keyword">not</span> <span class="builtin">self</span>.removed[u]:
+                child_centroid = <span class="builtin">self</span>._build(u, <span class="builtin">self</span>.sub_size[u])
+                <span class="builtin">self</span>.centroid_parent[child_centroid] = centroid
+
+        <span class="keyword">return</span> centroid
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">200005</span>;
+vector&lt;<span class="keyword">int</span>&gt; adj[MAXN];
+<span class="keyword">int</span> sub_sz[MAXN], cpar[MAXN];
+<span class="keyword">bool</span> removed[MAXN];
+
+<span class="keyword">int</span> <span class="function">get_size</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p) {
+    sub_sz[v] = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v])
+        <span class="keyword">if</span> (u != p &amp;&amp; !removed[u])
+            sub_sz[v] += <span class="function">get_size</span>(u, v);
+    <span class="keyword">return</span> sub_sz[v];
+}
+
+<span class="keyword">int</span> <span class="function">get_centroid</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p, <span class="keyword">int</span> tsz) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v])
+        <span class="keyword">if</span> (u != p &amp;&amp; !removed[u] &amp;&amp; sub_sz[u] &gt; tsz / <span class="number">2</span>)
+            <span class="keyword">return</span> <span class="function">get_centroid</span>(u, v, tsz);
+    <span class="keyword">return</span> v;
+}
+
+<span class="keyword">void</span> <span class="function">build</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> par) {
+    <span class="keyword">int</span> tsz = <span class="function">get_size</span>(v, <span class="number">-1</span>);
+    <span class="keyword">int</span> c = <span class="function">get_centroid</span>(v, <span class="number">-1</span>, tsz);
+    removed[c] = <span class="keyword">true</span>;
+    cpar[c] = par;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[c])
+        <span class="keyword">if</span> (!removed[u])
+            <span class="function">build</span>(u, c);
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Centroid Decomposition Applications</div>
+        <p><strong>Count/find all paths of length k:</strong> For each centroid, compute distances to all nodes in its subtree. Use a frequency array or map to count pairs summing to k.</p>
+        <p><strong>Closest marked node queries:</strong> For each centroid ancestor, maintain the minimum distance to a marked node. Answer queries by checking O(log N) ancestors.</p>
+        <p><strong>Path queries with updates:</strong> Combine with data structures at each centroid level for powerful update/query support in O(log^2 N) time.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Implementation Pitfall</div>
+        <p>When computing the centroid, always recompute subtree sizes relative to the current (not-removed) component. Using stale sizes from a previous decomposition step will give wrong centroids and break the O(log N) depth guarantee.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 12: PRACTICE PROBLEMS -->
+    <!-- ================================================================== -->
+    <section id="practice" class="section">
+      <h2>12. Practice Problems</h2>
+
+      <div class="example-box">
+        <div class="label">MST Problems</div>
+        <p><strong>Codeforces 472D - Design Tutorial: Inverse MST</strong> -- Construct a graph whose MST matches given edges.</p>
+        <p><strong>CSES - Road Reparation</strong> -- Classic MST on a city road network.</p>
+        <p><strong>Kattis - Minimum Spanning Tree</strong> -- Straightforward MST practice.</p>
+        <p><strong>LeetCode 1584 - Min Cost to Connect All Points</strong> -- MST on a complete graph with Manhattan distances.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Bridges &amp; Articulation Points</div>
+        <p><strong>CSES - Critical Cities</strong> -- Find all articulation points in an undirected graph.</p>
+        <p><strong>Codeforces 118E - Bertown Roads</strong> -- Orient edges so no bridge exists (2-edge-connected orientation).</p>
+        <p><strong>LeetCode 1192 - Critical Connections in a Network</strong> -- Find all bridges.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">SCC Problems</div>
+        <p><strong>CSES - Planets &amp; Kingdoms</strong> -- Find and label SCCs.</p>
+        <p><strong>Codeforces 427C - Checkposts</strong> -- SCC + processing on condensation DAG.</p>
+        <p><strong>CSES - Coin Collector</strong> -- DP on condensation graph (SCC + DAG DP).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">LCA Problems</div>
+        <p><strong>CSES - Company Queries I</strong> -- k-th ancestor using binary lifting.</p>
+        <p><strong>CSES - Company Queries II</strong> -- Direct LCA queries.</p>
+        <p><strong>CSES - Distance Queries</strong> -- dist(u,v) using LCA.</p>
+        <p><strong>Codeforces 519E - A and B and Lecture Rooms</strong> -- Count nodes equidistant from two nodes using LCA.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Max Flow Problems</div>
+        <p><strong>CSES - Download Speed</strong> -- Direct max flow application.</p>
+        <p><strong>Codeforces 653D - Delivery Bears</strong> -- Binary search + max flow.</p>
+        <p><strong>LeetCode - Maximum Flow (various)</strong> -- Practice on smaller networks first.</p>
+        <p><strong>SPOJ FASTFLOW</strong> -- Large max flow requiring Dinic's.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Bipartite Matching Problems</div>
+        <p><strong>CSES - School Dance</strong> -- Classic bipartite matching.</p>
+        <p><strong>Codeforces 1437D - Minimal Height Tree</strong></p>
+        <p><strong>LeetCode 785 - Is Graph Bipartite?</strong> -- Prerequisite: check bipartiteness.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Shortest Paths (Bellman-Ford, Floyd-Warshall)</div>
+        <p><strong>CSES - Cycle Finding</strong> -- Detect and output a negative cycle using Bellman-Ford.</p>
+        <p><strong>CSES - Shortest Routes II</strong> -- Floyd-Warshall on all-pairs queries.</p>
+        <p><strong>Codeforces 295B - Greg and Graph</strong> -- Floyd-Warshall with vertex additions (process in reverse).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Euler Paths/Circuits</div>
+        <p><strong>CSES - Mail Delivery</strong> -- Find Euler circuit in undirected graph.</p>
+        <p><strong>CSES - Teleporters Path</strong> -- Find Euler path in directed graph.</p>
+        <p><strong>LeetCode 332 - Reconstruct Itinerary</strong> -- Euler path with lexicographic order.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">2-SAT Problems</div>
+        <p><strong>Codeforces 228E - 2-SAT</strong> -- Direct 2-SAT application.</p>
+        <p><strong>Codeforces 776D - The Door Problem</strong> -- Model constraints as 2-SAT clauses.</p>
+        <p><strong>CSES - Giant Pizza</strong> -- 2-SAT on pizza topping preferences.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Centroid Decomposition Problems</div>
+        <p><strong>CSES - Finding a Centroid</strong> -- Find the centroid of a tree.</p>
+        <p><strong>Codeforces 342E - Xenia and Tree</strong> -- Closest marked node using centroid decomposition.</p>
+        <p><strong>IOI 2011 - Race</strong> -- Find path of exact length k with minimum edges using centroid decomposition.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Study Order Recommendation</div>
+        <p>If you are building up to these topics, a good order is: (1) Bellman-Ford and Floyd-Warshall (extend your shortest path knowledge), (2) MST with Kruskal/Prim, (3) Bridges and articulation points, (4) SCCs and condensation, (5) LCA with binary lifting, (6) Euler paths, (7) Max flow and bipartite matching, (8) 2-SAT, (9) Centroid decomposition. Each builds on the previous concepts.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

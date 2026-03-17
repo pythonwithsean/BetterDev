@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Dynamic Programming - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Advanced DP</div>
+      <h1>Advanced Dynamic Programming</h1>
+      <p>Beyond the basics: tree DP, bitmask DP, digit DP, interval DP, knapsack variants, convex hull trick, divide &amp; conquer optimization, Knuth's optimization, SOS DP, and profile DP. Every technique you need to solve the hardest DP problems in competitive programming -- with full code in Python and C++.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#tree-dp">1. DP on Trees</a>
+      <a href="#bitmask-dp">2. Bitmask DP</a>
+      <a href="#digit-dp">3. Digit DP</a>
+      <a href="#interval-dp">4. Interval DP</a>
+      <a href="#knapsack-variants">5. Knapsack Variants</a>
+      <a href="#cht">6. Convex Hull Trick</a>
+      <a href="#dnc-opt">7. Divide &amp; Conquer Optimization</a>
+      <a href="#knuth-opt">8. Knuth's Optimization</a>
+      <a href="#sos-dp">9. SOS DP (Sum over Subsets)</a>
+      <a href="#profile-dp">10. Profile DP</a>
+      <a href="#practice">11. Practice Problems</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: DP ON TREES -->
+    <!-- ============================================================ -->
+    <section id="tree-dp" class="section">
+      <h2>1. DP on Trees</h2>
+      <p>Tree DP exploits the recursive structure of trees. We root the tree and compute values bottom-up (subtree DP), then sometimes push values top-down (rerooting). These techniques solve problems about paths, subtrees, diameters, and optimal placement on trees.</p>
+
+      <h3>1.1 Subtree DP -- Tree Diameter</h3>
+      <p>The <strong>diameter</strong> of a tree is the longest path between any two nodes. We compute it in a single DFS: at each node, track the two longest paths descending into children. The diameter through a node is the sum of its two longest child-paths.</p>
+
+      <div class="formula-box">
+        <div class="label">Formula</div>
+        <p>Let depth[v] = longest descending path from v. At node v with children c1, c2, ..., ck:</p>
+        <p><strong>depth[v] = 1 + max(depth[ci])</strong></p>
+        <p><strong>diameter = max over all v of (top two depth[ci] values summed)</strong></p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> sys
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">tree_diameter</span>(n, edges):
+    <span class="comment"># Build adjacency list</span>
+    adj = defaultdict(<span class="builtin">list</span>)
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    diameter = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">dfs</span>(node, parent):
+        <span class="keyword">nonlocal</span> diameter
+        max1 = max2 = <span class="number">0</span>  <span class="comment"># two longest descending paths</span>
+        <span class="keyword">for</span> child <span class="keyword">in</span> adj[node]:
+            <span class="keyword">if</span> child == parent:
+                <span class="keyword">continue</span>
+            depth = dfs(child, node) + <span class="number">1</span>
+            <span class="keyword">if</span> depth >= max1:
+                max2 = max1
+                max1 = depth
+            <span class="keyword">elif</span> depth > max2:
+                max2 = depth
+        diameter = <span class="builtin">max</span>(diameter, max1 + max2)
+        <span class="keyword">return</span> max1
+
+    dfs(<span class="number">0</span>, -<span class="number">1</span>)
+    <span class="keyword">return</span> diameter
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> diameter;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj;
+
+<span class="keyword">int</span> <span class="function">dfs</span>(<span class="keyword">int</span> node, <span class="keyword">int</span> parent) {
+    <span class="keyword">int</span> max1 = <span class="number">0</span>, max2 = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> child : adj[node]) {
+        <span class="keyword">if</span> (child == parent) <span class="keyword">continue</span>;
+        <span class="keyword">int</span> depth = <span class="function">dfs</span>(child, node) + <span class="number">1</span>;
+        <span class="keyword">if</span> (depth >= max1) { max2 = max1; max1 = depth; }
+        <span class="keyword">else if</span> (depth > max2) { max2 = depth; }
+    }
+    diameter = <span class="function">max</span>(diameter, max1 + max2);
+    <span class="keyword">return</span> max1;
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Complexity</div>
+        <p>O(n) time and space. A single DFS visits each node exactly once.</p>
+      </div>
+
+      <h3>1.2 Rerooting Technique</h3>
+      <p>Many tree DP problems ask "compute f(v) for every node v as if v were the root." Naive approach: run DFS from each node = O(n^2). Rerooting does it in O(n) with two passes.</p>
+      <p><strong>Pass 1 (bottom-up):</strong> Root at node 0, compute dp_down[v] = answer when v is root of its subtree.</p>
+      <p><strong>Pass 2 (top-down):</strong> For each node, "reroot" by removing the child's contribution from the parent's answer and combining with the rest of the tree.</p>
+
+      <div class="example-box">
+        <div class="label">Example: Sum of distances to all other nodes</div>
+        <p>Given a tree, compute for each node v the sum of distances from v to every other node.</p>
+        <p>Let subtree_size[v] = number of nodes in subtree of v. Let dp_down[v] = sum of distances from v to all nodes in its subtree.</p>
+        <p>Then dp_down[v] = sum over children c of (dp_down[c] + subtree_size[c]).</p>
+        <p>For rerooting: ans[child] = ans[parent] + (n - subtree_size[child]) - subtree_size[child] = ans[parent] + n - 2*subtree_size[child].</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">sum_of_distances</span>(n, edges):
+    adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    sz = [<span class="number">1</span>] * n
+    dp_down = [<span class="number">0</span>] * n
+
+    <span class="comment"># Pass 1: bottom-up from root 0</span>
+    order = []
+    parent = [-<span class="number">1</span>] * n
+    visited = [<span class="keyword">False</span>] * n
+    stack = [<span class="number">0</span>]
+    visited[<span class="number">0</span>] = <span class="keyword">True</span>
+    <span class="keyword">while</span> stack:
+        node = stack.pop()
+        order.append(node)
+        <span class="keyword">for</span> nb <span class="keyword">in</span> adj[node]:
+            <span class="keyword">if</span> <span class="keyword">not</span> visited[nb]:
+                visited[nb] = <span class="keyword">True</span>
+                parent[nb] = node
+                stack.append(nb)
+
+    <span class="keyword">for</span> node <span class="keyword">in</span> <span class="builtin">reversed</span>(order):
+        <span class="keyword">for</span> nb <span class="keyword">in</span> adj[node]:
+            <span class="keyword">if</span> nb == parent[node]:
+                <span class="keyword">continue</span>
+            sz[node] += sz[nb]
+            dp_down[node] += dp_down[nb] + sz[nb]
+
+    <span class="comment"># Pass 2: top-down rerooting</span>
+    ans = [<span class="number">0</span>] * n
+    ans[<span class="number">0</span>] = dp_down[<span class="number">0</span>]
+    <span class="keyword">for</span> node <span class="keyword">in</span> order:
+        <span class="keyword">for</span> nb <span class="keyword">in</span> adj[node]:
+            <span class="keyword">if</span> nb == parent[node]:
+                <span class="keyword">continue</span>
+            ans[nb] = ans[node] + n - <span class="number">2</span> * sz[nb]
+
+    <span class="keyword">return</span> ans
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Rerooting</div>
+        <p>Rerooting works when the DP combines children's answers using an <strong>invertible operation</strong> (addition, multiplication, XOR, max with counts). If you can "remove" a child's contribution, you can reroot.</p>
+      </div>
+
+      <h3>1.3 Subtree DP -- Maximum Path Sum</h3>
+      <p>Given a tree with weighted nodes, find the path (between any two nodes) with maximum sum. This is a generalization of the diameter problem.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">long long</span> ans;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj;
+vector&lt;<span class="keyword">int</span>&gt; val;
+
+<span class="keyword">long long</span> <span class="function">dfs</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> par) {
+    <span class="keyword">long long</span> best = <span class="number">0</span>;  <span class="comment">// best descending path sum (can be 0 = take nothing)</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> v : adj[u]) {
+        <span class="keyword">if</span> (v == par) <span class="keyword">continue</span>;
+        <span class="keyword">long long</span> child_best = <span class="function">dfs</span>(v, u);
+        ans = <span class="function">max</span>(ans, best + child_best + val[u]);
+        best = <span class="function">max</span>(best, child_best);
+    }
+    <span class="keyword">return</span> best + val[u];
+}
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> n;
+    cin &gt;&gt; n;
+    adj.resize(n);
+    val.resize(n);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) cin &gt;&gt; val[i];
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) {
+        <span class="keyword">int</span> u, v; cin &gt;&gt; u &gt;&gt; v; u--; v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    ans = *<span class="function">max_element</span>(val.begin(), val.end());
+    <span class="function">dfs</span>(<span class="number">0</span>, -<span class="number">1</span>);
+    cout &lt;&lt; ans &lt;&lt; <span class="string">"\n"</span>;
+}
+</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: BITMASK DP -->
+    <!-- ============================================================ -->
+    <section id="bitmask-dp" class="section">
+      <h2>2. Bitmask DP</h2>
+      <p>When the state involves a <strong>subset</strong> of a small set (n &le; 20-23), we represent each subset as a bitmask integer. This gives us 2^n states, each encodable in a single int. Classic applications: TSP, assignment problem, Hamiltonian path, and subset enumeration.</p>
+
+      <div class="warning-box">
+        <div class="label">Size Constraint</div>
+        <p>Bitmask DP is feasible only for small n. Memory = O(2^n * n), time = O(2^n * n^2) for TSP. For n=20, 2^20 = ~1M which is fine. For n=25, 2^25 = ~33M which is borderline. Beyond n=25, consider meet-in-middle or other approaches.</p>
+      </div>
+
+      <h3>2.1 Travelling Salesman Problem (TSP)</h3>
+      <p>Given n cities and distances between every pair, find the shortest route visiting every city exactly once and returning to the start. The classic Held-Karp algorithm solves this in O(2^n * n^2).</p>
+
+      <div class="formula-box">
+        <div class="label">Recurrence</div>
+        <p><strong>dp[mask][i]</strong> = minimum cost to visit exactly the cities in <em>mask</em>, ending at city <em>i</em>.</p>
+        <p>Base: dp[1 &lt;&lt; start][start] = 0</p>
+        <p>Transition: dp[mask | (1 &lt;&lt; j)][j] = min(dp[mask][i] + dist[i][j]) for all i in mask where j is not in mask.</p>
+        <p>Answer: min over all i of dp[(1 &lt;&lt; n) - 1][i] + dist[i][start]</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">tsp</span>(dist):
+    <span class="string">"""Held-Karp TSP. dist is n x n matrix. Returns min tour cost."""</span>
+    n = <span class="builtin">len</span>(dist)
+    INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    dp = [[INF] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; n)]
+    dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span>  <span class="comment"># start at city 0</span>
+
+    <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">1</span> &lt;&lt; n):
+        <span class="keyword">for</span> u <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            <span class="keyword">if</span> dp[mask][u] == INF:
+                <span class="keyword">continue</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> (mask &amp; (<span class="number">1</span> &lt;&lt; u)):
+                <span class="keyword">continue</span>
+            <span class="keyword">for</span> v <span class="keyword">in</span> <span class="builtin">range</span>(n):
+                <span class="keyword">if</span> mask &amp; (<span class="number">1</span> &lt;&lt; v):
+                    <span class="keyword">continue</span>
+                new_mask = mask | (<span class="number">1</span> &lt;&lt; v)
+                dp[new_mask][v] = <span class="builtin">min</span>(dp[new_mask][v], dp[mask][u] + dist[u][v])
+
+    full = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>
+    <span class="keyword">return</span> <span class="builtin">min</span>(dp[full][i] + dist[i][<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n))
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">tsp</span>(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; dist) {
+    <span class="keyword">int</span> n = dist.size();
+    <span class="keyword">const int</span> INF = <span class="number">1e9</span>;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(<span class="number">1</span> &lt;&lt; n, vector&lt;<span class="keyword">int</span>&gt;(n, INF));
+    dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">1</span>; mask &lt; (<span class="number">1</span> &lt;&lt; n); mask++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> u = <span class="number">0</span>; u &lt; n; u++) {
+            <span class="keyword">if</span> (dp[mask][u] == INF || !(mask &amp; (<span class="number">1</span> &lt;&lt; u))) <span class="keyword">continue</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; n; v++) {
+                <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> &lt;&lt; v)) <span class="keyword">continue</span>;
+                <span class="keyword">int</span> nm = mask | (<span class="number">1</span> &lt;&lt; v);
+                dp[nm][v] = <span class="function">min</span>(dp[nm][v], dp[mask][u] + dist[u][v]);
+            }
+        }
+    }
+    <span class="keyword">int</span> ans = INF;
+    <span class="keyword">int</span> full = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)
+        ans = <span class="function">min</span>(ans, dp[full][i] + dist[i][<span class="number">0</span>]);
+    <span class="keyword">return</span> ans;
+}
+</code></pre>
+
+      <h3>2.2 Assignment Problem</h3>
+      <p>Given n workers and n tasks with cost[i][j], assign each worker to exactly one task (and each task to exactly one worker) minimizing total cost. This is equivalent to minimum weight perfect matching in a bipartite graph.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">assignment</span>(cost):
+    <span class="string">"""Bitmask DP for assignment problem. O(2^n * n)."""</span>
+    n = <span class="builtin">len</span>(cost)
+    INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    dp = [INF] * (<span class="number">1</span> &lt;&lt; n)
+    dp[<span class="number">0</span>] = <span class="number">0</span>
+
+    <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; n):
+        <span class="keyword">if</span> dp[mask] == INF:
+            <span class="keyword">continue</span>
+        worker = <span class="builtin">bin</span>(mask).count(<span class="string">'1'</span>)  <span class="comment"># which worker to assign next</span>
+        <span class="keyword">if</span> worker >= n:
+            <span class="keyword">continue</span>
+        <span class="keyword">for</span> task <span class="keyword">in</span> <span class="builtin">range</span>(n):
+            <span class="keyword">if</span> mask &amp; (<span class="number">1</span> &lt;&lt; task):
+                <span class="keyword">continue</span>
+            new_mask = mask | (<span class="number">1</span> &lt;&lt; task)
+            dp[new_mask] = <span class="builtin">min</span>(dp[new_mask], dp[mask] + cost[worker][task])
+
+    <span class="keyword">return</span> dp[(<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>]
+</code></pre>
+
+      <h3>2.3 Subset Enumeration</h3>
+      <p>A critical bitmask trick: iterating over all submasks of a given mask in O(3^n) total across all masks.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Enumerate all submasks of mask (including mask itself, excluding 0)</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> sub = mask; sub &gt; <span class="number">0</span>; sub = (sub - <span class="number">1</span>) &amp; mask) {
+    <span class="comment">// process submask 'sub'</span>
+}
+<span class="comment">// Don't forget to handle sub = 0 separately if needed</span>
+
+<span class="comment">// Total work across all masks: sum over mask of 2^popcount(mask) = 3^n</span>
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Bit Manipulation Cheatsheet</div>
+        <p><strong>Check bit i:</strong> mask &amp; (1 &lt;&lt; i)</p>
+        <p><strong>Set bit i:</strong> mask | (1 &lt;&lt; i)</p>
+        <p><strong>Clear bit i:</strong> mask &amp; ~(1 &lt;&lt; i)</p>
+        <p><strong>Toggle bit i:</strong> mask ^ (1 &lt;&lt; i)</p>
+        <p><strong>Lowest set bit:</strong> mask &amp; (-mask)</p>
+        <p><strong>Clear lowest set bit:</strong> mask &amp; (mask - 1)</p>
+        <p><strong>Count set bits:</strong> __builtin_popcount(mask) in C++, bin(mask).count('1') in Python</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: DIGIT DP -->
+    <!-- ============================================================ -->
+    <section id="digit-dp" class="section">
+      <h2>3. Digit DP</h2>
+      <p>Digit DP counts numbers in a range [L, R] satisfying some property by building the number digit by digit. The key idea is a <strong>tight</strong> flag: whether the digits chosen so far exactly match the upper bound's prefix (constraining future digits) or are already smaller (free to choose any digit).</p>
+
+      <div class="formula-box">
+        <div class="label">General Template</div>
+        <p>count(R) - count(L-1) gives the answer for [L, R].</p>
+        <p>State: (position, tight, ...extra state). Position goes from MSB to LSB.</p>
+        <p>If tight=True, current digit can be 0..digits[pos]. If tight=False, digit can be 0..9.</p>
+      </div>
+
+      <h3>3.1 Template: Count numbers in [1, N] with digit sum = S</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache
+
+<span class="keyword">def</span> <span class="function">count_digit_sum</span>(N, S):
+    <span class="string">"""Count integers in [1, N] whose digit sum equals S."""</span>
+    digits = [<span class="builtin">int</span>(d) <span class="keyword">for</span> d <span class="keyword">in</span> <span class="builtin">str</span>(N)]
+    n = <span class="builtin">len</span>(digits)
+
+    <span class="builtin">@lru_cache</span>(maxsize=<span class="keyword">None</span>)
+    <span class="keyword">def</span> <span class="function">solve</span>(pos, tight, rem, started):
+        <span class="string">"""
+        pos: current digit position (0-indexed from left)
+        tight: whether we're still bounded by N
+        rem: remaining digit sum needed
+        started: whether we've placed a nonzero digit yet
+        """</span>
+        <span class="keyword">if</span> rem &lt; <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> pos == n:
+            <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> rem == <span class="number">0</span> <span class="keyword">and</span> started <span class="keyword">else</span> <span class="number">0</span>
+
+        limit = digits[pos] <span class="keyword">if</span> tight <span class="keyword">else</span> <span class="number">9</span>
+        result = <span class="number">0</span>
+        <span class="keyword">for</span> d <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">0</span>, limit + <span class="number">1</span>):
+            result += solve(
+                pos + <span class="number">1</span>,
+                tight <span class="keyword">and</span> d == limit,
+                rem - d,
+                started <span class="keyword">or</span> d &gt; <span class="number">0</span>
+            )
+        <span class="keyword">return</span> result
+
+    <span class="keyword">return</span> solve(<span class="number">0</span>, <span class="keyword">True</span>, S, <span class="keyword">False</span>)
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">string</span> num;
+<span class="keyword">int</span> target;
+<span class="keyword">int</span> memo[<span class="number">20</span>][<span class="number">2</span>][<span class="number">200</span>][<span class="number">2</span>];
+
+<span class="keyword">int</span> <span class="function">solve</span>(<span class="keyword">int</span> pos, <span class="keyword">bool</span> tight, <span class="keyword">int</span> rem, <span class="keyword">bool</span> started) {
+    <span class="keyword">if</span> (rem &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">if</span> (pos == (<span class="keyword">int</span>)num.size())
+        <span class="keyword">return</span> (rem == <span class="number">0</span> &amp;&amp; started) ? <span class="number">1</span> : <span class="number">0</span>;
+
+    <span class="keyword">int</span>&amp; res = memo[pos][tight][rem][started];
+    <span class="keyword">if</span> (res != -<span class="number">1</span>) <span class="keyword">return</span> res;
+    res = <span class="number">0</span>;
+
+    <span class="keyword">int</span> limit = tight ? (num[pos] - <span class="string">'0'</span>) : <span class="number">9</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> d = <span class="number">0</span>; d &lt;= limit; d++) {
+        res += <span class="function">solve</span>(pos + <span class="number">1</span>, tight &amp;&amp; (d == limit),
+                     rem - d, started || (d &gt; <span class="number">0</span>));
+    }
+    <span class="keyword">return</span> res;
+}
+
+<span class="keyword">int</span> <span class="function">count_digit_sum</span>(<span class="keyword">long long</span> N, <span class="keyword">int</span> S) {
+    num = to_string(N);
+    target = S;
+    <span class="function">memset</span>(memo, -<span class="number">1</span>, <span class="keyword">sizeof</span> memo);
+    <span class="keyword">return</span> <span class="function">solve</span>(<span class="number">0</span>, <span class="keyword">true</span>, S, <span class="keyword">false</span>);
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Digit DP Pattern</div>
+        <p>Almost every digit DP problem follows this skeleton. The only thing that changes is the "extra state" (digit sum, count of certain digits, modular remainder, etc.) and the base case condition. Master this template and you can solve 90% of digit DP problems.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: count_digit_sum(123, 5)</div>
+        <p>We want numbers in [1, 123] with digit sum = 5. The digits array is [1, 2, 3].</p>
+        <p>At pos=0, tight=True: we can pick d=0 (then free for next digits) or d=1 (stay tight).</p>
+        <p>If d=0: need remaining sum 5 from 2 digits (00-99). Numbers: 05, 14, 23, 32, 41, 50 = 6 numbers.</p>
+        <p>If d=1, tight: pos=1, tight=True, rem=4. Can pick d=0..2.</p>
+        <p>If d=1,0: need 4 from 1 digit (0-9). Only 4. Number: 104.</p>
+        <p>If d=1,1: need 3 from 1 digit (0-9). Only 3. Number: 113.</p>
+        <p>If d=1,2, tight: need 2 from 1 digit (0-3). Only 2. Number: 122.</p>
+        <p>Total: 6 + 3 = 9 numbers.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: INTERVAL DP -->
+    <!-- ============================================================ -->
+    <section id="interval-dp" class="section">
+      <h2>4. Interval DP</h2>
+      <p>Interval DP operates on contiguous subarrays/substrings. The state is dp[i][j] = optimal answer for the interval [i, j]. We try all ways to split the interval and combine results. Typical time complexity: O(n^3).</p>
+
+      <h3>4.1 Matrix Chain Multiplication</h3>
+      <p>Given matrices A1(p0 x p1), A2(p1 x p2), ..., An(p_{n-1} x p_n), find the minimum number of scalar multiplications to compute their product.</p>
+
+      <div class="formula-box">
+        <div class="label">Recurrence</div>
+        <p><strong>dp[i][j]</strong> = minimum cost to multiply matrices i through j.</p>
+        <p>dp[i][j] = min over k in [i, j-1] of: dp[i][k] + dp[k+1][j] + p[i-1] * p[k] * p[j]</p>
+        <p>Base: dp[i][i] = 0 (single matrix costs nothing).</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">matrix_chain</span>(p):
+    <span class="string">"""p = list of dimensions. n matrices: p[0]xp[1], p[1]xp[2], ..., p[n-1]xp[n]."""</span>
+    n = <span class="builtin">len</span>(p) - <span class="number">1</span>  <span class="comment"># number of matrices</span>
+    INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+
+    <span class="keyword">for</span> length <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):  <span class="comment"># chain length</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - length + <span class="number">1</span>):
+            j = i + length - <span class="number">1</span>
+            dp[i][j] = INF
+            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(i, j):
+                cost = dp[i][k] + dp[k + <span class="number">1</span>][j] + p[i] * p[k + <span class="number">1</span>] * p[j + <span class="number">1</span>]
+                dp[i][j] = <span class="builtin">min</span>(dp[i][j], cost)
+
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n - <span class="number">1</span>]
+</code></pre>
+
+      <h3>4.2 Burst Balloons (LeetCode 312)</h3>
+      <p>Given n balloons with values, bursting balloon i gives nums[left]*nums[i]*nums[right]. Find max coins by bursting all balloons. The trick: think of which balloon is burst <strong>last</strong> in each interval.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_coins</span>(nums):
+    nums = [<span class="number">1</span>] + nums + [<span class="number">1</span>]  <span class="comment"># pad with 1s</span>
+    n = <span class="builtin">len</span>(nums)
+    dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+
+    <span class="keyword">for</span> length <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n):  <span class="comment"># gap between i and j</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - length):
+            j = i + length
+            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(i + <span class="number">1</span>, j):  <span class="comment"># k is the LAST balloon burst in (i,j)</span>
+                dp[i][j] = <span class="builtin">max</span>(
+                    dp[i][j],
+                    dp[i][k] + dp[k][j] + nums[i] * nums[k] * nums[j]
+                )
+
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n - <span class="number">1</span>]
+</code></pre>
+
+      <h3>4.3 Merge Stones</h3>
+      <p>Given n piles of stones, merge exactly k consecutive piles into one each step (cost = sum of merged piles). Find minimum total cost to merge into one pile, or -1 if impossible.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">mergeStones</span>(vector&lt;<span class="keyword">int</span>&gt;&amp; stones, <span class="keyword">int</span> K) {
+    <span class="keyword">int</span> n = stones.size();
+    <span class="keyword">if</span> ((n - <span class="number">1</span>) % (K - <span class="number">1</span>) != <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+
+    vector&lt;<span class="keyword">int</span>&gt; prefix(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) prefix[i + <span class="number">1</span>] = prefix[i] + stones[i];
+
+    <span class="comment">// dp[i][j] = min cost to merge stones[i..j] as far as possible</span>
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; dp(n, vector&lt;<span class="keyword">int</span>&gt;(n, <span class="number">0</span>));
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> len = K; len &lt;= n; len++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + len &lt;= n; i++) {
+            <span class="keyword">int</span> j = i + len - <span class="number">1</span>;
+            dp[i][j] = <span class="number">1e9</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> mid = i; mid &lt; j; mid += K - <span class="number">1</span>) {
+                dp[i][j] = <span class="function">min</span>(dp[i][j], dp[i][mid] + dp[mid + <span class="number">1</span>][j]);
+            }
+            <span class="keyword">if</span> ((len - <span class="number">1</span>) % (K - <span class="number">1</span>) == <span class="number">0</span>)
+                dp[i][j] += prefix[j + <span class="number">1</span>] - prefix[i];
+        }
+    }
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n - <span class="number">1</span>];
+}
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Complexity</div>
+        <p>Matrix chain and burst balloons: O(n^3) time, O(n^2) space. Merge stones with k groups: O(n^3 / k) time.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: KNAPSACK VARIANTS -->
+    <!-- ============================================================ -->
+    <section id="knapsack-variants" class="section">
+      <h2>5. Knapsack Variants</h2>
+      <p>The 0/1 knapsack is foundational DP, but real problems demand variants: unbounded (infinite copies), bounded (limited copies), multi-dimensional (multiple constraints), and meet-in-middle (when n is too large for standard DP but small enough for splitting).</p>
+
+      <h3>5.1 Unbounded Knapsack</h3>
+      <p>Each item can be used unlimited times. The only change: iterate items in the inner loop or process weights going forward (not backward).</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">unbounded_knapsack</span>(W, weights, values):
+    <span class="string">"""Max value with capacity W, unlimited copies of each item."""</span>
+    dp = [<span class="number">0</span>] * (W + <span class="number">1</span>)
+    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, W + <span class="number">1</span>):
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="builtin">len</span>(weights)):
+            <span class="keyword">if</span> weights[i] &lt;= w:
+                dp[w] = <span class="builtin">max</span>(dp[w], dp[w - weights[i]] + values[i])
+    <span class="keyword">return</span> dp[W]
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">0/1 vs Unbounded</div>
+        <p>In 0/1 knapsack, iterate capacity <strong>right to left</strong> (each item used at most once). In unbounded, iterate <strong>left to right</strong> (reuse allowed). This single direction change is the entire difference.</p>
+      </div>
+
+      <h3>5.2 Bounded Knapsack (Binary Lifting Trick)</h3>
+      <p>Each item i has a limit c[i]. Naive: treat as c[i] separate items = O(W * sum(c[i])). Binary lifting: decompose c[i] into powers of 2 (1, 2, 4, ..., remainder) to get O(W * n * log(max_c)) items.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">bounded_knapsack</span>(<span class="keyword">int</span> W, vector&lt;<span class="keyword">int</span>&gt;&amp; wt, vector&lt;<span class="keyword">int</span>&gt;&amp; val, vector&lt;<span class="keyword">int</span>&gt;&amp; cnt) {
+    <span class="keyword">int</span> n = wt.size();
+    vector&lt;<span class="keyword">int</span>&gt; dp(W + <span class="number">1</span>, <span class="number">0</span>);
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="comment">// Binary decomposition of cnt[i]</span>
+        <span class="keyword">int</span> remaining = cnt[i];
+        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; remaining &gt; <span class="number">0</span>; k *= <span class="number">2</span>) {
+            <span class="keyword">int</span> batch = <span class="function">min</span>(k, remaining);
+            remaining -= batch;
+            <span class="keyword">int</span> bw = wt[i] * batch, bv = val[i] * batch;
+            <span class="comment">// 0/1 knapsack for this batch (right to left)</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> w = W; w &gt;= bw; w--)
+                dp[w] = <span class="function">max</span>(dp[w], dp[w - bw] + bv);
+        }
+    }
+    <span class="keyword">return</span> dp[W];
+}
+</code></pre>
+
+      <h3>5.3 Multi-Dimensional Knapsack</h3>
+      <p>When there are multiple constraints (weight AND volume, for example), add an extra dimension to the DP table.</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">knapsack_2d</span>(W, V, items):
+    <span class="string">"""items = list of (weight, volume, value). Max value with capacity W and volume V."""</span>
+    dp = [[<span class="number">0</span>] * (V + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(W + <span class="number">1</span>)]
+
+    <span class="keyword">for</span> w, v, val <span class="keyword">in</span> items:
+        <span class="keyword">for</span> cw <span class="keyword">in</span> <span class="builtin">range</span>(W, w - <span class="number">1</span>, -<span class="number">1</span>):
+            <span class="keyword">for</span> cv <span class="keyword">in</span> <span class="builtin">range</span>(V, v - <span class="number">1</span>, -<span class="number">1</span>):
+                dp[cw][cv] = <span class="builtin">max</span>(dp[cw][cv], dp[cw - w][cv - v] + val)
+
+    <span class="keyword">return</span> dp[W][V]
+</code></pre>
+
+      <h3>5.4 Meet-in-the-Middle Knapsack</h3>
+      <p>When n is up to ~40 and W is very large, standard DP is impossible. Split items into two halves, enumerate all 2^(n/2) subsets for each, then combine with binary search. Time: O(2^(n/2) * log(2^(n/2))).</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> bisect <span class="keyword">import</span> bisect_right
+
+<span class="keyword">def</span> <span class="function">meet_in_middle_knapsack</span>(W, weights, values):
+    n = <span class="builtin">len</span>(weights)
+    half = n // <span class="number">2</span>
+
+    <span class="keyword">def</span> <span class="function">enumerate_subsets</span>(wts, vals):
+        <span class="string">"""Return list of (weight, value) for all subsets."""</span>
+        m = <span class="builtin">len</span>(wts)
+        result = []
+        <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; m):
+            tw = tv = <span class="number">0</span>
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m):
+                <span class="keyword">if</span> mask &amp; (<span class="number">1</span> &lt;&lt; i):
+                    tw += wts[i]
+                    tv += vals[i]
+            <span class="keyword">if</span> tw &lt;= W:
+                result.append((tw, tv))
+        <span class="keyword">return</span> result
+
+    left = enumerate_subsets(weights[:half], values[:half])
+    right = enumerate_subsets(weights[half:], values[half:])
+
+    <span class="comment"># Sort right by weight, build prefix-max of values</span>
+    right.sort()
+    rw = [r[<span class="number">0</span>] <span class="keyword">for</span> r <span class="keyword">in</span> right]
+    rv = [r[<span class="number">1</span>] <span class="keyword">for</span> r <span class="keyword">in</span> right]
+    <span class="comment"># Make rv prefix-max: rv[i] = max value among right subsets with weight <= rw[i]</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(rv)):
+        rv[i] = <span class="builtin">max</span>(rv[i], rv[i - <span class="number">1</span>])
+
+    ans = <span class="number">0</span>
+    <span class="keyword">for</span> lw, lv <span class="keyword">in</span> left:
+        remaining = W - lw
+        idx = bisect_right(rw, remaining) - <span class="number">1</span>
+        <span class="keyword">if</span> idx &gt;= <span class="number">0</span>:
+            ans = <span class="builtin">max</span>(ans, lv + rv[idx])
+        <span class="keyword">else</span>:
+            ans = <span class="builtin">max</span>(ans, lv)
+
+    <span class="keyword">return</span> ans
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Common Mistakes</div>
+        <p>1. Forgetting to iterate right-to-left in 0/1 knapsack (accidentally allowing reuse).</p>
+        <p>2. In meet-in-middle, forgetting to build the prefix-max on the sorted right half.</p>
+        <p>3. Off-by-one in bounded knapsack binary decomposition (the remainder group).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: CONVEX HULL TRICK -->
+    <!-- ============================================================ -->
+    <section id="cht" class="section">
+      <h2>6. Convex Hull Trick</h2>
+      <p>The Convex Hull Trick (CHT) optimizes DP recurrences of the form: <strong>dp[i] = min/max over j &lt; i of (a[j] * x[i] + b[j])</strong>, where each previous state j defines a linear function f_j(x) = a[j]*x + b[j], and we query at x = x[i]. If we maintain a convex hull of these lines, each query takes O(log n) or amortized O(1).</p>
+
+      <div class="formula-box">
+        <div class="label">When to Use CHT</div>
+        <p>Your DP recurrence must be expressible as: dp[i] = min/max(m_j * x_i + b_j) + cost(i)</p>
+        <p>where m_j and b_j depend on j (a previously computed state) and x_i depends only on i.</p>
+        <p>If slopes m_j are monotone AND query points x_i are monotone, use a simple deque (amortized O(1) per operation). Otherwise, use Li Chao tree (O(log n) per operation).</p>
+      </div>
+
+      <h3>6.1 Simple CHT with Monotone Slopes and Queries</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">class</span> <span class="function">ConvexHullTrick</span>:
+    <span class="string">"""Maintains lower hull for minimum queries.
+    Requirements: lines added in decreasing slope order,
+    queries in increasing x order."""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.hull = deque()  <span class="comment"># list of (slope, intercept)</span>
+
+    <span class="keyword">def</span> <span class="function">_bad</span>(self, l1, l2, l3):
+        <span class="string">"""Check if l2 is never optimal between l1 and l3."""</span>
+        <span class="keyword">return</span> (l3[<span class="number">1</span>] - l1[<span class="number">1</span>]) * (l1[<span class="number">0</span>] - l2[<span class="number">0</span>]) &lt;= \
+               (l2[<span class="number">1</span>] - l1[<span class="number">1</span>]) * (l1[<span class="number">0</span>] - l3[<span class="number">0</span>])
+
+    <span class="keyword">def</span> <span class="function">add_line</span>(self, m, b):
+        <span class="string">"""Add line y = m*x + b. Slopes must be decreasing."""</span>
+        line = (m, b)
+        <span class="keyword">while</span> <span class="builtin">len</span>(self.hull) &gt;= <span class="number">2</span> <span class="keyword">and</span> self._bad(self.hull[-<span class="number">2</span>], self.hull[-<span class="number">1</span>], line):
+            self.hull.pop()
+        self.hull.append(line)
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, x):
+        <span class="string">"""Query minimum y at x. x must be increasing."""</span>
+        <span class="keyword">while</span> <span class="builtin">len</span>(self.hull) &gt;= <span class="number">2</span>:
+            m1, b1 = self.hull[<span class="number">0</span>]
+            m2, b2 = self.hull[<span class="number">1</span>]
+            <span class="keyword">if</span> m1 * x + b1 &gt; m2 * x + b2:
+                self.hull.popleft()
+            <span class="keyword">else</span>:
+                <span class="keyword">break</span>
+        m, b = self.hull[<span class="number">0</span>]
+        <span class="keyword">return</span> m * x + b
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> Line {
+    <span class="keyword">long long</span> m, b;
+    <span class="keyword">long long</span> <span class="function">eval</span>(<span class="keyword">long long</span> x) { <span class="keyword">return</span> m * x + b; }
+};
+
+<span class="keyword">struct</span> CHT {
+    deque&lt;Line&gt; hull;
+
+    <span class="keyword">bool</span> <span class="function">bad</span>(Line l1, Line l2, Line l3) {
+        <span class="keyword">return</span> (__int128)(l3.b - l1.b) * (l1.m - l2.m) &lt;=
+               (__int128)(l2.b - l1.b) * (l1.m - l3.m);
+    }
+
+    <span class="keyword">void</span> <span class="function">add_line</span>(<span class="keyword">long long</span> m, <span class="keyword">long long</span> b) {
+        Line line = {m, b};
+        <span class="keyword">while</span> (hull.size() &gt;= <span class="number">2</span> &amp;&amp; <span class="function">bad</span>(hull[hull.size()-<span class="number">2</span>], hull.back(), line))
+            hull.pop_back();
+        hull.push_back(line);
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">long long</span> x) {
+        <span class="keyword">while</span> (hull.size() &gt;= <span class="number">2</span> &amp;&amp; hull[<span class="number">0</span>].<span class="function">eval</span>(x) &gt;= hull[<span class="number">1</span>].<span class="function">eval</span>(x))
+            hull.pop_front();
+        <span class="keyword">return</span> hull.front().<span class="function">eval</span>(x);
+    }
+};
+</code></pre>
+
+      <h3>6.2 Example: Minimize dp[i] = min(dp[j] + a[j]*b[i])</h3>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: APIO 2014 Sequence</div>
+        <p>Suppose dp[i] = min over j &lt; i of (dp[j] + cost(j, i)), where cost(j, i) can be decomposed as m_j * x_i + b_j.</p>
+        <p>Rewrite: dp[i] = min(m_j * x_i + b_j) where m_j = some function of j's values, b_j = dp[j] + extra, x_i = some function of i.</p>
+        <p>Add line (m_j, b_j) when computing dp[j]. Query at x_i to compute dp[i]. If slopes decrease and queries increase, the deque approach gives O(n) total.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Li Chao Tree</div>
+        <p>When slopes and queries are NOT monotone, use a Li Chao segment tree. It supports add_line in O(log(MAXX)) and query in O(log(MAXX)). Conceptually simpler than maintaining an explicit hull with binary search.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: DIVIDE & CONQUER OPTIMIZATION -->
+    <!-- ============================================================ -->
+    <section id="dnc-opt" class="section">
+      <h2>7. Divide &amp; Conquer Optimization</h2>
+      <p>This optimization applies when the DP recurrence is: <strong>dp[i][j] = min over k in [opt[i][j-1], opt[i+1][j]] of (dp[k][j-1] + C(k+1, i))</strong> and the "optimal split point" opt[i][j] is monotone: opt[i][j] &le; opt[i+1][j]. This means as i increases, the optimal k never decreases.</p>
+
+      <div class="formula-box">
+        <div class="label">Condition</div>
+        <p>Given dp[i][j] = min over k &lt; i of (dp[k][j-1] + C(k, i)), if the optimal k for row i is &le; optimal k for row i+1, we have the monotonicity condition. This reduces O(n^2 * k) to O(n * k * log n).</p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">const long long</span> INF = <span class="number">1e18</span>;
+<span class="keyword">int</span> N, K;
+vector&lt;vector&lt;<span class="keyword">long long</span>&gt;&gt; dp;
+
+<span class="comment">// cost(l, r) = cost of one group covering elements [l, r]</span>
+<span class="keyword">long long</span> <span class="function">cost</span>(<span class="keyword">int</span> l, <span class="keyword">int</span> r);
+
+<span class="keyword">void</span> <span class="function">solve</span>(<span class="keyword">int</span> layer, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi, <span class="keyword">int</span> opt_lo, <span class="keyword">int</span> opt_hi) {
+    <span class="keyword">if</span> (lo &gt; hi) <span class="keyword">return</span>;
+    <span class="keyword">int</span> mid = (lo + hi) / <span class="number">2</span>;
+    <span class="keyword">long long</span> best = INF;
+    <span class="keyword">int</span> opt = opt_lo;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> k = opt_lo; k &lt;= <span class="function">min</span>(mid - <span class="number">1</span>, opt_hi); k++) {
+        <span class="keyword">long long</span> val = dp[layer - <span class="number">1</span>][k] + <span class="function">cost</span>(k + <span class="number">1</span>, mid);
+        <span class="keyword">if</span> (val &lt; best) {
+            best = val;
+            opt = k;
+        }
+    }
+    dp[layer][mid] = best;
+
+    <span class="function">solve</span>(layer, lo, mid - <span class="number">1</span>, opt_lo, opt);
+    <span class="function">solve</span>(layer, mid + <span class="number">1</span>, hi, opt, opt_hi);
+}
+
+<span class="keyword">void</span> <span class="function">compute</span>() {
+    dp.assign(K + <span class="number">1</span>, vector&lt;<span class="keyword">long long</span>&gt;(N + <span class="number">1</span>, INF));
+    dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;
+
+    <span class="comment">// Base layer: dp[1][i] = cost(1, i)</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N; i++)
+        dp[<span class="number">1</span>][i] = <span class="function">cost</span>(<span class="number">1</span>, i);
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">2</span>; j &lt;= K; j++)
+        <span class="function">solve</span>(j, <span class="number">1</span>, N, <span class="number">0</span>, N - <span class="number">1</span>);
+}
+</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> sys
+sys.setrecursionlimit(<span class="number">300000</span>)
+
+<span class="keyword">def</span> <span class="function">dnc_optimize</span>(n, k, cost_fn):
+    <span class="string">"""
+    dp[j][i] = min over m < i of (dp[j-1][m] + cost_fn(m+1, i))
+    Returns dp[k][n].
+    """</span>
+    INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    prev = [INF] * (n + <span class="number">1</span>)
+    prev[<span class="number">0</span>] = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        prev[i] = cost_fn(<span class="number">1</span>, i)
+
+    <span class="keyword">for</span> layer <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, k + <span class="number">1</span>):
+        cur = [INF] * (n + <span class="number">1</span>)
+
+        <span class="keyword">def</span> <span class="function">rec</span>(lo, hi, opt_lo, opt_hi):
+            <span class="keyword">if</span> lo &gt; hi:
+                <span class="keyword">return</span>
+            mid = (lo + hi) // <span class="number">2</span>
+            best = INF
+            opt = opt_lo
+            <span class="keyword">for</span> m <span class="keyword">in</span> <span class="builtin">range</span>(opt_lo, <span class="builtin">min</span>(mid, opt_hi + <span class="number">1</span>)):
+                val = prev[m] + cost_fn(m + <span class="number">1</span>, mid)
+                <span class="keyword">if</span> val &lt; best:
+                    best = val
+                    opt = m
+            cur[mid] = best
+            rec(lo, mid - <span class="number">1</span>, opt_lo, opt)
+            rec(mid + <span class="number">1</span>, hi, opt, opt_hi)
+
+        rec(<span class="number">1</span>, n, <span class="number">0</span>, n - <span class="number">1</span>)
+        prev = cur
+
+    <span class="keyword">return</span> prev[n]
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">How to Verify Monotonicity</div>
+        <p>Compute the cost function C(l, r). If C satisfies the <strong>quadrangle inequality</strong> (C(a,c) + C(b,d) &le; C(a,d) + C(b,c) for a &le; b &le; c &le; d), then the optimal split points are monotone. Common qualifying costs: sum of squares of segment sums, variance-based costs.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: KNUTH'S OPTIMIZATION -->
+    <!-- ============================================================ -->
+    <section id="knuth-opt" class="section">
+      <h2>8. Knuth's Optimization</h2>
+      <p>Knuth's optimization speeds up interval DP from O(n^3) to O(n^2). It applies when the cost function C(i, j) satisfies the <strong>quadrangle inequality</strong> AND the DP recurrence is: dp[i][j] = min over i &lt; k &lt; j of (dp[i][k] + dp[k][j] + C(i, j)).</p>
+
+      <div class="formula-box">
+        <div class="label">Conditions</div>
+        <p>1. <strong>Quadrangle Inequality:</strong> C(a,c) + C(b,d) &le; C(a,d) + C(b,c) for all a &le; b &le; c &le; d.</p>
+        <p>2. <strong>Monotonicity:</strong> C(a,c) &le; C(b,d) for a &le; b &le; c &le; d.</p>
+        <p>Then opt[i][j-1] &le; opt[i][j] &le; opt[i+1][j], limiting the search range for k.</p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Knuth's optimization for optimal BST / interval DP</span>
+<span class="keyword">void</span> <span class="function">knuth_dp</span>(<span class="keyword">int</span> n, vector&lt;vector&lt;<span class="keyword">long long</span>&gt;&gt;&amp; dp,
+              vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; opt,
+              vector&lt;vector&lt;<span class="keyword">long long</span>&gt;&gt;&amp; C) {
+    <span class="comment">// Base cases</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        dp[i][i] = <span class="number">0</span>;
+        opt[i][i] = i;
+    }
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> len = <span class="number">2</span>; len &lt;= n; len++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + len - <span class="number">1</span> &lt; n; i++) {
+            <span class="keyword">int</span> j = i + len - <span class="number">1</span>;
+            dp[i][j] = <span class="number">1e18</span>;
+
+            <span class="comment">// Key: search only from opt[i][j-1] to opt[i+1][j]</span>
+            <span class="keyword">int</span> lo = opt[i][j - <span class="number">1</span>];
+            <span class="keyword">int</span> hi = (j + <span class="number">1</span> &lt; n) ? opt[i + <span class="number">1</span>][j] : j;
+
+            <span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) {
+                <span class="keyword">long long</span> val = dp[i][k] + dp[k + <span class="number">1</span>][j] + C[i][j];
+                <span class="keyword">if</span> (val &lt; dp[i][j]) {
+                    dp[i][j] = val;
+                    opt[i][j] = k;
+                }
+            }
+        }
+    }
+}
+</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">knuth_dp</span>(n, C):
+    <span class="string">"""
+    Interval DP with Knuth's optimization.
+    C[i][j] = cost of interval [i, j].
+    Returns dp[0][n-1] = optimal cost.
+    """</span>
+    INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+    dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    opt = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        opt[i][i] = i
+
+    <span class="keyword">for</span> length <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - length + <span class="number">1</span>):
+            j = i + length - <span class="number">1</span>
+            dp[i][j] = INF
+            lo = opt[i][j - <span class="number">1</span>]
+            hi = opt[i + <span class="number">1</span>][j] <span class="keyword">if</span> i + <span class="number">1</span> &lt; n <span class="keyword">else</span> j
+            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(lo, hi + <span class="number">1</span>):
+                val = dp[i][k] + (dp[k + <span class="number">1</span>][j] <span class="keyword">if</span> k + <span class="number">1</span> &lt;= j <span class="keyword">else</span> <span class="number">0</span>) + C[i][j]
+                <span class="keyword">if</span> val &lt; dp[i][j]:
+                    dp[i][j] = val
+                    opt[i][j] = k
+
+    <span class="keyword">return</span> dp[<span class="number">0</span>][n - <span class="number">1</span>]
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Classic Application: Optimal Binary Search Tree</div>
+        <p>Given keys with access frequencies f[i], build a BST minimizing weighted search cost. Cost C(i,j) = sum of f[i..j] (prefix sums). This satisfies the quadrangle inequality, so Knuth's optimization applies, giving O(n^2) instead of O(n^3).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: SOS DP -->
+    <!-- ============================================================ -->
+    <section id="sos-dp" class="section">
+      <h2>9. SOS DP (Sum over Subsets)</h2>
+      <p>SOS DP computes, for every bitmask x: F[x] = sum of A[y] for all y that are submasks of x (y &amp; x == y). The naive approach is O(4^n) (for each mask, enumerate all submasks). SOS DP does it in O(n * 2^n).</p>
+
+      <div class="formula-box">
+        <div class="label">Recurrence</div>
+        <p>Process bits one at a time. Let dp[mask][i] = sum of A[y] over all y that agree with mask on bits i+1..n-1 and are submasks of mask on bits 0..i.</p>
+        <p>dp[mask][-1] = A[mask]</p>
+        <p>dp[mask][i] = dp[mask][i-1] + (dp[mask ^ (1&lt;&lt;i)][i-1] if bit i is set in mask, else 0)</p>
+        <p>F[mask] = dp[mask][n-1]</p>
+        <p>We can flatten to 1D by processing in-place.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">sos_dp</span>(A, n):
+    <span class="string">"""
+    Given array A of size 2^n, compute F[mask] = sum of A[sub] for all sub submasks of mask.
+    Modifies A in-place to become F.
+    O(n * 2^n).
+    """</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; n):
+            <span class="keyword">if</span> mask &amp; (<span class="number">1</span> &lt;&lt; i):
+                A[mask] += A[mask ^ (<span class="number">1</span> &lt;&lt; i)]
+    <span class="keyword">return</span> A
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">void</span> <span class="function">sos_dp</span>(vector&lt;<span class="keyword">long long</span>&gt;&amp; A, <span class="keyword">int</span> n) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">0</span>; mask &lt; (<span class="number">1</span> &lt;&lt; n); mask++) {
+            <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> &lt;&lt; i))
+                A[mask] += A[mask ^ (<span class="number">1</span> &lt;&lt; i)];
+        }
+    }
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: n=3, A = [1, 2, 3, 4, 5, 6, 7, 8]</div>
+        <p>Indices 0..7 in binary: 000, 001, 010, 011, 100, 101, 110, 111.</p>
+        <p>After processing bit 0: A[001]+=A[000]=3, A[011]+=A[010]=7, A[101]+=A[100]=11, A[111]+=A[110]=15.</p>
+        <p>After processing bit 1: A[010]+=A[000]=4, A[011]+=A[001]=10, A[110]+=A[100]=12, A[111]+=A[101]=26.</p>
+        <p>After processing bit 2: A[100]+=A[000]=6, A[101]+=A[001]=14, A[110]+=A[010]=16, A[111]+=A[011]=36.</p>
+        <p>F[111] = A[000]+A[001]+A[010]+A[011]+A[100]+A[101]+A[110]+A[111] = 1+2+3+4+5+6+7+8 = 36. Correct.</p>
+      </div>
+
+      <h3>9.1 Superset Sum (Inverse Direction)</h3>
+      <p>To compute G[mask] = sum of A[y] for all y that are supermasks of mask (mask is a submask of y), simply flip the condition:</p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">superset_sum</span>(A, n):
+    <span class="string">"""G[mask] = sum of A[sup] for all sup where mask is submask of sup."""</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; n):
+            <span class="keyword">if</span> <span class="keyword">not</span> (mask &amp; (<span class="number">1</span> &lt;&lt; i)):
+                A[mask] += A[mask | (<span class="number">1</span> &lt;&lt; i)]
+    <span class="keyword">return</span> A
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Applications of SOS DP</div>
+        <p>1. Count pairs (i, j) where a[i] AND a[j] = a[i] (a[i] is submask of a[j]).</p>
+        <p>2. Maximum/minimum over all submasks.</p>
+        <p>3. Subset convolution (combine with inclusion-exclusion and popcount stratification).</p>
+        <p>4. Competitive programming: CF 165E, ARC 100E, many Div1 D/E problems.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: PROFILE DP -->
+    <!-- ============================================================ -->
+    <section id="profile-dp" class="section">
+      <h2>10. Profile DP (Broken Profile)</h2>
+      <p>Profile DP handles grid tiling problems: "In how many ways can you tile an m x n grid with dominoes (1x2 tiles)?" The idea is to process the grid column by column (or row by row), with the DP state being the "profile" -- a bitmask describing which cells in the current column boundary are already filled by a domino from the previous column.</p>
+
+      <div class="formula-box">
+        <div class="label">State</div>
+        <p>dp[col][mask] = number of ways to tile columns 0..col such that the boundary between col and col+1 has the given mask (bit i = 1 means row i is already covered by a horizontal domino extending from col to col+1).</p>
+        <p>For an m x n grid: 2^m states per column, n columns. Total: O(n * 2^m).</p>
+      </div>
+
+      <h3>10.1 Domino Tiling of m x n Grid</h3>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">domino_tiling</span>(m, n):
+    <span class="string">"""Count ways to tile m x n grid with 1x2 dominoes. m should be small (<= 20)."""</span>
+    <span class="keyword">if</span> (m * n) % <span class="number">2</span> != <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="number">0</span>  <span class="comment"># odd total cells = impossible</span>
+
+    <span class="comment"># Ensure m <= n (use m as the small dimension)</span>
+    <span class="keyword">if</span> m &gt; n:
+        m, n = n, m
+
+    full = (<span class="number">1</span> &lt;&lt; m) - <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">generate_transitions</span>(row, cur_mask, next_mask):
+        <span class="string">"""
+        Try to fill row 'row' of current column.
+        cur_mask: which rows are already filled in current column.
+        next_mask: which rows will be filled in next column (by horizontal dominos).
+        Returns list of valid next_masks.
+        """</span>
+        <span class="keyword">if</span> row == m:
+            <span class="keyword">if</span> cur_mask == full:
+                <span class="keyword">yield</span> next_mask
+            <span class="keyword">return</span>
+
+        <span class="keyword">if</span> cur_mask &amp; (<span class="number">1</span> &lt;&lt; row):
+            <span class="comment"># Row already filled, skip</span>
+            <span class="keyword">yield from</span> generate_transitions(row + <span class="number">1</span>, cur_mask, next_mask)
+        <span class="keyword">else</span>:
+            <span class="comment"># Option 1: place horizontal domino (extends to next column)</span>
+            <span class="keyword">yield from</span> generate_transitions(
+                row + <span class="number">1</span>, cur_mask, next_mask | (<span class="number">1</span> &lt;&lt; row)
+            )
+            <span class="comment"># Option 2: place vertical domino (fills this row and next row)</span>
+            <span class="keyword">if</span> row + <span class="number">1</span> &lt; m <span class="keyword">and</span> <span class="keyword">not</span> (cur_mask &amp; (<span class="number">1</span> &lt;&lt; (row + <span class="number">1</span>))):
+                <span class="keyword">yield from</span> generate_transitions(
+                    row + <span class="number">2</span>, cur_mask | (<span class="number">1</span> &lt;&lt; row) | (<span class="number">1</span> &lt;&lt; (row + <span class="number">1</span>)),
+                    next_mask
+                )
+
+    <span class="comment"># Precompute transitions</span>
+    trans = {}
+    <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; m):
+        trans[mask] = <span class="builtin">list</span>(generate_transitions(<span class="number">0</span>, mask, <span class="number">0</span>))
+
+    <span class="comment"># DP</span>
+    dp = [<span class="number">0</span>] * (<span class="number">1</span> &lt;&lt; m)
+    dp[<span class="number">0</span>] = <span class="number">1</span>  <span class="comment"># empty profile before first column</span>
+
+    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        new_dp = [<span class="number">0</span>] * (<span class="number">1</span> &lt;&lt; m)
+        <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span> &lt;&lt; m):
+            <span class="keyword">if</span> dp[mask] == <span class="number">0</span>:
+                <span class="keyword">continue</span>
+            <span class="keyword">for</span> next_mask <span class="keyword">in</span> trans[mask]:
+                new_dp[next_mask] += dp[mask]
+        dp = new_dp
+
+    <span class="keyword">return</span> dp[<span class="number">0</span>]  <span class="comment"># no overhanging dominoes after last column</span>
+</code></pre>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">#include</span> &lt;bits/stdc++.h&gt;
+<span class="keyword">using namespace</span> std;
+
+<span class="keyword">int</span> M;
+vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; trans;
+
+<span class="keyword">void</span> <span class="function">gen</span>(<span class="keyword">int</span> row, <span class="keyword">int</span> cur, <span class="keyword">int</span> nxt, vector&lt;<span class="keyword">int</span>&gt;&amp; out) {
+    <span class="keyword">if</span> (row == M) {
+        <span class="keyword">if</span> (cur == (<span class="number">1</span> &lt;&lt; M) - <span class="number">1</span>) out.push_back(nxt);
+        <span class="keyword">return</span>;
+    }
+    <span class="keyword">if</span> (cur &amp; (<span class="number">1</span> &lt;&lt; row)) {
+        <span class="function">gen</span>(row + <span class="number">1</span>, cur, nxt, out);
+    } <span class="keyword">else</span> {
+        <span class="comment">// horizontal: extends to next column</span>
+        <span class="function">gen</span>(row + <span class="number">1</span>, cur, nxt | (<span class="number">1</span> &lt;&lt; row), out);
+        <span class="comment">// vertical: fill two rows in current column</span>
+        <span class="keyword">if</span> (row + <span class="number">1</span> &lt; M &amp;&amp; !(cur &amp; (<span class="number">1</span> &lt;&lt; (row + <span class="number">1</span>))))
+            <span class="function">gen</span>(row + <span class="number">2</span>, cur | (<span class="number">1</span> &lt;&lt; row) | (<span class="number">1</span> &lt;&lt; (row + <span class="number">1</span>)), nxt, out);
+    }
+}
+
+<span class="keyword">long long</span> <span class="function">domino_tiling</span>(<span class="keyword">int</span> m, <span class="keyword">int</span> n) {
+    <span class="keyword">if</span> (((<span class="keyword">long long</span>)m * n) % <span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">if</span> (m &gt; n) swap(m, n);
+    M = m;
+
+    trans.assign(<span class="number">1</span> &lt;&lt; m, vector&lt;<span class="keyword">int</span>&gt;());
+    <span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">0</span>; mask &lt; (<span class="number">1</span> &lt;&lt; m); mask++)
+        <span class="function">gen</span>(<span class="number">0</span>, mask, <span class="number">0</span>, trans[mask]);
+
+    vector&lt;<span class="keyword">long long</span>&gt; dp(<span class="number">1</span> &lt;&lt; m, <span class="number">0</span>);
+    dp[<span class="number">0</span>] = <span class="number">1</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; n; col++) {
+        vector&lt;<span class="keyword">long long</span>&gt; ndp(<span class="number">1</span> &lt;&lt; m, <span class="number">0</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">0</span>; mask &lt; (<span class="number">1</span> &lt;&lt; m); mask++) {
+            <span class="keyword">if</span> (!dp[mask]) <span class="keyword">continue</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> nm : trans[mask])
+                ndp[nm] += dp[mask];
+        }
+        dp = ndp;
+    }
+    <span class="keyword">return</span> dp[<span class="number">0</span>];
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: 2 x 3 Grid</div>
+        <p>m=2, n=3. Full mask = 11 (binary) = 3.</p>
+        <p>Transitions from mask=00: can place vertical (fills both rows) -> next=00. Or two horizontals -> next=11.</p>
+        <p>Transitions from mask=11: both rows filled, nothing to place -> next=00.</p>
+        <p>Transitions from mask=01: row 0 filled, row 1 empty. Place horizontal on row 1 -> next=10. (No vertical since only one row empty.)</p>
+        <p>Transitions from mask=10: row 1 filled, row 0 empty. Place horizontal on row 0 -> next=01.</p>
+        <p>DP: col 0: dp[00]=1 -> ndp[00]+=1 (vertical), ndp[11]+=1 (two horizontal). dp=[1,0,0,1].</p>
+        <p>col 1: from 00: ndp[00]+=1, ndp[11]+=1. From 11: ndp[00]+=1. dp=[2,0,0,1].</p>
+        <p>col 2: from 00: ndp[00]+=2, ndp[11]+=2. From 11: ndp[00]+=1. dp=[3,0,0,2].</p>
+        <p>Answer: dp[0] = 3. The three tilings are: all vertical, horizontal top + vertical bottom shifted, etc.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Profile DP Variants</div>
+        <p>The same technique works for: tiling with L-trominoes, tiling with 1x3 bars, counting Hamiltonian paths in grid graphs, and any grid problem where the "interaction" between adjacent columns is bounded.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: PRACTICE PROBLEMS -->
+    <!-- ============================================================ -->
+    <section id="practice" class="section">
+      <h2>11. Practice Problems</h2>
+      <p>Organized by topic with approximate difficulty. Solve these to master advanced DP.</p>
+
+      <h3>DP on Trees</h3>
+      <ul>
+        <li><strong>CSES Tree Diameter</strong> -- direct application of subtree DP</li>
+        <li><strong>CSES Tree Distances I</strong> -- rerooting technique (sum of distances)</li>
+        <li><strong>CSES Tree Distances II</strong> -- rerooting with subtree sizes</li>
+        <li><strong>CF 1092F - Tree with Maximum Cost</strong> -- rerooting DP</li>
+        <li><strong>LeetCode 124 - Binary Tree Maximum Path Sum</strong> -- subtree DP on path sums</li>
+        <li><strong>LeetCode 337 - House Robber III</strong> -- DP on tree (take/skip each node)</li>
+      </ul>
+
+      <h3>Bitmask DP</h3>
+      <ul>
+        <li><strong>CSES Hamiltonian Flights</strong> -- count Hamiltonian paths with bitmask</li>
+        <li><strong>LeetCode 1879 - Minimum XOR Sum of Two Arrays</strong> -- assignment problem</li>
+        <li><strong>LeetCode 698 - Partition to K Equal Sum Subsets</strong> -- bitmask subset DP</li>
+        <li><strong>CF 580D - Kefa and Dishes</strong> -- bitmask DP with ordering constraint</li>
+        <li><strong>AtCoder DP Contest O - Matching</strong> -- assignment / bitmask</li>
+      </ul>
+
+      <h3>Digit DP</h3>
+      <ul>
+        <li><strong>SPOJ DIGIT1 - Digit Sum</strong> -- direct digit DP template</li>
+        <li><strong>CF 628D - Magic Numbers</strong> -- digit DP with divisibility + digit constraints</li>
+        <li><strong>LeetCode 233 - Number of Digit One</strong> -- count digit 1 in [1, n]</li>
+        <li><strong>LeetCode 1012 - Numbers With Repeated Digits</strong> -- digit DP with used digits mask</li>
+        <li><strong>CF 855E - Salazar Slytherin's Locket</strong> -- digit DP in different bases</li>
+      </ul>
+
+      <h3>Interval DP</h3>
+      <ul>
+        <li><strong>LeetCode 312 - Burst Balloons</strong> -- classic interval DP</li>
+        <li><strong>LeetCode 1039 - Minimum Score Triangulation of Polygon</strong> -- interval DP on polygon</li>
+        <li><strong>LeetCode 1000 - Minimum Cost to Merge Stones</strong> -- merge stones with k groups</li>
+        <li><strong>CSES Empty String</strong> -- palindrome-style interval DP</li>
+        <li><strong>CF 607B - Zuma</strong> -- interval DP to make palindrome</li>
+      </ul>
+
+      <h3>Knapsack Variants</h3>
+      <ul>
+        <li><strong>CSES Coin Combinations I</strong> -- unbounded knapsack (count ways)</li>
+        <li><strong>CSES Coin Combinations II</strong> -- unbounded knapsack (ordered vs unordered)</li>
+        <li><strong>LeetCode 474 - Ones and Zeroes</strong> -- 2D knapsack (two constraints)</li>
+        <li><strong>CF 687C - The Values You Can Make</strong> -- subset sum with extra tracking</li>
+        <li><strong>POJ 1742 - Coins</strong> -- bounded knapsack</li>
+      </ul>
+
+      <h3>Convex Hull Trick &amp; Optimizations</h3>
+      <ul>
+        <li><strong>CF 319C - Kalila and Dimna</strong> -- CHT on DP</li>
+        <li><strong>CF 311B - Cats Transport</strong> -- divide &amp; conquer optimization</li>
+        <li><strong>APIO 2014 Sequence</strong> -- CHT / DnC optimization</li>
+        <li><strong>IOI 2014 Holiday</strong> -- DnC optimization</li>
+        <li><strong>CF 868F - Yet Another Minimization Problem</strong> -- DnC optimization</li>
+      </ul>
+
+      <h3>SOS DP &amp; Profile DP</h3>
+      <ul>
+        <li><strong>CF 165E - Compatible Numbers</strong> -- SOS DP to find complementary masks</li>
+        <li><strong>CF 449D - Jzzhu and Numbers</strong> -- SOS DP + inclusion-exclusion</li>
+        <li><strong>CSES Counting Tilings</strong> -- profile DP (domino tiling)</li>
+        <li><strong>CF 1238E - Keyboard Purchase</strong> -- SOS DP optimization</li>
+        <li><strong>Broken Profile problems on SPOJ</strong> -- profile DP practice</li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Study Order</div>
+        <p>If you are new to advanced DP, tackle them in this order: (1) Tree DP -- natural extension of basic DP. (2) Bitmask DP -- builds intuition for state compression. (3) Interval DP -- classic pattern, appears everywhere. (4) Knapsack variants -- deepens your understanding of the fundamental DP. (5) Digit DP -- template-based, very learnable. (6) SOS DP + Profile DP -- bitmask mastery. (7) CHT, DnC opt, Knuth's opt -- these are optimization techniques that require solid DP foundations first.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Contest Strategy</div>
+        <p>In a contest, identifying the DP type is half the battle. Look for these signals: "tree structure" = tree DP; "n <= 20" = bitmask DP; "count numbers in range [L,R] with property" = digit DP; "merge intervals / break string" = interval DP; "minimize cost of partitioning into k groups" = DnC optimization or Knuth's; "subset/superset queries" = SOS DP. Once you identify the type, apply the template and focus on defining the cost function correctly.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

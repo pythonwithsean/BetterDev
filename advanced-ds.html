@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Data Structures - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Advanced Data Structures</div>
+      <h1>Advanced Data Structures</h1>
+      <p>The data structures that separate Div 2 solvers from Div 1 solvers. Fenwick trees, segment trees with lazy propagation, sparse tables, HLD, centroid decomposition, treaps, and more -- with full implementations in Python and C++.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#fenwick">1. Fenwick Tree (BIT)</a>
+      <a href="#segtree">2. Segment Tree Deep Dive</a>
+      <a href="#sparse-table">3. Sparse Table</a>
+      <a href="#dsu">4. DSU Advanced</a>
+      <a href="#hld">5. Heavy-Light Decomposition</a>
+      <a href="#centroid">6. Centroid Decomposition</a>
+      <a href="#treap">7. Treap / Implicit Treap</a>
+      <a href="#lichao">8. Li Chao Tree</a>
+      <a href="#sqrt">9. Sqrt Decomposition / Mo's Algorithm</a>
+      <a href="#persistent">10. Persistent Data Structures</a>
+      <a href="#practice">11. Practice Problems</a>
+    </div>
+
+    <!-- ========== 1. FENWICK TREE ========== -->
+    <section id="fenwick" class="section">
+      <h2>1. Fenwick Tree (Binary Indexed Tree)</h2>
+      <p>A Fenwick tree (BIT) supports <strong>point updates</strong> and <strong>prefix queries</strong> in O(log n) with minimal memory. The key insight: every index i is responsible for a range of elements determined by the lowest set bit of i.</p>
+
+      <div class="formula-box">
+        <div class="label">Core Operations</div>
+        <p><strong>lowbit(x)</strong> = x &amp; (-x) -- isolates the lowest set bit</p>
+        <p><strong>Update(i, delta)</strong>: add delta to index i, then i += lowbit(i) until i > n</p>
+        <p><strong>Query(i)</strong>: sum from [1..i], subtract lowbit(i) from i until i == 0</p>
+        <p>Both operations: <strong>O(log n)</strong> time, <strong>O(n)</strong> space</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">BIT</span> {
+    <span class="keyword">int</span> n;
+    vector&lt;<span class="keyword">long long</span>&gt; tree;
+
+    <span class="function">BIT</span>(<span class="keyword">int</span> n) : n(n), tree(n + <span class="number">1</span>, <span class="number">0</span>) {}
+
+    <span class="keyword">void</span> <span class="function">update</span>(<span class="keyword">int</span> i, <span class="keyword">long long</span> delta) {
+        <span class="keyword">for</span> (; i &lt;= n; i += i &amp; (-i))
+            tree[i] += delta;
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> i) {
+        <span class="keyword">long long</span> s = <span class="number">0</span>;
+        <span class="keyword">for</span> (; i &gt; <span class="number">0</span>; i -= i &amp; (-i))
+            s += tree[i];
+        <span class="keyword">return</span> s;
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+        <span class="keyword">return</span> <span class="function">query</span>(r) - <span class="function">query</span>(l - <span class="number">1</span>);
+    }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">BIT</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.n = n
+        self.tree = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, i, delta):
+        <span class="keyword">while</span> i &lt;= self.n:
+            self.tree[i] += delta
+            i += i &amp; (-i)
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, i):
+        s = <span class="number">0</span>
+        <span class="keyword">while</span> i &gt; <span class="number">0</span>:
+            s += self.tree[i]
+            i -= i &amp; (-i)
+        <span class="keyword">return</span> s
+
+    <span class="keyword">def</span> <span class="function">range_query</span>(self, l, r):
+        <span class="keyword">return</span> self.<span class="function">query</span>(r) - self.<span class="function">query</span>(l - <span class="number">1</span>)
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Why Fenwick over Segment Tree?</div>
+        <p>Fenwick trees use half the memory (n+1 vs 4n), have smaller constants, and the code is much shorter. Use them whenever you only need prefix sums + point updates. Switch to a segment tree when you need lazy propagation or non-invertible operations (like min/max).</p>
+      </div>
+
+      <h3>Range Update + Point Query BIT</h3>
+      <p>To support range updates [l, r] += val and point queries, use a difference array approach: update(l, val) and update(r+1, -val). Then query(i) gives the value at index i.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Range update [l, r] += val, point query at i</span>
+<span class="keyword">void</span> <span class="function">range_update</span>(BIT&amp; bit, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">long long</span> val) {
+    bit.<span class="function">update</span>(l, val);
+    bit.<span class="function">update</span>(r + <span class="number">1</span>, -val);
+}
+<span class="comment">// query(i) now returns the actual value at position i</span>
+</code></pre>
+
+      <h3>Range Update + Range Query (Two BITs)</h3>
+      <p>Maintain two BITs: B1 and B2. For range update [l, r] += val:</p>
+
+      <div class="formula-box">
+        <div class="label">Two-BIT Range Update/Query</div>
+        <p>B1.update(l, val), B1.update(r+1, -val)</p>
+        <p>B2.update(l, val*(l-1)), B2.update(r+1, -val*r)</p>
+        <p>prefix_sum(i) = B1.query(i) * i - B2.query(i)</p>
+      </div>
+
+      <h3>2D Fenwick Tree</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">BIT2D</span> {
+    <span class="keyword">int</span> N, M;
+    vector&lt;vector&lt;<span class="keyword">long long</span>&gt;&gt; tree;
+
+    <span class="function">BIT2D</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> m) : N(n), M(m), tree(n + <span class="number">1</span>, vector&lt;<span class="keyword">long long</span>&gt;(m + <span class="number">1</span>, <span class="number">0</span>)) {}
+
+    <span class="keyword">void</span> <span class="function">update</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">long long</span> val) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = x; i &lt;= N; i += i &amp; (-i))
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = y; j &lt;= M; j += j &amp; (-j))
+                tree[i][j] += val;
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+        <span class="keyword">long long</span> s = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = x; i &gt; <span class="number">0</span>; i -= i &amp; (-i))
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = y; j &gt; <span class="number">0</span>; j -= j &amp; (-j))
+                s += tree[i][j];
+        <span class="keyword">return</span> s;
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2) {
+        <span class="keyword">return</span> <span class="function">query</span>(x2, y2) - <span class="function">query</span>(x1 - <span class="number">1</span>, y2)
+             - <span class="function">query</span>(x2, y1 - <span class="number">1</span>) + <span class="function">query</span>(x1 - <span class="number">1</span>, y1 - <span class="number">1</span>);
+    }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">BIT2D</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n, m):
+        self.N, self.M = n, m
+        self.tree = [[<span class="number">0</span>] * (m + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n + <span class="number">1</span>)]
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, x, y, val):
+        i = x
+        <span class="keyword">while</span> i &lt;= self.N:
+            j = y
+            <span class="keyword">while</span> j &lt;= self.M:
+                self.tree[i][j] += val
+                j += j &amp; (-j)
+            i += i &amp; (-i)
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, x, y):
+        s = <span class="number">0</span>
+        i = x
+        <span class="keyword">while</span> i &gt; <span class="number">0</span>:
+            j = y
+            <span class="keyword">while</span> j &gt; <span class="number">0</span>:
+                s += self.tree[i][j]
+                j -= j &amp; (-j)
+            i -= i &amp; (-i)
+        <span class="keyword">return</span> s
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">ASCII: BIT Structure (n=8)</div>
+<pre>
+Index:    1    2    3    4    5    6    7    8
+lowbit:   1    2    1    4    1    2    1    8
+
+Responsibility ranges:
+tree[1] = a[1]
+tree[2] = a[1..2]
+tree[3] = a[3]
+tree[4] = a[1..4]
+tree[5] = a[5]
+tree[6] = a[5..6]
+tree[7] = a[7]
+tree[8] = a[1..8]
+
+query(7) = tree[7] + tree[6] + tree[4]
+         = a[7] + a[5..6] + a[1..4]
+         = a[1..7]  (remove lowest bit each step: 7->6->4->0)
+</pre>
+      </div>
+    </section>
+
+    <!-- ========== 2. SEGMENT TREE ========== -->
+    <section id="segtree" class="section">
+      <h2>2. Segment Tree Deep Dive</h2>
+      <p>The most versatile range query data structure in competitive programming. Supports arbitrary associative operations, range updates with lazy propagation, and can be made persistent.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p><strong>Build</strong>: O(n) | <strong>Update</strong>: O(log n) | <strong>Query</strong>: O(log n) | <strong>Space</strong>: O(4n)</p>
+      </div>
+
+      <h3>Build, Update, Query (Sum)</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">SegTree</span> {
+    <span class="keyword">int</span> n;
+    vector&lt;<span class="keyword">long long</span>&gt; tree;
+
+    <span class="function">SegTree</span>(<span class="keyword">int</span> n) : n(n), tree(<span class="number">4</span> * n, <span class="number">0</span>) {}
+
+    <span class="keyword">void</span> <span class="function">build</span>(vector&lt;<span class="keyword">int</span>&gt;&amp; a, <span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr) {
+        <span class="keyword">if</span> (tl == tr) {
+            tree[v] = a[tl];
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="function">build</span>(a, <span class="number">2</span>*v, tl, tm);
+        <span class="function">build</span>(a, <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr);
+        tree[v] = tree[<span class="number">2</span>*v] + tree[<span class="number">2</span>*v+<span class="number">1</span>];
+    }
+
+    <span class="keyword">void</span> <span class="function">update</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> pos, <span class="keyword">int</span> val) {
+        <span class="keyword">if</span> (tl == tr) {
+            tree[v] = val;
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="keyword">if</span> (pos &lt;= tm)
+            <span class="function">update</span>(<span class="number">2</span>*v, tl, tm, pos, val);
+        <span class="keyword">else</span>
+            <span class="function">update</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, pos, val);
+        tree[v] = tree[<span class="number">2</span>*v] + tree[<span class="number">2</span>*v+<span class="number">1</span>];
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">if</span> (l == tl &amp;&amp; r == tr) <span class="keyword">return</span> tree[v];
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="keyword">return</span> <span class="function">query</span>(<span class="number">2</span>*v, tl, tm, l, <span class="builtin">min</span>(r, tm))
+             + <span class="function">query</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, <span class="builtin">max</span>(l, tm+<span class="number">1</span>), r);
+    }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">SegTree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.n = n
+        self.tree = [<span class="number">0</span>] * (<span class="number">4</span> * n)
+
+    <span class="keyword">def</span> <span class="function">build</span>(self, a, v, tl, tr):
+        <span class="keyword">if</span> tl == tr:
+            self.tree[v] = a[tl]
+            <span class="keyword">return</span>
+        tm = (tl + tr) // <span class="number">2</span>
+        self.<span class="function">build</span>(a, <span class="number">2</span>*v, tl, tm)
+        self.<span class="function">build</span>(a, <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr)
+        self.tree[v] = self.tree[<span class="number">2</span>*v] + self.tree[<span class="number">2</span>*v+<span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, v, tl, tr, pos, val):
+        <span class="keyword">if</span> tl == tr:
+            self.tree[v] = val
+            <span class="keyword">return</span>
+        tm = (tl + tr) // <span class="number">2</span>
+        <span class="keyword">if</span> pos &lt;= tm:
+            self.<span class="function">update</span>(<span class="number">2</span>*v, tl, tm, pos, val)
+        <span class="keyword">else</span>:
+            self.<span class="function">update</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, pos, val)
+        self.tree[v] = self.tree[<span class="number">2</span>*v] + self.tree[<span class="number">2</span>*v+<span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, v, tl, tr, l, r):
+        <span class="keyword">if</span> l &gt; r:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> l == tl <span class="keyword">and</span> r == tr:
+            <span class="keyword">return</span> self.tree[v]
+        tm = (tl + tr) // <span class="number">2</span>
+        <span class="keyword">return</span> (self.<span class="function">query</span>(<span class="number">2</span>*v, tl, tm, l, <span class="builtin">min</span>(r, tm))
+              + self.<span class="function">query</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, <span class="builtin">max</span>(l, tm+<span class="number">1</span>), r))
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">ASCII: Segment Tree for [2, 1, 5, 3] (sum)</div>
+<pre>
+              [11]          node 1: sum(0..3)
+             /    \
+          [3]      [8]     node 2: sum(0..1), node 3: sum(2..3)
+         /   \    /   \
+       [2]  [1] [5]  [3]   leaves: a[0], a[1], a[2], a[3]
+
+query(1, 2) = go left child right + go right child left
+            = tree[5]=1 + tree[6]=5 = 6
+</pre>
+      </div>
+
+      <h3>Lazy Propagation (Range Add + Range Sum)</h3>
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">LazySegTree</span> {
+    <span class="keyword">int</span> n;
+    vector&lt;<span class="keyword">long long</span>&gt; tree, lazy;
+
+    <span class="function">LazySegTree</span>(<span class="keyword">int</span> n) : n(n), tree(<span class="number">4</span>*n, <span class="number">0</span>), lazy(<span class="number">4</span>*n, <span class="number">0</span>) {}
+
+    <span class="keyword">void</span> <span class="function">push</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr) {
+        <span class="keyword">if</span> (lazy[v]) {
+            <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+            <span class="function">apply</span>(<span class="number">2</span>*v, tl, tm, lazy[v]);
+            <span class="function">apply</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, lazy[v]);
+            lazy[v] = <span class="number">0</span>;
+        }
+    }
+
+    <span class="keyword">void</span> <span class="function">apply</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">long long</span> val) {
+        tree[v] += val * (tr - tl + <span class="number">1</span>);
+        lazy[v] += val;
+    }
+
+    <span class="keyword">void</span> <span class="function">update</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">long long</span> val) {
+        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;
+        <span class="keyword">if</span> (l == tl &amp;&amp; r == tr) {
+            <span class="function">apply</span>(v, tl, tr, val);
+            <span class="keyword">return</span>;
+        }
+        <span class="function">push</span>(v, tl, tr);
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="function">update</span>(<span class="number">2</span>*v, tl, tm, l, <span class="builtin">min</span>(r, tm), val);
+        <span class="function">update</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, <span class="builtin">max</span>(l, tm+<span class="number">1</span>), r, val);
+        tree[v] = tree[<span class="number">2</span>*v] + tree[<span class="number">2</span>*v+<span class="number">1</span>];
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+        <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">if</span> (l == tl &amp;&amp; r == tr) <span class="keyword">return</span> tree[v];
+        <span class="function">push</span>(v, tl, tr);
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="keyword">return</span> <span class="function">query</span>(<span class="number">2</span>*v, tl, tm, l, <span class="builtin">min</span>(r, tm))
+             + <span class="function">query</span>(<span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr, <span class="builtin">max</span>(l, tm+<span class="number">1</span>), r);
+    }
+};
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Lazy Propagation Pitfall</div>
+        <p>Always push lazy values BEFORE recursing into children during both update and query. Forgetting to push is the #1 bug. Also make sure your apply function updates BOTH the tree node AND the lazy tag.</p>
+      </div>
+
+      <h3>Persistent Segment Tree</h3>
+      <p>Create a new version of the tree on each update by only copying the O(log n) nodes on the path from root to the updated leaf. All other nodes are shared between versions.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">Node</span> {
+    <span class="keyword">int</span> left, right;
+    <span class="keyword">long long</span> val;
+};
+
+<span class="keyword">const</span> <span class="keyword">int</span> MAXNODES = <span class="number">20000000</span>;
+Node nodes[MAXNODES];
+<span class="keyword">int</span> cnt = <span class="number">0</span>;
+
+<span class="keyword">int</span> <span class="function">newNode</span>(<span class="keyword">long long</span> v = <span class="number">0</span>, <span class="keyword">int</span> l = <span class="number">0</span>, <span class="keyword">int</span> r = <span class="number">0</span>) {
+    nodes[cnt] = {l, r, v};
+    <span class="keyword">return</span> cnt++;
+}
+
+<span class="keyword">int</span> <span class="function">build</span>(<span class="keyword">int</span> tl, <span class="keyword">int</span> tr) {
+    <span class="keyword">if</span> (tl == tr) <span class="keyword">return</span> <span class="function">newNode</span>(<span class="number">0</span>);
+    <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+    <span class="keyword">int</span> l = <span class="function">build</span>(tl, tm);
+    <span class="keyword">int</span> r = <span class="function">build</span>(tm + <span class="number">1</span>, tr);
+    <span class="keyword">return</span> <span class="function">newNode</span>(nodes[l].val + nodes[r].val, l, r);
+}
+
+<span class="keyword">int</span> <span class="function">update</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> pos, <span class="keyword">long long</span> val) {
+    <span class="keyword">if</span> (tl == tr) <span class="keyword">return</span> <span class="function">newNode</span>(nodes[v].val + val);
+    <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+    <span class="keyword">int</span> l = nodes[v].left, r = nodes[v].right;
+    <span class="keyword">if</span> (pos &lt;= tm)
+        l = <span class="function">update</span>(l, tl, tm, pos, val);
+    <span class="keyword">else</span>
+        r = <span class="function">update</span>(r, tm + <span class="number">1</span>, tr, pos, val);
+    <span class="keyword">return</span> <span class="function">newNode</span>(nodes[l].val + nodes[r].val, l, r);
+}
+
+<span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr, <span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+    <span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">if</span> (l == tl &amp;&amp; r == tr) <span class="keyword">return</span> nodes[v].val;
+    <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+    <span class="keyword">return</span> <span class="function">query</span>(nodes[v].left, tl, tm, l, <span class="builtin">min</span>(r, tm))
+         + <span class="function">query</span>(nodes[v].right, tm+<span class="number">1</span>, tr, <span class="builtin">max</span>(l, tm+<span class="number">1</span>), r);
+}
+</code></pre>
+    </section>
+
+    <!-- ========== 3. SPARSE TABLE ========== -->
+    <section id="sparse-table" class="section">
+      <h2>3. Sparse Table</h2>
+      <p>A static data structure for answering range minimum/maximum/GCD queries in O(1) after O(n log n) preprocessing. Works for any <strong>idempotent</strong> operation (where f(a, a) = a).</p>
+
+      <div class="formula-box">
+        <div class="label">Key Idea</div>
+        <p>sparse[k][i] = answer for the range [i, i + 2^k - 1]</p>
+        <p>sparse[k][i] = op(sparse[k-1][i], sparse[k-1][i + 2^(k-1)])</p>
+        <p>Query [l, r]: k = floor(log2(r - l + 1)), answer = op(sparse[k][l], sparse[k][r - 2^k + 1])</p>
+        <p>The two ranges overlap, but for idempotent ops that is fine.</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">SparseTable</span> {
+    <span class="keyword">int</span> n, LOG;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; table;
+    vector&lt;<span class="keyword">int</span>&gt; lg;
+
+    <span class="function">SparseTable</span>(vector&lt;<span class="keyword">int</span>&gt;&amp; a) {
+        n = a.<span class="function">size</span>();
+        LOG = <span class="number">__lg</span>(n) + <span class="number">1</span>;
+        table.<span class="function">assign</span>(LOG, vector&lt;<span class="keyword">int</span>&gt;(n));
+        lg.<span class="function">assign</span>(n + <span class="number">1</span>, <span class="number">0</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)
+            lg[i] = lg[i / <span class="number">2</span>] + <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)
+            table[<span class="number">0</span>][i] = a[i];
+        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; LOG; k++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + (<span class="number">1</span> &lt;&lt; k) &lt;= n; i++)
+                table[k][i] = <span class="builtin">min</span>(table[k-<span class="number">1</span>][i],
+                               table[k-<span class="number">1</span>][i + (<span class="number">1</span> &lt;&lt; (k-<span class="number">1</span>))]);
+    }
+
+    <span class="keyword">int</span> <span class="function">query</span>(<span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+        <span class="keyword">int</span> k = lg[r - l + <span class="number">1</span>];
+        <span class="keyword">return</span> <span class="builtin">min</span>(table[k][l], table[k][r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>]);
+    }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">class</span> <span class="function">SparseTable</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, a):
+        self.n = <span class="builtin">len</span>(a)
+        self.LOG = self.n.<span class="function">bit_length</span>()
+        self.table = [<span class="builtin">list</span>(a)]
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, self.LOG):
+            prev = self.table[k - <span class="number">1</span>]
+            half = <span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>)
+            row = []
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(self.n - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>):
+                row.<span class="function">append</span>(<span class="builtin">min</span>(prev[i], prev[i + half]))
+            self.table.<span class="function">append</span>(row)
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, l, r):
+        k = (r - l + <span class="number">1</span>).<span class="function">bit_length</span>() - <span class="number">1</span>
+        <span class="keyword">return</span> <span class="builtin">min</span>(self.table[k][l], self.table[k][r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>])
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">ASCII: Sparse Table for [3, 1, 4, 1, 5, 9, 2, 6] (min)</div>
+<pre>
+k=0: [3] [1] [4] [1] [5] [9] [2] [6]    (individual elements)
+k=1: [1] [1] [1] [1] [5] [2] [2]  --    (min of pairs)
+k=2: [1] [1] [1] [1] [2] [2]  --  --    (min of quads)
+k=3: [1] [1] [1] [1]  --  --  --  --    (min of octets)
+
+query(2, 6): k = floor(log2(5)) = 2
+  = min(table[2][2], table[2][6 - 4 + 1])
+  = min(table[2][2], table[2][3])
+  = min(1, 1) = 1
+</pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When NOT to Use Sparse Table</div>
+        <p>Sparse table only works for static arrays (no updates). If you need updates, use a segment tree instead. Also, for non-idempotent operations like sum, the overlapping ranges trick does not work -- you would need a different query strategy (Disjoint Sparse Table) or just use a segment tree.</p>
+      </div>
+    </section>
+
+    <!-- ========== 4. DSU ADVANCED ========== -->
+    <section id="dsu" class="section">
+      <h2>4. DSU Advanced (Disjoint Set Union)</h2>
+      <p>Union-Find with path compression + union by rank gives near O(1) amortized per operation (technically O(alpha(n)) where alpha is the inverse Ackermann function). Advanced variants add rollback and weighted edges.</p>
+
+      <div class="formula-box">
+        <div class="label">Complexity</div>
+        <p><strong>Union by rank + path compression</strong>: O(alpha(n)) per operation (effectively O(1))</p>
+        <p><strong>Union by rank only (no path compression)</strong>: O(log n) per operation -- but supports rollback</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">DSU</span> {
+    vector&lt;<span class="keyword">int</span>&gt; parent, rank_;
+
+    <span class="function">DSU</span>(<span class="keyword">int</span> n) : parent(n), rank_(n, <span class="number">0</span>) {
+        <span class="builtin">iota</span>(parent.<span class="function">begin</span>(), parent.<span class="function">end</span>(), <span class="number">0</span>);
+    }
+
+    <span class="keyword">int</span> <span class="function">find</span>(<span class="keyword">int</span> x) {
+        <span class="keyword">while</span> (x != parent[x])
+            x = parent[x] = parent[parent[x]]; <span class="comment">// path compression (halving)</span>
+        <span class="keyword">return</span> x;
+    }
+
+    <span class="keyword">bool</span> <span class="function">unite</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+        a = <span class="function">find</span>(a); b = <span class="function">find</span>(b);
+        <span class="keyword">if</span> (a == b) <span class="keyword">return</span> <span class="keyword">false</span>;
+        <span class="keyword">if</span> (rank_[a] &lt; rank_[b]) <span class="builtin">swap</span>(a, b);
+        parent[b] = a;
+        <span class="keyword">if</span> (rank_[a] == rank_[b]) rank_[a]++;
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">DSU</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.parent = <span class="builtin">list</span>(<span class="builtin">range</span>(n))
+        self.rank = [<span class="number">0</span>] * n
+
+    <span class="keyword">def</span> <span class="function">find</span>(self, x):
+        <span class="keyword">while</span> self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        <span class="keyword">return</span> x
+
+    <span class="keyword">def</span> <span class="function">unite</span>(self, a, b):
+        a, b = self.<span class="function">find</span>(a), self.<span class="function">find</span>(b)
+        <span class="keyword">if</span> a == b:
+            <span class="keyword">return</span> <span class="keyword">False</span>
+        <span class="keyword">if</span> self.rank[a] &lt; self.rank[b]:
+            a, b = b, a
+        self.parent[b] = a
+        <span class="keyword">if</span> self.rank[a] == self.rank[b]:
+            self.rank[a] += <span class="number">1</span>
+        <span class="keyword">return</span> <span class="keyword">True</span>
+</code></pre>
+
+      <h3>DSU with Rollback</h3>
+      <p>For problems that require undoing unions (e.g., offline divide and conquer), use union by rank WITHOUT path compression and maintain a stack of changes.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">RollbackDSU</span> {
+    vector&lt;<span class="keyword">int</span>&gt; parent, rank_;
+    vector&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; history; <span class="comment">// (node, old_parent_or_rank)</span>
+
+    <span class="function">RollbackDSU</span>(<span class="keyword">int</span> n) : parent(n), rank_(n, <span class="number">0</span>) {
+        <span class="builtin">iota</span>(parent.<span class="function">begin</span>(), parent.<span class="function">end</span>(), <span class="number">0</span>);
+    }
+
+    <span class="keyword">int</span> <span class="function">find</span>(<span class="keyword">int</span> x) {
+        <span class="keyword">while</span> (x != parent[x]) x = parent[x]; <span class="comment">// NO path compression</span>
+        <span class="keyword">return</span> x;
+    }
+
+    <span class="keyword">int</span> <span class="function">snapshot</span>() { <span class="keyword">return</span> history.<span class="function">size</span>(); }
+
+    <span class="keyword">bool</span> <span class="function">unite</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+        a = <span class="function">find</span>(a); b = <span class="function">find</span>(b);
+        <span class="keyword">if</span> (a == b) <span class="keyword">return</span> <span class="keyword">false</span>;
+        <span class="keyword">if</span> (rank_[a] &lt; rank_[b]) <span class="builtin">swap</span>(a, b);
+        history.<span class="function">push_back</span>({b, parent[b]});
+        history.<span class="function">push_back</span>({~a, rank_[a]}); <span class="comment">// ~a marks rank entry</span>
+        parent[b] = a;
+        <span class="keyword">if</span> (rank_[a] == rank_[b]) rank_[a]++;
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">void</span> <span class="function">rollback</span>(<span class="keyword">int</span> snap) {
+        <span class="keyword">while</span> ((<span class="keyword">int</span>)history.<span class="function">size</span>() &gt; snap) {
+            <span class="keyword">auto</span> [node, val] = history.<span class="function">back</span>();
+            history.<span class="function">pop_back</span>();
+            <span class="keyword">if</span> (node &lt; <span class="number">0</span>) rank_[~node] = val;
+            <span class="keyword">else</span> parent[node] = val;
+        }
+    }
+};
+</code></pre>
+
+      <h3>Weighted DSU</h3>
+      <p>Each node stores a weight/distance relative to its parent. Useful for problems like "is the distance between a and b consistent with given constraints?"</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">WeightedDSU</span> {
+    vector&lt;<span class="keyword">int</span>&gt; parent, rank_;
+    vector&lt;<span class="keyword">long long</span>&gt; diff; <span class="comment">// diff[x] = weight(x) - weight(parent[x])</span>
+
+    <span class="function">WeightedDSU</span>(<span class="keyword">int</span> n) : parent(n), rank_(n, <span class="number">0</span>), diff(n, <span class="number">0</span>) {
+        <span class="builtin">iota</span>(parent.<span class="function">begin</span>(), parent.<span class="function">end</span>(), <span class="number">0</span>);
+    }
+
+    pair&lt;<span class="keyword">int</span>, <span class="keyword">long long</span>&gt; <span class="function">find</span>(<span class="keyword">int</span> x) {
+        <span class="keyword">if</span> (x == parent[x]) <span class="keyword">return</span> {x, <span class="number">0</span>};
+        <span class="keyword">auto</span> [root, d] = <span class="function">find</span>(parent[x]);
+        parent[x] = root;
+        diff[x] += d;
+        <span class="keyword">return</span> {root, diff[x]};
+    }
+
+    <span class="comment">// unite with constraint: weight(a) - weight(b) = w</span>
+    <span class="keyword">bool</span> <span class="function">unite</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">long long</span> w) {
+        <span class="keyword">auto</span> [ra, da] = <span class="function">find</span>(a);
+        <span class="keyword">auto</span> [rb, db] = <span class="function">find</span>(b);
+        <span class="keyword">if</span> (ra == rb) <span class="keyword">return</span> (da - db) == w; <span class="comment">// check consistency</span>
+        <span class="keyword">if</span> (rank_[ra] &lt; rank_[rb]) {
+            <span class="builtin">swap</span>(ra, rb); <span class="builtin">swap</span>(da, db); w = -w;
+        }
+        parent[rb] = ra;
+        diff[rb] = da - db - w;
+        <span class="keyword">if</span> (rank_[ra] == rank_[rb]) rank_[ra]++;
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+};
+</code></pre>
+    </section>
+
+    <!-- ========== 5. HEAVY-LIGHT DECOMPOSITION ========== -->
+    <section id="hld" class="section">
+      <h2>5. Heavy-Light Decomposition (HLD)</h2>
+      <p>Decomposes a tree into chains so that any root-to-leaf path crosses at most O(log n) chains. Combined with a segment tree on the flattened array, this gives O(log^2 n) path queries and updates.</p>
+
+      <div class="formula-box">
+        <div class="label">Core Idea</div>
+        <p>For each node, the <strong>heavy child</strong> is the child with the largest subtree. The edge to the heavy child is a <strong>heavy edge</strong>; all others are <strong>light edges</strong>.</p>
+        <p>Any path from root to leaf has at most O(log n) light edges, so at most O(log n) chain switches.</p>
+        <p>Path query: O(log^2 n) -- O(log n) chains, each queried in O(log n) on the segment tree.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">ASCII: HLD Chain Decomposition</div>
+<pre>
+Tree:          1               Heavy edges: 1-2, 2-4, 4-7
+              / \              Light edges: 1-3, 2-5, 3-6
+             2   3
+            / \    \           Chains (heavy paths):
+           4   5    6            Chain 0: [1, 2, 4, 7]
+           |                     Chain 1: [3, 6]
+           7                     Chain 2: [5]
+
+Euler tour (HLD order): 1 2 4 7 5 3 6
+  positions:             0 1 2 3 4 5 6
+
+path_query(5, 6):
+  5 is in chain [5], head=5 -> query pos[5]=4, climb to parent(5)=2
+  6 is in chain [3,6], head=3 -> query pos[3..6]=[5,6], climb to parent(3)=1
+  Now 2 and 1 are in same chain [1,2,4,7] -> query pos[1..2]=[0,1]
+  Merge all three segment tree queries.
+</pre>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">HLD</span> {
+    <span class="keyword">int</span> n, timer = <span class="number">0</span>;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj;
+    vector&lt;<span class="keyword">int</span>&gt; parent, depth, heavy, head, pos, sz;
+
+    <span class="function">HLD</span>(<span class="keyword">int</span> n) : n(n), adj(n), parent(n), depth(n),
+                  heavy(n, -<span class="number">1</span>), head(n), pos(n), sz(n) {}
+
+    <span class="keyword">void</span> <span class="function">addEdge</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v) {
+        adj[u].<span class="function">push_back</span>(v);
+        adj[v].<span class="function">push_back</span>(u);
+    }
+
+    <span class="keyword">void</span> <span class="function">dfs_sz</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p, <span class="keyword">int</span> d) {
+        parent[v] = p; depth[v] = d; sz[v] = <span class="number">1</span>;
+        <span class="keyword">int</span> maxSz = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v]) {
+            <span class="keyword">if</span> (u == p) <span class="keyword">continue</span>;
+            <span class="function">dfs_sz</span>(u, v, d + <span class="number">1</span>);
+            sz[v] += sz[u];
+            <span class="keyword">if</span> (sz[u] &gt; maxSz) { maxSz = sz[u]; heavy[v] = u; }
+        }
+    }
+
+    <span class="keyword">void</span> <span class="function">dfs_hld</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> h) {
+        head[v] = h; pos[v] = timer++;
+        <span class="keyword">if</span> (heavy[v] != -<span class="number">1</span>) <span class="function">dfs_hld</span>(heavy[v], h);
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v]) {
+            <span class="keyword">if</span> (u == parent[v] || u == heavy[v]) <span class="keyword">continue</span>;
+            <span class="function">dfs_hld</span>(u, u); <span class="comment">// new chain starts</span>
+        }
+    }
+
+    <span class="keyword">void</span> <span class="function">init</span>(<span class="keyword">int</span> root = <span class="number">0</span>) {
+        <span class="function">dfs_sz</span>(root, root, <span class="number">0</span>);
+        <span class="function">dfs_hld</span>(root, root);
+    }
+
+    <span class="comment">// Query path (u, v) using a segment tree</span>
+    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F&gt;
+    <span class="keyword">void</span> <span class="function">path</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v, F&amp;&amp; f) {
+        <span class="keyword">while</span> (head[u] != head[v]) {
+            <span class="keyword">if</span> (depth[head[u]] &lt; depth[head[v]]) <span class="builtin">swap</span>(u, v);
+            f(pos[head[u]], pos[u]); <span class="comment">// query segment [pos[head[u]], pos[u]]</span>
+            u = parent[head[u]];
+        }
+        <span class="keyword">if</span> (depth[u] &gt; depth[v]) <span class="builtin">swap</span>(u, v);
+        f(pos[u], pos[v]); <span class="comment">// query segment within same chain</span>
+    }
+};
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">HLD Pitfall: Recursion Depth</div>
+        <p>For trees with up to 2*10^5 nodes, recursive DFS may cause a stack overflow (especially on Codeforces with its default stack size). Use iterative DFS or increase the stack size with a pragma/thread trick in C++.</p>
+      </div>
+    </section>
+
+    <!-- ========== 6. CENTROID DECOMPOSITION ========== -->
+    <section id="centroid" class="section">
+      <h2>6. Centroid Decomposition</h2>
+      <p>Recursively find the centroid of the tree, remove it, and recurse on each remaining subtree. This creates a "centroid tree" of depth O(log n). Any path in the original tree passes through the LCA in the centroid tree.</p>
+
+      <div class="formula-box">
+        <div class="label">Properties</div>
+        <p>The centroid of a tree is a node whose removal splits the tree into components each of size at most n/2.</p>
+        <p>The centroid tree has depth O(log n).</p>
+        <p>Every path u-v in the original tree passes through either u's or v's ancestor in the centroid tree.</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">CentroidDecomp</span> {
+    <span class="keyword">int</span> n;
+    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; adj;
+    vector&lt;<span class="keyword">int</span>&gt; sz, par;
+    vector&lt;<span class="keyword">bool</span>&gt; removed;
+
+    <span class="function">CentroidDecomp</span>(<span class="keyword">int</span> n) : n(n), adj(n), sz(n), par(n, -<span class="number">1</span>), removed(n, <span class="keyword">false</span>) {}
+
+    <span class="keyword">void</span> <span class="function">addEdge</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v) {
+        adj[u].<span class="function">push_back</span>(v);
+        adj[v].<span class="function">push_back</span>(u);
+    }
+
+    <span class="keyword">void</span> <span class="function">calc_sz</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p) {
+        sz[v] = <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v])
+            <span class="keyword">if</span> (u != p &amp;&amp; !removed[u]) {
+                <span class="function">calc_sz</span>(u, v);
+                sz[v] += sz[u];
+            }
+    }
+
+    <span class="keyword">int</span> <span class="function">centroid</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p, <span class="keyword">int</span> tree_sz) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[v])
+            <span class="keyword">if</span> (u != p &amp;&amp; !removed[u] &amp;&amp; sz[u] &gt; tree_sz / <span class="number">2</span>)
+                <span class="keyword">return</span> <span class="function">centroid</span>(u, v, tree_sz);
+        <span class="keyword">return</span> v;
+    }
+
+    <span class="keyword">void</span> <span class="function">build</span>(<span class="keyword">int</span> v, <span class="keyword">int</span> p) {
+        <span class="function">calc_sz</span>(v, -<span class="number">1</span>);
+        <span class="keyword">int</span> c = <span class="function">centroid</span>(v, -<span class="number">1</span>, sz[v]);
+        par[c] = p;
+        removed[c] = <span class="keyword">true</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> u : adj[c])
+            <span class="keyword">if</span> (!removed[u])
+                <span class="function">build</span>(u, c);
+    }
+
+    <span class="keyword">void</span> <span class="function">init</span>() { <span class="function">build</span>(<span class="number">0</span>, -<span class="number">1</span>); }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> sys
+sys.<span class="function">setrecursionlimit</span>(<span class="number">300000</span>)
+
+<span class="keyword">class</span> <span class="function">CentroidDecomp</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.n = n
+        self.adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+        self.sz = [<span class="number">0</span>] * n
+        self.par = [-<span class="number">1</span>] * n
+        self.removed = [<span class="keyword">False</span>] * n
+
+    <span class="keyword">def</span> <span class="function">add_edge</span>(self, u, v):
+        self.adj[u].<span class="function">append</span>(v)
+        self.adj[v].<span class="function">append</span>(u)
+
+    <span class="keyword">def</span> <span class="function">calc_sz</span>(self, v, p):
+        self.sz[v] = <span class="number">1</span>
+        <span class="keyword">for</span> u <span class="keyword">in</span> self.adj[v]:
+            <span class="keyword">if</span> u != p <span class="keyword">and</span> <span class="keyword">not</span> self.removed[u]:
+                self.<span class="function">calc_sz</span>(u, v)
+                self.sz[v] += self.sz[u]
+
+    <span class="keyword">def</span> <span class="function">centroid</span>(self, v, p, tree_sz):
+        <span class="keyword">for</span> u <span class="keyword">in</span> self.adj[v]:
+            <span class="keyword">if</span> u != p <span class="keyword">and</span> <span class="keyword">not</span> self.removed[u] <span class="keyword">and</span> self.sz[u] &gt; tree_sz // <span class="number">2</span>:
+                <span class="keyword">return</span> self.<span class="function">centroid</span>(u, v, tree_sz)
+        <span class="keyword">return</span> v
+
+    <span class="keyword">def</span> <span class="function">build</span>(self, v, p):
+        self.<span class="function">calc_sz</span>(v, -<span class="number">1</span>)
+        c = self.<span class="function">centroid</span>(v, -<span class="number">1</span>, self.sz[v])
+        self.par[c] = p
+        self.removed[c] = <span class="keyword">True</span>
+        <span class="keyword">for</span> u <span class="keyword">in</span> self.adj[c]:
+            <span class="keyword">if</span> <span class="keyword">not</span> self.removed[u]:
+                self.<span class="function">build</span>(u, c)
+
+    <span class="keyword">def</span> <span class="function">init</span>(self):
+        self.<span class="function">build</span>(<span class="number">0</span>, -<span class="number">1</span>)
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Centroid Decomposition Use Cases</div>
+        <p>Use centroid decomposition for path queries on trees where you need to aggregate over all paths through a node: closest marked node, count of paths with given property, distance queries. For path updates/queries on edges (like "update all edges on path u-v"), HLD is usually a better fit.</p>
+      </div>
+    </section>
+
+    <!-- ========== 7. TREAP / IMPLICIT TREAP ========== -->
+    <section id="treap" class="section">
+      <h2>7. Treap / Implicit Treap</h2>
+      <p>A treap is a BST where each node also has a random priority, maintaining heap order on priorities. This ensures O(log n) expected height. An <strong>implicit treap</strong> uses the position (subtree size) as the implicit key, enabling array-like operations (insert at index, delete at index, reverse a subarray) in O(log n).</p>
+
+      <div class="formula-box">
+        <div class="label">Operations</div>
+        <p><strong>Split(t, k)</strong>: split treap t into two treaps: one with first k elements, one with the rest.</p>
+        <p><strong>Merge(l, r)</strong>: merge two treaps where all keys in l &lt; all keys in r.</p>
+        <p>All operations (insert, delete, reverse, query) are built from split + merge.</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">mt19937</span> rng(<span class="function">chrono::steady_clock::now</span>().<span class="function">time_since_epoch</span>().<span class="function">count</span>());
+
+<span class="keyword">struct</span> <span class="function">Node</span> {
+    <span class="keyword">int</span> val, pri, sz;
+    <span class="keyword">bool</span> rev;
+    Node *l, *r;
+    <span class="function">Node</span>(<span class="keyword">int</span> v) : val(v), pri(rng()), sz(<span class="number">1</span>), rev(<span class="keyword">false</span>), l(<span class="keyword">nullptr</span>), r(<span class="keyword">nullptr</span>) {}
+};
+
+<span class="keyword">int</span> <span class="function">sz</span>(Node* t) { <span class="keyword">return</span> t ? t-&gt;sz : <span class="number">0</span>; }
+
+<span class="keyword">void</span> <span class="function">pull</span>(Node* t) {
+    <span class="keyword">if</span> (t) t-&gt;sz = <span class="number">1</span> + <span class="function">sz</span>(t-&gt;l) + <span class="function">sz</span>(t-&gt;r);
+}
+
+<span class="keyword">void</span> <span class="function">push</span>(Node* t) {
+    <span class="keyword">if</span> (t &amp;&amp; t-&gt;rev) {
+        <span class="builtin">swap</span>(t-&gt;l, t-&gt;r);
+        <span class="keyword">if</span> (t-&gt;l) t-&gt;l-&gt;rev ^= <span class="number">1</span>;
+        <span class="keyword">if</span> (t-&gt;r) t-&gt;r-&gt;rev ^= <span class="number">1</span>;
+        t-&gt;rev = <span class="keyword">false</span>;
+    }
+}
+
+<span class="keyword">void</span> <span class="function">split</span>(Node* t, <span class="keyword">int</span> k, Node*&amp; l, Node*&amp; r) {
+    <span class="keyword">if</span> (!t) { l = r = <span class="keyword">nullptr</span>; <span class="keyword">return</span>; }
+    <span class="function">push</span>(t);
+    <span class="keyword">int</span> cur = <span class="function">sz</span>(t-&gt;l) + <span class="number">1</span>;
+    <span class="keyword">if</span> (k &lt; cur) {
+        <span class="function">split</span>(t-&gt;l, k, l, t-&gt;l);
+        r = t;
+    } <span class="keyword">else</span> {
+        <span class="function">split</span>(t-&gt;r, k - cur, t-&gt;r, r);
+        l = t;
+    }
+    <span class="function">pull</span>(t);
+}
+
+<span class="keyword">void</span> <span class="function">merge</span>(Node*&amp; t, Node* l, Node* r) {
+    <span class="keyword">if</span> (!l || !r) { t = l ? l : r; <span class="keyword">return</span>; }
+    <span class="function">push</span>(l); <span class="function">push</span>(r);
+    <span class="keyword">if</span> (l-&gt;pri &gt; r-&gt;pri) {
+        <span class="function">merge</span>(l-&gt;r, l-&gt;r, r);
+        t = l;
+    } <span class="keyword">else</span> {
+        <span class="function">merge</span>(r-&gt;l, l, r-&gt;l);
+        t = r;
+    }
+    <span class="function">pull</span>(t);
+}
+
+<span class="comment">// Reverse subarray [l, r] (0-indexed)</span>
+<span class="keyword">void</span> <span class="function">reverse</span>(Node*&amp; root, <span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+    Node *a, *b, *c;
+    <span class="function">split</span>(root, l, a, b);
+    <span class="function">split</span>(b, r - l + <span class="number">1</span>, b, c);
+    b-&gt;rev ^= <span class="number">1</span>;
+    <span class="function">merge</span>(root, a, b);
+    <span class="function">merge</span>(root, root, c);
+}
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> random
+
+<span class="keyword">class</span> <span class="function">TreapNode</span>:
+    __slots__ = [<span class="string">'val'</span>, <span class="string">'pri'</span>, <span class="string">'sz'</span>, <span class="string">'rev'</span>, <span class="string">'l'</span>, <span class="string">'r'</span>]
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, val):
+        self.val = val
+        self.pri = random.<span class="function">randint</span>(<span class="number">0</span>, (<span class="number">1</span> &lt;&lt; <span class="number">62</span>) - <span class="number">1</span>)
+        self.sz = <span class="number">1</span>
+        self.rev = <span class="keyword">False</span>
+        self.l = self.r = <span class="keyword">None</span>
+
+<span class="keyword">def</span> <span class="function">sz</span>(t):
+    <span class="keyword">return</span> t.sz <span class="keyword">if</span> t <span class="keyword">else</span> <span class="number">0</span>
+
+<span class="keyword">def</span> <span class="function">pull</span>(t):
+    <span class="keyword">if</span> t:
+        t.sz = <span class="number">1</span> + <span class="function">sz</span>(t.l) + <span class="function">sz</span>(t.r)
+
+<span class="keyword">def</span> <span class="function">push</span>(t):
+    <span class="keyword">if</span> t <span class="keyword">and</span> t.rev:
+        t.l, t.r = t.r, t.l
+        <span class="keyword">if</span> t.l: t.l.rev ^= <span class="keyword">True</span>
+        <span class="keyword">if</span> t.r: t.r.rev ^= <span class="keyword">True</span>
+        t.rev = <span class="keyword">False</span>
+
+<span class="keyword">def</span> <span class="function">split</span>(t, k):
+    <span class="keyword">if</span> <span class="keyword">not</span> t:
+        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span>
+    <span class="function">push</span>(t)
+    cur = <span class="function">sz</span>(t.l) + <span class="number">1</span>
+    <span class="keyword">if</span> k &lt; cur:
+        l, t.l = <span class="function">split</span>(t.l, k)
+        <span class="function">pull</span>(t)
+        <span class="keyword">return</span> l, t
+    <span class="keyword">else</span>:
+        t.r, r = <span class="function">split</span>(t.r, k - cur)
+        <span class="function">pull</span>(t)
+        <span class="keyword">return</span> t, r
+
+<span class="keyword">def</span> <span class="function">merge</span>(l, r):
+    <span class="keyword">if</span> <span class="keyword">not</span> l <span class="keyword">or</span> <span class="keyword">not</span> r:
+        <span class="keyword">return</span> l <span class="keyword">or</span> r
+    <span class="function">push</span>(l); <span class="function">push</span>(r)
+    <span class="keyword">if</span> l.pri &gt; r.pri:
+        l.r = <span class="function">merge</span>(l.r, r)
+        <span class="function">pull</span>(l)
+        <span class="keyword">return</span> l
+    <span class="keyword">else</span>:
+        r.l = <span class="function">merge</span>(l, r.l)
+        <span class="function">pull</span>(r)
+        <span class="keyword">return</span> r
+</code></pre>
+    </section>
+
+    <!-- ========== 8. LI CHAO TREE ========== -->
+    <section id="lichao" class="section">
+      <h2>8. Li Chao Tree</h2>
+      <p>A segment tree specialized for the "convex hull trick" problem: maintain a set of lines y = mx + b and answer "which line gives the minimum (or maximum) y at a given x?" in O(log C) per operation, where C is the coordinate range.</p>
+
+      <div class="formula-box">
+        <div class="label">Operations</div>
+        <p><strong>Insert line</strong> y = mx + b: O(log C)</p>
+        <p><strong>Query min/max</strong> at x: O(log C)</p>
+        <p>Works for both online and offline. Does not require lines to be inserted in sorted order (unlike CHT with deque).</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> <span class="function">Line</span> {
+    <span class="keyword">long long</span> m, b;
+    <span class="keyword">long long</span> <span class="function">eval</span>(<span class="keyword">long long</span> x) { <span class="keyword">return</span> m * x + b; }
+};
+
+<span class="keyword">struct</span> <span class="function">LiChaoTree</span> {
+    <span class="keyword">int</span> lo, hi;
+    vector&lt;Line&gt; tree;
+
+    <span class="function">LiChaoTree</span>(<span class="keyword">int</span> lo, <span class="keyword">int</span> hi) : lo(lo), hi(hi),
+        tree(<span class="number">4</span> * (hi - lo + <span class="number">1</span>), Line{<span class="number">0</span>, <span class="number">LLONG_MAX</span>}) {}
+
+    <span class="keyword">void</span> <span class="function">insert</span>(Line seg, <span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr) {
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="keyword">bool</span> leftBetter = seg.<span class="function">eval</span>(tl) &lt; tree[v].<span class="function">eval</span>(tl);
+        <span class="keyword">bool</span> midBetter  = seg.<span class="function">eval</span>(tm) &lt; tree[v].<span class="function">eval</span>(tm);
+        <span class="keyword">if</span> (midBetter) <span class="builtin">swap</span>(tree[v], seg);
+        <span class="keyword">if</span> (tl == tr) <span class="keyword">return</span>;
+        <span class="keyword">if</span> (leftBetter != midBetter)
+            <span class="function">insert</span>(seg, <span class="number">2</span>*v, tl, tm);
+        <span class="keyword">else</span>
+            <span class="function">insert</span>(seg, <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr);
+    }
+
+    <span class="keyword">void</span> <span class="function">insert</span>(Line seg) { <span class="function">insert</span>(seg, <span class="number">1</span>, lo, hi); }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> v, <span class="keyword">int</span> tl, <span class="keyword">int</span> tr) {
+        <span class="keyword">long long</span> best = tree[v].<span class="function">eval</span>(x);
+        <span class="keyword">if</span> (tl == tr) <span class="keyword">return</span> best;
+        <span class="keyword">int</span> tm = (tl + tr) / <span class="number">2</span>;
+        <span class="keyword">if</span> (x &lt;= tm)
+            <span class="keyword">return</span> <span class="builtin">min</span>(best, <span class="function">query</span>(x, <span class="number">2</span>*v, tl, tm));
+        <span class="keyword">else</span>
+            <span class="keyword">return</span> <span class="builtin">min</span>(best, <span class="function">query</span>(x, <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr));
+    }
+
+    <span class="keyword">long long</span> <span class="function">query</span>(<span class="keyword">int</span> x) { <span class="keyword">return</span> <span class="function">query</span>(x, <span class="number">1</span>, lo, hi); }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">LiChaoTree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, lo, hi):
+        self.lo, self.hi = lo, hi
+        self.INF = <span class="builtin">float</span>(<span class="string">'inf'</span>)
+        self.tree = {}  <span class="comment"># sparse: node_id -> (m, b)</span>
+
+    <span class="keyword">def</span> <span class="function">_eval</span>(self, line, x):
+        <span class="keyword">if</span> line <span class="keyword">is</span> <span class="keyword">None</span>:
+            <span class="keyword">return</span> self.INF
+        <span class="keyword">return</span> line[<span class="number">0</span>] * x + line[<span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">insert</span>(self, m, b, v=<span class="number">1</span>, tl=<span class="keyword">None</span>, tr=<span class="keyword">None</span>):
+        <span class="keyword">if</span> tl <span class="keyword">is</span> <span class="keyword">None</span>: tl, tr = self.lo, self.hi
+        seg = (m, b)
+        cur = self.tree.<span class="function">get</span>(v)
+        tm = (tl + tr) // <span class="number">2</span>
+        left_better = self.<span class="function">_eval</span>(seg, tl) &lt; self.<span class="function">_eval</span>(cur, tl)
+        mid_better = self.<span class="function">_eval</span>(seg, tm) &lt; self.<span class="function">_eval</span>(cur, tm)
+        <span class="keyword">if</span> mid_better:
+            self.tree[v] = seg
+            seg = cur
+        <span class="keyword">if</span> tl == tr:
+            <span class="keyword">return</span>
+        <span class="keyword">if</span> left_better != mid_better:
+            self.<span class="function">insert</span>(seg[<span class="number">0</span>], seg[<span class="number">1</span>], <span class="number">2</span>*v, tl, tm)
+        <span class="keyword">elif</span> seg <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+            self.<span class="function">insert</span>(seg[<span class="number">0</span>], seg[<span class="number">1</span>], <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr)
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, x, v=<span class="number">1</span>, tl=<span class="keyword">None</span>, tr=<span class="keyword">None</span>):
+        <span class="keyword">if</span> tl <span class="keyword">is</span> <span class="keyword">None</span>: tl, tr = self.lo, self.hi
+        best = self.<span class="function">_eval</span>(self.tree.<span class="function">get</span>(v), x)
+        <span class="keyword">if</span> tl == tr:
+            <span class="keyword">return</span> best
+        tm = (tl + tr) // <span class="number">2</span>
+        <span class="keyword">if</span> x &lt;= tm:
+            <span class="keyword">return</span> <span class="builtin">min</span>(best, self.<span class="function">query</span>(x, <span class="number">2</span>*v, tl, tm))
+        <span class="keyword">else</span>:
+            <span class="keyword">return</span> <span class="builtin">min</span>(best, self.<span class="function">query</span>(x, <span class="number">2</span>*v+<span class="number">1</span>, tm+<span class="number">1</span>, tr))
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Li Chao vs Convex Hull Trick</div>
+        <p>Li Chao tree is more general: it handles arbitrary insertion order and supports line segments (not just full lines). The classic CHT with a deque is faster (O(1) amortized) but requires queries in sorted order of x. Use Li Chao when queries come in arbitrary order or when you need to insert line segments.</p>
+      </div>
+    </section>
+
+    <!-- ========== 9. SQRT DECOMPOSITION / MO'S ========== -->
+    <section id="sqrt" class="section">
+      <h2>9. Sqrt Decomposition / Mo's Algorithm</h2>
+      <p>Divide the array into blocks of size approximately sqrt(n). This enables O(sqrt(n)) per query for many problems. Mo's algorithm is an offline technique that orders range queries to minimize the total number of add/remove operations.</p>
+
+      <div class="formula-box">
+        <div class="label">Mo's Algorithm Complexity</div>
+        <p>Block size B = sqrt(n). Sort queries by (l/B, r) with alternating direction for even/odd blocks.</p>
+        <p>Total pointer movements: O((n + q) * sqrt(n))</p>
+        <p>Works for any problem where you can add/remove an element from the current range in O(1) or O(log n).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">ASCII: Sqrt Block Decomposition</div>
+<pre>
+Array:  [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8]
+         |---------|  |---------|  |---------|
+          Block 0      Block 1      Block 2
+          B = 4        B = 4        B = 4
+
+Block sums:  9          22           21
+
+Point update a[5] += 3:
+  -> Block 1 sum += 3  (O(1) block update)
+
+Range query sum(2, 9):
+  -> Partial block 0: a[2]+a[3] = 4+1 = 5
+  -> Full block 1: 22
+  -> Partial block 2: a[8]+a[9] = 5+3 = 8
+  -> Total = 35            (O(sqrt(n)) query)
+</pre>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Mo's algorithm: count distinct elements in range [l, r]</span>
+<span class="keyword">struct</span> <span class="function">Query</span> {
+    <span class="keyword">int</span> l, r, idx;
+};
+
+<span class="keyword">int</span> block;
+<span class="keyword">bool</span> <span class="function">mo_cmp</span>(<span class="keyword">const</span> Query&amp; a, <span class="keyword">const</span> Query&amp; b) {
+    <span class="keyword">int</span> ba = a.l / block, bb = b.l / block;
+    <span class="keyword">if</span> (ba != bb) <span class="keyword">return</span> ba &lt; bb;
+    <span class="keyword">return</span> (ba &amp; <span class="number">1</span>) ? (a.r &gt; b.r) : (a.r &lt; b.r);
+}
+
+<span class="keyword">void</span> <span class="function">solve</span>() {
+    <span class="keyword">int</span> n, q;
+    <span class="builtin">cin</span> &gt;&gt; n &gt;&gt; q;
+    vector&lt;<span class="keyword">int</span>&gt; a(n);
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; x : a) <span class="builtin">cin</span> &gt;&gt; x;
+
+    vector&lt;Query&gt; queries(q);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; q; i++) {
+        <span class="builtin">cin</span> &gt;&gt; queries[i].l &gt;&gt; queries[i].r;
+        queries[i].idx = i;
+    }
+
+    block = <span class="builtin">max</span>(<span class="number">1</span>, (<span class="keyword">int</span>)<span class="builtin">sqrt</span>(n));
+    <span class="builtin">sort</span>(queries.<span class="function">begin</span>(), queries.<span class="function">end</span>(), mo_cmp);
+
+    vector&lt;<span class="keyword">int</span>&gt; cnt(<span class="number">1000001</span>, <span class="number">0</span>);
+    vector&lt;<span class="keyword">int</span>&gt; ans(q);
+    <span class="keyword">int</span> cur_l = <span class="number">0</span>, cur_r = -<span class="number">1</span>, distinct = <span class="number">0</span>;
+
+    <span class="keyword">auto</span> add = [&amp;](<span class="keyword">int</span> idx) {
+        <span class="keyword">if</span> (cnt[a[idx]]++ == <span class="number">0</span>) distinct++;
+    };
+    <span class="keyword">auto</span> rem = [&amp;](<span class="keyword">int</span> idx) {
+        <span class="keyword">if</span> (--cnt[a[idx]] == <span class="number">0</span>) distinct--;
+    };
+
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [l, r, qi] : queries) {
+        <span class="keyword">while</span> (cur_r &lt; r) add(++cur_r);
+        <span class="keyword">while</span> (cur_l &gt; l) add(--cur_l);
+        <span class="keyword">while</span> (cur_r &gt; r) rem(cur_r--);
+        <span class="keyword">while</span> (cur_l &lt; l) rem(cur_l++);
+        ans[qi] = distinct;
+    }
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> x : ans) <span class="builtin">cout</span> &lt;&lt; x &lt;&lt; <span class="string">"\n"</span>;
+}
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">mo_algorithm</span>(a, queries):
+    <span class="string">"""queries = list of (l, r, original_index)"""</span>
+    n = <span class="builtin">len</span>(a)
+    B = <span class="builtin">max</span>(<span class="number">1</span>, <span class="builtin">int</span>(math.<span class="function">sqrt</span>(n)))
+    queries.<span class="function">sort</span>(key=<span class="keyword">lambda</span> q: (q[<span class="number">0</span>] // B, q[<span class="number">1</span>] <span class="keyword">if</span> (q[<span class="number">0</span>] // B) % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">else</span> -q[<span class="number">1</span>]))
+
+    cnt = defaultdict(<span class="builtin">int</span>)
+    distinct = <span class="number">0</span>
+    cur_l, cur_r = <span class="number">0</span>, -<span class="number">1</span>
+    ans = [<span class="number">0</span>] * <span class="builtin">len</span>(queries)
+
+    <span class="keyword">def</span> <span class="function">add</span>(idx):
+        <span class="keyword">nonlocal</span> distinct
+        cnt[a[idx]] += <span class="number">1</span>
+        <span class="keyword">if</span> cnt[a[idx]] == <span class="number">1</span>:
+            distinct += <span class="number">1</span>
+
+    <span class="keyword">def</span> <span class="function">rem</span>(idx):
+        <span class="keyword">nonlocal</span> distinct
+        cnt[a[idx]] -= <span class="number">1</span>
+        <span class="keyword">if</span> cnt[a[idx]] == <span class="number">0</span>:
+            distinct -= <span class="number">1</span>
+
+    <span class="keyword">for</span> l, r, qi <span class="keyword">in</span> queries:
+        <span class="keyword">while</span> cur_r &lt; r: cur_r += <span class="number">1</span>; <span class="function">add</span>(cur_r)
+        <span class="keyword">while</span> cur_l &gt; l: cur_l -= <span class="number">1</span>; <span class="function">add</span>(cur_l)
+        <span class="keyword">while</span> cur_r &gt; r: <span class="function">rem</span>(cur_r); cur_r -= <span class="number">1</span>
+        <span class="keyword">while</span> cur_l &lt; l: <span class="function">rem</span>(cur_l); cur_l += <span class="number">1</span>
+        ans[qi] = distinct
+
+    <span class="keyword">return</span> ans
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Mo's Algorithm: Expand Before Shrink</div>
+        <p>Always expand the window before shrinking. If you shrink first, you might access an invalid state (e.g., removing an element that is not in the current window). The order in the loop matters: expand cur_r, expand cur_l, shrink cur_r, shrink cur_l.</p>
+      </div>
+    </section>
+
+    <!-- ========== 10. PERSISTENT DATA STRUCTURES ========== -->
+    <section id="persistent" class="section">
+      <h2>10. Persistent Data Structures</h2>
+      <p>A persistent data structure preserves all previous versions after each modification. The key technique is <strong>path copying</strong>: when updating, only create new copies of the O(log n) nodes on the root-to-leaf path.</p>
+
+      <h3>Kth Smallest in Range [l, r]</h3>
+      <p>The classic application: build a persistent segment tree over the value range. Version i includes the first i elements. To query kth smallest in [l, r], subtract version l-1 from version r and walk down the tree.</p>
+
+      <div class="formula-box">
+        <div class="label">Approach</div>
+        <p>1. Coordinate compress the values</p>
+        <p>2. Build version 0 (empty tree)</p>
+        <p>3. For each element a[i], create version i by inserting a[i] into version i-1</p>
+        <p>4. To find kth in [l, r]: compare left child counts of version[r] vs version[l-1]</p>
+        <p>Time: O(n log n) build, O(log n) per query. Space: O(n log n).</p>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Persistent segment tree for kth smallest in range</span>
+<span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">20000000</span>;
+<span class="keyword">int</span> ls[MAXN], rs[MAXN], sum[MAXN], tot = <span class="number">0</span>;
+
+<span class="keyword">int</span> <span class="function">build</span>(<span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+    <span class="keyword">int</span> p = ++tot;
+    sum[p] = <span class="number">0</span>;
+    <span class="keyword">if</span> (l == r) <span class="keyword">return</span> p;
+    <span class="keyword">int</span> m = (l + r) / <span class="number">2</span>;
+    ls[p] = <span class="function">build</span>(l, m);
+    rs[p] = <span class="function">build</span>(m + <span class="number">1</span>, r);
+    <span class="keyword">return</span> p;
+}
+
+<span class="keyword">int</span> <span class="function">update</span>(<span class="keyword">int</span> prev, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> pos) {
+    <span class="keyword">int</span> p = ++tot;
+    ls[p] = ls[prev]; rs[p] = rs[prev]; sum[p] = sum[prev] + <span class="number">1</span>;
+    <span class="keyword">if</span> (l == r) <span class="keyword">return</span> p;
+    <span class="keyword">int</span> m = (l + r) / <span class="number">2</span>;
+    <span class="keyword">if</span> (pos &lt;= m) ls[p] = <span class="function">update</span>(ls[prev], l, m, pos);
+    <span class="keyword">else</span>          rs[p] = <span class="function">update</span>(rs[prev], m + <span class="number">1</span>, r, pos);
+    <span class="keyword">return</span> p;
+}
+
+<span class="keyword">int</span> <span class="function">kth</span>(<span class="keyword">int</span> u, <span class="keyword">int</span> v, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> k) {
+    <span class="keyword">if</span> (l == r) <span class="keyword">return</span> l;
+    <span class="keyword">int</span> m = (l + r) / <span class="number">2</span>;
+    <span class="keyword">int</span> leftCnt = sum[ls[v]] - sum[ls[u]];
+    <span class="keyword">if</span> (k &lt;= leftCnt) <span class="keyword">return</span> <span class="function">kth</span>(ls[u], ls[v], l, m, k);
+    <span class="keyword">else</span>               <span class="keyword">return</span> <span class="function">kth</span>(rs[u], rs[v], m + <span class="number">1</span>, r, k - leftCnt);
+}
+
+<span class="comment">// Usage:</span>
+<span class="comment">// 1. Coordinate compress a[] into values 0..M-1</span>
+<span class="comment">// 2. root[0] = build(0, M-1)</span>
+<span class="comment">// 3. for i in 1..n: root[i] = update(root[i-1], 0, M-1, compressed[i])</span>
+<span class="comment">// 4. query kth in [l,r]: kth(root[l-1], root[r], 0, M-1, k)</span>
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="comment"># Persistent segment tree for kth smallest</span>
+<span class="keyword">class</span> <span class="function">PersistentSegTree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, maxval):
+        self.MAXN = <span class="number">20</span> * maxval  <span class="comment"># enough nodes</span>
+        self.ls = [<span class="number">0</span>] * self.MAXN
+        self.rs = [<span class="number">0</span>] * self.MAXN
+        self.sm = [<span class="number">0</span>] * self.MAXN
+        self.tot = <span class="number">0</span>
+
+    <span class="keyword">def</span> <span class="function">_new</span>(self):
+        self.tot += <span class="number">1</span>
+        <span class="keyword">return</span> self.tot
+
+    <span class="keyword">def</span> <span class="function">build</span>(self, l, r):
+        p = self.<span class="function">_new</span>()
+        <span class="keyword">if</span> l == r:
+            <span class="keyword">return</span> p
+        m = (l + r) // <span class="number">2</span>
+        self.ls[p] = self.<span class="function">build</span>(l, m)
+        self.rs[p] = self.<span class="function">build</span>(m + <span class="number">1</span>, r)
+        <span class="keyword">return</span> p
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, prev, l, r, pos):
+        p = self.<span class="function">_new</span>()
+        self.ls[p] = self.ls[prev]
+        self.rs[p] = self.rs[prev]
+        self.sm[p] = self.sm[prev] + <span class="number">1</span>
+        <span class="keyword">if</span> l == r:
+            <span class="keyword">return</span> p
+        m = (l + r) // <span class="number">2</span>
+        <span class="keyword">if</span> pos &lt;= m:
+            self.ls[p] = self.<span class="function">update</span>(self.ls[prev], l, m, pos)
+        <span class="keyword">else</span>:
+            self.rs[p] = self.<span class="function">update</span>(self.rs[prev], m + <span class="number">1</span>, r, pos)
+        <span class="keyword">return</span> p
+
+    <span class="keyword">def</span> <span class="function">kth</span>(self, u, v, l, r, k):
+        <span class="keyword">if</span> l == r:
+            <span class="keyword">return</span> l
+        m = (l + r) // <span class="number">2</span>
+        left_cnt = self.sm[self.ls[v]] - self.sm[self.ls[u]]
+        <span class="keyword">if</span> k &lt;= left_cnt:
+            <span class="keyword">return</span> self.<span class="function">kth</span>(self.ls[u], self.ls[v], l, m, k)
+        <span class="keyword">else</span>:
+            <span class="keyword">return</span> self.<span class="function">kth</span>(self.rs[u], self.rs[v], m + <span class="number">1</span>, r, k - left_cnt)
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">ASCII: Persistent Segment Tree Versions</div>
+<pre>
+Array: [3, 1, 4, 1]   Compressed: [1, 0, 2, 0]   Values: {0:1, 1:3, 2:4}
+
+Version 0 (empty):      Version 1 (+val 1):     Version 2 (+val 0):
+      [0]                    [1]                     [2]
+     /   \                  /   \                   /   \
+   [0]   [0]             [0]   [1]*              [1]*  [1]
+   / \   / \             / \   / \               / \   / \
+ [0] [0][0][0]         [0][0][0][1]*           [1]*[0][0][1]
+
+* = newly created node (others shared with previous version)
+
+kth(root[0], root[3], 0, 2, 2):
+  Find 2nd smallest in a[1..3] = {1, 4, 1}
+  Left child count = 2 (two 1's mapped to val 0)
+  k=2 <= 2, go left -> return value 0 -> original = 1
+</pre>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Memory for Persistent Structures</div>
+        <p>Each update creates O(log n) new nodes. For n updates, total nodes = O(n log n). Pre-allocate arrays of size ~20*n to be safe. Using dynamic allocation (new/malloc) per node is much slower -- always use flat arrays in competitive programming.</p>
+      </div>
+    </section>
+
+    <!-- ========== 11. PRACTICE PROBLEMS ========== -->
+    <section id="practice" class="section">
+      <h2>11. Practice Problems</h2>
+
+      <h3>Fenwick Tree</h3>
+      <ul>
+        <li><strong>CSES - Dynamic Range Sum Queries</strong> -- direct BIT application</li>
+        <li><strong>CSES - Range Update Queries</strong> -- difference array BIT</li>
+        <li><strong>Codeforces 1042D</strong> -- Petya and Array (BIT + coordinate compression for counting inversions)</li>
+        <li><strong>SPOJ INVCNT</strong> -- Count inversions using BIT</li>
+        <li><strong>Codeforces 459D</strong> -- Pashmak and Parmida's problem (BIT on frequencies)</li>
+      </ul>
+
+      <h3>Segment Tree</h3>
+      <ul>
+        <li><strong>CSES - Range Minimum Queries</strong> -- basic seg tree or sparse table</li>
+        <li><strong>CSES - Range Queries and Copies</strong> -- persistent segment tree</li>
+        <li><strong>Codeforces 877E</strong> -- Danil and a Part-time Job (lazy propagation with XOR)</li>
+        <li><strong>Codeforces 380C</strong> -- Sereja and Brackets (seg tree with custom merge)</li>
+        <li><strong>Codeforces 242E</strong> -- XOR on Segment (bitwise lazy seg tree)</li>
+      </ul>
+
+      <h3>Sparse Table</h3>
+      <ul>
+        <li><strong>CSES - Static Range Minimum Queries</strong> -- textbook sparse table</li>
+        <li><strong>SPOJ RMQSQ</strong> -- Range Minimum Query</li>
+        <li><strong>Codeforces 514D</strong> -- R2D2 and Droid Army (sparse table + two pointers)</li>
+      </ul>
+
+      <h3>DSU</h3>
+      <ul>
+        <li><strong>CSES - Road Construction</strong> -- DSU with component tracking</li>
+        <li><strong>Codeforces 1249D2</strong> -- Too Many Segments (DSU approach)</li>
+        <li><strong>Codeforces 1594D</strong> -- The Number of Imposters (weighted DSU / bipartite check)</li>
+        <li><strong>Codeforces 1513D</strong> -- GCD and MST (DSU + sieve)</li>
+      </ul>
+
+      <h3>HLD / Centroid Decomposition</h3>
+      <ul>
+        <li><strong>CSES - Path Queries</strong> -- HLD + segment tree</li>
+        <li><strong>CSES - Path Queries II</strong> -- HLD + seg tree for max</li>
+        <li><strong>Codeforces 342E</strong> -- Xenia and Tree (centroid decomposition)</li>
+        <li><strong>SPOJ QTREE</strong> -- Query on a Tree (classic HLD)</li>
+      </ul>
+
+      <h3>Treap / Implicit Treap</h3>
+      <ul>
+        <li><strong>CSES - Cut and Paste</strong> -- implicit treap split/merge</li>
+        <li><strong>CSES - Substring Reversals</strong> -- implicit treap with reverse</li>
+        <li><strong>Codeforces 863D</strong> -- Yet Another Arkanoid Problem (treap maintenance)</li>
+      </ul>
+
+      <h3>Li Chao Tree / CHT</h3>
+      <ul>
+        <li><strong>CSES - Line Segment Intersection</strong> -- Li Chao application</li>
+        <li><strong>Codeforces 932F</strong> -- Escape Through Leaf (Li Chao on tree)</li>
+        <li><strong>Codeforces 319C</strong> -- Kalila and Dimna (convex hull trick DP)</li>
+      </ul>
+
+      <h3>Mo's Algorithm</h3>
+      <ul>
+        <li><strong>CSES - Distinct Values Queries</strong> -- Mo's or offline + BIT</li>
+        <li><strong>SPOJ DQUERY</strong> -- D-query (distinct in range)</li>
+        <li><strong>Codeforces 86D</strong> -- Powerful Array (Mo's with sum of cnt^2 * val)</li>
+        <li><strong>Codeforces 617E</strong> -- XOR and Favorite Number (Mo's with XOR prefix)</li>
+      </ul>
+
+      <h3>Persistent Structures</h3>
+      <ul>
+        <li><strong>SPOJ MKTHNUM</strong> -- K-th Number (persistent seg tree, the classic problem)</li>
+        <li><strong>Codeforces 813D</strong> -- Two Melodies (persistent structures in DP)</li>
+        <li><strong>CSES - Range Queries and Copies</strong> -- persistent seg tree</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Study Order Recommendation</div>
+        <p>Start with Fenwick tree and basic segment tree -- you will use these constantly. Then learn lazy propagation (it appears in probably 30% of Div 2 D/E problems). DSU you likely already know; learn rollback when you hit offline divide and conquer problems. Sparse table is quick to learn and very useful for LCA and RMQ. After that, tackle HLD and centroid decomposition for tree path queries. Save treaps, Li Chao trees, and persistent structures for when you are pushing into Div 1 C+ territory.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CP Template Tip</div>
+        <p>Keep pre-written templates for: BIT (point update / prefix sum), segment tree with lazy propagation, DSU with union by rank, and sparse table. These four cover the vast majority of contest problems. For the more exotic structures (HLD, centroid decomp, treap), have tested code ready but expect to adapt it per-problem.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

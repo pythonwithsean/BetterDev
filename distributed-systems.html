@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distributed Systems - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Distributed Systems</div>
+      <h1>Distributed Systems</h1>
+      <p>Everything you need to understand, build, and debug distributed systems -- from CAP theorem and consensus algorithms to distributed caching and observability. With real code in Go and Node.js, ASCII diagrams, and battle-tested patterns used at companies running thousands of nodes.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#why">1. Why Distributed Systems</a>
+      <a href="#fundamentals">2. Fundamentals -- Time &amp; Ordering</a>
+      <a href="#consistency">3. Consistency Models</a>
+      <a href="#consensus">4. Consensus Algorithms</a>
+      <a href="#replication">5. Replication</a>
+      <a href="#partitioning">6. Partitioning &amp; Sharding</a>
+      <a href="#distributed-tx">7. Distributed Transactions</a>
+      <a href="#gossip">8. Gossip Protocols</a>
+      <a href="#load-balancing">9. Load Balancing</a>
+      <a href="#caching">10. Distributed Caching</a>
+      <a href="#rate-limiting">11. Rate Limiting</a>
+      <a href="#idempotency">12. Idempotency</a>
+      <a href="#observability">13. Observability</a>
+      <a href="#practice">14. Practice &amp; Resources</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: WHY DISTRIBUTED SYSTEMS -->
+    <!-- ============================================================ -->
+    <section id="why">
+      <h2>1. Why Distributed Systems</h2>
+
+      <p>A distributed system is a collection of independent computers that appears to its users as a single coherent system. You need them when a single machine cannot handle the load, when you need fault tolerance, or when your users are spread across the globe and need low latency.</p>
+
+      <h3>The CAP Theorem</h3>
+      <p>Formulated by Eric Brewer in 2000 and proven by Gilbert and Lynch in 2002. In any distributed data store, you can only guarantee two of the following three properties simultaneously:</p>
+
+      <div class="formula-box">
+        <div class="label">CAP Theorem</div>
+        <strong>C</strong>onsistency -- Every read receives the most recent write or an error<br>
+        <strong>A</strong>vailability -- Every request receives a non-error response (no guarantee it's the most recent write)<br>
+        <strong>P</strong>artition Tolerance -- The system continues to operate despite arbitrary message loss between nodes
+      </div>
+
+      <p>In practice, network partitions <em>will</em> happen. So the real choice is between <strong>CP</strong> (consistency + partition tolerance) and <strong>AP</strong> (availability + partition tolerance).</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">                    Consistency (C)</span>
+<span class="comment">                         /\</span>
+<span class="comment">                        /  \</span>
+<span class="comment">                       /    \</span>
+<span class="comment">                      / CP   \</span>
+<span class="comment">                     /  zone  \</span>
+<span class="comment">                    /----------\</span>
+<span class="comment">                   /   CAN'T    \</span>
+<span class="comment">                  /   HAVE ALL   \</span>
+<span class="comment">                 /     THREE      \</span>
+<span class="comment">                /___________________\</span>
+<span class="comment">    Availability (A) ---------- Partition Tolerance (P)</span>
+<span class="comment">                   AP zone</span>
+<span class="comment"></span>
+<span class="comment">    CP systems: ZooKeeper, HBase, MongoDB (default), etcd, Consul</span>
+<span class="comment">    AP systems: Cassandra, DynamoDB, CouchDB, Riak</span>
+<span class="comment">    CA systems: Traditional RDBMS (single node -- no partition tolerance)</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">CAP is Nuanced</div>
+        <p>CAP is not a binary toggle. Real systems make trade-offs on a spectrum. Many databases let you tune consistency per-query. Cassandra, for example, lets you set consistency level to QUORUM for strong reads and ONE for fast reads. The PACELC theorem extends CAP: even when there is no Partition, you still trade off between Latency and Consistency.</p>
+      </div>
+
+      <h3>The 8 Fallacies of Distributed Computing</h3>
+      <p>Peter Deutsch (and James Gosling) identified assumptions that developers new to distributed systems mistakenly make:</p>
+
+      <div class="example-box">
+        <div class="label">The 8 Fallacies</div>
+        <p><strong>1. The network is reliable</strong> -- Packets get dropped, connections reset, cables get cut.</p>
+        <p><strong>2. Latency is zero</strong> -- A cross-continent round trip is ~150ms. That adds up fast.</p>
+        <p><strong>3. Bandwidth is infinite</strong> -- Serialization, large payloads, and chatty protocols kill throughput.</p>
+        <p><strong>4. The network is secure</strong> -- Every hop is an attack surface. mTLS exists for a reason.</p>
+        <p><strong>5. Topology doesn't change</strong> -- Nodes join, leave, and move. Auto-scaling is normal.</p>
+        <p><strong>6. There is one administrator</strong> -- Multiple teams, orgs, and cloud providers manage pieces.</p>
+        <p><strong>7. Transport cost is zero</strong> -- Serialization/deserialization, DNS lookups, TLS handshakes all cost time and CPU.</p>
+        <p><strong>8. The network is homogeneous</strong> -- Different hardware, OS versions, protocol versions everywhere.</p>
+      </div>
+
+      <p>Every design decision you make in a distributed system should account for these realities. If your code assumes any of these, it <em>will</em> break in production.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: FUNDAMENTALS -->
+    <!-- ============================================================ -->
+    <section id="fundamentals">
+      <h2>2. Fundamentals -- Time &amp; Ordering</h2>
+
+      <p>In a distributed system, there is no global clock. Each node has its own clock that drifts independently. We need logical clocks to establish ordering of events.</p>
+
+      <h3>Happens-Before Relation</h3>
+      <p>Defined by Leslie Lamport in 1978. Event A <em>happens-before</em> event B (written A &rarr; B) if:</p>
+      <div class="formula-box">
+        <div class="label">Happens-Before Rules</div>
+        1. A and B are events in the same process, and A comes before B<br>
+        2. A is a send event and B is the corresponding receive event<br>
+        3. Transitivity: if A &rarr; B and B &rarr; C, then A &rarr; C<br><br>
+        If neither A &rarr; B nor B &rarr; A, the events are <strong>concurrent</strong> (A || B)
+      </div>
+
+      <h3>Lamport Timestamps</h3>
+      <p>Each process maintains a counter. On local event: increment. On send: increment and attach. On receive: set to max(local, received) + 1. If A &rarr; B then L(A) &lt; L(B), but the converse is NOT true.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">package</span> main
+
+<span class="keyword">import</span> (
+    <span class="string">"fmt"</span>
+    <span class="string">"sync"</span>
+)
+
+<span class="keyword">type</span> LamportClock <span class="keyword">struct</span> {
+    mu      sync.Mutex
+    counter <span class="keyword">uint64</span>
+}
+
+<span class="keyword">func</span> <span class="function">NewLamportClock</span>() *LamportClock {
+    <span class="keyword">return</span> &amp;LamportClock{counter: <span class="number">0</span>}
+}
+
+<span class="comment">// Tick increments the clock for a local event</span>
+<span class="keyword">func</span> (lc *LamportClock) <span class="function">Tick</span>() <span class="keyword">uint64</span> {
+    lc.mu.Lock()
+    <span class="keyword">defer</span> lc.mu.Unlock()
+    lc.counter++
+    <span class="keyword">return</span> lc.counter
+}
+
+<span class="comment">// Send increments and returns timestamp to attach to message</span>
+<span class="keyword">func</span> (lc *LamportClock) <span class="function">Send</span>() <span class="keyword">uint64</span> {
+    <span class="keyword">return</span> lc.<span class="function">Tick</span>()
+}
+
+<span class="comment">// Receive updates clock based on incoming message timestamp</span>
+<span class="keyword">func</span> (lc *LamportClock) <span class="function">Receive</span>(msgTimestamp <span class="keyword">uint64</span>) <span class="keyword">uint64</span> {
+    lc.mu.Lock()
+    <span class="keyword">defer</span> lc.mu.Unlock()
+    <span class="keyword">if</span> msgTimestamp &gt; lc.counter {
+        lc.counter = msgTimestamp
+    }
+    lc.counter++
+    <span class="keyword">return</span> lc.counter
+}
+
+<span class="keyword">func</span> <span class="function">main</span>() {
+    nodeA := <span class="function">NewLamportClock</span>()
+    nodeB := <span class="function">NewLamportClock</span>()
+
+    t1 := nodeA.<span class="function">Tick</span>()           <span class="comment">// A: local event, t=1</span>
+    sendT := nodeA.<span class="function">Send</span>()        <span class="comment">// A: send msg, t=2</span>
+    recvT := nodeB.<span class="function">Receive</span>(sendT) <span class="comment">// B: receive, t=max(0,2)+1=3</span>
+
+    fmt.<span class="function">Printf</span>(<span class="string">"A local: %d, A send: %d, B recv: %d\n"</span>, t1, sendT, recvT)
+}</code></pre>
+
+      <h3>Vector Clocks</h3>
+      <p>Lamport timestamps cannot detect concurrency. Vector clocks solve this: each node maintains a vector of counters, one per node. Now V(A) &lt; V(B) implies A &rarr; B, and incomparable vectors mean concurrent events.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">type</span> VectorClock <span class="keyword">struct</span> {
+    nodeID <span class="keyword">string</span>
+    clock  <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>
+}
+
+<span class="keyword">func</span> <span class="function">NewVectorClock</span>(nodeID <span class="keyword">string</span>) *VectorClock {
+    <span class="keyword">return</span> &amp;VectorClock{
+        nodeID: nodeID,
+        clock:  <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>{nodeID: <span class="number">0</span>},
+    }
+}
+
+<span class="keyword">func</span> (vc *VectorClock) <span class="function">Tick</span>() {
+    vc.clock[vc.nodeID]++
+}
+
+<span class="keyword">func</span> (vc *VectorClock) <span class="function">Send</span>() <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span> {
+    vc.<span class="function">Tick</span>()
+    <span class="comment">// Return a copy</span>
+    cp := <span class="builtin">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>)
+    <span class="keyword">for</span> k, v := <span class="keyword">range</span> vc.clock {
+        cp[k] = v
+    }
+    <span class="keyword">return</span> cp
+}
+
+<span class="keyword">func</span> (vc *VectorClock) <span class="function">Receive</span>(other <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>) {
+    <span class="keyword">for</span> k, v := <span class="keyword">range</span> other {
+        <span class="keyword">if</span> v &gt; vc.clock[k] {
+            vc.clock[k] = v
+        }
+    }
+    vc.clock[vc.nodeID]++
+}
+
+<span class="comment">// HappensBefore returns true if vc happened before other</span>
+<span class="keyword">func</span> (vc *VectorClock) <span class="function">HappensBefore</span>(other *VectorClock) <span class="keyword">bool</span> {
+    atLeastOneLess := <span class="keyword">false</span>
+    <span class="keyword">for</span> k, v := <span class="keyword">range</span> vc.clock {
+        ov := other.clock[k]
+        <span class="keyword">if</span> v &gt; ov {
+            <span class="keyword">return</span> <span class="keyword">false</span>
+        }
+        <span class="keyword">if</span> v &lt; ov {
+            atLeastOneLess = <span class="keyword">true</span>
+        }
+    }
+    <span class="keyword">for</span> k, ov := <span class="keyword">range</span> other.clock {
+        <span class="keyword">if</span> _, exists := vc.clock[k]; !exists &amp;&amp; ov &gt; <span class="number">0</span> {
+            atLeastOneLess = <span class="keyword">true</span>
+        }
+    }
+    <span class="keyword">return</span> atLeastOneLess
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Which</div>
+        <p>Use <strong>Lamport timestamps</strong> when you only need a total ordering (e.g., log sequencing). Use <strong>vector clocks</strong> when you need to detect concurrent writes (e.g., conflict detection in Dynamo-style databases). Vector clocks grow with the number of nodes -- in large clusters, consider <strong>dotted version vectors</strong> or <strong>interval tree clocks</strong> instead.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: CONSISTENCY MODELS -->
+    <!-- ============================================================ -->
+    <section id="consistency">
+      <h2>3. Consistency Models</h2>
+
+      <p>Consistency models define what guarantees a distributed system gives about the order and visibility of operations. From strongest to weakest:</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Strongest                                              Weakest</span>
+<span class="comment">  |                                                           |</span>
+<span class="comment">  v                                                           v</span>
+<span class="comment">  Linearizable &gt; Sequential &gt; Causal &gt; PRAM &gt; Eventual</span>
+<span class="comment"></span>
+<span class="comment">  More consistency = more coordination = higher latency</span>
+<span class="comment">  Less consistency = less coordination = higher throughput</span></code></pre>
+
+      <h3>Linearizability (Strong Consistency)</h3>
+      <p>The gold standard. Every operation appears to take effect atomically at some point between its invocation and response. Acts as if there is a single copy of the data.</p>
+
+      <div class="formula-box">
+        <div class="label">Linearizability Guarantee</div>
+        For any two operations op1 and op2:<br>
+        If op1 completes before op2 starts &rarr; op1's effect is visible to op2<br>
+        Real-time ordering is preserved.
+      </div>
+
+      <h3>Sequential Consistency</h3>
+      <p>All processes see the same order of operations, but that order does not need to match real-time. Operations from a single process appear in program order. Weaker than linearizability because cross-process real-time ordering is not guaranteed.</p>
+
+      <h3>Causal Consistency</h3>
+      <p>If operation A causally precedes B (A &rarr; B), then all nodes see A before B. Concurrent operations can appear in any order. This captures the intuition of "if you saw it, your response must come after it."</p>
+
+      <h3>Eventual Consistency</h3>
+      <p>If no new writes are made, eventually all replicas converge to the same value. No ordering guarantees during updates. Used by DNS, Cassandra (with low consistency level), and most caching systems.</p>
+
+      <div class="example-box">
+        <div class="label">Real-World Consistency Choices</div>
+        <p><strong>Banking (account balance)</strong>: Linearizable -- you cannot show a wrong balance.</p>
+        <p><strong>Social media (like count)</strong>: Eventual -- off by a few for a second is acceptable.</p>
+        <p><strong>Chat messages (ordering)</strong>: Causal -- replies must appear after the message they reply to.</p>
+        <p><strong>Shopping cart</strong>: Eventual with conflict resolution -- Amazon's Dynamo paper pioneered this.</p>
+      </div>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="comment">// Demonstrating consistency issues with a naive distributed counter</span>
+<span class="comment">// Two nodes both read, increment, write -- lost update problem</span>
+
+<span class="keyword">class</span> <span class="function">DistributedCounter</span> {
+  <span class="function">constructor</span>(replicas) {
+    <span class="keyword">this</span>.replicas = replicas; <span class="comment">// Map of nodeId -> value</span>
+  }
+
+  <span class="comment">// Eventual consistency: read from any replica</span>
+  <span class="function">readEventual</span>(nodeId) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.replicas.get(nodeId) || <span class="number">0</span>;
+  }
+
+  <span class="comment">// Strong consistency: read from quorum (majority)</span>
+  <span class="function">readStrong</span>() {
+    <span class="keyword">const</span> values = [...<span class="keyword">this</span>.replicas.values()];
+    <span class="keyword">const</span> majority = Math.<span class="function">floor</span>(values.length / <span class="number">2</span>) + <span class="number">1</span>;
+    <span class="comment">// In real systems, use read quorum + write quorum > N</span>
+    <span class="keyword">const</span> counts = <span class="keyword">new</span> <span class="function">Map</span>();
+    <span class="keyword">for</span> (<span class="keyword">const</span> v <span class="keyword">of</span> values) {
+      counts.<span class="function">set</span>(v, (counts.<span class="function">get</span>(v) || <span class="number">0</span>) + <span class="number">1</span>);
+      <span class="keyword">if</span> (counts.<span class="function">get</span>(v) &gt;= majority) <span class="keyword">return</span> v;
+    }
+    <span class="keyword">return</span> values[<span class="number">0</span>]; <span class="comment">// fallback</span>
+  }
+}
+
+<span class="comment">// Quorum formula: R + W > N guarantees overlap</span>
+<span class="comment">// N=3 replicas, W=2 (write quorum), R=2 (read quorum)</span>
+<span class="comment">// 2 + 2 = 4 > 3 -- at least one node has the latest write</span></code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: CONSENSUS -->
+    <!-- ============================================================ -->
+    <section id="consensus">
+      <h2>4. Consensus Algorithms</h2>
+
+      <p>Consensus is the problem of getting multiple nodes to agree on a value. It is the foundation of replicated state machines, leader election, and distributed locks.</p>
+
+      <h3>Raft -- Understandable Consensus</h3>
+      <p>Designed by Diego Ongaro and John Ousterhout in 2014 explicitly for understandability. Used in etcd, Consul, CockroachDB, and TiKV.</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Raft Node States:</span>
+<span class="comment"></span>
+<span class="comment">  +----------+     timeout      +-----------+    wins election    +--------+</span>
+<span class="comment">  | Follower | ---------------&gt; | Candidate | -----------------&gt; | Leader |</span>
+<span class="comment">  +----------+                  +-----------+                    +--------+</span>
+<span class="comment">       ^                             |                               |</span>
+<span class="comment">       |                             | discovers higher term          |</span>
+<span class="comment">       |                             v                               |</span>
+<span class="comment">       +-------- discovers higher term / loses election &lt;-----------+</span>
+<span class="comment"></span>
+<span class="comment">  Term: monotonically increasing logical clock. Each term has at most one leader.</span></code></pre>
+
+      <h4>Leader Election</h4>
+      <p>Followers have a randomized election timeout (e.g., 150-300ms). If no heartbeat from leader within that timeout, the follower becomes a candidate, increments its term, votes for itself, and requests votes from all other nodes. A candidate wins if it gets votes from a majority.</p>
+
+      <div class="formula-box">
+        <div class="label">Raft Election Rules</div>
+        1. Each node votes for at most one candidate per term<br>
+        2. Candidate must have a log at least as up-to-date as the voter<br>
+        3. Majority (N/2 + 1) votes needed to win<br>
+        4. If split vote, timeout and try again with new term
+      </div>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">type</span> NodeState <span class="keyword">int</span>
+
+<span class="keyword">const</span> (
+    Follower  NodeState = <span class="keyword">iota</span>
+    Candidate
+    Leader
+)
+
+<span class="keyword">type</span> RaftNode <span class="keyword">struct</span> {
+    mu          sync.Mutex
+    id          <span class="keyword">int</span>
+    state       NodeState
+    currentTerm <span class="keyword">int</span>
+    votedFor    <span class="keyword">int</span>  <span class="comment">// -1 means no vote this term</span>
+    log         []LogEntry
+    commitIndex <span class="keyword">int</span>
+    peers       []<span class="keyword">int</span>
+}
+
+<span class="keyword">type</span> LogEntry <span class="keyword">struct</span> {
+    Term    <span class="keyword">int</span>
+    Command <span class="keyword">interface</span>{}
+}
+
+<span class="keyword">type</span> RequestVoteArgs <span class="keyword">struct</span> {
+    Term         <span class="keyword">int</span>
+    CandidateID  <span class="keyword">int</span>
+    LastLogIndex <span class="keyword">int</span>
+    LastLogTerm  <span class="keyword">int</span>
+}
+
+<span class="keyword">type</span> RequestVoteReply <span class="keyword">struct</span> {
+    Term        <span class="keyword">int</span>
+    VoteGranted <span class="keyword">bool</span>
+}
+
+<span class="keyword">func</span> (rn *RaftNode) <span class="function">RequestVote</span>(args *RequestVoteArgs, reply *RequestVoteReply) {
+    rn.mu.Lock()
+    <span class="keyword">defer</span> rn.mu.Unlock()
+
+    reply.Term = rn.currentTerm
+    reply.VoteGranted = <span class="keyword">false</span>
+
+    <span class="comment">// Rule 1: reject if candidate's term is old</span>
+    <span class="keyword">if</span> args.Term &lt; rn.currentTerm {
+        <span class="keyword">return</span>
+    }
+
+    <span class="comment">// Step down if we see a higher term</span>
+    <span class="keyword">if</span> args.Term &gt; rn.currentTerm {
+        rn.currentTerm = args.Term
+        rn.state = Follower
+        rn.votedFor = -<span class="number">1</span>
+    }
+
+    <span class="comment">// Rule 2: only vote if we haven't voted or already voted for this candidate</span>
+    <span class="keyword">if</span> rn.votedFor == -<span class="number">1</span> || rn.votedFor == args.CandidateID {
+        <span class="comment">// Rule 3: candidate's log must be at least as up-to-date</span>
+        lastIdx := <span class="builtin">len</span>(rn.log) - <span class="number">1</span>
+        lastTerm := <span class="number">0</span>
+        <span class="keyword">if</span> lastIdx &gt;= <span class="number">0</span> {
+            lastTerm = rn.log[lastIdx].Term
+        }
+        <span class="keyword">if</span> args.LastLogTerm &gt; lastTerm ||
+            (args.LastLogTerm == lastTerm &amp;&amp; args.LastLogIndex &gt;= lastIdx) {
+            reply.VoteGranted = <span class="keyword">true</span>
+            rn.votedFor = args.CandidateID
+        }
+    }
+}</code></pre>
+
+      <h4>Log Replication</h4>
+      <p>Once elected, the leader accepts client requests, appends them to its log, and replicates them to followers via AppendEntries RPCs. An entry is committed once a majority of nodes have it. Committed entries are applied to the state machine.</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Log Replication Flow:</span>
+<span class="comment"></span>
+<span class="comment">  Client --&gt; Leader: "SET x=5"</span>
+<span class="comment">      |</span>
+<span class="comment">      v</span>
+<span class="comment">  Leader appends to local log: [term=3, SET x=5]</span>
+<span class="comment">      |</span>
+<span class="comment">      +-------+-------+</span>
+<span class="comment">      |       |       |</span>
+<span class="comment">      v       v       v</span>
+<span class="comment">  Follower1  Follower2  Follower3    (AppendEntries RPC)</span>
+<span class="comment">      |       |       |</span>
+<span class="comment">      v       v       v</span>
+<span class="comment">  ACK        ACK      ACK</span>
+<span class="comment">      |       |       |</span>
+<span class="comment">      +-------+-------+</span>
+<span class="comment">      |</span>
+<span class="comment">      v</span>
+<span class="comment">  Leader: 3/4 nodes have entry (majority!) --&gt; COMMIT</span>
+<span class="comment">  Leader applies to state machine and responds to client</span>
+<span class="comment">  Next heartbeat tells followers to commit too</span></code></pre>
+
+      <h3>Paxos -- Simplified</h3>
+      <p>Paxos, by Leslie Lamport, is the original consensus algorithm (1989). It is notoriously hard to understand. The basic idea has three roles: Proposers, Acceptors, and Learners.</p>
+
+      <div class="example-box">
+        <div class="label">Paxos in Two Phases</div>
+        <p><strong>Phase 1 (Prepare):</strong> Proposer picks a proposal number N. Sends Prepare(N) to a majority of acceptors. Acceptors promise not to accept proposals with number &lt; N. If they already accepted a value, they return it.</p>
+        <p><strong>Phase 2 (Accept):</strong> If proposer gets promises from majority, it sends Accept(N, value) where value is either the highest-numbered previously accepted value, or the proposer's own value. Acceptors accept if they haven't promised a higher number.</p>
+        <p><strong>Result:</strong> Once a majority of acceptors accept a value, consensus is reached. Learners are notified.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Raft vs Paxos</div>
+        <p>Use Raft. It was designed to be understandable and produces equivalent results. Paxos is a family of protocols (Basic, Multi, Fast, Cheap, etc.) and implementing it correctly is extremely difficult. Every production Paxos implementation deviates from the paper significantly. Raft gives you a clear spec to implement against.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: REPLICATION -->
+    <!-- ============================================================ -->
+    <section id="replication">
+      <h2>5. Replication</h2>
+
+      <p>Replication keeps copies of data on multiple nodes for fault tolerance and read throughput. The fundamental challenge: keeping replicas consistent when writes happen.</p>
+
+      <h3>Single-Leader Replication</h3>
+      <p>One node is the leader (master). All writes go to the leader, which streams changes to followers (slaves/replicas). Reads can come from any replica.</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Writes ----&gt; [Leader] ----&gt; replication log ----+----+----+</span>
+<span class="comment">                  |                                |    |    |</span>
+<span class="comment">                  v                                v    v    v</span>
+<span class="comment">              [Follower 1]                    [F2] [F3] [F4]</span>
+<span class="comment">                  ^</span>
+<span class="comment">                  |</span>
+<span class="comment">  Reads &lt;---------+ (reads from any replica)</span>
+<span class="comment"></span>
+<span class="comment">  + Simple, no write conflicts</span>
+<span class="comment">  - Single point of failure for writes</span>
+<span class="comment">  - Replication lag = stale reads from followers</span></code></pre>
+
+      <h3>Multi-Leader Replication</h3>
+      <p>Multiple nodes accept writes. Used in multi-datacenter setups. Each datacenter has a local leader. The big problem: write conflicts when two leaders accept conflicting writes.</p>
+
+      <h3>Leaderless Replication</h3>
+      <p>Any replica can accept writes. Used by Dynamo, Cassandra, Riak. Clients write to multiple replicas and read from multiple replicas. Uses quorum reads/writes to ensure consistency.</p>
+
+      <h3>Conflict Resolution</h3>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="comment">// Last-Writer-Wins (LWW) -- simple but loses data</span>
+<span class="keyword">function</span> <span class="function">resolveConflictLWW</span>(versions) {
+  <span class="keyword">return</span> versions.<span class="function">reduce</span>((latest, v) =&gt;
+    v.timestamp &gt; latest.timestamp ? v : latest
+  );
+}
+
+<span class="comment">// Merge function -- application-specific, preserves data</span>
+<span class="keyword">function</span> <span class="function">resolveShoppingCart</span>(v1, v2) {
+  <span class="comment">// Union of items from both carts</span>
+  <span class="keyword">const</span> merged = <span class="keyword">new</span> <span class="function">Map</span>();
+  <span class="keyword">for</span> (<span class="keyword">const</span> item <span class="keyword">of</span> [...v1.items, ...v2.items]) {
+    <span class="keyword">const</span> existing = merged.<span class="function">get</span>(item.id);
+    <span class="keyword">if</span> (!existing || item.quantity &gt; existing.quantity) {
+      merged.<span class="function">set</span>(item.id, item);
+    }
+  }
+  <span class="keyword">return</span> { items: [...merged.<span class="function">values</span>()] };
+}</code></pre>
+
+      <h3>CRDTs -- Conflict-Free Replicated Data Types</h3>
+      <p>Data structures that can be replicated across nodes and updated independently without coordination. They mathematically guarantee convergence. Two types: state-based (CvRDT) and operation-based (CmRDT).</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="comment">// G-Counter: a grow-only counter CRDT</span>
+<span class="comment">// Each node increments its own slot. Total = sum of all slots.</span>
+<span class="keyword">type</span> GCounter <span class="keyword">struct</span> {
+    counts <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span> <span class="comment">// nodeID -> count</span>
+    nodeID <span class="keyword">string</span>
+}
+
+<span class="keyword">func</span> <span class="function">NewGCounter</span>(nodeID <span class="keyword">string</span>) *GCounter {
+    <span class="keyword">return</span> &amp;GCounter{
+        counts: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>{nodeID: <span class="number">0</span>},
+        nodeID: nodeID,
+    }
+}
+
+<span class="keyword">func</span> (gc *GCounter) <span class="function">Increment</span>() {
+    gc.counts[gc.nodeID]++
+}
+
+<span class="keyword">func</span> (gc *GCounter) <span class="function">Value</span>() <span class="keyword">uint64</span> {
+    <span class="keyword">var</span> total <span class="keyword">uint64</span>
+    <span class="keyword">for</span> _, v := <span class="keyword">range</span> gc.counts {
+        total += v
+    }
+    <span class="keyword">return</span> total
+}
+
+<span class="comment">// Merge takes the max of each node's counter</span>
+<span class="keyword">func</span> (gc *GCounter) <span class="function">Merge</span>(other *GCounter) {
+    <span class="keyword">for</span> k, v := <span class="keyword">range</span> other.counts {
+        <span class="keyword">if</span> v &gt; gc.counts[k] {
+            gc.counts[k] = v
+        }
+    }
+}
+
+<span class="comment">// PN-Counter: supports both increment and decrement</span>
+<span class="comment">// Uses two G-Counters: one for increments, one for decrements</span>
+<span class="keyword">type</span> PNCounter <span class="keyword">struct</span> {
+    pos *GCounter
+    neg *GCounter
+}
+
+<span class="keyword">func</span> (pn *PNCounter) <span class="function">Increment</span>() { pn.pos.<span class="function">Increment</span>() }
+<span class="keyword">func</span> (pn *PNCounter) <span class="function">Decrement</span>() { pn.neg.<span class="function">Increment</span>() }
+<span class="keyword">func</span> (pn *PNCounter) <span class="function">Value</span>() <span class="keyword">int64</span>  {
+    <span class="keyword">return</span> <span class="keyword">int64</span>(pn.pos.<span class="function">Value</span>()) - <span class="keyword">int64</span>(pn.neg.<span class="function">Value</span>())
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">CRDTs in Production</div>
+        <p>Redis has built-in CRDT support in Redis Enterprise. Riak uses CRDTs for maps, sets, counters, and flags. Automerge and Yjs are CRDT libraries for collaborative editing (Google Docs-style). CRDTs trade off space (metadata grows) for coordination-freedom.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: PARTITIONING -->
+    <!-- ============================================================ -->
+    <section id="partitioning">
+      <h2>6. Partitioning &amp; Sharding</h2>
+
+      <p>When data is too large for one node, you split it across multiple nodes. Each piece is a <strong>partition</strong> (or shard). The key question: which data goes to which node?</p>
+
+      <h3>Range Partitioning</h3>
+      <p>Assign contiguous ranges of keys to each partition. Good for range queries but risks hot spots (e.g., all recent timestamps hit the same partition).</p>
+
+      <h3>Hash Partitioning</h3>
+      <p>Hash the key and assign based on hash value. Distributes data evenly but range queries require scatter-gather.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">import</span> (
+    <span class="string">"crypto/sha256"</span>
+    <span class="string">"encoding/binary"</span>
+    <span class="string">"fmt"</span>
+)
+
+<span class="keyword">func</span> <span class="function">hashPartition</span>(key <span class="keyword">string</span>, numPartitions <span class="keyword">int</span>) <span class="keyword">int</span> {
+    h := sha256.<span class="function">Sum256</span>([]<span class="keyword">byte</span>(key))
+    num := binary.BigEndian.<span class="function">Uint64</span>(h[:8])
+    <span class="keyword">return</span> <span class="keyword">int</span>(num % <span class="keyword">uint64</span>(numPartitions))
+}
+
+<span class="keyword">func</span> <span class="function">main</span>() {
+    keys := []<span class="keyword">string</span>{<span class="string">"user:1001"</span>, <span class="string">"user:1002"</span>, <span class="string">"user:1003"</span>, <span class="string">"order:5001"</span>}
+    <span class="keyword">for</span> _, k := <span class="keyword">range</span> keys {
+        fmt.<span class="function">Printf</span>(<span class="string">"Key %s -> Partition %d\n"</span>, k, <span class="function">hashPartition</span>(k, <span class="number">4</span>))
+    }
+}</code></pre>
+
+      <h3>Consistent Hashing</h3>
+      <p>The problem with simple hash partitioning: when you add or remove a node, almost ALL keys get reassigned. Consistent hashing fixes this -- only K/N keys move on average (K = total keys, N = number of nodes).</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Consistent Hashing Ring:</span>
+<span class="comment"></span>
+<span class="comment">                    0 / 2^32</span>
+<span class="comment">                      |</span>
+<span class="comment">              Node C   |   Node A</span>
+<span class="comment">                \      |      /</span>
+<span class="comment">                 \     |     /</span>
+<span class="comment">                  *----+----*</span>
+<span class="comment">                 /           \</span>
+<span class="comment">                /             \</span>
+<span class="comment">         ------               ------</span>
+<span class="comment">        |      |             |      |</span>
+<span class="comment">        |      |             |      |</span>
+<span class="comment">         ------               ------</span>
+<span class="comment">                \             /</span>
+<span class="comment">                 \           /</span>
+<span class="comment">                  *---------*</span>
+<span class="comment">                 /     |     \</span>
+<span class="comment">                /      |      \</span>
+<span class="comment">              Node B   |   Node D</span>
+<span class="comment">                      |</span>
+<span class="comment">                    2^31</span>
+<span class="comment"></span>
+<span class="comment">  Each key is hashed onto the ring.</span>
+<span class="comment">  Walk clockwise to find the first node -- that's the owner.</span>
+<span class="comment">  Virtual nodes: each physical node gets multiple positions on the ring</span>
+<span class="comment">  for better balance.</span></code></pre>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">import</span> (
+    <span class="string">"crypto/sha256"</span>
+    <span class="string">"encoding/binary"</span>
+    <span class="string">"fmt"</span>
+    <span class="string">"sort"</span>
+)
+
+<span class="keyword">type</span> ConsistentHash <span class="keyword">struct</span> {
+    ring       []<span class="keyword">uint64</span>
+    nodeMap    <span class="keyword">map</span>[<span class="keyword">uint64</span>]<span class="keyword">string</span>
+    vnodes     <span class="keyword">int</span> <span class="comment">// virtual nodes per physical node</span>
+}
+
+<span class="keyword">func</span> <span class="function">NewConsistentHash</span>(vnodes <span class="keyword">int</span>) *ConsistentHash {
+    <span class="keyword">return</span> &amp;ConsistentHash{
+        nodeMap: <span class="builtin">make</span>(<span class="keyword">map</span>[<span class="keyword">uint64</span>]<span class="keyword">string</span>),
+        vnodes:  vnodes,
+    }
+}
+
+<span class="keyword">func</span> (ch *ConsistentHash) <span class="function">hashKey</span>(key <span class="keyword">string</span>) <span class="keyword">uint64</span> {
+    h := sha256.<span class="function">Sum256</span>([]<span class="keyword">byte</span>(key))
+    <span class="keyword">return</span> binary.BigEndian.<span class="function">Uint64</span>(h[:8])
+}
+
+<span class="keyword">func</span> (ch *ConsistentHash) <span class="function">AddNode</span>(node <span class="keyword">string</span>) {
+    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ch.vnodes; i++ {
+        vkey := fmt.<span class="function">Sprintf</span>(<span class="string">"%s-vnode-%d"</span>, node, i)
+        hash := ch.<span class="function">hashKey</span>(vkey)
+        ch.ring = <span class="builtin">append</span>(ch.ring, hash)
+        ch.nodeMap[hash] = node
+    }
+    sort.<span class="function">Slice</span>(ch.ring, <span class="keyword">func</span>(i, j <span class="keyword">int</span>) <span class="keyword">bool</span> {
+        <span class="keyword">return</span> ch.ring[i] &lt; ch.ring[j]
+    })
+}
+
+<span class="keyword">func</span> (ch *ConsistentHash) <span class="function">GetNode</span>(key <span class="keyword">string</span>) <span class="keyword">string</span> {
+    hash := ch.<span class="function">hashKey</span>(key)
+    idx := sort.<span class="function">Search</span>(<span class="builtin">len</span>(ch.ring), <span class="keyword">func</span>(i <span class="keyword">int</span>) <span class="keyword">bool</span> {
+        <span class="keyword">return</span> ch.ring[i] &gt;= hash
+    })
+    <span class="keyword">if</span> idx == <span class="builtin">len</span>(ch.ring) {
+        idx = <span class="number">0</span> <span class="comment">// wrap around the ring</span>
+    }
+    <span class="keyword">return</span> ch.nodeMap[ch.ring[idx]]
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Rebalancing is Expensive</div>
+        <p>Even with consistent hashing, moving data between nodes takes time and bandwidth. Plan for it: use partition counts larger than your node count so you can move whole partitions. Kafka uses this approach -- partitions are the unit of rebalancing, not individual keys.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: DISTRIBUTED TRANSACTIONS -->
+    <!-- ============================================================ -->
+    <section id="distributed-tx">
+      <h2>7. Distributed Transactions</h2>
+
+      <p>How do you ensure atomicity when a transaction spans multiple services or partitions? Single-node ACID does not help you here.</p>
+
+      <h3>Two-Phase Commit (2PC)</h3>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Phase 1: PREPARE</span>
+<span class="comment">  Coordinator ----Prepare----&gt; Participant A  --&gt; "Yes, I can commit"</span>
+<span class="comment">              ----Prepare----&gt; Participant B  --&gt; "Yes, I can commit"</span>
+<span class="comment">              ----Prepare----&gt; Participant C  --&gt; "Yes, I can commit"</span>
+<span class="comment"></span>
+<span class="comment">  Phase 2: COMMIT (if all said yes)</span>
+<span class="comment">  Coordinator ----Commit-----&gt; Participant A  --&gt; ACK</span>
+<span class="comment">              ----Commit-----&gt; Participant B  --&gt; ACK</span>
+<span class="comment">              ----Commit-----&gt; Participant C  --&gt; ACK</span>
+<span class="comment"></span>
+<span class="comment">  If ANY participant says "No" in Phase 1:</span>
+<span class="comment">  Coordinator ----Abort------&gt; All Participants</span>
+<span class="comment"></span>
+<span class="comment">  Problem: If coordinator crashes after Phase 1, participants are STUCK</span>
+<span class="comment">  waiting (blocking protocol). This is why 2PC is rarely used across services.</span></code></pre>
+
+      <h3>Sagas -- Compensating Transactions</h3>
+      <p>Instead of a distributed transaction, break it into a sequence of local transactions. Each step has a compensating action that undoes it if a later step fails.</p>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="comment">// Saga: Order Processing</span>
+<span class="comment">// Step 1: Reserve inventory</span>
+<span class="comment">// Step 2: Charge payment</span>
+<span class="comment">// Step 3: Ship order</span>
+<span class="comment">// If step 3 fails, compensate: refund payment, release inventory</span>
+
+<span class="keyword">class</span> <span class="function">SagaOrchestrator</span> {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.steps = [];
+    <span class="keyword">this</span>.completedSteps = [];
+  }
+
+  <span class="function">addStep</span>(name, execute, compensate) {
+    <span class="keyword">this</span>.steps.<span class="function">push</span>({ name, execute, compensate });
+  }
+
+  <span class="keyword">async</span> <span class="function">run</span>(context) {
+    <span class="keyword">for</span> (<span class="keyword">const</span> step <span class="keyword">of</span> <span class="keyword">this</span>.steps) {
+      <span class="keyword">try</span> {
+        console.<span class="function">log</span>(<span class="string">`Executing: ${step.name}`</span>);
+        <span class="keyword">const</span> result = <span class="keyword">await</span> step.<span class="function">execute</span>(context);
+        context[step.name] = result;
+        <span class="keyword">this</span>.completedSteps.<span class="function">push</span>(step);
+      } <span class="keyword">catch</span> (err) {
+        console.<span class="function">log</span>(<span class="string">`Failed: ${step.name} -- ${err.message}`</span>);
+        <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">compensate</span>(context);
+        <span class="keyword">throw</span> err;
+      }
+    }
+    <span class="keyword">return</span> context;
+  }
+
+  <span class="keyword">async</span> <span class="function">compensate</span>(context) {
+    <span class="comment">// Compensate in reverse order</span>
+    <span class="keyword">for</span> (<span class="keyword">const</span> step <span class="keyword">of</span> <span class="keyword">this</span>.completedSteps.<span class="function">reverse</span>()) {
+      <span class="keyword">try</span> {
+        console.<span class="function">log</span>(<span class="string">`Compensating: ${step.name}`</span>);
+        <span class="keyword">await</span> step.<span class="function">compensate</span>(context);
+      } <span class="keyword">catch</span> (err) {
+        console.<span class="function">error</span>(<span class="string">`Compensation failed for ${step.name}: ${err.message}`</span>);
+        <span class="comment">// Log for manual intervention -- compensations MUST eventually succeed</span>
+      }
+    }
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> saga = <span class="keyword">new</span> <span class="function">SagaOrchestrator</span>();
+
+saga.<span class="function">addStep</span>(
+  <span class="string">'reserveInventory'</span>,
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* call inventory service */</span> <span class="keyword">return</span> { reservationId: <span class="string">'abc'</span> }; },
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* release reservation ctx.reserveInventory.reservationId */</span> }
+);
+
+saga.<span class="function">addStep</span>(
+  <span class="string">'chargePayment'</span>,
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* call payment service */</span> <span class="keyword">return</span> { chargeId: <span class="string">'ch_123'</span> }; },
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* refund ctx.chargePayment.chargeId */</span> }
+);
+
+saga.<span class="function">addStep</span>(
+  <span class="string">'shipOrder'</span>,
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* call shipping service */</span> <span class="keyword">return</span> { trackingId: <span class="string">'trk_789'</span> }; },
+  <span class="keyword">async</span> (ctx) =&gt; { <span class="comment">/* cancel shipment */</span> }
+);</code></pre>
+
+      <h3>Transactional Outbox Pattern</h3>
+      <p>When you need to update a database AND publish an event atomically. Write both to the same database in one transaction. A separate process reads the outbox table and publishes events.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="comment">// Transactional Outbox: write order + event in one DB transaction</span>
+<span class="keyword">func</span> <span class="function">CreateOrderWithOutbox</span>(db *sql.DB, order Order) <span class="keyword">error</span> {
+    tx, err := db.<span class="function">Begin</span>()
+    <span class="keyword">if</span> err != <span class="keyword">nil</span> {
+        <span class="keyword">return</span> err
+    }
+    <span class="keyword">defer</span> tx.<span class="function">Rollback</span>()
+
+    <span class="comment">// 1. Insert the order</span>
+    _, err = tx.<span class="function">Exec</span>(
+        <span class="string">"INSERT INTO orders (id, user_id, total) VALUES ($1, $2, $3)"</span>,
+        order.ID, order.UserID, order.Total,
+    )
+    <span class="keyword">if</span> err != <span class="keyword">nil</span> {
+        <span class="keyword">return</span> err
+    }
+
+    <span class="comment">// 2. Insert event into outbox table (same transaction!)</span>
+    eventPayload, _ := json.<span class="function">Marshal</span>(order)
+    _, err = tx.<span class="function">Exec</span>(
+        <span class="string">"INSERT INTO outbox (id, event_type, payload, created_at) VALUES ($1, $2, $3, NOW())"</span>,
+        uuid.<span class="function">New</span>(), <span class="string">"order.created"</span>, eventPayload,
+    )
+    <span class="keyword">if</span> err != <span class="keyword">nil</span> {
+        <span class="keyword">return</span> err
+    }
+
+    <span class="keyword">return</span> tx.<span class="function">Commit</span>()
+}
+
+<span class="comment">// Separate poller reads outbox and publishes to message broker</span>
+<span class="keyword">func</span> <span class="function">OutboxPoller</span>(db *sql.DB, publisher MessagePublisher) {
+    <span class="keyword">for</span> {
+        rows, _ := db.<span class="function">Query</span>(
+            <span class="string">"SELECT id, event_type, payload FROM outbox WHERE published = false ORDER BY created_at LIMIT 100"</span>,
+        )
+        <span class="keyword">for</span> rows.<span class="function">Next</span>() {
+            <span class="keyword">var</span> id, eventType, payload <span class="keyword">string</span>
+            rows.<span class="function">Scan</span>(&amp;id, &amp;eventType, &amp;payload)
+            publisher.<span class="function">Publish</span>(eventType, payload)
+            db.<span class="function">Exec</span>(<span class="string">"UPDATE outbox SET published = true WHERE id = $1"</span>, id)
+        }
+        time.<span class="function">Sleep</span>(<span class="number">500</span> * time.Millisecond)
+    }
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">CDC Instead of Polling</div>
+        <p>Instead of polling the outbox table, use <strong>Change Data Capture (CDC)</strong> with tools like Debezium. It reads the database's write-ahead log (WAL) and streams changes to Kafka. No polling delay, no extra load on the database. This is the production-grade approach.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: GOSSIP PROTOCOLS -->
+    <!-- ============================================================ -->
+    <section id="gossip">
+      <h2>8. Gossip Protocols</h2>
+
+      <p>How do nodes in a large cluster discover each other, detect failures, and propagate state? Gossip protocols spread information like a rumor -- each node periodically tells a random peer what it knows.</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Gossip Round 1:        Round 2:           Round 3:</span>
+<span class="comment">  Node A knows X         A tells B           B tells D</span>
+<span class="comment">                         A tells C           C tells E</span>
+<span class="comment">  [A*] [B] [C]          [A*] [B*] [C*]      [A*] [B*] [C*]</span>
+<span class="comment">  [D]  [E] [F]          [D]  [E]  [F]       [D*] [E*] [F]</span>
+<span class="comment"></span>
+<span class="comment">  Information spreads in O(log N) rounds to all N nodes.</span>
+<span class="comment">  Even if some messages are lost, redundancy ensures delivery.</span></code></pre>
+
+      <h3>Failure Detection with Gossip</h3>
+      <p>Nodes periodically ping random peers. If a node does not respond, don't immediately declare it dead. Use a <strong>suspicion mechanism</strong>: mark it as suspected, gossip the suspicion, and only declare dead after a timeout.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">type</span> NodeStatus <span class="keyword">int</span>
+
+<span class="keyword">const</span> (
+    Alive     NodeStatus = <span class="keyword">iota</span>
+    Suspected
+    Dead
+)
+
+<span class="keyword">type</span> Member <span class="keyword">struct</span> {
+    ID        <span class="keyword">string</span>
+    Addr      <span class="keyword">string</span>
+    Status    NodeStatus
+    Heartbeat <span class="keyword">uint64</span>
+    Timestamp time.Time
+}
+
+<span class="keyword">type</span> GossipNode <span class="keyword">struct</span> {
+    mu        sync.RWMutex
+    self      Member
+    members   <span class="keyword">map</span>[<span class="keyword">string</span>]*Member
+    suspectTTL time.Duration
+}
+
+<span class="keyword">func</span> (g *GossipNode) <span class="function">GossipRound</span>() {
+    g.mu.RLock()
+    peers := <span class="builtin">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>, <span class="builtin">len</span>(g.members))
+    <span class="keyword">for</span> id := <span class="keyword">range</span> g.members {
+        <span class="keyword">if</span> id != g.self.ID {
+            peers = <span class="builtin">append</span>(peers, id)
+        }
+    }
+    g.mu.RUnlock()
+
+    <span class="keyword">if</span> <span class="builtin">len</span>(peers) == <span class="number">0</span> {
+        <span class="keyword">return</span>
+    }
+
+    <span class="comment">// Pick a random peer (fanout = 1 for simplicity)</span>
+    target := peers[rand.<span class="function">Intn</span>(<span class="builtin">len</span>(peers))]
+
+    <span class="comment">// Send our membership list, receive theirs, merge</span>
+    g.<span class="function">sendGossip</span>(target)
+}
+
+<span class="keyword">func</span> (g *GossipNode) <span class="function">MergeMemberList</span>(incoming []Member) {
+    g.mu.Lock()
+    <span class="keyword">defer</span> g.mu.Unlock()
+
+    <span class="keyword">for</span> _, m := <span class="keyword">range</span> incoming {
+        existing, ok := g.members[m.ID]
+        <span class="keyword">if</span> !ok {
+            <span class="comment">// New node discovered</span>
+            g.members[m.ID] = &amp;m
+            <span class="keyword">continue</span>
+        }
+        <span class="comment">// Higher heartbeat = more recent info</span>
+        <span class="keyword">if</span> m.Heartbeat &gt; existing.Heartbeat {
+            existing.Heartbeat = m.Heartbeat
+            existing.Status = m.Status
+            existing.Timestamp = time.<span class="function">Now</span>()
+        }
+    }
+}
+
+<span class="keyword">func</span> (g *GossipNode) <span class="function">DetectFailures</span>() {
+    g.mu.Lock()
+    <span class="keyword">defer</span> g.mu.Unlock()
+
+    <span class="keyword">for</span> _, m := <span class="keyword">range</span> g.members {
+        <span class="keyword">if</span> m.ID == g.self.ID {
+            <span class="keyword">continue</span>
+        }
+        age := time.<span class="function">Since</span>(m.Timestamp)
+        <span class="keyword">if</span> m.Status == Alive &amp;&amp; age &gt; g.suspectTTL {
+            m.Status = Suspected
+        } <span class="keyword">else</span> <span class="keyword">if</span> m.Status == Suspected &amp;&amp; age &gt; g.suspectTTL*<span class="number">3</span> {
+            m.Status = Dead
+        }
+    }
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Gossip in Practice</div>
+        <p><strong>Cassandra</strong> uses gossip for cluster membership and failure detection.</p>
+        <p><strong>HashiCorp Serf/Consul</strong> uses the SWIM protocol (gossip-based failure detection).</p>
+        <p><strong>Redis Cluster</strong> uses gossip for node discovery and slot assignment propagation.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: LOAD BALANCING -->
+    <!-- ============================================================ -->
+    <section id="load-balancing">
+      <h2>9. Load Balancing</h2>
+
+      <p>Distribute incoming traffic across multiple backend servers to maximize throughput, minimize latency, and avoid overloading any single server.</p>
+
+      <h3>Algorithms</h3>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  Algorithm Comparison:</span>
+<span class="comment"></span>
+<span class="comment">  Round Robin        Least Connections    Weighted Round Robin</span>
+<span class="comment">  A -> B -> C ->     A(2) B(5) C(1)       A(w=3) B(w=1) C(w=2)</span>
+<span class="comment">  A -> B -> C ->     next -> C (least)     A A A B C C A A A ...</span>
+<span class="comment">  Simple, fair if    Good for varying       Good when servers</span>
+<span class="comment">  requests are       request durations      have different capacity</span>
+<span class="comment">  similar cost</span></code></pre>
+
+      <h3>L4 vs L7 Load Balancing</h3>
+
+      <div class="formula-box">
+        <div class="label">Layer 4 vs Layer 7</div>
+        <strong>L4 (Transport)</strong>: Operates on TCP/UDP. Sees IP + port. Very fast (kernel-level). Cannot inspect HTTP headers, cookies, or URLs. Example: AWS NLB, HAProxy (TCP mode), IPVS.<br><br>
+        <strong>L7 (Application)</strong>: Operates on HTTP/gRPC. Can route based on URL path, headers, cookies. Can do SSL termination. Slower than L4 but much more flexible. Example: Nginx, HAProxy (HTTP mode), AWS ALB, Envoy.
+      </div>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="comment">// Simple round-robin load balancer in Node.js</span>
+<span class="keyword">const</span> http = <span class="builtin">require</span>(<span class="string">'http'</span>);
+<span class="keyword">const</span> httpProxy = <span class="builtin">require</span>(<span class="string">'http-proxy'</span>);
+
+<span class="keyword">const</span> backends = [
+  { host: <span class="string">'127.0.0.1'</span>, port: <span class="number">3001</span> },
+  { host: <span class="string">'127.0.0.1'</span>, port: <span class="number">3002</span> },
+  { host: <span class="string">'127.0.0.1'</span>, port: <span class="number">3003</span> },
+];
+
+<span class="keyword">let</span> current = <span class="number">0</span>;
+<span class="keyword">const</span> proxy = httpProxy.<span class="function">createProxyServer</span>({});
+
+<span class="keyword">const</span> server = http.<span class="function">createServer</span>((req, res) =&gt; {
+  <span class="keyword">const</span> target = backends[current % backends.length];
+  current++;
+
+  proxy.<span class="function">web</span>(req, res, {
+    target: <span class="string">`http://${target.host}:${target.port}`</span>
+  });
+});
+
+proxy.<span class="function">on</span>(<span class="string">'error'</span>, (err, req, res) =&gt; {
+  res.writeHead(<span class="number">502</span>);
+  res.<span class="function">end</span>(<span class="string">'Bad Gateway'</span>);
+});
+
+server.<span class="function">listen</span>(<span class="number">8080</span>, () =&gt; {
+  console.<span class="function">log</span>(<span class="string">'Load balancer on :8080'</span>);
+});</code></pre>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="comment">// Least-connections load balancer</span>
+<span class="keyword">type</span> Backend <span class="keyword">struct</span> {
+    URL         *url.URL
+    Alive       <span class="keyword">bool</span>
+    Connections <span class="keyword">int64</span>
+    mu          sync.RWMutex
+}
+
+<span class="keyword">type</span> LeastConnLB <span class="keyword">struct</span> {
+    backends []*Backend
+    mu       sync.RWMutex
+}
+
+<span class="keyword">func</span> (lb *LeastConnLB) <span class="function">NextBackend</span>() *Backend {
+    lb.mu.RLock()
+    <span class="keyword">defer</span> lb.mu.RUnlock()
+
+    <span class="keyword">var</span> best *Backend
+    <span class="keyword">for</span> _, b := <span class="keyword">range</span> lb.backends {
+        <span class="keyword">if</span> !b.Alive {
+            <span class="keyword">continue</span>
+        }
+        <span class="keyword">if</span> best == <span class="keyword">nil</span> || atomic.<span class="function">LoadInt64</span>(&amp;b.Connections) &lt; atomic.<span class="function">LoadInt64</span>(&amp;best.Connections) {
+            best = b
+        }
+    }
+    <span class="keyword">if</span> best != <span class="keyword">nil</span> {
+        atomic.<span class="function">AddInt64</span>(&amp;best.Connections, <span class="number">1</span>)
+    }
+    <span class="keyword">return</span> best
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: DISTRIBUTED CACHING -->
+    <!-- ============================================================ -->
+    <section id="caching">
+      <h2>10. Distributed Caching</h2>
+
+      <p>Caching reduces load on databases and speeds up responses. In a distributed system, caching introduces its own set of consistency challenges.</p>
+
+      <h3>Cache-Aside (Lazy Loading)</h3>
+      <p>The application checks the cache first. On miss, it loads from the database, stores in cache, and returns. On write, it updates the database and invalidates the cache.</p>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="keyword">const</span> Redis = <span class="builtin">require</span>(<span class="string">'ioredis'</span>);
+<span class="keyword">const</span> redis = <span class="keyword">new</span> <span class="function">Redis</span>();
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">getUserCacheAside</span>(userId) {
+  <span class="keyword">const</span> cacheKey = <span class="string">`user:${userId}`</span>;
+
+  <span class="comment">// 1. Check cache</span>
+  <span class="keyword">const</span> cached = <span class="keyword">await</span> redis.<span class="function">get</span>(cacheKey);
+  <span class="keyword">if</span> (cached) {
+    <span class="keyword">return</span> JSON.<span class="function">parse</span>(cached); <span class="comment">// Cache hit</span>
+  }
+
+  <span class="comment">// 2. Cache miss -- load from DB</span>
+  <span class="keyword">const</span> user = <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT * FROM users WHERE id = $1'</span>, [userId]);
+
+  <span class="comment">// 3. Store in cache with TTL</span>
+  <span class="keyword">await</span> redis.<span class="function">setex</span>(cacheKey, <span class="number">3600</span>, JSON.<span class="function">stringify</span>(user));
+
+  <span class="keyword">return</span> user;
+}
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">updateUser</span>(userId, data) {
+  <span class="comment">// 1. Update database FIRST</span>
+  <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'UPDATE users SET name=$1 WHERE id=$2'</span>, [data.name, userId]);
+
+  <span class="comment">// 2. Invalidate cache (don't update -- avoids race conditions)</span>
+  <span class="keyword">await</span> redis.<span class="function">del</span>(<span class="string">`user:${userId}`</span>);
+}</code></pre>
+
+      <h3>Write-Through Cache</h3>
+      <p>Every write goes to both cache and database synchronously. Guarantees cache is always up-to-date but adds latency to writes.</p>
+
+      <h3>Cache Stampede (Thundering Herd)</h3>
+      <p>When a popular cache key expires, hundreds of concurrent requests all miss the cache and hit the database simultaneously. Solutions:</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">import</span> (
+    <span class="string">"context"</span>
+    <span class="string">"sync"</span>
+    <span class="string">"time"</span>
+)
+
+<span class="comment">// singleflight: only one goroutine fetches, others wait for the result</span>
+<span class="keyword">type</span> SingleFlight <span class="keyword">struct</span> {
+    mu    sync.Mutex
+    calls <span class="keyword">map</span>[<span class="keyword">string</span>]*call
+}
+
+<span class="keyword">type</span> call <span class="keyword">struct</span> {
+    wg  sync.WaitGroup
+    val <span class="keyword">interface</span>{}
+    err <span class="keyword">error</span>
+}
+
+<span class="keyword">func</span> (sf *SingleFlight) <span class="function">Do</span>(key <span class="keyword">string</span>, fn <span class="keyword">func</span>() (<span class="keyword">interface</span>{}, <span class="keyword">error</span>)) (<span class="keyword">interface</span>{}, <span class="keyword">error</span>) {
+    sf.mu.Lock()
+    <span class="keyword">if</span> sf.calls == <span class="keyword">nil</span> {
+        sf.calls = <span class="builtin">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*call)
+    }
+
+    <span class="keyword">if</span> c, ok := sf.calls[key]; ok {
+        sf.mu.Unlock()
+        c.wg.<span class="function">Wait</span>() <span class="comment">// Wait for the in-flight request</span>
+        <span class="keyword">return</span> c.val, c.err
+    }
+
+    c := &amp;call{}
+    c.wg.<span class="function">Add</span>(<span class="number">1</span>)
+    sf.calls[key] = c
+    sf.mu.Unlock()
+
+    <span class="comment">// Only ONE goroutine executes this</span>
+    c.val, c.err = <span class="function">fn</span>()
+    c.wg.<span class="function">Done</span>()
+
+    sf.mu.Lock()
+    <span class="builtin">delete</span>(sf.calls, key)
+    sf.mu.Unlock()
+
+    <span class="keyword">return</span> c.val, c.err
+}
+
+<span class="comment">// Usage: prevents cache stampede</span>
+<span class="comment">// var sf SingleFlight</span>
+<span class="comment">// val, err := sf.Do("user:123", func() (interface{}, error) {</span>
+<span class="comment">//     return db.GetUser(123)  // only called once even with 1000 concurrent requests</span>
+<span class="comment">// })</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Cache Invalidation</div>
+        <p>"There are only two hard things in Computer Science: cache invalidation and naming things." Delete on write is the safest strategy. Never update the cache on write -- if two writes happen concurrently, the cache can end up with a stale value permanently. Use TTLs as a safety net. Consider event-driven invalidation with CDC for strong consistency.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: RATE LIMITING -->
+    <!-- ============================================================ -->
+    <section id="rate-limiting">
+      <h2>11. Rate Limiting</h2>
+
+      <p>Protect your services from being overwhelmed. Rate limiting controls how many requests a client can make in a given time window.</p>
+
+      <h3>Token Bucket Algorithm</h3>
+      <p>A bucket holds tokens. Each request consumes one token. Tokens are added at a fixed rate. If the bucket is empty, the request is rejected. Allows bursts up to the bucket capacity.</p>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">type</span> TokenBucket <span class="keyword">struct</span> {
+    mu         sync.Mutex
+    tokens     <span class="keyword">float64</span>
+    maxTokens  <span class="keyword">float64</span>
+    refillRate <span class="keyword">float64</span> <span class="comment">// tokens per second</span>
+    lastRefill time.Time
+}
+
+<span class="keyword">func</span> <span class="function">NewTokenBucket</span>(maxTokens, refillRate <span class="keyword">float64</span>) *TokenBucket {
+    <span class="keyword">return</span> &amp;TokenBucket{
+        tokens:     maxTokens,
+        maxTokens:  maxTokens,
+        refillRate: refillRate,
+        lastRefill: time.<span class="function">Now</span>(),
+    }
+}
+
+<span class="keyword">func</span> (tb *TokenBucket) <span class="function">Allow</span>() <span class="keyword">bool</span> {
+    tb.mu.Lock()
+    <span class="keyword">defer</span> tb.mu.Unlock()
+
+    <span class="comment">// Refill tokens based on elapsed time</span>
+    now := time.<span class="function">Now</span>()
+    elapsed := now.<span class="function">Sub</span>(tb.lastRefill).<span class="function">Seconds</span>()
+    tb.tokens += elapsed * tb.refillRate
+    <span class="keyword">if</span> tb.tokens &gt; tb.maxTokens {
+        tb.tokens = tb.maxTokens
+    }
+    tb.lastRefill = now
+
+    <span class="comment">// Try to consume a token</span>
+    <span class="keyword">if</span> tb.tokens &gt;= <span class="number">1.0</span> {
+        tb.tokens -= <span class="number">1.0</span>
+        <span class="keyword">return</span> <span class="keyword">true</span>
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>
+}</code></pre>
+
+      <h3>Sliding Window with Redis</h3>
+      <p>For distributed rate limiting across multiple servers, use Redis sorted sets. Each request adds a timestamp, and you count entries in the window.</p>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="keyword">const</span> Redis = <span class="builtin">require</span>(<span class="string">'ioredis'</span>);
+<span class="keyword">const</span> redis = <span class="keyword">new</span> <span class="function">Redis</span>();
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">slidingWindowRateLimit</span>(userId, maxRequests, windowSec) {
+  <span class="keyword">const</span> key = <span class="string">`ratelimit:${userId}`</span>;
+  <span class="keyword">const</span> now = Date.<span class="function">now</span>();
+  <span class="keyword">const</span> windowStart = now - windowSec * <span class="number">1000</span>;
+
+  <span class="comment">// Use a Redis transaction (pipeline)</span>
+  <span class="keyword">const</span> pipe = redis.<span class="function">pipeline</span>();
+
+  <span class="comment">// Remove entries outside the window</span>
+  pipe.<span class="function">zremrangebyscore</span>(key, <span class="number">0</span>, windowStart);
+
+  <span class="comment">// Count entries in the window</span>
+  pipe.<span class="function">zcard</span>(key);
+
+  <span class="comment">// Add current request</span>
+  pipe.<span class="function">zadd</span>(key, now, <span class="string">`${now}-${Math.random()}`</span>);
+
+  <span class="comment">// Set TTL so the key auto-expires</span>
+  pipe.<span class="function">expire</span>(key, windowSec);
+
+  <span class="keyword">const</span> results = <span class="keyword">await</span> pipe.<span class="function">exec</span>();
+  <span class="keyword">const</span> count = results[<span class="number">1</span>][<span class="number">1</span>]; <span class="comment">// result of zcard</span>
+
+  <span class="keyword">if</span> (count &gt;= maxRequests) {
+    <span class="keyword">return</span> { allowed: <span class="keyword">false</span>, remaining: <span class="number">0</span> };
+  }
+
+  <span class="keyword">return</span> { allowed: <span class="keyword">true</span>, remaining: maxRequests - count - <span class="number">1</span> };
+}
+
+<span class="comment">// Usage: 100 requests per 60 seconds per user</span>
+<span class="comment">// const result = await slidingWindowRateLimit('user:42', 100, 60);</span></code></pre>
+
+      <div class="tip-box">
+        <div class="label">Rate Limiting in Practice</div>
+        <p>Use token bucket for API rate limiting (allows bursts). Use sliding window for strict per-second limits. For distributed rate limiting, Redis is the standard choice. Consider using a Lua script in Redis to make the check-and-increment atomic. Libraries: Go has <code>golang.org/x/time/rate</code>, Node.js has <code>rate-limiter-flexible</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: IDEMPOTENCY -->
+    <!-- ============================================================ -->
+    <section id="idempotency">
+      <h2>12. Idempotency</h2>
+
+      <p>An operation is idempotent if performing it multiple times has the same effect as performing it once. In distributed systems, retries are inevitable -- your APIs MUST be idempotent.</p>
+
+      <div class="formula-box">
+        <div class="label">Why Idempotency Matters</div>
+        Client sends request &rarr; Server processes it &rarr; Response is lost<br>
+        Client retries &rarr; Server processes it AGAIN &rarr; Double charge!<br><br>
+        With idempotency key: Server checks "I already processed this" &rarr; Returns cached response
+      </div>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="comment">// Idempotency middleware using Redis</span>
+<span class="keyword">func</span> <span class="function">IdempotencyMiddleware</span>(redisClient *redis.Client) <span class="keyword">func</span>(http.Handler) http.Handler {
+    <span class="keyword">return</span> <span class="keyword">func</span>(next http.Handler) http.Handler {
+        <span class="keyword">return</span> http.<span class="function">HandlerFunc</span>(<span class="keyword">func</span>(w http.ResponseWriter, r *http.Request) {
+            idempotencyKey := r.Header.<span class="function">Get</span>(<span class="string">"Idempotency-Key"</span>)
+            <span class="keyword">if</span> idempotencyKey == <span class="string">""</span> {
+                next.<span class="function">ServeHTTP</span>(w, r)
+                <span class="keyword">return</span>
+            }
+
+            cacheKey := <span class="string">"idempotency:"</span> + idempotencyKey
+
+            <span class="comment">// Check if we already processed this request</span>
+            cached, err := redisClient.<span class="function">Get</span>(r.<span class="function">Context</span>(), cacheKey).<span class="function">Result</span>()
+            <span class="keyword">if</span> err == <span class="keyword">nil</span> {
+                <span class="comment">// Already processed -- return cached response</span>
+                w.Header().<span class="function">Set</span>(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)
+                w.<span class="function">Write</span>([]<span class="keyword">byte</span>(cached))
+                <span class="keyword">return</span>
+            }
+
+            <span class="comment">// Try to acquire a lock (prevent concurrent processing of same key)</span>
+            lockKey := cacheKey + <span class="string">":lock"</span>
+            ok, _ := redisClient.<span class="function">SetNX</span>(r.<span class="function">Context</span>(), lockKey, <span class="string">"1"</span>, <span class="number">30</span>*time.Second).<span class="function">Result</span>()
+            <span class="keyword">if</span> !ok {
+                http.<span class="function">Error</span>(w, <span class="string">"Request already in progress"</span>, <span class="number">409</span>)
+                <span class="keyword">return</span>
+            }
+            <span class="keyword">defer</span> redisClient.<span class="function">Del</span>(r.<span class="function">Context</span>(), lockKey)
+
+            <span class="comment">// Capture the response</span>
+            rec := &amp;responseRecorder{ResponseWriter: w, body: &amp;bytes.Buffer{}}
+            next.<span class="function">ServeHTTP</span>(rec, r)
+
+            <span class="comment">// Cache the response for 24 hours</span>
+            redisClient.<span class="function">Set</span>(r.<span class="function">Context</span>(), cacheKey, rec.body.<span class="function">String</span>(), <span class="number">24</span>*time.Hour)
+        })
+    }
+}</code></pre>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="comment">// Idempotent payment processing</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">processPayment</span>(idempotencyKey, amount, userId) {
+  <span class="comment">// 1. Check if this payment was already processed</span>
+  <span class="keyword">const</span> existing = <span class="keyword">await</span> db.<span class="function">query</span>(
+    <span class="string">'SELECT result FROM idempotency_keys WHERE key = $1'</span>,
+    [idempotencyKey]
+  );
+
+  <span class="keyword">if</span> (existing.rows.length &gt; <span class="number">0</span>) {
+    <span class="keyword">return</span> JSON.<span class="function">parse</span>(existing.rows[<span class="number">0</span>].result); <span class="comment">// Return cached result</span>
+  }
+
+  <span class="comment">// 2. Process the payment</span>
+  <span class="keyword">const</span> charge = <span class="keyword">await</span> stripe.charges.<span class="function">create</span>({
+    amount,
+    currency: <span class="string">'usd'</span>,
+    customer: userId,
+    idempotency_key: idempotencyKey, <span class="comment">// Stripe supports this natively!</span>
+  });
+
+  <span class="comment">// 3. Store result with the idempotency key</span>
+  <span class="keyword">await</span> db.<span class="function">query</span>(
+    <span class="string">'INSERT INTO idempotency_keys (key, result, created_at) VALUES ($1, $2, NOW())'</span>,
+    [idempotencyKey, JSON.<span class="function">stringify</span>(charge)]
+  );
+
+  <span class="keyword">return</span> charge;
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Exactly-Once is a Lie (Sort Of)</div>
+        <p>True exactly-once delivery is impossible in a distributed system (proven by the Two Generals Problem). What we actually achieve is <strong>effectively-once</strong>: at-least-once delivery + idempotent processing = appears exactly-once. Kafka achieves "exactly-once semantics" through idempotent producers + transactional consumers -- it is still at-least-once under the hood.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 13: OBSERVABILITY -->
+    <!-- ============================================================ -->
+    <section id="observability">
+      <h2>13. Observability</h2>
+
+      <p>You cannot fix what you cannot see. In a distributed system, a single user request may touch 10+ services. You need distributed tracing, metrics, and structured logging to understand what happened.</p>
+
+      <h3>Distributed Tracing with OpenTelemetry</h3>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">  A single user request as a trace:</span>
+<span class="comment"></span>
+<span class="comment">  Trace ID: abc-123</span>
+<span class="comment">  |</span>
+<span class="comment">  +-- Span: API Gateway (12ms)</span>
+<span class="comment">  |   |</span>
+<span class="comment">  |   +-- Span: Auth Service (3ms)</span>
+<span class="comment">  |   |</span>
+<span class="comment">  |   +-- Span: Order Service (45ms)</span>
+<span class="comment">  |       |</span>
+<span class="comment">  |       +-- Span: DB Query (8ms)</span>
+<span class="comment">  |       |</span>
+<span class="comment">  |       +-- Span: Payment Service (30ms)</span>
+<span class="comment">  |           |</span>
+<span class="comment">  |           +-- Span: Stripe API call (25ms)</span>
+<span class="comment">  |</span>
+<span class="comment">  Total: 60ms</span>
+<span class="comment"></span>
+<span class="comment">  Each span has: trace_id, span_id, parent_span_id, start_time,</span>
+<span class="comment">  duration, service_name, attributes, status</span></code></pre>
+
+      <pre><code><span class="lang-label">Go</span>
+<span class="keyword">import</span> (
+    <span class="string">"context"</span>
+    <span class="string">"go.opentelemetry.io/otel"</span>
+    <span class="string">"go.opentelemetry.io/otel/attribute"</span>
+    <span class="string">"go.opentelemetry.io/otel/trace"</span>
+)
+
+<span class="keyword">var</span> tracer = otel.<span class="function">Tracer</span>(<span class="string">"order-service"</span>)
+
+<span class="keyword">func</span> <span class="function">CreateOrder</span>(ctx context.Context, req OrderRequest) (*Order, <span class="keyword">error</span>) {
+    ctx, span := tracer.<span class="function">Start</span>(ctx, <span class="string">"CreateOrder"</span>,
+        trace.<span class="function">WithAttributes</span>(
+            attribute.<span class="function">String</span>(<span class="string">"user.id"</span>, req.UserID),
+            attribute.<span class="function">Float64</span>(<span class="string">"order.total"</span>, req.Total),
+        ),
+    )
+    <span class="keyword">defer</span> span.<span class="function">End</span>()
+
+    <span class="comment">// This span is a child of the parent span from the API gateway</span>
+    <span class="comment">// The context carries the trace ID and parent span ID</span>
+
+    <span class="comment">// Call payment service -- the context propagates the trace</span>
+    charge, err := paymentClient.<span class="function">Charge</span>(ctx, req.Total)
+    <span class="keyword">if</span> err != <span class="keyword">nil</span> {
+        span.<span class="function">RecordError</span>(err)
+        span.<span class="function">SetStatus</span>(codes.Error, err.<span class="function">Error</span>())
+        <span class="keyword">return</span> <span class="keyword">nil</span>, err
+    }
+
+    span.<span class="function">AddEvent</span>(<span class="string">"payment_processed"</span>,
+        trace.<span class="function">WithAttributes</span>(attribute.<span class="function">String</span>(<span class="string">"charge.id"</span>, charge.ID)),
+    )
+
+    <span class="keyword">return</span> &amp;Order{ID: <span class="function">generateID</span>(), ChargeID: charge.ID}, <span class="keyword">nil</span>
+}</code></pre>
+
+      <h3>Circuit Breakers</h3>
+      <p>When a downstream service is failing, stop sending it traffic. Let it recover. The circuit breaker pattern has three states: Closed (normal), Open (failing, reject requests), Half-Open (test if service recovered).</p>
+
+      <pre><code><span class="lang-label">ASCII</span>
+<span class="comment">                    success</span>
+<span class="comment">            +---------------------+</span>
+<span class="comment">            v                     |</span>
+<span class="comment">         +--------+         +----------+</span>
+<span class="comment">         | CLOSED | -----&gt; | HALF-OPEN |</span>
+<span class="comment">         +--------+ timer  +----------+</span>
+<span class="comment">            |  failures          |</span>
+<span class="comment">            |  exceed            | failure</span>
+<span class="comment">            |  threshold         |</span>
+<span class="comment">            v                    v</span>
+<span class="comment">         +------+          +------+</span>
+<span class="comment">         | OPEN | &lt;--------| OPEN |</span>
+<span class="comment">         +------+          +------+</span>
+<span class="comment">         (reject all      (back to open)</span>
+<span class="comment">          requests)</span></code></pre>
+
+      <pre><code><span class="lang-label">Node.js</span>
+<span class="keyword">class</span> <span class="function">CircuitBreaker</span> {
+  <span class="function">constructor</span>(options = {}) {
+    <span class="keyword">this</span>.failureThreshold = options.failureThreshold || <span class="number">5</span>;
+    <span class="keyword">this</span>.resetTimeout = options.resetTimeout || <span class="number">30000</span>; <span class="comment">// 30s</span>
+    <span class="keyword">this</span>.state = <span class="string">'CLOSED'</span>;
+    <span class="keyword">this</span>.failures = <span class="number">0</span>;
+    <span class="keyword">this</span>.lastFailure = <span class="keyword">null</span>;
+  }
+
+  <span class="keyword">async</span> <span class="function">execute</span>(fn) {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.state === <span class="string">'OPEN'</span>) {
+      <span class="keyword">if</span> (Date.<span class="function">now</span>() - <span class="keyword">this</span>.lastFailure &gt; <span class="keyword">this</span>.resetTimeout) {
+        <span class="keyword">this</span>.state = <span class="string">'HALF_OPEN'</span>;
+      } <span class="keyword">else</span> {
+        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">Error</span>(<span class="string">'Circuit breaker is OPEN'</span>);
+      }
+    }
+
+    <span class="keyword">try</span> {
+      <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="function">fn</span>();
+      <span class="keyword">this</span>.<span class="function">onSuccess</span>();
+      <span class="keyword">return</span> result;
+    } <span class="keyword">catch</span> (err) {
+      <span class="keyword">this</span>.<span class="function">onFailure</span>();
+      <span class="keyword">throw</span> err;
+    }
+  }
+
+  <span class="function">onSuccess</span>() {
+    <span class="keyword">this</span>.failures = <span class="number">0</span>;
+    <span class="keyword">this</span>.state = <span class="string">'CLOSED'</span>;
+  }
+
+  <span class="function">onFailure</span>() {
+    <span class="keyword">this</span>.failures++;
+    <span class="keyword">this</span>.lastFailure = Date.<span class="function">now</span>();
+    <span class="keyword">if</span> (<span class="keyword">this</span>.failures &gt;= <span class="keyword">this</span>.failureThreshold) {
+      <span class="keyword">this</span>.state = <span class="string">'OPEN'</span>;
+    }
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">const</span> breaker = <span class="keyword">new</span> <span class="function">CircuitBreaker</span>({ failureThreshold: <span class="number">3</span>, resetTimeout: <span class="number">10000</span> });
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">callPaymentService</span>(data) {
+  <span class="keyword">return</span> breaker.<span class="function">execute</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'https://payment.internal/charge'</span>, {
+      method: <span class="string">'POST'</span>,
+      body: JSON.<span class="function">stringify</span>(data),
+    });
+    <span class="keyword">if</span> (!res.ok) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">Error</span>(<span class="string">`Payment failed: ${res.status}`</span>);
+    <span class="keyword">return</span> res.<span class="function">json</span>();
+  });
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">The Three Pillars of Observability</div>
+        <p><strong>Traces</strong>: Follow a request through services (Jaeger, Zipkin, Datadog APM). <strong>Metrics</strong>: Aggregated numbers over time -- request rate, error rate, latency percentiles (Prometheus + Grafana). <strong>Logs</strong>: Structured event records with correlation IDs (ELK stack, Loki). OpenTelemetry unifies all three with a single SDK.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 14: PRACTICE & RESOURCES -->
+    <!-- ============================================================ -->
+    <section id="practice">
+      <h2>14. Practice &amp; Resources</h2>
+
+      <p>Distributed systems are best learned by reading papers, implementing protocols, and building things that break.</p>
+
+      <h3>MIT 6.824: Distributed Systems</h3>
+      <div class="example-box">
+        <div class="label">The Gold Standard Course</div>
+        <p>MIT 6.824 (now 6.5840) is the best distributed systems course in existence. The labs have you implement:</p>
+        <p><strong>Lab 1:</strong> MapReduce -- distributed batch processing framework</p>
+        <p><strong>Lab 2:</strong> Raft -- full consensus algorithm with leader election, log replication, persistence</p>
+        <p><strong>Lab 3:</strong> Fault-tolerant key/value service -- built on top of your Raft implementation</p>
+        <p><strong>Lab 4:</strong> Sharded key/value service -- with dynamic shard migration</p>
+        <p>All labs are in Go. The course is freely available at <code>pdos.csail.mit.edu/6.824</code>. Do the labs. They will take weeks and teach you more than any book.</p>
+      </div>
+
+      <h3>Designing Data-Intensive Applications (DDIA)</h3>
+      <div class="tip-box">
+        <div class="label">The Bible</div>
+        <p>Martin Kleppmann's DDIA is the single best book on distributed systems for practitioners. It covers replication, partitioning, transactions, consistency, batch/stream processing, and more. Read it cover to cover. Then read it again. Every senior engineer should have read this book.</p>
+      </div>
+
+      <h3>Papers to Read</h3>
+      <div class="example-box">
+        <div class="label">Essential Reading List</div>
+        <p><strong>Foundations:</strong></p>
+        <p>- Lamport, "Time, Clocks, and the Ordering of Events" (1978) -- the paper that started it all</p>
+        <p>- Fischer, Lynch, Paterson, "Impossibility of Distributed Consensus" (FLP, 1985) -- proves async consensus is impossible with one faulty process</p>
+        <p>- Brewer, "CAP Twelve Years Later" (2012) -- Brewer's own clarification of CAP</p>
+        <p><strong>Consensus:</strong></p>
+        <p>- Ongaro &amp; Ousterhout, "In Search of an Understandable Consensus Algorithm" (Raft, 2014)</p>
+        <p>- Lamport, "Paxos Made Simple" (2001) -- Lamport's attempt to simplify his own algorithm</p>
+        <p><strong>Industry Systems:</strong></p>
+        <p>- DeCandia et al., "Dynamo: Amazon's Highly Available Key-value Store" (2007) -- eventual consistency, vector clocks, consistent hashing</p>
+        <p>- Corbett et al., "Spanner: Google's Globally-Distributed Database" (2012) -- TrueTime, external consistency</p>
+        <p>- Kreps, "The Log: What every software engineer should know" (2013) -- the foundation of Kafka's design</p>
+        <p>- Shapiro et al., "Conflict-free Replicated Data Types" (2011) -- CRDTs formalized</p>
+      </div>
+
+      <h3>Build These Projects</h3>
+      <div class="example-box">
+        <div class="label">Hands-On Practice</div>
+        <p><strong>1. Distributed KV Store:</strong> Build a key-value store with Raft consensus. Start with MIT 6.824 labs.</p>
+        <p><strong>2. URL Shortener at Scale:</strong> Hash partitioning, read replicas, caching layer, rate limiting.</p>
+        <p><strong>3. Chat System:</strong> WebSockets across multiple servers. Use Redis Pub/Sub for cross-server message delivery. Implement causal ordering.</p>
+        <p><strong>4. Distributed Task Queue:</strong> Like a mini Celery/Sidekiq. At-least-once delivery, idempotent workers, dead letter queue.</p>
+        <p><strong>5. Fly.io Gossip Glomers:</strong> A set of distributed systems challenges at <code>fly.io/dist-sys</code>. Implement broadcast, unique ID generation, counters, and Kafka-style logs. Uses Maelstrom for testing.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">The Hard Truth</div>
+        <p>Distributed systems are genuinely difficult. Bugs are non-deterministic, latent, and often only appear under load or during failures. You cannot unit test your way to correctness -- you need property-based testing (Jepsen), chaos engineering (Chaos Monkey), and formal verification (TLA+). Start simple. Add distribution only when you must. A single PostgreSQL instance handles more load than most startups will ever need.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

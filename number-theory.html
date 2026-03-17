@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Theory for CP - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Number Theory for CP</div>
+      <h1>Number Theory for Competitive Programming</h1>
+      <p>Every number theory algorithm, technique, and trick you need to crush math-heavy CP problems. From modular arithmetic fundamentals to FFT and Mobius inversion -- with full code in C++ and Python.</p>
+    </div>
+
+    <div class="toc">
+      <h4>Table of Contents</h4>
+      <a href="#sieve">1. Sieve of Eratosthenes &amp; Variations</a>
+      <a href="#gcd">2. GCD, LCM &amp; Extended Euclidean Algorithm</a>
+      <a href="#modular-inverse">3. Modular Inverse (All Methods)</a>
+      <a href="#binary-exp">4. Binary Exponentiation</a>
+      <a href="#fermats">5. Fermat's Little Theorem</a>
+      <a href="#euler-totient">6. Euler's Totient Function &amp; Theorem</a>
+      <a href="#crt">7. Chinese Remainder Theorem</a>
+      <a href="#combinatorics">8. Combinatorics for CP</a>
+      <a href="#inclusion-exclusion">9. Inclusion-Exclusion Principle</a>
+      <a href="#catalan">10. Catalan Numbers</a>
+      <a href="#matrix-exp">11. Matrix Exponentiation</a>
+      <a href="#mobius">12. Mobius Function &amp; Inversion</a>
+      <a href="#fft">13. FFT &amp; Polynomial Multiplication</a>
+      <a href="#practice">14. Practice Problems</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: SIEVE -->
+    <!-- ============================================================ -->
+    <section id="sieve">
+      <h2>1. Sieve of Eratosthenes &amp; Variations</h2>
+
+      <p>The sieve is the bread and butter of number theory in CP. If a problem mentions primes and n &le; 10<sup>7</sup>, you almost certainly need a sieve.</p>
+
+      <h3>Classic Sieve of Eratosthenes</h3>
+      <p><strong>Idea:</strong> Mark all composite numbers by iterating through each prime and crossing off its multiples. We only need to check up to &radic;n because any composite number &le; n has a prime factor &le; &radic;n.</p>
+
+      <div class="formula-box">
+        Time: O(n log log n) &nbsp;|&nbsp; Space: O(n)
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="function">sieve</span>(<span class="keyword">int</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; is_prime(n + <span class="number">1</span>, <span class="keyword">true</span>);
+    is_prime[<span class="number">0</span>] = is_prime[<span class="number">1</span>] = <span class="keyword">false</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i <= n; i++) {
+        <span class="keyword">if</span> (is_prime[i]) {
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = i * i; j <= n; j += i)
+                is_prime[j] = <span class="keyword">false</span>;
+        }
+    }
+    <span class="keyword">return</span> is_prime;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">sieve</span>(n):
+    is_prime = [<span class="keyword">True</span>] * (n + <span class="number">1</span>)
+    is_prime[<span class="number">0</span>] = is_prime[<span class="number">1</span>] = <span class="keyword">False</span>
+    i = <span class="number">2</span>
+    <span class="keyword">while</span> i * i <= n:
+        <span class="keyword">if</span> is_prime[i]:
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(i * i, n + <span class="number">1</span>, i):
+                is_prime[j] = <span class="keyword">False</span>
+        i += <span class="number">1</span>
+    <span class="keyword">return</span> is_prime</code></pre>
+
+      <h3>Linear Sieve (O(n))</h3>
+      <p><strong>Why it matters:</strong> The classic sieve marks some composites multiple times (e.g., 12 is crossed off by both 2 and 3). The linear sieve ensures each composite is marked exactly once by its <em>smallest prime factor</em>. This also gives you the smallest prime factor (SPF) array for free -- extremely useful for fast factorization.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const int</span> MAXN = <span class="number">10000001</span>;
+<span class="keyword">int</span> spf[MAXN]; <span class="comment">// smallest prime factor</span>
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; primes;
+
+<span class="keyword">void</span> <span class="function">linear_sieve</span>() {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i < MAXN; i++) {
+        <span class="keyword">if</span> (spf[i] == <span class="number">0</span>) { <span class="comment">// i is prime</span>
+            spf[i] = i;
+            primes.<span class="function">push_back</span>(i);
+        }
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < primes.<span class="function">size</span>() && primes[j] <= spf[i] && (<span class="keyword">long long</span>)i * primes[j] < MAXN; j++) {
+            spf[i * primes[j]] = primes[j];
+        }
+    }
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">linear_sieve</span>(n):
+    spf = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    primes = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        <span class="keyword">if</span> spf[i] == <span class="number">0</span>:
+            spf[i] = i
+            primes.append(i)
+        <span class="keyword">for</span> p <span class="keyword">in</span> primes:
+            <span class="keyword">if</span> p > spf[i] <span class="keyword">or</span> i * p > n:
+                <span class="keyword">break</span>
+            spf[i * p] = p
+    <span class="keyword">return</span> spf, primes</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Fast Factorization with SPF</div>
+        <p>Once you have the SPF array, you can factorize any number up to n in O(log n) by repeatedly dividing by its smallest prime factor. This is a game-changer when you need to factorize many numbers.</p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Factorize x using the SPF array -- O(log x)</span>
+<span class="function">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="function">factorize</span>(<span class="keyword">int</span> x) {
+    <span class="function">map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; factors;
+    <span class="keyword">while</span> (x > <span class="number">1</span>) {
+        factors[spf[x]]++;
+        x /= spf[x];
+    }
+    <span class="keyword">return</span> factors;
+}</code></pre>
+
+      <h3>Segmented Sieve</h3>
+      <p><strong>When to use:</strong> You need primes in a range [L, R] where R can be up to 10<sup>12</sup>, but R - L is small (say &le; 10<sup>6</sup>). You cannot allocate an array of size 10<sup>12</sup>, so you sieve only the segment [L, R].</p>
+
+      <p><strong>Idea:</strong> First, sieve all primes up to &radic;R using the normal sieve. Then, for each such prime p, mark all its multiples in the range [L, R].</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="function">segmented_sieve</span>(<span class="keyword">long long</span> L, <span class="keyword">long long</span> R) {
+    <span class="keyword">int</span> lim = <span class="function">sqrt</span>((<span class="keyword">double</span>)R) + <span class="number">1</span>;
+    <span class="keyword">auto</span> small_primes = <span class="function">sieve</span>(lim); <span class="comment">// basic sieve up to sqrt(R)</span>
+
+    <span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; is_prime(R - L + <span class="number">1</span>, <span class="keyword">true</span>);
+    <span class="keyword">if</span> (L == <span class="number">0</span>) is_prime[<span class="number">0</span>] = <span class="keyword">false</span>;
+    <span class="keyword">if</span> (L <= <span class="number">1</span>) is_prime[<span class="number">1</span> - L] = <span class="keyword">false</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> p = <span class="number">2</span>; p <= lim; p++) {
+        <span class="keyword">if</span> (!small_primes[p]) <span class="keyword">continue</span>;
+        <span class="comment">// Find first multiple of p >= L</span>
+        <span class="keyword">long long</span> start = <span class="function">max</span>((<span class="keyword">long long</span>)p * p, ((L + p - <span class="number">1</span>) / p) * p);
+        <span class="keyword">for</span> (<span class="keyword">long long</span> j = start; j <= R; j += p)
+            is_prime[j - L] = <span class="keyword">false</span>;
+    }
+    <span class="keyword">return</span> is_prime;
+}</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Watch Out</div>
+        <p>In the segmented sieve, be careful with L = 0 or L = 1. Also ensure your starting multiple calculation does not overflow -- use <code>long long</code> throughout.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: GCD & EXTENDED GCD -->
+    <!-- ============================================================ -->
+    <section id="gcd">
+      <h2>2. GCD, LCM &amp; Extended Euclidean Algorithm</h2>
+
+      <h3>Euclidean Algorithm</h3>
+      <p><strong>Intuition:</strong> gcd(a, b) = gcd(b, a mod b). Why? If d divides both a and b, it also divides a - kb = a mod b. So the set of common divisors stays the same, and we keep reducing until one side hits 0.</p>
+
+      <div class="formula-box">
+        gcd(a, 0) = a &nbsp;&nbsp;|&nbsp;&nbsp; gcd(a, b) = gcd(b, a mod b) &nbsp;&nbsp;|&nbsp;&nbsp; Time: O(log(min(a, b)))
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// C++17 has __gcd and std::gcd, but know how to write it</span>
+<span class="keyword">int</span> <span class="function">gcd</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    <span class="keyword">while</span> (b) {
+        a %= b;
+        <span class="function">swap</span>(a, b);
+    }
+    <span class="keyword">return</span> a;
+}
+
+<span class="keyword">long long</span> <span class="function">lcm</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">return</span> a / <span class="function">gcd</span>(a, b) * b; <span class="comment">// divide first to avoid overflow</span>
+}</code></pre>
+
+      <h3>Extended Euclidean Algorithm</h3>
+      <p><strong>What it does:</strong> Given a and b, find integers x and y such that ax + by = gcd(a, b). This is called Bezout's identity, and it always has a solution.</p>
+
+      <p><strong>Why it matters:</strong> This gives us the modular inverse. If gcd(a, m) = 1, then ax + my = 1, which means ax &equiv; 1 (mod m), so x is the modular inverse of a mod m.</p>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: extgcd(30, 21)</div>
+        <p>gcd(30, 21) &rarr; gcd(21, 9) &rarr; gcd(9, 3) &rarr; gcd(3, 0) = 3</p>
+        <p>Backtrack: 3 = 9 - 1*3 = 9 - 1*(21 - 2*9) = 3*9 - 1*21 = 3*(30 - 1*21) - 1*21 = 3*30 - 4*21</p>
+        <p>So x = 3, y = -4, and indeed 3*30 + (-4)*21 = 90 - 84 = 6... wait, that is not right. Let us be careful: 3*30 = 90, 4*21 = 84, 90 - 84 = 6? No, gcd(30,21) = 3. Recheck: 30 = 1*21 + 9, 21 = 2*9 + 3, 9 = 3*3 + 0. So gcd = 3. Back-substitute: 3 = 21 - 2*9 = 21 - 2*(30 - 1*21) = 3*21 - 2*30. So x = -2, y = 3: (-2)*30 + 3*21 = -60 + 63 = 3. Correct.</p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">extgcd</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> &amp;x, <span class="keyword">int</span> &amp;y) {
+    <span class="keyword">if</span> (b == <span class="number">0</span>) {
+        x = <span class="number">1</span>; y = <span class="number">0</span>;
+        <span class="keyword">return</span> a;
+    }
+    <span class="keyword">int</span> x1, y1;
+    <span class="keyword">int</span> g = <span class="function">extgcd</span>(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    <span class="keyword">return</span> g;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">extgcd</span>(a, b):
+    <span class="keyword">if</span> b == <span class="number">0</span>:
+        <span class="keyword">return</span> a, <span class="number">1</span>, <span class="number">0</span>
+    g, x1, y1 = <span class="function">extgcd</span>(b, a % b)
+    <span class="keyword">return</span> g, y1, x1 - (a // b) * y1</code></pre>
+
+      <div class="formula-box">
+        Time: O(log(min(a, b))) &nbsp;|&nbsp; Finds x, y such that ax + by = gcd(a, b)
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: MODULAR INVERSE -->
+    <!-- ============================================================ -->
+    <section id="modular-inverse">
+      <h2>3. Modular Inverse (All Methods)</h2>
+
+      <p>Finding the modular inverse is one of the most common operations in CP. If you need to compute a/b mod p, you actually compute a * b<sup>-1</sup> mod p. The inverse of b mod p exists if and only if gcd(b, p) = 1.</p>
+
+      <h3>Method 1: Fermat's Little Theorem (p is prime)</h3>
+      <p>If p is prime and gcd(a, p) = 1, then a<sup>p-1</sup> &equiv; 1 (mod p), so a<sup>-1</sup> &equiv; a<sup>p-2</sup> (mod p). Use binary exponentiation to compute this in O(log p).</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">power</span>(<span class="keyword">long long</span> base, <span class="keyword">long long</span> exp, <span class="keyword">long long</span> mod) {
+    <span class="keyword">long long</span> result = <span class="number">1</span>;
+    base %= mod;
+    <span class="keyword">while</span> (exp > <span class="number">0</span>) {
+        <span class="keyword">if</span> (exp &amp; <span class="number">1</span>) result = result * base % mod;
+        base = base * base % mod;
+        exp >>= <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">long long</span> <span class="function">mod_inverse_fermat</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> p) {
+    <span class="keyword">return</span> <span class="function">power</span>(a, p - <span class="number">2</span>, p); <span class="comment">// only works when p is prime</span>
+}</code></pre>
+
+      <h3>Method 2: Extended GCD (works for any modulus)</h3>
+      <p>This works whenever gcd(a, m) = 1, even if m is not prime.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">mod_inverse_extgcd</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> m) {
+    <span class="keyword">long long</span> x, y;
+    <span class="keyword">long long</span> g = <span class="function">extgcd</span>(a, m, x, y);
+    <span class="keyword">if</span> (g != <span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// no inverse</span>
+    <span class="keyword">return</span> (x % m + m) % m; <span class="comment">// ensure positive</span>
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">mod_inverse_extgcd</span>(a, m):
+    g, x, _ = <span class="function">extgcd</span>(a, m)
+    <span class="keyword">if</span> g != <span class="number">1</span>:
+        <span class="keyword">return</span> -<span class="number">1</span>
+    <span class="keyword">return</span> x % m</code></pre>
+
+      <h3>Method 3: Precompute Inverses for 1..n</h3>
+      <p><strong>When to use:</strong> You need inverses of many consecutive numbers mod p (e.g., for computing many nCr values). Uses the recurrence: inv[i] = -(p // i) * inv[p % i] mod p.</p>
+
+      <div class="formula-box">
+        inv[1] = 1 &nbsp;|&nbsp; inv[i] = -(p / i) * inv[p % i] mod p &nbsp;|&nbsp; Time: O(n)
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const int</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;
+<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; inv(<span class="number">MAXN</span>);
+
+<span class="keyword">void</span> <span class="function">precompute_inverses</span>(<span class="keyword">int</span> n) {
+    inv[<span class="number">1</span>] = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++)
+        inv[i] = (MOD - MOD / i) * inv[MOD % i] % MOD;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">precompute_inverses</span>(n, mod):
+    inv = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    inv[<span class="number">1</span>] = <span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        inv[i] = (mod - mod // i) * inv[mod % i] % mod
+    <span class="keyword">return</span> inv</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Python Shortcut</div>
+        <p>In Python 3.8+, <code>pow(a, -1, p)</code> computes the modular inverse directly. Under the hood it uses an efficient algorithm. For CP, this is the fastest way in Python.</p>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Common Bug</div>
+        <p>When computing (a - b) % MOD, the result can be negative in C++. Always do <code>((a - b) % MOD + MOD) % MOD</code>. Python handles negative mod correctly, but C++ does not.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: BINARY EXPONENTIATION -->
+    <!-- ============================================================ -->
+    <section id="binary-exp">
+      <h2>4. Binary Exponentiation</h2>
+
+      <p><strong>The idea:</strong> To compute a<sup>n</sup>, instead of multiplying a by itself n times (O(n)), decompose n into its binary representation and square repeatedly. This gives O(log n).</p>
+
+      <div class="example-box">
+        <div class="label">Walkthrough: 3<sup>13</sup></div>
+        <p>13 in binary = 1101. So 3<sup>13</sup> = 3<sup>8</sup> * 3<sup>4</sup> * 3<sup>1</sup></p>
+        <p>We compute: 3<sup>1</sup> = 3, 3<sup>2</sup> = 9, 3<sup>4</sup> = 81, 3<sup>8</sup> = 6561</p>
+        <p>Result: 3 * 81 * 6561 = 1594323</p>
+        <p>Only 4 squarings and 3 multiplications instead of 12 multiplications.</p>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">binpow</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b, <span class="keyword">long long</span> mod) {
+    a %= mod;
+    <span class="keyword">long long</span> res = <span class="number">1</span>;
+    <span class="keyword">while</span> (b > <span class="number">0</span>) {
+        <span class="keyword">if</span> (b &amp; <span class="number">1</span>)
+            res = res * a % mod;
+        a = a * a % mod;
+        b >>= <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> res;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">binpow</span>(a, b, mod):
+    a %= mod
+    res = <span class="number">1</span>
+    <span class="keyword">while</span> b > <span class="number">0</span>:
+        <span class="keyword">if</span> b &amp; <span class="number">1</span>:
+            res = res * a % mod
+        a = a * a % mod
+        b >>= <span class="number">1</span>
+    <span class="keyword">return</span> res
+
+<span class="comment"># Or just use: pow(a, b, mod) -- Python's built-in is optimized</span></code></pre>
+
+      <h3>Applications Beyond Simple Powers</h3>
+      <ul>
+        <li><strong>Modular inverse:</strong> a<sup>-1</sup> = a<sup>p-2</sup> mod p (Fermat's)</li>
+        <li><strong>Matrix exponentiation:</strong> Replace scalar multiplication with matrix multiplication</li>
+        <li><strong>Binary lifting on trees:</strong> Same idea applied to ancestor queries</li>
+        <li><strong>Computing large Fibonacci numbers:</strong> Via matrix exponentiation</li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Overflow Trap</div>
+        <p>In C++, <code>a * a</code> can overflow even with <code>long long</code> if a is near 10<sup>18</sup>. Use <code>__int128</code> or reduce a modulo first. In most CP problems, MOD = 10<sup>9</sup>+7 so a &lt; 10<sup>9</sup> and a*a &lt; 10<sup>18</sup> which fits in <code>long long</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: FERMAT'S LITTLE THEOREM -->
+    <!-- ============================================================ -->
+    <section id="fermats">
+      <h2>5. Fermat's Little Theorem</h2>
+
+      <div class="formula-box">
+        If p is prime and gcd(a, p) = 1, then a<sup>p-1</sup> &equiv; 1 (mod p)
+      </div>
+
+      <p><strong>Intuition:</strong> Consider the set {1, 2, 3, ..., p-1}. Multiply every element by a (mod p). Since gcd(a, p) = 1, this is a bijection -- you get the same set back in a different order. So the product of all elements stays the same: a<sup>p-1</sup> * (p-1)! &equiv; (p-1)! (mod p). Cancel (p-1)! (which is coprime to p) to get a<sup>p-1</sup> &equiv; 1.</p>
+
+      <h3>Key Consequences</h3>
+      <ul>
+        <li><strong>Modular inverse:</strong> a<sup>-1</sup> &equiv; a<sup>p-2</sup> (mod p)</li>
+        <li><strong>Reducing exponents:</strong> a<sup>n</sup> mod p = a<sup>n mod (p-1)</sup> mod p (when gcd(a,p)=1)</li>
+        <li><strong>Primality test hint:</strong> If a<sup>p-1</sup> &ne; 1 (mod p), then p is definitely not prime (Miller-Rabin builds on this)</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Example: Reduce a huge exponent</div>
+        <p>Compute 2<sup>10<sup>18</sup></sup> mod 10<sup>9</sup>+7.</p>
+        <p>Since 10<sup>9</sup>+7 is prime: 2<sup>10<sup>18</sup></sup> mod (10<sup>9</sup>+7) = 2<sup>10<sup>18</sup> mod (10<sup>9</sup>+6)</sup> mod (10<sup>9</sup>+7).</p>
+        <p>Compute 10<sup>18</sup> mod (10<sup>9</sup>+6) first, then use binary exponentiation.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When to Use</div>
+        <p>Any time you see "answer mod 10<sup>9</sup>+7" and division is involved, Fermat's theorem gives you the modular inverse. It is the most common method in CP because the modulus is almost always prime.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: EULER'S TOTIENT -->
+    <!-- ============================================================ -->
+    <section id="euler-totient">
+      <h2>6. Euler's Totient Function &amp; Theorem</h2>
+
+      <p><strong>&phi;(n)</strong> counts how many integers from 1 to n are coprime to n. This is one of the most important functions in number theory.</p>
+
+      <div class="formula-box">
+        &phi;(n) = n * &prod;(1 - 1/p) for each prime p dividing n
+      </div>
+
+      <h3>Computing &phi;(n) for a Single Value</h3>
+      <p>Factorize n and apply the formula. Time: O(&radic;n).</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">euler_totient</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">int</span> result = n;
+    <span class="keyword">for</span> (<span class="keyword">int</span> p = <span class="number">2</span>; p * p <= n; p++) {
+        <span class="keyword">if</span> (n % p == <span class="number">0</span>) {
+            <span class="keyword">while</span> (n % p == <span class="number">0</span>) n /= p;
+            result -= result / p;
+        }
+    }
+    <span class="keyword">if</span> (n > <span class="number">1</span>) result -= result / n;
+    <span class="keyword">return</span> result;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">euler_totient</span>(n):
+    result = n
+    p = <span class="number">2</span>
+    temp = n
+    <span class="keyword">while</span> p * p <= temp:
+        <span class="keyword">if</span> temp % p == <span class="number">0</span>:
+            <span class="keyword">while</span> temp % p == <span class="number">0</span>:
+                temp //= p
+            result -= result // p
+        p += <span class="number">1</span>
+    <span class="keyword">if</span> temp > <span class="number">1</span>:
+        result -= result // temp
+    <span class="keyword">return</span> result</code></pre>
+
+      <h3>Sieve for &phi;(1) through &phi;(n)</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="function">totient_sieve</span>(<span class="keyword">int</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; phi(n + <span class="number">1</span>);
+    <span class="function">iota</span>(phi.<span class="function">begin</span>(), phi.<span class="function">end</span>(), <span class="number">0</span>); <span class="comment">// phi[i] = i</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+        <span class="keyword">if</span> (phi[i] == i) { <span class="comment">// i is prime</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j <= n; j += i)
+                phi[j] -= phi[j] / i;
+        }
+    }
+    <span class="keyword">return</span> phi;
+}</code></pre>
+
+      <h3>Euler's Theorem (Generalization of Fermat's)</h3>
+
+      <div class="formula-box">
+        If gcd(a, m) = 1, then a<sup>&phi;(m)</sup> &equiv; 1 (mod m)
+      </div>
+
+      <p>Fermat's is the special case where m = p (prime), so &phi;(p) = p - 1. Euler's theorem works for <em>any</em> modulus, not just primes. This means a<sup>-1</sup> &equiv; a<sup>&phi;(m)-1</sup> (mod m) when gcd(a, m) = 1.</p>
+
+      <div class="tip-box">
+        <div class="label">Reducing Exponents with Composite Moduli</div>
+        <p>a<sup>n</sup> mod m = a<sup>n mod &phi;(m)</sup> mod m (when gcd(a, m) = 1). This is crucial for problems like "compute a^b^c mod m" where you need to reduce the tower of exponents.</p>
+      </div>
+
+      <h3>Key Properties of &phi;</h3>
+      <ul>
+        <li>&phi;(1) = 1</li>
+        <li>&phi;(p) = p - 1 for prime p</li>
+        <li>&phi;(p<sup>k</sup>) = p<sup>k</sup> - p<sup>k-1</sup> = p<sup>k</sup>(1 - 1/p)</li>
+        <li>&phi; is multiplicative: if gcd(a, b) = 1, then &phi;(ab) = &phi;(a)&phi;(b)</li>
+        <li>&sum;<sub>d|n</sub> &phi;(d) = n (sum of totient over all divisors of n equals n)</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: CRT -->
+    <!-- ============================================================ -->
+    <section id="crt">
+      <h2>7. Chinese Remainder Theorem (CRT)</h2>
+
+      <p><strong>Problem:</strong> Given a system of congruences x &equiv; a<sub>1</sub> (mod m<sub>1</sub>), x &equiv; a<sub>2</sub> (mod m<sub>2</sub>), ..., find x.</p>
+
+      <div class="formula-box">
+        If m<sub>1</sub>, m<sub>2</sub>, ..., m<sub>k</sub> are pairwise coprime, there exists a unique solution modulo M = m<sub>1</sub> * m<sub>2</sub> * ... * m<sub>k</sub>.
+      </div>
+
+      <p><strong>Intuition:</strong> Think of it as reconstructing a number from its "remainders" in different modular systems. Like how knowing the time is 3 o'clock on a 12-hour clock and that it is 15:00 on a 24-hour clock together tell you more than either alone.</p>
+
+      <h3>Two-Equation CRT (The Workhorse)</h3>
+      <p>In practice, you almost always combine equations two at a time. Given x &equiv; a<sub>1</sub> (mod m<sub>1</sub>) and x &equiv; a<sub>2</sub> (mod m<sub>2</sub>):</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Returns {r, m} such that x ≡ r (mod m), or {-1, -1} if no solution</span>
+<span class="function">pair</span>&lt;<span class="keyword">long long</span>, <span class="keyword">long long</span>&gt; <span class="function">crt</span>(<span class="keyword">long long</span> a1, <span class="keyword">long long</span> m1, <span class="keyword">long long</span> a2, <span class="keyword">long long</span> m2) {
+    <span class="keyword">long long</span> x, y;
+    <span class="keyword">long long</span> g = <span class="function">extgcd</span>(m1, m2, x, y);
+    <span class="keyword">if</span> ((a2 - a1) % g != <span class="number">0</span>) <span class="keyword">return</span> {-<span class="number">1</span>, -<span class="number">1</span>}; <span class="comment">// no solution</span>
+    <span class="keyword">long long</span> lcm = m1 / g * m2;
+    <span class="keyword">long long</span> diff = (a2 - a1) / g;
+    <span class="keyword">long long</span> r = (a1 + m1 * (diff % (m2 / g) * (x % (m2 / g)) % (m2 / g))) % lcm;
+    <span class="keyword">return</span> {(r % lcm + lcm) % lcm, lcm};
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">crt</span>(a1, m1, a2, m2):
+    <span class="string">"""Combine x ≡ a1 (mod m1) and x ≡ a2 (mod m2)"""</span>
+    g, p, _ = <span class="function">extgcd</span>(m1, m2)
+    <span class="keyword">if</span> (a2 - a1) % g != <span class="number">0</span>:
+        <span class="keyword">return</span> -<span class="number">1</span>, -<span class="number">1</span>  <span class="comment"># no solution</span>
+    lcm = m1 // g * m2
+    diff = (a2 - a1) // g
+    r = (a1 + m1 * (diff * p % (m2 // g))) % lcm
+    <span class="keyword">return</span> r % lcm, lcm
+
+<span class="comment"># Combine multiple congruences</span>
+<span class="keyword">def</span> <span class="function">crt_system</span>(remainders, moduli):
+    cur_a, cur_m = remainders[<span class="number">0</span>], moduli[<span class="number">0</span>]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="builtin">len</span>(remainders)):
+        cur_a, cur_m = <span class="function">crt</span>(cur_a, cur_m, remainders[i], moduli[i])
+        <span class="keyword">if</span> cur_m == -<span class="number">1</span>:
+            <span class="keyword">return</span> -<span class="number">1</span>, -<span class="number">1</span>
+    <span class="keyword">return</span> cur_a, cur_m</code></pre>
+
+      <div class="example-box">
+        <div class="label">Classic CRT Example</div>
+        <p>x &equiv; 2 (mod 3), x &equiv; 3 (mod 5), x &equiv; 2 (mod 7)</p>
+        <p>M = 3 * 5 * 7 = 105. Solution: x = 23. Verify: 23 mod 3 = 2, 23 mod 5 = 3, 23 mod 7 = 2.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When CRT Appears in CP</div>
+        <p>1) Computing nCr mod a non-prime (factor it into prime powers, compute nCr mod each, combine with CRT). 2) Problems where constraints are given in different moduli. 3) Hash collision avoidance (use multiple mods).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: COMBINATORICS -->
+    <!-- ============================================================ -->
+    <section id="combinatorics">
+      <h2>8. Combinatorics for CP</h2>
+
+      <p>Combinatorics is everywhere in CP. The core challenge is computing C(n, r) mod p efficiently.</p>
+
+      <h3>Precomputing Factorials &amp; Inverse Factorials</h3>
+      <p><strong>The standard approach:</strong> Precompute fact[i] = i! mod p and ifact[i] = (i!)<sup>-1</sup> mod p. Then C(n, r) = fact[n] * ifact[r] * ifact[n-r] mod p. This is O(1) per query after O(n) precomputation.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const int</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;
+<span class="keyword">const int</span> MAXN = <span class="number">2000005</span>;
+<span class="keyword">long long</span> fact[MAXN], ifact[MAXN];
+
+<span class="keyword">void</span> <span class="function">precompute</span>() {
+    fact[<span class="number">0</span>] = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < MAXN; i++)
+        fact[i] = fact[i - <span class="number">1</span>] * i % MOD;
+    ifact[MAXN - <span class="number">1</span>] = <span class="function">power</span>(fact[MAXN - <span class="number">1</span>], MOD - <span class="number">2</span>, MOD);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = MAXN - <span class="number">2</span>; i >= <span class="number">0</span>; i--)
+        ifact[i] = ifact[i + <span class="number">1</span>] * (i + <span class="number">1</span>) % MOD;
+}
+
+<span class="keyword">long long</span> <span class="function">C</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> r) {
+    <span class="keyword">if</span> (r < <span class="number">0</span> || r > n) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">return</span> fact[n] % MOD * ifact[r] % MOD * ifact[n - r] % MOD;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+MOD = <span class="number">10</span>**<span class="number">9</span> + <span class="number">7</span>
+
+<span class="keyword">def</span> <span class="function">precompute</span>(n):
+    fact = [<span class="number">1</span>] * (n + <span class="number">1</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        fact[i] = fact[i - <span class="number">1</span>] * i % MOD
+    ifact = [<span class="number">1</span>] * (n + <span class="number">1</span>)
+    ifact[n] = <span class="builtin">pow</span>(fact[n], MOD - <span class="number">2</span>, MOD)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
+        ifact[i] = ifact[i + <span class="number">1</span>] * (i + <span class="number">1</span>) % MOD
+    <span class="keyword">return</span> fact, ifact
+
+<span class="keyword">def</span> <span class="function">C</span>(n, r, fact, ifact):
+    <span class="keyword">if</span> r < <span class="number">0</span> <span class="keyword">or</span> r > n:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="keyword">return</span> fact[n] * ifact[r] % MOD * ifact[n - r] % MOD</code></pre>
+
+      <div class="tip-box">
+        <div class="label">The Inverse Factorial Trick</div>
+        <p>Instead of computing n inverse factorials with n modular exponentiations (O(n log p) total), compute only ifact[n] using one modular exponentiation, then get ifact[n-1] = ifact[n] * n, ifact[n-2] = ifact[n-1] * (n-1), etc. Total: O(n) + O(log p).</p>
+      </div>
+
+      <h3>Pascal's Triangle (Small n)</h3>
+      <p>If n is small (&le; 5000), build Pascal's triangle with DP. Works with any modulus, not just primes.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> C[<span class="number">5001</span>][<span class="number">5001</span>];
+<span class="keyword">void</span> <span class="function">build_pascal</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> mod) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= n; i++) {
+        C[i][<span class="number">0</span>] = <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j <= i; j++)
+            C[i][j] = (C[i-<span class="number">1</span>][j-<span class="number">1</span>] + C[i-<span class="number">1</span>][j]) % mod;
+    }
+}</code></pre>
+
+      <h3>Lucas' Theorem (n is huge, p is small prime)</h3>
+
+      <div class="formula-box">
+        C(n, r) mod p = &prod; C(n<sub>i</sub>, r<sub>i</sub>) mod p, where n<sub>i</sub> and r<sub>i</sub> are digits of n and r in base p.
+      </div>
+
+      <p><strong>When to use:</strong> n can be up to 10<sup>18</sup> but p is a small prime (say &le; 10<sup>6</sup>). You need a table of C(a, b) for 0 &le; a, b &lt; p, then multiply digits.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">lucas</span>(<span class="keyword">long long</span> n, <span class="keyword">long long</span> r, <span class="keyword">int</span> p) {
+    <span class="keyword">if</span> (r == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">return</span> <span class="function">C</span>(n % p, r % p) * <span class="function">lucas</span>(n / p, r / p, p) % p;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">lucas</span>(n, r, p, fact, ifact):
+    <span class="keyword">if</span> r == <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="number">1</span>
+    ni, ri = n % p, r % p
+    <span class="keyword">if</span> ri > ni:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="keyword">return</span> C(ni, ri, fact, ifact) * <span class="function">lucas</span>(n // p, r // p, p, fact, ifact) % p</code></pre>
+
+      <h3>Stars and Bars</h3>
+      <p><strong>Problem:</strong> Distribute n identical objects into k distinct bins.</p>
+      <ul>
+        <li>Each bin &ge; 0: C(n + k - 1, k - 1)</li>
+        <li>Each bin &ge; 1: C(n - 1, k - 1)</li>
+      </ul>
+
+      <div class="example-box">
+        <div class="label">Stars and Bars Example</div>
+        <p>Distribute 5 candies among 3 kids (each kid can get 0): C(5 + 3 - 1, 3 - 1) = C(7, 2) = 21 ways.</p>
+        <p>If each kid must get at least 1: C(5 - 1, 3 - 1) = C(4, 2) = 6 ways.</p>
+      </div>
+
+      <h3>Useful Identities</h3>
+      <ul>
+        <li><strong>Vandermonde's:</strong> &sum;<sub>k</sub> C(m, k)*C(n, p-k) = C(m+n, p)</li>
+        <li><strong>Hockey stick:</strong> &sum;<sub>i=r</sub><sup>n</sup> C(i, r) = C(n+1, r+1)</li>
+        <li><strong>Symmetry:</strong> C(n, r) = C(n, n-r)</li>
+        <li><strong>Absorption:</strong> C(n, r) = (n/r) * C(n-1, r-1)</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: INCLUSION-EXCLUSION -->
+    <!-- ============================================================ -->
+    <section id="inclusion-exclusion">
+      <h2>9. Inclusion-Exclusion Principle</h2>
+
+      <div class="formula-box">
+        |A<sub>1</sub> &cup; A<sub>2</sub> &cup; ... &cup; A<sub>n</sub>| = &sum;|A<sub>i</sub>| - &sum;|A<sub>i</sub> &cap; A<sub>j</sub>| + &sum;|A<sub>i</sub> &cap; A<sub>j</sub> &cap; A<sub>k</sub>| - ... + (-1)<sup>n+1</sup>|A<sub>1</sub> &cap; ... &cap; A<sub>n</sub>|
+      </div>
+
+      <p><strong>Intuition:</strong> When you add up the sizes of individual sets, elements in multiple sets get counted multiple times. Subtract pairwise intersections -- but then elements in three sets got subtracted too much. Add triple intersections back, and so on. The alternating signs ensure every element is counted exactly once.</p>
+
+      <h3>Template: Count Numbers 1..n NOT Divisible by Any Prime in a Set</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Count numbers in [1, n] coprime to all primes in 'primes'</span>
+<span class="keyword">long long</span> <span class="function">count_coprime</span>(<span class="keyword">long long</span> n, <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; &amp;primes) {
+    <span class="keyword">int</span> m = primes.<span class="function">size</span>();
+    <span class="keyword">long long</span> result = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> mask = <span class="number">1</span>; mask < (<span class="number">1</span> << m); mask++) {
+        <span class="keyword">long long</span> prod = <span class="number">1</span>;
+        <span class="keyword">int</span> bits = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < m; i++) {
+            <span class="keyword">if</span> (mask &amp; (<span class="number">1</span> << i)) {
+                prod *= primes[i];
+                <span class="keyword">if</span> (prod > n) <span class="keyword">break</span>;
+                bits++;
+            }
+        }
+        <span class="keyword">if</span> (prod > n) <span class="keyword">continue</span>;
+        <span class="keyword">if</span> (bits % <span class="number">2</span> == <span class="number">1</span>) result += n / prod;
+        <span class="keyword">else</span> result -= n / prod;
+    }
+    <span class="keyword">return</span> n - result; <span class="comment">// n minus those divisible by at least one prime</span>
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">count_coprime</span>(n, primes):
+    m = <span class="builtin">len</span>(primes)
+    result = <span class="number">0</span>
+    <span class="keyword">for</span> mask <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, <span class="number">1</span> << m):
+        prod = <span class="number">1</span>
+        bits = <span class="number">0</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(m):
+            <span class="keyword">if</span> mask &amp; (<span class="number">1</span> << i):
+                prod *= primes[i]
+                bits += <span class="number">1</span>
+        <span class="keyword">if</span> prod > n:
+            <span class="keyword">continue</span>
+        <span class="keyword">if</span> bits % <span class="number">2</span> == <span class="number">1</span>:
+            result += n // prod
+        <span class="keyword">else</span>:
+            result -= n // prod
+    <span class="keyword">return</span> n - result</code></pre>
+
+      <h3>Derangements</h3>
+      <p>A derangement is a permutation where no element is in its original position. The number of derangements D(n) can be derived using inclusion-exclusion.</p>
+
+      <div class="formula-box">
+        D(n) = n! * &sum;<sub>k=0</sub><sup>n</sup> (-1)<sup>k</sup> / k! &nbsp;&nbsp;&asymp;&nbsp;&nbsp; n! / e (rounded to nearest integer)
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">derangements</span>(<span class="keyword">int</span> n, <span class="keyword">long long</span> mod) {
+    <span class="comment">// D(n) = (n-1) * (D(n-1) + D(n-2))</span>
+    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">long long</span> prev2 = <span class="number">1</span>, prev1 = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+        <span class="keyword">long long</span> cur = (i - <span class="number">1</span>) * (prev1 + prev2) % mod;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    <span class="keyword">return</span> prev1;
+}</code></pre>
+
+      <h3>Deriving Euler's Totient via Inclusion-Exclusion</h3>
+      <p>Let the prime factors of n be p<sub>1</sub>, ..., p<sub>k</sub>. Let A<sub>i</sub> = numbers in [1, n] divisible by p<sub>i</sub>. Then &phi;(n) = n - |A<sub>1</sub> &cup; ... &cup; A<sub>k</sub>|. Apply inclusion-exclusion: &phi;(n) = n * (1 - 1/p<sub>1</sub>) * (1 - 1/p<sub>2</sub>) * ... * (1 - 1/p<sub>k</sub>). That is exactly the totient formula.</p>
+
+      <div class="tip-box">
+        <div class="label">Complexity Note</div>
+        <p>Inclusion-exclusion over k elements requires iterating over 2<sup>k</sup> subsets. This is fine when k is small (number of distinct prime factors of n &le; 15 for n &le; 10<sup>18</sup>). For larger k, look for ways to avoid full enumeration.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: CATALAN NUMBERS -->
+    <!-- ============================================================ -->
+    <section id="catalan">
+      <h2>10. Catalan Numbers</h2>
+
+      <div class="formula-box">
+        C<sub>n</sub> = C(2n, n) / (n + 1) = C(2n, n) - C(2n, n + 1)
+      </div>
+
+      <p>The first few: 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, ...</p>
+
+      <h3>What Catalan Numbers Count</h3>
+      <p>Catalan numbers appear <em>everywhere</em>. Here is an incomplete list:</p>
+      <ul>
+        <li>Number of valid sequences of n pairs of parentheses</li>
+        <li>Number of distinct BSTs with n nodes</li>
+        <li>Number of full binary trees with n+1 leaves</li>
+        <li>Number of paths from (0,0) to (n,n) that stay on or below the diagonal (Dyck paths)</li>
+        <li>Number of ways to triangulate a convex polygon with n+2 sides</li>
+        <li>Number of non-crossing partitions of {1, ..., n}</li>
+        <li>Number of ways to cut a rectangle into n+1 rectangles using n vertical cuts</li>
+      </ul>
+
+      <h3>Computing C<sub>n</sub></h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">long long</span> <span class="function">catalan</span>(<span class="keyword">int</span> n) {
+    <span class="comment">// Using precomputed fact[] and ifact[]</span>
+    <span class="keyword">return</span> fact[<span class="number">2</span> * n] % MOD * ifact[n] % MOD * ifact[n + <span class="number">1</span>] % MOD;
+}
+
+<span class="comment">// Alternative: use the recurrence C(n) = C(2n,n) - C(2n,n+1)</span>
+<span class="keyword">long long</span> <span class="function">catalan_alt</span>(<span class="keyword">int</span> n) {
+    <span class="keyword">return</span> (<span class="function">C</span>(<span class="number">2</span> * n, n) - <span class="function">C</span>(<span class="number">2</span> * n, n + <span class="number">1</span>) + MOD) % MOD;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">catalan</span>(n, fact, ifact):
+    <span class="keyword">return</span> fact[<span class="number">2</span> * n] * ifact[n] % MOD * ifact[n + <span class="number">1</span>] % MOD</code></pre>
+
+      <h3>Recurrence</h3>
+      <div class="formula-box">
+        C<sub>0</sub> = 1 &nbsp;|&nbsp; C<sub>n+1</sub> = &sum;<sub>i=0</sub><sup>n</sup> C<sub>i</sub> * C<sub>n-i</sub>
+      </div>
+
+      <p>This recurrence comes from choosing where to split. For valid parentheses: the first '(' matches some ')' at position 2k+1, giving C<sub>k</sub> ways inside and C<sub>n-1-k</sub> ways outside.</p>
+
+      <div class="tip-box">
+        <div class="label">The Ballot / Reflection Argument</div>
+        <p>The formula C(2n,n) - C(2n,n+1) comes from the <em>reflection principle</em>. Total paths from (0,0) to (2n,0) with +1/-1 steps = C(2n,n). Bad paths (those that go below 0) biject to paths to (2n,-2) via reflection, which is C(2n,n+1). Subtract to get Catalan.</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">CP Pattern: Grid Paths That Avoid a Diagonal</div>
+        <p>Paths from (0,0) to (n,m) using right/up steps that never cross above the line y = x: if m &le; n, the answer is C(n+m, m) - C(n+m, m-1). This generalizes Catalan (n = m gives C<sub>n</sub>).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: MATRIX EXPONENTIATION -->
+    <!-- ============================================================ -->
+    <section id="matrix-exp">
+      <h2>11. Matrix Exponentiation</h2>
+
+      <p><strong>The big idea:</strong> Any linear recurrence can be expressed as a matrix multiplication. Once in matrix form, use binary exponentiation on the matrix to compute the n-th term in O(k<sup>3</sup> log n), where k is the matrix dimension.</p>
+
+      <h3>Fibonacci in O(log n)</h3>
+
+      <div class="formula-box">
+        [F(n+1), F(n)] = [F(1), F(0)] * [[1, 1], [1, 0]]<sup>n</sup>
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">typedef</span> <span class="function">vector</span>&lt;<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt;&gt; Matrix;
+
+Matrix <span class="function">multiply</span>(<span class="keyword">const</span> Matrix &amp;A, <span class="keyword">const</span> Matrix &amp;B, <span class="keyword">long long</span> mod) {
+    <span class="keyword">int</span> n = A.<span class="function">size</span>(), m = B[<span class="number">0</span>].<span class="function">size</span>(), k = B.<span class="function">size</span>();
+    Matrix C(n, <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt;(m, <span class="number">0</span>));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < k; j++)
+            <span class="keyword">if</span> (A[i][j])
+                <span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l < m; l++)
+                    C[i][l] = (C[i][l] + A[i][j] * B[j][l]) % mod;
+    <span class="keyword">return</span> C;
+}
+
+Matrix <span class="function">mat_pow</span>(Matrix A, <span class="keyword">long long</span> p, <span class="keyword">long long</span> mod) {
+    <span class="keyword">int</span> n = A.<span class="function">size</span>();
+    Matrix result(n, <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt;(n, <span class="number">0</span>));
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) result[i][i] = <span class="number">1</span>; <span class="comment">// identity</span>
+    <span class="keyword">while</span> (p > <span class="number">0</span>) {
+        <span class="keyword">if</span> (p &amp; <span class="number">1</span>) result = <span class="function">multiply</span>(result, A, mod);
+        A = <span class="function">multiply</span>(A, A, mod);
+        p >>= <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> result;
+}
+
+<span class="keyword">long long</span> <span class="function">fibonacci</span>(<span class="keyword">long long</span> n, <span class="keyword">long long</span> mod) {
+    <span class="keyword">if</span> (n <= <span class="number">1</span>) <span class="keyword">return</span> n;
+    Matrix M = {{<span class="number">1</span>, <span class="number">1</span>}, {<span class="number">1</span>, <span class="number">0</span>}};
+    Matrix result = <span class="function">mat_pow</span>(M, n - <span class="number">1</span>, mod);
+    <span class="keyword">return</span> result[<span class="number">0</span>][<span class="number">0</span>];
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">mat_mul</span>(A, B, mod):
+    n, m, k = <span class="builtin">len</span>(A), <span class="builtin">len</span>(B[<span class="number">0</span>]), <span class="builtin">len</span>(B)
+    C = [[<span class="number">0</span>] * m <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(k):
+            <span class="keyword">if</span> A[i][j]:
+                <span class="keyword">for</span> l <span class="keyword">in</span> <span class="builtin">range</span>(m):
+                    C[i][l] = (C[i][l] + A[i][j] * B[j][l]) % mod
+    <span class="keyword">return</span> C
+
+<span class="keyword">def</span> <span class="function">mat_pow</span>(M, p, mod):
+    n = <span class="builtin">len</span>(M)
+    result = [[<span class="number">1</span> <span class="keyword">if</span> i == j <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="builtin">range</span>(n)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n)]
+    <span class="keyword">while</span> p > <span class="number">0</span>:
+        <span class="keyword">if</span> p &amp; <span class="number">1</span>:
+            result = <span class="function">mat_mul</span>(result, M, mod)
+        M = <span class="function">mat_mul</span>(M, M, mod)
+        p >>= <span class="number">1</span>
+    <span class="keyword">return</span> result
+
+<span class="keyword">def</span> <span class="function">fibonacci</span>(n, mod):
+    <span class="keyword">if</span> n <= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    result = <span class="function">mat_pow</span>([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]], n - <span class="number">1</span>, mod)
+    <span class="keyword">return</span> result[<span class="number">0</span>][<span class="number">0</span>]</code></pre>
+
+      <h3>General Linear Recurrences</h3>
+      <p>Any recurrence f(n) = c<sub>1</sub>f(n-1) + c<sub>2</sub>f(n-2) + ... + c<sub>k</sub>f(n-k) can be converted into a k x k matrix. The matrix is called the <em>companion matrix</em>:</p>
+
+      <div class="example-box">
+        <div class="label">Example: f(n) = 2f(n-1) + 3f(n-2) + f(n-3)</div>
+        <p>The companion matrix is:</p>
+        <p>[[2, 3, 1], [1, 0, 0], [0, 1, 0]]</p>
+        <p>Multiply [f(n-1), f(n-2), f(n-3)] by this matrix to get [f(n), f(n-1), f(n-2)].</p>
+        <p>Raise to the (n-2)<sup>th</sup> power and multiply by the initial state vector to get f(n).</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">When to Reach for Matrix Exponentiation</div>
+        <p>1) Linear recurrence with large n (up to 10<sup>18</sup>). 2) DP with small state space but huge number of transitions (e.g., tiling problems, string counting). 3) Graph problems: count paths of length exactly k (raise adjacency matrix to k-th power). 4) Any time you see "compute f(10<sup>18</sup>)" in a problem.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: MOBIUS -->
+    <!-- ============================================================ -->
+    <section id="mobius">
+      <h2>12. Mobius Function &amp; Inversion</h2>
+
+      <h3>The Mobius Function &mu;(n)</h3>
+      <div class="formula-box">
+        &mu;(1) = 1 &nbsp;|&nbsp; &mu;(n) = 0 if n has a squared prime factor &nbsp;|&nbsp; &mu;(n) = (-1)<sup>k</sup> if n is a product of k distinct primes
+      </div>
+
+      <p><strong>Intuition:</strong> &mu; is the "sign" function for inclusion-exclusion on divisors. It tells you whether to add or subtract when inverting a sum over divisors.</p>
+
+      <h3>Computing &mu; via Sieve</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="function">mobius_sieve</span>(<span class="keyword">int</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; mu(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="function">vector</span>&lt;<span class="keyword">bool</span>&gt; is_prime(n + <span class="number">1</span>, <span class="keyword">true</span>);
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; primes;
+    mu[<span class="number">1</span>] = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+        <span class="keyword">if</span> (is_prime[i]) {
+            primes.<span class="function">push_back</span>(i);
+            mu[i] = -<span class="number">1</span>; <span class="comment">// prime has one factor</span>
+        }
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < primes.<span class="function">size</span>() && (<span class="keyword">long long</span>)i * primes[j] <= n; j++) {
+            is_prime[i * primes[j]] = <span class="keyword">false</span>;
+            <span class="keyword">if</span> (i % primes[j] == <span class="number">0</span>) {
+                mu[i * primes[j]] = <span class="number">0</span>; <span class="comment">// squared factor</span>
+                <span class="keyword">break</span>;
+            }
+            mu[i * primes[j]] = -mu[i];
+        }
+    }
+    <span class="keyword">return</span> mu;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">mobius_sieve</span>(n):
+    mu = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+    mu[<span class="number">1</span>] = <span class="number">1</span>
+    is_prime = [<span class="keyword">True</span>] * (n + <span class="number">1</span>)
+    primes = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):
+        <span class="keyword">if</span> is_prime[i]:
+            primes.append(i)
+            mu[i] = -<span class="number">1</span>
+        <span class="keyword">for</span> p <span class="keyword">in</span> primes:
+            <span class="keyword">if</span> i * p > n:
+                <span class="keyword">break</span>
+            is_prime[i * p] = <span class="keyword">False</span>
+            <span class="keyword">if</span> i % p == <span class="number">0</span>:
+                mu[i * p] = <span class="number">0</span>
+                <span class="keyword">break</span>
+            mu[i * p] = -mu[i]
+    <span class="keyword">return</span> mu</code></pre>
+
+      <h3>Mobius Inversion Formula</h3>
+      <p>If f(n) = &sum;<sub>d|n</sub> g(d), then g(n) = &sum;<sub>d|n</sub> &mu;(n/d) * f(d).</p>
+
+      <p><strong>Why it matters:</strong> Many problems ask you to count pairs (i, j) with gcd(i, j) = k, or sum f(gcd(i, j)). Mobius inversion lets you reformulate these into sums you can compute efficiently.</p>
+
+      <h3>Classic Application: Count Coprime Pairs</h3>
+      <p><strong>Problem:</strong> Count pairs (i, j) with 1 &le; i &le; n, 1 &le; j &le; m, gcd(i, j) = 1.</p>
+
+      <div class="formula-box">
+        Answer = &sum;<sub>d=1</sub><sup>min(n,m)</sup> &mu;(d) * floor(n/d) * floor(m/d)
+      </div>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Count pairs with gcd = 1, using Mobius function</span>
+<span class="keyword">long long</span> <span class="function">count_coprime_pairs</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;mu) {
+    <span class="keyword">long long</span> ans = <span class="number">0</span>;
+    <span class="keyword">int</span> lim = <span class="function">min</span>(n, m);
+    <span class="keyword">for</span> (<span class="keyword">int</span> d = <span class="number">1</span>; d <= lim; d++)
+        ans += (<span class="keyword">long long</span>)mu[d] * (n / d) * (m / d);
+    <span class="keyword">return</span> ans;
+}
+
+<span class="comment">// Optimized with floor division blocks: O(sqrt(n) + sqrt(m))</span>
+<span class="keyword">long long</span> <span class="function">count_coprime_fast</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> m, <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; &amp;prefix_mu) {
+    <span class="keyword">long long</span> ans = <span class="number">0</span>;
+    <span class="keyword">int</span> lim = <span class="function">min</span>(n, m);
+    <span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">1</span>, r; l <= lim; l = r + <span class="number">1</span>) {
+        r = <span class="function">min</span>({lim, n / (n / l), m / (m / l)});
+        ans += (prefix_mu[r] - prefix_mu[l - <span class="number">1</span>]) * (n / l) * (m / l);
+    }
+    <span class="keyword">return</span> ans;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Floor Division Blocks</div>
+        <p>The values of floor(n/d) take at most O(2&radic;n) distinct values as d goes from 1 to n. For each distinct value, the d's that produce it form a contiguous block. This lets you speed up any sum &sum; f(d) * floor(n/d) from O(n) to O(&radic;n) by grouping. This optimization is essential for Mobius-based problems.</p>
+      </div>
+
+      <h3>Key Property</h3>
+      <div class="formula-box">
+        &sum;<sub>d|n</sub> &mu;(d) = [n = 1] &nbsp;&nbsp; (equals 1 if n = 1, else 0)
+      </div>
+      <p>This is the foundation of why Mobius inversion works. It acts as the "identity" for the Dirichlet convolution.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 13: FFT -->
+    <!-- ============================================================ -->
+    <section id="fft">
+      <h2>13. FFT &amp; Polynomial Multiplication</h2>
+
+      <p><strong>What FFT does:</strong> Multiplies two polynomials of degree n in O(n log n) instead of O(n<sup>2</sup>). This is not just for polynomial problems -- any convolution can be expressed as polynomial multiplication.</p>
+
+      <h3>When You Need FFT in CP</h3>
+      <ul>
+        <li><strong>Big number multiplication:</strong> Multiply two numbers with millions of digits</li>
+        <li><strong>Counting problems:</strong> "How many ways to get sum S using elements from two sets?" is a convolution</li>
+        <li><strong>String matching:</strong> Wildcard pattern matching can be reduced to polynomial multiplication</li>
+        <li><strong>Any time you see O(n<sup>2</sup>) convolution</strong> and n is up to 10<sup>5</sup> or 10<sup>6</sup></li>
+      </ul>
+
+      <h3>The Idea (Intuition, Not Full Proof)</h3>
+      <ol>
+        <li>Evaluate both polynomials at n special points (roots of unity) -- O(n log n) via divide and conquer</li>
+        <li>Multiply the values pointwise -- O(n)</li>
+        <li>Interpolate back to get the result polynomial -- O(n log n) (inverse FFT, which is almost the same as forward FFT)</li>
+      </ol>
+
+      <h3>NTT (Number Theoretic Transform) for Modular Arithmetic</h3>
+      <p>In CP, you usually need results mod a prime p. NTT replaces complex roots of unity with primitive roots mod p. The standard MOD = 998244353 = 119 * 2<sup>23</sup> + 1 is specifically chosen because it has a primitive root and supports NTT up to 2<sup>23</sup> elements.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const int</span> MOD = <span class="number">998244353</span>;
+<span class="keyword">const int</span> g = <span class="number">3</span>; <span class="comment">// primitive root of MOD</span>
+
+<span class="keyword">void</span> <span class="function">ntt</span>(<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; &amp;a, <span class="keyword">bool</span> invert) {
+    <span class="keyword">int</span> n = a.<span class="function">size</span>();
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i < n; i++) {
+        <span class="keyword">int</span> bit = n >> <span class="number">1</span>;
+        <span class="keyword">for</span> (; j &amp; bit; bit >>= <span class="number">1</span>) j ^= bit;
+        j ^= bit;
+        <span class="keyword">if</span> (i < j) <span class="function">swap</span>(a[i], a[j]);
+    }
+    <span class="keyword">for</span> (<span class="keyword">int</span> len = <span class="number">2</span>; len <= n; len <<= <span class="number">1</span>) {
+        <span class="keyword">long long</span> w = invert ? <span class="function">binpow</span>(<span class="function">binpow</span>(g, (MOD - <span class="number">1</span>) / len, MOD), MOD - <span class="number">2</span>, MOD)
+                             : <span class="function">binpow</span>(g, (MOD - <span class="number">1</span>) / len, MOD);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i += len) {
+            <span class="keyword">long long</span> wn = <span class="number">1</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j < len / <span class="number">2</span>; j++) {
+                <span class="keyword">long long</span> u = a[i + j];
+                <span class="keyword">long long</span> v = a[i + j + len / <span class="number">2</span>] * wn % MOD;
+                a[i + j] = (u + v) % MOD;
+                a[i + j + len / <span class="number">2</span>] = (u - v + MOD) % MOD;
+                wn = wn * w % MOD;
+            }
+        }
+    }
+    <span class="keyword">if</span> (invert) {
+        <span class="keyword">long long</span> n_inv = <span class="function">binpow</span>(n, MOD - <span class="number">2</span>, MOD);
+        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;x : a) x = x * n_inv % MOD;
+    }
+}
+
+<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; <span class="function">poly_multiply</span>(<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; a, <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; b) {
+    <span class="keyword">int</span> result_size = a.<span class="function">size</span>() + b.<span class="function">size</span>() - <span class="number">1</span>;
+    <span class="keyword">int</span> n = <span class="number">1</span>;
+    <span class="keyword">while</span> (n < result_size) n <<= <span class="number">1</span>;
+    a.<span class="function">resize</span>(n); b.<span class="function">resize</span>(n);
+    <span class="function">ntt</span>(a, <span class="keyword">false</span>); <span class="function">ntt</span>(b, <span class="keyword">false</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) a[i] = a[i] * b[i] % MOD;
+    <span class="function">ntt</span>(a, <span class="keyword">true</span>);
+    a.<span class="function">resize</span>(result_size);
+    <span class="keyword">return</span> a;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Python FFT using complex numbers (for non-modular problems)</span>
+<span class="keyword">import</span> cmath
+
+<span class="keyword">def</span> <span class="function">fft</span>(a, invert=<span class="keyword">False</span>):
+    n = <span class="builtin">len</span>(a)
+    <span class="keyword">if</span> n == <span class="number">1</span>:
+        <span class="keyword">return</span> a
+    a_even = <span class="function">fft</span>(a[<span class="number">0</span>::<span class="number">2</span>], invert)
+    a_odd = <span class="function">fft</span>(a[<span class="number">1</span>::<span class="number">2</span>], invert)
+    angle = <span class="number">2</span> * cmath.pi / n * (-<span class="number">1</span> <span class="keyword">if</span> invert <span class="keyword">else</span> <span class="number">1</span>)
+    w = <span class="number">1</span>
+    wn = cmath.exp(<span class="number">1j</span> * angle)
+    result = [<span class="number">0</span>] * n
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(n // <span class="number">2</span>):
+        result[i] = a_even[i] + w * a_odd[i]
+        result[i + n // <span class="number">2</span>] = a_even[i] - w * a_odd[i]
+        <span class="keyword">if</span> invert:
+            result[i] /= <span class="number">2</span>
+            result[i + n // <span class="number">2</span>] /= <span class="number">2</span>
+        w *= wn
+    <span class="keyword">return</span> result
+
+<span class="comment"># For CP in Python, use numpy.fft or the NTT approach above translated to Python</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Precision Issues with Complex FFT</div>
+        <p>Complex number FFT suffers from floating point errors. For exact integer results, round at the end. For modular results, always use NTT instead. In C++ CP, NTT is the standard. Python is too slow for FFT in most CP problems -- use C++ for FFT/NTT.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">998244353 vs 10<sup>9</sup>+7</div>
+        <p>If the problem uses MOD = 998244353, it is almost certainly hinting that NTT is needed. If MOD = 10<sup>9</sup>+7, you might need to use three different NTT-friendly primes and combine results with CRT, or use complex FFT with care.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BONUS: MODULAR ARITHMETIC CHEAT SHEET -->
+    <!-- ============================================================ -->
+    <section id="mod-cheatsheet">
+      <h2>Bonus: Modular Arithmetic Cheat Sheet</h2>
+
+      <p>This is the foundation everything above builds on. Internalize these rules and modular arithmetic becomes second nature.</p>
+
+      <h3>Basic Rules</h3>
+      <div class="formula-box">
+        (a + b) mod m = ((a mod m) + (b mod m)) mod m<br>
+        (a * b) mod m = ((a mod m) * (b mod m)) mod m<br>
+        (a - b) mod m = ((a mod m) - (b mod m) + m) mod m<br>
+        (a / b) mod m = (a * b<sup>-1</sup>) mod m &nbsp;&nbsp;(b<sup>-1</sup> is the modular inverse)
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Division is NOT (a mod m) / (b mod m)</div>
+        <p>You cannot just divide the remainders. You must multiply by the modular inverse. This is the most common mistake beginners make with modular arithmetic.</p>
+      </div>
+
+      <h3>The 10<sup>9</sup>+7 Constant</h3>
+      <p>Why do CP problems use 10<sup>9</sup>+7 (1000000007)?</p>
+      <ul>
+        <li>It is prime (so Fermat's theorem works, every non-zero element has an inverse)</li>
+        <li>It fits in a 32-bit integer</li>
+        <li>The product of two numbers mod 10<sup>9</sup>+7 fits in a 64-bit integer (about 10<sup>18</sup>)</li>
+        <li>It is large enough to make "guess the answer" impractical</li>
+      </ul>
+
+      <h3>Common Modular Arithmetic Patterns in CP</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">const long long</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;
+
+<span class="comment">// Safe addition</span>
+<span class="keyword">long long</span> <span class="function">add</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">return</span> (a + b) % MOD;
+}
+
+<span class="comment">// Safe subtraction (handles negative)</span>
+<span class="keyword">long long</span> <span class="function">sub</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">return</span> (a - b % MOD + MOD) % MOD;
+}
+
+<span class="comment">// Safe multiplication</span>
+<span class="keyword">long long</span> <span class="function">mul</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">return</span> a % MOD * (b % MOD) % MOD;
+}
+
+<span class="comment">// Safe division</span>
+<span class="keyword">long long</span> <span class="function">divmod</span>(<span class="keyword">long long</span> a, <span class="keyword">long long</span> b) {
+    <span class="keyword">return</span> <span class="function">mul</span>(a, <span class="function">binpow</span>(b, MOD - <span class="number">2</span>, MOD));
+}</code></pre>
+
+      <h3>Exponent Towers: a<sup>b<sup>c</sup></sup> mod m</h3>
+      <p>A classic hard problem. The key insight chains together Euler's theorem:</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Compute a^b^c^... mod m using Euler's theorem recursively</span>
+<span class="comment">// tower = [a, b, c, ...] read bottom to top</span>
+<span class="keyword">long long</span> <span class="function">tower_mod</span>(<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; &amp;tower, <span class="keyword">int</span> idx, <span class="keyword">long long</span> mod) {
+    <span class="keyword">if</span> (mod == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">if</span> (idx == tower.<span class="function">size</span>()) <span class="keyword">return</span> <span class="number">1</span> % mod;
+    <span class="keyword">long long</span> phi_m = <span class="function">euler_totient</span>(mod);
+    <span class="keyword">long long</span> exp = <span class="function">tower_mod</span>(tower, idx + <span class="number">1</span>, phi_m);
+    <span class="keyword">return</span> <span class="function">binpow</span>(tower[idx] % mod, exp + phi_m, mod);
+    <span class="comment">// +phi_m handles the case when gcd(a, mod) != 1</span>
+    <span class="comment">// (generalized Euler's theorem: a^n ≡ a^(n mod φ(m) + φ(m)) when n ≥ log2(m))</span>
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Generalized Euler's Theorem</div>
+        <p>When gcd(a, m) is not 1, the standard Euler's theorem does not apply directly. But for n &ge; log<sub>2</sub>(m): a<sup>n</sup> &equiv; a<sup>(n mod &phi;(m)) + &phi;(m)</sup> (mod m). This is why the code above adds &phi;(m) to the exponent -- it ensures correctness even when a and m share factors.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BONUS: PRIMALITY TESTING -->
+    <!-- ============================================================ -->
+    <section id="primality">
+      <h2>Bonus: Primality Testing</h2>
+
+      <h3>Trial Division: O(&radic;n)</h3>
+      <p>Simple and sufficient for n up to about 10<sup>14</sup> in CP.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">bool</span> <span class="function">is_prime</span>(<span class="keyword">long long</span> n) {
+    <span class="keyword">if</span> (n < <span class="number">2</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">if</span> (n < <span class="number">4</span>) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">0</span> || n % <span class="number">3</span> == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">for</span> (<span class="keyword">long long</span> i = <span class="number">5</span>; i * i <= n; i += <span class="number">6</span>)
+        <span class="keyword">if</span> (n % i == <span class="number">0</span> || n % (i + <span class="number">2</span>) == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">is_prime</span>(n):
+    <span class="keyword">if</span> n < <span class="number">2</span>: <span class="keyword">return</span> <span class="keyword">False</span>
+    <span class="keyword">if</span> n < <span class="number">4</span>: <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">or</span> n % <span class="number">3</span> == <span class="number">0</span>: <span class="keyword">return</span> <span class="keyword">False</span>
+    i = <span class="number">5</span>
+    <span class="keyword">while</span> i * i <= n:
+        <span class="keyword">if</span> n % i == <span class="number">0</span> <span class="keyword">or</span> n % (i + <span class="number">2</span>) == <span class="number">0</span>: <span class="keyword">return</span> <span class="keyword">False</span>
+        i += <span class="number">6</span>
+    <span class="keyword">return</span> <span class="keyword">True</span></code></pre>
+
+      <h3>Miller-Rabin: O(k log<sup>2</sup> n)</h3>
+      <p><strong>The idea:</strong> Based on Fermat's little theorem, but stronger. If n is prime, then for any a: either a<sup>d</sup> &equiv; 1 (mod n), or a<sup>d*2<sup>r</sup></sup> &equiv; -1 (mod n) for some r, where n-1 = d * 2<sup>s</sup>.</p>
+
+      <p><strong>Deterministic version for CP:</strong> For n &lt; 3.3 * 10<sup>24</sup>, testing with bases {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37} is enough. For n &lt; 3.2 * 10<sup>18</sup> (fits in long long), bases {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37} give a deterministic answer.</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">using</span> u64 = <span class="keyword">unsigned long long</span>;
+<span class="keyword">using</span> u128 = __uint128_t;
+
+u64 <span class="function">mulmod</span>(u64 a, u64 b, u64 m) {
+    <span class="keyword">return</span> (u128)a * b % m;
+}
+
+u64 <span class="function">powmod</span>(u64 a, u64 b, u64 m) {
+    u64 res = <span class="number">1</span>;
+    a %= m;
+    <span class="keyword">while</span> (b > <span class="number">0</span>) {
+        <span class="keyword">if</span> (b &amp; <span class="number">1</span>) res = <span class="function">mulmod</span>(res, a, m);
+        a = <span class="function">mulmod</span>(a, a, m);
+        b >>= <span class="number">1</span>;
+    }
+    <span class="keyword">return</span> res;
+}
+
+<span class="keyword">bool</span> <span class="function">miller_rabin</span>(u64 n, u64 a) {
+    <span class="keyword">if</span> (n % a == <span class="number">0</span>) <span class="keyword">return</span> n == a;
+    u64 d = n - <span class="number">1</span>;
+    <span class="keyword">int</span> r = <span class="number">0</span>;
+    <span class="keyword">while</span> (d % <span class="number">2</span> == <span class="number">0</span>) { d /= <span class="number">2</span>; r++; }
+    u64 x = <span class="function">powmod</span>(a, d, n);
+    <span class="keyword">if</span> (x == <span class="number">1</span> || x == n - <span class="number">1</span>) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < r - <span class="number">1</span>; i++) {
+        x = <span class="function">mulmod</span>(x, x, n);
+        <span class="keyword">if</span> (x == n - <span class="number">1</span>) <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+
+<span class="keyword">bool</span> <span class="function">is_prime_millerrabin</span>(u64 n) {
+    <span class="keyword">if</span> (n < <span class="number">2</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">for</span> (u64 a : {<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">37</span>})
+        <span class="keyword">if</span> (!<span class="function">miller_rabin</span>(n, a)) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Miller-Rabin</div>
+        <p>When n is too large for a sieve (say n up to 10<sup>18</sup>) and you need to check individual numbers for primality. Often paired with Pollard's rho for factorization of large numbers. If you only need primes up to 10<sup>7</sup>, just use a sieve.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BONUS: DIVISOR FUNCTIONS -->
+    <!-- ============================================================ -->
+    <section id="divisors">
+      <h2>Bonus: Divisor Functions &amp; Multiplicative Functions</h2>
+
+      <h3>Number of Divisors: d(n) / &tau;(n) / &sigma;<sub>0</sub>(n)</h3>
+      <p>If n = p<sub>1</sub><sup>a<sub>1</sub></sup> * p<sub>2</sub><sup>a<sub>2</sub></sup> * ... * p<sub>k</sub><sup>a<sub>k</sub></sup>, then d(n) = (a<sub>1</sub>+1)(a<sub>2</sub>+1)...(a<sub>k</sub>+1).</p>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="keyword">int</span> <span class="function">count_divisors</span>(<span class="keyword">long long</span> n) {
+    <span class="keyword">int</span> count = <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">long long</span> p = <span class="number">2</span>; p * p <= n; p++) {
+        <span class="keyword">int</span> e = <span class="number">0</span>;
+        <span class="keyword">while</span> (n % p == <span class="number">0</span>) { n /= p; e++; }
+        count *= (e + <span class="number">1</span>);
+    }
+    <span class="keyword">if</span> (n > <span class="number">1</span>) count *= <span class="number">2</span>; <span class="comment">// remaining prime factor with exponent 1</span>
+    <span class="keyword">return</span> count;
+}</code></pre>
+
+      <h3>Sum of Divisors: &sigma;(n) / &sigma;<sub>1</sub>(n)</h3>
+      <p>If n = p<sub>1</sub><sup>a<sub>1</sub></sup> * ... * p<sub>k</sub><sup>a<sub>k</sub></sup>, then &sigma;(n) = &prod; (p<sub>i</sub><sup>a<sub>i</sub>+1</sup> - 1) / (p<sub>i</sub> - 1).</p>
+
+      <h3>Listing All Divisors</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; <span class="function">get_divisors</span>(<span class="keyword">long long</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; divs;
+    <span class="keyword">for</span> (<span class="keyword">long long</span> i = <span class="number">1</span>; i * i <= n; i++) {
+        <span class="keyword">if</span> (n % i == <span class="number">0</span>) {
+            divs.<span class="function">push_back</span>(i);
+            <span class="keyword">if</span> (i != n / i)
+                divs.<span class="function">push_back</span>(n / i);
+        }
+    }
+    <span class="function">sort</span>(divs.<span class="function">begin</span>(), divs.<span class="function">end</span>());
+    <span class="keyword">return</span> divs;
+}</code></pre>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">get_divisors</span>(n):
+    divs = []
+    i = <span class="number">1</span>
+    <span class="keyword">while</span> i * i <= n:
+        <span class="keyword">if</span> n % i == <span class="number">0</span>:
+            divs.append(i)
+            <span class="keyword">if</span> i != n // i:
+                divs.append(n // i)
+        i += <span class="number">1</span>
+    <span class="keyword">return</span> <span class="builtin">sorted</span>(divs)</code></pre>
+
+      <h3>Sieve for Number of Divisors / Sum of Divisors (1 to n)</h3>
+
+      <pre><code><span class="lang-label">C++</span>
+<span class="comment">// Count divisors for all numbers 1..n in O(n log n)</span>
+<span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="function">divisor_count_sieve</span>(<span class="keyword">int</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">int</span>&gt; d(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j <= n; j += i)
+            d[j]++;
+    <span class="keyword">return</span> d;
+}
+
+<span class="comment">// Sum of divisors for all numbers 1..n in O(n log n)</span>
+<span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; <span class="function">divisor_sum_sieve</span>(<span class="keyword">int</span> n) {
+    <span class="function">vector</span>&lt;<span class="keyword">long long</span>&gt; s(n + <span class="number">1</span>, <span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j <= n; j += i)
+            s[j] += i;
+    <span class="keyword">return</span> s;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Multiplicative Functions</div>
+        <p>A function f is multiplicative if f(ab) = f(a)f(b) when gcd(a,b) = 1. The functions &phi;, &mu;, d, &sigma; are all multiplicative. This means you only need to know their values on prime powers, then multiply. The linear sieve can compute any multiplicative function in O(n).</p>
+      </div>
+
+      <div class="example-box">
+        <div class="label">Harmonic Series Trick</div>
+        <p>The sum &sum;<sub>i=1</sub><sup>n</sup> floor(n/i) = O(n log n). This is because floor(n/i) counts how many multiples of i are &le; n. This sum appears constantly in number theory problems. Compute it in O(&radic;n) using floor division blocks (same technique as in Mobius section).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 14: PRACTICE PROBLEMS -->
+    <!-- ============================================================ -->
+    <section id="practice">
+      <h2>14. Practice Problems</h2>
+
+      <p>Organized by topic. Solve these and you will have solid number theory fundamentals for CP.</p>
+
+      <h3>Sieve &amp; Primes</h3>
+      <ul>
+        <li><strong>SPOJ PRIME1</strong> -- Prime Generator (segmented sieve)</li>
+        <li><strong>Codeforces 576A</strong> -- Vasya and Petya's Game (prime factorization)</li>
+        <li><strong>Codeforces 154B</strong> -- Colliders (sieve + SPF)</li>
+        <li><strong>Codeforces 1771F</strong> -- Hossam and Range Minimum Query (primes + data structures)</li>
+      </ul>
+
+      <h3>GCD &amp; Extended GCD</h3>
+      <ul>
+        <li><strong>Codeforces 1295D</strong> -- Same GCDs (Euler's totient)</li>
+        <li><strong>CSES</strong> -- Exponentiation II (modular exponentiation with Fermat's)</li>
+        <li><strong>Codeforces 1225D</strong> -- Power Products (prime factorization + GCD)</li>
+      </ul>
+
+      <h3>Modular Inverse &amp; Combinatorics</h3>
+      <ul>
+        <li><strong>CSES</strong> -- Binomial Coefficients (precompute factorials)</li>
+        <li><strong>CSES</strong> -- Creating Strings II (multinomial coefficient)</li>
+        <li><strong>Codeforces 1312D</strong> -- Count the Arrays (combinatorics)</li>
+        <li><strong>Codeforces 1716D</strong> -- Chip Move (DP + combinatorics)</li>
+        <li><strong>AtCoder ABC 021D</strong> -- Lining Up (factorial + inverse)</li>
+      </ul>
+
+      <h3>Binary &amp; Matrix Exponentiation</h3>
+      <ul>
+        <li><strong>CSES</strong> -- Fibonacci Numbers (matrix exponentiation, n up to 10<sup>18</sup>)</li>
+        <li><strong>CSES</strong> -- Graph Paths I (count paths of length k via matrix exp)</li>
+        <li><strong>Codeforces 1117D</strong> -- Magic Gems (linear recurrence + matrix exp)</li>
+        <li><strong>Codeforces 1182E</strong> -- Product Oriented Recurrence</li>
+      </ul>
+
+      <h3>CRT</h3>
+      <ul>
+        <li><strong>CSES</strong> -- Chinese Remainder Theorem (direct application)</li>
+        <li><strong>Codeforces 687B</strong> -- Remainders Game (CRT theory)</li>
+        <li><strong>Kattis</strong> -- Chinese Remainder (implementation)</li>
+      </ul>
+
+      <h3>Inclusion-Exclusion</h3>
+      <ul>
+        <li><strong>SPOJ DCEPC206</strong> -- Derangements (derangement formula)</li>
+        <li><strong>Codeforces 451E</strong> -- Devu and Flowers (inclusion-exclusion + nCr)</li>
+        <li><strong>Codeforces 1036F</strong> -- Relatively Prime Powers (Mobius + IE)</li>
+      </ul>
+
+      <h3>Catalan Numbers</h3>
+      <ul>
+        <li><strong>CSES</strong> -- Bracket Sequences I (Catalan number)</li>
+        <li><strong>LeetCode 96</strong> -- Unique Binary Search Trees</li>
+        <li><strong>CSES</strong> -- Counting Necklaces (Burnside + combinatorics)</li>
+      </ul>
+
+      <h3>Mobius Function</h3>
+      <ul>
+        <li><strong>SPOJ PGCD</strong> -- Primes in GCD Table (Mobius inversion)</li>
+        <li><strong>Codeforces 1139D</strong> -- Steps to One (Mobius + expected value)</li>
+        <li><strong>SPOJ LCMSUM</strong> -- LCM Sum (Euler's totient + divisor sums)</li>
+        <li><strong>Codeforces 1553F</strong> -- Pairwise Modulo (number theory + data structures)</li>
+      </ul>
+
+      <h3>FFT / NTT</h3>
+      <ul>
+        <li><strong>CSES</strong> -- Polynomial Multiplication (direct NTT)</li>
+        <li><strong>Codeforces 632E</strong> -- Thief in a Shop (FFT + DP)</li>
+        <li><strong>AtCoder ARC 106F</strong> -- Figures (polynomial operations)</li>
+        <li><strong>Codeforces 993E</strong> -- Nikita and Order Statistics (FFT on count arrays)</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Study Order Recommendation</div>
+        <p>Start with sieve and binary exponentiation (you will use these in almost every contest). Then learn modular inverse and combinatorics (needed for 80% of math problems). CRT and Euler's totient come next. Matrix exponentiation unlocks a whole class of problems. Save Mobius inversion and FFT for after you are comfortable with everything else -- they appear mainly in Div 1 C/D and harder.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">CP Template Tip</div>
+        <p>Keep a pre-written template with: binpow, modular inverse, factorial/inverse-factorial precomputation, sieve, and matrix exponentiation. In a contest, you should be able to paste these in and use them instantly. The time to learn them is now -- the contest is not the time to debug your number theory library.</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

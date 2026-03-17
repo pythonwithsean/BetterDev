@@ -44,6 +44,9 @@
         <a href="linear-algebra.html">Linear Algebra</a>
         <a href="probability.html">Probability &amp; Statistics</a>
         <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
       </div>
       <div class="sidebar-group">
         <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
@@ -58,6 +61,10 @@
         <a href="patterns.html">LeetCode Patterns</a>
         <a href="dp.html">Dynamic Programming</a>
         <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
         <a href="leetcode-650.html">The 650 Problems</a>
         <a href="competitive-programming.html">CP Roadmap</a>
       </div>
@@ -79,6 +86,10 @@
         <a href="kubernetes.html">Kubernetes</a>
         <a href="message-queues.html">Queues &amp; Pub/Sub</a>
         <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
       </div>
       <div class="sidebar-group">
         <div class="sidebar-group-label">JS/TS Ecosystem</div>
@@ -93,28 +104,30 @@
 
     <div class="hero">
       <h1>Better Dev</h1>
-      <p>Everything you need to go from zero to confident in mathematics and data structures &amp; algorithms. Built for self-learners who started late and want to catch up fast.</p>
+      <p>Everything you need to go from zero to cracked in maths, DSA, systems, and software engineering. Follow the site top to bottom -- each section builds on the last. <strong>The order IS the roadmap.</strong></p>
     </div>
 
-    <!-- MATHS ROADMAP -->
-    <h2 class="section-title">Math Learning Roadmap</h2>
-    <p>Follow this order. Each topic builds on the one before it. Don't skip ahead -- the foundations make everything else click.</p>
+    <!-- ============================================================ -->
+    <!-- PHASE 1: FOUNDATIONS                                          -->
+    <!-- ============================================================ -->
+    <h2 class="section-title">Phase 1 -- Foundations</h2>
+    <p>Build the base. Math fundamentals, your first data structures, your tools, and your first language. Everything after this depends on nailing these. Go in order.</p>
 
     <div class="roadmap">
       <a href="pre-algebra.html" class="roadmap-step">
         <div class="step-num">1</div>
         <div class="step-label">Pre-Algebra</div>
-        <div class="step-desc">Numbers, BODMAS, fractions, decimals, ratios</div>
+        <div class="step-desc">Numbers, BODMAS, fractions, ratios</div>
       </a>
       <a href="algebra.html" class="roadmap-step">
         <div class="step-num">2</div>
         <div class="step-label">Algebra</div>
-        <div class="step-desc">Variables, equations, functions, polynomials</div>
+        <div class="step-desc">Variables, equations, functions</div>
       </a>
       <a href="sequences-series.html" class="roadmap-step">
         <div class="step-num">3</div>
         <div class="step-label">Sequences &amp; Series</div>
-        <div class="step-desc">Arithmetic &amp; geometric progressions, sum formulas</div>
+        <div class="step-desc">Progressions, sum formulas</div>
       </a>
       <a href="geometry.html" class="roadmap-step">
         <div class="step-num">4</div>
@@ -124,33 +137,49 @@
       <a href="binary-systems.html" class="roadmap-step">
         <div class="step-num">5</div>
         <div class="step-label">Binary &amp; Number Systems</div>
-        <div class="step-desc">Binary, hex, bitwise ops -- CS essential</div>
+        <div class="step-desc">Binary, hex, bitwise ops</div>
       </a>
-      <a href="discrete-math.html" class="roadmap-step">
+      <a href="linux.html" class="roadmap-step">
         <div class="step-num">6</div>
-        <div class="step-label">Discrete Math</div>
-        <div class="step-desc">Logic, sets, proofs, Big-O, graph theory</div>
+        <div class="step-label">Linux</div>
+        <div class="step-desc">Shell, filesystem, commands</div>
       </a>
-      <a href="calculus.html" class="roadmap-step">
+      <a href="git.html" class="roadmap-step">
         <div class="step-num">7</div>
-        <div class="step-label">Calculus</div>
-        <div class="step-desc">Limits, derivatives, integrals</div>
+        <div class="step-label">Git</div>
+        <div class="step-desc">Version control, branches, workflows</div>
       </a>
-      <a href="linear-algebra.html" class="roadmap-step">
+      <a href="javascript.html" class="roadmap-step">
         <div class="step-num">8</div>
-        <div class="step-label">Linear Algebra</div>
-        <div class="step-desc">Vectors, matrices, transformations</div>
+        <div class="step-label">JavaScript</div>
+        <div class="step-desc">V8, closures, event loop, async</div>
       </a>
-      <a href="probability.html" class="roadmap-step">
+      <a href="dsa-foundations.html" class="roadmap-step">
         <div class="step-num">9</div>
-        <div class="step-label">Probability &amp; Statistics</div>
-        <div class="step-desc">Probability, Bayes, distributions</div>
+        <div class="step-label">DSA Foundations</div>
+        <div class="step-desc">Time complexity, Big-O, core structures</div>
+      </a>
+      <a href="arrays.html" class="roadmap-step">
+        <div class="step-num">10</div>
+        <div class="step-label">Arrays &amp; Strings</div>
+        <div class="step-desc">Two pointers, sliding window, prefix sum</div>
+      </a>
+      <a href="hashmaps.html" class="roadmap-step">
+        <div class="step-num">11</div>
+        <div class="step-label">Hash Maps &amp; Sets</div>
+        <div class="step-desc">Frequency counting, Two Sum</div>
+      </a>
+      <a href="stacks-queues.html" class="roadmap-step">
+        <div class="step-num">12</div>
+        <div class="step-label">Stacks &amp; Queues</div>
+        <div class="step-desc">LIFO, FIFO, monotonic stack</div>
+      </a>
+      <a href="linked-lists.html" class="roadmap-step">
+        <div class="step-num">13</div>
+        <div class="step-label">Linked Lists</div>
+        <div class="step-desc">Fast/slow pointers, reversal, cycles</div>
       </a>
     </div>
-
-    <!-- MATHS SECTION -->
-    <h2 class="section-title">Mathematics</h2>
-    <p>Start from the very basics and work your way up to the maths every computer scientist needs. Every topic has explanations, worked examples, formulas, and quizzes.</p>
 
     <div class="cards">
       <a href="pre-algebra.html" class="card">
@@ -163,250 +192,434 @@
         <div class="icon">📐</div>
         <h3>Algebra</h3>
         <p>Variables, equations, functions, polynomials, quadratics, logarithms, and exponent rules.</p>
-        <span class="tag green">Essential</span>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="sequences-series.html" class="card">
         <div class="icon">📊</div>
         <h3>Sequences &amp; Series</h3>
         <p>Arithmetic and geometric progressions, sum formulas, n(n+1)/2, and why nested loops are O(n&sup2;).</p>
-        <span class="tag green">Essential</span>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="geometry.html" class="card">
         <div class="icon">📏</div>
         <h3>Geometry</h3>
         <p>Shapes, angles, area, volume, trigonometry, coordinate geometry, and transformations.</p>
-        <span class="tag">Essential</span>
-      </a>
-      <a href="calculus.html" class="card">
-        <div class="icon">📈</div>
-        <h3>Calculus</h3>
-        <p>Limits, derivatives, integrals, and their applications in CS and machine learning.</p>
-        <span class="tag orange">Intermediate</span>
-      </a>
-      <a href="discrete-math.html" class="card">
-        <div class="icon">🧠</div>
-        <h3>Discrete Math</h3>
-        <p>Logic, sets, proofs, counting, graph theory, Big-O notation, and recurrence relations.</p>
-        <span class="tag">CS Core</span>
-      </a>
-      <a href="linear-algebra.html" class="card">
-        <div class="icon">🔀</div>
-        <h3>Linear Algebra</h3>
-        <p>Vectors, matrices, eigenvalues, transformations, and applications in ML and graphics.</p>
-        <span class="tag">CS Core</span>
-      </a>
-      <a href="probability.html" class="card">
-        <div class="icon">🎲</div>
-        <h3>Probability &amp; Statistics</h3>
-        <p>Probability rules, Bayes' theorem, distributions, statistics, and CS applications.</p>
-        <span class="tag">CS Core</span>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="binary-systems.html" class="card">
         <div class="icon">01</div>
         <h3>Binary &amp; Number Systems</h3>
-        <p>Binary, hex, octal, bitwise operations (AND, OR, XOR), bit manipulation, how files and data are stored as bytes, and C++ bitwise programming.</p>
-        <span class="tag green">Essential</span>
+        <p>Binary, hex, octal, bitwise operations (AND, OR, XOR), bit manipulation, how data is stored as bytes, and C++ bitwise programming.</p>
+        <span class="tag green">Phase 1</span>
       </a>
-    </div>
-
-    <!-- DSA SECTION -->
-    <h2 class="section-title">Data Structures &amp; Algorithms</h2>
-    <p>Master every data structure and algorithm you need for LeetCode and technical interviews, with code in Python and JavaScript.</p>
-
-    <div class="cards">
+      <a href="linux.html" class="card">
+        <div class="icon">🐧</div>
+        <h3>Learn Linux</h3>
+        <p>What Linux is, the kernel and shell, directory structure, apt, Bash scripting, .bashrc, and ANSI terminal codes.</p>
+        <span class="tag green">Phase 1</span>
+      </a>
+      <a href="git.html" class="card">
+        <div class="icon">🔀</div>
+        <h3>Master Git</h3>
+        <p>Git internals, branches as pointers, the DAG, rebase, cherry-pick, reset vs revert, reflog, and GitHub CLI.</p>
+        <span class="tag green">Phase 1</span>
+      </a>
+      <a href="javascript.html" class="card">
+        <div class="icon">🟨</div>
+        <h3>JavaScript Deep Dive</h3>
+        <p>V8 engine, execution context, closures, prototypes, the event loop, Proxy/Reflect, ES6+, modules, and memory management.</p>
+        <span class="tag green">Phase 1</span>
+      </a>
       <a href="dsa-foundations.html" class="card">
         <div class="icon">🧱</div>
         <h3>DSA Foundations</h3>
-        <p>Everything explained from zero: what data structures are, time complexity with the math, every core structure, algorithms, and a problem-solving framework.</p>
-        <span class="tag green">Start Here</span>
-      </a>
-      <a href="leetcode-650.html" class="card">
-        <div class="icon">🏋️</div>
-        <h3>The PythonWithSean 650</h3>
-        <p>650 curated LeetCode problems organized by topic. Complete this list and you'll be ready for any interview.</p>
-        <span class="tag green">Essential</span>
+        <p>Everything from zero: what data structures are, time complexity with the math, every core structure, algorithms, and a problem-solving framework.</p>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="arrays.html" class="card">
         <div class="icon">📊</div>
         <h3>Arrays &amp; Strings</h3>
         <p>Array operations, two pointers, sliding window, prefix sum, and string manipulation.</p>
-        <span class="tag green">Start Here</span>
-      </a>
-      <a href="stacks-queues.html" class="card">
-        <div class="icon">📚</div>
-        <h3>Stacks &amp; Queues</h3>
-        <p>LIFO and FIFO structures, implementations, deques, and monotonic stack patterns.</p>
-        <span class="tag green">Fundamental</span>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="hashmaps.html" class="card">
         <div class="icon">🗂️</div>
         <h3>Hash Maps &amp; Sets</h3>
         <p>Hash map internals, frequency counting, Two Sum, Group Anagrams, and building from scratch.</p>
-        <span class="tag green">Fundamental</span>
+        <span class="tag green">Phase 1</span>
+      </a>
+      <a href="stacks-queues.html" class="card">
+        <div class="icon">📚</div>
+        <h3>Stacks &amp; Queues</h3>
+        <p>LIFO and FIFO structures, implementations, deques, and monotonic stack patterns.</p>
+        <span class="tag green">Phase 1</span>
       </a>
       <a href="linked-lists.html" class="card">
         <div class="icon">🔗</div>
         <h3>Linked Lists</h3>
         <p>Singly and doubly linked lists, fast/slow pointers, reversal, and cycle detection.</p>
-        <span class="tag">Core</span>
+        <span class="tag green">Phase 1</span>
+      </a>
+    </div>
+
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">Phase 1 LeetCode Target</div>
+      <p>2-3 Easy problems per day. Focus on Arrays, Strings, Hash Maps. Time yourself: 20 min per Easy. If stuck after 20 min, read the solution, understand it, then redo it tomorrow.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PHASE 2: CORE CS                                              -->
+    <!-- ============================================================ -->
+    <h2 class="section-title">Phase 2 -- Core Computer Science</h2>
+    <p>The real CS begins. Advanced math, trees, graphs, DP, and understanding how computers actually work at the OS and network level. This is where you go from beginner to competent.</p>
+
+    <div class="roadmap">
+      <a href="discrete-math.html" class="roadmap-step">
+        <div class="step-num">14</div>
+        <div class="step-label">Discrete Math</div>
+        <div class="step-desc">Logic, sets, proofs, combinatorics</div>
+      </a>
+      <a href="calculus.html" class="roadmap-step">
+        <div class="step-num">15</div>
+        <div class="step-label">Calculus</div>
+        <div class="step-desc">Limits, derivatives, integrals</div>
+      </a>
+      <a href="linear-algebra.html" class="roadmap-step">
+        <div class="step-num">16</div>
+        <div class="step-label">Linear Algebra</div>
+        <div class="step-desc">Vectors, matrices, transformations</div>
+      </a>
+      <a href="probability.html" class="roadmap-step">
+        <div class="step-num">17</div>
+        <div class="step-label">Probability &amp; Statistics</div>
+        <div class="step-desc">Bayes, distributions, expected value</div>
+      </a>
+      <a href="trees.html" class="roadmap-step">
+        <div class="step-num">18</div>
+        <div class="step-label">Trees &amp; BST</div>
+        <div class="step-desc">Traversals, DFS, BFS, balanced trees</div>
+      </a>
+      <a href="graphs.html" class="roadmap-step">
+        <div class="step-num">19</div>
+        <div class="step-label">Graphs</div>
+        <div class="step-desc">BFS, DFS, Dijkstra's, topo sort</div>
+      </a>
+      <a href="sorting.html" class="roadmap-step">
+        <div class="step-num">20</div>
+        <div class="step-label">Sorting &amp; Searching</div>
+        <div class="step-desc">All sorts, binary search variants</div>
+      </a>
+      <a href="patterns.html" class="roadmap-step">
+        <div class="step-num">21</div>
+        <div class="step-label">LeetCode Patterns</div>
+        <div class="step-desc">All 13 patterns, sweep line, greedy</div>
+      </a>
+      <a href="dp.html" class="roadmap-step">
+        <div class="step-num">22</div>
+        <div class="step-label">Dynamic Programming</div>
+        <div class="step-desc">Top-down, bottom-up, 1D/2D, knapsack</div>
+      </a>
+      <a href="advanced.html" class="roadmap-step">
+        <div class="step-num">23</div>
+        <div class="step-label">Advanced Topics</div>
+        <div class="step-desc">Heaps, tries, union-find, segment trees</div>
+      </a>
+    </div>
+
+    <div class="cards">
+      <a href="discrete-math.html" class="card">
+        <div class="icon">🧠</div>
+        <h3>Discrete Math</h3>
+        <p>Logic, sets, proofs, counting, graph theory, Big-O notation, and recurrence relations.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="calculus.html" class="card">
+        <div class="icon">📈</div>
+        <h3>Calculus</h3>
+        <p>Limits, derivatives, integrals, and their applications in CS and machine learning.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="linear-algebra.html" class="card">
+        <div class="icon">🔀</div>
+        <h3>Linear Algebra</h3>
+        <p>Vectors, matrices, eigenvalues, transformations, and applications in ML and graphics.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="probability.html" class="card">
+        <div class="icon">🎲</div>
+        <h3>Probability &amp; Statistics</h3>
+        <p>Probability rules, Bayes' theorem, distributions, statistics, and CS applications.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="typescript.html" class="card">
+        <div class="icon">🔷</div>
+        <h3>TypeScript</h3>
+        <p>Generics, conditional types, mapped types, utility types, infer, keyof, decorators, and tsconfig deep dive.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="cpp.html" class="card">
+        <div class="icon">⚙️</div>
+        <h3>C++</h3>
+        <p>Data types, pointers (single through triple indirection), RAII, smart pointers, vectors, strings, STL containers, and modern C++ features.</p>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="trees.html" class="card">
         <div class="icon">🌳</div>
         <h3>Trees &amp; BST</h3>
         <p>Binary search trees, all traversals, DFS, BFS, and balanced tree concepts.</p>
-        <span class="tag">Core</span>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="graphs.html" class="card">
         <div class="icon">🕸️</div>
         <h3>Graphs</h3>
         <p>BFS, DFS, Dijkstra's, topological sort, union-find, and cycle detection.</p>
-        <span class="tag orange">Intermediate</span>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="sorting.html" class="card">
         <div class="icon">🔄</div>
         <h3>Sorting &amp; Searching</h3>
         <p>All sorting algorithms, binary search variants, and built-in sorting pitfalls.</p>
-        <span class="tag">Core</span>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="patterns.html" class="card">
         <div class="icon">🧩</div>
         <h3>LeetCode Patterns</h3>
-        <p>Two pointers, sliding window, backtracking, prefix sum, greedy, and the pattern cheat sheet.</p>
-        <span class="tag orange">Key Resource</span>
+        <p>Two pointers, sliding window, backtracking, prefix sum, greedy, sweep line, and the pattern cheat sheet.</p>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="dp.html" class="card">
         <div class="icon">💡</div>
         <h3>Dynamic Programming</h3>
         <p>Top-down vs bottom-up, 1D and 2D DP, knapsack, LCS, and the 5-step framework.</p>
-        <span class="tag red">Advanced</span>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="advanced.html" class="card">
         <div class="icon">⚡</div>
         <h3>Advanced Topics</h3>
         <p>Heaps, tries, union-find, segment trees, bit manipulation, and math for interviews.</p>
-        <span class="tag red">Advanced</span>
-      </a>
-      <a href="competitive-programming.html" class="card">
-        <div class="icon">🏆</div>
-        <h3>CP Roadmap</h3>
-        <p>Full competitive programming roadmap: Regular to Legendary tier algorithms, practice platforms, tournaments with prizes, and a weekly training schedule.</p>
-        <span class="tag orange">Competitive</span>
-      </a>
-    </div>
-
-    <!-- LANGUAGES & SYSTEMS -->
-    <h2 class="section-title">Languages &amp; Systems</h2>
-    <p>Learn a systems-level programming language in depth and understand how operating systems actually work.</p>
-
-    <div class="cards">
-      <a href="cpp.html" class="card">
-        <div class="icon">⚙️</div>
-        <h3>C++</h3>
-        <p>Data types, pointers (single through triple indirection), RAII, smart pointers, vectors, strings, STL containers, and modern C++ features.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="golang.html" class="card">
-        <div class="icon">🐹</div>
-        <h3>Go (Golang)</h3>
-        <p>Go fundamentals, structs, interfaces, goroutines &amp; channels, building HTTP backends, CLIs, testing, concurrency patterns, and Go for DSA.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="javascript.html" class="card">
-        <div class="icon">🟨</div>
-        <h3>JavaScript Deep Dive</h3>
-        <p>V8 engine, execution context, closures, prototypes, the event loop, Proxy/Reflect, ES6+ features, modules, and memory management.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="typescript.html" class="card">
-        <div class="icon">🔷</div>
-        <h3>TypeScript</h3>
-        <p>Generics, conditional types, mapped types, utility types, infer, keyof, decorators, declare module, namespaces, and tsconfig deep dive.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="nodejs.html" class="card">
-        <div class="icon">🟢</div>
-        <h3>Node.js Internals</h3>
-        <p>V8 + libuv architecture, event loop phases, streams, buffers, child_process, worker threads, cluster, and the module system.</p>
-        <span class="tag green">Essential</span>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="os.html" class="card">
         <div class="icon">🖥️</div>
         <h3>Operating Systems</h3>
-        <p>Processes, syscalls, scheduling, threads, locks, virtual memory, paging, file systems, and security. Companion to the free OSTEP textbook.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="linux.html" class="card">
-        <div class="icon">🐧</div>
-        <h3>Learn Linux</h3>
-        <p>What Linux is, Unix vs Linux, the kernel and shell, directory structure, apt package management, Bash scripting, .bashrc, ANSI terminal codes, and more.</p>
-        <span class="tag green">Essential</span>
-      </a>
-      <a href="git.html" class="card">
-        <div class="icon">🔀</div>
-        <h3>Master Git</h3>
-        <p>Git internals, branches as pointers, the DAG, rebase, interactive rebase, cherry-pick, squash, reset vs revert, reflog, GitHub CLI, GitLab CLI, and advanced workflows.</p>
-        <span class="tag green">Essential</span>
+        <p>Processes, syscalls, scheduling, threads, locks, virtual memory, paging, file systems, and security.</p>
+        <span class="tag orange">Phase 2</span>
       </a>
       <a href="networking.html" class="card">
         <div class="icon">🌐</div>
         <h3>Networking</h3>
-        <p>OSI model, TCP/IP, DNS, HTTP/HTTPS, TLS handshakes, WebSockets, REST vs GraphQL vs gRPC, ports, and network debugging tools.</p>
-        <span class="tag green">Essential</span>
+        <p>OSI model, TCP/IP, DNS, HTTP/HTTPS, TLS, WebSockets, REST vs GraphQL vs gRPC, and socket programming.</p>
+        <span class="tag orange">Phase 2</span>
       </a>
-      <a href="cloud.html" class="card">
-        <div class="icon">☁️</div>
-        <h3>Cloud &amp; Infrastructure</h3>
-        <p>AWS/GCP/Azure, compute &amp; storage, serverless, CI/CD, Terraform, load balancers, CDNs, managed databases, and avoiding bill shock.</p>
-        <span class="tag orange">Intermediate</span>
+      <a href="nodejs.html" class="card">
+        <div class="icon">🟢</div>
+        <h3>Node.js Internals</h3>
+        <p>V8 + libuv architecture, event loop phases, streams, buffers, child_process, worker threads, and cluster.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="backend.html" class="card">
+        <div class="icon">🗄️</div>
+        <h3>Backend</h3>
+        <p>Binary data, buffers, streams, transactions, indexes, connection pooling, and database scaling.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="databases.html" class="card">
+        <div class="icon">🐘</div>
+        <h3>PostgreSQL &amp; MySQL</h3>
+        <p>Setup, CLI, SQL fundamentals, joins, aggregation, database design, normalization, indexes, transactions, ACID, JSONB, connection from Node.js, and schema design exercises.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+      <a href="leetcode-650.html" class="card">
+        <div class="icon">🏋️</div>
+        <h3>The PythonWithSean 650</h3>
+        <p>650 curated LeetCode problems organized by topic. Start working through this during Phase 2.</p>
+        <span class="tag orange">Phase 2</span>
+      </a>
+    </div>
+
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">Phase 2 LeetCode Target</div>
+      <p>2 Medium problems per day. Start the Blind 75 / NeetCode 150. Time yourself: 30 min per Medium. Do the problems in topic order (trees, then graphs, then DP). If you can't solve it in 30 min, study the solution and redo it next week.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PHASE 3: ADVANCED + COMPETITIVE                               -->
+    <!-- ============================================================ -->
+    <h2 class="section-title">Phase 3 -- Advanced &amp; Competitive</h2>
+    <p>This is where you become dangerous. Advanced math for CP, advanced algorithms that win contests, advanced data structures that solve impossible problems, and production infrastructure skills.</p>
+
+    <div class="roadmap">
+      <a href="number-theory.html" class="roadmap-step">
+        <div class="step-num">24</div>
+        <div class="step-label">Number Theory for CP</div>
+        <div class="step-desc">Fermat's, CRT, combinatorics, FFT</div>
+      </a>
+      <a href="string-algorithms.html" class="roadmap-step">
+        <div class="step-num">25</div>
+        <div class="step-label">String Algorithms</div>
+        <div class="step-desc">KMP, Z, Rabin-Karp, edit distance</div>
+      </a>
+      <a href="advanced-graphs.html" class="roadmap-step">
+        <div class="step-num">26</div>
+        <div class="step-label">Advanced Graphs</div>
+        <div class="step-desc">MST, SCC, LCA, max flow, bridges</div>
+      </a>
+      <a href="advanced-dp.html" class="roadmap-step">
+        <div class="step-num">27</div>
+        <div class="step-label">Advanced DP</div>
+        <div class="step-desc">Tree DP, bitmask, digit, SOS, CHT</div>
+      </a>
+      <a href="advanced-ds.html" class="roadmap-step">
+        <div class="step-num">28</div>
+        <div class="step-label">Advanced Data Structures</div>
+        <div class="step-desc">BIT, segment tree, HLD, Mo's</div>
+      </a>
+      <a href="computational-geometry.html" class="roadmap-step">
+        <div class="step-num">29</div>
+        <div class="step-label">Computational Geometry</div>
+        <div class="step-desc">Convex hull, sweep line, intersections</div>
+      </a>
+      <a href="game-theory.html" class="roadmap-step">
+        <div class="step-num">30</div>
+        <div class="step-label">Game Theory</div>
+        <div class="step-desc">Nim, Sprague-Grundy, minimax</div>
+      </a>
+    </div>
+
+    <div class="cards">
+      <a href="number-theory.html" class="card">
+        <div class="icon">#</div>
+        <h3>Number Theory for CP</h3>
+        <p>Fast exponentiation, Fermat's little theorem, extended Euclidean, Euler's totient, CRT, combinatorics (nCr mod p), Catalan numbers, matrix exponentiation, FFT, and Mobius inversion.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="string-algorithms.html" class="card">
+        <div class="icon">abc</div>
+        <h3>String Algorithms</h3>
+        <p>KMP, Z-algorithm, Rabin-Karp hashing, edit distance (Levenshtein), suffix arrays, Aho-Corasick, Manacher's, string DP, and real-world applications like typing accuracy and fuzzy matching.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="advanced-graphs.html" class="card">
+        <div class="icon">&#9670;</div>
+        <h3>Advanced Graphs</h3>
+        <p>MST (Kruskal/Prim), bridges and articulation points, SCCs (Tarjan/Kosaraju), LCA (binary lifting), max flow (Dinic's), bipartite matching, Euler paths, Floyd-Warshall, and 2-SAT.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="advanced-dp.html" class="card">
+        <div class="icon">&#8734;</div>
+        <h3>Advanced DP</h3>
+        <p>DP on trees, bitmask DP, digit DP, interval DP, SOS DP, convex hull trick, divide and conquer optimization, Knuth's optimization, and profile DP.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="advanced-ds.html" class="card">
+        <div class="icon">&#9733;</div>
+        <h3>Advanced Data Structures</h3>
+        <p>Fenwick trees (BIT), segment trees with lazy propagation, sparse tables, heavy-light decomposition, centroid decomposition, treaps, Li Chao trees, Mo's algorithm, and persistent structures.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="computational-geometry.html" class="card">
+        <div class="icon">&#9651;</div>
+        <h3>Computational Geometry</h3>
+        <p>Cross products, convex hull, point-in-polygon, line segment intersection, closest pair, sweep line, polygon area, rotating calipers, and half-plane intersection.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="game-theory.html" class="card">
+        <div class="icon">&#9823;</div>
+        <h3>Game Theory</h3>
+        <p>Combinatorial game theory, Nim and Nim-sum, Sprague-Grundy theorem, Grundy numbers, minimax, alpha-beta pruning, Wythoff's game, and common CP game problems.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="competitive-programming.html" class="card">
+        <div class="icon">🏆</div>
+        <h3>CP Roadmap</h3>
+        <p>Full competitive programming roadmap: Regular to Legendary tier algorithms, practice platforms, tournaments with prizes, and weekly training schedule.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="golang.html" class="card">
+        <div class="icon">🐹</div>
+        <h3>Go (Golang)</h3>
+        <p>Go fundamentals, structs, interfaces, goroutines &amp; channels, building HTTP backends, CLIs, testing, and concurrency patterns.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="system-design.html" class="card">
+        <div class="icon">🏗️</div>
+        <h3>System Design</h3>
+        <p>Requirements gathering, estimation, components, trade-offs, and the system design interview framework.</p>
+        <span class="tag red">Phase 3</span>
       </a>
       <a href="docker.html" class="card">
         <div class="icon">🐳</div>
         <h3>Docker &amp; Compose</h3>
-        <p>Containers from scratch -- images, Dockerfiles, volumes, networking, Docker Compose, multi-container apps, and production best practices.</p>
-        <span class="tag green">Essential</span>
+        <p>Containers from scratch -- images, Dockerfiles, volumes, networking, Compose, and production best practices.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="cloud.html" class="card">
+        <div class="icon">☁️</div>
+        <h3>Cloud &amp; Infrastructure</h3>
+        <p>AWS/GCP/Azure, compute &amp; storage, serverless, CI/CD, Terraform, load balancers, CDNs, and managed databases.</p>
+        <span class="tag red">Phase 3</span>
       </a>
       <a href="kubernetes.html" class="card">
         <div class="icon">☸️</div>
         <h3>Kubernetes</h3>
-        <p>Container orchestration -- Pods, Deployments, Services, scaling, self-healing, YAML configs, kubectl, and when to use K8s vs Docker Compose.</p>
-        <span class="tag orange">Intermediate</span>
+        <p>Container orchestration -- Pods, Deployments, Services, scaling, self-healing, YAML configs, and kubectl.</p>
+        <span class="tag red">Phase 3</span>
       </a>
       <a href="message-queues.html" class="card">
         <div class="icon">📨</div>
         <h3>Queues &amp; Pub/Sub</h3>
-        <p>Message queues, Pub/Sub patterns, topics, fan-out, RabbitMQ, Apache Kafka, AWS SQS/SNS, consumer groups, and event-driven architecture.</p>
-        <span class="tag orange">Intermediate</span>
+        <p>Message queues, Pub/Sub patterns, RabbitMQ, Apache Kafka, consumer groups, and event-driven architecture.</p>
+        <span class="tag red">Phase 3</span>
       </a>
       <a href="selfhosting.html" class="card">
         <div class="icon">🏠</div>
         <h3>VPS &amp; Self-Hosting</h3>
-        <p>Set up a VPS from scratch, SSH keys, firewalls, reverse proxies, SSL, Docker deployments, Coolify, and self-hosted tools -- all on a $4/month server.</p>
-        <span class="tag green">Essential</span>
+        <p>Set up a VPS from scratch, SSH keys, firewalls, reverse proxies, SSL, Docker deployments, and self-hosted tools.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="stripe.html" class="card">
+        <div class="icon">💳</div>
+        <h3>Stripe &amp; Payments</h3>
+        <p>How payments work, Payment Intents, Checkout, Elements, subscriptions, webhooks, testing, security, PCI compliance, and full Node.js integration examples.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
+      <a href="distributed-systems.html" class="card">
+        <div class="icon">🌍</div>
+        <h3>Distributed Systems</h3>
+        <p>CAP theorem, consensus (Raft/Paxos), replication, sharding, consistent hashing, distributed transactions (2PC/sagas), gossip protocols, caching, rate limiting, idempotency, and observability.</p>
+        <span class="tag red">Phase 3</span>
       </a>
     </div>
 
-    <!-- JS/TS ECOSYSTEM -->
-    <h2 class="section-title">JS/TS Ecosystem</h2>
-    <p>The JavaScript and TypeScript ecosystem explained: tooling, testing, and building real projects.</p>
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">Phase 3 LeetCode + CP Target</div>
+      <p>1-2 Hard problems per day. Virtual contests on Codeforces/AtCoder weekly. Work through The 650 Problems. Target: Codeforces 1400+ rating. Start entering real competitions (ICPC, Google Code Jam, Meta Hacker Cup).</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PHASE 4: ECOSYSTEM + SHIPPING                                 -->
+    <!-- ============================================================ -->
+    <h2 class="section-title">Phase 4 -- Ecosystem &amp; Shipping</h2>
+    <p>You know the theory. Now build real things. Master your ecosystem tooling, testing, and ship production software.</p>
 
     <div class="cards">
       <a href="js-tooling.html" class="card">
         <div class="icon">🔧</div>
         <h3>Tooling &amp; Bundlers</h3>
-        <p>npm/yarn/pnpm, package.json, Webpack, Vite, esbuild, Babel, SWC, module resolution, linting, monorepos, and npm audit.</p>
-        <span class="tag green">Essential</span>
+        <p>npm/yarn/pnpm, package.json, Webpack, Vite, esbuild, Babel, SWC, module resolution, linting, and monorepos.</p>
+        <span class="tag">Phase 4</span>
       </a>
       <a href="js-testing.html" class="card">
         <div class="icon">🧪</div>
         <h3>Testing</h3>
         <p>Vitest, Jest, mocking, spies, async testing, HTTP API testing, snapshots, coverage, TDD, and Playwright for E2E.</p>
-        <span class="tag green">Essential</span>
+        <span class="tag">Phase 4</span>
       </a>
       <a href="ts-projects.html" class="card">
         <div class="icon">🏗️</div>
         <h3>Building with TS</h3>
-        <p>Build CLIs, TUIs with Ink, HTTP APIs (Express/Fastify/Hono), an AI git commit tool, SDKs, npm publishing, and Docker for TS.</p>
-        <span class="tag orange">Intermediate</span>
+        <p>Build CLIs, TUIs with Ink, HTTP APIs (Express/Fastify/Hono), SDKs, npm publishing, and Docker for TS.</p>
+        <span class="tag">Phase 4</span>
       </a>
     </div>
 
@@ -528,6 +741,31 @@
         <strong>Write the code yourself first.</strong> Struggle with it. Read the docs. Try and fail. Then if you're truly stuck, ask AI to explain the concept -- not to write the code for you.<br><br>
         <strong>If AI already wrote code you don't understand -- go back and learn it.</strong> It's not too late. Open every file, read every function, look up every library. Make the codebase yours. That's how you turn AI-assisted code into real knowledge.<br><br>
         <strong>The engineer on LinkedIn already paid the price of learning.</strong> He can review AI code because he spent years writing it himself first. You still need to pay that price. And honestly, paying it now while you're in university is the cheapest it'll ever be.
+      </p>
+    </div>
+
+    <!-- LIFE ROADMAP -->
+    <h2 class="section-title">Your Roadmap -- Just Follow the Site</h2>
+    <p>The site is organized so that scrolling down IS the roadmap. Phase 1 &rarr; Phase 2 &rarr; Phase 3 &rarr; Phase 4. Go through each card in order. By the time you finish Phase 4, you'll have the math, algorithms, systems knowledge, and practical skills to be a cracked backend and systems engineer.</p>
+
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">How to Use This Site</div>
+      <p>
+        <strong>1. Start at Phase 1, card 1.</strong> Open each topic in order. Read it. Do the practice problems. Move to the next card.<br><br>
+        <strong>2. Don't skip ahead.</strong> Every topic builds on the previous ones. If you skip Discrete Math, you won't understand graph theory. If you skip Binary Systems, bit manipulation problems will destroy you.<br><br>
+        <strong>3. Do LeetCode alongside.</strong> Each phase has a LeetCode target at the bottom. Hit it daily.<br><br>
+        <strong>4. The numbered roadmap bars show the exact order.</strong> Follow the numbers 1 through 30. That's it. That's the plan.
+      </p>
+    </div>
+
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">The Daily Grind Schedule</div>
+      <p>
+        <strong>Morning (1 hr):</strong> Bible/prayer + 1 LeetCode problem (timed)<br>
+        <strong>Afternoon (2-3 hrs):</strong> Study from this site -- one topic at a time, do the practice problems<br>
+        <strong>Evening (1-2 hrs):</strong> Build projects / practice CP / contribute to open source<br>
+        <strong>Weekend:</strong> Virtual contest (Codeforces or LeetCode weekly) + review weak areas<br>
+        <strong>Sunday:</strong> Rest. Church. No code. Trust the process.
       </p>
     </div>
 

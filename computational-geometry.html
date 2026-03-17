@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computational Geometry - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false"><span class="hamburger-icon"></span></button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header"><span class="sidebar-title">Navigation</span><button class="sidebar-close" aria-label="Close navigation">&times;</button></div>
+    <div class="sidebar-search"><input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics"><div class="sidebar-search-results"></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a><a href="algebra.html">Algebra</a><a href="sequences-series.html">Sequences &amp; Series</a><a href="geometry.html">Geometry</a><a href="calculus.html">Calculus</a><a href="discrete-math.html">Discrete Math</a><a href="linear-algebra.html">Linear Algebra</a><a href="probability.html">Probability &amp; Statistics</a><a href="binary-systems.html">Binary &amp; Number Systems</a><a href="number-theory.html">Number Theory for CP</a><a href="computational-geometry.html">Computational Geometry</a><a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a><a href="arrays.html">Arrays &amp; Strings</a><a href="stacks-queues.html">Stacks &amp; Queues</a><a href="hashmaps.html">Hash Maps &amp; Sets</a><a href="linked-lists.html">Linked Lists</a><a href="trees.html">Trees &amp; BST</a><a href="graphs.html">Graphs</a><a href="sorting.html">Sorting &amp; Searching</a><a href="patterns.html">LeetCode Patterns</a><a href="dp.html">Dynamic Programming</a><a href="advanced.html">Advanced Topics</a><a href="string-algorithms.html">String Algorithms</a><a href="advanced-graphs.html">Advanced Graphs</a><a href="advanced-dp.html">Advanced DP</a><a href="advanced-ds.html">Advanced Data Structures</a><a href="leetcode-650.html">The 650 Problems</a><a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a><a href="golang.html">Go</a><a href="javascript.html">JavaScript Deep Dive</a><a href="typescript.html">TypeScript</a><a href="nodejs.html">Node.js Internals</a><a href="os.html">Operating Systems</a><a href="linux.html">Linux</a><a href="git.html">Git</a><a href="backend.html">Backend</a><a href="system-design.html">System Design</a><a href="networking.html">Networking</a><a href="cloud.html">Cloud &amp; Infrastructure</a><a href="docker.html">Docker &amp; Compose</a><a href="kubernetes.html">Kubernetes</a><a href="message-queues.html">Queues &amp; Pub/Sub</a><a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a><a href="js-testing.html">Testing</a><a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group"><div class="sidebar-group-label">More</div><a href="seans-brain.html">Sean's Brain</a></div>
+    </nav>
+  </aside>
+  <div class="container">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> &raquo; Computational Geometry</div>
+      <h1>Computational Geometry</h1>
+      <p>The algorithmic study of geometric objects -- points, lines, polygons, and their relationships. Essential for competitive programming, computer graphics, robotics, and GIS. This page covers every major technique with code, proofs, and intuition.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#points-vectors">Points and Vectors</a></li>
+        <li><a href="#cross-product-orientation">Cross Product and Orientation</a></li>
+        <li><a href="#segment-intersection">Line Segment Intersection</a></li>
+        <li><a href="#convex-hull">Convex Hull</a></li>
+        <li><a href="#point-in-polygon">Point in Polygon</a></li>
+        <li><a href="#closest-pair">Closest Pair of Points</a></li>
+        <li><a href="#sweep-line">Sweep Line Algorithms</a></li>
+        <li><a href="#polygon-area">Polygon Area and Centroid</a></li>
+        <li><a href="#half-plane">Half-Plane Intersection</a></li>
+        <li><a href="#rotating-calipers">Rotating Calipers</a></li>
+        <li><a href="#voronoi-delaunay">Voronoi Diagrams and Delaunay Triangulation</a></li>
+        <li><a href="#practice">Practice Problems</a></li>
+      </ol>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: Points and Vectors -->
+    <!-- ============================================================ -->
+    <div class="section" id="points-vectors">
+      <h2>1. Points and Vectors</h2>
+
+      <p>Everything in computational geometry starts with representing points in 2D space and performing vector operations on them. A point is a location <strong>(x, y)</strong>. A vector is a direction + magnitude, often represented the same way but interpreted differently.</p>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        A vector from point A to point B is simply <strong>B - A = (B.x - A.x, B.y - A.y)</strong>. This is the most fundamental operation -- it converts two points into a direction.
+      </div>
+
+      <h3>Point / Vector Struct</h3>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> Point {
+    <span class="keyword">double</span> x, y;
+    Point(<span class="keyword">double</span> x = <span class="number">0</span>, <span class="keyword">double</span> y = <span class="number">0</span>) : x(x), y(y) {}
+
+    <span class="comment">// Vector addition</span>
+    Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; p) <span class="keyword">const</span> { <span class="keyword">return</span> {x + p.x, y + p.y}; }
+    <span class="comment">// Vector subtraction (A - B = vector from B to A)</span>
+    Point <span class="keyword">operator</span>-(<span class="keyword">const</span> Point&amp; p) <span class="keyword">const</span> { <span class="keyword">return</span> {x - p.x, y - p.y}; }
+    <span class="comment">// Scalar multiplication</span>
+    Point <span class="keyword">operator</span>*(<span class="keyword">double</span> t) <span class="keyword">const</span> { <span class="keyword">return</span> {x * t, y * t}; }
+    <span class="comment">// Dot product</span>
+    <span class="keyword">double</span> <span class="function">dot</span>(<span class="keyword">const</span> Point&amp; p) <span class="keyword">const</span> { <span class="keyword">return</span> x * p.x + y * p.y; }
+    <span class="comment">// Cross product (z-component of 3D cross)</span>
+    <span class="keyword">double</span> <span class="function">cross</span>(<span class="keyword">const</span> Point&amp; p) <span class="keyword">const</span> { <span class="keyword">return</span> x * p.y - y * p.x; }
+    <span class="comment">// Magnitude</span>
+    <span class="keyword">double</span> <span class="function">norm</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="function">sqrt</span>(x * x + y * y); }
+    <span class="comment">// Squared magnitude (avoid sqrt when possible)</span>
+    <span class="keyword">double</span> <span class="function">norm2</span>() <span class="keyword">const</span> { <span class="keyword">return</span> x * x + y * y; }
+};
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">class</span> <span class="function">Point</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, x=<span class="number">0</span>, y=<span class="number">0</span>):
+        self.x = x
+        self.y = y
+
+    <span class="keyword">def</span> <span class="function">__add__</span>(self, p):
+        <span class="keyword">return</span> Point(self.x + p.x, self.y + p.y)
+
+    <span class="keyword">def</span> <span class="function">__sub__</span>(self, p):
+        <span class="keyword">return</span> Point(self.x - p.x, self.y - p.y)
+
+    <span class="keyword">def</span> <span class="function">__mul__</span>(self, t):
+        <span class="keyword">return</span> Point(self.x * t, self.y * t)
+
+    <span class="keyword">def</span> <span class="function">dot</span>(self, p):
+        <span class="keyword">return</span> self.x * p.x + self.y * p.y
+
+    <span class="keyword">def</span> <span class="function">cross</span>(self, p):
+        <span class="keyword">return</span> self.x * p.y - self.y * p.x
+
+    <span class="keyword">def</span> <span class="function">norm</span>(self):
+        <span class="keyword">return</span> math.sqrt(self.x ** <span class="number">2</span> + self.y ** <span class="number">2</span>)
+
+    <span class="keyword">def</span> <span class="function">norm2</span>(self):
+        <span class="keyword">return</span> self.x ** <span class="number">2</span> + self.y ** <span class="number">2</span>
+
+    <span class="keyword">def</span> <span class="function">__repr__</span>(self):
+        <span class="keyword">return</span> <span class="string">f"({self.x}, {self.y})"</span>
+</code></pre>
+
+      <h3>Visual: Vector Operations</h3>
+<pre><code>
+        y
+        ^
+    4   |         B(4,3)
+        |        /
+    3   |       / &lt;-- vector AB
+        |      /
+    2   |     /
+        |    /
+    1   |   A(1,1)
+        |
+    0   +---+---+---+---+---&gt; x
+        0   1   2   3   4
+
+    Vector AB = B - A = (3, 2)
+    |AB| = sqrt(9 + 4) = sqrt(13) ~ 3.61
+</code></pre>
+
+      <h3>Dot Product Intuition</h3>
+
+      <div class="formula-box">
+        <div class="label">Dot Product</div>
+        <strong>A . B = |A| * |B| * cos(theta)</strong><br>
+        <strong>A . B = A.x * B.x + A.y * B.y</strong><br><br>
+        Result &gt; 0: angle &lt; 90 degrees (vectors point roughly same direction)<br>
+        Result = 0: angle = 90 degrees (perpendicular)<br>
+        Result &lt; 0: angle &gt; 90 degrees (vectors point roughly opposite)
+      </div>
+
+      <h3>Angle Between Two Vectors</h3>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">angle_between</span>(a, b):
+    <span class="string">"""Returns angle in radians between vectors a and b"""</span>
+    cos_theta = a.dot(b) / (a.norm() * b.norm())
+    <span class="comment"># Clamp to avoid floating point errors with acos</span>
+    cos_theta = max(-<span class="number">1</span>, min(<span class="number">1</span>, cos_theta))
+    <span class="keyword">return</span> math.acos(cos_theta)
+</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Floating Point Warning</div>
+        Computational geometry is plagued by floating point issues. Whenever possible, use <strong>integer arithmetic</strong> (cross products, dot products with integer coordinates) and avoid <code>sqrt</code> and <code>acos</code>. Compare squared distances instead of distances. Use an epsilon (e.g., 1e-9) for floating point comparisons.
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: Cross Product and Orientation -->
+    <!-- ============================================================ -->
+    <div class="section" id="cross-product-orientation">
+      <h2>2. Cross Product and Orientation</h2>
+
+      <p>The 2D cross product is the single most important tool in computational geometry. It tells you the <strong>orientation</strong> (turn direction) of three points.</p>
+
+      <div class="formula-box">
+        <div class="label">2D Cross Product</div>
+        For vectors A and B: <strong>A x B = A.x * B.y - A.y * B.x</strong><br><br>
+        This equals the <strong>signed area</strong> of the parallelogram formed by A and B.<br>
+        Equivalently, for three points P, Q, R:<br>
+        <strong>cross(PQ, PR) = (Q-P) x (R-P)</strong>
+      </div>
+
+      <h3>Orientation Test (CCW / CW / Collinear)</h3>
+
+<pre><code>
+    Positive cross =&gt; Counter-Clockwise (left turn)
+
+         R
+        /
+       /
+      P --------&gt; Q     Turn LEFT to go P-&gt;Q-&gt;R
+
+    Negative cross =&gt; Clockwise (right turn)
+
+      P --------&gt; Q     Turn RIGHT to go P-&gt;Q-&gt;R
+       \
+        \
+         R
+
+    Zero cross =&gt; Collinear
+
+      P --------&gt; Q --------&gt; R  (all on same line)
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Returns: positive = CCW, negative = CW, 0 = collinear</span>
+<span class="keyword">double</span> <span class="function">cross</span>(Point O, Point A, Point B) {
+    <span class="keyword">return</span> (A - O).cross(B - O);
+}
+
+<span class="comment">// Orientation enum for clarity</span>
+<span class="keyword">int</span> <span class="function">orient</span>(Point P, Point Q, Point R) {
+    <span class="keyword">double</span> v = cross(P, Q, R);
+    <span class="keyword">if</span> (v &gt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;   <span class="comment">// CCW (left turn)</span>
+    <span class="keyword">if</span> (v &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// CW  (right turn)</span>
+    <span class="keyword">return</span> <span class="number">0</span>;              <span class="comment">// collinear</span>
+}
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">cross3</span>(O, A, B):
+    <span class="string">"""Cross product of vectors OA and OB"""</span>
+    <span class="keyword">return</span> (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x)
+
+<span class="keyword">def</span> <span class="function">orient</span>(P, Q, R):
+    <span class="string">"""Returns 1=CCW, -1=CW, 0=collinear"""</span>
+    v = cross3(P, Q, R)
+    <span class="keyword">if</span> v &gt; <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">if</span> v &lt; <span class="number">0</span>: <span class="keyword">return</span> -<span class="number">1</span>
+    <span class="keyword">return</span> <span class="number">0</span>
+</code></pre>
+
+      <h3>Signed Area of a Triangle</h3>
+
+      <div class="formula-box">
+        <div class="label">Triangle Area from Cross Product</div>
+        <strong>Area(P, Q, R) = |cross(PQ, PR)| / 2</strong><br><br>
+        The signed version (without absolute value) is positive when P,Q,R are in CCW order, negative when CW.
+      </div>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">triangle_area</span>(P, Q, R):
+    <span class="keyword">return</span> abs(cross3(P, Q, R)) / <span class="number">2</span>
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use</div>
+        The orientation test is the building block of almost everything: convex hulls, segment intersection, point-in-polygon, and more. Master it and the rest follows naturally.
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: Line Segment Intersection -->
+    <!-- ============================================================ -->
+    <div class="section" id="segment-intersection">
+      <h2>3. Line Segment Intersection</h2>
+
+      <p>Given segments AB and CD, do they intersect? This is one of the most common geometric predicates.</p>
+
+      <h3>Geometric Intuition</h3>
+<pre><code>
+    Two segments intersect if and only if:
+    1) Points C and D are on opposite sides of line AB
+       AND points A and B are on opposite sides of line CD
+
+         A-----------B
+              / \
+             /   \
+            C     D     C and D on opposite sides of AB? YES
+                        A and B on opposite sides of CD? YES
+                        =&gt; They intersect!
+
+    Special case: a point lies ON the other segment (collinear)
+</code></pre>
+
+      <h3>The Algorithm</h3>
+
+      <p>Use orientation tests. Segments AB and CD intersect when:</p>
+      <ul>
+        <li><code>orient(A,B,C)</code> and <code>orient(A,B,D)</code> have different signs, AND</li>
+        <li><code>orient(C,D,A)</code> and <code>orient(C,D,B)</code> have different signs</li>
+        <li>OR one of the four orientations is zero and the point lies on the segment (collinear overlap)</li>
+      </ul>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">bool</span> <span class="function">onSegment</span>(Point p, Point a, Point b) {
+    <span class="comment">// Check if p is on segment ab, assuming p is collinear with a,b</span>
+    <span class="keyword">return</span> min(a.x, b.x) &lt;= p.x &amp;&amp; p.x &lt;= max(a.x, b.x)
+        &amp;&amp; min(a.y, b.y) &lt;= p.y &amp;&amp; p.y &lt;= max(a.y, b.y);
+}
+
+<span class="keyword">bool</span> <span class="function">segmentsIntersect</span>(Point a, Point b, Point c, Point d) {
+    <span class="keyword">int</span> d1 = orient(a, b, c);
+    <span class="keyword">int</span> d2 = orient(a, b, d);
+    <span class="keyword">int</span> d3 = orient(c, d, a);
+    <span class="keyword">int</span> d4 = orient(c, d, b);
+
+    <span class="comment">// General case: segments straddle each other's lines</span>
+    <span class="keyword">if</span> (d1 * d2 &lt; <span class="number">0</span> &amp;&amp; d3 * d4 &lt; <span class="number">0</span>)
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+
+    <span class="comment">// Special cases: collinear points lie on the other segment</span>
+    <span class="keyword">if</span> (d1 == <span class="number">0</span> &amp;&amp; onSegment(c, a, b)) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="keyword">if</span> (d2 == <span class="number">0</span> &amp;&amp; onSegment(d, a, b)) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="keyword">if</span> (d3 == <span class="number">0</span> &amp;&amp; onSegment(a, c, d)) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="keyword">if</span> (d4 == <span class="number">0</span> &amp;&amp; onSegment(b, c, d)) <span class="keyword">return</span> <span class="keyword">true</span>;
+
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">on_segment</span>(p, a, b):
+    <span class="string">"""Check if p lies on segment ab (assuming collinear)"""</span>
+    <span class="keyword">return</span> (min(a.x, b.x) &lt;= p.x &lt;= max(a.x, b.x) <span class="keyword">and</span>
+            min(a.y, b.y) &lt;= p.y &lt;= max(a.y, b.y))
+
+<span class="keyword">def</span> <span class="function">segments_intersect</span>(a, b, c, d):
+    d1 = orient(a, b, c)
+    d2 = orient(a, b, d)
+    d3 = orient(c, d, a)
+    d4 = orient(c, d, b)
+
+    <span class="keyword">if</span> d1 * d2 &lt; <span class="number">0</span> <span class="keyword">and</span> d3 * d4 &lt; <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="keyword">True</span>
+
+    <span class="keyword">if</span> d1 == <span class="number">0</span> <span class="keyword">and</span> on_segment(c, a, b): <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">if</span> d2 == <span class="number">0</span> <span class="keyword">and</span> on_segment(d, a, b): <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">if</span> d3 == <span class="number">0</span> <span class="keyword">and</span> on_segment(a, c, d): <span class="keyword">return</span> <span class="keyword">True</span>
+    <span class="keyword">if</span> d4 == <span class="number">0</span> <span class="keyword">and</span> on_segment(b, c, d): <span class="keyword">return</span> <span class="keyword">True</span>
+
+    <span class="keyword">return</span> <span class="keyword">False</span>
+</code></pre>
+
+      <h3>Finding the Intersection Point</h3>
+
+      <p>When you need the actual intersection coordinates, use parametric line equations:</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">intersection_point</span>(a, b, c, d):
+    <span class="string">"""Find intersection point of segments AB and CD.
+    Returns None if they don't intersect or are parallel."""</span>
+    <span class="comment"># Line AB: P = A + t*(B-A), Line CD: P = C + u*(D-C)</span>
+    denom = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x)
+    <span class="keyword">if</span> abs(denom) &lt; <span class="number">1e-9</span>:
+        <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># parallel</span>
+
+    t = ((c.x - a.x) * (d.y - c.y) - (c.y - a.y) * (d.x - c.x)) / denom
+    u = ((c.x - a.x) * (b.y - a.y) - (c.y - a.y) * (b.x - a.x)) / denom
+
+    <span class="keyword">if</span> <span class="number">0</span> &lt;= t &lt;= <span class="number">1</span> <span class="keyword">and</span> <span class="number">0</span> &lt;= u &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> Point(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y))
+    <span class="keyword">return</span> <span class="keyword">None</span>
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Time:</strong> O(1) per intersection test<br>
+        <strong>Space:</strong> O(1)
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: Convex Hull -->
+    <!-- ============================================================ -->
+    <div class="section" id="convex-hull">
+      <h2>4. Convex Hull</h2>
+
+      <p>The convex hull of a set of points is the smallest convex polygon containing all points. Think of stretching a rubber band around nails on a board -- the shape it makes is the convex hull.</p>
+
+<pre><code>
+    Convex Hull Visualization:
+
+    Input points:          Convex Hull:
+                                  *
+      *   *                      / \
+        *                       /   \
+    *       *               *  / * * \  *
+      *   *                  \/       \/
+        *                     *-------*
+
+    The "rubber band" wraps around the outermost points.
+</code></pre>
+
+      <h3>Andrew's Monotone Chain (Preferred)</h3>
+
+      <p>Sort points by x (then y), then build lower and upper hulls separately. This is generally preferred over Graham scan because it avoids angle computations and handles collinear points cleanly.</p>
+
+      <div class="formula-box">
+        <div class="label">Algorithm Steps</div>
+        1. Sort points by (x, y)<br>
+        2. Build lower hull: process left to right, keeping only left turns<br>
+        3. Build upper hull: process right to left, keeping only left turns<br>
+        4. Concatenate (remove duplicated endpoints)
+      </div>
+
+<pre><code>
+    Walkthrough: Building lower hull for points sorted left to right
+
+    Step 1: Start with leftmost points
+    *
+
+    Step 2: Add next point
+    *---*
+
+    Step 3: Add point -- makes left turn, keep it
+    *---*
+         \
+          *
+
+    Step 4: Add point -- makes RIGHT turn! Pop the previous point
+    *---*           *---*
+         \    =&gt;         \
+          *               *---*     (popped the "dent")
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">vector</span>&lt;Point&gt; <span class="function">convexHull</span>(<span class="keyword">vector</span>&lt;Point&gt; pts) {
+    <span class="keyword">int</span> n = pts.size();
+    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span> pts;
+    <span class="function">sort</span>(pts.begin(), pts.end(), [](Point&amp; a, Point&amp; b) {
+        <span class="keyword">return</span> a.x &lt; b.x || (a.x == b.x &amp;&amp; a.y &lt; b.y);
+    });
+
+    <span class="keyword">vector</span>&lt;Point&gt; hull;
+
+    <span class="comment">// Lower hull</span>
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; p : pts) {
+        <span class="keyword">while</span> (hull.size() &gt;= <span class="number">2</span> &amp;&amp;
+               cross(hull[hull.size()-<span class="number">2</span>], hull[hull.size()-<span class="number">1</span>], p) &lt;= <span class="number">0</span>)
+            hull.pop_back();
+        hull.push_back(p);
+    }
+
+    <span class="comment">// Upper hull</span>
+    <span class="keyword">int</span> lower_size = hull.size() + <span class="number">1</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) {
+        <span class="keyword">while</span> (hull.size() &gt;= lower_size &amp;&amp;
+               cross(hull[hull.size()-<span class="number">2</span>], hull[hull.size()-<span class="number">1</span>], pts[i]) &lt;= <span class="number">0</span>)
+            hull.pop_back();
+        hull.push_back(pts[i]);
+    }
+
+    hull.pop_back(); <span class="comment">// Remove last point (same as first)</span>
+    <span class="keyword">return</span> hull;
+}
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">convex_hull</span>(points):
+    <span class="string">"""Andrew's monotone chain. Returns hull in CCW order."""</span>
+    points = sorted(points, key=<span class="keyword">lambda</span> p: (p.x, p.y))
+    <span class="keyword">if</span> len(points) &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> points
+
+    <span class="comment"># Build lower hull</span>
+    lower = []
+    <span class="keyword">for</span> p <span class="keyword">in</span> points:
+        <span class="keyword">while</span> len(lower) &gt;= <span class="number">2</span> <span class="keyword">and</span> cross3(lower[-<span class="number">2</span>], lower[-<span class="number">1</span>], p) &lt;= <span class="number">0</span>:
+            lower.pop()
+        lower.append(p)
+
+    <span class="comment"># Build upper hull</span>
+    upper = []
+    <span class="keyword">for</span> p <span class="keyword">in</span> reversed(points):
+        <span class="keyword">while</span> len(upper) &gt;= <span class="number">2</span> <span class="keyword">and</span> cross3(upper[-<span class="number">2</span>], upper[-<span class="number">1</span>], p) &lt;= <span class="number">0</span>:
+            upper.pop()
+        upper.append(p)
+
+    <span class="comment"># Concatenate, removing duplicate endpoints</span>
+    <span class="keyword">return</span> lower[:-<span class="number">1</span>] + upper[:-<span class="number">1</span>]
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Time:</strong> O(n log n) -- dominated by sorting<br>
+        <strong>Space:</strong> O(n)
+      </div>
+
+      <h3>Graham Scan (Alternative)</h3>
+
+      <p>Graham scan picks the lowest point as anchor, sorts remaining points by polar angle relative to the anchor, then builds the hull by processing in angular order.</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">graham_scan</span>(points):
+    <span class="string">"""Graham scan convex hull. Returns hull in CCW order."""</span>
+    <span class="comment"># Find bottom-most point (lowest y, then leftmost x)</span>
+    anchor = min(points, key=<span class="keyword">lambda</span> p: (p.y, p.x))
+
+    <span class="keyword">def</span> <span class="function">polar_angle</span>(p):
+        <span class="keyword">return</span> math.atan2(p.y - anchor.y, p.x - anchor.x)
+
+    <span class="keyword">def</span> <span class="function">dist2</span>(p):
+        <span class="keyword">return</span> (p.x - anchor.x) ** <span class="number">2</span> + (p.y - anchor.y) ** <span class="number">2</span>
+
+    <span class="comment"># Sort by polar angle, break ties by distance</span>
+    pts = sorted(points, key=<span class="keyword">lambda</span> p: (polar_angle(p), dist2(p)))
+
+    stack = []
+    <span class="keyword">for</span> p <span class="keyword">in</span> pts:
+        <span class="keyword">while</span> len(stack) &gt;= <span class="number">2</span> <span class="keyword">and</span> cross3(stack[-<span class="number">2</span>], stack[-<span class="number">1</span>], p) &lt;= <span class="number">0</span>:
+            stack.pop()
+        stack.append(p)
+
+    <span class="keyword">return</span> stack
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Convex Hull</div>
+        <ul>
+          <li><strong>Farthest pair of points</strong> -- always on the convex hull (use rotating calipers)</li>
+          <li><strong>Minimum enclosing rectangle/circle</strong> -- work on hull instead of all points</li>
+          <li><strong>Checking if all points can be separated by a line</strong></li>
+          <li><strong>Any problem where only boundary points matter</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: Point in Polygon -->
+    <!-- ============================================================ -->
+    <div class="section" id="point-in-polygon">
+      <h2>5. Point in Polygon</h2>
+
+      <p>Given a polygon (simple, not necessarily convex) and a query point, determine if the point is inside the polygon.</p>
+
+      <h3>Ray Casting Algorithm</h3>
+
+      <p>Cast a ray from the query point in any direction (typically to the right). Count how many times it crosses the polygon boundary. Odd = inside, even = outside.</p>
+
+<pre><code>
+    Ray Casting Visualization:
+
+    +---+               Point P is INSIDE:
+    |   |               Ray crosses boundary 1 time (odd)
+    | P -------->
+    |   |               Point Q is OUTSIDE:
+    +---+---+           Ray crosses boundary 2 times (even)
+        |   |
+        | Q ---------->
+        |   |
+        +---+
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">point_in_polygon</span>(p, polygon):
+    <span class="string">"""Ray casting: returns True if p is inside the polygon.
+    polygon is a list of Point objects forming a simple polygon."""</span>
+    n = len(polygon)
+    inside = <span class="keyword">False</span>
+
+    j = n - <span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        pi = polygon[i]
+        pj = polygon[j]
+
+        <span class="comment"># Check if ray from p going right crosses edge (pj, pi)</span>
+        <span class="keyword">if</span> ((pi.y &gt; p.y) != (pj.y &gt; p.y)) <span class="keyword">and</span> \
+           (p.x &lt; (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x):
+            inside = <span class="keyword">not</span> inside
+
+        j = i
+
+    <span class="keyword">return</span> inside
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">bool</span> <span class="function">pointInPolygon</span>(Point p, <span class="keyword">vector</span>&lt;Point&gt;&amp; poly) {
+    <span class="keyword">int</span> n = poly.size();
+    <span class="keyword">bool</span> inside = <span class="keyword">false</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = n - <span class="number">1</span>; i &lt; n; j = i++) {
+        <span class="keyword">if</span> ((poly[i].y &gt; p.y) != (poly[j].y &gt; p.y) &amp;&amp;
+            p.x &lt; (poly[j].x - poly[i].x) * (p.y - poly[i].y) /
+                   (poly[j].y - poly[i].y) + poly[i].x)
+            inside = !inside;
+    }
+    <span class="keyword">return</span> inside;
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Time:</strong> O(n) per query, where n = number of polygon vertices<br>
+        <strong>Space:</strong> O(1)
+      </div>
+
+      <h3>Winding Number Algorithm</h3>
+
+      <p>Count how many times the polygon winds around the point. More robust than ray casting for edge cases.</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">winding_number</span>(p, polygon):
+    <span class="string">"""Returns the winding number (0 = outside, nonzero = inside)"""</span>
+    n = len(polygon)
+    wn = <span class="number">0</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        a = polygon[i]
+        b = polygon[(i + <span class="number">1</span>) % n]
+
+        <span class="keyword">if</span> a.y &lt;= p.y:
+            <span class="keyword">if</span> b.y &gt; p.y:  <span class="comment"># upward crossing</span>
+                <span class="keyword">if</span> cross3(a, b, p) &gt; <span class="number">0</span>:  <span class="comment"># p is left of edge</span>
+                    wn += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">if</span> b.y &lt;= p.y:  <span class="comment"># downward crossing</span>
+                <span class="keyword">if</span> cross3(a, b, p) &lt; <span class="number">0</span>:  <span class="comment"># p is right of edge</span>
+                    wn -= <span class="number">1</span>
+
+    <span class="keyword">return</span> wn
+</code></pre>
+
+      <h3>Convex Polygon: O(log n) Binary Search</h3>
+
+      <p>For a <strong>convex</strong> polygon, you can do point-in-polygon in O(log n) by treating the polygon as a fan of triangles from one vertex and binary searching for the right triangle.</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">point_in_convex_polygon</span>(p, hull):
+    <span class="string">"""O(log n) point-in-convex-polygon. hull is in CCW order."""</span>
+    n = len(hull)
+    <span class="keyword">if</span> n &lt; <span class="number">3</span>:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="comment"># Check if p is on the correct side of edges from hull[0]</span>
+    <span class="keyword">if</span> cross3(hull[<span class="number">0</span>], hull[<span class="number">1</span>], p) &lt; <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    <span class="keyword">if</span> cross3(hull[<span class="number">0</span>], hull[n - <span class="number">1</span>], p) &gt; <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+
+    <span class="comment"># Binary search for the triangle containing p</span>
+    lo, hi = <span class="number">1</span>, n - <span class="number">1</span>
+    <span class="keyword">while</span> hi - lo &gt; <span class="number">1</span>:
+        mid = (lo + hi) // <span class="number">2</span>
+        <span class="keyword">if</span> cross3(hull[<span class="number">0</span>], hull[mid], p) &gt;= <span class="number">0</span>:
+            lo = mid
+        <span class="keyword">else</span>:
+            hi = mid
+
+    <span class="comment"># Check if p is inside triangle (hull[0], hull[lo], hull[hi])</span>
+    <span class="keyword">return</span> cross3(hull[lo], hull[hi], p) &gt;= <span class="number">0</span>
+</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Which Method to Use?</div>
+        <ul>
+          <li><strong>Ray casting</strong> -- simple polygons, easy to implement, O(n)</li>
+          <li><strong>Winding number</strong> -- more robust for self-intersecting polygons, O(n)</li>
+          <li><strong>Binary search</strong> -- convex polygons only, O(log n) per query after O(n) preprocessing</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: Closest Pair of Points -->
+    <!-- ============================================================ -->
+    <div class="section" id="closest-pair">
+      <h2>6. Closest Pair of Points</h2>
+
+      <p>Given n points, find the two points with minimum distance. The brute force is O(n^2). We can do O(n log n) with divide and conquer.</p>
+
+      <h3>Divide and Conquer Approach</h3>
+
+<pre><code>
+    Algorithm Overview:
+
+    1. Sort points by x-coordinate
+    2. Split into left half and right half
+    3. Recursively find closest pair in each half
+    4. d = min(left_closest, right_closest)
+    5. Check the "strip" of width 2d around the dividing line
+       (points in the strip might form a closer pair across halves)
+    6. For each point in the strip, only check the next ~7 points
+       (sorted by y) -- this is the key insight!
+
+    |         |         |
+    |  Left   | Strip   |  Right
+    |  half   | (2d)    |  half
+    |    *    |  * *    |    *
+    |  *      |    *    |  *
+    |      *  |  *      |    *
+    |         |         |
+    |&lt;-- d --&gt;|&lt;-- d --&gt;|
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> math
+
+<span class="keyword">def</span> <span class="function">closest_pair</span>(points):
+    <span class="string">"""Returns the minimum distance between any two points.
+    O(n log n) divide and conquer."""</span>
+    pts = sorted(points, key=<span class="keyword">lambda</span> p: (p.x, p.y))
+
+    <span class="keyword">def</span> <span class="function">dist</span>(a, b):
+        <span class="keyword">return</span> math.sqrt((a.x - b.x)**<span class="number">2</span> + (a.y - b.y)**<span class="number">2</span>)
+
+    <span class="keyword">def</span> <span class="function">rec</span>(pts):
+        n = len(pts)
+        <span class="keyword">if</span> n &lt;= <span class="number">3</span>:
+            <span class="comment"># Brute force for small inputs</span>
+            best = float(<span class="string">'inf'</span>)
+            <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+                <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>, n):
+                    best = min(best, dist(pts[i], pts[j]))
+            <span class="keyword">return</span> best
+
+        mid = n // <span class="number">2</span>
+        mid_x = pts[mid].x
+
+        <span class="comment"># Recurse on left and right halves</span>
+        d = min(rec(pts[:mid]), rec(pts[mid:]))
+
+        <span class="comment"># Build strip: points within distance d of the dividing line</span>
+        strip = [p <span class="keyword">for</span> p <span class="keyword">in</span> pts <span class="keyword">if</span> abs(p.x - mid_x) &lt; d]
+        strip.sort(key=<span class="keyword">lambda</span> p: p.y)
+
+        <span class="comment"># Check strip: for each point, only check next few points</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(strip)):
+            j = i + <span class="number">1</span>
+            <span class="keyword">while</span> j &lt; len(strip) <span class="keyword">and</span> (strip[j].y - strip[i].y) &lt; d:
+                d = min(d, dist(strip[i], strip[j]))
+                j += <span class="number">1</span>
+
+        <span class="keyword">return</span> d
+
+    <span class="keyword">return</span> rec(pts)
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">double</span> <span class="function">closestPair</span>(<span class="keyword">vector</span>&lt;Point&gt;&amp; pts, <span class="keyword">int</span> l, <span class="keyword">int</span> r) {
+    <span class="keyword">if</span> (r - l &lt;= <span class="number">3</span>) {
+        <span class="keyword">double</span> best = <span class="number">1e18</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = l; i &lt; r; i++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; r; j++)
+                best = min(best, (pts[i] - pts[j]).norm());
+        <span class="keyword">return</span> best;
+    }
+
+    <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;
+    <span class="keyword">double</span> midX = pts[mid].x;
+    <span class="keyword">double</span> d = min(closestPair(pts, l, mid), closestPair(pts, mid, r));
+
+    <span class="comment">// Merge step: build strip</span>
+    <span class="keyword">vector</span>&lt;Point&gt; strip;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = l; i &lt; r; i++)
+        <span class="keyword">if</span> (abs(pts[i].x - midX) &lt; d)
+            strip.push_back(pts[i]);
+
+    sort(strip.begin(), strip.end(), [](<span class="keyword">const</span> Point&amp; a, <span class="keyword">const</span> Point&amp; b) {
+        <span class="keyword">return</span> a.y &lt; b.y;
+    });
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; strip.size(); i++)
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; strip.size() &amp;&amp; strip[j].y - strip[i].y &lt; d; j++)
+            d = min(d, (strip[i] - strip[j]).norm());
+
+    <span class="keyword">return</span> d;
+}
+
+<span class="comment">// Usage: sort pts by x first, then call closestPair(pts, 0, pts.size())</span>
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Time:</strong> O(n log^2 n) as shown above (can be made O(n log n) by maintaining sorted order during merge)<br>
+        <strong>Space:</strong> O(n)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">The Strip Optimization -- Why Only 7 Points?</div>
+        In the strip of width 2d, any d x 2d rectangle can hold at most 8 points (because each half guarantees no two points closer than d). So for each point, we check at most 7 others sorted by y-coordinate. This is what brings the strip check from O(n^2) down to O(n).
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: Sweep Line Algorithms -->
+    <!-- ============================================================ -->
+    <div class="section" id="sweep-line">
+      <h2>7. Sweep Line Algorithms</h2>
+
+      <p>Sweep line is a paradigm: imagine a vertical line sweeping left-to-right across the plane, processing "events" (point appearances, segment endpoints) in order. A data structure (usually a balanced BST or set) maintains the current state.</p>
+
+      <h3>Line Segment Intersection (Bentley-Ottmann Concept)</h3>
+
+<pre><code>
+    Sweep line moving left to right:
+
+    |  /       /
+    | /   X   /      The sweep line processes events:
+    |/   / \ /       - Left endpoint: insert segment
+    |   /   X        - Right endpoint: remove segment
+    |  / \ / \       - Intersection: swap adjacent segments
+    | /   /   \
+    |/   /     \
+    +---+---+---+--&gt;  sweep direction --&gt;
+
+    At each event, check newly adjacent segment pairs for intersections.
+</code></pre>
+
+      <div class="formula-box">
+        <div class="label">Bentley-Ottmann Overview</div>
+        <strong>Events:</strong> segment endpoints + discovered intersections<br>
+        <strong>Status structure:</strong> segments ordered by y-coordinate at current sweep x<br>
+        <strong>Time:</strong> O((n + k) log n) where k = number of intersections<br>
+        <strong>Key idea:</strong> Two segments can only intersect if they are adjacent in the sweep status at some point
+      </div>
+
+      <p>The full Bentley-Ottmann implementation is complex. For competitive programming, the brute force O(n^2) check is often sufficient when n is small. Here is a simplified sweep for detecting any intersection:</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> sortedcontainers <span class="keyword">import</span> SortedList
+
+<span class="keyword">def</span> <span class="function">any_intersection</span>(segments):
+    <span class="string">"""Sweep line to detect if any two segments intersect.
+    segments: list of ((x1,y1), (x2,y2)) tuples.
+    Simplified version -- checks adjacent segments in sweep status."""</span>
+    events = []
+    <span class="keyword">for</span> i, (p, q) <span class="keyword">in</span> enumerate(segments):
+        <span class="keyword">if</span> p &gt; q:
+            p, q = q, p
+        events.append((p[<span class="number">0</span>], <span class="number">0</span>, i))  <span class="comment"># 0 = left endpoint</span>
+        events.append((q[<span class="number">0</span>], <span class="number">1</span>, i))  <span class="comment"># 1 = right endpoint</span>
+    events.sort()
+
+    <span class="comment"># In a full implementation, you'd maintain a balanced BST</span>
+    <span class="comment"># ordered by y-coordinate at the sweep line's current x,</span>
+    <span class="comment"># and check adjacent pairs at each event.</span>
+    <span class="comment"># For CP, brute force is often simpler.</span>
+    <span class="keyword">pass</span>
+</code></pre>
+
+      <h3>Area of Union of Rectangles</h3>
+
+      <p>A classic sweep line + segment tree problem. Sweep a vertical line, and at each event (rectangle left/right edge), update a segment tree that tracks the covered length along the y-axis.</p>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="comment">// Sweep line for area of union of rectangles</span>
+<span class="comment">// Events: left edge (+1 to coverage), right edge (-1 to coverage)</span>
+<span class="comment">// Segment tree tracks total covered y-length</span>
+
+<span class="keyword">struct</span> Event {
+    <span class="keyword">double</span> x;
+    <span class="keyword">int</span> type; <span class="comment">// +1 = open, -1 = close</span>
+    <span class="keyword">double</span> y1, y2;
+};
+
+<span class="keyword">double</span> <span class="function">unionArea</span>(<span class="keyword">vector</span>&lt;<span class="keyword">array</span>&lt;<span class="keyword">double</span>, <span class="number">4</span>&gt;&gt;&amp; rects) {
+    <span class="comment">// rects[i] = {x1, y1, x2, y2}</span>
+    <span class="keyword">vector</span>&lt;Event&gt; events;
+    <span class="keyword">vector</span>&lt;<span class="keyword">double</span>&gt; ys; <span class="comment">// coordinate compression for y</span>
+
+    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; r : rects) {
+        events.push_back({r[<span class="number">0</span>], +<span class="number">1</span>, r[<span class="number">1</span>], r[<span class="number">3</span>]});
+        events.push_back({r[<span class="number">2</span>], -<span class="number">1</span>, r[<span class="number">1</span>], r[<span class="number">3</span>]});
+        ys.push_back(r[<span class="number">1</span>]);
+        ys.push_back(r[<span class="number">3</span>]);
+    }
+
+    sort(events.begin(), events.end(), [](<span class="keyword">const</span> Event&amp; a, <span class="keyword">const</span> Event&amp; b) {
+        <span class="keyword">return</span> a.x &lt; b.x;
+    });
+    sort(ys.begin(), ys.end());
+    ys.erase(unique(ys.begin(), ys.end()), ys.end());
+
+    <span class="keyword">int</span> m = ys.size();
+    <span class="keyword">vector</span>&lt;<span class="keyword">int</span>&gt; cnt(m, <span class="number">0</span>); <span class="comment">// coverage count per y-interval</span>
+
+    <span class="keyword">double</span> area = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; events.size(); i++) {
+        <span class="keyword">if</span> (i &gt; <span class="number">0</span>) {
+            <span class="keyword">double</span> dx = events[i].x - events[i-<span class="number">1</span>].x;
+            <span class="keyword">double</span> covered = <span class="number">0</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j + <span class="number">1</span> &lt; m; j++)
+                <span class="keyword">if</span> (cnt[j] &gt; <span class="number">0</span>)
+                    covered += ys[j+<span class="number">1</span>] - ys[j];
+            area += dx * covered;
+        }
+        <span class="comment">// Update coverage</span>
+        <span class="keyword">int</span> lo = lower_bound(ys.begin(), ys.end(), events[i].y1) - ys.begin();
+        <span class="keyword">int</span> hi = lower_bound(ys.begin(), ys.end(), events[i].y2) - ys.begin();
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = lo; j &lt; hi; j++)
+            cnt[j] += events[i].type;
+    }
+    <span class="keyword">return</span> area;
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Union of rectangles (brute force y):</strong> O(n^2)<br>
+        <strong>Union of rectangles (segment tree):</strong> O(n log n)<br>
+        <strong>Bentley-Ottmann:</strong> O((n + k) log n)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Sweep Line Pattern</div>
+        The sweep line paradigm reduces 2D problems to 1D. Ask yourself: "If I process events left-to-right, what information do I need about the current vertical slice?" That information is your sweep status structure.
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 8: Polygon Area and Centroid -->
+    <!-- ============================================================ -->
+    <div class="section" id="polygon-area">
+      <h2>8. Polygon Area and Centroid</h2>
+
+      <h3>Shoelace Formula</h3>
+
+      <p>The area of any simple polygon given its vertices in order (CW or CCW) can be computed using the shoelace formula, which sums cross products of consecutive edges.</p>
+
+      <div class="formula-box">
+        <div class="label">Shoelace Formula</div>
+        Given vertices (x0,y0), (x1,y1), ..., (x_{n-1},y_{n-1}) in order:<br><br>
+        <strong>2 * Area = |sum_{i=0}^{n-1} (x_i * y_{i+1} - x_{i+1} * y_i)|</strong><br><br>
+        where indices are taken mod n (so vertex n = vertex 0).<br>
+        The signed version (without absolute value) is positive for CCW, negative for CW.
+      </div>
+
+<pre><code>
+    Shoelace Walkthrough:
+    Polygon with vertices: (1,0), (4,0), (4,3), (0,3)
+
+       3  +------*
+          |      |         Cross products:
+          |      |         (1*0 - 4*0) =  0
+          |      |         (4*3 - 4*0) = 12
+       0  *------*         (4*3 - 0*3) = 12
+          0  1   4         (0*0 - 1*3) = -3
+
+    2*Area = |0 + 12 + 12 + (-3)| = 21
+    Area = 10.5    (which is wrong -- let's be careful)
+
+    Actually: (1*0-4*0) + (4*3-4*0) + (4*3-0*3) + (0*0-1*3)
+            = 0 + 12 - 12 + (-3) ... let me recompute properly:
+
+    x_i*y_{i+1}: 1*0 + 4*3 + 4*3 + 0*0 = 0+12+12+0 = 24
+    x_{i+1}*y_i: 4*0 + 4*0 + 0*3 + 1*3 = 0+0+0+3   = 3
+    2*Area = |24 - 3| = 21  ...
+
+    Hmm, the actual rectangle is 3*4=12. Let me use correct vertices:
+    (1,0), (4,0), (4,3), (1,3)
+    x_i*y_{i+1}: 1*0 + 4*3 + 4*3 + 1*0 = 0+12+12+0 = 24
+    x_{i+1}*y_i: 4*0 + 4*0 + 1*3 + 1*3 = 0+0+3+3   = 6
+    2*Area = |24 - 6| = 18, Area = 9 = 3*3.  Correct!
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">polygon_area</span>(polygon):
+    <span class="string">"""Shoelace formula. Returns the area of a simple polygon.
+    polygon: list of Point objects in order (CW or CCW)."""</span>
+    n = len(polygon)
+    area = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        j = (i + <span class="number">1</span>) % n
+        area += polygon[i].x * polygon[j].y
+        area -= polygon[j].x * polygon[i].y
+    <span class="keyword">return</span> abs(area) / <span class="number">2</span>
+
+<span class="keyword">def</span> <span class="function">signed_area</span>(polygon):
+    <span class="string">"""Signed area: positive if CCW, negative if CW."""</span>
+    n = len(polygon)
+    area = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        j = (i + <span class="number">1</span>) % n
+        area += polygon[i].x * polygon[j].y
+        area -= polygon[j].x * polygon[i].y
+    <span class="keyword">return</span> area / <span class="number">2</span>
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">double</span> <span class="function">polygonArea</span>(<span class="keyword">vector</span>&lt;Point&gt;&amp; poly) {
+    <span class="keyword">double</span> area = <span class="number">0</span>;
+    <span class="keyword">int</span> n = poly.size();
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">int</span> j = (i + <span class="number">1</span>) % n;
+        area += poly[i].x * poly[j].y;
+        area -= poly[j].x * poly[i].y;
+    }
+    <span class="keyword">return</span> abs(area) / <span class="number">2.0</span>;
+}
+</code></pre>
+
+      <h3>Centroid of a Polygon</h3>
+
+      <div class="formula-box">
+        <div class="label">Centroid Formula</div>
+        <strong>Cx = (1 / 6A) * sum_{i=0}^{n-1} (x_i + x_{i+1})(x_i * y_{i+1} - x_{i+1} * y_i)</strong><br>
+        <strong>Cy = (1 / 6A) * sum_{i=0}^{n-1} (y_i + y_{i+1})(x_i * y_{i+1} - x_{i+1} * y_i)</strong><br><br>
+        where A is the signed area.
+      </div>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">polygon_centroid</span>(polygon):
+    <span class="string">"""Returns the centroid (center of mass) of a simple polygon."""</span>
+    n = len(polygon)
+    A = signed_area(polygon)
+    cx, cy = <span class="number">0</span>, <span class="number">0</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        j = (i + <span class="number">1</span>) % n
+        factor = polygon[i].x * polygon[j].y - polygon[j].x * polygon[i].y
+        cx += (polygon[i].x + polygon[j].x) * factor
+        cy += (polygon[i].y + polygon[j].y) * factor
+
+    cx /= (<span class="number">6</span> * A)
+    cy /= (<span class="number">6</span> * A)
+    <span class="keyword">return</span> Point(cx, cy)
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+Point <span class="function">polygonCentroid</span>(<span class="keyword">vector</span>&lt;Point&gt;&amp; poly) {
+    <span class="keyword">int</span> n = poly.size();
+    <span class="keyword">double</span> A = <span class="number">0</span>, cx = <span class="number">0</span>, cy = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">int</span> j = (i + <span class="number">1</span>) % n;
+        <span class="keyword">double</span> f = poly[i].x * poly[j].y - poly[j].x * poly[i].y;
+        A += f;
+        cx += (poly[i].x + poly[j].x) * f;
+        cy += (poly[i].y + poly[j].y) * f;
+    }
+    A /= <span class="number">2.0</span>;
+    cx /= (<span class="number">6.0</span> * A);
+    cy /= (<span class="number">6.0</span> * A);
+    <span class="keyword">return</span> {cx, cy};
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Shoelace area:</strong> O(n)<br>
+        <strong>Centroid:</strong> O(n)
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 9: Half-Plane Intersection -->
+    <!-- ============================================================ -->
+    <div class="section" id="half-plane">
+      <h2>9. Half-Plane Intersection</h2>
+
+      <p>A <strong>half-plane</strong> is one side of a line. The intersection of multiple half-planes forms a convex polygon (or is empty/unbounded). This appears in linear programming, visibility problems, and kernel of a polygon.</p>
+
+      <h3>Representation</h3>
+
+<pre><code>
+    A half-plane can be defined by a directed line (P, Q):
+    the feasible region is to the LEFT of the line P-&gt;Q.
+
+    Line P --&gt; Q
+    ============     &lt;-- the line
+    ////////////     &lt;-- feasible region (left side)
+
+
+    Example: intersection of 3 half-planes forms a triangle
+
+         /\
+        /  \         Half-plane 1: above y = -x + 4
+       /    \        Half-plane 2: above y = x
+      / feas \       Half-plane 3: below y = 3
+     /  ible  \
+    +-----------+    The intersection is a triangle
+</code></pre>
+
+      <div class="formula-box">
+        <div class="label">Half-Plane Representation</div>
+        A half-plane is stored as a directed line from point P to point Q.<br>
+        The feasible region is to the <strong>left</strong> of P-&gt;Q (where cross(PQ, Ptest) &gt; 0).<br><br>
+        Angle of the half-plane: <strong>atan2(Q.y - P.y, Q.x - P.x)</strong>
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">struct</span> HalfPlane {
+    Point p, d; <span class="comment">// point on line and direction vector</span>
+    <span class="keyword">double</span> angle;
+
+    HalfPlane() {}
+    HalfPlane(Point a, Point b) : p(a), d(b - a) {
+        angle = atan2(d.y, d.x);
+    }
+
+    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> HalfPlane&amp; h) <span class="keyword">const</span> {
+        <span class="keyword">return</span> angle &lt; h.angle;
+    }
+
+    <span class="comment">// Is point q on the left side (feasible)?</span>
+    <span class="keyword">bool</span> <span class="function">out</span>(Point q) <span class="keyword">const</span> {
+        <span class="keyword">return</span> d.cross(q - p) &lt; -<span class="number">1e-9</span>;
+    }
+};
+
+Point <span class="function">lineIntersect</span>(HalfPlane&amp; h1, HalfPlane&amp; h2) {
+    Point n = h2.p - h1.p;
+    <span class="keyword">double</span> t = h2.d.cross(n) / h1.d.cross(h2.d);
+    <span class="keyword">return</span> h1.p + h1.d * t;
+}
+</code></pre>
+
+      <h3>Sorting-Based Algorithm (O(n log n))</h3>
+
+      <p>The half-plane intersection can be computed in O(n log n) using a deque-based approach:</p>
+
+      <ol>
+        <li>Sort half-planes by angle</li>
+        <li>Process each half-plane: maintain a deque of half-planes</li>
+        <li>Remove from back if the intersection point of the last two is outside the new half-plane</li>
+        <li>Remove from front similarly</li>
+        <li>Final cleanup: check front against back</li>
+      </ol>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">vector</span>&lt;Point&gt; <span class="function">halfPlaneIntersection</span>(<span class="keyword">vector</span>&lt;HalfPlane&gt; hps) {
+    sort(hps.begin(), hps.end());
+
+    <span class="comment">// Remove duplicates (keep the more restrictive one)</span>
+    <span class="keyword">int</span> n = hps.size(), cnt = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">if</span> (i == <span class="number">0</span> || fabs(hps[i].angle - hps[i-<span class="number">1</span>].angle) &gt; <span class="number">1e-9</span>)
+            hps[cnt++] = hps[i];
+        <span class="keyword">else</span> <span class="keyword">if</span> (hps[i].d.cross(hps[cnt-<span class="number">1</span>].p - hps[i].p) &gt; <span class="number">0</span>)
+            hps[cnt-<span class="number">1</span>] = hps[i];
+    }
+    hps.resize(cnt);
+    n = cnt;
+
+    <span class="keyword">deque</span>&lt;HalfPlane&gt; dq;
+    <span class="keyword">deque</span>&lt;Point&gt; pts;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">while</span> (dq.size() &gt; <span class="number">1</span> &amp;&amp; hps[i].out(pts.back()))
+            { dq.pop_back(); pts.pop_back(); }
+        <span class="keyword">while</span> (dq.size() &gt; <span class="number">1</span> &amp;&amp; hps[i].out(pts.front()))
+            { dq.pop_front(); pts.pop_front(); }
+        dq.push_back(hps[i]);
+        <span class="keyword">if</span> (dq.size() &gt; <span class="number">1</span>)
+            pts.push_back(lineIntersect(dq[dq.size()-<span class="number">2</span>], dq.back()));
+    }
+
+    <span class="comment">// Final cleanup</span>
+    <span class="keyword">while</span> (dq.size() &gt; <span class="number">2</span> &amp;&amp; dq.front().out(pts.back()))
+        { dq.pop_back(); pts.pop_back(); }
+    <span class="keyword">if</span> (dq.size() &gt; <span class="number">1</span>)
+        pts.push_back(lineIntersect(dq.front(), dq.back()));
+
+    <span class="keyword">return</span> <span class="keyword">vector</span>&lt;Point&gt;(pts.begin(), pts.end());
+}
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Time:</strong> O(n log n) -- dominated by sorting<br>
+        <strong>Space:</strong> O(n)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Applications</div>
+        <ul>
+          <li><strong>Kernel of a polygon:</strong> the set of points from which the entire polygon interior is visible</li>
+          <li><strong>Linear programming in 2D:</strong> find the point maximizing c.x + d.y subject to half-plane constraints</li>
+          <li><strong>Feasibility testing:</strong> check if constraints have any common solution</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 10: Rotating Calipers -->
+    <!-- ============================================================ -->
+    <div class="section" id="rotating-calipers">
+      <h2>10. Rotating Calipers</h2>
+
+      <p>Rotating calipers is a technique for solving problems on convex polygons in O(n) time by "rotating" two parallel support lines around the hull simultaneously. Think of clamping the hull between two parallel rulers and rotating them.</p>
+
+<pre><code>
+    Rotating Calipers for Diameter:
+
+    Step 1: Start with horizontal calipers
+    ========================
+           *---*
+          / *   \
+         *       *
+    ========================
+
+    Step 2: Rotate to next edge, advance the opposite pointer
+    \\\\\\\\\\\\\\\\\\\\\\\\
+          *---*
+         / *   \
+        *       *
+    ////////////////////////
+
+    At each step, record the distance between the two contact points.
+    The maximum distance is the diameter of the hull.
+</code></pre>
+
+      <h3>Diameter of Convex Hull (Farthest Pair)</h3>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">diameter</span>(hull):
+    <span class="string">"""Find the diameter (farthest pair distance) of a convex hull.
+    hull: list of Points in CCW order. O(n) time."""</span>
+    n = len(hull)
+    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="keyword">if</span> n == <span class="number">2</span>:
+        <span class="keyword">return</span> (hull[<span class="number">0</span>] - hull[<span class="number">1</span>]).norm()
+
+    <span class="comment"># Find the point farthest from edge (hull[0], hull[1])</span>
+    j = <span class="number">1</span>
+    best = <span class="number">0</span>
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        <span class="comment"># Advance j while the triangle area increases</span>
+        ni = (i + <span class="number">1</span>) % n
+        <span class="keyword">while</span> <span class="keyword">True</span>:
+            nj = (j + <span class="number">1</span>) % n
+            <span class="comment"># Cross product gives twice the triangle area</span>
+            curr = (hull[ni] - hull[i]).cross(hull[j] - hull[i])
+            next_val = (hull[ni] - hull[i]).cross(hull[nj] - hull[i])
+            <span class="keyword">if</span> next_val &gt; curr:
+                j = nj
+            <span class="keyword">else</span>:
+                <span class="keyword">break</span>
+
+        <span class="comment"># Check distance from hull[i] and hull[ni] to hull[j]</span>
+        best = max(best, (hull[i] - hull[j]).norm2())
+        best = max(best, (hull[ni] - hull[j]).norm2())
+
+    <span class="keyword">return</span> math.sqrt(best)
+</code></pre>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">double</span> <span class="function">diameter</span>(<span class="keyword">vector</span>&lt;Point&gt;&amp; hull) {
+    <span class="keyword">int</span> n = hull.size();
+    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="keyword">if</span> (n == <span class="number">2</span>) <span class="keyword">return</span> (hull[<span class="number">0</span>] - hull[<span class="number">1</span>]).norm();
+
+    <span class="keyword">int</span> j = <span class="number">1</span>;
+    <span class="keyword">double</span> best = <span class="number">0</span>;
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) {
+        <span class="keyword">int</span> ni = (i + <span class="number">1</span>) % n;
+        <span class="keyword">while</span> (<span class="keyword">true</span>) {
+            <span class="keyword">int</span> nj = (j + <span class="number">1</span>) % n;
+            <span class="keyword">if</span> ((hull[ni] - hull[i]).cross(hull[nj] - hull[i]) &gt;
+                (hull[ni] - hull[i]).cross(hull[j] - hull[i]))
+                j = nj;
+            <span class="keyword">else</span> <span class="keyword">break</span>;
+        }
+        best = max(best, (hull[i] - hull[j]).norm2());
+        best = max(best, (hull[(i+<span class="number">1</span>)%n] - hull[j]).norm2());
+    }
+    <span class="keyword">return</span> sqrt(best);
+}
+</code></pre>
+
+      <h3>Minimum Width of Convex Hull</h3>
+
+      <p>The minimum width is the minimum distance between two parallel support lines. Use rotating calipers, but instead of tracking the farthest point, track the point with maximum perpendicular distance from the current edge, and record the minimum such distance.</p>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">min_width</span>(hull):
+    <span class="string">"""Minimum width of a convex hull using rotating calipers."""</span>
+    n = len(hull)
+    <span class="keyword">if</span> n &lt;= <span class="number">2</span>:
+        <span class="keyword">return</span> <span class="number">0</span>
+
+    j = <span class="number">1</span>
+    best = float(<span class="string">'inf'</span>)
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        ni = (i + <span class="number">1</span>) % n
+        edge = hull[ni] - hull[i]
+        edge_len = edge.norm()
+
+        <span class="comment"># Advance j to farthest point from edge i</span>
+        <span class="keyword">while</span> <span class="keyword">True</span>:
+            nj = (j + <span class="number">1</span>) % n
+            <span class="keyword">if</span> abs(edge.cross(hull[nj] - hull[i])) &gt; abs(edge.cross(hull[j] - hull[i])):
+                j = nj
+            <span class="keyword">else</span>:
+                <span class="keyword">break</span>
+
+        <span class="comment"># Distance from hull[j] to line through edge i</span>
+        width = abs(edge.cross(hull[j] - hull[i])) / edge_len
+        best = min(best, width)
+
+    <span class="keyword">return</span> best
+</code></pre>
+
+      <div class="example-box">
+        <div class="label">Complexity</div>
+        <strong>Diameter:</strong> O(n) after convex hull<br>
+        <strong>Minimum width:</strong> O(n) after convex hull<br>
+        <strong>Bridge between two hulls:</strong> O(n + m)
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Key Idea Behind Rotating Calipers</div>
+        The technique works because the "antipodal" (farthest opposite) vertex advances monotonically as you walk around the hull. Each vertex is the antipodal point for a contiguous range of edges. So the total number of advances across all edges is at most n.
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 11: Voronoi Diagrams and Delaunay Triangulation -->
+    <!-- ============================================================ -->
+    <div class="section" id="voronoi-delaunay">
+      <h2>11. Voronoi Diagrams and Delaunay Triangulation</h2>
+
+      <p>These are dual structures that partition the plane based on proximity to a set of points.</p>
+
+      <h3>Voronoi Diagram</h3>
+
+<pre><code>
+    Voronoi Diagram: Each cell contains all points closest
+    to its "site" (input point).
+
+    +-------+-----+--------+
+    |       |     |        |
+    |   *   |  *  |   *    |    * = site (input point)
+    |       | /   |  /     |    Lines = cell boundaries
+    +------/ +    +-+------+    (equidistant from 2 sites)
+    |     /  |   /  |      |
+    |   */   |  / * |      |
+    |   /    | /    |  *   |
+    +--/-----+------+------+
+</code></pre>
+
+      <div class="formula-box">
+        <div class="label">Voronoi Diagram Properties</div>
+        <ul>
+          <li>Each cell is a <strong>convex polygon</strong> (possibly unbounded)</li>
+          <li>Every Voronoi edge is the <strong>perpendicular bisector</strong> of the segment connecting two sites</li>
+          <li>Every Voronoi vertex is equidistant from exactly 3 sites (generically)</li>
+          <li>Number of edges: O(n), number of vertices: O(n)</li>
+          <li><strong>Fortune's algorithm</strong> computes it in O(n log n)</li>
+        </ul>
+      </div>
+
+      <h3>Delaunay Triangulation</h3>
+
+<pre><code>
+    Delaunay Triangulation: The dual of the Voronoi diagram.
+    Connect two sites if their Voronoi cells share an edge.
+
+    *-------*          Property: No point lies inside the
+    |\     /|          circumcircle of any triangle.
+    | \   / |
+    |  \ /  |          This maximizes the minimum angle
+    |   *   |          of all triangles (avoids "skinny"
+    |  / \  |          triangles).
+    | /   \ |
+    |/     \|
+    *-------*
+</code></pre>
+
+      <div class="formula-box">
+        <div class="label">Delaunay Triangulation Properties</div>
+        <ul>
+          <li><strong>Empty circle property:</strong> the circumcircle of each triangle contains no other points</li>
+          <li><strong>Maximizes minimum angle</strong> -- avoids degenerate skinny triangles</li>
+          <li>Contains the <strong>nearest-neighbor graph</strong> as a subgraph</li>
+          <li>Contains the <strong>Euclidean minimum spanning tree</strong> as a subgraph</li>
+          <li>Number of triangles: O(n), edges: O(n)</li>
+        </ul>
+      </div>
+
+      <h3>Fortune's Algorithm Overview</h3>
+
+      <p>Fortune's algorithm computes the Voronoi diagram in O(n log n) using a sweep line. Instead of the typical vertical sweep line, it uses a <strong>beach line</strong> -- a curve made of parabolic arcs.</p>
+
+      <ol>
+        <li><strong>Beach line:</strong> A sequence of parabolic arcs, one per site discovered so far. Each arc is the set of points equidistant from a site and the sweep line.</li>
+        <li><strong>Site events:</strong> When the sweep line hits a new site, a new arc appears on the beach line.</li>
+        <li><strong>Circle events:</strong> When three consecutive arcs converge (the middle arc shrinks to zero), a Voronoi vertex is created and the middle arc disappears.</li>
+      </ol>
+
+      <div class="warning-box">
+        <div class="label">Implementation Complexity</div>
+        Fortune's algorithm is notoriously tricky to implement correctly due to floating point issues and degenerate cases. In competitive programming, if you need Delaunay triangulation, consider using the incremental flip approach or the divide-and-conquer method instead. Many competitive programmers use pre-built templates.
+      </div>
+
+      <h3>When You Need These</h3>
+
+      <div class="tip-box">
+        <div class="label">Applications</div>
+        <ul>
+          <li><strong>Nearest neighbor queries:</strong> Voronoi cells directly encode nearest neighbors</li>
+          <li><strong>Euclidean MST:</strong> Compute Delaunay triangulation, then run Kruskal's on its O(n) edges</li>
+          <li><strong>Facility location:</strong> Find optimal placement to minimize distance to nearest service point</li>
+          <li><strong>Mesh generation:</strong> Delaunay triangulation gives high-quality meshes for finite element methods</li>
+          <li><strong>Largest empty circle:</strong> Center is at a Voronoi vertex</li>
+        </ul>
+      </div>
+
+      <h3>Practical: Euclidean MST via Delaunay</h3>
+
+      <p>Computing Euclidean MST naively requires checking all O(n^2) pairs. But since the MST is a subgraph of the Delaunay triangulation (which has O(n) edges), we can:</p>
+
+      <ol>
+        <li>Build Delaunay triangulation: O(n log n)</li>
+        <li>Run Kruskal's MST on the O(n) Delaunay edges: O(n log n)</li>
+        <li>Total: O(n log n) instead of O(n^2)</li>
+      </ol>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="comment"># Using scipy for Delaunay (practical approach)</span>
+<span class="keyword">from</span> scipy.spatial <span class="keyword">import</span> Delaunay
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="keyword">def</span> <span class="function">euclidean_mst</span>(points):
+    <span class="string">"""Compute Euclidean MST using Delaunay triangulation."""</span>
+    pts = np.array([(p.x, p.y) <span class="keyword">for</span> p <span class="keyword">in</span> points])
+    tri = Delaunay(pts)
+
+    <span class="comment"># Extract edges from triangulation</span>
+    edges = set()
+    <span class="keyword">for</span> simplex <span class="keyword">in</span> tri.simplices:
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):
+            <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, <span class="number">3</span>):
+                u, v = simplex[i], simplex[j]
+                <span class="keyword">if</span> u &gt; v: u, v = v, u
+                edges.add((u, v))
+
+    <span class="comment"># Kruskal's algorithm</span>
+    edge_list = []
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        d = np.linalg.norm(pts[u] - pts[v])
+        edge_list.append((d, u, v))
+    edge_list.sort()
+
+    <span class="comment"># Union-Find</span>
+    parent = list(range(len(points)))
+    <span class="keyword">def</span> <span class="function">find</span>(x):
+        <span class="keyword">while</span> parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        <span class="keyword">return</span> x
+
+    mst_weight = <span class="number">0</span>
+    mst_edges = []
+    <span class="keyword">for</span> d, u, v <span class="keyword">in</span> edge_list:
+        ru, rv = find(u), find(v)
+        <span class="keyword">if</span> ru != rv:
+            parent[ru] = rv
+            mst_weight += d
+            mst_edges.append((u, v, d))
+
+    <span class="keyword">return</span> mst_weight, mst_edges
+</code></pre>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 12: Practice Problems -->
+    <!-- ============================================================ -->
+    <div class="section" id="practice">
+      <h2>12. Practice Problems</h2>
+
+      <p>Organized by topic, from fundamental to advanced. Problems are drawn from Codeforces, SPOJ, Kattis, CSES, and UVa.</p>
+
+      <h3>Points, Vectors, and Cross Product</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Point Location Test</td><td>CSES</td><td>Orientation / cross product</td></tr>
+          <tr><td>Line Segment Intersection</td><td>CSES</td><td>Segment intersection test</td></tr>
+          <tr><td>Polygon Area</td><td>CSES</td><td>Shoelace formula</td></tr>
+          <tr><td>Point in Polygon</td><td>CSES</td><td>Ray casting</td></tr>
+          <tr><td>Polygon Lattice Points</td><td>CSES</td><td>Pick's theorem + shoelace</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Convex Hull</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Convex Hull</td><td>CSES</td><td>Andrew's monotone chain</td></tr>
+          <tr><td>Fence</td><td>SPOJ (FENCE1)</td><td>Convex hull basics</td></tr>
+          <tr><td>Codeforces 166B</td><td>Codeforces</td><td>Convex hull containment</td></tr>
+          <tr><td>Wall</td><td>UVa 1111</td><td>Convex hull perimeter + offset</td></tr>
+          <tr><td>Beauty Contest</td><td>POJ 2187</td><td>Convex hull diameter (rotating calipers)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Closest Pair</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Minimum Euclidean Distance</td><td>CSES</td><td>Divide and conquer closest pair</td></tr>
+          <tr><td>Closest Pair</td><td>SPOJ (CLOPPAIR)</td><td>D&C closest pair</td></tr>
+          <tr><td>Closest Point Pair</td><td>Kattis</td><td>Closest pair with coordinates</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Sweep Line</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rectangle Union Area</td><td>Various OJs</td><td>Sweep line + segment tree</td></tr>
+          <tr><td>Codeforces 1194F</td><td>Codeforces</td><td>Sweep line geometry</td></tr>
+          <tr><td>Worm Holes</td><td>Kattis</td><td>Sweep line intersection detection</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Half-Plane Intersection and Rotating Calipers</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Most Distant Point from the Sea</td><td>Kattis</td><td>Half-plane intersection + binary search</td></tr>
+          <tr><td>Codeforces 1059E</td><td>Codeforces</td><td>Rotating calipers / convex hull</td></tr>
+          <tr><td>Minimum Enclosing Rectangle</td><td>Various</td><td>Rotating calipers</td></tr>
+          <tr><td>Robert Hood</td><td>Kattis</td><td>Diameter of convex hull</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Voronoi / Delaunay / Mixed</h3>
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Source</th><th>Key Concept</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Codeforces 429D</td><td>Codeforces</td><td>Delaunay triangulation MST</td></tr>
+          <tr><td>Galactic Taxes</td><td>Kattis</td><td>Computational geometry + ternary search</td></tr>
+          <tr><td>Airport</td><td>SPOJ</td><td>Voronoi / farthest point queries</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">How to Practice</div>
+        <ol>
+          <li><strong>Start with CSES Geometry section</strong> -- these cover the fundamentals cleanly</li>
+          <li><strong>Build a template library</strong> -- competitive programmers keep a tested geometry library (Point struct, convex hull, etc.)</li>
+          <li><strong>Test with integer coordinates first</strong> -- avoid floating point until you must</li>
+          <li><strong>Draw everything</strong> -- computational geometry bugs are almost always clearer with a picture</li>
+          <li><strong>Handle edge cases</strong> -- collinear points, duplicate points, degenerate polygons</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION: Quick Reference / Cheat Sheet -->
+    <!-- ============================================================ -->
+    <div class="section" id="cheat-sheet">
+      <h2>Quick Reference: Complexity Cheat Sheet</h2>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Orientation test</td><td>O(1)</td><td>O(1)</td><td>Cross product</td></tr>
+          <tr><td>Segment intersection test</td><td>O(1)</td><td>O(1)</td><td>4 orientation tests</td></tr>
+          <tr><td>Convex hull (Andrew's)</td><td>O(n log n)</td><td>O(n)</td><td>Sort + linear scan</td></tr>
+          <tr><td>Convex hull (Graham)</td><td>O(n log n)</td><td>O(n)</td><td>Polar angle sort</td></tr>
+          <tr><td>Point in polygon (ray cast)</td><td>O(n)</td><td>O(1)</td><td>Simple polygon</td></tr>
+          <tr><td>Point in convex polygon</td><td>O(log n)</td><td>O(1)</td><td>Binary search</td></tr>
+          <tr><td>Closest pair</td><td>O(n log n)</td><td>O(n)</td><td>Divide and conquer</td></tr>
+          <tr><td>Polygon area (shoelace)</td><td>O(n)</td><td>O(1)</td><td>Works for any simple polygon</td></tr>
+          <tr><td>Polygon centroid</td><td>O(n)</td><td>O(1)</td><td>Weighted by signed area</td></tr>
+          <tr><td>Half-plane intersection</td><td>O(n log n)</td><td>O(n)</td><td>Sort + deque</td></tr>
+          <tr><td>Rotating calipers (diameter)</td><td>O(n)</td><td>O(1)</td><td>After convex hull</td></tr>
+          <tr><td>Voronoi diagram (Fortune)</td><td>O(n log n)</td><td>O(n)</td><td>Beach line sweep</td></tr>
+          <tr><td>Delaunay triangulation</td><td>O(n log n)</td><td>O(n)</td><td>Dual of Voronoi</td></tr>
+          <tr><td>Euclidean MST</td><td>O(n log n)</td><td>O(n)</td><td>Via Delaunay + Kruskal</td></tr>
+          <tr><td>Bentley-Ottmann</td><td>O((n+k) log n)</td><td>O(n+k)</td><td>k = intersections</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION: Common Pitfalls -->
+    <!-- ============================================================ -->
+    <div class="section" id="pitfalls">
+      <h2>Common Pitfalls in Computational Geometry</h2>
+
+      <div class="warning-box">
+        <div class="label">Floating Point Precision</div>
+        <ul>
+          <li>Use <code>long long</code> in C++ or integers in Python for cross products when coordinates are integers</li>
+          <li>Avoid <code>atan2</code> for sorting when you can use cross-product comparisons instead</li>
+          <li>Use epsilon comparisons: <code>abs(x) &lt; 1e-9</code> instead of <code>x == 0</code></li>
+          <li>Prefer squared distances over distances to avoid <code>sqrt</code></li>
+          <li>Be careful with <code>acos</code> -- clamp input to [-1, 1]</li>
+        </ul>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Degenerate Cases</div>
+        <ul>
+          <li><strong>Collinear points:</strong> Most algorithms need special handling. In convex hull, decide whether to include collinear points on the hull boundary (<code>&lt;= 0</code> vs <code>&lt; 0</code> in cross product check).</li>
+          <li><strong>Duplicate points:</strong> Remove or handle explicitly.</li>
+          <li><strong>Vertical/horizontal segments:</strong> Special care with sweep line ordering.</li>
+          <li><strong>Polygon with fewer than 3 vertices:</strong> Guard your functions.</li>
+          <li><strong>Cocircular points:</strong> Delaunay triangulation can have non-unique triangulations when 4+ points are cocircular.</li>
+        </ul>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Integer Geometry Template</div>
+        For competitive programming, this integer-only Point struct avoids all floating point issues when coordinates are integers:
+      </div>
+
+<pre><code><span class="lang-label">C++</span>
+<span class="keyword">typedef</span> <span class="keyword">long long</span> ll;
+
+<span class="keyword">struct</span> P {
+    ll x, y;
+    P(ll x = <span class="number">0</span>, ll y = <span class="number">0</span>) : x(x), y(y) {}
+    P <span class="keyword">operator</span>-(P o) { <span class="keyword">return</span> {x - o.x, y - o.y}; }
+    ll <span class="function">cross</span>(P o) { <span class="keyword">return</span> x * o.y - y * o.x; }
+    ll <span class="function">dot</span>(P o) { <span class="keyword">return</span> x * o.x + y * o.y; }
+    ll <span class="function">norm2</span>() { <span class="keyword">return</span> x * x + y * y; }
+    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(P o) <span class="keyword">const</span> { <span class="keyword">return</span> x &lt; o.x || (x == o.x &amp;&amp; y &lt; o.y); }
+};
+
+ll <span class="function">cross</span>(P O, P A, P B) { <span class="keyword">return</span> (A - O).cross(B - O); }
+
+<span class="comment">// Twice the signed area of triangle OAB</span>
+<span class="comment">// Positive = CCW, Negative = CW, Zero = collinear</span>
+<span class="comment">// No floating point anywhere!</span>
+</code></pre>
+
+<pre><code><span class="lang-label">Python</span>
+<span class="comment"># Python handles big integers natively -- no overflow risk!</span>
+<span class="comment"># For competitive programming, use tuples for speed:</span>
+
+<span class="keyword">def</span> <span class="function">cross</span>(o, a, b):
+    <span class="keyword">return</span> (a[<span class="number">0</span>] - o[<span class="number">0</span>]) * (b[<span class="number">1</span>] - o[<span class="number">1</span>]) - (a[<span class="number">1</span>] - o[<span class="number">1</span>]) * (b[<span class="number">0</span>] - o[<span class="number">0</span>])
+
+<span class="keyword">def</span> <span class="function">convex_hull_fast</span>(points):
+    <span class="string">"""Tuple-based convex hull for speed in CP."""</span>
+    points = sorted(set(points))
+    <span class="keyword">if</span> len(points) &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> points
+    lower = []
+    <span class="keyword">for</span> p <span class="keyword">in</span> points:
+        <span class="keyword">while</span> len(lower) &gt;= <span class="number">2</span> <span class="keyword">and</span> cross(lower[-<span class="number">2</span>], lower[-<span class="number">1</span>], p) &lt;= <span class="number">0</span>:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    <span class="keyword">for</span> p <span class="keyword">in</span> reversed(points):
+        <span class="keyword">while</span> len(upper) &gt;= <span class="number">2</span> <span class="keyword">and</span> cross(upper[-<span class="number">2</span>], upper[-<span class="number">1</span>], p) &lt;= <span class="number">0</span>:
+            upper.pop()
+        upper.append(p)
+    <span class="keyword">return</span> lower[:-<span class="number">1</span>] + upper[:-<span class="number">1</span>]
+</code></pre>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION: Geometry Problem-Solving Strategy -->
+    <!-- ============================================================ -->
+    <div class="section" id="strategy">
+      <h2>Problem-Solving Strategy for Geometry Problems</h2>
+
+      <div class="tip-box">
+        <div class="label">Step-by-Step Approach</div>
+        <ol>
+          <li><strong>Draw it.</strong> Always sketch the geometry before coding. Most bugs become obvious on paper.</li>
+          <li><strong>Identify the primitive.</strong> What fundamental operation does the problem reduce to? (orientation test, convex hull, sweep line, etc.)</li>
+          <li><strong>Choose integer or floating point.</strong> If coordinates are integers and you can stay in integers, do so. Use <code>long long</code> in C++.</li>
+          <li><strong>Handle degeneracies.</strong> What happens when points are collinear? When the polygon has only 3 vertices? When segments overlap?</li>
+          <li><strong>Test on small cases.</strong> Geometry is hard to debug. Use small hand-drawn examples and verify each step.</li>
+          <li><strong>Use a template.</strong> Build and test your geometry library once. In contests, paste it and focus on the problem logic.</li>
+        </ol>
+      </div>
+
+      <h3>Decision Tree: Which Algorithm Do I Need?</h3>
+
+<pre><code>
+    "I need to..."
+
+    Find if a point is left/right of a line?
+        =&gt; Cross product / orientation test
+
+    Find the outermost boundary of points?
+        =&gt; Convex hull (Andrew's monotone chain)
+
+    Check if a point is inside a shape?
+        =&gt; Ray casting (general) or binary search (convex)
+
+    Find the two farthest points?
+        =&gt; Convex hull + rotating calipers
+
+    Find the two closest points?
+        =&gt; Divide and conquer closest pair
+
+    Compute the area of a polygon?
+        =&gt; Shoelace formula
+
+    Process geometric events in spatial order?
+        =&gt; Sweep line
+
+    Find where multiple constraints overlap?
+        =&gt; Half-plane intersection
+
+    Find nearest neighbor regions?
+        =&gt; Voronoi diagram
+
+    Build a good triangulation?
+        =&gt; Delaunay triangulation
+</code></pre>
+    </div>
+
+  </div> <!-- end container -->
+
+<script>
+(function(){var toggle=document.querySelector('.sidebar-toggle');var sidebar=document.querySelector('.sidebar');var backdrop=document.querySelector('.sidebar-backdrop');var closeBtn=document.querySelector('.sidebar-close');function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});if(backdrop)backdrop.addEventListener('click',close);if(closeBtn)closeBtn.addEventListener('click',close);var links=document.querySelectorAll('.sidebar-nav a');var current=location.pathname.split('/').pop()||'index.html';for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}})();
+(function(){var input=document.querySelector('.sidebar-search-input');var box=document.querySelector('.sidebar-search-results');if(!input||!box)return;var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});var idx=-1;function render(q){if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}var lc=q.toLowerCase();var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');box.classList.add('visible');idx=-1;}function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}input.addEventListener('input',function(){render(this.value);});input.addEventListener('keydown',function(e){var items=box.querySelectorAll('a');if(!items.length)return;if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}});input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});input.addEventListener('focus',function(){if(this.value)render(this.value);});})();
+</script>
+</body>
+</html>
