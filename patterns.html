@@ -59,6 +59,7 @@
         <a href="dp.html">Dynamic Programming</a>
         <a href="advanced.html">Advanced Topics</a>
         <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
       </div>
       <div class="sidebar-group">
         <div class="sidebar-group-label">Languages &amp; Systems</div>
@@ -115,8 +116,25 @@
       <a href="#greedy">9. Greedy</a>
       <a href="#intervals">10. Interval Problems</a>
       <a href="#sweep-line">11. Sweep Line</a>
-      <a href="#cheat-sheet">12. Pattern Recognition Cheat Sheet</a>
-      <a href="#quiz">13. Practice Quiz</a>
+      <a href="#hashmap">12. HashMap Patterns</a>
+      <a href="#kadanes">13. Kadane's Algorithm</a>
+      <a href="#top-k">14. Top K Elements</a>
+      <a href="#topo-sort">15. Topological Sort</a>
+      <a href="#dijkstra">16. Dijkstra's Algorithm</a>
+      <a href="#bipartite">17. Bipartite Graph</a>
+      <a href="#sieve">18. Sieve of Eratosthenes</a>
+      <a href="#dp-patterns">19. DP Patterns</a>
+      <a href="#floyd-bellman">20. Floyd Warshall &amp; Bellman Ford</a>
+      <a href="#bitmask-dp">21. Bitmask DP</a>
+      <a href="#digit-dp">22. Digit DP</a>
+      <a href="#fenwick">23. Fenwick Tree (BIT)</a>
+      <a href="#segment-tree">24. Segment Tree</a>
+      <a href="#kmp-rolling-hash">25. KMP &amp; Rolling Hash</a>
+      <a href="#nlogn-lis">26. NlogN LIS</a>
+      <a href="#eulerian">27. Eulerian Paths</a>
+      <a href="#fft">28. FFT</a>
+      <a href="#cheat-sheet">29. Pattern Recognition Cheat Sheet</a>
+      <a href="#quiz">30. Practice Quiz</a>
     </div>
 
     <!-- ============================================================ -->
@@ -1381,10 +1399,1026 @@ Rule of thumb:
     </section>
 
     <!-- ============================================================ -->
-    <!-- 12. PATTERN RECOGNITION CHEAT SHEET -->
+    <!-- 12. HASHMAP PATTERNS -->
+    <!-- ============================================================ -->
+    <section id="hashmap">
+      <h2>12. HashMap Patterns</h2>
+      <p>
+        HashMaps give you O(1) average-time lookups, making them the go-to for frequency counting, finding complements, and grouping. Many problems that look like O(n^2) brute force become O(n) with a HashMap.
+      </p>
+      <div class="formula-box">
+        When to use: "find a pair with property X", frequency counting, grouping by key, subarray sum problems, duplicate detection
+      </div>
+
+      <h3>Two Sum (Unsorted)</h3>
+      <p>The most famous LeetCode problem. For each number, check if its complement (target - num) is already in the map.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">two_sum</span>(nums, target):
+    seen = {}  <span class="comment"># value -> index</span>
+    <span class="keyword">for</span> i, num <span class="keyword">in</span> enumerate(nums):
+        complement = target - num
+        <span class="keyword">if</span> complement <span class="keyword">in</span> seen:
+            <span class="keyword">return</span> [seen[complement], i]
+        seen[num] = i</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">twoSum</span>(nums, target) {
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> Map();
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < nums.length; i++) {
+        <span class="keyword">const</span> complement = target - nums[i];
+        <span class="keyword">if</span> (seen.has(complement)) <span class="keyword">return</span> [seen.get(complement), i];
+        seen.set(nums[i], i);
+    }
+}</code></pre>
+
+      <h3>Group Anagrams</h3>
+      <p>Sort each word to create a canonical key. Group words with the same key.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">group_anagrams</span>(strs):
+    groups = {}
+    <span class="keyword">for</span> s <span class="keyword">in</span> strs:
+        key = tuple(sorted(s))
+        groups.setdefault(key, []).append(s)
+    <span class="keyword">return</span> list(groups.values())</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">groupAnagrams</span>(strs) {
+    <span class="keyword">const</span> groups = <span class="keyword">new</span> Map();
+    <span class="keyword">for</span> (<span class="keyword">const</span> s <span class="keyword">of</span> strs) {
+        <span class="keyword">const</span> key = [...s].sort().join(<span class="string">''</span>);
+        <span class="keyword">if</span> (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(s);
+    }
+    <span class="keyword">return</span> [...groups.values()];
+}</code></pre>
+
+      <h3>Subarray Sum Equals K</h3>
+      <p>Use prefix sum + hashmap. If prefix[j] - prefix[i] = k, then subarray (i,j] sums to k. Store prefix sum frequencies in a map.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">subarray_sum</span>(nums, k):
+    count = <span class="number">0</span>
+    prefix = <span class="number">0</span>
+    seen = {<span class="number">0</span>: <span class="number">1</span>}  <span class="comment"># prefix_sum -> frequency</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        prefix += num
+        count += seen.get(prefix - k, <span class="number">0</span>)
+        seen[prefix] = seen.get(prefix, <span class="number">0</span>) + <span class="number">1</span>
+    <span class="keyword">return</span> count</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">subarraySum</span>(nums, k) {
+    <span class="keyword">let</span> count = <span class="number">0</span>, prefix = <span class="number">0</span>;
+    <span class="keyword">const</span> seen = <span class="keyword">new</span> Map([[<span class="number">0</span>, <span class="number">1</span>]]);
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        prefix += num;
+        count += (seen.get(prefix - k) || <span class="number">0</span>);
+        seen.set(prefix, (seen.get(prefix) || <span class="number">0</span>) + <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> count;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Why it works</div>
+        <p>If two prefix sums differ by k, the subarray between them sums to k. The hashmap counts how many previous prefix sums equal (current prefix - k), giving us the count of valid subarrays ending here.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13. KADANE'S ALGORITHM -->
+    <!-- ============================================================ -->
+    <section id="kadanes">
+      <h2>13. Kadane's Algorithm</h2>
+      <p>
+        Find the contiguous subarray with the maximum sum in O(n). The key insight: at each position, either extend the previous subarray or start a new one.
+      </p>
+      <div class="formula-box">
+        When to use: maximum subarray sum, maximum product, circular arrays, any "best contiguous sequence" problem
+      </div>
+
+      <h3>Maximum Subarray</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_subarray</span>(nums):
+    max_ending_here = nums[<span class="number">0</span>]
+    max_so_far = nums[<span class="number">0</span>]
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums[<span class="number">1</span>:]:
+        max_ending_here = max(num, max_ending_here + num)
+        max_so_far = max(max_so_far, max_ending_here)
+    <span class="keyword">return</span> max_so_far</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSubArray</span>(nums) {
+    <span class="keyword">let</span> maxHere = nums[<span class="number">0</span>], maxSoFar = nums[<span class="number">0</span>];
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i < nums.length; i++) {
+        maxHere = Math.max(nums[i], maxHere + nums[i]);
+        maxSoFar = Math.max(maxSoFar, maxHere);
+    }
+    <span class="keyword">return</span> maxSoFar;
+}</code></pre>
+
+      <h3>Maximum Sum Circular Subarray</h3>
+      <p>The max circular subarray is either: (1) a normal max subarray, or (2) total_sum - min_subarray (the "wrap-around" case). Take the max of both.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">max_subarray_circular</span>(nums):
+    max_here = min_here = <span class="number">0</span>
+    max_sum = float(<span class="string">'-inf'</span>)
+    min_sum = float(<span class="string">'inf'</span>)
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        max_here = max(num, max_here + num)
+        max_sum = max(max_sum, max_here)
+        min_here = min(num, min_here + num)
+        min_sum = min(min_sum, min_here)
+        total += num
+    <span class="comment"># If all negative, min_sum == total, return max_sum (non-circular)</span>
+    <span class="keyword">return</span> max(max_sum, total - min_sum) <span class="keyword">if</span> total != min_sum <span class="keyword">else</span> max_sum</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">maxSubarraySumCircular</span>(nums) {
+    <span class="keyword">let</span> maxHere = <span class="number">0</span>, minHere = <span class="number">0</span>;
+    <span class="keyword">let</span> maxSum = -Infinity, minSum = Infinity, total = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        maxHere = Math.max(num, maxHere + num);
+        maxSum = Math.max(maxSum, maxHere);
+        minHere = Math.min(num, minHere + num);
+        minSum = Math.min(minSum, minHere);
+        total += num;
+    }
+    <span class="keyword">return</span> total === minSum ? maxSum : Math.max(maxSum, total - minSum);
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 14. TOP K ELEMENTS -->
+    <!-- ============================================================ -->
+    <section id="top-k">
+      <h2>14. Top K Elements</h2>
+      <p>
+        Find the K largest, smallest, or most frequent elements. The heap approach gives O(n log k) which is better than sorting O(n log n) when k is much smaller than n.
+      </p>
+      <div class="formula-box">
+        When to use: "K-th largest/smallest", "top K frequent", "K closest", merge K sorted things
+      </div>
+
+      <h3>Kth Largest Element</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">find_kth_largest</span>(nums, k):
+    <span class="comment"># Min-heap of size k -- the root is the k-th largest</span>
+    heap = nums[:k]
+    heapq.heapify(heap)
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums[k:]:
+        <span class="keyword">if</span> num > heap[<span class="number">0</span>]:
+            heapq.heapreplace(heap, num)
+    <span class="keyword">return</span> heap[<span class="number">0</span>]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Using quickselect (average O(n), worst O(n^2))</span>
+<span class="keyword">function</span> <span class="function">findKthLargest</span>(nums, k) {
+    <span class="keyword">const</span> target = nums.length - k;
+    <span class="keyword">function</span> <span class="function">quickselect</span>(lo, hi) {
+        <span class="keyword">let</span> pivot = nums[hi], j = lo;
+        <span class="keyword">for</span> (<span class="keyword">let</span> i = lo; i < hi; i++) {
+            <span class="keyword">if</span> (nums[i] <= pivot) {
+                [nums[i], nums[j]] = [nums[j], nums[i]];
+                j++;
+            }
+        }
+        [nums[j], nums[hi]] = [nums[hi], nums[j]];
+        <span class="keyword">if</span> (j === target) <span class="keyword">return</span> nums[j];
+        <span class="keyword">return</span> j < target ? quickselect(j + <span class="number">1</span>, hi) : quickselect(lo, j - <span class="number">1</span>);
+    }
+    <span class="keyword">return</span> quickselect(<span class="number">0</span>, nums.length - <span class="number">1</span>);
+}</code></pre>
+
+      <h3>Top K Frequent Elements</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">top_k_frequent</span>(nums, k):
+    freq = Counter(nums)
+    <span class="keyword">return</span> heapq.nlargest(k, freq.keys(), key=freq.get)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">topKFrequent</span>(nums, k) {
+    <span class="keyword">const</span> freq = <span class="keyword">new</span> Map();
+    <span class="keyword">for</span> (<span class="keyword">const</span> n <span class="keyword">of</span> nums) freq.set(n, (freq.get(n) || <span class="number">0</span>) + <span class="number">1</span>);
+    <span class="comment">// Bucket sort: index = frequency</span>
+    <span class="keyword">const</span> buckets = Array.from({length: nums.length + <span class="number">1</span>}, () => []);
+    <span class="keyword">for</span> (<span class="keyword">const</span> [num, count] <span class="keyword">of</span> freq) buckets[count].push(num);
+    <span class="keyword">const</span> result = [];
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = buckets.length - <span class="number">1</span>; i >= <span class="number">0</span> && result.length < k; i--) {
+        result.push(...buckets[i]);
+    }
+    <span class="keyword">return</span> result.slice(<span class="number">0</span>, k);
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 15. TOPOLOGICAL SORT -->
+    <!-- ============================================================ -->
+    <section id="topo-sort">
+      <h2>15. Topological Sort</h2>
+      <p>
+        Order vertices of a DAG (Directed Acyclic Graph) so that for every edge u &rarr; v, u comes before v. Two approaches: Kahn's (BFS with indegree tracking) and DFS post-order.
+      </p>
+      <div class="formula-box">
+        When to use: dependency ordering, course prerequisites, build systems, task scheduling, detecting cycles in directed graphs
+      </div>
+
+      <h3>Kahn's Algorithm (BFS)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">topo_sort</span>(num_nodes, edges):
+    adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> range(num_nodes)]
+    indegree = [<span class="number">0</span>] * num_nodes
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        adj[u].append(v)
+        indegree[v] += <span class="number">1</span>
+
+    queue = deque(i <span class="keyword">for</span> i <span class="keyword">in</span> range(num_nodes) <span class="keyword">if</span> indegree[i] == <span class="number">0</span>)
+    order = []
+    <span class="keyword">while</span> queue:
+        node = queue.popleft()
+        order.append(node)
+        <span class="keyword">for</span> nei <span class="keyword">in</span> adj[node]:
+            indegree[nei] -= <span class="number">1</span>
+            <span class="keyword">if</span> indegree[nei] == <span class="number">0</span>:
+                queue.append(nei)
+    <span class="keyword">return</span> order <span class="keyword">if</span> len(order) == num_nodes <span class="keyword">else</span> []  <span class="comment"># empty = cycle</span></code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">topoSort</span>(numNodes, edges) {
+    <span class="keyword">const</span> adj = Array.from({length: numNodes}, () => []);
+    <span class="keyword">const</span> indegree = <span class="keyword">new</span> Array(numNodes).fill(<span class="number">0</span>);
+    <span class="keyword">for</span> (<span class="keyword">const</span> [u, v] <span class="keyword">of</span> edges) { adj[u].push(v); indegree[v]++; }
+
+    <span class="keyword">const</span> queue = [];
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < numNodes; i++) <span class="keyword">if</span> (indegree[i] === <span class="number">0</span>) queue.push(i);
+    <span class="keyword">const</span> order = [];
+    <span class="keyword">while</span> (queue.length) {
+        <span class="keyword">const</span> node = queue.shift();
+        order.push(node);
+        <span class="keyword">for</span> (<span class="keyword">const</span> nei <span class="keyword">of</span> adj[node]) {
+            <span class="keyword">if</span> (--indegree[nei] === <span class="number">0</span>) queue.push(nei);
+        }
+    }
+    <span class="keyword">return</span> order.length === numNodes ? order : [];
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 16. DIJKSTRA'S ALGORITHM -->
+    <!-- ============================================================ -->
+    <section id="dijkstra">
+      <h2>16. Dijkstra's Algorithm</h2>
+      <p>
+        Shortest path from a single source in a weighted graph with non-negative edges. Uses a min-heap to always process the closest unvisited node. Time: O((V + E) log V).
+      </p>
+      <div class="formula-box">
+        When to use: weighted shortest path (non-negative weights), "minimum cost to reach", network delay, cheapest flights
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">dijkstra</span>(graph, start):
+    <span class="comment"># graph: adjacency list, graph[u] = [(v, weight), ...]</span>
+    dist = {start: <span class="number">0</span>}
+    heap = [(<span class="number">0</span>, start)]
+    <span class="keyword">while</span> heap:
+        d, u = heapq.heappop(heap)
+        <span class="keyword">if</span> d > dist.get(u, float(<span class="string">'inf'</span>)):
+            <span class="keyword">continue</span>  <span class="comment"># stale entry</span>
+        <span class="keyword">for</span> v, w <span class="keyword">in</span> graph[u]:
+            nd = d + w
+            <span class="keyword">if</span> nd < dist.get(v, float(<span class="string">'inf'</span>)):
+                dist[v] = nd
+                heapq.heappush(heap, (nd, v))
+    <span class="keyword">return</span> dist</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">dijkstra</span>(graph, start) {
+    <span class="comment">// Simple min-heap via sorted insert (use a proper heap for production)</span>
+    <span class="keyword">const</span> dist = <span class="keyword">new</span> Map([[start, <span class="number">0</span>]]);
+    <span class="keyword">const</span> heap = [[<span class="number">0</span>, start]]; <span class="comment">// [distance, node]</span>
+    <span class="keyword">while</span> (heap.length) {
+        heap.sort((a, b) => a[<span class="number">0</span>] - b[<span class="number">0</span>]);
+        <span class="keyword">const</span> [d, u] = heap.shift();
+        <span class="keyword">if</span> (d > (dist.get(u) ?? Infinity)) <span class="keyword">continue</span>;
+        <span class="keyword">for</span> (<span class="keyword">const</span> [v, w] <span class="keyword">of</span> (graph[u] || [])) {
+            <span class="keyword">const</span> nd = d + w;
+            <span class="keyword">if</span> (nd < (dist.get(v) ?? Infinity)) {
+                dist.set(v, nd);
+                heap.push([nd, v]);
+            }
+        }
+    }
+    <span class="keyword">return</span> dist;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Key Insight</div>
+        <p>The "stale entry" check (<code>if d > dist[u]: continue</code>) is crucial. Since we can't decrease-key in a standard heap, we just push duplicates and skip them when they pop. This keeps the algorithm correct and efficient.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 17. BIPARTITE GRAPH -->
+    <!-- ============================================================ -->
+    <section id="bipartite">
+      <h2>17. Bipartite Graph</h2>
+      <p>
+        A graph is bipartite if you can 2-color it: assign every node to group A or group B such that no edge connects two nodes in the same group. Check this with BFS or DFS.
+      </p>
+      <div class="formula-box">
+        When to use: "can we split into two groups", "is the graph 2-colorable", checking for odd-length cycles
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> deque
+
+<span class="keyword">def</span> <span class="function">is_bipartite</span>(graph):
+    <span class="comment"># graph: adjacency list, graph[i] = [neighbors]</span>
+    n = len(graph)
+    color = [-<span class="number">1</span>] * n
+    <span class="keyword">for</span> start <span class="keyword">in</span> range(n):
+        <span class="keyword">if</span> color[start] != -<span class="number">1</span>:
+            <span class="keyword">continue</span>
+        queue = deque([start])
+        color[start] = <span class="number">0</span>
+        <span class="keyword">while</span> queue:
+            node = queue.popleft()
+            <span class="keyword">for</span> nei <span class="keyword">in</span> graph[node]:
+                <span class="keyword">if</span> color[nei] == -<span class="number">1</span>:
+                    color[nei] = <span class="number">1</span> - color[node]
+                    queue.append(nei)
+                <span class="keyword">elif</span> color[nei] == color[node]:
+                    <span class="keyword">return</span> False
+    <span class="keyword">return</span> True</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">isBipartite</span>(graph) {
+    <span class="keyword">const</span> n = graph.length;
+    <span class="keyword">const</span> color = <span class="keyword">new</span> Array(n).fill(-<span class="number">1</span>);
+    <span class="keyword">for</span> (<span class="keyword">let</span> start = <span class="number">0</span>; start < n; start++) {
+        <span class="keyword">if</span> (color[start] !== -<span class="number">1</span>) <span class="keyword">continue</span>;
+        <span class="keyword">const</span> queue = [start];
+        color[start] = <span class="number">0</span>;
+        <span class="keyword">while</span> (queue.length) {
+            <span class="keyword">const</span> node = queue.shift();
+            <span class="keyword">for</span> (<span class="keyword">const</span> nei <span class="keyword">of</span> graph[node]) {
+                <span class="keyword">if</span> (color[nei] === -<span class="number">1</span>) {
+                    color[nei] = <span class="number">1</span> - color[node];
+                    queue.push(nei);
+                } <span class="keyword">else if</span> (color[nei] === color[node]) <span class="keyword">return</span> false;
+            }
+        }
+    }
+    <span class="keyword">return</span> true;
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 18. SIEVE OF ERATOSTHENES -->
+    <!-- ============================================================ -->
+    <section id="sieve">
+      <h2>18. Sieve of Eratosthenes</h2>
+      <p>
+        Find all prime numbers up to N in O(N log log N). Mark multiples of each prime as composite starting from p^2.
+      </p>
+      <div class="formula-box">
+        When to use: "count primes", "find all primes up to N", prime factorization, number theory problems in CP
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">sieve</span>(n):
+    is_prime = [True] * (n + <span class="number">1</span>)
+    is_prime[<span class="number">0</span>] = is_prime[<span class="number">1</span>] = False
+    <span class="keyword">for</span> p <span class="keyword">in</span> range(<span class="number">2</span>, int(n**<span class="number">0.5</span>) + <span class="number">1</span>):
+        <span class="keyword">if</span> is_prime[p]:
+            <span class="keyword">for</span> multiple <span class="keyword">in</span> range(p * p, n + <span class="number">1</span>, p):
+                is_prime[multiple] = False
+    <span class="keyword">return</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n + <span class="number">1</span>) <span class="keyword">if</span> is_prime[i]]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">sieve</span>(n) {
+    <span class="keyword">const</span> isPrime = <span class="keyword">new</span> Array(n + <span class="number">1</span>).fill(true);
+    isPrime[<span class="number">0</span>] = isPrime[<span class="number">1</span>] = false;
+    <span class="keyword">for</span> (<span class="keyword">let</span> p = <span class="number">2</span>; p * p <= n; p++) {
+        <span class="keyword">if</span> (isPrime[p]) {
+            <span class="keyword">for</span> (<span class="keyword">let</span> m = p * p; m <= n; m += p) isPrime[m] = false;
+        }
+    }
+    <span class="keyword">return</span> isPrime.reduce((acc, v, i) => v ? [...acc, i] : acc, []);
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 19. DP PATTERNS -->
+    <!-- ============================================================ -->
+    <section id="dp-patterns">
+      <h2>19. Dynamic Programming Patterns</h2>
+      <p>
+        DP is the most important topic in competitive programming. Here are the three foundational DP frameworks. For full coverage see the <a href="dp.html">DP page</a>.
+      </p>
+
+      <h3>Fibonacci-Type Recurrence</h3>
+      <p>dp[i] depends on a fixed number of previous states (dp[i-1], dp[i-2], etc.). Often optimizable to O(1) space.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Template: Fibonacci-type DP</span>
+<span class="keyword">def</span> <span class="function">fib_dp</span>(n):
+    <span class="keyword">if</span> n <= <span class="number">1</span>: <span class="keyword">return</span> n
+    prev2, prev1 = <span class="number">0</span>, <span class="number">1</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">2</span>, n + <span class="number">1</span>):
+        prev2, prev1 = prev1, prev2 + prev1
+    <span class="keyword">return</span> prev1</code></pre>
+
+      <h3>0/1 Knapsack (Take It or Leave It)</h3>
+      <p>For each item, decide: include it or skip it. dp[i][w] = best value using first i items with capacity w.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">knapsack</span>(weights, values, capacity):
+    n = len(weights)
+    dp = [[<span class="number">0</span>] * (capacity + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
+        <span class="keyword">for</span> w <span class="keyword">in</span> range(capacity + <span class="number">1</span>):
+            dp[i][w] = dp[i-<span class="number">1</span>][w]  <span class="comment"># skip item i</span>
+            <span class="keyword">if</span> weights[i-<span class="number">1</span>] <= w:
+                dp[i][w] = max(dp[i][w], dp[i-<span class="number">1</span>][w - weights[i-<span class="number">1</span>]] + values[i-<span class="number">1</span>])
+    <span class="keyword">return</span> dp[n][capacity]</code></pre>
+
+      <h3>Longest Increasing Subsequence (O(n^2))</h3>
+      <p>dp[i] = length of LIS ending at index i. For each j &lt; i where arr[j] &lt; arr[i], dp[i] = max(dp[i], dp[j] + 1).</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">lis</span>(nums):
+    n = len(nums)
+    dp = [<span class="number">1</span>] * n
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):
+        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):
+            <span class="keyword">if</span> nums[j] < nums[i]:
+                dp[i] = max(dp[i], dp[j] + <span class="number">1</span>)
+    <span class="keyword">return</span> max(dp)</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 20. FLOYD WARSHALL & BELLMAN FORD -->
+    <!-- ============================================================ -->
+    <section id="floyd-bellman">
+      <h2>20. Floyd Warshall &amp; Bellman Ford</h2>
+
+      <h3>Floyd Warshall -- All-Pairs Shortest Path</h3>
+      <p>O(V^3). Three nested loops: for each intermediate vertex k, check if going through k gives a shorter path from i to j.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">floyd_warshall</span>(n, edges):
+    INF = float(<span class="string">'inf'</span>)
+    dist = [[INF] * n <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
+        dist[i][i] = <span class="number">0</span>
+    <span class="keyword">for</span> u, v, w <span class="keyword">in</span> edges:
+        dist[u][v] = w
+    <span class="keyword">for</span> k <span class="keyword">in</span> range(n):        <span class="comment"># intermediate</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):    <span class="comment"># source</span>
+            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):  <span class="comment"># destination</span>
+                <span class="keyword">if</span> dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    <span class="keyword">return</span> dist</code></pre>
+
+      <h3>Bellman Ford -- Single Source with Negative Weights</h3>
+      <p>O(V * E). Relax all edges V-1 times. If any edge can still be relaxed after V-1 iterations, there's a negative cycle.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">bellman_ford</span>(n, edges, src):
+    dist = [float(<span class="string">'inf'</span>)] * n
+    dist[src] = <span class="number">0</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> range(n - <span class="number">1</span>):
+        <span class="keyword">for</span> u, v, w <span class="keyword">in</span> edges:
+            <span class="keyword">if</span> dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    <span class="comment"># Check for negative cycles</span>
+    <span class="keyword">for</span> u, v, w <span class="keyword">in</span> edges:
+        <span class="keyword">if</span> dist[u] + w < dist[v]:
+            <span class="keyword">return</span> None  <span class="comment"># negative cycle exists</span>
+    <span class="keyword">return</span> dist</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">bellmanFord</span>(n, edges, src) {
+    <span class="keyword">const</span> dist = <span class="keyword">new</span> Array(n).fill(Infinity);
+    dist[src] = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        <span class="keyword">for</span> (<span class="keyword">const</span> [u, v, w] <span class="keyword">of</span> edges) {
+            <span class="keyword">if</span> (dist[u] + w < dist[v]) dist[v] = dist[u] + w;
+        }
+    }
+    <span class="keyword">for</span> (<span class="keyword">const</span> [u, v, w] <span class="keyword">of</span> edges) {
+        <span class="keyword">if</span> (dist[u] + w < dist[v]) <span class="keyword">return</span> null; <span class="comment">// negative cycle</span>
+    }
+    <span class="keyword">return</span> dist;
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Which</div>
+        <p><strong>Dijkstra:</strong> Single source, non-negative weights, O((V+E) log V). <strong>Bellman-Ford:</strong> Single source, negative weights OK, O(V*E). <strong>Floyd-Warshall:</strong> All pairs, O(V^3), simple to implement.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 21. BITMASK DP -->
+    <!-- ============================================================ -->
+    <section id="bitmask-dp">
+      <h2>21. Bitmask DP</h2>
+      <p>
+        Represent subsets as bitmasks (integers). Bit i is 1 if element i is in the subset. This lets you enumerate all 2^n subsets and use them as DP states.
+      </p>
+      <div class="formula-box">
+        When to use: small n (&le; 20), "assign n items to groups", traveling salesman, subset problems, combinatorial optimization
+      </div>
+
+      <h3>Traveling Salesman Problem (TSP)</h3>
+      <p>dp[mask][i] = minimum cost to visit all cities in mask, ending at city i.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">tsp</span>(dist):
+    n = len(dist)
+    INF = float(<span class="string">'inf'</span>)
+    dp = [[INF] * n <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1</span> << n)]
+    dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span>  <span class="comment"># start at city 0</span>
+
+    <span class="keyword">for</span> mask <span class="keyword">in</span> range(<span class="number">1</span> << n):
+        <span class="keyword">for</span> u <span class="keyword">in</span> range(n):
+            <span class="keyword">if</span> dp[mask][u] == INF: <span class="keyword">continue</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> (mask & (<span class="number">1</span> << u)): <span class="keyword">continue</span>
+            <span class="keyword">for</span> v <span class="keyword">in</span> range(n):
+                <span class="keyword">if</span> mask & (<span class="number">1</span> << v): <span class="keyword">continue</span>  <span class="comment"># already visited</span>
+                new_mask = mask | (<span class="number">1</span> << v)
+                dp[new_mask][v] = min(dp[new_mask][v], dp[mask][u] + dist[u][v])
+
+    full = (<span class="number">1</span> << n) - <span class="number">1</span>
+    <span class="keyword">return</span> min(dp[full][i] + dist[i][<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(n))</code></pre>
+
+      <h3>Useful Bitmask Operations</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="comment"># Check if bit i is set</span>
+(mask >> i) & <span class="number">1</span>
+
+<span class="comment"># Set bit i</span>
+mask | (<span class="number">1</span> << i)
+
+<span class="comment"># Clear bit i</span>
+mask & ~(<span class="number">1</span> << i)
+
+<span class="comment"># Iterate over all subsets of mask</span>
+sub = mask
+<span class="keyword">while</span> sub > <span class="number">0</span>:
+    <span class="comment"># process subset 'sub'</span>
+    sub = (sub - <span class="number">1</span>) & mask</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 22. DIGIT DP -->
+    <!-- ============================================================ -->
+    <section id="digit-dp">
+      <h2>22. Digit DP</h2>
+      <p>
+        Count numbers in a range [0, N] that satisfy some digit-based constraint. Build the number digit by digit, tracking whether we're still "tight" (bounded by N's digits) and any constraint state.
+      </p>
+      <div class="formula-box">
+        When to use: "count numbers from L to R where digits satisfy X", digit sum constraints, no consecutive same digits, etc.
+      </div>
+
+      <h3>Template: Count Numbers with Digit Sum &le; S</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache
+
+<span class="keyword">def</span> <span class="function">count_up_to</span>(N, max_digit_sum):
+    digits = [int(d) <span class="keyword">for</span> d <span class="keyword">in</span> str(N)]
+
+    @lru_cache(maxsize=None)
+    <span class="keyword">def</span> <span class="function">dp</span>(pos, digit_sum, tight):
+        <span class="keyword">if</span> digit_sum > max_digit_sum:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> pos == len(digits):
+            <span class="keyword">return</span> <span class="number">1</span>
+        limit = digits[pos] <span class="keyword">if</span> tight <span class="keyword">else</span> <span class="number">9</span>
+        result = <span class="number">0</span>
+        <span class="keyword">for</span> d <span class="keyword">in</span> range(<span class="number">0</span>, limit + <span class="number">1</span>):
+            result += dp(pos + <span class="number">1</span>, digit_sum + d, tight <span class="keyword">and</span> d == limit)
+        <span class="keyword">return</span> result
+
+    <span class="keyword">return</span> dp(<span class="number">0</span>, <span class="number">0</span>, True)
+
+<span class="comment"># Count in range [L, R]: count_up_to(R) - count_up_to(L - 1)</span></code></pre>
+
+      <div class="example-box">
+        <div class="label">Key Concepts</div>
+        <p><strong>tight:</strong> Are we still bounded by N? If all digits so far match N's digits, the next digit can be at most N's next digit. Once we place a smaller digit, we're "free" (tight = False) and can use 0-9 for all remaining positions.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 23. FENWICK TREE (BIT) -->
+    <!-- ============================================================ -->
+    <section id="fenwick">
+      <h2>23. Fenwick Tree (Binary Indexed Tree)</h2>
+      <p>
+        A data structure that supports point updates and prefix sum queries in O(log n). Much simpler to implement than a segment tree. Uses the lowest set bit trick to navigate.
+      </p>
+      <div class="formula-box">
+        When to use: dynamic prefix sums, count inversions, range sum with updates, coordinate compression + counting
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">FenwickTree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, n):
+        self.n = n
+        self.tree = [<span class="number">0</span>] * (n + <span class="number">1</span>)
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, i, delta):
+        <span class="comment"># Add delta to index i (1-indexed)</span>
+        <span class="keyword">while</span> i <= self.n:
+            self.tree[i] += delta
+            i += i & (-i)  <span class="comment"># add lowest set bit</span>
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, i):
+        <span class="comment"># Prefix sum [1..i]</span>
+        s = <span class="number">0</span>
+        <span class="keyword">while</span> i > <span class="number">0</span>:
+            s += self.tree[i]
+            i -= i & (-i)  <span class="comment"># remove lowest set bit</span>
+        <span class="keyword">return</span> s
+
+    <span class="keyword">def</span> <span class="function">range_query</span>(self, l, r):
+        <span class="keyword">return</span> self.query(r) - self.query(l - <span class="number">1</span>)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">FenwickTree</span> {
+    constructor(n) {
+        this.n = n;
+        this.tree = <span class="keyword">new</span> Array(n + <span class="number">1</span>).fill(<span class="number">0</span>);
+    }
+    update(i, delta) {
+        <span class="keyword">for</span> (; i <= this.n; i += i & (-i)) this.tree[i] += delta;
+    }
+    query(i) {
+        <span class="keyword">let</span> s = <span class="number">0</span>;
+        <span class="keyword">for</span> (; i > <span class="number">0</span>; i -= i & (-i)) s += this.tree[i];
+        <span class="keyword">return</span> s;
+    }
+    rangeQuery(l, r) { <span class="keyword">return</span> this.query(r) - this.query(l - <span class="number">1</span>); }
+}</code></pre>
+
+      <div class="tip-box">
+        <div class="label">i &amp; (-i)</div>
+        <p>This extracts the lowest set bit. For index 6 (binary 110), <code>6 & (-6) = 2</code> (binary 010). Update goes UP by adding the lowest set bit. Query goes DOWN by subtracting it. This is what makes the tree work in O(log n).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 24. SEGMENT TREE -->
+    <!-- ============================================================ -->
+    <section id="segment-tree">
+      <h2>24. Segment Tree</h2>
+      <p>
+        Range queries (sum, min, max, GCD) and point/range updates in O(log n). More flexible than Fenwick tree. Lazy propagation enables range updates.
+      </p>
+      <div class="formula-box">
+        When to use: range queries + updates, range minimum/maximum, more complex range operations that Fenwick can't handle
+      </div>
+
+      <h3>Basic Segment Tree (Range Sum, Point Update)</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">class</span> <span class="function">SegTree</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, arr):
+        self.n = len(arr)
+        self.tree = [<span class="number">0</span>] * (<span class="number">4</span> * self.n)
+        self._build(arr, <span class="number">1</span>, <span class="number">0</span>, self.n - <span class="number">1</span>)
+
+    <span class="keyword">def</span> <span class="function">_build</span>(self, arr, node, lo, hi):
+        <span class="keyword">if</span> lo == hi:
+            self.tree[node] = arr[lo]
+            <span class="keyword">return</span>
+        mid = (lo + hi) // <span class="number">2</span>
+        self._build(arr, <span class="number">2</span> * node, lo, mid)
+        self._build(arr, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi)
+        self.tree[node] = self.tree[<span class="number">2</span> * node] + self.tree[<span class="number">2</span> * node + <span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">update</span>(self, idx, val, node=<span class="number">1</span>, lo=<span class="number">0</span>, hi=None):
+        <span class="keyword">if</span> hi <span class="keyword">is</span> None: hi = self.n - <span class="number">1</span>
+        <span class="keyword">if</span> lo == hi:
+            self.tree[node] = val
+            <span class="keyword">return</span>
+        mid = (lo + hi) // <span class="number">2</span>
+        <span class="keyword">if</span> idx <= mid:
+            self.update(idx, val, <span class="number">2</span> * node, lo, mid)
+        <span class="keyword">else</span>:
+            self.update(idx, val, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi)
+        self.tree[node] = self.tree[<span class="number">2</span> * node] + self.tree[<span class="number">2</span> * node + <span class="number">1</span>]
+
+    <span class="keyword">def</span> <span class="function">query</span>(self, ql, qr, node=<span class="number">1</span>, lo=<span class="number">0</span>, hi=None):
+        <span class="keyword">if</span> hi <span class="keyword">is</span> None: hi = self.n - <span class="number">1</span>
+        <span class="keyword">if</span> qr < lo <span class="keyword">or</span> hi < ql: <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">if</span> ql <= lo <span class="keyword">and</span> hi <= qr: <span class="keyword">return</span> self.tree[node]
+        mid = (lo + hi) // <span class="number">2</span>
+        <span class="keyword">return</span> self.query(ql, qr, <span class="number">2</span> * node, lo, mid) + \
+               self.query(ql, qr, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">SegTree</span> {
+    constructor(arr) {
+        this.n = arr.length;
+        this.tree = <span class="keyword">new</span> Array(<span class="number">4</span> * this.n).fill(<span class="number">0</span>);
+        this._build(arr, <span class="number">1</span>, <span class="number">0</span>, this.n - <span class="number">1</span>);
+    }
+    _build(arr, node, lo, hi) {
+        <span class="keyword">if</span> (lo === hi) { this.tree[node] = arr[lo]; <span class="keyword">return</span>; }
+        <span class="keyword">const</span> mid = (lo + hi) >> <span class="number">1</span>;
+        this._build(arr, <span class="number">2</span> * node, lo, mid);
+        this._build(arr, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi);
+        this.tree[node] = this.tree[<span class="number">2</span> * node] + this.tree[<span class="number">2</span> * node + <span class="number">1</span>];
+    }
+    update(idx, val, node = <span class="number">1</span>, lo = <span class="number">0</span>, hi = this.n - <span class="number">1</span>) {
+        <span class="keyword">if</span> (lo === hi) { this.tree[node] = val; <span class="keyword">return</span>; }
+        <span class="keyword">const</span> mid = (lo + hi) >> <span class="number">1</span>;
+        <span class="keyword">if</span> (idx <= mid) this.update(idx, val, <span class="number">2</span> * node, lo, mid);
+        <span class="keyword">else</span> this.update(idx, val, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi);
+        this.tree[node] = this.tree[<span class="number">2</span> * node] + this.tree[<span class="number">2</span> * node + <span class="number">1</span>];
+    }
+    query(ql, qr, node = <span class="number">1</span>, lo = <span class="number">0</span>, hi = this.n - <span class="number">1</span>) {
+        <span class="keyword">if</span> (qr < lo || hi < ql) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">if</span> (ql <= lo && hi <= qr) <span class="keyword">return</span> this.tree[node];
+        <span class="keyword">const</span> mid = (lo + hi) >> <span class="number">1</span>;
+        <span class="keyword">return</span> this.query(ql, qr, <span class="number">2</span> * node, lo, mid)
+             + this.query(ql, qr, <span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, hi);
+    }
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 25. KMP & ROLLING HASH -->
+    <!-- ============================================================ -->
+    <section id="kmp-rolling-hash">
+      <h2>25. Advanced String Algorithms</h2>
+
+      <h3>KMP (Knuth-Morris-Pratt)</h3>
+      <p>Find all occurrences of pattern in text in O(n + m). Build a prefix function (failure function) that tells you how far to "fall back" on a mismatch instead of restarting.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">kmp_search</span>(text, pattern):
+    <span class="comment"># Build prefix function</span>
+    m = len(pattern)
+    lps = [<span class="number">0</span>] * m
+    length = <span class="number">0</span>
+    i = <span class="number">1</span>
+    <span class="keyword">while</span> i < m:
+        <span class="keyword">if</span> pattern[i] == pattern[length]:
+            length += <span class="number">1</span>
+            lps[i] = length
+            i += <span class="number">1</span>
+        <span class="keyword">elif</span> length:
+            length = lps[length - <span class="number">1</span>]
+        <span class="keyword">else</span>:
+            lps[i] = <span class="number">0</span>
+            i += <span class="number">1</span>
+
+    <span class="comment"># Search</span>
+    results = []
+    j = <span class="number">0</span>  <span class="comment"># index in pattern</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(text)):
+        <span class="keyword">while</span> j > <span class="number">0</span> <span class="keyword">and</span> text[i] != pattern[j]:
+            j = lps[j - <span class="number">1</span>]
+        <span class="keyword">if</span> text[i] == pattern[j]:
+            j += <span class="number">1</span>
+        <span class="keyword">if</span> j == m:
+            results.append(i - m + <span class="number">1</span>)
+            j = lps[j - <span class="number">1</span>]
+    <span class="keyword">return</span> results</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">kmpSearch</span>(text, pattern) {
+    <span class="keyword">const</span> m = pattern.length;
+    <span class="keyword">const</span> lps = <span class="keyword">new</span> Array(m).fill(<span class="number">0</span>);
+    <span class="keyword">let</span> len = <span class="number">0</span>, i = <span class="number">1</span>;
+    <span class="keyword">while</span> (i < m) {
+        <span class="keyword">if</span> (pattern[i] === pattern[len]) { lps[i++] = ++len; }
+        <span class="keyword">else if</span> (len) { len = lps[len - <span class="number">1</span>]; }
+        <span class="keyword">else</span> { lps[i++] = <span class="number">0</span>; }
+    }
+    <span class="keyword">const</span> results = [];
+    <span class="keyword">let</span> j = <span class="number">0</span>;
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < text.length; i++) {
+        <span class="keyword">while</span> (j > <span class="number">0</span> && text[i] !== pattern[j]) j = lps[j - <span class="number">1</span>];
+        <span class="keyword">if</span> (text[i] === pattern[j]) j++;
+        <span class="keyword">if</span> (j === m) { results.push(i - m + <span class="number">1</span>); j = lps[j - <span class="number">1</span>]; }
+    }
+    <span class="keyword">return</span> results;
+}</code></pre>
+
+      <h3>Rolling Hash (Rabin-Karp)</h3>
+      <p>Hash substrings in O(1) using polynomial hashing. Compare hashes instead of characters. Use double hashing to minimize collisions.</p>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">def</span> <span class="function">rabin_karp</span>(text, pattern):
+    n, m = len(text), len(pattern)
+    <span class="keyword">if</span> m > n: <span class="keyword">return</span> []
+    BASE, MOD = <span class="number">131</span>, <span class="number">10</span>**<span class="number">9</span> + <span class="number">7</span>
+
+    <span class="comment"># Compute pattern hash and first window hash</span>
+    p_hash = <span class="number">0</span>
+    t_hash = <span class="number">0</span>
+    power = <span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
+        p_hash = (p_hash * BASE + ord(pattern[i])) % MOD
+        t_hash = (t_hash * BASE + ord(text[i])) % MOD
+        <span class="keyword">if</span> i < m - <span class="number">1</span>:
+            power = power * BASE % MOD
+
+    results = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - m + <span class="number">1</span>):
+        <span class="keyword">if</span> t_hash == p_hash <span class="keyword">and</span> text[i:i+m] == pattern:
+            results.append(i)
+        <span class="keyword">if</span> i < n - m:
+            t_hash = (t_hash - ord(text[i]) * power) * BASE + ord(text[i + m])
+            t_hash %= MOD
+    <span class="keyword">return</span> results</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 26. NlogN LIS -->
+    <!-- ============================================================ -->
+    <section id="nlogn-lis">
+      <h2>26. NlogN LIS (Patience Sorting)</h2>
+      <p>
+        Optimize LIS from O(n^2) to O(n log n). Maintain a "tails" array where tails[i] is the smallest tail element of all increasing subsequences of length i+1. Use binary search to find where each element fits.
+      </p>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> bisect <span class="keyword">import</span> bisect_left
+
+<span class="keyword">def</span> <span class="function">lis_nlogn</span>(nums):
+    tails = []
+    <span class="keyword">for</span> num <span class="keyword">in</span> nums:
+        pos = bisect_left(tails, num)
+        <span class="keyword">if</span> pos == len(tails):
+            tails.append(num)    <span class="comment"># extend longest subsequence</span>
+        <span class="keyword">else</span>:
+            tails[pos] = num     <span class="comment"># replace to keep smallest tail</span>
+    <span class="keyword">return</span> len(tails)</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">lisNlogN</span>(nums) {
+    <span class="keyword">const</span> tails = [];
+    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) {
+        <span class="keyword">let</span> lo = <span class="number">0</span>, hi = tails.length;
+        <span class="keyword">while</span> (lo < hi) {
+            <span class="keyword">const</span> mid = (lo + hi) >> <span class="number">1</span>;
+            <span class="keyword">if</span> (tails[mid] < num) lo = mid + <span class="number">1</span>;
+            <span class="keyword">else</span> hi = mid;
+        }
+        tails[lo] = num;
+    }
+    <span class="keyword">return</span> tails.length;
+}</code></pre>
+
+      <div class="example-box">
+        <div class="label">Why It Works</div>
+        <p>The tails array is always sorted. For each new number, binary search finds the first tail &ge; num. If found, replace it (we found a subsequence of the same length with a smaller tail). If not found, extend the array (we found a longer subsequence). The length of tails is the LIS length.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 27. EULERIAN PATHS -->
+    <!-- ============================================================ -->
+    <section id="eulerian">
+      <h2>27. Eulerian Paths</h2>
+      <p>
+        An Eulerian path visits every <strong>edge</strong> exactly once. An Eulerian circuit returns to the starting vertex.
+      </p>
+      <div class="formula-box">
+        <strong>Undirected:</strong> Eulerian circuit exists iff all vertices have even degree. Eulerian path exists iff exactly 0 or 2 vertices have odd degree.<br>
+        <strong>Directed:</strong> Eulerian circuit exists iff in-degree = out-degree for all vertices. Eulerian path exists iff at most one vertex has out - in = 1 (start) and one has in - out = 1 (end).
+      </div>
+
+      <h3>Hierholzer's Algorithm</h3>
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="keyword">def</span> <span class="function">eulerian_path</span>(edges):
+    <span class="comment"># Directed graph: edges = [(u, v), ...]</span>
+    graph = defaultdict(list)
+    in_deg = defaultdict(int)
+    out_deg = defaultdict(int)
+    <span class="keyword">for</span> u, v <span class="keyword">in</span> edges:
+        graph[u].append(v)
+        out_deg[u] += <span class="number">1</span>
+        in_deg[v] += <span class="number">1</span>
+
+    <span class="comment"># Find start node</span>
+    start = edges[<span class="number">0</span>][<span class="number">0</span>]
+    <span class="keyword">for</span> node <span class="keyword">in</span> graph:
+        <span class="keyword">if</span> out_deg[node] - in_deg[node] == <span class="number">1</span>:
+            start = node
+            <span class="keyword">break</span>
+
+    <span class="comment"># Sort neighbors for lexicographic order (if needed)</span>
+    <span class="keyword">for</span> node <span class="keyword">in</span> graph:
+        graph[node].sort(reverse=True)  <span class="comment"># reverse so we can pop()</span>
+
+    <span class="comment"># Hierholzer's</span>
+    stack = [start]
+    path = []
+    <span class="keyword">while</span> stack:
+        <span class="keyword">while</span> graph[stack[-<span class="number">1</span>]]:
+            stack.append(graph[stack[-<span class="number">1</span>]].pop())
+        path.append(stack.pop())
+    <span class="keyword">return</span> path[::-<span class="number">1</span>]</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">function</span> <span class="function">eulerianPath</span>(edges) {
+    <span class="keyword">const</span> graph = <span class="keyword">new</span> Map();
+    <span class="keyword">const</span> inDeg = <span class="keyword">new</span> Map(), outDeg = <span class="keyword">new</span> Map();
+    <span class="keyword">for</span> (<span class="keyword">const</span> [u, v] <span class="keyword">of</span> edges) {
+        <span class="keyword">if</span> (!graph.has(u)) graph.set(u, []);
+        graph.get(u).push(v);
+        outDeg.set(u, (outDeg.get(u) || <span class="number">0</span>) + <span class="number">1</span>);
+        inDeg.set(v, (inDeg.get(v) || <span class="number">0</span>) + <span class="number">1</span>);
+    }
+    <span class="keyword">let</span> start = edges[<span class="number">0</span>][<span class="number">0</span>];
+    <span class="keyword">for</span> (<span class="keyword">const</span> [node] <span class="keyword">of</span> graph) {
+        <span class="keyword">if</span> ((outDeg.get(node) || <span class="number">0</span>) - (inDeg.get(node) || <span class="number">0</span>) === <span class="number">1</span>) {
+            start = node; <span class="keyword">break</span>;
+        }
+    }
+    <span class="keyword">for</span> (<span class="keyword">const</span> [, neighbors] <span class="keyword">of</span> graph) neighbors.sort();
+    <span class="keyword">const</span> stack = [start], path = [];
+    <span class="keyword">while</span> (stack.length) {
+        <span class="keyword">const</span> top = stack[stack.length - <span class="number">1</span>];
+        <span class="keyword">if</span> (graph.has(top) && graph.get(top).length) {
+            stack.push(graph.get(top).pop());
+        } <span class="keyword">else</span> {
+            path.push(stack.pop());
+        }
+    }
+    <span class="keyword">return</span> path.reverse();
+}</code></pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 28. FAST FOURIER TRANSFORM -->
+    <!-- ============================================================ -->
+    <section id="fft">
+      <h2>28. Fast Fourier Transform (FFT)</h2>
+      <p>
+        Multiply two polynomials in O(n log n) instead of O(n^2). Convert coefficients to point-value form (evaluate at roots of unity), multiply pointwise, then convert back. Used for convolutions, large number multiplication, and counting problems.
+      </p>
+      <div class="formula-box">
+        When to use: polynomial multiplication, convolution (counting pairs that sum to X), large number multiplication, generating functions
+      </div>
+
+      <pre><code><span class="lang-label">Python</span>
+<span class="keyword">import</span> cmath
+
+<span class="keyword">def</span> <span class="function">fft</span>(a, invert=False):
+    n = len(a)
+    <span class="keyword">if</span> n == <span class="number">1</span>: <span class="keyword">return</span> a
+
+    a_even = fft(a[<span class="number">0</span>::<span class="number">2</span>], invert)
+    a_odd = fft(a[<span class="number">1</span>::<span class="number">2</span>], invert)
+
+    angle = <span class="number">2</span> * cmath.pi / n * (-<span class="number">1</span> <span class="keyword">if</span> invert <span class="keyword">else</span> <span class="number">1</span>)
+    w = <span class="number">1</span>
+    wn = cmath.exp(complex(<span class="number">0</span>, angle))
+    result = [<span class="number">0</span>] * n
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n // <span class="number">2</span>):
+        result[i] = a_even[i] + w * a_odd[i]
+        result[i + n // <span class="number">2</span>] = a_even[i] - w * a_odd[i]
+        <span class="keyword">if</span> invert:
+            result[i] /= <span class="number">2</span>
+            result[i + n // <span class="number">2</span>] /= <span class="number">2</span>
+        w *= wn
+    <span class="keyword">return</span> result
+
+<span class="keyword">def</span> <span class="function">poly_multiply</span>(a, b):
+    <span class="comment"># Pad to next power of 2</span>
+    n = <span class="number">1</span>
+    <span class="keyword">while</span> n < len(a) + len(b): n <<= <span class="number">1</span>
+    a += [<span class="number">0</span>] * (n - len(a))
+    b += [<span class="number">0</span>] * (n - len(b))
+
+    fa = fft(a)
+    fb = fft(b)
+    fc = [fa[i] * fb[i] <span class="keyword">for</span> i <span class="keyword">in</span> range(n)]
+    c = fft(fc, invert=True)
+    <span class="keyword">return</span> [round(x.real) <span class="keyword">for</span> x <span class="keyword">in</span> c]</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Floating Point</div>
+        <p>Standard FFT uses complex numbers and has floating-point precision issues. For competitive programming with modular arithmetic, use <strong>NTT (Number Theoretic Transform)</strong> instead, which works over a prime modulus (commonly 998244353) and avoids floating-point errors entirely.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 29. PATTERN RECOGNITION CHEAT SHEET -->
     <!-- ============================================================ -->
     <section id="cheat-sheet">
-      <h2>12. Pattern Recognition Cheat Sheet</h2>
+      <h2>29. Pattern Recognition Cheat Sheet</h2>
       <p>
         When you read a problem, look for these clues to identify the right pattern. This is the single most valuable skill for LeetCode.
       </p>
@@ -1477,6 +2511,71 @@ Rule of thumb:
             <td><strong>Heap / Bucket Sort</strong></td>
             <td>Heap for O(n log k), bucket sort for O(n)</td>
           </tr>
+          <tr>
+            <td>"Maximum contiguous subarray"</td>
+            <td><strong>Kadane's Algorithm</strong></td>
+            <td>Track max ending here vs starting fresh at each position</td>
+          </tr>
+          <tr>
+            <td>"Prerequisites" or "dependency order"</td>
+            <td><strong>Topological Sort</strong></td>
+            <td>DAG ordering ensures dependencies come first</td>
+          </tr>
+          <tr>
+            <td>"Shortest path" (weighted, non-negative)</td>
+            <td><strong>Dijkstra's Algorithm</strong></td>
+            <td>Min-heap greedily processes closest unvisited node</td>
+          </tr>
+          <tr>
+            <td>"Shortest path" (negative weights)</td>
+            <td><strong>Bellman Ford</strong></td>
+            <td>Relax all edges V-1 times; detects negative cycles</td>
+          </tr>
+          <tr>
+            <td>"All-pairs shortest path"</td>
+            <td><strong>Floyd Warshall</strong></td>
+            <td>O(V^3) triple loop through intermediate vertices</td>
+          </tr>
+          <tr>
+            <td>"Can we split into two groups"</td>
+            <td><strong>Bipartite Check (BFS/DFS)</strong></td>
+            <td>2-color the graph; conflict means not bipartite</td>
+          </tr>
+          <tr>
+            <td>"Count primes" or number theory</td>
+            <td><strong>Sieve of Eratosthenes</strong></td>
+            <td>Mark multiples as composite in O(N log log N)</td>
+          </tr>
+          <tr>
+            <td>"Assign n items" (n &le; 20)</td>
+            <td><strong>Bitmask DP</strong></td>
+            <td>Enumerate 2^n subsets as bitmask states</td>
+          </tr>
+          <tr>
+            <td>"Count numbers in range with digit constraint"</td>
+            <td><strong>Digit DP</strong></td>
+            <td>Build number digit-by-digit tracking tight bound</td>
+          </tr>
+          <tr>
+            <td>"Range sum/min/max with updates"</td>
+            <td><strong>Segment Tree / Fenwick Tree</strong></td>
+            <td>O(log n) queries and updates on ranges</td>
+          </tr>
+          <tr>
+            <td>"Find pattern in string" (exact match)</td>
+            <td><strong>KMP / Rolling Hash</strong></td>
+            <td>Linear-time string matching without backtracking</td>
+          </tr>
+          <tr>
+            <td>"Visit every edge exactly once"</td>
+            <td><strong>Eulerian Path (Hierholzer's)</strong></td>
+            <td>Check degree conditions, then DFS with edge removal</td>
+          </tr>
+          <tr>
+            <td>"Polynomial multiplication" or convolution</td>
+            <td><strong>FFT / NTT</strong></td>
+            <td>O(n log n) via evaluation at roots of unity</td>
+          </tr>
         </tbody>
       </table>
 
@@ -1490,7 +2589,7 @@ Rule of thumb:
     <!-- 13. PRACTICE QUIZ -->
     <!-- ============================================================ -->
     <section id="quiz">
-      <h2>13. Practice Quiz</h2>
+      <h2>30. Practice Quiz</h2>
       <p>Given each problem description, identify which algorithm pattern you would use. Think about the clues before clicking an answer.</p>
 
       <div class="quiz">

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitive Programming Roadmap &mdash; Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .tier-badge {
+      display: inline-block;
+      padding: 0.15em 0.6em;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      vertical-align: middle;
+      margin-left: 0.5em;
+    }
+    .tier-regular { background: #e0e0e0; color: #333; }
+    .tier-magical { background: #b388ff; color: #1a0033; }
+    .tier-rare { background: #4dd0e1; color: #003033; }
+    .tier-epic { background: #69f0ae; color: #003300; }
+    .tier-legendary { background: #ffd740; color: #332b00; }
+    .diff-easy { color: #43a047; font-weight: 600; }
+    .diff-med { color: #f9a825; font-weight: 600; }
+    .diff-hard { color: #e53935; font-weight: 600; }
+    .algo-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      background: #fafafa;
+    }
+    .algo-card h4 { margin-bottom: 0.5rem; }
+    .algo-card p { margin-bottom: 0.75rem; }
+    .algo-card table { font-size: 0.92rem; }
+    .algo-card table td, .algo-card table th { padding: 0.35rem 0.75rem; }
+    .study-link { font-size: 0.85rem; color: #555; }
+    .study-link a { color: #1565c0; }
+    .schedule-table td, .schedule-table th { text-align: center; }
+    .graduation-box {
+      border: 2px solid #43a047;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      background: #f1f8e9;
+    }
+    .graduation-box h4 { color: #2e7d32; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="index.html">Home</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / CP Roadmap</div>
+      <h1>Competitive Programming Roadmap</h1>
+      <p>Master every algorithm pattern from foundation to god tier. Organized by the ecchito tier system with real problems to grind for each pattern.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h4>On This Page</h4>
+      <a href="#how-to-use">1. How to Use This Roadmap</a>
+      <a href="#regular">2. Regular Algorithms (Foundation)</a>
+      <a href="#magical">3. Magical Algorithms (Intermediate)</a>
+      <a href="#rare">4. Rare Algorithms (Advanced)</a>
+      <a href="#epic">5. Epic Algorithms (Expert)</a>
+      <a href="#legendary">6. Legendary Algorithms (God Tier)</a>
+      <a href="#platforms">7. Platforms &amp; Resources</a>
+      <a href="#schedule">8. Weekly Training Schedule</a>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. HOW TO USE THIS ROADMAP -->
+    <!-- ============================================================ -->
+    <section id="how-to-use">
+      <h2>1. How to Use This Roadmap</h2>
+      <p>
+        Competitive programming is different from interview prep. Interviews test if you can apply known patterns under pressure. CP tests if you can combine patterns creatively, optimize to tight constraints, and think under time limits. This roadmap prepares you for both.
+      </p>
+
+      <h3>The Tier System</h3>
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Description</th><th>Target</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tier-badge tier-regular">Regular</span></td><td>Core patterns that appear in 80% of problems</td><td>Master first -- these are your bread and butter</td></tr>
+          <tr><td><span class="tier-badge tier-magical">Magical</span></td><td>Intermediate algorithms for harder contest problems</td><td>Codeforces 1400-1800 rating range</td></tr>
+          <tr><td><span class="tier-badge tier-rare">Rare</span></td><td>Advanced techniques for Div 1 / hard problems</td><td>Codeforces 1800-2100 rating range</td></tr>
+          <tr><td><span class="tier-badge tier-epic">Epic</span></td><td>Expert-level algorithms for top competitive programmers</td><td>Codeforces 2100-2400 rating range</td></tr>
+          <tr><td><span class="tier-badge tier-legendary">Legendary</span></td><td>God-tier algorithms -- rarely needed but devastating when they are</td><td>Codeforces 2400+ / IOI / ICPC</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The Approach</h3>
+      <ul>
+        <li><strong>Master each tier before moving to the next.</strong> Don't skip Regular to learn Segment Trees -- you'll have no foundation.</li>
+        <li><strong>For each algorithm:</strong> Learn the theory, code the template from scratch, then grind 5-10 problems.</li>
+        <li><strong>30-minute rule:</strong> If you can't solve a problem in 30 minutes, read the editorial. Understand it fully, then re-solve it without looking.</li>
+        <li><strong>Track your progress.</strong> Mark each algorithm as: Not Started / Learning / Comfortable / Mastered.</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Pro Tip</div>
+        <p>Speed matters in contests. Once you understand a pattern, practice implementing it fast. Time yourself. A contest-ready programmer can code BFS, DFS, Dijkstra, and basic DP from scratch in under 5 minutes each.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. REGULAR ALGORITHMS -->
+    <!-- ============================================================ -->
+    <section id="regular">
+      <h2>2. Regular Algorithms <span class="tier-badge tier-regular">Foundation</span></h2>
+      <p>These 22 patterns form the core of competitive programming. You will use them in almost every contest. Master all of these before moving to Magical tier.</p>
+
+      <!-- Two Pointer -->
+      <div class="algo-card">
+        <h4>Two Pointer</h4>
+        <p>Scan from both ends or same direction to find pairs, partition arrays, or detect conditions in O(n).</p>
+        <p class="study-link">Study: <a href="patterns.html#two-pointers">Patterns &rarr; Two Pointers</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Two Sum II - Input Array Is Sorted (#167)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>3Sum (#15)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Container With Most Water (#11)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Trapping Rain Water (#42)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Move Zeroes (#283)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- HashMap -->
+      <div class="algo-card">
+        <h4>HashMap</h4>
+        <p>O(1) lookups for frequency counting, grouping, and finding complements.</p>
+        <p class="study-link">Study: <a href="hashmaps.html">Hash Maps &amp; Sets</a> | <a href="patterns.html#hashmap">Patterns &rarr; HashMap</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Two Sum (#1)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Group Anagrams (#49)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Subarray Sum Equals K (#560)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Longest Consecutive Sequence (#128)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Valid Anagram (#242)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Binary Search -->
+      <div class="algo-card">
+        <h4>Binary Search</h4>
+        <p>Halve the search space each step. Works on sorted arrays and monotonic functions (binary search on the answer).</p>
+        <p class="study-link">Study: <a href="patterns.html#binary-search">Patterns &rarr; Binary Search</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Binary Search (#704)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Search in Rotated Sorted Array (#33)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Find Minimum in Rotated Sorted Array (#153)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Koko Eating Bananas (#875)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Median of Two Sorted Arrays (#4)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sliding Window -->
+      <div class="algo-card">
+        <h4>Sliding Window</h4>
+        <p>Maintain a window over contiguous elements. Fixed size or variable size (expand right, shrink left).</p>
+        <p class="study-link">Study: <a href="patterns.html#sliding-window">Patterns &rarr; Sliding Window</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Best Time to Buy and Sell Stock (#121)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Longest Substring Without Repeating Characters (#3)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Minimum Window Substring (#76)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Sliding Window Maximum (#239)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Permutation in String (#567)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Kadane's Algorithm -->
+      <div class="algo-card">
+        <h4>Kadane's Algorithm</h4>
+        <p>Find the maximum sum contiguous subarray in O(n). The foundation of many DP problems.</p>
+        <p class="study-link">Study: <a href="patterns.html#kadanes">Patterns &rarr; Kadane's</a> | <a href="dp.html">Dynamic Programming</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Maximum Subarray (#53)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Maximum Product Subarray (#152)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Maximum Sum Circular Subarray (#918)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Best Time to Buy and Sell Stock (#121)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Merge Intervals -->
+      <div class="algo-card">
+        <h4>Merge Intervals</h4>
+        <p>Sort intervals by start time, then merge overlapping ones. Foundation for all interval problems.</p>
+        <p class="study-link">Study: <a href="patterns.html#intervals">Patterns &rarr; Intervals</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Merge Intervals (#56)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Insert Interval (#57)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Non-overlapping Intervals (#435)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Meeting Rooms II (#253)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Prefix Sums -->
+      <div class="algo-card">
+        <h4>Prefix Sums</h4>
+        <p>Precompute cumulative sums to answer range sum queries in O(1). Combine with hashmap for subarray sum problems.</p>
+        <p class="study-link">Study: <a href="patterns.html#prefix-sum">Patterns &rarr; Prefix Sum</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Range Sum Query - Immutable (#303)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Subarray Sum Equals K (#560)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Product of Array Except Self (#238)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Contiguous Array (#525)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Top K Elements -->
+      <div class="algo-card">
+        <h4>Top K Elements</h4>
+        <p>Use heaps (priority queues) or quickselect to find the K largest/smallest/most frequent elements.</p>
+        <p class="study-link">Study: <a href="advanced.html">Advanced Topics &rarr; Heaps</a> | <a href="patterns.html#top-k">Patterns &rarr; Top K</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Kth Largest Element in an Array (#215)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Top K Frequent Elements (#347)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>K Closest Points to Origin (#973)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Find Median from Data Stream (#295)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Merge K Sorted Lists (#23)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Monotonic Stack/Queue -->
+      <div class="algo-card">
+        <h4>Monotonic Stack / Queue</h4>
+        <p>Maintain a stack/deque in sorted order to find next greater/smaller elements or sliding window extremes in O(n).</p>
+        <p class="study-link">Study: <a href="patterns.html#monotonic-stack">Patterns &rarr; Monotonic Stack</a> | <a href="advanced.html">Advanced &rarr; Monotonic Queue</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Daily Temperatures (#739)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Next Greater Element I (#496)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Largest Rectangle in Histogram (#84)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Sliding Window Maximum (#239)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BFS -->
+      <div class="algo-card">
+        <h4>BFS (Breadth-First Search)</h4>
+        <p>Level-by-level exploration. Guarantees shortest path in unweighted graphs. Use a queue.</p>
+        <p class="study-link">Study: <a href="patterns.html#bfs">Patterns &rarr; BFS</a> | <a href="graphs.html">Graphs</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Number of Islands (#200)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Binary Tree Level Order Traversal (#102)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Rotting Oranges (#994)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Word Ladder (#127)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Open the Lock (#752)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Multi-Source BFS -->
+      <div class="algo-card">
+        <h4>Multi-Source BFS</h4>
+        <p>Start BFS from multiple sources simultaneously. Used for "spread" problems (fire, infection, distance from nearest).</p>
+        <p class="study-link">Study: <a href="patterns.html#bfs">Patterns &rarr; BFS (Multi-Source)</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Rotting Oranges (#994)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>01 Matrix (#542)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Walls and Gates (#286)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Shortest Bridge (#934)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Topological Sort -->
+      <div class="algo-card">
+        <h4>Topological Sort</h4>
+        <p>Order vertices of a DAG so every edge goes from earlier to later. Kahn's (BFS with indegree) or DFS post-order.</p>
+        <p class="study-link">Study: <a href="graphs.html#topological-sort">Graphs &rarr; Topological Sort</a> | <a href="patterns.html#topo-sort">Patterns &rarr; Topo Sort</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Course Schedule (#207)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Course Schedule II (#210)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Alien Dictionary (#269)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Parallel Courses (#1136)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dijkstra -->
+      <div class="algo-card">
+        <h4>Dijkstra's Algorithm</h4>
+        <p>Shortest path in weighted graphs with non-negative edges. Uses a min-heap (priority queue).</p>
+        <p class="study-link">Study: <a href="graphs.html#dijkstra">Graphs &rarr; Dijkstra</a> | <a href="patterns.html#dijkstra">Patterns &rarr; Dijkstra</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Network Delay Time (#743)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Cheapest Flights Within K Stops (#787)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Path with Maximum Probability (#1514)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Swim in Rising Water (#778)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DFS -->
+      <div class="algo-card">
+        <h4>DFS (Depth-First Search)</h4>
+        <p>Go as deep as possible before backtracking. Recursion or explicit stack. Used for trees, graphs, connectivity.</p>
+        <p class="study-link">Study: <a href="patterns.html#dfs">Patterns &rarr; DFS</a> | <a href="graphs.html">Graphs</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Number of Islands (#200)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Max Area of Island (#695)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Clone Graph (#133)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Pacific Atlantic Water Flow (#417)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Number of Connected Components (#323)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bipartite Graph -->
+      <div class="algo-card">
+        <h4>Bipartite Graph</h4>
+        <p>2-color the graph using BFS/DFS. If any edge connects same-color nodes, it's not bipartite.</p>
+        <p class="study-link">Study: <a href="patterns.html#bipartite">Patterns &rarr; Bipartite</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Is Graph Bipartite? (#785)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Possible Bipartition (#886)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Codeforces: Bipartiteness (862B)</td><td>Codeforces</td><td class="diff-med">1400</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Backtracking -->
+      <div class="algo-card">
+        <h4>Backtracking</h4>
+        <p>Choose-explore-unchoose. Generate all permutations, combinations, subsets, or valid configurations.</p>
+        <p class="study-link">Study: <a href="patterns.html#dfs">Patterns &rarr; DFS &amp; Backtracking</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Subsets (#78)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Permutations (#46)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Combination Sum (#39)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Word Search (#79)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>N-Queens (#51)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sieve of Eratosthenes -->
+      <div class="algo-card">
+        <h4>Sieve of Eratosthenes</h4>
+        <p>Find all primes up to N in O(N log log N). Essential for number theory problems in CP.</p>
+        <p class="study-link">Study: <a href="advanced.html">Advanced &rarr; Sieve</a> | <a href="patterns.html#sieve">Patterns &rarr; Sieve</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Count Primes (#204)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Four Divisors (#1390)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Closest Prime Numbers in Range (#2523)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Counting Divisors</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Line Sweep -->
+      <div class="algo-card">
+        <h4>Line Sweep</h4>
+        <p>Convert intervals to +1/-1 events, sort, and sweep to find peak overlaps, skylines, or coverage.</p>
+        <p class="study-link">Study: <a href="patterns.html#sweep-line">Patterns &rarr; Sweep Line</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Meeting Rooms II (#253)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>The Skyline Problem (#218)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>My Calendar I (#729)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>My Calendar III (#732)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dynamic Programming -->
+      <div class="algo-card">
+        <h4>Dynamic Programming (General)</h4>
+        <p>Break problems into overlapping subproblems. Memoize (top-down) or tabulate (bottom-up). The most important pattern in CP.</p>
+        <p class="study-link">Study: <a href="dp.html">Dynamic Programming</a> | <a href="patterns.html#dp-patterns">Patterns &rarr; DP</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Climbing Stairs (#70)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>House Robber (#198)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Coin Change (#322)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Unique Paths (#62)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Dice Combinations</td><td>CSES</td><td class="diff-easy">Easy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fibonacci DP -->
+      <div class="algo-card">
+        <h4>Fibonacci DP</h4>
+        <p>Problems where dp[i] depends on dp[i-1] and dp[i-2] (or similar small lookback). Often optimizable to O(1) space.</p>
+        <p class="study-link">Study: <a href="dp.html">DP &rarr; Fibonacci</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Fibonacci Number (#509)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Climbing Stairs (#70)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>House Robber (#198)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Decode Ways (#91)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Knapsack DP -->
+      <div class="algo-card">
+        <h4>Take It or Leave It (Knapsack DP)</h4>
+        <p>For each item: include it or skip it. Classic 0/1 decision framework. dp[i][w] = best value using items 0..i with capacity w.</p>
+        <p class="study-link">Study: <a href="dp.html">DP &rarr; 0/1 Knapsack</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Partition Equal Subset Sum (#416)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Target Sum (#494)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Last Stone Weight II (#1049)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Ones and Zeroes (#474)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Book Shop</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LIS DP -->
+      <div class="algo-card">
+        <h4>Longest Increasing Subsequence DP</h4>
+        <p>Classic O(n^2) DP: dp[i] = length of LIS ending at index i. For each i, check all j &lt; i where arr[j] &lt; arr[i].</p>
+        <p class="study-link">Study: <a href="dp.html">DP &rarr; LIS</a> | <a href="patterns.html#nlogn-lis">Patterns &rarr; NlogN LIS</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Longest Increasing Subsequence (#300)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Number of Longest Increasing Subsequence (#673)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Russian Doll Envelopes (#354)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Longest String Chain (#1048)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="graduation-box">
+        <h4>Regular Tier Graduation Checklist</h4>
+        <p>Before moving to Magical, you should be able to:</p>
+        <ul>
+          <li>Identify which of these 22 patterns applies to a new problem within 2-3 minutes</li>
+          <li>Code any of these patterns from scratch in under 10 minutes</li>
+          <li>Solve LeetCode Mediums using these patterns in under 25 minutes</li>
+          <li>Consistently solve 2-3 problems in LeetCode Weekly Contests</li>
+          <li>Have solved at least 150-200 problems total</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. MAGICAL ALGORITHMS -->
+    <!-- ============================================================ -->
+    <section id="magical">
+      <h2>3. Magical Algorithms <span class="tier-badge tier-magical">Intermediate</span></h2>
+      <p>These algorithms appear in harder contest problems and are the bridge between "solid" and "strong" competitive programmers.</p>
+
+      <!-- Floyd Warshall -->
+      <div class="algo-card">
+        <h4>Floyd Warshall</h4>
+        <p>All-pairs shortest path in O(V^3). Simple triple nested loop. Works with negative edges (no negative cycles).</p>
+        <p class="study-link">Study: <a href="patterns.html#floyd-bellman">Patterns &rarr; Floyd Warshall &amp; Bellman Ford</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Find the City With the Smallest Number of Neighbors (#1334)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Shortest Path Visiting All Nodes (#847)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Shortest Routes II</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Codeforces: Greg and Graph (295B)</td><td>Codeforces</td><td class="diff-hard">1700</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bitmask DP -->
+      <div class="algo-card">
+        <h4>Bitmask DP</h4>
+        <p>Use a bitmask to represent subsets. dp[mask] = answer for the subset represented by mask. O(2^n * n).</p>
+        <p class="study-link">Study: <a href="patterns.html#bitmask-dp">Patterns &rarr; Bitmask DP</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Partition to K Equal Sum Subsets (#698)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Shortest Path Visiting All Nodes (#847)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Maximum Students Taking Exam (#1349)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Hamiltonian Flights</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Codeforces: Matching Burnside (to practice bitmask enumeration)</td><td>Codeforces</td><td class="diff-hard">1800</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bellman Ford -->
+      <div class="algo-card">
+        <h4>Bellman Ford</h4>
+        <p>Single-source shortest path that handles negative weights. Relax all edges V-1 times. Detects negative cycles.</p>
+        <p class="study-link">Study: <a href="patterns.html#floyd-bellman">Patterns &rarr; Floyd Warshall &amp; Bellman Ford</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Cheapest Flights Within K Stops (#787)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Network Delay Time (#743)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Cycle Finding</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: High Score (negative cycle detection)</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- NlogN LIS -->
+      <div class="algo-card">
+        <h4>NlogN LIS (Patience Sorting)</h4>
+        <p>Optimize LIS from O(n^2) to O(n log n) using binary search on a "tails" array. Essential for large inputs in CP.</p>
+        <p class="study-link">Study: <a href="patterns.html#nlogn-lis">Patterns &rarr; NlogN LIS</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Longest Increasing Subsequence (#300)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Russian Doll Envelopes (#354)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Maximum Length of Pair Chain (#646)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Towers</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="graduation-box">
+        <h4>Magical Tier Graduation Checklist</h4>
+        <ul>
+          <li>Comfortable implementing Floyd Warshall, Bellman Ford, and Bitmask DP from scratch</li>
+          <li>Can solve LeetCode Hards using these patterns</li>
+          <li>Codeforces rating around 1400-1800</li>
+          <li>Consistently solve 3-4 problems in LeetCode Weekly Contests</li>
+          <li>Have solved at least 300-400 problems total</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. RARE ALGORITHMS -->
+    <!-- ============================================================ -->
+    <section id="rare">
+      <h2>4. Rare Algorithms <span class="tier-badge tier-rare">Advanced</span></h2>
+      <p>These show up in Div 1 problems and harder LeetCode Hards. Learning these separates you from most competitive programmers.</p>
+
+      <!-- Digit DP -->
+      <div class="algo-card">
+        <h4>Digit DP</h4>
+        <p>Count numbers in a range [L, R] satisfying digit constraints. Build the number digit by digit, tracking whether you're still "tight" to the upper bound.</p>
+        <p class="study-link">Study: <a href="patterns.html#digit-dp">Patterns &rarr; Digit DP</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Numbers At Most N Given Digit Set (#902)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Count of Integers (#2719)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Non-negative Integers without Consecutive Ones (#600)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Counting Numbers</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Codeforces: Magic Numbers (628D)</td><td>Codeforces</td><td class="diff-hard">2200</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fenwick Tree -->
+      <div class="algo-card">
+        <h4>Fenwick Tree (Binary Indexed Tree)</h4>
+        <p>Supports point updates and prefix sum queries in O(log n). Simpler to implement than segment tree. Uses bit manipulation to navigate the tree.</p>
+        <p class="study-link">Study: <a href="patterns.html#fenwick">Patterns &rarr; Fenwick Tree</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Range Sum Query - Mutable (#307)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Count of Smaller Numbers After Self (#315)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Reverse Pairs (#493)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Dynamic Range Sum Queries</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Nested Ranges Count</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Eulerian Paths -->
+      <div class="algo-card">
+        <h4>Eulerian Paths</h4>
+        <p>Visit every EDGE exactly once. Hierholzer's algorithm. Exists iff 0 or 2 vertices have odd degree (undirected) or in-degree matches out-degree (directed).</p>
+        <p class="study-link">Study: <a href="patterns.html#eulerian">Patterns &rarr; Eulerian Paths</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Reconstruct Itinerary (#332)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Valid Arrangement of Pairs (#2097)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Cracking the Safe (#753)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Mail Delivery</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="graduation-box">
+        <h4>Rare Tier Graduation Checklist</h4>
+        <ul>
+          <li>Can implement Fenwick Tree and Digit DP from memory</li>
+          <li>Know when to use Fenwick vs Segment Tree</li>
+          <li>Codeforces rating around 1800-2100</li>
+          <li>Can solve most LeetCode Hards within 45 minutes</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. EPIC ALGORITHMS -->
+    <!-- ============================================================ -->
+    <section id="epic">
+      <h2>5. Epic Algorithms <span class="tier-badge tier-epic">Expert</span></h2>
+      <p>Expert-level data structures and string algorithms. These unlock the hardest contest problems.</p>
+
+      <!-- KMP -->
+      <div class="algo-card">
+        <h4>Knuth-Morris-Pratt (KMP)</h4>
+        <p>Find pattern in text in O(n + m) using a failure/prefix function. No backtracking in the text. Essential for string matching in CP.</p>
+        <p class="study-link">Study: <a href="patterns.html#kmp-rolling-hash">Patterns &rarr; KMP &amp; Rolling Hash</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Find the Index of the First Occurrence (#28)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Repeated Substring Pattern (#459)</td><td>LeetCode</td><td class="diff-easy">Easy</td></tr>
+            <tr><td>Shortest Palindrome (#214)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: String Matching</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Codeforces: Password (126B)</td><td>Codeforces</td><td class="diff-hard">1700</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Segment Tree -->
+      <div class="algo-card">
+        <h4>Segment Tree</h4>
+        <p>Range queries and range/point updates in O(log n). Supports sum, min, max, GCD, and more. Lazy propagation for range updates.</p>
+        <p class="study-link">Study: <a href="patterns.html#segment-tree">Patterns &rarr; Segment Tree</a> | <a href="advanced.html">Advanced &rarr; Segment Tree</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Range Sum Query - Mutable (#307)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Count of Range Sum (#327)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Falling Squares (#699)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: Dynamic Range Minimum Queries</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Range Update Queries</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+            <tr><td>Codeforces: Sereja and Brackets (380C)</td><td>Codeforces</td><td class="diff-hard">2000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Rolling Hash -->
+      <div class="algo-card">
+        <h4>Rolling Hash (Rabin-Karp)</h4>
+        <p>Hash substrings in O(1) after O(n) preprocessing. Compare substrings without character-by-character comparison. Great for pattern matching and palindrome detection.</p>
+        <p class="study-link">Study: <a href="patterns.html#kmp-rolling-hash">Patterns &rarr; KMP &amp; Rolling Hash</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Longest Duplicate Substring (#1044)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Distinct Echo Substrings (#1316)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Longest Happy Prefix (#1392)</td><td>LeetCode</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>CSES: String Hashing</td><td>CSES</td><td class="diff-med">Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="graduation-box">
+        <h4>Epic Tier Graduation Checklist</h4>
+        <ul>
+          <li>Can implement Segment Tree with lazy propagation from scratch</li>
+          <li>Comfortable with KMP prefix function and its applications</li>
+          <li>Can use rolling hash to solve substring problems efficiently</li>
+          <li>Codeforces rating around 2100-2400</li>
+          <li>Regularly solve 4+ problems in Codeforces Div 2 contests</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. LEGENDARY ALGORITHMS -->
+    <!-- ============================================================ -->
+    <section id="legendary">
+      <h2>6. Legendary Algorithms <span class="tier-badge tier-legendary">God Tier</span></h2>
+      <p>The final boss. FFT is rarely needed but when it is, nothing else will work. This is what separates the top 1%.</p>
+
+      <!-- FFT -->
+      <div class="algo-card">
+        <h4>Fast Fourier Transform (FFT)</h4>
+        <p>Multiply two polynomials in O(n log n) instead of O(n^2). Also used for large number multiplication and convolution problems. NTT (Number Theoretic Transform) is the modular arithmetic variant.</p>
+        <p class="study-link">Study: <a href="patterns.html#fft">Patterns &rarr; FFT</a></p>
+        <table>
+          <thead><tr><th>Problem</th><th>Platform</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr><td>Multiply Strings (#43) (motivational -- FFT overkill here)</td><td>LeetCode</td><td class="diff-med">Medium</td></tr>
+            <tr><td>CSES: Polynomial Multiplication</td><td>CSES</td><td class="diff-hard">Hard</td></tr>
+            <tr><td>Codeforces: Yet Another Counting Problem (practice convolution)</td><td>Codeforces</td><td class="diff-hard">2300+</td></tr>
+            <tr><td>AtCoder: Convolution (practice problem from AtCoder Library)</td><td>AtCoder</td><td class="diff-hard">Hard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warning-box">
+        <div class="label">Reality Check</div>
+        <p>FFT appears in maybe 1-2% of contest problems. Don't grind this until you're comfortable with everything above. When you get here, you're already in the top tier of competitive programmers.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. PLATFORMS & RESOURCES -->
+    <!-- ============================================================ -->
+    <section id="platforms">
+      <h2>7. Platforms &amp; Resources</h2>
+
+      <h3>Where to Practice</h3>
+      <table>
+        <thead>
+          <tr><th>Platform</th><th>Best For</th><th>How to Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LeetCode</strong></td>
+            <td>Pattern practice, interviews, weekly contests</td>
+            <td>Filter by topic/difficulty. Do Weekly and Biweekly contests every week. Track your contest rating.</td>
+          </tr>
+          <tr>
+            <td><strong>Codeforces</strong></td>
+            <td>True competitive programming, rating system, editorials</td>
+            <td>Start with Div 3/4 contests. Work up to Div 2. Upsolve every problem you couldn't solve during contest. Virtual contests to practice under time pressure.</td>
+          </tr>
+          <tr>
+            <td><strong>AtCoder</strong></td>
+            <td>Clean problems, great for beginners, educational contests</td>
+            <td>ABC (AtCoder Beginner Contest) for practice. Problems A-D are Regular tier, E-F are Magical/Rare. Very well-structured difficulty curve.</td>
+          </tr>
+          <tr>
+            <td><strong>CSES Problem Set</strong></td>
+            <td>Structured topic-by-topic practice (300 problems)</td>
+            <td>Go section by section. Every problem teaches a specific technique. The best structured problem set available. Covers Regular through Rare tiers.</td>
+          </tr>
+          <tr>
+            <td><strong>USACO</strong></td>
+            <td>Algorithm olympiad problems, longer thinking problems</td>
+            <td>Past contest problems sorted by difficulty (Bronze/Silver/Gold/Platinum). Great for deeper algorithmic thinking.</td>
+          </tr>
+          <tr>
+            <td><strong>Kattis</strong></td>
+            <td>University-level CP problems, ICPC practice</td>
+            <td>Problems from real ICPC regionals and other contests. Difficulty ratings from 1-10. Great for C++ practice.</td>
+          </tr>
+          <tr>
+            <td><strong>HackerRank</strong></td>
+            <td>Beginner-friendly, language-specific tracks</td>
+            <td>Good for warming up in a new language (C++, Python). Problem Solving track covers basics well.</td>
+          </tr>
+          <tr>
+            <td><strong>Project Euler</strong></td>
+            <td>Math + programming problems</td>
+            <td>Pure math-heavy problems. Great for building the math intuition that CP requires. Start from problem 1.</td>
+          </tr>
+          <tr>
+            <td><strong>DMOJ</strong></td>
+            <td>Canadian computing olympiad problems, great judges</td>
+            <td>Clean problem archive. Good for practicing with strict time limits. Supports C++, Python, Java, Go.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Books &amp; References</h3>
+      <ul>
+        <li><strong>Competitive Programmer's Handbook</strong> (Antti Laaksonen) -- Free PDF. Covers everything from basics to advanced. The CP bible.</li>
+        <li><strong>CP-Algorithms (cp-algorithms.com)</strong> -- Comprehensive reference for every algorithm with implementations.</li>
+        <li><strong>CSES Book</strong> -- Companion to the CSES problem set.</li>
+        <li><strong>Introduction to Algorithms (CLRS)</strong> -- The heavy reference. Use for deep understanding of specific algorithms, not as a study guide.</li>
+        <li><strong>Guide to Competitive Programming</strong> (Antti Laaksonen) -- Updated version of the handbook with more examples.</li>
+        <li><strong>USACO Guide (usaco.guide)</strong> -- Free, structured curriculum from Bronze to Platinum with explanations and practice problems for every topic.</li>
+        <li><strong>Errichto's CP YouTube</strong> -- Screencasts of contest solving, tutorials on advanced topics, and live contest walkthroughs.</li>
+        <li><strong>Colin Galen's YouTube</strong> -- Deep dives into CP topics, mindset, and how to improve your rating.</li>
+        <li><strong>William Lin's YouTube</strong> -- Speed-solving contests, great for seeing how top competitors think.</li>
+      </ul>
+
+      <h3>Learning C++ for Competitive Programming</h3>
+      <p>C++ is the king of CP. It's the fastest, has the best STL (Standard Template Library), and 95% of top competitive programmers use it. Here's your path:</p>
+      <ul>
+        <li><strong>Learn the basics:</strong> Use the <a href="cpp.html">C++ page on this site</a> for fundamentals -- types, pointers, STL containers, strings.</li>
+        <li><strong>CP-specific C++ features to master:</strong> <code>bits/stdc++.h</code>, <code>ios_base::sync_with_stdio(false)</code>, <code>cin.tie(NULL)</code>, <code>sort()</code>, <code>lower_bound()</code>, <code>upper_bound()</code>, <code>set</code>, <code>map</code>, <code>priority_queue</code>, <code>pair</code>, <code>vector</code>, <code>bitset</code>.</li>
+        <li><strong>Build a template:</strong> Create a <code>template.cpp</code> file with your standard includes, fast I/O, and common macros. Use it for every contest.</li>
+        <li><strong>Practice in C++ on CSES:</strong> Redo problems you solved in Python/JS in C++ to build muscle memory.</li>
+      </ul>
+
+      <h3>Recommended Progression by Platform</h3>
+      <div class="tip-box">
+        <div class="label">Path</div>
+        <p>
+          <strong>Month 1-2:</strong> LeetCode Easy/Medium by pattern (Regular tier) + CSES Introductory/Sorting sections<br>
+          <strong>Month 3-4:</strong> LeetCode Medium/Hard + Codeforces Div 3/4 contests + CSES Graph/DP sections<br>
+          <strong>Month 5-6:</strong> Codeforces Div 2 contests + AtCoder ABC + Magical tier algorithms<br>
+          <strong>Month 7+:</strong> Codeforces Div 2/1 + Rare/Epic algorithms + USACO Gold/Platinum
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8.5 COMPETITIONS & TOURNAMENTS -->
+    <!-- ============================================================ -->
+    <section id="competitions">
+      <h2>Competitions &amp; Tournaments (Win Prizes)</h2>
+      <p>Competitive programming isn't just for practice -- there are real competitions with real prizes. Here's where you can compete and potentially earn money.</p>
+
+      <h3>Regular Contests (Weekly/Biweekly)</h3>
+      <table>
+        <thead>
+          <tr><th>Contest</th><th>Frequency</th><th>Prizes</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LeetCode Weekly Contest</strong></td>
+            <td>Every Sunday</td>
+            <td>LeetCoins (redeemable for swag/premium)</td>
+            <td>Best place to start. 4 problems, 90 minutes. Track your rating growth.</td>
+          </tr>
+          <tr>
+            <td><strong>LeetCode Biweekly Contest</strong></td>
+            <td>Every other Saturday</td>
+            <td>LeetCoins</td>
+            <td>Same format as Weekly. Double your contest practice.</td>
+          </tr>
+          <tr>
+            <td><strong>Codeforces Rounds</strong></td>
+            <td>2-3 times/week</td>
+            <td>Rating (your rank in the global CP community)</td>
+            <td>The heartbeat of competitive programming. Div 3/4 for beginners, Div 2 for intermediate, Div 1 for advanced.</td>
+          </tr>
+          <tr>
+            <td><strong>AtCoder Beginner Contest (ABC)</strong></td>
+            <td>Weekly (Saturdays)</td>
+            <td>Rating</td>
+            <td>Cleanest problems in CP. Great for building fundamentals.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Major Competitions with Cash Prizes</h3>
+      <table>
+        <thead>
+          <tr><th>Competition</th><th>When</th><th>Prize Pool</th><th>Requirements</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google Code Jam</strong> (now Coding Competitions)</td>
+            <td>Annual (check Google's site for current format)</td>
+            <td>$15,000+ for top finishers</td>
+            <td>Open to all. Online rounds qualify you for later stages. Great resume item.</td>
+          </tr>
+          <tr>
+            <td><strong>Meta Hacker Cup</strong></td>
+            <td>Annual (usually Oct-Nov)</td>
+            <td>$20,000+ total prizes</td>
+            <td>Open to all. Online qualification rounds. Problems range from easy to insane.</td>
+          </tr>
+          <tr>
+            <td><strong>ICPC (International Collegiate Programming Contest)</strong></td>
+            <td>Annual</td>
+            <td>Scholarships, trophies, job offers</td>
+            <td>Must be enrolled in university. Teams of 3. The most prestigious CP competition. Regional qualifiers lead to World Finals.</td>
+          </tr>
+          <tr>
+            <td><strong>Topcoder Open (TCO)</strong></td>
+            <td>Annual</td>
+            <td>$25,000+ in prizes</td>
+            <td>Open to all Topcoder members. Algorithm track has online rounds leading to onsite finals.</td>
+          </tr>
+          <tr>
+            <td><strong>Codeforces Global Rounds</strong></td>
+            <td>Several per year</td>
+            <td>Prizes for top-rated participants</td>
+            <td>Open to all. Higher prize pools than regular rounds.</td>
+          </tr>
+          <tr>
+            <td><strong>AtCoder Grand Contest (AGC)</strong></td>
+            <td>Periodic</td>
+            <td>Cash prizes for top finishers</td>
+            <td>Harder problems. Need a solid rating to compete effectively.</td>
+          </tr>
+          <tr>
+            <td><strong>Reply Code Challenge</strong></td>
+            <td>Annual (March)</td>
+            <td>Cash prizes + tech gadgets</td>
+            <td>Team contest (2-4 people). Fun optimization problems. Good entry-level competition.</td>
+          </tr>
+          <tr>
+            <td><strong>Advent of Code</strong></td>
+            <td>December (25 days)</td>
+            <td>No cash, but leaderboard bragging rights + community</td>
+            <td>Daily puzzles in December. Great for building consistency and having fun. Solve in any language.</td>
+          </tr>
+          <tr>
+            <td><strong>CodeChef Long/Short Contests</strong></td>
+            <td>Monthly</td>
+            <td>Laddus (redeemable for cash/prizes)</td>
+            <td>Long contests (10 days) are great for learning. Short contests test speed.</td>
+          </tr>
+          <tr>
+            <td><strong>HackerRank Contests</strong></td>
+            <td>Various</td>
+            <td>Cash prizes, job opportunities</td>
+            <td>Company-sponsored contests often have significant prizes. Check their contest page regularly.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="label">Strategy for Winning</div>
+        <p>
+          <strong>Short term:</strong> Focus on LeetCode Weekly + Codeforces Div 3/4 to build rating and speed.<br>
+          <strong>Medium term:</strong> Enter Meta Hacker Cup, Google competitions, and Codeforces Global Rounds.<br>
+          <strong>Long term:</strong> If you're in university, ICPC is the ultimate goal. If not, Topcoder Open and major platform finals.<br><br>
+          The money comes when you're consistently solving 4+ problems in contests. Get your Codeforces rating to 1600+ and you'll start placing in prize ranges.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. WEEKLY TRAINING SCHEDULE -->
+    <!-- ============================================================ -->
+    <section id="schedule">
+      <h2>8. Weekly Training Schedule</h2>
+      <p>Consistency beats intensity. Here's a sustainable schedule for getting cracked at CP.</p>
+
+      <table class="schedule-table">
+        <thead>
+          <tr><th>Day</th><th>Focus</th><th>Time</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Monday</strong></td><td>New Pattern</td><td>1.5-2 hrs</td><td>Learn one new algorithm/pattern. Read theory, understand the template, code it from scratch.</td></tr>
+          <tr><td><strong>Tuesday</strong></td><td>Practice</td><td>1.5-2 hrs</td><td>Solve 3-4 problems using Monday's pattern. Start easy, increase difficulty.</td></tr>
+          <tr><td><strong>Wednesday</strong></td><td>Mixed Practice</td><td>1.5-2 hrs</td><td>Solve 3-4 random problems (no topic filter). Practice pattern recognition.</td></tr>
+          <tr><td><strong>Thursday</strong></td><td>Hard Problems</td><td>1.5-2 hrs</td><td>Attempt 1-2 hard problems. Spend 30 min each, then read editorials if stuck.</td></tr>
+          <tr><td><strong>Friday</strong></td><td>Review</td><td>1 hr</td><td>Re-solve problems you got wrong this week without looking at solutions.</td></tr>
+          <tr><td><strong>Saturday</strong></td><td>Contest</td><td>2-2.5 hrs</td><td>LeetCode Weekly Contest OR Codeforces Round (virtual or live).</td></tr>
+          <tr><td><strong>Sunday</strong></td><td>Upsolve</td><td>1.5 hrs</td><td>Solve the contest problems you couldn't solve. Read editorials for every unsolved problem.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="formula-box">
+        Total: ~11-13 hours/week. Adjust based on your schedule. The minimum effective dose is 1 hour/day, 5 days/week. Less than that and progress stalls.
+      </div>
+
+      <h3>The 30-Minute Rule</h3>
+      <p>For every problem:</p>
+      <ul>
+        <li><strong>First 5 minutes:</strong> Read and understand the problem. Identify the pattern.</li>
+        <li><strong>Next 25 minutes:</strong> Try to solve it. Code your approach.</li>
+        <li><strong>If stuck after 30 minutes:</strong> Read the editorial. Understand every line. Then close it and re-implement from memory.</li>
+        <li><strong>After solving:</strong> Ask yourself -- what was the key insight? Could I solve a variation of this?</li>
+      </ul>
+
+      <div class="warning-box">
+        <div class="label">Common Mistake</div>
+        <p>Don't spend 3 hours on one problem hoping for a breakthrough. That's not practice, that's stubbornness. Read the editorial after 30 minutes, learn the technique, and move on. You'll get faster with practice, not with suffering.</p>
+      </div>
+
+      <h3>When to Move to the Next Tier</h3>
+      <ul>
+        <li>You can solve 80%+ of problems in the current tier without hints</li>
+        <li>You can implement the algorithms from scratch without referencing templates</li>
+        <li>You've completed the graduation checklist for your current tier</li>
+        <li>Your contest rating reflects the tier (see the tier table above)</li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="label">Final Advice</div>
+        <p>Competitive programming is a marathon, not a sprint. The people who get cracked are the ones who show up every day, not the ones who grind 12 hours once a week. Be consistent. Trust the process. You will get there.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built for developers who want to master competitive programming.</p>
+    <p>No ads, no tracking, no paywalls -- just algorithms.</p>
+    <p style="margin-top: 1rem; font-size: 0.85rem;"><a href="https://github.com/pythonwithsean/BetterDev/blob/main/competitive-programming.html" target="_blank" rel="noopener noreferrer" class="edit-link">Edit this page on GitHub <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 2px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a></p>
+  </footer>
+
+  <script>
+  (function(){
+    var sidebar=document.querySelector('.sidebar');
+    var backdrop=document.querySelector('.sidebar-backdrop');
+    var toggleBtn=document.querySelector('.sidebar-toggle');
+    var closeBtn=document.querySelector('.sidebar-close');
+
+    function openSidebar(){
+      sidebar.classList.add('open');
+      backdrop.classList.add('visible');
+      document.body.classList.add('sidebar-open');
+      toggleBtn.setAttribute('aria-expanded','true');
+      var si=sidebar.querySelector('.sidebar-search-input');
+      if(si)si.focus();
+    }
+    function closeSidebar(){
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('visible');
+      document.body.classList.remove('sidebar-open');
+      toggleBtn.setAttribute('aria-expanded','false');
+    }
+    if(toggleBtn)toggleBtn.addEventListener('click',function(){
+      sidebar.classList.contains('open')?closeSidebar():openSidebar();
+    });
+    if(closeBtn)closeBtn.addEventListener('click',closeSidebar);
+    if(backdrop)backdrop.addEventListener('click',closeSidebar);
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'&&sidebar.classList.contains('open'))closeSidebar();
+    });
+
+    var currentPage=window.location.pathname.split('/').pop()||'index.html';
+    var navLinks=document.querySelectorAll('.sidebar-nav a');
+    for(var i=0;i<navLinks.length;i++){
+      if(navLinks[i].getAttribute('href')===currentPage)navLinks[i].classList.add('active');
+    }
+
+    var input=document.querySelector('.sidebar-search-input');
+    var box=document.querySelector('.sidebar-search-results');
+    if(!input||!box)return;
+    var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+    var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+    var idx=-1;
+    function render(q){
+      if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+      var lc=q.toLowerCase();
+      var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+      if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+      box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+      box.classList.add('visible');
+      idx=-1;
+    }
+    function highlight(items){
+      for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}
+    }
+    input.addEventListener('input',function(){render(this.value);});
+    input.addEventListener('keydown',function(e){
+      var items=box.querySelectorAll('a');
+      if(!items.length)return;
+      if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+      else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+      else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+    });
+    input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+    input.addEventListener('focus',function(){if(this.value)render(this.value);});
+  })();
+  </script>
+</body>
+</html>
