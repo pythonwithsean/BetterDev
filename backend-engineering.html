@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Engineering - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Backend Engineering</div>
+      <h1>Backend Engineering</h1>
+      <p>Everything you need to build production backend systems. REST APIs, authentication, rate limiting, caching, WebSockets, message queues, event-driven architecture, database patterns, and deployment strategies -- all with Node.js/Express examples.</p>
+    </div>
+
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#rest-apis">REST API Design</a></li>
+        <li><a href="#middleware">Middleware Pattern</a></li>
+        <li><a href="#authentication">Authentication &amp; Authorization</a></li>
+        <li><a href="#rate-limiting">Rate Limiting</a></li>
+        <li><a href="#pagination">Pagination</a></li>
+        <li><a href="#caching">Caching Strategies</a></li>
+        <li><a href="#websockets">WebSockets</a></li>
+        <li><a href="#event-driven">Event-Driven Architecture</a></li>
+        <li><a href="#message-queues">Message Queues</a></li>
+        <li><a href="#background-jobs">Background Jobs</a></li>
+        <li><a href="#validation">Input Validation &amp; Security</a></li>
+        <li><a href="#error-handling">Error Handling Patterns</a></li>
+        <li><a href="#database-patterns">Database Patterns</a></li>
+        <li><a href="#monitoring">Monitoring &amp; Observability</a></li>
+        <li><a href="#deployment">Deployment Patterns</a></li>
+      </ol>
+    </div>
+
+    <!-- Section 1: REST API Design -->
+    <section id="rest-apis" class="section">
+      <h2>1. REST API Design</h2>
+
+      <h3>HTTP Methods</h3>
+      <div class="example-box">
+        <div class="label">CRUD Mapping</div>
+        <p><strong>GET</strong> -- Read resources. Idempotent, cacheable. <code>GET /api/users/123</code></p>
+        <p><strong>POST</strong> -- Create resources. Not idempotent. <code>POST /api/users</code></p>
+        <p><strong>PUT</strong> -- Replace entire resource. Idempotent. <code>PUT /api/users/123</code></p>
+        <p><strong>PATCH</strong> -- Partial update. <code>PATCH /api/users/123</code></p>
+        <p><strong>DELETE</strong> -- Remove resource. Idempotent. <code>DELETE /api/users/123</code></p>
+      </div>
+
+      <h3>Status Codes You Must Know</h3>
+      <div class="example-box">
+        <div class="label">HTTP Status Codes</div>
+        <p><strong>200</strong> OK -- success<br>
+        <strong>201</strong> Created -- resource created (POST)<br>
+        <strong>204</strong> No Content -- success, no body (DELETE)<br>
+        <strong>400</strong> Bad Request -- client sent invalid data<br>
+        <strong>401</strong> Unauthorized -- not authenticated (no/bad token)<br>
+        <strong>403</strong> Forbidden -- authenticated but not authorized<br>
+        <strong>404</strong> Not Found -- resource doesn't exist<br>
+        <strong>409</strong> Conflict -- duplicate resource (email already exists)<br>
+        <strong>422</strong> Unprocessable Entity -- validation failed<br>
+        <strong>429</strong> Too Many Requests -- rate limited<br>
+        <strong>500</strong> Internal Server Error -- your bug<br>
+        <strong>502</strong> Bad Gateway -- upstream service down<br>
+        <strong>503</strong> Service Unavailable -- overloaded/maintenance</p>
+      </div>
+
+      <h3>Resource Naming</h3>
+      <pre><code><span class="lang-label">REST</span>
+<span class="comment">// Good: nouns, plural, hierarchical</span>
+GET    /api/users
+GET    /api/users/123
+GET    /api/users/123/posts
+POST   /api/users/123/posts
+GET    /api/users/123/posts/456/comments
+
+<span class="comment">// Bad: verbs, actions in URL</span>
+GET    /api/getUser/123          <span class="comment">// verb in URL</span>
+POST   /api/createPost           <span class="comment">// action in URL</span>
+GET    /api/user/123             <span class="comment">// singular (use plural)</span></code></pre>
+
+      <h3>Express API Example</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">const</span> app = <span class="function">express</span>();
+app.<span class="function">use</span>(express.<span class="function">json</span>());
+
+<span class="comment">// GET all users</span>
+app.<span class="function">get</span>(<span class="string">'/api/users'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> users = <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT id, username, email FROM users'</span>);
+  res.<span class="function">json</span>(users.rows);
+});
+
+<span class="comment">// GET single user</span>
+app.<span class="function">get</span>(<span class="string">'/api/users/:id'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT * FROM users WHERE id = $1'</span>, [req.params.id]);
+  <span class="keyword">if</span> (!rows[<span class="number">0</span>]) <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">404</span>).<span class="function">json</span>({ error: <span class="string">'User not found'</span> });
+  res.<span class="function">json</span>(rows[<span class="number">0</span>]);
+});
+
+<span class="comment">// POST create user</span>
+app.<span class="function">post</span>(<span class="string">'/api/users'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { email, username, password } = req.body;
+  <span class="keyword">const</span> hash = <span class="keyword">await</span> bcrypt.<span class="function">hash</span>(password, <span class="number">10</span>);
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(
+    <span class="string">'INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3) RETURNING id, email, username'</span>,
+    [email, username, hash]
+  );
+  res.<span class="function">status</span>(<span class="number">201</span>).<span class="function">json</span>(rows[<span class="number">0</span>]);
+});
+
+<span class="comment">// DELETE user</span>
+app.<span class="function">delete</span>(<span class="string">'/api/users/:id'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'DELETE FROM users WHERE id = $1'</span>, [req.params.id]);
+  res.<span class="function">status</span>(<span class="number">204</span>).<span class="function">send</span>();
+});</code></pre>
+    </section>
+
+    <!-- Section 2: Middleware -->
+    <section id="middleware" class="section">
+      <h2>2. Middleware Pattern</h2>
+      <p>Middleware functions run between receiving a request and sending a response. They form a chain -- each one can modify the request/response or stop the chain.</p>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Request flow: Client -> Middleware 1 -> Middleware 2 -> Route Handler -> Response</span>
+
+<span class="comment">// Logging middleware</span>
+<span class="keyword">const</span> <span class="function">logger</span> = (req, res, next) => {
+  console.<span class="function">log</span>(<span class="string">`${req.method} ${req.url} - ${new Date().toISOString()}`</span>);
+  <span class="keyword">const</span> start = Date.<span class="function">now</span>();
+  res.<span class="function">on</span>(<span class="string">'finish'</span>, () => {
+    console.<span class="function">log</span>(<span class="string">`${req.method} ${req.url} ${res.statusCode} - ${Date.now() - start}ms`</span>);
+  });
+  <span class="function">next</span>();  <span class="comment">// pass to next middleware</span>
+};
+
+<span class="comment">// Auth middleware</span>
+<span class="keyword">const</span> <span class="function">requireAuth</span> = (req, res, next) => {
+  <span class="keyword">const</span> token = req.headers.authorization?.<span class="function">split</span>(<span class="string">' '</span>)[<span class="number">1</span>];
+  <span class="keyword">if</span> (!token) <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">401</span>).<span class="function">json</span>({ error: <span class="string">'No token provided'</span> });
+
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> payload = jwt.<span class="function">verify</span>(token, process.env.JWT_SECRET);
+    req.user = payload;  <span class="comment">// attach user to request</span>
+    <span class="function">next</span>();
+  } <span class="keyword">catch</span> {
+    res.<span class="function">status</span>(<span class="number">401</span>).<span class="function">json</span>({ error: <span class="string">'Invalid token'</span> });
+  }
+};
+
+<span class="comment">// Apply globally</span>
+app.<span class="function">use</span>(logger);
+app.<span class="function">use</span>(express.<span class="function">json</span>());
+
+<span class="comment">// Apply to specific routes</span>
+app.<span class="function">get</span>(<span class="string">'/api/profile'</span>, requireAuth, (req, res) => {
+  res.<span class="function">json</span>(req.user);
+});
+
+<span class="comment">// Error middleware (4 params -- must be last)</span>
+app.<span class="function">use</span>((err, req, res, next) => {
+  console.<span class="function">error</span>(err.stack);
+  res.<span class="function">status</span>(err.status || <span class="number">500</span>).<span class="function">json</span>({
+    error: err.message || <span class="string">'Internal server error'</span>,
+  });
+});</code></pre>
+    </section>
+
+    <!-- Section 3: Authentication -->
+    <section id="authentication" class="section">
+      <h2>3. Authentication &amp; Authorization</h2>
+
+      <h3>JWT (JSON Web Tokens)</h3>
+      <p>JWT is a self-contained token with a payload (claims) signed by the server. The client sends it with every request. No server-side session storage needed.</p>
+
+      <div class="example-box">
+        <div class="label">JWT Structure</div>
+        <pre>
+  header.payload.signature
+
+  Header:  { "alg": "HS256", "typ": "JWT" }
+  Payload: { "userId": 123, "role": "admin", "iat": 1710000000, "exp": 1710003600 }
+  Signature: HMACSHA256(base64(header) + "." + base64(payload), secret)</pre>
+      </div>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install jsonwebtoken bcrypt</span>
+<span class="keyword">import</span> jwt <span class="keyword">from</span> <span class="string">'jsonwebtoken'</span>;
+<span class="keyword">import</span> bcrypt <span class="keyword">from</span> <span class="string">'bcrypt'</span>;
+
+<span class="keyword">const</span> JWT_SECRET = process.env.JWT_SECRET;
+<span class="keyword">const</span> ACCESS_TTL = <span class="string">'15m'</span>;
+<span class="keyword">const</span> REFRESH_TTL = <span class="string">'7d'</span>;
+
+<span class="comment">// Register</span>
+app.<span class="function">post</span>(<span class="string">'/api/auth/register'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { email, password } = req.body;
+  <span class="keyword">const</span> hash = <span class="keyword">await</span> bcrypt.<span class="function">hash</span>(password, <span class="number">12</span>); <span class="comment">// 12 rounds</span>
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(
+    <span class="string">'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email'</span>,
+    [email, hash]
+  );
+  res.<span class="function">status</span>(<span class="number">201</span>).<span class="function">json</span>(rows[<span class="number">0</span>]);
+});
+
+<span class="comment">// Login -- return access + refresh tokens</span>
+app.<span class="function">post</span>(<span class="string">'/api/auth/login'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> { email, password } = req.body;
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT * FROM users WHERE email = $1'</span>, [email]);
+  <span class="keyword">const</span> user = rows[<span class="number">0</span>];
+  <span class="keyword">if</span> (!user || !(<span class="keyword">await</span> bcrypt.<span class="function">compare</span>(password, user.password_hash))) {
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">401</span>).<span class="function">json</span>({ error: <span class="string">'Invalid credentials'</span> });
+  }
+
+  <span class="keyword">const</span> accessToken = jwt.<span class="function">sign</span>({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: ACCESS_TTL });
+  <span class="keyword">const</span> refreshToken = jwt.<span class="function">sign</span>({ userId: user.id }, JWT_SECRET, { expiresIn: REFRESH_TTL });
+
+  <span class="comment">// Store refresh token in httpOnly cookie</span>
+  res.<span class="function">cookie</span>(<span class="string">'refreshToken'</span>, refreshToken, {
+    httpOnly: <span class="keyword">true</span>,
+    secure: <span class="keyword">true</span>,
+    sameSite: <span class="string">'strict'</span>,
+    maxAge: <span class="number">7</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>,
+  });
+
+  res.<span class="function">json</span>({ accessToken });
+});
+
+<span class="comment">// Refresh token endpoint</span>
+app.<span class="function">post</span>(<span class="string">'/api/auth/refresh'</span>, (req, res) => {
+  <span class="keyword">const</span> token = req.cookies.refreshToken;
+  <span class="keyword">if</span> (!token) <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">401</span>).<span class="function">json</span>({ error: <span class="string">'No refresh token'</span> });
+
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> { userId } = jwt.<span class="function">verify</span>(token, JWT_SECRET);
+    <span class="keyword">const</span> accessToken = jwt.<span class="function">sign</span>({ userId }, JWT_SECRET, { expiresIn: ACCESS_TTL });
+    res.<span class="function">json</span>({ accessToken });
+  } <span class="keyword">catch</span> {
+    res.<span class="function">status</span>(<span class="number">401</span>).<span class="function">json</span>({ error: <span class="string">'Invalid refresh token'</span> });
+  }
+});</code></pre>
+
+      <h3>Role-Based Access Control (RBAC)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">const</span> <span class="function">requireRole</span> = (...roles) => (req, res, next) => {
+  <span class="keyword">if</span> (!roles.<span class="function">includes</span>(req.user.role)) {
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">403</span>).<span class="function">json</span>({ error: <span class="string">'Insufficient permissions'</span> });
+  }
+  <span class="function">next</span>();
+};
+
+<span class="comment">// Only admins can delete users</span>
+app.<span class="function">delete</span>(<span class="string">'/api/users/:id'</span>, requireAuth, <span class="function">requireRole</span>(<span class="string">'admin'</span>), <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'DELETE FROM users WHERE id = $1'</span>, [req.params.id]);
+  res.<span class="function">status</span>(<span class="number">204</span>).<span class="function">send</span>();
+});</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Access vs Refresh Tokens</div>
+        <p><strong>Access token:</strong> Short-lived (15min), sent in Authorization header, contains user claims. If stolen, damage is time-limited.<br>
+        <strong>Refresh token:</strong> Long-lived (7 days), stored in httpOnly cookie (JS can't read it), used only to get new access tokens. Can be revoked server-side.</p>
+      </div>
+    </section>
+
+    <!-- Section 4: Rate Limiting -->
+    <section id="rate-limiting" class="section">
+      <h2>4. Rate Limiting</h2>
+      <p>Prevents abuse by limiting how many requests a client can make in a time window.</p>
+
+      <h3>Algorithms</h3>
+      <div class="example-box">
+        <div class="label">Rate Limiting Algorithms</div>
+        <p><strong>Fixed Window:</strong> Count requests per time window (e.g., 100 per minute). Simple but bursty at window boundaries.</p>
+        <p><strong>Sliding Window:</strong> Weighted count across current and previous window. Smoother than fixed.</p>
+        <p><strong>Token Bucket:</strong> Tokens refill at a steady rate. Each request consumes a token. Allows controlled bursts.</p>
+        <p><strong>Leaky Bucket:</strong> Requests enter a queue and are processed at a fixed rate. Smoothest output.</p>
+      </div>
+
+      <h3>Token Bucket Implementation</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">class</span> <span class="function">TokenBucket</span> {
+  <span class="function">constructor</span>(capacity, refillRate) {
+    <span class="keyword">this</span>.capacity = capacity;       <span class="comment">// max tokens</span>
+    <span class="keyword">this</span>.tokens = capacity;         <span class="comment">// current tokens</span>
+    <span class="keyword">this</span>.refillRate = refillRate;    <span class="comment">// tokens per second</span>
+    <span class="keyword">this</span>.lastRefill = Date.<span class="function">now</span>();
+  }
+
+  <span class="function">consume</span>() {
+    <span class="keyword">this</span>.<span class="function">refill</span>();
+    <span class="keyword">if</span> (<span class="keyword">this</span>.tokens >= <span class="number">1</span>) {
+      <span class="keyword">this</span>.tokens -= <span class="number">1</span>;
+      <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  }
+
+  <span class="function">refill</span>() {
+    <span class="keyword">const</span> now = Date.<span class="function">now</span>();
+    <span class="keyword">const</span> elapsed = (now - <span class="keyword">this</span>.lastRefill) / <span class="number">1000</span>;
+    <span class="keyword">this</span>.tokens = Math.<span class="function">min</span>(<span class="keyword">this</span>.capacity, <span class="keyword">this</span>.tokens + elapsed * <span class="keyword">this</span>.refillRate);
+    <span class="keyword">this</span>.lastRefill = now;
+  }
+}
+
+<span class="comment">// Rate limiter middleware (in-memory -- use Redis for multi-server)</span>
+<span class="keyword">const</span> buckets = <span class="keyword">new</span> <span class="function">Map</span>();
+
+<span class="keyword">const</span> <span class="function">rateLimit</span> = (maxRequests, windowSeconds) => (req, res, next) => {
+  <span class="keyword">const</span> key = req.ip;
+  <span class="keyword">if</span> (!buckets.<span class="function">has</span>(key)) {
+    buckets.<span class="function">set</span>(key, <span class="keyword">new</span> <span class="function">TokenBucket</span>(maxRequests, maxRequests / windowSeconds));
+  }
+  <span class="keyword">const</span> bucket = buckets.<span class="function">get</span>(key);
+  <span class="keyword">if</span> (!bucket.<span class="function">consume</span>()) {
+    res.<span class="function">set</span>(<span class="string">'Retry-After'</span>, String(windowSeconds));
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">429</span>).<span class="function">json</span>({ error: <span class="string">'Too many requests'</span> });
+  }
+  <span class="function">next</span>();
+};
+
+app.<span class="function">use</span>(<span class="function">rateLimit</span>(<span class="number">100</span>, <span class="number">60</span>)); <span class="comment">// 100 requests per 60 seconds</span></code></pre>
+
+      <h3>Redis-Based (Production)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Sliding window with Redis sorted sets</span>
+<span class="keyword">import</span> Redis <span class="keyword">from</span> <span class="string">'ioredis'</span>;
+<span class="keyword">const</span> redis = <span class="keyword">new</span> <span class="function">Redis</span>();
+
+<span class="keyword">const</span> <span class="function">slidingWindowLimit</span> = (maxRequests, windowMs) => <span class="keyword">async</span> (req, res, next) => {
+  <span class="keyword">const</span> key = <span class="string">`ratelimit:${req.ip}`</span>;
+  <span class="keyword">const</span> now = Date.<span class="function">now</span>();
+  <span class="keyword">const</span> windowStart = now - windowMs;
+
+  <span class="keyword">const</span> pipe = redis.<span class="function">pipeline</span>();
+  pipe.<span class="function">zremrangebyscore</span>(key, <span class="number">0</span>, windowStart);    <span class="comment">// remove old entries</span>
+  pipe.<span class="function">zadd</span>(key, now, <span class="string">`${now}-${Math.random()}`</span>); <span class="comment">// add current request</span>
+  pipe.<span class="function">zcard</span>(key);                               <span class="comment">// count requests in window</span>
+  pipe.<span class="function">pexpire</span>(key, windowMs);                    <span class="comment">// auto-cleanup</span>
+
+  <span class="keyword">const</span> results = <span class="keyword">await</span> pipe.<span class="function">exec</span>();
+  <span class="keyword">const</span> count = results[<span class="number">2</span>][<span class="number">1</span>];
+
+  res.<span class="function">set</span>(<span class="string">'X-RateLimit-Limit'</span>, String(maxRequests));
+  res.<span class="function">set</span>(<span class="string">'X-RateLimit-Remaining'</span>, String(Math.<span class="function">max</span>(<span class="number">0</span>, maxRequests - count)));
+
+  <span class="keyword">if</span> (count > maxRequests) {
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">429</span>).<span class="function">json</span>({ error: <span class="string">'Rate limit exceeded'</span> });
+  }
+  <span class="function">next</span>();
+};
+
+app.<span class="function">use</span>(<span class="function">slidingWindowLimit</span>(<span class="number">100</span>, <span class="number">60000</span>)); <span class="comment">// 100 per minute</span></code></pre>
+    </section>
+
+    <!-- Section 5: Pagination -->
+    <section id="pagination" class="section">
+      <h2>5. Pagination</h2>
+
+      <h3>Offset-Based (Simple)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// GET /api/posts?page=2&limit=20</span>
+app.<span class="function">get</span>(<span class="string">'/api/posts'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> page = <span class="function">parseInt</span>(req.query.page) || <span class="number">1</span>;
+  <span class="keyword">const</span> limit = Math.<span class="function">min</span>(<span class="function">parseInt</span>(req.query.limit) || <span class="number">20</span>, <span class="number">100</span>);
+  <span class="keyword">const</span> offset = (page - <span class="number">1</span>) * limit;
+
+  <span class="keyword">const</span> [posts, countResult] = <span class="keyword">await</span> Promise.<span class="function">all</span>([
+    db.<span class="function">query</span>(<span class="string">'SELECT * FROM posts ORDER BY created_at DESC LIMIT $1 OFFSET $2'</span>, [limit, offset]),
+    db.<span class="function">query</span>(<span class="string">'SELECT COUNT(*) FROM posts'</span>),
+  ]);
+
+  <span class="keyword">const</span> total = <span class="function">parseInt</span>(countResult.rows[<span class="number">0</span>].count);
+  res.<span class="function">json</span>({
+    data: posts.rows,
+    meta: { page, limit, total, totalPages: Math.<span class="function">ceil</span>(total / limit) },
+  });
+});</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Offset Pagination Problems</div>
+        <p>OFFSET skips rows by scanning them -- <code>OFFSET 100000</code> scans 100K rows then discards them. Gets slower as pages increase. Also, if new rows are inserted while paginating, you'll see duplicates or miss items.</p>
+      </div>
+
+      <h3>Cursor-Based (Production)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// GET /api/posts?cursor=2024-01-15T10:30:00Z&limit=20</span>
+app.<span class="function">get</span>(<span class="string">'/api/posts'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> limit = Math.<span class="function">min</span>(<span class="function">parseInt</span>(req.query.limit) || <span class="number">20</span>, <span class="number">100</span>);
+  <span class="keyword">const</span> cursor = req.query.cursor; <span class="comment">// timestamp of last seen item</span>
+
+  <span class="keyword">let</span> query, params;
+  <span class="keyword">if</span> (cursor) {
+    query = <span class="string">'SELECT * FROM posts WHERE created_at < $1 ORDER BY created_at DESC LIMIT $2'</span>;
+    params = [cursor, limit + <span class="number">1</span>]; <span class="comment">// fetch one extra to check if more exist</span>
+  } <span class="keyword">else</span> {
+    query = <span class="string">'SELECT * FROM posts ORDER BY created_at DESC LIMIT $1'</span>;
+    params = [limit + <span class="number">1</span>];
+  }
+
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(query, params);
+  <span class="keyword">const</span> hasMore = rows.length > limit;
+  <span class="keyword">const</span> data = hasMore ? rows.<span class="function">slice</span>(<span class="number">0</span>, limit) : rows;
+
+  res.<span class="function">json</span>({
+    data,
+    meta: {
+      hasMore,
+      nextCursor: hasMore ? data[data.length - <span class="number">1</span>].created_at : <span class="keyword">null</span>,
+    },
+  });
+});</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Cursor vs Offset</div>
+        <p><strong>Offset:</strong> Easy, supports jumping to page N. Slow for large offsets, inconsistent with live data.<br>
+        <strong>Cursor:</strong> Fast regardless of position, consistent with live data. Can't jump to page N. Use for infinite scroll, feeds, APIs.</p>
+      </div>
+    </section>
+
+    <!-- Section 6: Caching -->
+    <section id="caching" class="section">
+      <h2>6. Caching Strategies</h2>
+
+      <h3>Cache-Aside (Lazy Loading)</h3>
+      <p>Most common pattern. App checks cache first, falls back to DB, then populates cache.</p>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> Redis <span class="keyword">from</span> <span class="string">'ioredis'</span>;
+<span class="keyword">const</span> redis = <span class="keyword">new</span> <span class="function">Redis</span>();
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">getUser</span>(id) {
+  <span class="comment">// 1. Check cache</span>
+  <span class="keyword">const</span> cached = <span class="keyword">await</span> redis.<span class="function">get</span>(<span class="string">`user:${id}`</span>);
+  <span class="keyword">if</span> (cached) <span class="keyword">return</span> JSON.<span class="function">parse</span>(cached);
+
+  <span class="comment">// 2. Cache miss -- query DB</span>
+  <span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT * FROM users WHERE id = $1'</span>, [id]);
+  <span class="keyword">const</span> user = rows[<span class="number">0</span>];
+  <span class="keyword">if</span> (!user) <span class="keyword">return</span> <span class="keyword">null</span>;
+
+  <span class="comment">// 3. Populate cache (TTL: 1 hour)</span>
+  <span class="keyword">await</span> redis.<span class="function">setex</span>(<span class="string">`user:${id}`</span>, <span class="number">3600</span>, JSON.<span class="function">stringify</span>(user));
+  <span class="keyword">return</span> user;
+}
+
+<span class="comment">// Invalidate on update</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">updateUser</span>(id, data) {
+  <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'UPDATE users SET username = $1 WHERE id = $2'</span>, [data.username, id]);
+  <span class="keyword">await</span> redis.<span class="function">del</span>(<span class="string">`user:${id}`</span>);  <span class="comment">// invalidate cache</span>
+}</code></pre>
+
+      <h3>HTTP Caching</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Cache-Control header</span>
+app.<span class="function">get</span>(<span class="string">'/api/posts/:id'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> post = <span class="keyword">await</span> <span class="function">getPost</span>(req.params.id);
+
+  <span class="comment">// Cache for 5 minutes, stale-while-revalidate for 1 hour</span>
+  res.<span class="function">set</span>(<span class="string">'Cache-Control'</span>, <span class="string">'public, max-age=300, stale-while-revalidate=3600'</span>);
+
+  <span class="comment">// ETag for conditional requests</span>
+  <span class="keyword">const</span> etag = <span class="string">`"${post.updated_at.getTime()}"`</span>;
+  res.<span class="function">set</span>(<span class="string">'ETag'</span>, etag);
+
+  <span class="keyword">if</span> (req.headers[<span class="string">'if-none-match'</span>] === etag) {
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">304</span>).<span class="function">send</span>(); <span class="comment">// Not Modified</span>
+  }
+
+  res.<span class="function">json</span>(post);
+});</code></pre>
+
+      <div class="example-box">
+        <div class="label">Caching Strategies Summary</div>
+        <p><strong>Cache-Aside:</strong> App manages cache. Best for read-heavy workloads.</p>
+        <p><strong>Write-Through:</strong> Write to cache and DB simultaneously. Consistent but slower writes.</p>
+        <p><strong>Write-Behind:</strong> Write to cache, async write to DB. Fast writes, risk of data loss.</p>
+        <p><strong>Read-Through:</strong> Cache loads from DB automatically on miss. Cache acts as main data source.</p>
+      </div>
+    </section>
+
+    <!-- Section 7: WebSockets -->
+    <section id="websockets" class="section">
+      <h2>7. WebSockets</h2>
+      <p>WebSockets provide full-duplex communication over a single TCP connection. Unlike HTTP (request-response), both client and server can send messages at any time.</p>
+
+      <h3>Raw WebSocket with ws</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install ws</span>
+<span class="keyword">import</span> { WebSocketServer } <span class="keyword">from</span> <span class="string">'ws'</span>;
+
+<span class="keyword">const</span> wss = <span class="keyword">new</span> <span class="function">WebSocketServer</span>({ port: <span class="number">8080</span> });
+
+wss.<span class="function">on</span>(<span class="string">'connection'</span>, (ws) => {
+  console.<span class="function">log</span>(<span class="string">'Client connected'</span>);
+
+  ws.<span class="function">on</span>(<span class="string">'message'</span>, (data) => {
+    <span class="keyword">const</span> msg = JSON.<span class="function">parse</span>(data);
+    console.<span class="function">log</span>(<span class="string">'Received:'</span>, msg);
+
+    <span class="comment">// Broadcast to all connected clients</span>
+    wss.clients.<span class="function">forEach</span>((client) => {
+      <span class="keyword">if</span> (client.readyState === <span class="number">1</span>) { <span class="comment">// OPEN</span>
+        client.<span class="function">send</span>(JSON.<span class="function">stringify</span>(msg));
+      }
+    });
+  });
+
+  ws.<span class="function">on</span>(<span class="string">'close'</span>, () => console.<span class="function">log</span>(<span class="string">'Client disconnected'</span>));
+
+  ws.<span class="function">send</span>(JSON.<span class="function">stringify</span>({ type: <span class="string">'welcome'</span>, message: <span class="string">'Connected!'</span> }));
+});</code></pre>
+
+      <h3>Socket.IO (Higher Level)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install socket.io</span>
+<span class="keyword">import</span> { Server } <span class="keyword">from</span> <span class="string">'socket.io'</span>;
+
+<span class="keyword">const</span> io = <span class="keyword">new</span> <span class="function">Server</span>(httpServer, {
+  cors: { origin: <span class="string">'http://localhost:3000'</span> },
+});
+
+io.<span class="function">on</span>(<span class="string">'connection'</span>, (socket) => {
+  console.<span class="function">log</span>(<span class="string">`User connected: ${socket.id}`</span>);
+
+  <span class="comment">// Join a room (e.g., chat room)</span>
+  socket.<span class="function">on</span>(<span class="string">'join-room'</span>, (roomId) => {
+    socket.<span class="function">join</span>(roomId);
+    socket.<span class="function">to</span>(roomId).<span class="function">emit</span>(<span class="string">'user-joined'</span>, socket.id);
+  });
+
+  <span class="comment">// Send message to room</span>
+  socket.<span class="function">on</span>(<span class="string">'chat-message'</span>, ({ roomId, message }) => {
+    io.<span class="function">to</span>(roomId).<span class="function">emit</span>(<span class="string">'chat-message'</span>, {
+      from: socket.id,
+      message,
+      timestamp: Date.<span class="function">now</span>(),
+    });
+  });
+
+  <span class="comment">// Typing indicator</span>
+  socket.<span class="function">on</span>(<span class="string">'typing'</span>, (roomId) => {
+    socket.<span class="function">to</span>(roomId).<span class="function">emit</span>(<span class="string">'user-typing'</span>, socket.id);
+  });
+
+  socket.<span class="function">on</span>(<span class="string">'disconnect'</span>, () => console.<span class="function">log</span>(<span class="string">'User disconnected'</span>));
+});</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Scaling WebSockets</div>
+        <p>WebSocket connections are stateful -- each server holds its own connections. To scale across multiple servers, use a Redis adapter: <code>@socket.io/redis-adapter</code>. Redis pub/sub broadcasts events across all server instances.</p>
+      </div>
+    </section>
+
+    <!-- Section 8: Event-Driven -->
+    <section id="event-driven" class="section">
+      <h2>8. Event-Driven Architecture</h2>
+
+      <h3>Node.js EventEmitter</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">import</span> { EventEmitter } <span class="keyword">from</span> <span class="string">'events'</span>;
+
+<span class="keyword">const</span> events = <span class="keyword">new</span> <span class="function">EventEmitter</span>();
+
+<span class="comment">// Register handlers</span>
+events.<span class="function">on</span>(<span class="string">'user:created'</span>, <span class="keyword">async</span> (user) => {
+  <span class="keyword">await</span> <span class="function">sendWelcomeEmail</span>(user.email);
+});
+
+events.<span class="function">on</span>(<span class="string">'user:created'</span>, <span class="keyword">async</span> (user) => {
+  <span class="keyword">await</span> <span class="function">createDefaultSettings</span>(user.id);
+});
+
+events.<span class="function">on</span>(<span class="string">'order:completed'</span>, <span class="keyword">async</span> (order) => {
+  <span class="keyword">await</span> <span class="function">updateInventory</span>(order.items);
+  <span class="keyword">await</span> <span class="function">sendReceipt</span>(order);
+});
+
+<span class="comment">// Emit events from your routes</span>
+app.<span class="function">post</span>(<span class="string">'/api/users'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="function">createUser</span>(req.body);
+  events.<span class="function">emit</span>(<span class="string">'user:created'</span>, user);  <span class="comment">// side effects happen async</span>
+  res.<span class="function">status</span>(<span class="number">201</span>).<span class="function">json</span>(user);
+});</code></pre>
+
+      <h3>Event Sourcing</h3>
+      <div class="example-box">
+        <div class="label">Event Sourcing vs CRUD</div>
+        <p><strong>CRUD:</strong> Store current state. <code>UPDATE accounts SET balance = 900</code>. You lose history.</p>
+        <p><strong>Event Sourcing:</strong> Store events. <code>AccountDebited { amount: 100 }</code>. Current state = replay all events. You keep full audit trail.</p>
+        <p>Use event sourcing for: financial systems, audit logs, collaborative editing, systems where "why" matters as much as "what".</p>
+      </div>
+
+      <h3>CQRS (Command Query Responsibility Segregation)</h3>
+      <div class="example-box">
+        <div class="label">CQRS Pattern</div>
+        <p><strong>Command side:</strong> Handles writes. Validates, applies business logic, stores events.</p>
+        <p><strong>Query side:</strong> Handles reads. Uses optimized read models (denormalized views).</p>
+        <p>Separate the write model (normalized, consistent) from the read model (denormalized, fast). Sync them via events. Overkill for most apps, but powerful for complex domains.</p>
+      </div>
+    </section>
+
+    <!-- Section 9: Message Queues -->
+    <section id="message-queues" class="section">
+      <h2>9. Message Queues</h2>
+      <p>Decouple services by communicating through messages instead of direct calls. Producer sends a message to a queue, consumer processes it later. This enables async processing, retry logic, and load leveling.</p>
+
+      <h3>RabbitMQ</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install amqplib</span>
+<span class="keyword">import</span> amqp <span class="keyword">from</span> <span class="string">'amqplib'</span>;
+
+<span class="comment">// Producer: send email job to queue</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">sendEmailJob</span>(to, subject, body) {
+  <span class="keyword">const</span> conn = <span class="keyword">await</span> amqp.<span class="function">connect</span>(<span class="string">'amqp://localhost'</span>);
+  <span class="keyword">const</span> channel = <span class="keyword">await</span> conn.<span class="function">createChannel</span>();
+  <span class="keyword">const</span> queue = <span class="string">'email_queue'</span>;
+
+  <span class="keyword">await</span> channel.<span class="function">assertQueue</span>(queue, { durable: <span class="keyword">true</span> });
+  channel.<span class="function">sendToQueue</span>(queue,
+    Buffer.<span class="function">from</span>(JSON.<span class="function">stringify</span>({ to, subject, body })),
+    { persistent: <span class="keyword">true</span> }  <span class="comment">// survives broker restart</span>
+  );
+  console.<span class="function">log</span>(<span class="string">'Email job queued'</span>);
+}
+
+<span class="comment">// Consumer: process email jobs</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">startEmailWorker</span>() {
+  <span class="keyword">const</span> conn = <span class="keyword">await</span> amqp.<span class="function">connect</span>(<span class="string">'amqp://localhost'</span>);
+  <span class="keyword">const</span> channel = <span class="keyword">await</span> conn.<span class="function">createChannel</span>();
+  <span class="keyword">const</span> queue = <span class="string">'email_queue'</span>;
+
+  <span class="keyword">await</span> channel.<span class="function">assertQueue</span>(queue, { durable: <span class="keyword">true</span> });
+  channel.<span class="function">prefetch</span>(<span class="number">1</span>); <span class="comment">// process one at a time</span>
+
+  channel.<span class="function">consume</span>(queue, <span class="keyword">async</span> (msg) => {
+    <span class="keyword">const</span> job = JSON.<span class="function">parse</span>(msg.content.<span class="function">toString</span>());
+    <span class="keyword">try</span> {
+      <span class="keyword">await</span> <span class="function">sendEmail</span>(job.to, job.subject, job.body);
+      channel.<span class="function">ack</span>(msg);  <span class="comment">// remove from queue</span>
+    } <span class="keyword">catch</span> (err) {
+      channel.<span class="function">nack</span>(msg, <span class="keyword">false</span>, <span class="keyword">true</span>);  <span class="comment">// requeue on failure</span>
+    }
+  });
+}</code></pre>
+
+      <h3>BullMQ (Redis-Based Queues)</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install bullmq ioredis</span>
+<span class="keyword">import</span> { Queue, Worker } <span class="keyword">from</span> <span class="string">'bullmq'</span>;
+
+<span class="comment">// Create queue</span>
+<span class="keyword">const</span> emailQueue = <span class="keyword">new</span> <span class="function">Queue</span>(<span class="string">'emails'</span>, {
+  connection: { host: <span class="string">'localhost'</span>, port: <span class="number">6379</span> },
+});
+
+<span class="comment">// Add job</span>
+<span class="keyword">await</span> emailQueue.<span class="function">add</span>(<span class="string">'welcome'</span>, {
+  to: <span class="string">'sean@dev.com'</span>,
+  subject: <span class="string">'Welcome!'</span>,
+}, {
+  attempts: <span class="number">3</span>,              <span class="comment">// retry 3 times</span>
+  backoff: { type: <span class="string">'exponential'</span>, delay: <span class="number">1000</span> },
+  removeOnComplete: <span class="number">100</span>,     <span class="comment">// keep last 100 completed jobs</span>
+});
+
+<span class="comment">// Process jobs</span>
+<span class="keyword">const</span> worker = <span class="keyword">new</span> <span class="function">Worker</span>(<span class="string">'emails'</span>, <span class="keyword">async</span> (job) => {
+  console.<span class="function">log</span>(<span class="string">`Processing ${job.name}: ${job.data.to}`</span>);
+  <span class="keyword">await</span> <span class="function">sendEmail</span>(job.data);
+}, {
+  connection: { host: <span class="string">'localhost'</span>, port: <span class="number">6379</span> },
+  concurrency: <span class="number">5</span>,  <span class="comment">// process 5 jobs simultaneously</span>
+});
+
+worker.<span class="function">on</span>(<span class="string">'completed'</span>, (job) => console.<span class="function">log</span>(<span class="string">`Job ${job.id} done`</span>));
+worker.<span class="function">on</span>(<span class="string">'failed'</span>, (job, err) => console.<span class="function">error</span>(<span class="string">`Job ${job.id} failed: ${err.message}`</span>));</code></pre>
+
+      <div class="tip-box">
+        <div class="label">When to Use Queues</div>
+        <p>1. Email/SMS sending (don't block the API response)<br>
+        2. Image/video processing<br>
+        3. PDF generation<br>
+        4. Webhook delivery with retries<br>
+        5. Data import/export<br>
+        6. Any work that can be deferred</p>
+      </div>
+    </section>
+
+    <!-- Section 10: Background Jobs -->
+    <section id="background-jobs" class="section">
+      <h2>10. Background Jobs</h2>
+
+      <h3>Cron Jobs with node-cron</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install node-cron</span>
+<span class="keyword">import</span> cron <span class="keyword">from</span> <span class="string">'node-cron'</span>;
+
+<span class="comment">// Every day at midnight</span>
+cron.<span class="function">schedule</span>(<span class="string">'0 0 * * *'</span>, <span class="keyword">async</span> () => {
+  console.<span class="function">log</span>(<span class="string">'Running daily cleanup...'</span>);
+  <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">"DELETE FROM sessions WHERE expires_at < NOW()"</span>);
+});
+
+<span class="comment">// Every 5 minutes</span>
+cron.<span class="function">schedule</span>(<span class="string">'*/5 * * * *'</span>, <span class="keyword">async</span> () => {
+  <span class="keyword">await</span> <span class="function">checkHealthOfExternalServices</span>();
+});
+
+<span class="comment">// Cron syntax: minute hour day month weekday</span>
+<span class="comment">// */5 * * * *    = every 5 minutes</span>
+<span class="comment">// 0 */2 * * *    = every 2 hours</span>
+<span class="comment">// 0 9 * * 1-5    = 9 AM weekdays</span>
+<span class="comment">// 0 0 1 * *      = midnight on 1st of month</span></code></pre>
+
+      <h3>Retry Strategies</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">withRetry</span>(fn, maxRetries = <span class="number">3</span>, baseDelay = <span class="number">1000</span>) {
+  <span class="keyword">for</span> (<span class="keyword">let</span> attempt = <span class="number">0</span>; attempt <= maxRetries; attempt++) {
+    <span class="keyword">try</span> {
+      <span class="keyword">return</span> <span class="keyword">await</span> <span class="function">fn</span>();
+    } <span class="keyword">catch</span> (err) {
+      <span class="keyword">if</span> (attempt === maxRetries) <span class="keyword">throw</span> err;
+      <span class="comment">// Exponential backoff with jitter</span>
+      <span class="keyword">const</span> delay = baseDelay * Math.<span class="function">pow</span>(<span class="number">2</span>, attempt) + Math.<span class="function">random</span>() * <span class="number">1000</span>;
+      console.<span class="function">log</span>(<span class="string">`Retry ${attempt + 1}/${maxRetries} in ${delay}ms`</span>);
+      <span class="keyword">await</span> <span class="keyword">new</span> <span class="function">Promise</span>(r => <span class="function">setTimeout</span>(r, delay));
+    }
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">await</span> <span class="function">withRetry</span>(() => <span class="function">sendWebhook</span>(url, payload), <span class="number">5</span>, <span class="number">2000</span>);</code></pre>
+    </section>
+
+    <!-- Section 11: Input Validation -->
+    <section id="validation" class="section">
+      <h2>11. Input Validation &amp; Security</h2>
+
+      <h3>Zod Validation</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install zod</span>
+<span class="keyword">import</span> { z } <span class="keyword">from</span> <span class="string">'zod'</span>;
+
+<span class="keyword">const</span> createUserSchema = z.<span class="function">object</span>({
+  email: z.<span class="function">string</span>().<span class="function">email</span>(<span class="string">'Invalid email'</span>),
+  username: z.<span class="function">string</span>().<span class="function">min</span>(<span class="number">3</span>).<span class="function">max</span>(<span class="number">30</span>).<span class="function">regex</span>(<span class="keyword">/</span>^[a-zA-Z0-9_]+$<span class="keyword">/</span>),
+  password: z.<span class="function">string</span>().<span class="function">min</span>(<span class="number">8</span>).<span class="function">max</span>(<span class="number">128</span>),
+  age: z.<span class="function">number</span>().<span class="function">int</span>().<span class="function">min</span>(<span class="number">13</span>).<span class="function">max</span>(<span class="number">150</span>).<span class="function">optional</span>(),
+});
+
+<span class="comment">// Validation middleware</span>
+<span class="keyword">const</span> <span class="function">validate</span> = (schema) => (req, res, next) => {
+  <span class="keyword">const</span> result = schema.<span class="function">safeParse</span>(req.body);
+  <span class="keyword">if</span> (!result.success) {
+    <span class="keyword">return</span> res.<span class="function">status</span>(<span class="number">422</span>).<span class="function">json</span>({
+      error: <span class="string">'Validation failed'</span>,
+      details: result.error.issues,
+    });
+  }
+  req.body = result.data; <span class="comment">// use parsed/typed data</span>
+  <span class="function">next</span>();
+};
+
+app.<span class="function">post</span>(<span class="string">'/api/users'</span>, <span class="function">validate</span>(createUserSchema), <span class="keyword">async</span> (req, res) => {
+  <span class="comment">// req.body is guaranteed to be valid here</span>
+  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="function">createUser</span>(req.body);
+  res.<span class="function">status</span>(<span class="number">201</span>).<span class="function">json</span>(user);
+});</code></pre>
+
+      <h3>SQL Injection Prevention</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// BAD: string concatenation = SQL injection</span>
+<span class="keyword">const</span> query = <span class="string">`SELECT * FROM users WHERE email = '${req.body.email}'`</span>;
+<span class="comment">// Attacker sends: ' OR '1'='1' --</span>
+<span class="comment">// Result: SELECT * FROM users WHERE email = '' OR '1'='1' --'</span>
+<span class="comment">// Returns ALL users!</span>
+
+<span class="comment">// GOOD: parameterized queries</span>
+<span class="keyword">const</span> { rows } = <span class="keyword">await</span> db.<span class="function">query</span>(
+  <span class="string">'SELECT * FROM users WHERE email = $1'</span>,
+  [req.body.email]  <span class="comment">// safely escaped</span>
+);</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Security Essentials</div>
+        <p>1. <strong>Always</strong> use parameterized queries (never concat user input into SQL)<br>
+        2. <strong>Always</strong> validate and sanitize input on the server (never trust the client)<br>
+        3. <strong>Hash</strong> passwords with bcrypt/argon2 (never store plaintext)<br>
+        4. <strong>Escape</strong> HTML output to prevent XSS (React does this by default)<br>
+        5. <strong>Use</strong> HTTPS everywhere<br>
+        6. <strong>Set</strong> security headers: helmet middleware</p>
+      </div>
+    </section>
+
+    <!-- Section 12: Error Handling -->
+    <section id="error-handling" class="section">
+      <h2>12. Error Handling Patterns</h2>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Custom error classes</span>
+<span class="keyword">class</span> <span class="function">AppError</span> <span class="keyword">extends</span> Error {
+  <span class="function">constructor</span>(message, statusCode, code) {
+    <span class="keyword">super</span>(message);
+    <span class="keyword">this</span>.statusCode = statusCode;
+    <span class="keyword">this</span>.code = code;
+    <span class="keyword">this</span>.isOperational = <span class="keyword">true</span>;
+  }
+}
+
+<span class="keyword">class</span> <span class="function">NotFoundError</span> <span class="keyword">extends</span> AppError {
+  <span class="function">constructor</span>(resource) {
+    <span class="keyword">super</span>(<span class="string">`${resource} not found`</span>, <span class="number">404</span>, <span class="string">'NOT_FOUND'</span>);
+  }
+}
+
+<span class="keyword">class</span> <span class="function">ConflictError</span> <span class="keyword">extends</span> AppError {
+  <span class="function">constructor</span>(message) {
+    <span class="keyword">super</span>(message, <span class="number">409</span>, <span class="string">'CONFLICT'</span>);
+  }
+}
+
+<span class="comment">// Use in routes</span>
+app.<span class="function">get</span>(<span class="string">'/api/users/:id'</span>, <span class="keyword">async</span> (req, res, next) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="function">getUser</span>(req.params.id);
+    <span class="keyword">if</span> (!user) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">NotFoundError</span>(<span class="string">'User'</span>);
+    res.<span class="function">json</span>(user);
+  } <span class="keyword">catch</span> (err) {
+    <span class="function">next</span>(err);
+  }
+});
+
+<span class="comment">// Global error handler (must be last middleware)</span>
+app.<span class="function">use</span>((err, req, res, next) => {
+  <span class="keyword">if</span> (err.isOperational) {
+    <span class="comment">// Expected error -- send clean response</span>
+    res.<span class="function">status</span>(err.statusCode).<span class="function">json</span>({
+      error: { message: err.message, code: err.code },
+    });
+  } <span class="keyword">else</span> {
+    <span class="comment">// Unexpected error -- log and send generic message</span>
+    console.<span class="function">error</span>(<span class="string">'UNEXPECTED ERROR:'</span>, err);
+    res.<span class="function">status</span>(<span class="number">500</span>).<span class="function">json</span>({
+      error: { message: <span class="string">'Internal server error'</span>, code: <span class="string">'INTERNAL'</span> },
+    });
+  }
+});</code></pre>
+    </section>
+
+    <!-- Section 13: Database Patterns -->
+    <section id="database-patterns" class="section">
+      <h2>13. Database Patterns</h2>
+
+      <h3>Connection Pooling</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Don't create a new connection per request -- use a pool</span>
+<span class="keyword">import</span> pg <span class="keyword">from</span> <span class="string">'pg'</span>;
+
+<span class="keyword">const</span> pool = <span class="keyword">new</span> pg.<span class="function">Pool</span>({
+  max: <span class="number">20</span>,                  <span class="comment">// max connections</span>
+  idleTimeoutMillis: <span class="number">30000</span>, <span class="comment">// close idle connections after 30s</span>
+  connectionTimeoutMillis: <span class="number">2000</span>, <span class="comment">// fail fast if no connection available</span>
+});
+
+<span class="comment">// Pool automatically manages connections</span>
+<span class="keyword">const</span> result = <span class="keyword">await</span> pool.<span class="function">query</span>(<span class="string">'SELECT * FROM users'</span>);
+
+<span class="comment">// For production: use PgBouncer as external connection pooler</span>
+<span class="comment">// PgBouncer sits between your app and PostgreSQL</span>
+<span class="comment">// Handles thousands of app connections with fewer DB connections</span></code></pre>
+
+      <h3>Read Replicas</h3>
+      <div class="example-box">
+        <div class="label">Read/Write Splitting</div>
+        <p>Write to the primary database, read from replicas. This distributes read load across multiple servers.</p>
+      </div>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Simple read/write splitting</span>
+<span class="keyword">const</span> writePool = <span class="keyword">new</span> pg.<span class="function">Pool</span>({ host: <span class="string">'primary.db.internal'</span>, max: <span class="number">10</span> });
+<span class="keyword">const</span> readPool = <span class="keyword">new</span> pg.<span class="function">Pool</span>({ host: <span class="string">'replica.db.internal'</span>, max: <span class="number">30</span> });
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">query</span>(sql, params, write = <span class="keyword">false</span>) {
+  <span class="keyword">const</span> pool = write ? writePool : readPool;
+  <span class="keyword">return</span> pool.<span class="function">query</span>(sql, params);
+}
+
+<span class="comment">// Writes go to primary</span>
+<span class="keyword">await</span> <span class="function">query</span>(<span class="string">'INSERT INTO posts (title) VALUES ($1)'</span>, [title], <span class="keyword">true</span>);
+
+<span class="comment">// Reads go to replica</span>
+<span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="function">query</span>(<span class="string">'SELECT * FROM posts ORDER BY created_at DESC LIMIT 20'</span>);</code></pre>
+
+      <h3>Migrations</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Using node-pg-migrate</span>
+<span class="comment">// npm install node-pg-migrate</span>
+
+<span class="comment">// migrations/001_create_users.js</span>
+<span class="keyword">exports</span>.up = (pgm) => {
+  pgm.<span class="function">createTable</span>(<span class="string">'users'</span>, {
+    id: <span class="string">'id'</span>,  <span class="comment">// shorthand for serial primary key</span>
+    email: { type: <span class="string">'varchar(255)'</span>, notNull: <span class="keyword">true</span>, unique: <span class="keyword">true</span> },
+    username: { type: <span class="string">'varchar(50)'</span>, notNull: <span class="keyword">true</span> },
+    password_hash: { type: <span class="string">'text'</span>, notNull: <span class="keyword">true</span> },
+    created_at: { type: <span class="string">'timestamp'</span>, <span class="keyword">default</span>: pgm.<span class="function">func</span>(<span class="string">'NOW()'</span>) },
+  });
+};
+
+<span class="keyword">exports</span>.down = (pgm) => {
+  pgm.<span class="function">dropTable</span>(<span class="string">'users'</span>);
+};
+
+<span class="comment">// Run: npx node-pg-migrate up</span>
+<span class="comment">// Rollback: npx node-pg-migrate down</span></code></pre>
+    </section>
+
+    <!-- Section 14: Monitoring -->
+    <section id="monitoring" class="section">
+      <h2>14. Monitoring &amp; Observability</h2>
+
+      <h3>Structured Logging</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install pino</span>
+<span class="keyword">import</span> pino <span class="keyword">from</span> <span class="string">'pino'</span>;
+
+<span class="keyword">const</span> logger = <span class="function">pino</span>({ level: process.env.LOG_LEVEL || <span class="string">'info'</span> });
+
+<span class="comment">// Structured logs (JSON -- queryable by log services)</span>
+logger.<span class="function">info</span>({ userId: <span class="number">123</span>, action: <span class="string">'login'</span> }, <span class="string">'User logged in'</span>);
+logger.<span class="function">error</span>({ err, requestId: req.id }, <span class="string">'Payment failed'</span>);
+logger.<span class="function">warn</span>({ queueDepth: <span class="number">1500</span> }, <span class="string">'Queue depth high'</span>);
+
+<span class="comment">// Request logging middleware</span>
+<span class="keyword">import</span> pinoHttp <span class="keyword">from</span> <span class="string">'pino-http'</span>;
+app.<span class="function">use</span>(<span class="function">pinoHttp</span>({ logger }));</code></pre>
+
+      <h3>Health Checks</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+app.<span class="function">get</span>(<span class="string">'/health'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> checks = {};
+
+  <span class="keyword">try</span> {
+    <span class="keyword">await</span> db.<span class="function">query</span>(<span class="string">'SELECT 1'</span>);
+    checks.database = <span class="string">'ok'</span>;
+  } <span class="keyword">catch</span> {
+    checks.database = <span class="string">'error'</span>;
+  }
+
+  <span class="keyword">try</span> {
+    <span class="keyword">await</span> redis.<span class="function">ping</span>();
+    checks.redis = <span class="string">'ok'</span>;
+  } <span class="keyword">catch</span> {
+    checks.redis = <span class="string">'error'</span>;
+  }
+
+  <span class="keyword">const</span> healthy = Object.<span class="function">values</span>(checks).<span class="function">every</span>(v => v === <span class="string">'ok'</span>);
+  res.<span class="function">status</span>(healthy ? <span class="number">200</span> : <span class="number">503</span>).<span class="function">json</span>({
+    status: healthy ? <span class="string">'healthy'</span> : <span class="string">'degraded'</span>,
+    checks,
+    uptime: process.<span class="function">uptime</span>(),
+  });
+});</code></pre>
+    </section>
+
+    <!-- Section 15: Deployment -->
+    <section id="deployment" class="section">
+      <h2>15. Deployment Patterns</h2>
+
+      <div class="example-box">
+        <div class="label">Deployment Strategies</div>
+        <p><strong>Rolling Update:</strong> Replace instances one by one. No downtime but old and new versions run simultaneously during rollout. Default in Kubernetes.</p>
+        <p><strong>Blue-Green:</strong> Run two identical environments (blue = current, green = new). Switch traffic from blue to green instantly. Easy rollback -- just switch back.</p>
+        <p><strong>Canary:</strong> Route a small percentage (1-5%) of traffic to the new version. Monitor errors/latency. Gradually increase if healthy. Safest for critical services.</p>
+        <p><strong>Feature Flags:</strong> Deploy new code behind a flag. Enable for specific users/percentages without redeploying. Decouple deployment from release.</p>
+      </div>
+
+      <h3>Feature Flags</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Simple feature flag system</span>
+<span class="keyword">const</span> flags = {
+  newCheckoutFlow: {
+    enabled: <span class="keyword">true</span>,
+    percentage: <span class="number">10</span>,     <span class="comment">// 10% of users</span>
+    allowlist: [<span class="string">'sean'</span>], <span class="comment">// always enabled for these users</span>
+  },
+};
+
+<span class="keyword">function</span> <span class="function">isEnabled</span>(flagName, userId) {
+  <span class="keyword">const</span> flag = flags[flagName];
+  <span class="keyword">if</span> (!flag?.enabled) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> (flag.allowlist?.<span class="function">includes</span>(userId)) <span class="keyword">return</span> <span class="keyword">true</span>;
+  <span class="comment">// Deterministic: same user always gets same result</span>
+  <span class="keyword">const</span> hash = <span class="function">simpleHash</span>(<span class="string">`${flagName}:${userId}`</span>) % <span class="number">100</span>;
+  <span class="keyword">return</span> hash < flag.percentage;
+}
+
+<span class="comment">// Usage in route</span>
+app.<span class="function">get</span>(<span class="string">'/checkout'</span>, (req, res) => {
+  <span class="keyword">if</span> (<span class="function">isEnabled</span>(<span class="string">'newCheckoutFlow'</span>, req.user.id)) {
+    <span class="keyword">return</span> <span class="function">newCheckout</span>(req, res);
+  }
+  <span class="function">oldCheckout</span>(req, res);
+});</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Production Checklist</div>
+        <p>1. HTTPS everywhere (use Let's Encrypt)<br>
+        2. Environment variables for secrets (never hardcode)<br>
+        3. Health check endpoint<br>
+        4. Structured logging<br>
+        5. Error tracking (Sentry)<br>
+        6. Rate limiting on all public endpoints<br>
+        7. CORS configured properly<br>
+        8. Security headers (helmet)<br>
+        9. Database connection pooling<br>
+        10. Graceful shutdown handling<br>
+        11. Automated database backups<br>
+        12. CI/CD pipeline with tests</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>

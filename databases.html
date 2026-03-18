@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostgreSQL &amp; MySQL - Better Dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="sidebar-toggle" aria-label="Open navigation" aria-expanded="false">
+      <span class="hamburger-icon"></span>
+    </button>
+    <a href="index.html" class="logo">Better Dev</a>
+  </header>
+
+  <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Site navigation">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Navigation</span>
+      <button class="sidebar-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" class="sidebar-search-input" placeholder="Search topics..." aria-label="Search topics">
+      <div class="sidebar-search-results"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group"><a href="index.html">Home</a></div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Mathematics</div>
+        <a href="pre-algebra.html">Pre-Algebra</a>
+        <a href="algebra.html">Algebra</a>
+        <a href="sequences-series.html">Sequences &amp; Series</a>
+        <a href="geometry.html">Geometry</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="discrete-math.html">Discrete Math</a>
+        <a href="linear-algebra.html">Linear Algebra</a>
+        <a href="probability.html">Probability &amp; Statistics</a>
+        <a href="binary-systems.html">Binary &amp; Number Systems</a>
+        <a href="number-theory.html">Number Theory for CP</a>
+        <a href="computational-geometry.html">Computational Geometry</a>
+        <a href="game-theory.html">Game Theory</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Data Structures &amp; Algorithms</div>
+        <a href="dsa-foundations.html">DSA Foundations</a>
+        <a href="arrays.html">Arrays &amp; Strings</a>
+        <a href="stacks-queues.html">Stacks &amp; Queues</a>
+        <a href="hashmaps.html">Hash Maps &amp; Sets</a>
+        <a href="linked-lists.html">Linked Lists</a>
+        <a href="trees.html">Trees &amp; BST</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="sorting.html">Sorting &amp; Searching</a>
+        <a href="patterns.html">LeetCode Patterns</a>
+        <a href="dp.html">Dynamic Programming</a>
+        <a href="advanced.html">Advanced Topics</a>
+        <a href="string-algorithms.html">String Algorithms</a>
+        <a href="advanced-graphs.html">Advanced Graphs</a>
+        <a href="advanced-dp.html">Advanced DP</a>
+        <a href="advanced-ds.html">Advanced Data Structures</a>
+        <a href="leetcode-650.html">The 650 Problems</a>
+        <a href="competitive-programming.html">CP Roadmap</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Languages &amp; Systems</div>
+        <a href="cpp.html">C++</a>
+        <a href="golang.html">Go</a>
+        <a href="javascript.html">JavaScript Deep Dive</a>
+        <a href="typescript.html">TypeScript</a>
+        <a href="nodejs.html">Node.js Internals</a>
+        <a href="os.html">Operating Systems</a>
+        <a href="linux.html">Linux</a>
+        <a href="git.html">Git</a>
+        <a href="backend.html">Backend</a>
+        <a href="system-design.html">System Design</a>
+        <a href="networking.html">Networking</a>
+        <a href="cloud.html">Cloud &amp; Infrastructure</a>
+        <a href="docker.html">Docker &amp; Compose</a>
+        <a href="kubernetes.html">Kubernetes</a>
+        <a href="message-queues.html">Queues &amp; Pub/Sub</a>
+        <a href="selfhosting.html">VPS &amp; Self-Hosting</a>
+        <a href="databases.html">PostgreSQL &amp; MySQL</a>
+        <a href="stripe.html">Stripe &amp; Payments</a>
+        <a href="distributed-systems.html">Distributed Systems</a>
+        <a href="backend-engineering.html">Backend Engineering</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">JS/TS Ecosystem</div>
+        <a href="js-tooling.html">Tooling &amp; Bundlers</a>
+        <a href="js-testing.html">Testing</a>
+        <a href="ts-projects.html">Building with TS</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">More</div>
+        <a href="seans-brain.html">Sean's Brain</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> / PostgreSQL &amp; MySQL</div>
+      <h1>PostgreSQL &amp; MySQL</h1>
+      <p>Master relational databases from setup to production. Learn SQL fundamentals, database design, indexing, transactions, and how to connect from Node.js. Covers both PostgreSQL and MySQL with CLI commands, real queries, and best practices.</p>
+    </div>
+
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#why-databases">Why Databases Matter</a></li>
+        <li><a href="#postgresql-setup">PostgreSQL Setup &amp; CLI</a></li>
+        <li><a href="#mysql-setup">MySQL Setup &amp; CLI</a></li>
+        <li><a href="#sql-fundamentals">SQL Fundamentals</a></li>
+        <li><a href="#joins">Joins</a></li>
+        <li><a href="#aggregation">Aggregation &amp; Window Functions</a></li>
+        <li><a href="#database-design">Database Design &amp; Normalization</a></li>
+        <li><a href="#indexes">Indexes &amp; Query Performance</a></li>
+        <li><a href="#transactions">Transactions &amp; ACID</a></li>
+        <li><a href="#views-ctes">Views, CTEs &amp; Subqueries</a></li>
+        <li><a href="#postgresql-features">PostgreSQL-Specific Features</a></li>
+        <li><a href="#mysql-features">MySQL-Specific Features</a></li>
+        <li><a href="#nodejs-connection">Connecting from Node.js</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+      </ol>
+    </div>
+
+    <!-- Section 1: Why Databases Matter -->
+    <section id="why-databases" class="section">
+      <h2>1. Why Databases Matter</h2>
+      <p>Every real application needs to persist data. You could save JSON files, but that breaks down fast -- no concurrent access, no queries, no integrity guarantees. That's why relational databases exist.</p>
+
+      <h3>RDBMS vs NoSQL</h3>
+      <div class="example-box">
+        <div class="label">When to Use What</div>
+        <p><strong>Relational (PostgreSQL, MySQL)</strong> -- structured data with relationships, transactions matter, complex queries. Use for: user accounts, orders, financial data, most web apps.</p>
+        <p><strong>Document (MongoDB)</strong> -- flexible schema, nested data, rapid prototyping. Use for: CMS, catalogs, event logging.</p>
+        <p><strong>Key-Value (Redis)</strong> -- simple lookups, caching, sessions. Use for: cache layer, rate limiting, leaderboards.</p>
+        <p><strong>Graph (Neo4j)</strong> -- deeply connected data. Use for: social networks, recommendation engines.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">Start with PostgreSQL</div>
+        <p>If you're unsure, pick PostgreSQL. It handles JSON (like MongoDB), has full-text search, geospatial queries, and is the most feature-rich open-source RDBMS. Most startups and companies use it.</p>
+      </div>
+
+      <h3>PostgreSQL vs MySQL</h3>
+      <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+        <tr style="border-bottom:2px solid var(--border);"><th style="text-align:left;padding:8px;">Feature</th><th style="text-align:left;padding:8px;">PostgreSQL</th><th style="text-align:left;padding:8px;">MySQL</th></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Standards compliance</td><td style="padding:8px;">Excellent</td><td style="padding:8px;">Good</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">JSON support</td><td style="padding:8px;">JSONB (indexed, fast)</td><td style="padding:8px;">JSON (functional)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Full-text search</td><td style="padding:8px;">Built-in, powerful</td><td style="padding:8px;">Basic</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Replication</td><td style="padding:8px;">Streaming, logical</td><td style="padding:8px;">Binary log, group</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Extensions</td><td style="padding:8px;">PostGIS, pg_trgm, etc.</td><td style="padding:8px;">Plugins</td></tr>
+        <tr><td style="padding:8px;">Used by</td><td style="padding:8px;">Instagram, Discord, Reddit</td><td style="padding:8px;">Facebook, Twitter, Uber</td></tr>
+      </table>
+    </section>
+
+    <!-- Section 2: PostgreSQL Setup -->
+    <section id="postgresql-setup" class="section">
+      <h2>2. PostgreSQL Setup &amp; CLI</h2>
+
+      <h3>Installation</h3>
+      <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Ubuntu / WSL</span>
+<span class="builtin">sudo</span> apt update
+<span class="builtin">sudo</span> apt install postgresql postgresql-contrib
+<span class="builtin">sudo</span> systemctl start postgresql
+<span class="builtin">sudo</span> systemctl enable postgresql
+
+<span class="comment"># Mac (Homebrew)</span>
+brew install postgresql@16
+brew services start postgresql@16
+
+<span class="comment"># Check version</span>
+psql <span class="keyword">--version</span></code></pre>
+
+      <h3>First Connection</h3>
+      <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Switch to postgres user and open psql</span>
+<span class="builtin">sudo</span> -u postgres psql
+
+<span class="comment"># Create your own user + database</span>
+CREATE USER sean WITH PASSWORD <span class="string">'yourpassword'</span> CREATEDB;
+CREATE DATABASE myapp OWNER sean;
+\q
+
+<span class="comment"># Now connect as yourself</span>
+psql -U sean -d myapp</code></pre>
+
+      <h3>Essential psql Commands</h3>
+      <div class="example-box">
+        <div class="label">psql Cheat Sheet</div>
+        <pre><code><span class="lang-label">psql</span>
+\l              <span class="comment">-- list all databases</span>
+\c dbname       <span class="comment">-- connect to database</span>
+\dt             <span class="comment">-- list tables</span>
+\d tablename    <span class="comment">-- describe table (columns, types, constraints)</span>
+\di             <span class="comment">-- list indexes</span>
+\du             <span class="comment">-- list users/roles</span>
+\x              <span class="comment">-- toggle expanded output (vertical display)</span>
+\timing         <span class="comment">-- toggle query timing</span>
+\i file.sql     <span class="comment">-- execute SQL file</span>
+\e              <span class="comment">-- open editor for query</span>
+\q              <span class="comment">-- quit</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Section 3: MySQL Setup -->
+    <section id="mysql-setup" class="section">
+      <h2>3. MySQL Setup &amp; CLI</h2>
+
+      <h3>Installation</h3>
+      <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Ubuntu / WSL</span>
+<span class="builtin">sudo</span> apt update
+<span class="builtin">sudo</span> apt install mysql-server
+<span class="builtin">sudo</span> systemctl start mysql
+<span class="builtin">sudo</span> mysql_secure_installation
+
+<span class="comment"># Mac</span>
+brew install mysql
+brew services start mysql</code></pre>
+
+      <h3>First Connection</h3>
+      <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># Connect as root</span>
+<span class="builtin">sudo</span> mysql
+
+<span class="comment"># Create user + database</span>
+CREATE USER <span class="string">'sean'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'yourpassword'</span>;
+CREATE DATABASE myapp;
+GRANT ALL PRIVILEGES ON myapp.* TO <span class="string">'sean'</span>@<span class="string">'localhost'</span>;
+FLUSH PRIVILEGES;
+EXIT;
+
+<span class="comment"># Connect as yourself</span>
+mysql -u sean -p myapp</code></pre>
+
+      <h3>Essential mysql Commands</h3>
+      <div class="example-box">
+        <div class="label">MySQL CLI Cheat Sheet</div>
+        <pre><code><span class="lang-label">MySQL</span>
+SHOW DATABASES;           <span class="comment">-- list databases</span>
+USE dbname;               <span class="comment">-- switch database</span>
+SHOW TABLES;              <span class="comment">-- list tables</span>
+DESCRIBE tablename;       <span class="comment">-- show table structure</span>
+SHOW INDEX FROM tablename;<span class="comment">-- list indexes</span>
+SHOW PROCESSLIST;         <span class="comment">-- active connections</span>
+SOURCE file.sql;          <span class="comment">-- execute SQL file</span>
+EXIT;                     <span class="comment">-- quit</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Section 4: SQL Fundamentals -->
+    <section id="sql-fundamentals" class="section">
+      <h2>4. SQL Fundamentals</h2>
+
+      <div class="tip-box">
+        <div class="label">Interactive Practice</div>
+        <p>Go through <a href="https://sqlbolt.com/" target="_blank" rel="noopener">SQLBolt</a> -- it's the best free interactive SQL tutorial. Do every lesson. It takes about 2 hours and you'll have SQL basics locked in.</p>
+      </div>
+
+      <h3>CREATE TABLE</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">CREATE TABLE</span> users (
+  id          SERIAL <span class="keyword">PRIMARY KEY</span>,        <span class="comment">-- auto-incrementing integer</span>
+  email       VARCHAR(<span class="number">255</span>) <span class="keyword">UNIQUE NOT NULL</span>,
+  username    VARCHAR(<span class="number">50</span>) <span class="keyword">NOT NULL</span>,
+  password_hash TEXT <span class="keyword">NOT NULL</span>,
+  created_at  TIMESTAMP <span class="keyword">DEFAULT</span> <span class="builtin">NOW</span>(),
+  is_active   BOOLEAN <span class="keyword">DEFAULT</span> <span class="keyword">true</span>
+);
+
+<span class="keyword">CREATE TABLE</span> posts (
+  id          SERIAL <span class="keyword">PRIMARY KEY</span>,
+  user_id     INTEGER <span class="keyword">NOT NULL REFERENCES</span> users(id) <span class="keyword">ON DELETE CASCADE</span>,
+  title       VARCHAR(<span class="number">200</span>) <span class="keyword">NOT NULL</span>,
+  body        TEXT,
+  published   BOOLEAN <span class="keyword">DEFAULT</span> <span class="keyword">false</span>,
+  created_at  TIMESTAMP <span class="keyword">DEFAULT</span> <span class="builtin">NOW</span>()
+);
+
+<span class="keyword">CREATE TABLE</span> comments (
+  id          SERIAL <span class="keyword">PRIMARY KEY</span>,
+  post_id     INTEGER <span class="keyword">NOT NULL REFERENCES</span> posts(id) <span class="keyword">ON DELETE CASCADE</span>,
+  user_id     INTEGER <span class="keyword">NOT NULL REFERENCES</span> users(id),
+  body        TEXT <span class="keyword">NOT NULL</span>,
+  created_at  TIMESTAMP <span class="keyword">DEFAULT</span> <span class="builtin">NOW</span>()
+);</code></pre>
+
+      <div class="tip-box">
+        <div class="label">SERIAL vs UUID</div>
+        <p><strong>SERIAL</strong> (auto-increment integer) is simple and fast. <strong>UUID</strong> (gen_random_uuid()) is better for distributed systems -- no collision across servers. For most apps, SERIAL is fine. Use UUID if you'll shard later.</p>
+      </div>
+
+      <h3>INSERT</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">INSERT INTO</span> users (email, username, password_hash)
+<span class="keyword">VALUES</span> (<span class="string">'sean@example.com'</span>, <span class="string">'sean'</span>, <span class="string">'$2b$10$hash...'</span>);
+
+<span class="comment">-- Insert multiple rows</span>
+<span class="keyword">INSERT INTO</span> users (email, username, password_hash) <span class="keyword">VALUES</span>
+  (<span class="string">'alice@example.com'</span>, <span class="string">'alice'</span>, <span class="string">'$2b$10$hash1'</span>),
+  (<span class="string">'bob@example.com'</span>, <span class="string">'bob'</span>, <span class="string">'$2b$10$hash2'</span>);
+
+<span class="comment">-- Insert and return the created row</span>
+<span class="keyword">INSERT INTO</span> posts (user_id, title, body)
+<span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">'My First Post'</span>, <span class="string">'Hello world!'</span>)
+<span class="keyword">RETURNING</span> id, title, created_at;</code></pre>
+
+      <h3>SELECT</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Basic query</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users;
+
+<span class="comment">-- Specific columns with filter</span>
+<span class="keyword">SELECT</span> id, username, email
+<span class="keyword">FROM</span> users
+<span class="keyword">WHERE</span> is_active = <span class="keyword">true</span>
+<span class="keyword">ORDER BY</span> created_at <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="number">10</span>;
+
+<span class="comment">-- Pattern matching</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> email <span class="keyword">LIKE</span> <span class="string">'%@gmail.com'</span>;
+
+<span class="comment">-- IN clause</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="keyword">IN</span> (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);
+
+<span class="comment">-- NULL checks</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> posts <span class="keyword">WHERE</span> body <span class="keyword">IS NOT NULL</span>;</code></pre>
+
+      <h3>UPDATE &amp; DELETE</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Update with WHERE (always use WHERE!)</span>
+<span class="keyword">UPDATE</span> users
+<span class="keyword">SET</span> username = <span class="string">'seandev'</span>, is_active = <span class="keyword">false</span>
+<span class="keyword">WHERE</span> id = <span class="number">1</span>
+<span class="keyword">RETURNING</span> *;
+
+<span class="comment">-- Delete specific rows</span>
+<span class="keyword">DELETE FROM</span> comments <span class="keyword">WHERE</span> id = <span class="number">5</span>;
+
+<span class="comment">-- Delete with subquery</span>
+<span class="keyword">DELETE FROM</span> posts
+<span class="keyword">WHERE</span> user_id <span class="keyword">IN</span> (
+  <span class="keyword">SELECT</span> id <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> is_active = <span class="keyword">false</span>
+);</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Never UPDATE/DELETE Without WHERE</div>
+        <p><code>UPDATE users SET is_active = false;</code> will update EVERY row. Always include WHERE. In production, wrap destructive operations in a transaction so you can ROLLBACK if something goes wrong.</p>
+      </div>
+    </section>
+
+    <!-- Section 5: Joins -->
+    <section id="joins" class="section">
+      <h2>5. Joins</h2>
+      <p>Joins combine rows from two or more tables based on a related column. This is the core power of relational databases.</p>
+
+      <h3>INNER JOIN</h3>
+      <p>Returns only rows that have matching values in both tables.</p>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Get all posts with their author's username</span>
+<span class="keyword">SELECT</span> p.id, p.title, u.username, p.created_at
+<span class="keyword">FROM</span> posts p
+<span class="keyword">INNER JOIN</span> users u <span class="keyword">ON</span> p.user_id = u.id
+<span class="keyword">WHERE</span> p.published = <span class="keyword">true</span>
+<span class="keyword">ORDER BY</span> p.created_at <span class="keyword">DESC</span>;</code></pre>
+
+      <div class="example-box">
+        <div class="label">Visual: INNER JOIN</div>
+        <pre>
+  users                posts
+  ┌──┬───────┐         ┌──┬─────────┬─────────┐
+  │id│username│         │id│ title   │ user_id │
+  ├──┼───────┤         ├──┼─────────┼─────────┤
+  │ 1│ sean  │◄────────│ 1│ Hello   │    1    │
+  │ 2│ alice │◄────────│ 2│ World   │    2    │
+  │ 3│ bob   │  (no)   │ 3│ Bye     │    1    │
+  └──┴───────┘         └──┴─────────┴─────────┘
+
+  Result: posts 1, 2, 3 with their usernames
+  (bob has no posts -- not in result)</pre>
+      </div>
+
+      <h3>LEFT JOIN</h3>
+      <p>Returns ALL rows from the left table, plus matching rows from the right. If no match, right side is NULL.</p>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- All users, even those with no posts</span>
+<span class="keyword">SELECT</span> u.username, <span class="builtin">COUNT</span>(p.id) <span class="keyword">AS</span> post_count
+<span class="keyword">FROM</span> users u
+<span class="keyword">LEFT JOIN</span> posts p <span class="keyword">ON</span> u.id = p.user_id
+<span class="keyword">GROUP BY</span> u.username
+<span class="keyword">ORDER BY</span> post_count <span class="keyword">DESC</span>;
+
+<span class="comment">-- Find users who have never posted</span>
+<span class="keyword">SELECT</span> u.username
+<span class="keyword">FROM</span> users u
+<span class="keyword">LEFT JOIN</span> posts p <span class="keyword">ON</span> u.id = p.user_id
+<span class="keyword">WHERE</span> p.id <span class="keyword">IS NULL</span>;</code></pre>
+
+      <h3>RIGHT JOIN &amp; FULL OUTER JOIN</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- RIGHT JOIN: all posts, even if user was deleted (rare in practice)</span>
+<span class="keyword">SELECT</span> p.title, u.username
+<span class="keyword">FROM</span> users u
+<span class="keyword">RIGHT JOIN</span> posts p <span class="keyword">ON</span> u.id = p.user_id;
+
+<span class="comment">-- FULL OUTER JOIN: all rows from both tables</span>
+<span class="keyword">SELECT</span> u.username, p.title
+<span class="keyword">FROM</span> users u
+<span class="keyword">FULL OUTER JOIN</span> posts p <span class="keyword">ON</span> u.id = p.user_id;</code></pre>
+
+      <h3>Self Join</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Employees table with manager_id referencing same table</span>
+<span class="keyword">CREATE TABLE</span> employees (
+  id          SERIAL <span class="keyword">PRIMARY KEY</span>,
+  name        VARCHAR(<span class="number">100</span>),
+  manager_id  INTEGER <span class="keyword">REFERENCES</span> employees(id)
+);
+
+<span class="comment">-- Get employee name with their manager's name</span>
+<span class="keyword">SELECT</span> e.name <span class="keyword">AS</span> employee, m.name <span class="keyword">AS</span> manager
+<span class="keyword">FROM</span> employees e
+<span class="keyword">LEFT JOIN</span> employees m <span class="keyword">ON</span> e.manager_id = m.id;</code></pre>
+
+      <h3>Multi-Table Join</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Posts with author name and comment count</span>
+<span class="keyword">SELECT</span>
+  p.id,
+  p.title,
+  u.username <span class="keyword">AS</span> author,
+  <span class="builtin">COUNT</span>(c.id) <span class="keyword">AS</span> comment_count
+<span class="keyword">FROM</span> posts p
+<span class="keyword">INNER JOIN</span> users u <span class="keyword">ON</span> p.user_id = u.id
+<span class="keyword">LEFT JOIN</span> comments c <span class="keyword">ON</span> p.id = c.post_id
+<span class="keyword">WHERE</span> p.published = <span class="keyword">true</span>
+<span class="keyword">GROUP BY</span> p.id, p.title, u.username
+<span class="keyword">ORDER BY</span> comment_count <span class="keyword">DESC</span>;</code></pre>
+    </section>
+
+    <!-- Section 6: Aggregation -->
+    <section id="aggregation" class="section">
+      <h2>6. Aggregation &amp; Window Functions</h2>
+
+      <h3>GROUP BY &amp; Aggregate Functions</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Posts per user</span>
+<span class="keyword">SELECT</span> user_id, <span class="builtin">COUNT</span>(*) <span class="keyword">AS</span> total_posts
+<span class="keyword">FROM</span> posts
+<span class="keyword">GROUP BY</span> user_id;
+
+<span class="comment">-- Average, min, max</span>
+<span class="keyword">SELECT</span>
+  <span class="builtin">COUNT</span>(*) <span class="keyword">AS</span> total,
+  <span class="builtin">AVG</span>(price) <span class="keyword">AS</span> avg_price,
+  <span class="builtin">MIN</span>(price) <span class="keyword">AS</span> cheapest,
+  <span class="builtin">MAX</span>(price) <span class="keyword">AS</span> most_expensive,
+  <span class="builtin">SUM</span>(price) <span class="keyword">AS</span> revenue
+<span class="keyword">FROM</span> orders
+<span class="keyword">WHERE</span> status = <span class="string">'completed'</span>;
+
+<span class="comment">-- HAVING filters groups (WHERE filters rows)</span>
+<span class="keyword">SELECT</span> user_id, <span class="builtin">COUNT</span>(*) <span class="keyword">AS</span> post_count
+<span class="keyword">FROM</span> posts
+<span class="keyword">GROUP BY</span> user_id
+<span class="keyword">HAVING</span> <span class="builtin">COUNT</span>(*) > <span class="number">5</span>
+<span class="keyword">ORDER BY</span> post_count <span class="keyword">DESC</span>;</code></pre>
+
+      <h3>Window Functions</h3>
+      <p>Window functions perform calculations across rows related to the current row -- without collapsing them like GROUP BY.</p>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- ROW_NUMBER: assign sequential numbers</span>
+<span class="keyword">SELECT</span>
+  username,
+  email,
+  <span class="builtin">ROW_NUMBER</span>() <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> created_at) <span class="keyword">AS</span> row_num
+<span class="keyword">FROM</span> users;
+
+<span class="comment">-- RANK: rank with gaps for ties</span>
+<span class="keyword">SELECT</span>
+  username,
+  score,
+  <span class="builtin">RANK</span>() <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> score <span class="keyword">DESC</span>) <span class="keyword">AS</span> rank
+<span class="keyword">FROM</span> leaderboard;
+
+<span class="comment">-- DENSE_RANK: rank without gaps</span>
+<span class="keyword">SELECT</span>
+  username,
+  score,
+  <span class="builtin">DENSE_RANK</span>() <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> score <span class="keyword">DESC</span>) <span class="keyword">AS</span> dense_rank
+<span class="keyword">FROM</span> leaderboard;
+
+<span class="comment">-- LAG / LEAD: access previous/next row</span>
+<span class="keyword">SELECT</span>
+  date,
+  revenue,
+  <span class="builtin">LAG</span>(revenue) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> date) <span class="keyword">AS</span> prev_day,
+  revenue - <span class="builtin">LAG</span>(revenue) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> date) <span class="keyword">AS</span> change,
+  <span class="builtin">LEAD</span>(revenue) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> date) <span class="keyword">AS</span> next_day
+<span class="keyword">FROM</span> daily_revenue;
+
+<span class="comment">-- Running total with SUM window</span>
+<span class="keyword">SELECT</span>
+  date,
+  amount,
+  <span class="builtin">SUM</span>(amount) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> date) <span class="keyword">AS</span> running_total
+<span class="keyword">FROM</span> transactions;
+
+<span class="comment">-- Partition: window per group</span>
+<span class="keyword">SELECT</span>
+  department,
+  employee,
+  salary,
+  <span class="builtin">RANK</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>) <span class="keyword">AS</span> dept_rank
+<span class="keyword">FROM</span> employees;</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Window Functions are a Superpower</div>
+        <p>Learn ROW_NUMBER, RANK, LAG, LEAD, and SUM OVER. These come up constantly in interviews and real analytics queries. They let you avoid self-joins and subqueries.</p>
+      </div>
+    </section>
+
+    <!-- Section 7: Database Design -->
+    <section id="database-design" class="section">
+      <h2>7. Database Design &amp; Normalization</h2>
+
+      <h3>Normal Forms</h3>
+      <div class="example-box">
+        <div class="label">1NF through BCNF</div>
+        <p><strong>1NF:</strong> Every column has atomic (single) values. No arrays or comma-separated lists in a column.</p>
+        <p><strong>2NF:</strong> 1NF + no partial dependencies. Every non-key column depends on the entire primary key (matters for composite keys).</p>
+        <p><strong>3NF:</strong> 2NF + no transitive dependencies. Non-key columns don't depend on other non-key columns.</p>
+        <p><strong>BCNF:</strong> Every determinant is a candidate key. Slightly stricter than 3NF.</p>
+      </div>
+
+      <h3>Bad Design (Un-normalized)</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- DON'T: everything in one table</span>
+<span class="keyword">CREATE TABLE</span> orders_bad (
+  order_id    INTEGER,
+  customer_name VARCHAR(<span class="number">100</span>),
+  customer_email VARCHAR(<span class="number">255</span>),  <span class="comment">-- duplicated per order!</span>
+  product_name  VARCHAR(<span class="number">200</span>),
+  product_price DECIMAL,          <span class="comment">-- duplicated per order!</span>
+  quantity    INTEGER
+);</code></pre>
+
+      <h3>Good Design (Normalized)</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">CREATE TABLE</span> customers (
+  id    SERIAL <span class="keyword">PRIMARY KEY</span>,
+  name  VARCHAR(<span class="number">100</span>) <span class="keyword">NOT NULL</span>,
+  email VARCHAR(<span class="number">255</span>) <span class="keyword">UNIQUE NOT NULL</span>
+);
+
+<span class="keyword">CREATE TABLE</span> products (
+  id    SERIAL <span class="keyword">PRIMARY KEY</span>,
+  name  VARCHAR(<span class="number">200</span>) <span class="keyword">NOT NULL</span>,
+  price DECIMAL(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">NOT NULL</span>
+);
+
+<span class="keyword">CREATE TABLE</span> orders (
+  id          SERIAL <span class="keyword">PRIMARY KEY</span>,
+  customer_id INTEGER <span class="keyword">NOT NULL REFERENCES</span> customers(id),
+  created_at  TIMESTAMP <span class="keyword">DEFAULT</span> <span class="builtin">NOW</span>()
+);
+
+<span class="keyword">CREATE TABLE</span> order_items (
+  id         SERIAL <span class="keyword">PRIMARY KEY</span>,
+  order_id   INTEGER <span class="keyword">NOT NULL REFERENCES</span> orders(id) <span class="keyword">ON DELETE CASCADE</span>,
+  product_id INTEGER <span class="keyword">NOT NULL REFERENCES</span> products(id),
+  quantity   INTEGER <span class="keyword">NOT NULL</span> <span class="keyword">CHECK</span> (quantity > <span class="number">0</span>),
+  price_at_time DECIMAL(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">NOT NULL</span>  <span class="comment">-- snapshot price at order time</span>
+);</code></pre>
+
+      <div class="tip-box">
+        <div class="label">price_at_time Pattern</div>
+        <p>Always store the price at the time of purchase in the order_items table. If you just reference products.price, the order total changes when you update product prices. This is a real-world mistake people make.</p>
+      </div>
+
+      <h3>Entity Relationships</h3>
+      <div class="example-box">
+        <div class="label">Relationship Types</div>
+        <p><strong>One-to-Many (1:N):</strong> user has many posts. Put user_id foreign key on posts table.</p>
+        <p><strong>Many-to-Many (M:N):</strong> users can have many tags, tags can have many users. Use a join/junction table (user_tags).</p>
+        <p><strong>One-to-One (1:1):</strong> user has one profile. Put user_id UNIQUE foreign key on profiles table (or just add columns to users).</p>
+      </div>
+
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Many-to-Many: tags on posts</span>
+<span class="keyword">CREATE TABLE</span> tags (
+  id   SERIAL <span class="keyword">PRIMARY KEY</span>,
+  name VARCHAR(<span class="number">50</span>) <span class="keyword">UNIQUE NOT NULL</span>
+);
+
+<span class="keyword">CREATE TABLE</span> post_tags (
+  post_id INTEGER <span class="keyword">REFERENCES</span> posts(id) <span class="keyword">ON DELETE CASCADE</span>,
+  tag_id  INTEGER <span class="keyword">REFERENCES</span> tags(id) <span class="keyword">ON DELETE CASCADE</span>,
+  <span class="keyword">PRIMARY KEY</span> (post_id, tag_id)  <span class="comment">-- composite PK prevents duplicates</span>
+);</code></pre>
+    </section>
+
+    <!-- Section 8: Indexes -->
+    <section id="indexes" class="section">
+      <h2>8. Indexes &amp; Query Performance</h2>
+      <p>Without indexes, the database scans every row (sequential scan). Indexes are like a book's index -- they let the DB jump directly to matching rows.</p>
+
+      <h3>Creating Indexes</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- B-tree index (default, most common)</span>
+<span class="keyword">CREATE INDEX</span> idx_posts_user_id <span class="keyword">ON</span> posts(user_id);
+
+<span class="comment">-- Unique index (also enforces uniqueness)</span>
+<span class="keyword">CREATE UNIQUE INDEX</span> idx_users_email <span class="keyword">ON</span> users(email);
+
+<span class="comment">-- Composite index (order matters!)</span>
+<span class="keyword">CREATE INDEX</span> idx_posts_user_published
+  <span class="keyword">ON</span> posts(user_id, published);
+
+<span class="comment">-- Partial index (only index a subset of rows)</span>
+<span class="keyword">CREATE INDEX</span> idx_active_users
+  <span class="keyword">ON</span> users(email) <span class="keyword">WHERE</span> is_active = <span class="keyword">true</span>;
+
+<span class="comment">-- GIN index for full-text search / JSONB</span>
+<span class="keyword">CREATE INDEX</span> idx_posts_body_search
+  <span class="keyword">ON</span> posts <span class="keyword">USING</span> GIN(<span class="builtin">to_tsvector</span>(<span class="string">'english'</span>, body));</code></pre>
+
+      <h3>EXPLAIN ANALYZE</h3>
+      <p>See exactly how the database executes your query:</p>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">EXPLAIN ANALYZE</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> posts <span class="keyword">WHERE</span> user_id = <span class="number">1</span>;
+
+<span class="comment">-- Output tells you:</span>
+<span class="comment">--   Seq Scan = full table scan (slow)</span>
+<span class="comment">--   Index Scan = used an index (fast)</span>
+<span class="comment">--   Bitmap Index Scan = used index for many rows</span>
+<span class="comment">--   actual time = real execution time</span>
+<span class="comment">--   rows = actual rows returned</span></code></pre>
+
+      <div class="warning-box">
+        <div class="label">Index Trade-offs</div>
+        <p>Indexes speed up reads but slow down writes (every INSERT/UPDATE must also update the index). Don't index everything -- index columns you frequently filter, join, or sort by. Drop unused indexes.</p>
+      </div>
+
+      <div class="tip-box">
+        <div class="label">What to Index</div>
+        <p>1. Foreign keys (user_id, post_id) -- always index these<br>
+        2. Columns in WHERE clauses you query frequently<br>
+        3. Columns in ORDER BY<br>
+        4. Columns in JOIN conditions<br>
+        5. Don't index boolean columns or columns with very few distinct values</p>
+      </div>
+    </section>
+
+    <!-- Section 9: Transactions -->
+    <section id="transactions" class="section">
+      <h2>9. Transactions &amp; ACID</h2>
+
+      <div class="formula-box">
+        <div class="label">ACID Properties</div>
+        <p><strong>Atomicity:</strong> All operations in a transaction succeed or all fail. No partial updates.</p>
+        <p><strong>Consistency:</strong> Transaction moves the database from one valid state to another.</p>
+        <p><strong>Isolation:</strong> Concurrent transactions don't interfere with each other.</p>
+        <p><strong>Durability:</strong> Once committed, data survives crashes.</p>
+      </div>
+
+      <h3>Basic Transaction</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Transfer money between accounts</span>
+<span class="keyword">BEGIN</span>;
+
+<span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance - <span class="number">100</span> <span class="keyword">WHERE</span> id = <span class="number">1</span>;
+<span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance + <span class="number">100</span> <span class="keyword">WHERE</span> id = <span class="number">2</span>;
+
+<span class="comment">-- Check constraint: balance >= 0</span>
+<span class="comment">-- If any statement fails, both are rolled back</span>
+
+<span class="keyword">COMMIT</span>;
+<span class="comment">-- or ROLLBACK; to cancel</span></code></pre>
+
+      <h3>Isolation Levels</h3>
+      <div class="example-box">
+        <div class="label">From Weakest to Strongest</div>
+        <p><strong>READ UNCOMMITTED:</strong> Can see other transactions' uncommitted changes (dirty reads). Almost never used.</p>
+        <p><strong>READ COMMITTED (PostgreSQL default):</strong> Only sees committed data. Each statement sees a new snapshot.</p>
+        <p><strong>REPEATABLE READ (MySQL default):</strong> Sees a snapshot from the start of the transaction. Same query returns same results.</p>
+        <p><strong>SERIALIZABLE:</strong> Full isolation. Transactions behave as if run one after another. Slowest but safest.</p>
+      </div>
+
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Set isolation level</span>
+<span class="keyword">BEGIN</span> ISOLATION LEVEL SERIALIZABLE;
+<span class="comment">-- ... your queries ...</span>
+<span class="keyword">COMMIT</span>;
+
+<span class="comment">-- Row-level locking (SELECT FOR UPDATE)</span>
+<span class="keyword">BEGIN</span>;
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> accounts <span class="keyword">WHERE</span> id = <span class="number">1</span> <span class="keyword">FOR UPDATE</span>;
+<span class="comment">-- This row is now locked until COMMIT/ROLLBACK</span>
+<span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance - <span class="number">50</span> <span class="keyword">WHERE</span> id = <span class="number">1</span>;
+<span class="keyword">COMMIT</span>;</code></pre>
+
+      <div class="warning-box">
+        <div class="label">Deadlocks</div>
+        <p>Deadlock: Transaction A locks row 1 and waits for row 2. Transaction B locks row 2 and waits for row 1. Both wait forever. The database detects this and kills one transaction. Fix: always lock rows in the same order (e.g., by ascending ID).</p>
+      </div>
+    </section>
+
+    <!-- Section 10: Views, CTEs -->
+    <section id="views-ctes" class="section">
+      <h2>10. Views, CTEs &amp; Subqueries</h2>
+
+      <h3>Views</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Create a view: a saved query that acts like a table</span>
+<span class="keyword">CREATE VIEW</span> published_posts <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> p.id, p.title, u.username, p.created_at
+<span class="keyword">FROM</span> posts p
+<span class="keyword">JOIN</span> users u <span class="keyword">ON</span> p.user_id = u.id
+<span class="keyword">WHERE</span> p.published = <span class="keyword">true</span>;
+
+<span class="comment">-- Use it like a table</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> published_posts <span class="keyword">WHERE</span> username = <span class="string">'sean'</span>;
+
+<span class="comment">-- Materialized view: cached result, must be refreshed</span>
+<span class="keyword">CREATE MATERIALIZED VIEW</span> user_stats <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> u.id, u.username, <span class="builtin">COUNT</span>(p.id) <span class="keyword">AS</span> post_count
+<span class="keyword">FROM</span> users u
+<span class="keyword">LEFT JOIN</span> posts p <span class="keyword">ON</span> u.id = p.user_id
+<span class="keyword">GROUP BY</span> u.id, u.username;
+
+<span class="keyword">REFRESH MATERIALIZED VIEW</span> user_stats;</code></pre>
+
+      <h3>Common Table Expressions (CTEs)</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- CTE: temporary named result set</span>
+<span class="keyword">WITH</span> active_authors <span class="keyword">AS</span> (
+  <span class="keyword">SELECT</span> user_id, <span class="builtin">COUNT</span>(*) <span class="keyword">AS</span> post_count
+  <span class="keyword">FROM</span> posts
+  <span class="keyword">WHERE</span> created_at > <span class="builtin">NOW</span>() - INTERVAL <span class="string">'30 days'</span>
+  <span class="keyword">GROUP BY</span> user_id
+  <span class="keyword">HAVING</span> <span class="builtin">COUNT</span>(*) >= <span class="number">3</span>
+)
+<span class="keyword">SELECT</span> u.username, aa.post_count
+<span class="keyword">FROM</span> active_authors aa
+<span class="keyword">JOIN</span> users u <span class="keyword">ON</span> aa.user_id = u.id
+<span class="keyword">ORDER BY</span> aa.post_count <span class="keyword">DESC</span>;
+
+<span class="comment">-- Recursive CTE: traverse hierarchies</span>
+<span class="keyword">WITH RECURSIVE</span> org_chart <span class="keyword">AS</span> (
+  <span class="comment">-- Base case: top-level managers</span>
+  <span class="keyword">SELECT</span> id, name, manager_id, <span class="number">0</span> <span class="keyword">AS</span> depth
+  <span class="keyword">FROM</span> employees
+  <span class="keyword">WHERE</span> manager_id <span class="keyword">IS NULL</span>
+
+  <span class="keyword">UNION ALL</span>
+
+  <span class="comment">-- Recursive case: employees under each manager</span>
+  <span class="keyword">SELECT</span> e.id, e.name, e.manager_id, oc.depth + <span class="number">1</span>
+  <span class="keyword">FROM</span> employees e
+  <span class="keyword">JOIN</span> org_chart oc <span class="keyword">ON</span> e.manager_id = oc.id
+)
+<span class="keyword">SELECT</span> <span class="builtin">REPEAT</span>(<span class="string">'  '</span>, depth) || name <span class="keyword">AS</span> org_tree
+<span class="keyword">FROM</span> org_chart
+<span class="keyword">ORDER BY</span> depth, name;</code></pre>
+    </section>
+
+    <!-- Section 11: PostgreSQL-Specific Features -->
+    <section id="postgresql-features" class="section">
+      <h2>11. PostgreSQL-Specific Features</h2>
+
+      <h3>JSONB</h3>
+      <p>PostgreSQL's JSONB type lets you store and query JSON data with indexes. It's like having MongoDB inside PostgreSQL.</p>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">CREATE TABLE</span> events (
+  id   SERIAL <span class="keyword">PRIMARY KEY</span>,
+  type VARCHAR(<span class="number">50</span>),
+  data JSONB <span class="keyword">NOT NULL</span>,
+  created_at TIMESTAMP <span class="keyword">DEFAULT</span> <span class="builtin">NOW</span>()
+);
+
+<span class="keyword">INSERT INTO</span> events (type, data) <span class="keyword">VALUES</span>
+(<span class="string">'click'</span>, <span class="string">'{"page": "/home", "x": 120, "y": 450, "user_agent": "Chrome"}'</span>),
+(<span class="string">'purchase'</span>, <span class="string">'{"product_id": 42, "amount": 29.99, "currency": "USD"}'</span>);
+
+<span class="comment">-- Access JSON fields</span>
+<span class="keyword">SELECT</span> data-><span class="string">'page'</span> <span class="keyword">AS</span> page           <span class="comment">-- returns JSON: "/home"</span>
+<span class="keyword">FROM</span> events <span class="keyword">WHERE</span> type = <span class="string">'click'</span>;
+
+<span class="keyword">SELECT</span> data->><span class="string">'page'</span> <span class="keyword">AS</span> page          <span class="comment">-- returns text: /home</span>
+<span class="keyword">FROM</span> events <span class="keyword">WHERE</span> type = <span class="string">'click'</span>;
+
+<span class="comment">-- Nested access</span>
+<span class="keyword">SELECT</span> data-><span class="string">'address'</span>->><span class="string">'city'</span> <span class="keyword">FROM</span> customers;
+
+<span class="comment">-- Filter by JSON field</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> events
+<span class="keyword">WHERE</span> data->><span class="string">'currency'</span> = <span class="string">'USD'</span>
+  <span class="keyword">AND</span> (data->><span class="string">'amount'</span>)::<span class="keyword">numeric</span> > <span class="number">20</span>;
+
+<span class="comment">-- Contains operator @></span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> events
+<span class="keyword">WHERE</span> data @> <span class="string">'{"currency": "USD"}'</span>;
+
+<span class="comment">-- Index JSONB for fast queries</span>
+<span class="keyword">CREATE INDEX</span> idx_events_data <span class="keyword">ON</span> events <span class="keyword">USING</span> GIN(data);</code></pre>
+
+      <h3>Arrays</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="keyword">CREATE TABLE</span> articles (
+  id   SERIAL <span class="keyword">PRIMARY KEY</span>,
+  title TEXT,
+  tags  TEXT[] <span class="keyword">DEFAULT</span> <span class="string">'{}'</span>
+);
+
+<span class="keyword">INSERT INTO</span> articles (title, tags) <span class="keyword">VALUES</span>
+(<span class="string">'Learn SQL'</span>, ARRAY[<span class="string">'sql'</span>, <span class="string">'database'</span>, <span class="string">'tutorial'</span>]);
+
+<span class="comment">-- Check if array contains value</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> articles <span class="keyword">WHERE</span> <span class="string">'sql'</span> = <span class="keyword">ANY</span>(tags);
+
+<span class="comment">-- Array overlap</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> articles <span class="keyword">WHERE</span> tags && ARRAY[<span class="string">'sql'</span>, <span class="string">'go'</span>];
+
+<span class="comment">-- Unnest: expand array into rows</span>
+<span class="keyword">SELECT</span> id, <span class="builtin">unnest</span>(tags) <span class="keyword">AS</span> tag <span class="keyword">FROM</span> articles;</code></pre>
+
+      <h3>Full-Text Search</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Basic full-text search</span>
+<span class="keyword">SELECT</span> title, body
+<span class="keyword">FROM</span> posts
+<span class="keyword">WHERE</span> <span class="builtin">to_tsvector</span>(<span class="string">'english'</span>, title || <span class="string">' '</span> || body)
+  @@ <span class="builtin">to_tsquery</span>(<span class="string">'english'</span>, <span class="string">'database &amp; design'</span>);
+
+<span class="comment">-- Add a generated tsvector column for performance</span>
+<span class="keyword">ALTER TABLE</span> posts <span class="keyword">ADD COLUMN</span> search_vector tsvector
+  GENERATED ALWAYS <span class="keyword">AS</span> (
+    <span class="builtin">to_tsvector</span>(<span class="string">'english'</span>, <span class="builtin">coalesce</span>(title, <span class="string">''</span>) || <span class="string">' '</span> || <span class="builtin">coalesce</span>(body, <span class="string">''</span>))
+  ) STORED;
+
+<span class="keyword">CREATE INDEX</span> idx_posts_search <span class="keyword">ON</span> posts <span class="keyword">USING</span> GIN(search_vector);</code></pre>
+    </section>
+
+    <!-- Section 12: MySQL-Specific -->
+    <section id="mysql-features" class="section">
+      <h2>12. MySQL-Specific Features</h2>
+
+      <h3>Storage Engines</h3>
+      <div class="example-box">
+        <div class="label">InnoDB vs MyISAM</div>
+        <p><strong>InnoDB (default since MySQL 5.5):</strong> Supports transactions, foreign keys, row-level locking. Use this for everything.</p>
+        <p><strong>MyISAM:</strong> No transactions, table-level locking, faster full-table reads. Legacy -- avoid for new projects.</p>
+      </div>
+
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Check engine of a table</span>
+SHOW TABLE STATUS <span class="keyword">LIKE</span> <span class="string">'users'</span>;
+
+<span class="comment">-- Create with specific engine</span>
+<span class="keyword">CREATE TABLE</span> logs (
+  id   INT AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,
+  msg  TEXT
+) ENGINE=InnoDB;
+
+<span class="comment">-- MySQL JSON support</span>
+<span class="keyword">CREATE TABLE</span> configs (
+  id    INT AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,
+  name  VARCHAR(<span class="number">100</span>),
+  settings JSON
+);
+
+<span class="keyword">INSERT INTO</span> configs (name, settings) <span class="keyword">VALUES</span>
+(<span class="string">'app'</span>, <span class="string">'{"theme": "dark", "lang": "en", "notifications": true}'</span>);
+
+<span class="comment">-- Access JSON (MySQL uses -> and ->>)</span>
+<span class="keyword">SELECT</span> name, settings->><span class="string">'$.theme'</span> <span class="keyword">AS</span> theme <span class="keyword">FROM</span> configs;
+
+<span class="comment">-- MySQL AUTO_INCREMENT vs PostgreSQL SERIAL</span>
+<span class="comment">-- MySQL: INT AUTO_INCREMENT</span>
+<span class="comment">-- PostgreSQL: SERIAL (or GENERATED ALWAYS AS IDENTITY)</span></code></pre>
+
+      <h3>MySQL Replication Basics</h3>
+      <pre><code><span class="lang-label">SQL</span>
+<span class="comment">-- Check binary logging (needed for replication)</span>
+SHOW VARIABLES <span class="keyword">LIKE</span> <span class="string">'log_bin'</span>;
+
+<span class="comment">-- On source server: create replication user</span>
+<span class="keyword">CREATE USER</span> <span class="string">'repl'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'password'</span>;
+<span class="keyword">GRANT</span> REPLICATION SLAVE <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'%'</span>;
+
+<span class="comment">-- On replica: configure and start</span>
+CHANGE REPLICATION SOURCE TO
+  SOURCE_HOST = <span class="string">'192.168.1.100'</span>,
+  SOURCE_USER = <span class="string">'repl'</span>,
+  SOURCE_PASSWORD = <span class="string">'password'</span>,
+  SOURCE_LOG_FILE = <span class="string">'mysql-bin.000001'</span>,
+  SOURCE_LOG_POS = <span class="number">0</span>;
+
+START REPLICA;</code></pre>
+    </section>
+
+    <!-- Section 13: Connecting from Node.js -->
+    <section id="nodejs-connection" class="section">
+      <h2>13. Connecting from Node.js</h2>
+
+      <h3>PostgreSQL with pg</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install pg</span>
+<span class="keyword">import</span> pg <span class="keyword">from</span> <span class="string">'pg'</span>;
+
+<span class="comment">// Connection pool (recommended for production)</span>
+<span class="keyword">const</span> pool = <span class="keyword">new</span> pg.<span class="function">Pool</span>({
+  host: <span class="string">'localhost'</span>,
+  port: <span class="number">5432</span>,
+  database: <span class="string">'myapp'</span>,
+  user: <span class="string">'sean'</span>,
+  password: process.env.DB_PASSWORD,
+  max: <span class="number">20</span>,              <span class="comment">// max connections in pool</span>
+  idleTimeoutMillis: <span class="number">30000</span>,
+});
+
+<span class="comment">// Simple query</span>
+<span class="keyword">const</span> result = <span class="keyword">await</span> pool.<span class="function">query</span>(<span class="string">'SELECT * FROM users WHERE id = $1'</span>, [<span class="number">1</span>]);
+console.<span class="function">log</span>(result.rows[<span class="number">0</span>]);
+
+<span class="comment">// Parameterized queries prevent SQL injection</span>
+<span class="keyword">const</span> { rows } = <span class="keyword">await</span> pool.<span class="function">query</span>(
+  <span class="string">'SELECT * FROM users WHERE email = $1 AND is_active = $2'</span>,
+  [email, <span class="keyword">true</span>]
+);
+
+<span class="comment">// Insert and return</span>
+<span class="keyword">const</span> { rows: [newPost] } = <span class="keyword">await</span> pool.<span class="function">query</span>(
+  <span class="string">'INSERT INTO posts (user_id, title, body) VALUES ($1, $2, $3) RETURNING *'</span>,
+  [userId, title, body]
+);
+
+<span class="comment">// Transaction</span>
+<span class="keyword">const</span> client = <span class="keyword">await</span> pool.<span class="function">connect</span>();
+<span class="keyword">try</span> {
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">'BEGIN'</span>);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">'UPDATE accounts SET balance = balance - $1 WHERE id = $2'</span>, [<span class="number">100</span>, fromId]);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">'UPDATE accounts SET balance = balance + $1 WHERE id = $2'</span>, [<span class="number">100</span>, toId]);
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">'COMMIT'</span>);
+} <span class="keyword">catch</span> (e) {
+  <span class="keyword">await</span> client.<span class="function">query</span>(<span class="string">'ROLLBACK'</span>);
+  <span class="keyword">throw</span> e;
+} <span class="keyword">finally</span> {
+  client.<span class="function">release</span>();
+}</code></pre>
+
+      <h3>MySQL with mysql2</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// npm install mysql2</span>
+<span class="keyword">import</span> mysql <span class="keyword">from</span> <span class="string">'mysql2/promise'</span>;
+
+<span class="keyword">const</span> pool = mysql.<span class="function">createPool</span>({
+  host: <span class="string">'localhost'</span>,
+  user: <span class="string">'sean'</span>,
+  password: process.env.DB_PASSWORD,
+  database: <span class="string">'myapp'</span>,
+  waitForConnections: <span class="keyword">true</span>,
+  connectionLimit: <span class="number">10</span>,
+});
+
+<span class="comment">// MySQL uses ? for parameters (not $1, $2)</span>
+<span class="keyword">const</span> [rows] = <span class="keyword">await</span> pool.<span class="function">execute</span>(
+  <span class="string">'SELECT * FROM users WHERE email = ? AND is_active = ?'</span>,
+  [email, <span class="keyword">true</span>]
+);
+
+<span class="comment">// Insert</span>
+<span class="keyword">const</span> [result] = <span class="keyword">await</span> pool.<span class="function">execute</span>(
+  <span class="string">'INSERT INTO posts (user_id, title) VALUES (?, ?)'</span>,
+  [userId, title]
+);
+console.<span class="function">log</span>(result.insertId);</code></pre>
+
+      <h3>ORMs: Prisma &amp; Drizzle</h3>
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Prisma -- schema-first ORM</span>
+<span class="comment">// prisma/schema.prisma defines your models</span>
+<span class="comment">// Then: npx prisma generate && npx prisma migrate dev</span>
+
+<span class="keyword">import</span> { PrismaClient } <span class="keyword">from</span> <span class="string">'@prisma/client'</span>;
+<span class="keyword">const</span> prisma = <span class="keyword">new</span> <span class="function">PrismaClient</span>();
+
+<span class="comment">// Find users with posts</span>
+<span class="keyword">const</span> users = <span class="keyword">await</span> prisma.user.<span class="function">findMany</span>({
+  where: { isActive: <span class="keyword">true</span> },
+  include: { posts: <span class="keyword">true</span> },
+  orderBy: { createdAt: <span class="string">'desc'</span> },
+  take: <span class="number">10</span>,
+});
+
+<span class="comment">// Create with relations</span>
+<span class="keyword">const</span> user = <span class="keyword">await</span> prisma.user.<span class="function">create</span>({
+  data: {
+    email: <span class="string">'sean@dev.com'</span>,
+    username: <span class="string">'sean'</span>,
+    posts: {
+      create: [{ title: <span class="string">'First Post'</span>, body: <span class="string">'Hello!'</span> }],
+    },
+  },
+  include: { posts: <span class="keyword">true</span> },
+});
+
+<span class="comment">// Transaction in Prisma</span>
+<span class="keyword">await</span> prisma.<span class="function">$transaction</span>([
+  prisma.account.<span class="function">update</span>({ where: { id: fromId }, data: { balance: { decrement: <span class="number">100</span> } } }),
+  prisma.account.<span class="function">update</span>({ where: { id: toId }, data: { balance: { increment: <span class="number">100</span> } } }),
+]);</code></pre>
+
+      <pre><code><span class="lang-label">JavaScript</span>
+<span class="comment">// Drizzle -- SQL-like TypeScript ORM</span>
+<span class="comment">// npm install drizzle-orm pg</span>
+
+<span class="keyword">import</span> { drizzle } <span class="keyword">from</span> <span class="string">'drizzle-orm/node-postgres'</span>;
+<span class="keyword">import</span> { pgTable, serial, text, boolean, timestamp } <span class="keyword">from</span> <span class="string">'drizzle-orm/pg-core'</span>;
+<span class="keyword">import</span> { eq } <span class="keyword">from</span> <span class="string">'drizzle-orm'</span>;
+
+<span class="keyword">const</span> users = <span class="function">pgTable</span>(<span class="string">'users'</span>, {
+  id: <span class="function">serial</span>(<span class="string">'id'</span>).<span class="function">primaryKey</span>(),
+  email: <span class="function">text</span>(<span class="string">'email'</span>).<span class="function">notNull</span>().<span class="function">unique</span>(),
+  username: <span class="function">text</span>(<span class="string">'username'</span>).<span class="function">notNull</span>(),
+  isActive: <span class="function">boolean</span>(<span class="string">'is_active'</span>).<span class="function">default</span>(<span class="keyword">true</span>),
+});
+
+<span class="keyword">const</span> db = <span class="function">drizzle</span>(pool);
+
+<span class="comment">// Select</span>
+<span class="keyword">const</span> activeUsers = <span class="keyword">await</span> db.<span class="function">select</span>().<span class="function">from</span>(users).<span class="function">where</span>(<span class="function">eq</span>(users.isActive, <span class="keyword">true</span>));
+
+<span class="comment">// Insert</span>
+<span class="keyword">await</span> db.<span class="function">insert</span>(users).<span class="function">values</span>({ email: <span class="string">'sean@dev.com'</span>, username: <span class="string">'sean'</span> });</code></pre>
+
+      <div class="tip-box">
+        <div class="label">Prisma vs Drizzle</div>
+        <p><strong>Prisma:</strong> Schema file, migrations, great DX, heavier. Best for rapid development.<br>
+        <strong>Drizzle:</strong> SQL-like syntax, lighter, faster, TypeScript-native. Best when you want to stay close to SQL.<br>
+        Both are excellent. Drizzle is trending for new projects in 2024+.</p>
+      </div>
+    </section>
+
+    <!-- Section 14: Best Practices -->
+    <section id="best-practices" class="section">
+      <h2>14. Best Practices</h2>
+
+      <h3>Migrations</h3>
+      <div class="example-box">
+        <div class="label">Why Migrations Matter</div>
+        <p>Never modify production schemas by hand. Use migration tools that track schema changes as versioned files:</p>
+        <p><strong>Prisma:</strong> <code>npx prisma migrate dev --name add_posts_table</code></p>
+        <p><strong>Drizzle:</strong> <code>npx drizzle-kit generate:pg && npx drizzle-kit push:pg</code></p>
+        <p><strong>Raw SQL:</strong> Use <code>golang-migrate</code> or <code>node-pg-migrate</code></p>
+        <p>Each migration is a file with UP (apply) and DOWN (rollback) SQL. Commit them to git.</p>
+      </div>
+
+      <h3>Backups</h3>
+      <pre><code><span class="lang-label">Bash</span>
+<span class="comment"># PostgreSQL backup</span>
+pg_dump -U sean myapp > backup_2024_01_15.sql
+pg_dump -U sean -Fc myapp > backup.dump  <span class="comment"># compressed format</span>
+
+<span class="comment"># Restore</span>
+psql -U sean myapp < backup_2024_01_15.sql
+pg_restore -U sean -d myapp backup.dump
+
+<span class="comment"># MySQL backup</span>
+mysqldump -u sean -p myapp > backup.sql
+mysql -u sean -p myapp < backup.sql
+
+<span class="comment"># Automate with cron (daily at 2am)</span>
+<span class="comment"># 0 2 * * * pg_dump -U sean myapp | gzip > /backups/myapp_$(date +\%Y\%m\%d).sql.gz</span></code></pre>
+
+      <h3>Security Checklist</h3>
+      <div class="warning-box">
+        <div class="label">Database Security</div>
+        <p>1. <strong>Never</strong> use the postgres/root superuser in your app. Create a limited user.</p>
+        <p>2. <strong>Always</strong> use parameterized queries. Never concatenate user input into SQL strings.</p>
+        <p>3. <strong>Restrict</strong> network access. Don't expose port 5432/3306 to the internet.</p>
+        <p>4. <strong>Encrypt</strong> connections with SSL in production.</p>
+        <p>5. <strong>Hash</strong> passwords with bcrypt/argon2 before storing.</p>
+        <p>6. <strong>Backup</strong> daily and test your restore process.</p>
+        <p>7. <strong>Monitor</strong> slow queries with pg_stat_statements or MySQL slow query log.</p>
+      </div>
+
+      <h3>Query Optimization Tips</h3>
+      <div class="tip-box">
+        <div class="label">Performance</div>
+        <p>1. Use EXPLAIN ANALYZE on slow queries<br>
+        2. Add indexes on columns you filter/join by<br>
+        3. Use connection pooling (PgBouncer or pool in your driver)<br>
+        4. Avoid SELECT * -- only select columns you need<br>
+        5. Use LIMIT for pagination, never load all rows<br>
+        6. Use COPY instead of INSERT for bulk loading<br>
+        7. Vacuum regularly (PostgreSQL auto-vacuums by default)<br>
+        8. Consider materialized views for expensive aggregations</p>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+(function(){
+  var toggle=document.querySelector('.sidebar-toggle');
+  var sidebar=document.querySelector('.sidebar');
+  var backdrop=document.querySelector('.sidebar-backdrop');
+  var closeBtn=document.querySelector('.sidebar-close');
+  function open(){sidebar.classList.add('open');backdrop.classList.add('visible');toggle.setAttribute('aria-expanded','true');}
+  function close(){sidebar.classList.remove('open');backdrop.classList.remove('visible');toggle.setAttribute('aria-expanded','false');}
+  if(toggle)toggle.addEventListener('click',function(){sidebar.classList.contains('open')?close():open();});
+  if(backdrop)backdrop.addEventListener('click',close);
+  if(closeBtn)closeBtn.addEventListener('click',close);
+  var links=document.querySelectorAll('.sidebar-nav a');
+  var current=location.pathname.split('/').pop()||'index.html';
+  for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')===current)links[i].classList.add('active');}
+})();
+(function(){
+  var input=document.querySelector('.sidebar-search-input');
+  var box=document.querySelector('.sidebar-search-results');
+  if(!input||!box)return;
+  var links=[].slice.call(document.querySelectorAll('.sidebar-nav a'));
+  var topics=links.map(function(a){return{text:a.textContent.trim(),href:a.getAttribute('href')};});
+  var idx=-1;
+  function render(q){
+    if(!q){box.classList.remove('visible');box.innerHTML='';idx=-1;return;}
+    var lc=q.toLowerCase();
+    var matches=topics.filter(function(t){return t.text.toLowerCase().indexOf(lc)!==-1;});
+    if(matches.length===0){box.innerHTML='<div class="no-results">No topics found</div>';box.classList.add('visible');idx=-1;return;}
+    box.innerHTML=matches.map(function(m){return'<a href="'+m.href+'">'+m.text+'</a>';}).join('');
+    box.classList.add('visible');idx=-1;
+  }
+  function highlight(items){for(var i=0;i<items.length;i++){items[i].classList.toggle('highlighted',i===idx);}}
+  input.addEventListener('input',function(){render(this.value);});
+  input.addEventListener('keydown',function(e){
+    var items=box.querySelectorAll('a');if(!items.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);highlight(items);items[idx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&idx>=0){e.preventDefault();items[idx].click();}
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){box.classList.remove('visible');idx=-1;},200);});
+  input.addEventListener('focus',function(){if(this.value)render(this.value);});
+})();
+</script>
+</body>
+</html>
