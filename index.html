@@ -589,6 +589,12 @@
         <p>CAP theorem, consensus (Raft/Paxos), replication, sharding, consistent hashing, distributed transactions (2PC/sagas), gossip protocols, caching, rate limiting, idempotency, and observability.</p>
         <span class="tag red">Phase 3</span>
       </a>
+      <a href="backend-engineering.html" class="card">
+        <div class="icon">&#9881;</div>
+        <h3>Backend Engineering</h3>
+        <p>REST APIs, middleware, JWT/OAuth auth, rate limiting (token bucket, sliding window), pagination, caching (Redis), WebSockets, event-driven architecture, RabbitMQ, BullMQ, error handling, and deployment patterns.</p>
+        <span class="tag red">Phase 3</span>
+      </a>
     </div>
 
     <div class="tip-box" style="margin-top: 1.5rem;">
@@ -744,6 +750,115 @@
       </p>
     </div>
 
+    <!-- BACKEND ENGINEERING CARD (was missing) -->
+
+    <!-- ============================================================ -->
+    <!-- PROJECTS THAT MAKE YOU CRACKED                                -->
+    <!-- ============================================================ -->
+    <h2 class="section-title">Projects That Make You Cracked</h2>
+    <p>These aren't random portfolio projects. Each one <strong>forces you to use real algorithms and systems knowledge</strong> to solve real problems. You can't fake your way through these -- you either understand the algorithm or it doesn't work. Build them in order alongside the phases above.</p>
+
+    <div class="tip-box" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+      <div class="label">The Rule</div>
+      <p>Every project below has an <strong>algorithmic core</strong> and a <strong>systems core</strong>. You need both. A CRUD app teaches you nothing. A project where you have to implement edit distance, build a B-tree, or design a consistent hashing ring -- that's where growth happens. <strong>No AI when implementing the algorithm.</strong> Use AI for boilerplate and setup, never for the hard part.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card" style="cursor:default;">
+        <div class="icon">P1</div>
+        <h3>Typing Accuracy Service</h3>
+        <p><strong>The problem you already had.</strong> User listens to audio and types what they hear. You need to determine accuracy.<br><br>
+        <strong>Algorithms:</strong> Levenshtein distance (edit distance), longest common subsequence, diff algorithm, fuzzy matching with string hashing.<br>
+        <strong>Systems:</strong> WebSocket for real-time typing, REST API, PostgreSQL for storing results, Redis for session state.<br>
+        <strong>What you'll learn:</strong> Why your char-map solution was O(1) but wrong, and why edit distance is O(nm) but correct. This is the project that bridges string algorithms to real software.</p>
+        <span class="tag green">Phase 1-2 -- Start Here</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P2</div>
+        <h3>Key-Value Store (Go)</h3>
+        <p><strong>You already started this -- finish it and make it production-grade.</strong><br><br>
+        <strong>Algorithms:</strong> Hash tables with open addressing, B-trees for disk storage, LSM trees, bloom filters for fast negative lookups, LRU cache eviction.<br>
+        <strong>Systems:</strong> TCP server, serialization/deserialization, file I/O, WAL (write-ahead log) for crash recovery, goroutine-per-connection concurrency.<br>
+        <strong>Levels:</strong> Level 1: in-memory hashmap with TCP interface. Level 2: persist to disk with B-tree. Level 3: add TTL, LRU eviction. Level 4: add replication to a second node.</p>
+        <span class="tag orange">Phase 2-3</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P3</div>
+        <h3>URL Shortener with Analytics</h3>
+        <p><strong>Simple concept, deep execution.</strong><br><br>
+        <strong>Algorithms:</strong> Base62 encoding, consistent hashing for distribution, HyperLogLog for unique visitor counting, bloom filters to check if URL exists without DB hit.<br>
+        <strong>Systems:</strong> Rate limiting (sliding window), caching (Redis), database design (PostgreSQL), background job to aggregate analytics, API design.<br>
+        <strong>What you'll learn:</strong> How to think about scale. What happens when you have 100M URLs? That's where the algorithms matter.</p>
+        <span class="tag orange">Phase 2</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P4</div>
+        <h3>Search Engine (Go or Node)</h3>
+        <p><strong>Build a search engine that indexes and searches text documents.</strong><br><br>
+        <strong>Algorithms:</strong> Inverted index, TF-IDF ranking, trie for autocomplete, string hashing for deduplication, edit distance for "did you mean?" suggestions.<br>
+        <strong>Systems:</strong> File crawling, concurrent indexing, query parsing, HTTP API for search, pagination with cursor-based approach.<br>
+        <strong>What you'll learn:</strong> How Google actually works at a basic level. Tries, inverted indexes, and ranking algorithms are used everywhere.</p>
+        <span class="tag red">Phase 3</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P5</div>
+        <h3>Load Balancer (Go)</h3>
+        <p><strong>Route HTTP requests across multiple backend servers.</strong><br><br>
+        <strong>Algorithms:</strong> Round-robin, weighted round-robin, least connections (min-heap), consistent hashing (hash ring with virtual nodes), health check with exponential backoff.<br>
+        <strong>Systems:</strong> TCP/HTTP proxying, goroutines for concurrent connections, graceful shutdown, connection draining, metrics endpoint.<br>
+        <strong>What you'll learn:</strong> How NGINX and cloud load balancers work. Consistent hashing is asked in every system design interview.</p>
+        <span class="tag red">Phase 3</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P6</div>
+        <h3>DNS Resolver from Scratch (Go)</h3>
+        <p><strong>Send raw UDP packets and resolve domain names.</strong><br><br>
+        <strong>Algorithms:</strong> Binary parsing (DNS packet format), trie for cache lookup, LRU eviction, recursion (root -> TLD -> authoritative).<br>
+        <strong>Systems:</strong> UDP sockets, binary protocol implementation, caching with TTL, concurrent request handling.<br>
+        <strong>What you'll learn:</strong> How the internet actually works at the DNS level. Parsing binary protocols is a skill most web devs never learn.</p>
+        <span class="tag red">Phase 3</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P7</div>
+        <h3>Rate Limiter Library (Go + Node)</h3>
+        <p><strong>Publish a real rate limiting library to npm and Go modules.</strong><br><br>
+        <strong>Algorithms:</strong> Token bucket, sliding window log, sliding window counter, fixed window. Each is a different trade-off.<br>
+        <strong>Systems:</strong> Redis integration for distributed rate limiting, middleware pattern for Express/Gin, thread safety, benchmarking.<br>
+        <strong>What you'll learn:</strong> How to build and publish a real library. Rate limiting appears in every backend system.</p>
+        <span class="tag orange">Phase 2-3</span>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="icon">P8</div>
+        <h3>Database from Scratch (Go)</h3>
+        <p><strong>The ultimate systems project. Build a simple SQL database.</strong><br><br>
+        <strong>Algorithms:</strong> B+ tree for indexes, query parsing (recursive descent parser), hash join, sort-merge join, buffer pool (LRU page replacement).<br>
+        <strong>Systems:</strong> Page-based file storage, WAL for crash recovery, lock manager for transactions, SQL tokenizer and parser.<br>
+        <strong>What you'll learn:</strong> How PostgreSQL works under the hood. This is the project that separates good engineers from great ones. Only attempt after completing Phase 3 of the site.</p>
+        <span class="tag red">Phase 3 -- Boss Level</span>
+      </div>
+    </div>
+
+    <div class="warning-box" style="margin-top: 1.5rem;">
+      <div class="label">Projects You Should NOT Build Right Now</div>
+      <p>
+        <strong>Another CRUD todo app</strong> -- teaches nothing new.<br>
+        <strong>A portfolio website</strong> -- not engineering, it's design.<br>
+        <strong>An AI wrapper</strong> -- calling an API is not engineering. The API call is 3 lines. The interesting part is the system around it (queue, caching, rate limiting).<br>
+        <strong>A "vibe coded" SaaS</strong> -- if AI wrote 90% of it, you learned 10% of it. Ship it for money if you want, but don't count it as learning.
+      </p>
+    </div>
+
+    <div class="tip-box" style="margin-top: 1.5rem;">
+      <div class="label">Your Personal Project Order (Starting Today)</div>
+      <p>
+        <strong>1. Typing Accuracy Service</strong> -- you already have the problem in your head. Implement Levenshtein distance yourself. Build the WebSocket server. This bridges what you already know to what you need to learn.<br><br>
+        <strong>2. Finish the KV Store in Go</strong> -- get it to Level 3 (disk persistence + LRU eviction). This is your systems foundation project.<br><br>
+        <strong>3. URL Shortener</strong> -- quick to build, teaches database design, caching, and rate limiting. Good for interviews.<br><br>
+        <strong>4. Search Engine OR Load Balancer</strong> -- pick whichever excites you more. Both are Phase 3 projects that will push you hard.<br><br>
+        <strong>5. Database from Scratch</strong> -- this is the final boss. Attempt this after you've done the others and completed Phase 3 of the site.
+      </p>
+    </div>
+
     <!-- LIFE ROADMAP -->
     <h2 class="section-title">Your Roadmap -- Just Follow the Site</h2>
     <p>The site is organized so that scrolling down IS the roadmap. Phase 1 &rarr; Phase 2 &rarr; Phase 3 &rarr; Phase 4. Go through each card in order. By the time you finish Phase 4, you'll have the math, algorithms, systems knowledge, and practical skills to be a cracked backend and systems engineer.</p>
@@ -761,11 +876,21 @@
     <div class="tip-box" style="margin-top: 1.5rem;">
       <div class="label">The Daily Grind Schedule</div>
       <p>
-        <strong>Morning (1 hr):</strong> Bible/prayer + 1 LeetCode problem (timed)<br>
-        <strong>Afternoon (2-3 hrs):</strong> Study from this site -- one topic at a time, do the practice problems<br>
-        <strong>Evening (1-2 hrs):</strong> Build projects / practice CP / contribute to open source<br>
-        <strong>Weekend:</strong> Virtual contest (Codeforces or LeetCode weekly) + review weak areas<br>
-        <strong>Sunday:</strong> Rest. Church. No code. Trust the process.
+        <strong>Morning (30 min):</strong> Bible/prayer. Set your mind right before anything else.<br>
+        <strong>Morning (30-45 min):</strong> 1 LeetCode problem, timed. No AI. If you solve it, move on. If you can't after 25 min, read the solution approach (not code), then implement it yourself.<br>
+        <strong>Afternoon (2-3 hrs):</strong> Study from this site -- one topic per session. Read the theory, then do the practice problems by hand. Take notes.<br>
+        <strong>Evening (1-2 hrs):</strong> Build your current project. Implement one feature per session. The algorithm part gets done without AI. The boilerplate (Express setup, Docker config) is fine with AI.<br>
+        <strong>Saturday:</strong> Virtual contest (Codeforces Div 2 or LeetCode weekly). Even if you only solve 1-2 problems, that's progress. Review the editorial for every problem you couldn't solve.<br>
+        <strong>Sunday:</strong> Rest. Church. No code. This is non-negotiable. Burnout is real and it's already hit you. Rest is what makes the other 6 days work.
+      </p>
+    </div>
+
+    <div class="warning-box" style="margin-top: 1rem;">
+      <div class="label">When You're Burnt Out (Be Honest With Yourself)</div>
+      <p>
+        If you can't focus, if you're watching anime all day, if you're binge eating and lying in bed -- that's burnout, not laziness. It means you've been sprinting too hard without recovery.<br><br>
+        <strong>The fix is not "try harder."</strong> The fix is: pick ONE thing. Not LeetCode AND networking revision AND SharpSharp AND exams AND job apps. ONE thing per day. Today it might just be "solve one Easy problem." Tomorrow it might be "read one section of this site." Small consistent actions beat heroic sprints every time.<br><br>
+        <strong>You got a Google internship from Kent.</strong> You've built real software for real clients. You're not behind. You're just tired. Rest, then start small.
       </p>
     </div>
 
